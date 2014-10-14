@@ -1,0 +1,25 @@
+{
+    "name": "cultuurnet/udb3-silex",
+    "description": "Silex UDB3 search platform",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Kristof Coomans",
+            "email": "kristof@2dotstwice.be"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://bitbucket.org/2dotstwice/culudb-php"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "cultuurnet/udb3": "~0.0@dev",
+        "cultuurnet/search": "dev-guzzle-39-update",
+        "silex/silex": "~1.2",
+        "deralex/yaml-config-service-provider": "~1.0"
+    },
+    "preferred-install": "source"
+}

@@ -1,0 +1,5 @@
+search:
+  base_url: http://acc.uitid.be/uitid/rest/searchv2
+  consumer:
+    key: ***
+    secret: **
