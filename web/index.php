@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\DefaultSearchService;
-use CultuurNet\UDB3\EventService;
+use CultuurNet\UDB3\DefaultEventService;
 
 $app = new Application();
 
@@ -48,7 +48,7 @@ $app['search_service'] = $app->share(
 
 $app['event_service'] = $app->share(
     function($app) {
-        return new EventService($app['search_service']);
+        return new DefaultEventService($app['search_api_2']);
     }
 );
 
@@ -112,13 +112,8 @@ $app->get(
 $app->get(
     'event/{cdbid}',
     function(Request $request, Application $app, $cdbid) {
-        /** @var Service $service */
-        $service = $app['search_api_2'];
-        $cdbidCondition = 'cdbid:' . $cdbid;
-        $results = $service->search(array(
-                new \CultuurNet\Search\Parameter\Query($cdbidCondition),
-                new \CultuurNet\Search\Parameter\Group(),
-        ));
+        /** @var \CultuurNet\UDB3\EventServiceInterface $service */
+        $service = $app['event_service'];
 
         /** @var \Symfony\Component\HttpFoundation\JsonResponse $response */
         $response = \Symfony\Component\HttpFoundation\JsonResponse::create()
@@ -126,19 +121,10 @@ $app->get(
             ->setClientTtl(60 * 1)
             ->setTtl(60 * 5);
 
-        //$response->headers->set('Content-Type', 'text/xml');
+        $event = $service->getEvent($cdbid);
+        $response->setData($event);
 
-        $items = $results->getItems();
-        /** @var \CultuurNet\Search\ActivityStatsExtendedEntity $first */
-        $first = reset($items);
-
-        // @todo Only return event xml
-        $response->setData(array(
-                'xml' => $results->getXml(),
-            ));
-
-        // @todo convert to json-ld
-        //$response->headers->set('Content-Type', 'application/ld+json');
+        $response->headers->set('Content-Type', 'application/ld+json');
 
         return $response;
     }
