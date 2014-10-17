@@ -3,3 +3,5 @@ search:
   consumer:
     key: ***
     secret: **
+cors:
+  origins: []
