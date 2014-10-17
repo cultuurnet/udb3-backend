@@ -78,6 +78,15 @@ $app->get(
 );
 
 $app->get(
+    'api/1.0/event.jsonld',
+    function(Request $request, Application $app) {
+        $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse('api/1.0/event.jsonld');
+        $response->headers->set('Content-Type', 'application/ld+json');
+        return $response;
+    }
+);
+
+$app->get(
     'api/1.0/search',
     function (Request $request, Application $app) {
         $query = $request->query->get('query', '*.*');

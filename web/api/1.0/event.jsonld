@@ -1,0 +1,78 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "cf": "http://culturefeed.io/event-ld/0.1/DRAFT#",
+    "@base": "http://culturefeed.io/event-ld/0.1/DRAFT#",
+
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string",
+      "_comment": "TO DO translations"
+    },
+    "calendarSummary": {
+      "@id": "cf:calendarSummary",
+      "@type": "xsd:string"
+    },
+    "shortDescription": {
+      "@id": "cf:shortDescription",
+      "@type": "xsd:string"
+    },
+    "available": {
+      "@id": "dcterms:available",
+      "@type": "xsd:dateTime"
+    },
+    "created": {
+      "@id": "dcterms:created",
+      "@type": "xsd:dateTime"
+    },
+    "creator": {
+      "@id": "dcterms:creator",
+      "@type": "xsd:string"
+    },
+    "modified": {
+      "@id": "dcterms:modified",
+      "@type": "xsd:dateTime"
+    },
+    "publisher": {
+      "@id": "dc:publisher",
+      "@type": "xsd:string"
+    },
+    "typicalAgeRange": {
+      "@id": "schema:typicalAgeRange",
+      "@type": "xsd:string"
+    },
+    "performer": {
+      "@id": "schema:performer",
+      "@type": "xsd:string",
+      "_comment": "TO DO: example"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "offers": {
+      "@id": "schema:offers",
+      "@type": "schema:Offer",
+      "_comment": "TO DO example meerdere prijzen, url"
+    },
+    "image": {
+      "@id": "schema:image",
+      "@type": "@id"
+    },
+    "location": {
+      "@id": "cf:location",
+      "@type": "cf:PostalAddress"
+    },
+    "organizer": {
+      "@id": "cf:organizer",
+      "@type": "cf:Organizer"
+    },
+    "license": {
+      "@id": "dcterms:license",
+      "@type": "@id"
+    }
+  }
+}
