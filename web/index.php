@@ -9,12 +9,15 @@ use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\PullParsingSearchService;
 use CultuurNet\UDB3\DefaultEventService;
+use CultuurNet\UDB3\CallableIriGenerator;
 
 $app = new Application();
 
 $app['debug'] = true;
 
 $app->register(new YamlConfigServiceProvider(__DIR__ . '/../config.yml'));
+
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 // Enable CORS.
 $app->after(
@@ -30,6 +33,23 @@ $app->after(
     }
 );
 
+$app['iri_generator'] = $app->share(
+    function($app) {
+        return new CallableIriGenerator(function ($cdbid) use ($app) {
+                /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
+                $urlGenerator = $app['url_generator'];
+
+                return $urlGenerator->generate(
+                    'event',
+                    array(
+                        'cdbid' => $cdbid,
+                    ),
+                    $urlGenerator::ABSOLUTE_URL
+                );
+        });
+    }
+);
+
 $app['search_api_2'] = $app->share(
     function($app) {
         $searchConfig = $app['config']['search'];
@@ -42,13 +62,13 @@ $app['search_api_2'] = $app->share(
 
 $app['search_service'] = $app->share(
     function($app) {
-        return new PullParsingSearchService($app['search_api_2']);
+        return new PullParsingSearchService($app['search_api_2'], $app['iri_generator']);
     }
 );
 
 $app['event_service'] = $app->share(
     function($app) {
-        return new DefaultEventService($app['search_api_2']);
+        return new DefaultEventService($app['search_api_2'], $app['iri_generator']);
     }
 );
 
@@ -132,6 +152,6 @@ $app->get(
 
         return $response;
     }
-);
+)->bind('event');
 
 $app->run();
