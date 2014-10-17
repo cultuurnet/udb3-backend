@@ -139,12 +139,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
-                "reference": "f6942a0a7aeac81aee5b403034c2c4c1d7e8ea63"
+                "reference": "e5830dc7ac16d448cd861a3cb87ef587efa8b422"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/f6942a0a7aeac81aee5b403034c2c4c1d7e8ea63.zip",
-                "reference": "f6942a0a7aeac81aee5b403034c2c4c1d7e8ea63",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/e5830dc7ac16d448cd861a3cb87ef587efa8b422.zip",
+                "reference": "e5830dc7ac16d448cd861a3cb87ef587efa8b422",
                 "shasum": ""
             },
             "require": {
@@ -175,7 +175,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-10-17 10:43:08"
+            "time": "2014-10-17 13:34:14"
         },
         {
             "name": "deralex/yaml-config-service-provider",
