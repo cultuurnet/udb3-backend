@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
-use CultuurNet\UDB3\DefaultSearchService;
+use CultuurNet\UDB3\PullParsingSearchService;
 use CultuurNet\UDB3\DefaultEventService;
 
 $app = new Application();
@@ -42,7 +42,7 @@ $app['search_api_2'] = $app->share(
 
 $app['search_service'] = $app->share(
     function($app) {
-        return new DefaultSearchService($app['search_api_2']);
+        return new PullParsingSearchService($app['search_api_2']);
     }
 );
 
@@ -122,7 +122,11 @@ $app->get(
             ->setTtl(60 * 5);
 
         $event = $service->getEvent($cdbid);
-        $response->setData($event);
+        $response
+            ->setData($event)
+            ->setPublic()
+            ->setClientTtl(60 * 30)
+            ->setTtl(60 * 5);
 
         $response->headers->set('Content-Type', 'application/ld+json');
 
