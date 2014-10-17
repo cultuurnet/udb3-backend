@@ -11,7 +11,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://bitbucket.org/2dotstwice/culudb-php"
+            "url": "https://bitbucket.org/2dotstwice/culudb-php.git"
         }
     ],
     "minimum-stability": "dev",

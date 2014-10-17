@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "21ec7b9bbe6b2793cd224642456cd7c8",
+    "hash": "0890f433ffd615039673977ad01aa05f",
     "packages": [
         {
             "name": "cultuurnet/auth",
@@ -93,12 +93,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Search.git",
-                "reference": "d57c782d46d5519f3086acfca2ec14a73e8e2203"
+                "reference": "062c447075cf61ed39e3b54b024ca1edb395f311"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/d57c782d46d5519f3086acfca2ec14a73e8e2203",
-                "reference": "d57c782d46d5519f3086acfca2ec14a73e8e2203",
+                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/062c447075cf61ed39e3b54b024ca1edb395f311",
+                "reference": "062c447075cf61ed39e3b54b024ca1edb395f311",
                 "shasum": ""
             },
             "require": {
@@ -131,21 +131,24 @@
                 "Apache-2.0"
             ],
             "description": "CultuurNet search service",
-            "time": "2014-10-07 12:51:32"
+            "time": "2014-10-17 07:28:37"
         },
         {
             "name": "cultuurnet/udb3",
             "version": "dev-master",
             "source": {
-                "type": "hg",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php",
-                "reference": "bf8cf53dc3586a6c087e2c42ac18a36646feaf06"
+                "type": "git",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
+                "reference": "cfc75baffa8b239d7ac11375bc36e44cd359aa59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/bf8cf53dc3586a6c087e2c42ac18a36646feaf06.zip",
-                "reference": "bf8cf53dc3586a6c087e2c42ac18a36646feaf06",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/cfc75baffa8b239d7ac11375bc36e44cd359aa59.zip",
+                "reference": "cfc75baffa8b239d7ac11375bc36e44cd359aa59",
                 "shasum": ""
+            },
+            "require": {
+                "cultuurnet/search": "dev-guzzle-39-update"
             },
             "type": "library",
             "extra": {
@@ -165,10 +168,14 @@
                 {
                     "name": "Kristof Coomans",
                     "email": "kristof@2dotstwice.be"
+                },
+                {
+                    "name": "Bram Cordie",
+                    "email": "bram@2dotstwice.be"
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-10-14 09:02:56"
+            "time": "2014-10-17 10:14:32"
         },
         {
             "name": "deralex/yaml-config-service-provider",
@@ -785,12 +792,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "be10a76303a1323a2e5709151ede97f60820b307"
+                "reference": "2603afb3d2d902a3dbc19075d91f0b39a9d46c40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/be10a76303a1323a2e5709151ede97f60820b307",
-                "reference": "be10a76303a1323a2e5709151ede97f60820b307",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/2603afb3d2d902a3dbc19075d91f0b39a9d46c40",
+                "reference": "2603afb3d2d902a3dbc19075d91f0b39a9d46c40",
                 "shasum": ""
             },
             "require": {
@@ -804,7 +811,6 @@
             "require-dev": {
                 "doctrine/dbal": "~2.2",
                 "monolog/monolog": "~1.4,>=1.4.1",
-                "phpunit/phpunit": "~3.7",
                 "swiftmailer/swiftmailer": "5.*",
                 "symfony/browser-kit": ">=2.3,<2.6-dev",
                 "symfony/config": ">=2.3,<2.6-dev",
@@ -860,7 +866,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2014-09-26 09:33:25"
+            "time": "2014-10-12 12:14:54"
         },
         {
             "name": "symfony/console",
@@ -1164,12 +1170,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "e7913afef5d809b25b78c2bc23ecff132784a90b"
+                "reference": "dbc92bceefe69b9de84d2ef1148436dcf82e1c03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/e7913afef5d809b25b78c2bc23ecff132784a90b",
-                "reference": "e7913afef5d809b25b78c2bc23ecff132784a90b",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/dbc92bceefe69b9de84d2ef1148436dcf82e1c03",
+                "reference": "dbc92bceefe69b9de84d2ef1148436dcf82e1c03",
                 "shasum": ""
             },
             "require": {
@@ -1222,7 +1228,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-10-01 05:50:18"
+            "time": "2014-10-09 16:00:03"
         },
         {
             "name": "symfony/yaml",
