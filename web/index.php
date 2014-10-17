@@ -19,11 +19,12 @@ $app->register(new YamlConfigServiceProvider(__DIR__ . '/../config.yml'));
 // Enable CORS.
 $app->after(
     function (Request $request, Response $response, Application $app) {
+        $origin = $request->headers->get('Origin');
         $origins = $app['config']['cors']['origins'];
-        if (!empty($origins)) {
+        if (!empty($origins) && in_array($origin, $origins)) {
             $response->headers->set(
                 'Access-Control-Allow-Origin',
-                implode(' ', $origins)
+                $origin
             );
         }
     }
