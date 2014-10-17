@@ -95,7 +95,6 @@ $app->get(
             ->setTtl(60 * 5);
 
         $response->headers->set('Content-Type', 'application/ld+json');
-        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:9000');
 
         return $response;
     }
