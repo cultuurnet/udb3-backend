@@ -109,9 +109,15 @@ $app->get('culturefeed/oauth/connect', function (Request $request, Application $
         /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $app['url_generator'];
 
+        $callback_url_params = array();
+
+        if ($request->query->get('destination')) {
+            $callback_url_params['destination'] = $request->query->get('destination');
+        }
+
         $callback_url = $urlGenerator->generate(
             'culturefeed.oauth.authorize',
-            array(),
+            $callback_url_params,
             $urlGenerator::ABSOLUTE_URL
         );
 
@@ -152,8 +158,16 @@ $app->get('culturefeed/oauth/authorize', function(Request $request, Application 
             $session->set('culturefeed_user', $user);
         }
 
-        // @todo redirect to a particular query parameter that was passed
-        return new RedirectResponse($urlGenerator->generate('api/1.0/search'));
+        if ($query->get('destination')) {
+            return new RedirectResponse(
+                $query->get('destination')
+            );
+        }
+        else {
+            return new RedirectResponse(
+                $urlGenerator->generate('api/1.0/search')
+            );
+        }
     })
     ->bind('culturefeed.oauth.authorize');
 
@@ -187,7 +201,7 @@ $app->get(
 
         return $response;
     }
-)->before($checkAuthenticated)->bind('api/1.0/search');
+)->before($checkAuthenticated);
 
 $app->get(
     'api/1.0/event.jsonld',
@@ -219,7 +233,7 @@ $app->get(
 
         return $response;
     }
-)->before($checkAuthenticated);
+)->before($checkAuthenticated)->bind('api/1.0/search');
 
 $app
     ->get(
