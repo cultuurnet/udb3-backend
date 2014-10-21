@@ -41,6 +41,10 @@ $app->after(
                 'Access-Control-Allow-Origin',
                 $origin
             );
+            $response->headers->set(
+                'Access-Control-Allow-Credentials',
+                'true'
+            );
         }
     }
 );
@@ -237,7 +241,6 @@ $app
             return $response;
         }
     )
-    ->bind('event')
-    ->before($checkAuthenticated);
+    ->bind('event');
 
 $app->run();
