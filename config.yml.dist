@@ -3,5 +3,10 @@ search:
   consumer:
     key: ***
     secret: **
+uitid:
+  base_url: http://acc.uitid.be/uitid/rest
+  consumer:
+    key: ***
+    secret: ***
 cors:
   origins: []

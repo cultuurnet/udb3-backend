@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Auth.git",
-                "reference": "66f00654085f481069085077715bb98596cbdd1d"
+                "reference": "972a63edcb24f063a1c1c62184dbc7ba6ac8a3b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Auth/zipball/66f00654085f481069085077715bb98596cbdd1d",
-                "reference": "66f00654085f481069085077715bb98596cbdd1d",
+                "url": "https://api.github.com/repos/cultuurnet/Auth/zipball/972a63edcb24f063a1c1c62184dbc7ba6ac8a3b3",
+                "reference": "972a63edcb24f063a1c1c62184dbc7ba6ac8a3b3",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2014-10-09 09:56:53"
+            "time": "2014-10-21 07:44:05"
         },
         {
             "name": "cultuurnet/cdb",
@@ -139,12 +139,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
-                "reference": "f7110f0d3d6a19bac555619b264c5bbdd7019e0f"
+                "reference": "7a522e15f0a50aa6066c4d740ff29fb24de0d410"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/f7110f0d3d6a19bac555619b264c5bbdd7019e0f.zip",
-                "reference": "f7110f0d3d6a19bac555619b264c5bbdd7019e0f",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/7a522e15f0a50aa6066c4d740ff29fb24de0d410.zip",
+                "reference": "7a522e15f0a50aa6066c4d740ff29fb24de0d410",
                 "shasum": ""
             },
             "require": {
@@ -175,7 +175,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-10-17 18:55:50"
+            "time": "2014-10-17 19:13:19"
         },
         {
             "name": "deralex/yaml-config-service-provider",

@@ -10,6 +10,7 @@ use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\PullParsingSearchService;
 use CultuurNet\UDB3\DefaultEventService;
 use CultuurNet\UDB3\CallableIriGenerator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $app = new Application();
 
@@ -18,6 +19,16 @@ $app['debug'] = true;
 $app->register(new YamlConfigServiceProvider(__DIR__ . '/../config.yml'));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new Silex\Provider\SessionServiceProvider());
+
+$checkAuthenticated = function(Request $request, Application $app) {
+    /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
+    $session = $app['session'];
+
+    if (!$session->get('culturefeed_user')) {
+        return new Response('Access denied', 403);
+    }
+};
 
 // Enable CORS.
 $app->after(
@@ -72,6 +83,82 @@ $app['event_service'] = $app->share(
     }
 );
 
+$app['auth_service'] = $app->share(
+  function ($app) {
+      $uitidConfig = $app['config']['uitid'];
+
+      return new CultuurNet\Auth\Guzzle\Service(
+          $uitidConfig['base_url'],
+          new \CultuurNet\Auth\ConsumerCredentials(
+              $uitidConfig['consumer']['key'],
+              $uitidConfig['consumer']['secret']
+          )
+      );
+  }
+);
+
+$app->get('culturefeed/oauth/connect', function (Request $request, Application $app) {
+        /** @var CultuurNet\Auth\ServiceInterface $authService */
+        $authService = $app['auth_service'];
+
+        /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $app['url_generator'];
+
+        $callback_url = $urlGenerator->generate(
+            'culturefeed.oauth.authorize',
+            array(),
+            $urlGenerator::ABSOLUTE_URL
+        );
+
+        $token = $authService->getRequestToken($callback_url);
+
+        $authorizeUrl = $authService->getAuthorizeUrl($token);
+
+        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
+        $session = $app['session'];
+        $session->set('culturefeed_tmp_token', $token);
+
+        return new RedirectResponse($authorizeUrl);
+    });
+
+$app->get('culturefeed/oauth/authorize', function(Request $request, Application $app) {
+        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
+        $session = $app['session'];
+
+        /** @var CultuurNet\Auth\ServiceInterface $authService */
+        $authService = $app['auth_service'];
+
+        /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $app['url_generator'];
+        $query = $request->query;
+
+        /** @var \CultuurNet\Auth\TokenCredentials $token */
+        $token = $session->get('culturefeed_tmp_token');
+
+        if ($query->get('oauth_token') == $token->getToken() && $query->get('oauth_verifier')) {
+
+            $user = $authService->getAccessToken(
+                $token,
+                $query->get('oauth_verifier')
+            );
+
+            $session->remove('culturefeed_tmp_token');
+
+            $session->set('culturefeed_user', $user);
+        }
+
+        // @todo redirect to a particular query parameter that was passed
+        return new RedirectResponse($urlGenerator->generate('api/1.0/search'));
+    })
+    ->bind('culturefeed.oauth.authorize');
+
+$app->get('logout', function(Request $request, Application $app) {
+        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
+        $session = $app['session'];
+        $session->invalidate();
+
+        return new Response('Logged out');
+    });
 
 $app->get(
     'search',
@@ -95,7 +182,7 @@ $app->get(
 
         return $response;
     }
-);
+)->before($checkAuthenticated)->bind('api/1.0/search');
 
 $app->get(
     'api/1.0/event.jsonld',
@@ -127,31 +214,34 @@ $app->get(
 
         return $response;
     }
-);
+)->before($checkAuthenticated);
 
-$app->get(
-    'event/{cdbid}',
-    function(Request $request, Application $app, $cdbid) {
-        /** @var \CultuurNet\UDB3\EventServiceInterface $service */
-        $service = $app['event_service'];
+$app
+    ->get(
+        'event/{cdbid}',
+        function(Request $request, Application $app, $cdbid) {
+            /** @var \CultuurNet\UDB3\EventServiceInterface $service */
+            $service = $app['event_service'];
 
-        /** @var \Symfony\Component\HttpFoundation\JsonResponse $response */
-        $response = \Symfony\Component\HttpFoundation\JsonResponse::create()
-            ->setPublic()
-            ->setClientTtl(60 * 1)
-            ->setTtl(60 * 5);
+            /** @var \Symfony\Component\HttpFoundation\JsonResponse $response */
+            $response = \Symfony\Component\HttpFoundation\JsonResponse::create()
+                ->setPublic()
+                ->setClientTtl(60 * 1)
+                ->setTtl(60 * 5);
 
-        $event = $service->getEvent($cdbid);
-        $response
-            ->setData($event)
-            ->setPublic()
-            ->setClientTtl(60 * 30)
-            ->setTtl(60 * 5);
+            $event = $service->getEvent($cdbid);
+            $response
+                ->setData($event)
+                ->setPublic()
+                ->setClientTtl(60 * 30)
+                ->setTtl(60 * 5);
 
-        $response->headers->set('Content-Type', 'application/ld+json');
+            $response->headers->set('Content-Type', 'application/ld+json');
 
-        return $response;
-    }
-)->bind('event');
+            return $response;
+        }
+    )
+    ->bind('event')
+    ->before($checkAuthenticated);
 
 $app->run();
