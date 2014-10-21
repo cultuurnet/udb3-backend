@@ -11,6 +11,7 @@ use CultuurNet\UDB3\PullParsingSearchService;
 use CultuurNet\UDB3\DefaultEventService;
 use CultuurNet\UDB3\CallableIriGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 $app = new Application();
 
@@ -204,8 +205,8 @@ $app->get(
         $searchService = $app['search_service'];
         $results = $searchService->search($query, $limit, $start);
 
-        $response = Response::create()
-            ->setContent(json_encode($results))
+        $response = JsonResponse::create()
+            ->setData($results)
             ->setPublic()
             ->setClientTtl(60 * 1)
             ->setTtl(60 * 5);
@@ -223,14 +224,9 @@ $app
             /** @var \CultuurNet\UDB3\EventServiceInterface $service */
             $service = $app['event_service'];
 
-            /** @var \Symfony\Component\HttpFoundation\JsonResponse $response */
-            $response = \Symfony\Component\HttpFoundation\JsonResponse::create()
-                ->setPublic()
-                ->setClientTtl(60 * 1)
-                ->setTtl(60 * 5);
-
             $event = $service->getEvent($cdbid);
-            $response
+
+            $response = JsonResponse::create()
                 ->setData($event)
                 ->setPublic()
                 ->setClientTtl(60 * 30)
