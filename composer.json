@@ -17,7 +17,6 @@
     "minimum-stability": "dev",
     "require": {
         "cultuurnet/udb3": "~0.0@dev",
-        "cultuurnet/search": "dev-guzzle-39-update",
         "silex/silex": "~1.2",
         "deralex/yaml-config-service-provider": "~1.0"
     },
