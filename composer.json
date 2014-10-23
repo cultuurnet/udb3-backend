@@ -16,6 +16,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
+        "cultuurnet/culturefeed": "~3.0",
         "cultuurnet/udb3": "~0.0@dev",
         "silex/silex": "~1.2",
         "deralex/yaml-config-service-provider": "~1.0"

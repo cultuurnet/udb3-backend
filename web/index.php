@@ -88,6 +88,32 @@ $app['event_service'] = $app->share(
     }
 );
 
+$app['current_user'] = $app->share(
+    function ($app) {
+        /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
+        $session = $app['session'];
+
+        $config = $app['config']['uitid'];
+
+        /** @var \CultuurNet\Auth\User $minimalUserData */
+        $minimalUserData = $session->get('culturefeed_user');
+
+        $userCredentials = $minimalUserData->getTokenCredentials();
+
+        $oauthClient = new CultureFeed_DefaultOAuthClient(
+            $config['consumer']['key'],
+            $config['consumer']['secret'],
+            $userCredentials->getToken(),
+            $userCredentials->getSecret()
+        );
+        $oauthClient->setEndpoint($config['base_url']);
+
+        $cf = new CultureFeed($oauthClient);
+
+        return $cf->getUser($minimalUserData->getId());
+    }
+);
+
 $app['auth_service'] = $app->share(
   function ($app) {
       $uitidConfig = $app['config']['uitid'];
@@ -256,5 +282,16 @@ $app
         }
     )
     ->bind('event');
+
+$app->get('api/1.0/user', function (Request $request, Application $app) {
+        /** @var CultureFeed_User $user */
+        $user = $app['current_user'];
+
+        $response = JsonResponse::create()
+            ->setData($user)
+            ->setPrivate();
+
+        return $response;
+    })->before($checkAuthenticated);
 
 $app->run();
