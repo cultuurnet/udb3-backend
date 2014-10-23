@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e3e1400eb4a5209f13c914835ef2e8ab",
+    "hash": "5190819d8b9e69eda408816bbacbf59a",
     "packages": [
         {
             "name": "cultuurnet/auth",
@@ -252,6 +252,46 @@
             ],
             "description": "UDB3 integration with Doctrine Cache",
             "time": "2014-10-23 07:00:09"
+        },
+        {
+            "name": "cultuurnet/udb3-symfony",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php-symfony.git",
+                "reference": "b85ef2cfb265f162984bf0a8537e57dd06a50b7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php-symfony/get/b85ef2cfb265f162984bf0a8537e57dd06a50b7e.zip",
+                "reference": "b85ef2cfb265f162984bf0a8537e57dd06a50b7e",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/http-foundation": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Symfony\\": "src/"
+                }
+            },
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                }
+            ],
+            "description": "UDB3 integration with Symfony HTTPFoundation",
+            "time": "2014-10-23 11:14:04"
         },
         {
             "name": "deralex/yaml-config-service-provider",
@@ -1428,7 +1468,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb3": 20,
-        "cultuurnet/udb3-doctrine": 20
+        "cultuurnet/udb3-doctrine": 20,
+        "cultuurnet/udb3-symfony": 20
     },
     "prefer-stable": false,
     "platform": [],

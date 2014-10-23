@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use CultuurNet\UDB3\Symfony\JsonLdResponse;
 
 $app = require __DIR__ . '/../bootstrap.php';
 
@@ -159,13 +159,11 @@ $app->get(
         $searchService = $app['search_service'];
         $results = $searchService->search($query, $limit, $start);
 
-        $response = JsonResponse::create()
+        $response = JsonLdResponse::create()
             ->setData($results)
             ->setPublic()
             ->setClientTtl(60 * 1)
             ->setTtl(60 * 5);
-
-        $response->headers->set('Content-Type', 'application/ld+json');
 
         return $response;
     }
@@ -180,13 +178,11 @@ $app
 
             $event = $service->getEvent($cdbid);
 
-            $response = JsonResponse::create()
+            $response = JsonLdResponse::create()
                 ->setData($event)
                 ->setPublic()
                 ->setClientTtl(60 * 30)
                 ->setTtl(60 * 5);
-
-            $response->headers->set('Content-Type', 'application/ld+json');
 
             return $response;
         }
@@ -197,7 +193,7 @@ $app->get('api/1.0/user', function (Request $request, Application $app) {
         /** @var CultureFeed_User $user */
         $user = $app['current_user'];
 
-        $response = JsonResponse::create()
+        $response = JsonLdResponse::create()
             ->setData($user)
             ->setPrivate();
 
