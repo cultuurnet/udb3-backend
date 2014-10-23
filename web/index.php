@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use CultuurNet\UDB3\Doctrine\EventServiceCache;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\PullParsingSearchService;
@@ -84,7 +85,8 @@ $app['search_service'] = $app->share(
 
 $app['event_service'] = $app->share(
     function($app) {
-        return new DefaultEventService($app['search_api_2'], $app['iri_generator']);
+        $service = new DefaultEventService($app['search_api_2'], $app['iri_generator']);
+        return new EventServiceCache($service, $app['cache']);
     }
 );
 
@@ -126,6 +128,15 @@ $app['auth_service'] = $app->share(
           )
       );
   }
+);
+
+$app['cache'] = $app->share(
+    function ($app) {
+        $cacheDirectory = __DIR__ . '/../cache';
+        $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory);
+
+        return $cache;
+    }
 );
 
 $app->get('culturefeed/oauth/connect', function (Request $request, Application $app) {
