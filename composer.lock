@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5190819d8b9e69eda408816bbacbf59a",
+    "hash": "1631e1f39eaaeb76fd890c759ae54495",
     "packages": [
         {
             "name": "cultuurnet/auth",
@@ -88,23 +88,23 @@
             "time": "2014-03-24 15:53:14"
         },
         {
-            "name": "cultuurnet/culturefeed",
-            "version": "3.2",
+            "name": "cultuurnet/culturefeed-php",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cultuurnet/culturefeed.git",
-                "reference": "362604edc302a260bdc102e20313c68a115d321d"
+                "url": "https://github.com/cultuurnet/culturefeed-php.git",
+                "reference": "ded7c5527acc3374d8e79718ea07973b224147a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed/zipball/362604edc302a260bdc102e20313c68a115d321d",
-                "reference": "362604edc302a260bdc102e20313c68a115d321d",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/ded7c5527acc3374d8e79718ea07973b224147a1",
+                "reference": "ded7c5527acc3374d8e79718ea07973b224147a1",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/cdb": "2.x-dev"
+                "cultuurnet/cdb": "~2.0"
             },
-            "type": "drupal-module",
+            "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.0.x-dev"
@@ -112,16 +112,43 @@
             },
             "autoload": {
                 "classmap": [
-                    "lib/CultureFeed",
-                    "lib/OAuth"
+                    "CultureFeed",
+                    "OAuth"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache-2.0"
+                "GPL-2.0"
             ],
-            "description": "CultuurNet culturefeed PHP library & Drupal module",
-            "time": "2014-08-04 15:26:35"
+            "authors": [
+                {
+                    "name": "Sven Houtmeyers",
+                    "email": "sven.houtmeyers@cultuurnet.be"
+                },
+                {
+                    "name": "Luk Dens",
+                    "email": "luk.dens@cultuurnet.be"
+                },
+                {
+                    "name": "Davy Van Den Bremt"
+                },
+                {
+                    "name": "Jochen Stals"
+                },
+                {
+                    "name": "Nils Destoop"
+                },
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                },
+                {
+                    "name": "Hans Langouche",
+                    "email": "hans@2dotstwice.be"
+                }
+            ],
+            "description": "Culturefeed PHP library",
+            "time": "2014-10-23 14:53:24"
         },
         {
             "name": "cultuurnet/search",
