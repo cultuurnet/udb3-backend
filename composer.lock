@@ -175,12 +175,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
-                "reference": "cc89f5f5ae942544031bea2ea9bb5349685e7001"
+                "reference": "067d87a851ffae9311017d5dccbbbe007889d33a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/cc89f5f5ae942544031bea2ea9bb5349685e7001.zip",
-                "reference": "cc89f5f5ae942544031bea2ea9bb5349685e7001",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/067d87a851ffae9311017d5dccbbbe007889d33a.zip",
+                "reference": "067d87a851ffae9311017d5dccbbbe007889d33a",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-10-23 06:35:37"
+            "time": "2014-10-23 08:58:42"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -219,12 +219,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php-doctrine.git",
-                "reference": "4cd01586ac9668ad89b33b625aed3f4795891e90"
+                "reference": "a4ea1d718de8709ba4db3ac994c98f2987152432"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php-doctrine/get/4cd01586ac9668ad89b33b625aed3f4795891e90.zip",
-                "reference": "4cd01586ac9668ad89b33b625aed3f4795891e90",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php-doctrine/get/a4ea1d718de8709ba4db3ac994c98f2987152432.zip",
+                "reference": "a4ea1d718de8709ba4db3ac994c98f2987152432",
                 "shasum": ""
             },
             "require": {
@@ -251,7 +251,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2014-10-23 06:34:04"
+            "time": "2014-10-23 07:00:09"
         },
         {
             "name": "deralex/yaml-config-service-provider",
