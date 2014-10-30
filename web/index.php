@@ -9,6 +9,7 @@ use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 
+/** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
 $checkAuthenticated = function(Request $request, Application $app) {
@@ -19,6 +20,32 @@ $checkAuthenticated = function(Request $request, Application $app) {
         return new Response('Access denied', 403);
     }
 };
+
+$app['logger'] = $app->share(function ($app) {
+        $logger = new \Monolog\Logger('culudb-silex');
+
+        $handlers = $app['config']['log'];
+        foreach ($handlers as $handler_config) {
+            switch ($handler_config['type']) {
+                case 'hipchat':
+                    $handler = new \Monolog\Handler\HipChatHandler(
+                        $handler_config['token'],
+                        $handler_config['room']
+                    );
+                    break;
+                case 'file':
+                    $handler = new \Monolog\Handler\StreamHandler($handler_config['path']);
+                    break;
+                default:
+                    continue 2;
+            }
+
+            $handler->setLevel($handler_config['level']);
+            $logger->pushHandler($handler);
+        }
+
+        return $logger;
+    });
 
 // Enable CORS.
 $app->after(
@@ -155,9 +182,18 @@ $app->get(
         $limit = $request->query->get('limit', 30);
         $start = $request->query->get('start', 0);
 
-        /** @var \CultuurNet\UDB3\SearchServiceInterface $searchService */
+        /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
         $searchService = $app['search_service'];
-        $results = $searchService->search($query, $limit, $start);
+        try {
+            $results = $searchService->search($query, $limit, $start);
+        }
+        catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
+            /** @var Psr\Log\LoggerInterface $logger */
+            $logger = $app['logger'];
+            $logger->alert("Search failed with HTTP status {$e->getResponse()->getStatusCode()}. Query: {$query}");
+
+            return new Response('Error while searching', '400');
+        }
 
         $response = JsonLdResponse::create()
             ->setData($results)
