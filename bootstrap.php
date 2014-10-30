@@ -6,9 +6,9 @@ use Silex\Application;
 use CultuurNet\UDB3\Doctrine\EventServiceCache;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
-use CultuurNet\UDB3\PullParsingSearchService;
+use CultuurNet\UDB3\Search\PullParsingSearchService;
 use CultuurNet\UDB3\DefaultEventService;
-use CultuurNet\UDB3\CallableIriGenerator;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 
 $app = new Application();
 
