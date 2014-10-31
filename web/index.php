@@ -190,7 +190,9 @@ $app->get(
         catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
             /** @var Psr\Log\LoggerInterface $logger */
             $logger = $app['logger'];
-            $logger->alert("Search failed with HTTP status {$e->getResponse()->getStatusCode()}. Query: {$query}");
+            /** @var CultureFeed_User $user */
+            $user = $app['current_user'];
+            $logger->alert("Search failed with HTTP status {$e->getResponse()->getStatusCode()}. Query: {$query}", array('user' => $user->nick));
 
             return new Response('Error while searching', '400');
         }
