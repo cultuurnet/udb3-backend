@@ -21,10 +21,10 @@ $checkAuthenticated = function(Request $request, Application $app) {
     }
 };
 
-$app['logger'] = $app->share(function ($app) {
-        $logger = new \Monolog\Logger('culudb-silex');
+$app['logger.search'] = $app->share(function ($app) {
+        $logger = new \Monolog\Logger('search');
 
-        $handlers = $app['config']['log'];
+        $handlers = $app['config']['log.search'];
         foreach ($handlers as $handler_config) {
             switch ($handler_config['type']) {
                 case 'hipchat':
@@ -193,16 +193,18 @@ $app->get(
         $limit = $request->query->get('limit', 30);
         $start = $request->query->get('start', 0);
 
+        /** @var Psr\Log\LoggerInterface $logger */
+        $logger = $app['logger.search'];
+        /** @var CultureFeed_User $user */
+        $user = $app['current_user'];
+
         /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
         $searchService = $app['search_service'];
         try {
             $results = $searchService->search($query, $limit, $start);
         }
         catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
-            /** @var Psr\Log\LoggerInterface $logger */
-            $logger = $app['logger'];
-            /** @var CultureFeed_User $user */
-            $user = $app['current_user'];
+
             $logger->alert("Search failed with HTTP status {$e->getResponse()->getStatusCode()}. Query: {$query}", array('user' => $user->nick));
 
             return new Response('Error while searching', '400');

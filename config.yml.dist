@@ -10,4 +10,4 @@ uitid:
     secret: ***
 cors:
   origins: []
-log: []
+log.search: []
