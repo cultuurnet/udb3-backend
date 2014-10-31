@@ -146,11 +146,22 @@ $app->get(
     'search',
     function (Request $request, Application $app) {
         $q = $request->query->get('q');
+        $limit = new \CultuurNet\Search\Parameter\Rows(
+            $request->query->get('limit', 30)
+        );
+        $start = new \CultuurNet\Search\Parameter\Start(
+            $request->query->get('start', 0)
+        );
+        $group = new \CultuurNet\Search\Parameter\Group();
+        $typeFilter = new \CultuurNet\Search\Parameter\FilterQuery(
+            'type:event'
+        );
+
 
         /** @var SearchAPI2 $service */
         $service = $app['search_api_2'];
         $q = new \CultuurNet\Search\Parameter\Query($q);
-        $response = $service->search(array($q));
+        $response = $service->search(array($q, $limit, $start, $group, $typeFilter));
 
         $results = \CultuurNet\Search\SearchResult::fromXml(new SimpleXMLElement($response->getBody(true), 0, false, \CultureFeed_Cdb_Default::CDB_SCHEME_URL));
 
