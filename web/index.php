@@ -202,6 +202,10 @@ $app->get(
         $searchService = $app['search_service'];
         try {
             $results = $searchService->search($query, $limit, $start);
+            $logger->info(
+                "Search for: {$query}",
+                array('user' => $user->nick)
+            );
         }
         catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
 
