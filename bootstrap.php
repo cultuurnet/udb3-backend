@@ -141,7 +141,8 @@ $app['event_repository'] = $app->share(
   function ($app) {
       return new \CultuurNet\UDB3\Event\EventRepository(
           $app['event_store'],
-          $app['event_bus']
+          $app['event_bus'],
+          $app['search_api_2']
       );
   }
 );
