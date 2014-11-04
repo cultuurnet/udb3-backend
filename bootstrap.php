@@ -82,7 +82,11 @@ $app['current_user'] = $app->share(
 
         $cf = new CultureFeed($oauthClient);
 
-        return $cf->getUser($minimalUserData->getId());
+        $user = $cf->getUser($minimalUserData->getId());
+
+        unset($user->following);
+
+        return $user;
     }
 );
 
