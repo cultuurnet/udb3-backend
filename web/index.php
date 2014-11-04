@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Symfony\JsonLdResponse;
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
-$checkAuthenticated = function(Request $request, Application $app) {
+$checkAuthenticated = function (Request $request, Application $app) {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
     $session = $app['session'];
 
@@ -21,7 +21,8 @@ $checkAuthenticated = function(Request $request, Application $app) {
     }
 };
 
-$app['logger.search'] = $app->share(function ($app) {
+$app['logger.search'] = $app->share(
+    function ($app) {
         $logger = new \Monolog\Logger('search');
 
         $handlers = $app['config']['log.search'];
@@ -34,7 +35,9 @@ $app['logger.search'] = $app->share(function ($app) {
                     );
                     break;
                 case 'file':
-                    $handler = new \Monolog\Handler\StreamHandler($handler_config['path']);
+                    $handler = new \Monolog\Handler\StreamHandler(
+                        $handler_config['path']
+                    );
                     break;
                 default:
                     continue 2;
@@ -45,7 +48,8 @@ $app['logger.search'] = $app->share(function ($app) {
         }
 
         return $logger;
-    });
+    }
+);
 
 // Enable CORS.
 $app->after(
@@ -65,7 +69,22 @@ $app->after(
     }
 );
 
-$app->get('culturefeed/oauth/connect', function (Request $request, Application $app) {
+$app->before(
+    function (Request $request) {
+        if (0 === strpos(
+                $request->headers->get('Content-Type'),
+                'application/json'
+            )
+        ) {
+            $data = json_decode($request->getContent(), true);
+            $request->request->replace(is_array($data) ? $data : array());
+        }
+    }
+);
+
+$app->get(
+    'culturefeed/oauth/connect',
+    function (Request $request, Application $app) {
         /** @var CultuurNet\Auth\ServiceInterface $authService */
         $authService = $app['auth_service'];
 
@@ -75,7 +94,9 @@ $app->get('culturefeed/oauth/connect', function (Request $request, Application $
         $callback_url_params = array();
 
         if ($request->query->get('destination')) {
-            $callback_url_params['destination'] = $request->query->get('destination');
+            $callback_url_params['destination'] = $request->query->get(
+                'destination'
+            );
         }
 
         $callback_url = $urlGenerator->generate(
@@ -93,9 +114,12 @@ $app->get('culturefeed/oauth/connect', function (Request $request, Application $
         $session->set('culturefeed_tmp_token', $token);
 
         return new RedirectResponse($authorizeUrl);
-    });
+    }
+);
 
-$app->get('culturefeed/oauth/authorize', function(Request $request, Application $app) {
+$app->get(
+    'culturefeed/oauth/authorize',
+    function (Request $request, Application $app) {
         /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $app['session'];
 
@@ -109,7 +133,10 @@ $app->get('culturefeed/oauth/authorize', function(Request $request, Application 
         /** @var \CultuurNet\Auth\TokenCredentials $token */
         $token = $session->get('culturefeed_tmp_token');
 
-        if ($query->get('oauth_token') == $token->getToken() && $query->get('oauth_verifier')) {
+        if ($query->get('oauth_token') == $token->getToken() && $query->get(
+                'oauth_verifier'
+            )
+        ) {
 
             $user = $authService->getAccessToken(
                 $token,
@@ -125,22 +152,25 @@ $app->get('culturefeed/oauth/authorize', function(Request $request, Application 
             return new RedirectResponse(
                 $query->get('destination')
             );
-        }
-        else {
+        } else {
             return new RedirectResponse(
                 $urlGenerator->generate('api/1.0/search')
             );
         }
-    })
+    }
+)
     ->bind('culturefeed.oauth.authorize');
 
-$app->get('logout', function(Request $request, Application $app) {
+$app->get(
+    'logout',
+    function (Request $request, Application $app) {
         /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $app['session'];
         $session->invalidate();
 
         return new Response('Logged out');
-    });
+    }
+);
 
 $app->get(
     'search',
@@ -161,9 +191,18 @@ $app->get(
         /** @var SearchAPI2 $service */
         $service = $app['search_api_2'];
         $q = new \CultuurNet\Search\Parameter\Query($q);
-        $response = $service->search(array($q, $limit, $start, $group, $typeFilter));
+        $response = $service->search(
+            array($q, $limit, $start, $group, $typeFilter)
+        );
 
-        $results = \CultuurNet\Search\SearchResult::fromXml(new SimpleXMLElement($response->getBody(true), 0, false, \CultureFeed_Cdb_Default::CDB_SCHEME_URL));
+        $results = \CultuurNet\Search\SearchResult::fromXml(
+            new SimpleXMLElement(
+                $response->getBody(true),
+                0,
+                false,
+                \CultureFeed_Cdb_Default::CDB_SCHEME_URL
+            )
+        );
 
         $response = Response::create()
             ->setContent($results->getXml())
@@ -179,10 +218,29 @@ $app->get(
 
 $app->get(
     'api/1.0/event.jsonld',
-    function(Request $request, Application $app) {
-        $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse('api/1.0/event.jsonld');
+    function (Request $request, Application $app) {
+        $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse(
+            'api/1.0/event.jsonld'
+        );
         $response->headers->set('Content-Type', 'application/ld+json');
         return $response;
+    }
+);
+
+$app->get(
+    'db_init',
+    function (Request $request, Application $app) {
+        /** @var \Broadway\EventStore\DBALEventStore $eventStore */
+        $eventStore = $app['event_store'];
+
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $app['dbal_connection'];
+
+        $schemaManager = $connection->getSchemaManager();
+        $schema = $schemaManager->createSchema();
+
+        $table = $eventStore->configureSchema($schema);
+        $schemaManager->createTable($table);
     }
 );
 
@@ -206,10 +264,13 @@ $app->get(
                 "Search for: {$query}",
                 array('user' => $user->nick)
             );
-        }
-        catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
+        } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
 
-            $logger->alert("Search failed with HTTP status {$e->getResponse()->getStatusCode()}. Query: {$query}", array('user' => $user->nick));
+            $logger->alert(
+                "Search failed with HTTP status {$e->getResponse(
+                )->getStatusCode()}. Query: {$query}",
+                array('user' => $user->nick)
+            );
 
             return new Response('Error while searching', '400');
         }
@@ -227,7 +288,7 @@ $app->get(
 $app
     ->get(
         'event/{cdbid}',
-        function(Request $request, Application $app, $cdbid) {
+        function (Request $request, Application $app, $cdbid) {
             /** @var \CultuurNet\UDB3\EventServiceInterface $service */
             $service = $app['event_service'];
 
@@ -244,7 +305,9 @@ $app
     )
     ->bind('event');
 
-$app->get('api/1.0/user', function (Request $request, Application $app) {
+$app->get(
+    'api/1.0/user',
+    function (Request $request, Application $app) {
         /** @var CultureFeed_User $user */
         $user = $app['current_user'];
 
@@ -253,6 +316,54 @@ $app->get('api/1.0/user', function (Request $request, Application $app) {
             ->setPrivate();
 
         return $response;
-    })->before($checkAuthenticated);
+    }
+)->before($checkAuthenticated);
+
+$app->post(
+    'events/tag',
+    function (Request $request, Application $app) {
+        /** @var \CultuurNet\UDB3\DefaultEventService $eventService */
+        $eventService = $app['event_service'];
+
+        /** @var \CultuurNet\UDB3\CommandHandling\ResqueCommandBus */
+        $eventCommandBus = $app['event_command_bus'];
+
+
+        $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+
+        $keyword = $request->request->get('keyword');
+        if (!$keyword) {
+            $response->setStatusCode(400);
+            $response->setData(['error' => 'keyword required']);
+            return $response;
+        }
+
+        $eventIds = $request->request->get('events');
+        $events = array();
+        foreach ($eventIds as $cdbid) {
+            try {
+                $events[] = $eventService->getEvent($cdbid);
+            } catch (Exception $e) {
+                $response->setStatusCode(404);
+                $response->setData(
+                    ['error' => 'event with id:' . $cdbid . ' not found']
+                );
+                return $response;
+            }
+        }
+
+        $command = new \CultuurNet\UDB3\Event\TagEvents($eventIds, $keyword);
+        $commandId = $eventCommandBus->dispatch($command);
+
+        $responseData = array();
+        $responseData['commandId'] = $commandId;
+        $responseData['events'] = $events;
+
+        $response = JsonLdResponse::create()
+            ->setData($responseData);
+
+        return $response;
+    }
+);
 
 $app->run();

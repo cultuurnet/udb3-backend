@@ -30,7 +30,9 @@
     "cultuurnet/udb3-symfony": "~0.0@dev",
     "silex/silex": "~1.2",
     "deralex/yaml-config-service-provider": "~1.0",
-    "monolog/monolog": "~1.11"
+    "monolog/monolog": "~1.11",
+    "chrisboulton/php-resque": "~1.2",
+    "doctrine/dbal": "~2.4"
   },
   "preferred-install": "source"
 }

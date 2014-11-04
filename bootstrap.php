@@ -113,4 +113,45 @@ $app['cache'] = $app->share(
     }
 );
 
+$app['dbal_connection'] = $app->share(
+    function ($app) {
+        $connection = \Doctrine\DBAL\DriverManager::getConnection($app['config']['database']);
+        return $connection;
+    }
+);
+
+$app['event_store'] = $app->share(
+  function ($app) {
+    return new \Broadway\EventStore\DBALEventStore(
+        $app['dbal_connection'],
+        new \Broadway\Serializer\SimpleInterfaceSerializer(),
+        new \Broadway\Serializer\SimpleInterfaceSerializer(),
+        'events'
+    );
+  }
+);
+
+$app['event_bus'] = $app->share(
+    function ($app) {
+        return new \Broadway\EventHandling\SimpleEventBus();
+    }
+);
+
+$app['event_repository'] = $app->share(
+  function ($app) {
+      return new \CultuurNet\UDB3\Event\EventRepository(
+          $app['event_store'],
+          $app['event_bus']
+      );
+  }
+);
+
+$app['event_command_bus'] = $app->share(
+    function ($app) {
+        $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus('event');
+        $commandBus->subscribe(new \CultuurNet\UDB3\Event\EventCommandHandler($app['event_repository']));
+        return $commandBus;
+    }
+);
+
 return $app;
