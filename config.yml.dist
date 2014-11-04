@@ -11,3 +11,9 @@ uitid:
 cors:
   origins: []
 log.search: []
+database:
+  driver: pdo_mysql
+  dbname: ***
+  user: ***
+  password: ***
+  host: 127.0.0.1
