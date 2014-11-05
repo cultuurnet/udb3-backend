@@ -355,6 +355,10 @@ $app->post(
         $command = new \CultuurNet\UDB3\Event\TagEvents($eventIds, $keyword);
         $commandId = $eventCommandBus->dispatch($command);
 
+        /** @var CultureFeed_User $user */
+        $user = $app['current_user'];
+        $app['used_keywords_memory']->rememberKeywordUsed($user->id, $keyword);
+
         $responseData = array();
         $responseData['commandId'] = $commandId;
         $responseData['events'] = $events;

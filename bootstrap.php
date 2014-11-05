@@ -155,4 +155,15 @@ $app['event_command_bus'] = $app->share(
     }
 );
 
+$app['used_keywords_memory'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService(
+            new \CultuurNet\UDB3\UsedKeywordsMemory\UsedKeywordsMemoryRepository(
+                $app['event_store'],
+                $app['event_bus']
+            )
+        );
+    }
+);
+
 return $app;
