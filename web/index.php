@@ -321,6 +321,18 @@ $app->get(
     }
 )->before($checkAuthenticated);
 
+$app->get(
+    'api/1.0/user/keywords',
+    function (Request $request, Application $app) {
+        /** @var \CultuurNet\UDB3\UsedKeywordsMemory\UsedKeywordsMemoryServiceInterface $usedKeywordsMemoryService */
+        $usedKeywordsMemoryService = $app['used_keywords_memory'];
+        $user = $app['current_user'];
+        $memory = $usedKeywordsMemoryService->getMemory($user->id);
+
+        return JsonResponse::create($memory->getKeywords());
+    }
+)->before($checkAuthenticated);
+
 $app->post(
     'events/tag',
     function (Request $request, Application $app) {
