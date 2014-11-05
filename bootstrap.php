@@ -168,7 +168,7 @@ $app['used_keywords_memory'] = $app->share(
 
 $app['event_tagger'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\EventTaggerService(
+        return new \CultuurNet\UDB3\Event\DefaultEventTaggerService(
             $app['event_service'],
             $app['event_command_bus']
         );
