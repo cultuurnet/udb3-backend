@@ -9,7 +9,7 @@ use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
-use CultuurNet\UDB3\Event\DefaultEventTaggerService;
+use CultuurNet\UDB3\Event\EventTaggerServiceInterface;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -324,7 +324,7 @@ $app->get(
 $app->post(
     'events/tag',
     function (Request $request, Application $app) {
-        /** @var DefaultEventTaggerService $eventTagger */
+        /** @var EventTaggerServiceInterface $eventTagger */
         $eventTagger = $app['event_tagger'];
 
         $keyword = $request->request->get('keyword');
