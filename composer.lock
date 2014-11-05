@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "45e7ffd91866263c8e47c9a2d908b0c8",
+    "hash": "124446afec35668e78262f127f0ddcd1",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -292,16 +292,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "dev-master",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "4f93aecc85d3d053801fb9d942c2dd5171baf0cc"
+                "reference": "d4c74f5ac5bf605f19cc1ab65a6d1c923e63902b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/4f93aecc85d3d053801fb9d942c2dd5171baf0cc",
-                "reference": "4f93aecc85d3d053801fb9d942c2dd5171baf0cc",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/d4c74f5ac5bf605f19cc1ab65a6d1c923e63902b",
+                "reference": "d4c74f5ac5bf605f19cc1ab65a6d1c923e63902b",
                 "shasum": ""
             },
             "require": {
@@ -351,7 +351,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2014-10-24 06:59:27"
+            "time": "2014-10-30 13:44:06"
         },
         {
             "name": "cultuurnet/search",
@@ -401,16 +401,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/iii-59",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
-                "reference": "ad707f7f12ce6380c304488e937a82905a7d53c4"
+                "reference": "22fc0bffa424eaffc33be4d1aa66bca7faf4521c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/ad707f7f12ce6380c304488e937a82905a7d53c4.zip",
-                "reference": "ad707f7f12ce6380c304488e937a82905a7d53c4",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/22fc0bffa424eaffc33be4d1aa66bca7faf4521c.zip",
+                "reference": "22fc0bffa424eaffc33be4d1aa66bca7faf4521c",
                 "shasum": ""
             },
             "require": {
@@ -446,7 +446,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-11-04 11:53:25"
+            "time": "2014-11-05 15:20:33"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -866,12 +866,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "d12672808124e711c2cb78a82d4461ba2e89c7ef"
+                "reference": "6458b0bd6e62817e961a9611959a67b5f8622b59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/d12672808124e711c2cb78a82d4461ba2e89c7ef",
-                "reference": "d12672808124e711c2cb78a82d4461ba2e89c7ef",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/6458b0bd6e62817e961a9611959a67b5f8622b59",
+                "reference": "6458b0bd6e62817e961a9611959a67b5f8622b59",
                 "shasum": ""
             },
             "require": {
@@ -929,7 +929,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2014-10-29 16:12:22"
+            "time": "2014-11-05 14:17:28"
         },
         {
             "name": "doctrine/inflector",
@@ -2240,7 +2240,14 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.0",
+            "alias_normalized": "0.0.0.0",
+            "version": "dev-feature/iii-59",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb3": 20,

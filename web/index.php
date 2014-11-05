@@ -7,7 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Event\EventTaggerService;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -322,53 +324,31 @@ $app->get(
 $app->post(
     'events/tag',
     function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\DefaultEventService $eventService */
-        $eventService = $app['event_service'];
-
-        /** @var \CultuurNet\UDB3\CommandHandling\ResqueCommandBus */
-        $eventCommandBus = $app['event_command_bus'];
-
-
-        $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+        /** @var EventTaggerService $eventTagger */
+        $eventTagger = $app['event_tagger'];
 
         $keyword = $request->request->get('keyword');
-        if (!$keyword) {
-            $response->setStatusCode(400);
-            $response->setData(['error' => 'keyword required']);
-            return $response;
-        }
-
         $eventIds = $request->request->get('events');
-        $events = array();
-        foreach ($eventIds as $cdbid) {
-            try {
-                $events[] = $eventService->getEvent($cdbid);
-            } catch (Exception $e) {
-                $response->setStatusCode(404);
-                $response->setData(
-                    ['error' => 'event with id:' . $cdbid . ' not found']
-                );
-                return $response;
-            }
-        }
 
-        $command = new \CultuurNet\UDB3\Event\TagEvents($eventIds, $keyword);
-        $commandId = $eventCommandBus->dispatch($command);
+        $response = new JsonResponse();
 
-        /** @var CultureFeed_User $user */
-        $user = $app['current_user'];
-        $app['used_keywords_memory']->rememberKeywordUsed($user->id, $keyword);
+        try{
+            $commandId = $eventTagger->tagEventsById($eventIds, $keyword);
 
-        $responseData = array();
-        $responseData['commandId'] = $commandId;
-        $responseData['events'] = $events;
+            /** @var CultureFeed_User $user */
+            $user = $app['current_user'];
+            $app['used_keywords_memory']->rememberKeywordUsed($user->id, $keyword);
 
-        $response = JsonLdResponse::create()
-            ->setData($responseData);
+            $response->setData(['commandId'=>$commandId]);
+
+        } catch (Exception $e){
+            $response->setStatusCode(400);
+            $response->setData(['error' => $e->getMessage()]);
+        };
 
         return $response;
     }
-);
+)->before($checkAuthenticated);
 
 $app->get(
     'command/{token}',
