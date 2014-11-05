@@ -332,16 +332,19 @@ $app->post(
 
         $response = new JsonResponse();
 
-        try{
+        try {
             $commandId = $eventTagger->tagEventsById($eventIds, $keyword);
 
             /** @var CultureFeed_User $user */
             $user = $app['current_user'];
-            $app['used_keywords_memory']->rememberKeywordUsed($user->id, $keyword);
+            $app['used_keywords_memory']->rememberKeywordUsed(
+                $user->id,
+                $keyword
+            );
 
-            $response->setData(['commandId'=>$commandId]);
+            $response->setData(['commandId' => $commandId]);
 
-        } catch (Exception $e){
+        } catch (Exception $e) {
             $response->setStatusCode(400);
             $response->setData(['error' => $e->getMessage()]);
         };
@@ -352,8 +355,7 @@ $app->post(
 
 $app->get(
     'command/{token}',
-    function (Request $request, Application $app, $token)
-    {
+    function (Request $request, Application $app, $token) {
         $status = new Resque_Job_Status($token);
 
         $code = $status->get();
