@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "c02c1ac910959100d80dc166c4ec5c20",
+    "hash": "3c9c53e9a108cda323ecc377363bb53d",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -258,17 +259,20 @@
         },
         {
             "name": "cultuurnet/cdb",
-            "version": "dev-release/2.x",
+            "version": "dev-feature/keywords-remove-leading-trailing-whitespace",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "e547c9e6937f7ae77f1abd94d8f996839c682101"
+                "reference": "e87a4f1a492d470d0ed8896584f90685ac08c995"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/e547c9e6937f7ae77f1abd94d8f996839c682101",
-                "reference": "e547c9e6937f7ae77f1abd94d8f996839c682101",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/e87a4f1a492d470d0ed8896584f90685ac08c995",
+                "reference": "e87a4f1a492d470d0ed8896584f90685ac08c995",
                 "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.3"
             },
             "type": "library",
             "extra": {
@@ -288,7 +292,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2014-03-24 15:53:14"
+            "time": "2014-11-05 08:33:07"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -401,16 +405,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/iii-59",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
-                "reference": "22fc0bffa424eaffc33be4d1aa66bca7faf4521c"
+                "reference": "21e14373d3eeac5d4b8ea8c5774e40c03541582f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/22fc0bffa424eaffc33be4d1aa66bca7faf4521c.zip",
-                "reference": "22fc0bffa424eaffc33be4d1aa66bca7faf4521c",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/21e14373d3eeac5d4b8ea8c5774e40c03541582f.zip",
+                "reference": "21e14373d3eeac5d4b8ea8c5774e40c03541582f",
                 "shasum": ""
             },
             "require": {
@@ -446,7 +450,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-11-05 15:20:33"
+            "time": "2014-11-05 17:54:35"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3093,18 +3097,20 @@
     ],
     "aliases": [
         {
-            "alias": "0.0",
-            "alias_normalized": "0.0.0.0",
-            "version": "dev-feature/iii-59",
-            "package": "cultuurnet/udb3"
+            "alias": "2.0.1",
+            "alias_normalized": "2.0.1.0",
+            "version": "dev-feature/keywords-remove-leading-trailing-whitespace",
+            "package": "cultuurnet/cdb"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/cdb": 20,
         "cultuurnet/udb3": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20
     },
+    "prefer-stable": false,
     "platform": [],
     "platform-dev": []
 }
