@@ -78,23 +78,27 @@ $app['current_user'] = $app->share(
         /** @var \CultuurNet\Auth\User $minimalUserData */
         $minimalUserData = $session->get('culturefeed_user');
 
-        $userCredentials = $minimalUserData->getTokenCredentials();
+        if ($minimalUserData) {
+            $userCredentials = $minimalUserData->getTokenCredentials();
 
-        $oauthClient = new CultureFeed_DefaultOAuthClient(
-            $config['consumer']['key'],
-            $config['consumer']['secret'],
-            $userCredentials->getToken(),
-            $userCredentials->getSecret()
-        );
-        $oauthClient->setEndpoint($config['base_url']);
+            $oauthClient = new CultureFeed_DefaultOAuthClient(
+                $config['consumer']['key'],
+                $config['consumer']['secret'],
+                $userCredentials->getToken(),
+                $userCredentials->getSecret()
+            );
+            $oauthClient->setEndpoint($config['base_url']);
 
-        $cf = new CultureFeed($oauthClient);
+            $cf = new CultureFeed($oauthClient);
 
-        $user = $cf->getUser($minimalUserData->getId());
+            $user = $cf->getUser($minimalUserData->getId());
 
-        unset($user->following);
+            unset($user->following);
 
-        return $user;
+            return $user;
+        }
+
+        return NULL;
     }
 );
 
