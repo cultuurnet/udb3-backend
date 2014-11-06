@@ -147,9 +147,43 @@ $app['event_repository'] = $app->share(
   }
 );
 
+$app['logger.command_bus'] = $app->share(
+    function ($app) {
+        $logger = new \Monolog\Logger('command_bus');
+
+        $handlers = $app['config']['log.command_bus'];
+        foreach ($handlers as $handler_config) {
+            switch ($handler_config['type']) {
+                case 'hipchat':
+                    $handler = new \Monolog\Handler\HipChatHandler(
+                        $handler_config['token'],
+                        $handler_config['room']
+                    );
+                    break;
+                case 'file':
+                    $handler = new \Monolog\Handler\StreamHandler(
+                        __DIR__ . '/web/' . $handler_config['path']
+                    );
+                    break;
+                case 'socketioemitter':
+                    $handler = new \CultuurNet\UDB3\Monolog\SocketIOEmitterHandler();
+                    break;
+                default:
+                    continue 2;
+            }
+
+            $handler->setLevel($handler_config['level']);
+            $logger->pushHandler($handler);
+        }
+
+        return $logger;
+    }
+);
+
 $app['event_command_bus'] = $app->share(
     function ($app) {
         $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus('event');
+        $commandBus->setLogger($app['logger.command_bus']);
         $commandBus->subscribe(new \CultuurNet\UDB3\Event\EventCommandHandler($app['event_repository']));
         return $commandBus;
     }
