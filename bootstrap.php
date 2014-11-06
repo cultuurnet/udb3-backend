@@ -21,8 +21,9 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 
 
 $app['iri_generator'] = $app->share(
-    function($app) {
-        return new CallableIriGenerator(function ($cdbid) use ($app) {
+    function ($app) {
+        return new CallableIriGenerator(
+            function ($cdbid) use ($app) {
                 /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
                 $urlGenerator = $app['url_generator'];
 
@@ -33,7 +34,8 @@ $app['iri_generator'] = $app->share(
                     ),
                     $urlGenerator::ABSOLUTE_URL
                 );
-            });
+            }
+        );
     }
 );
 
