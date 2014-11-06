@@ -151,20 +151,61 @@ $app['event_bus'] = $app->share(
     }
 );
 
+$app['execution_context_metadata_enricher'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher();
+    }
+);
+
+$app['event_stream_metadata_enricher'] = $app->share(
+    function ($app) {
+        $eventStreamDecorator = new \Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator();
+        $eventStreamDecorator->registerEnricher(
+            $app['execution_context_metadata_enricher']
+        );
+        return $eventStreamDecorator;
+    }
+);
+
 $app['event_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\EventRepository(
+            $app['event_store'],
+            $app['event_bus'],
+            $app['search_api_2'],
+            array($app['event_stream_metadata_enricher'])
+        );
+    }
+);
+
+$app['command_bus_event_dispatcher'] = $app->share(
   function ($app) {
-      return new \CultuurNet\UDB3\Event\EventRepository(
-          $app['event_store'],
-          $app['event_bus'],
-          $app['search_api_2']
+      $dispatcher = new \Broadway\EventDispatcher\EventDispatcher();
+      $dispatcher->addListener(
+          \CultuurNet\UDB3\CommandHandling\ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
+          function ($context) use ($app) {
+              $app['execution_context_metadata_enricher']->setContext($context);
+          }
       );
+
+      return $dispatcher;
   }
 );
 
 $app['event_command_bus'] = $app->share(
     function ($app) {
-        $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus('event');
-        $commandBus->subscribe(new \CultuurNet\UDB3\Event\EventCommandHandler($app['event_repository']));
+        $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus();
+        $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus(
+            $mainCommandBus,
+            'event',
+            $app['command_bus_event_dispatcher']
+        );
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Event\EventCommandHandler(
+                $app['event_repository']
+            )
+        );
+
         return $commandBus;
     }
 );
