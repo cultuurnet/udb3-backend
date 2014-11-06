@@ -127,20 +127,22 @@ $app['cache'] = $app->share(
 
 $app['dbal_connection'] = $app->share(
     function ($app) {
-        $connection = \Doctrine\DBAL\DriverManager::getConnection($app['config']['database']);
+        $connection = \Doctrine\DBAL\DriverManager::getConnection(
+            $app['config']['database']
+        );
         return $connection;
     }
 );
 
 $app['event_store'] = $app->share(
-  function ($app) {
-    return new \Broadway\EventStore\DBALEventStore(
-        $app['dbal_connection'],
-        new \Broadway\Serializer\SimpleInterfaceSerializer(),
-        new \Broadway\Serializer\SimpleInterfaceSerializer(),
-        'events'
-    );
-  }
+    function ($app) {
+        return new \Broadway\EventStore\DBALEventStore(
+            $app['dbal_connection'],
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            'events'
+        );
+    }
 );
 
 $app['event_bus'] = $app->share(
