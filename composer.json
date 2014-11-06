@@ -32,8 +32,8 @@
     "silex/silex": "~1.2",
     "deralex/yaml-config-service-provider": "~1.0",
     "monolog/monolog": "~1.11",
-    "chrisboulton/php-resque": "~1.2",
-    "doctrine/dbal": "~2.4"
+    "doctrine/dbal": "~2.4",
+    "predis/predis": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.3"
