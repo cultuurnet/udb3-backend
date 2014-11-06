@@ -166,7 +166,40 @@ $app['logger.command_bus'] = $app->share(
                     );
                     break;
                 case 'socketioemitter':
-                    $handler = new \CultuurNet\UDB3\Monolog\SocketIOEmitterHandler();
+                    $redisConfig = isset($handler_config['redis']) ? $handler_config['redis'] : array();
+                    $redisConfig += array(
+                        'host' => '127.0.0.1',
+                        'port' => 6379,
+                    );
+                    if (extension_loaded('redis')) {
+                        $redis = new \Redis();
+                        $redis->connect(
+                            $redisConfig['host'],
+                            $redisConfig['port']
+                        );
+                    } else {
+                        $redis = new Predis\Client(
+                            [
+                                'host' => $redisConfig['host'],
+                                'port' => $redisConfig['port']
+                            ]
+                        );
+                        $redis->connect();
+                    }
+
+                    $emitter = new \SocketIO\Emitter($redis);
+
+                    if (isset($handler_config['namespace'])) {
+                        $emitter->of($handler_config['namespace']);
+                    }
+
+                    if (isset($handler_config['room'])) {
+                        $emitter->in($handler_config['room']);
+                    }
+
+                    $handler = new \CultuurNet\UDB3\Monolog\SocketIOEmitterHandler(
+                        $emitter
+                    );
                     break;
                 default:
                     continue 2;

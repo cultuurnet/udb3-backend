@@ -11,6 +11,21 @@ uitid:
 cors:
   origins: []
 log.search: []
+log.command_bus:
+  #- type: hipchat
+  #  token: ***
+  #  room: ***
+  #  level: ALERT
+  - type: file
+    path: ../log/command_bus.log
+    level: DEBUG
+  - type: socketioemitter
+    redis:
+      host: 127.0.0.1
+      port: 6379
+    #namespace: ***
+    #room: ***
+    level: DEBUG
 database:
   driver: pdo_mysql
   dbname: ***
