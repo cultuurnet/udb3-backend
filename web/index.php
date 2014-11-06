@@ -38,7 +38,7 @@ $app['logger.search'] = $app->share(
                     break;
                 case 'file':
                     $handler = new \Monolog\Handler\StreamHandler(
-                        $handler_config['path']
+                        __DIR__ . '/' . $handler_config['path']
                     );
                     break;
                 default:
