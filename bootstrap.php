@@ -40,7 +40,7 @@ $app['iri_generator'] = $app->share(
 );
 
 $app['search_api_2'] = $app->share(
-    function($app) {
+    function ($app) {
         $searchConfig = $app['config']['search'];
         $consumerCredentials = new \CultuurNet\Auth\ConsumerCredentials();
         $consumerCredentials->setKey($searchConfig['consumer']['key']);
@@ -50,14 +50,20 @@ $app['search_api_2'] = $app->share(
 );
 
 $app['search_service'] = $app->share(
-    function($app) {
-        return new PullParsingSearchService($app['search_api_2'], $app['iri_generator']);
+    function ($app) {
+        return new PullParsingSearchService(
+            $app['search_api_2'],
+            $app['iri_generator']
+        );
     }
 );
 
 $app['event_service'] = $app->share(
-    function($app) {
-        $service = new DefaultEventService($app['search_api_2'], $app['iri_generator']);
+    function ($app) {
+        $service = new DefaultEventService(
+            $app['search_api_2'],
+            $app['iri_generator']
+        );
         return new EventServiceCache($service, $app['cache']);
     }
 );
