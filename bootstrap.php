@@ -151,6 +151,46 @@ $app['event_bus'] = $app->share(
     }
 );
 
+$app['uitid_consumer'] = $app->share(
+    function ($app) {
+        $config = $app['config']['uitid'];
+        return new \CultuurNet\UDB3\UDB2\Consumer(
+            $config['base_url'],
+            new \CultuurNet\Auth\ConsumerCredentials(
+                $config['consumer']['key'],
+                $config['consumer']['secret']
+            )
+        );
+    }
+);
+
+$app['udb2_entry_api_factory'] = $app->share(
+  function ($app) {
+      return new \CultuurNet\UDB3\UDB2\EntryAPIFactory(
+          $app['uitid_consumer']
+      );
+  }
+);
+
+$app['event_repository'] = $app->share(
+  function ($app) {
+      $repository = new \CultuurNet\UDB3\Event\EventRepository(
+          $app['event_store'],
+          $app['event_bus'],
+          array($app['event_stream_metadata_enricher'])
+      );
+
+      $udb2RepositoryDecorator = new CultuurNet\UDB3\UDB2\EventRepository(
+          $repository,
+          $app['search_api_2'],
+          $app['udb2_entry_api_factory'],
+          array($app['event_stream_metadata_enricher'])
+      );
+
+      return $udb2RepositoryDecorator;
+  }
+);
+
 $app['execution_context_metadata_enricher'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher();
@@ -164,17 +204,6 @@ $app['event_stream_metadata_enricher'] = $app->share(
             $app['execution_context_metadata_enricher']
         );
         return $eventStreamDecorator;
-    }
-);
-
-$app['event_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\EventRepository(
-            $app['event_store'],
-            $app['event_bus'],
-            $app['search_api_2'],
-            array($app['event_stream_metadata_enricher'])
-        );
     }
 );
 
