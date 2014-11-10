@@ -84,6 +84,28 @@ $app->before(
     }
 );
 
+// Set execution context for the asynchronous command bus.
+// @todo Limit this to the paths where the command bus is used.
+$app->before(
+    function (Request $request, Application $app) {
+        /** @var \Broadway\CommandHandling\CommandBusInterface|\CultuurNet\UDB3\CommandHandling\ContextAwareInterface $eventCommandBus */
+        $eventCommandBus = $app['event_command_bus'];
+
+        /** @var CultureFeed_User $user */
+        $user = $app['current_user'];
+
+        $contextValues = array();
+        if ($user) {
+            $contextValues['user_id'] = $user->id;
+            $contextValues['user_nick'] = $user->nick;
+        }
+        $contextValues['client_ip'] = $request->getClientIp();
+        $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
+        $context = new \Broadway\Domain\Metadata($contextValues);
+        $eventCommandBus->setContext($context);
+    }
+);
+
 $app->get(
     'culturefeed/oauth/connect',
     function (Request $request, Application $app) {
