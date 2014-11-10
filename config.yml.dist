@@ -1,13 +1,11 @@
-search:
-  base_url: http://acc.uitid.be/uitid/rest/searchv2
-  consumer:
-    key: ***
-    secret: **
 uitid:
-  base_url: http://acc.uitid.be/uitid/rest
   consumer:
     key: ***
     secret: ***
+  base_url: http://www.uitid.be/uitid/rest/
+  apis:
+    entry: entry/rest.uitdatabank.be/api/v2
+    search: searchv2
 cors:
   origins: []
 log.search: []

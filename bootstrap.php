@@ -39,13 +39,26 @@ $app['iri_generator'] = $app->share(
     }
 );
 
+$app['uitid_consumer_credentials'] = $app->share(
+    function ($app) {
+        $consumerConfig = $app['config']['uitid']['consumer'];
+        return new \CultuurNet\Auth\ConsumerCredentials(
+            $consumerConfig['key'],
+            $consumerConfig['secret']
+        );
+    }
+);
+
 $app['search_api_2'] = $app->share(
     function ($app) {
-        $searchConfig = $app['config']['search'];
-        $consumerCredentials = new \CultuurNet\Auth\ConsumerCredentials();
-        $consumerCredentials->setKey($searchConfig['consumer']['key']);
-        $consumerCredentials->setSecret($searchConfig['consumer']['secret']);
-        return new SearchAPI2($searchConfig['base_url'], $consumerCredentials);
+        $searchApiUrl =
+            $app['config']['uitid']['base_url'] .
+            $app['config']['uitid']['apis']['search'];
+
+        return new SearchAPI2(
+            $searchApiUrl,
+            $app['uitid_consumer_credentials']
+        );
     }
 );
 
@@ -72,18 +85,19 @@ $app['current_user'] = $app->share(
     function ($app) {
         /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
         $session = $app['session'];
-
         $config = $app['config']['uitid'];
 
         /** @var \CultuurNet\Auth\User $minimalUserData */
         $minimalUserData = $session->get('culturefeed_user');
 
         if ($minimalUserData) {
+            /** @var \CultuurNet\Auth\ConsumerCredentials $consumerCredentials */
+            $consumerCredentials = $app['uitid_consumer_credentials'];
             $userCredentials = $minimalUserData->getTokenCredentials();
 
             $oauthClient = new CultureFeed_DefaultOAuthClient(
-                $config['consumer']['key'],
-                $config['consumer']['secret'],
+                $consumerCredentials->getKey(),
+                $consumerCredentials->getSecret(),
                 $userCredentials->getToken(),
                 $userCredentials->getSecret()
             );
@@ -113,10 +127,7 @@ $app['auth_service'] = $app->share(
 
         return new CultuurNet\Auth\Guzzle\Service(
             $uitidConfig['base_url'],
-            new \CultuurNet\Auth\ConsumerCredentials(
-                $uitidConfig['consumer']['key'],
-                $uitidConfig['consumer']['secret']
-            )
+            $app['uitid_consumer_credentials']
         );
     }
 );
@@ -156,23 +167,18 @@ $app['event_bus'] = $app->share(
     }
 );
 
-$app['uitid_consumer'] = $app->share(
-    function ($app) {
-        $config = $app['config']['uitid'];
-        return new \CultuurNet\UDB3\UDB2\Consumer(
-            $config['base_url'],
-            new \CultuurNet\Auth\ConsumerCredentials(
-                $config['consumer']['key'],
-                $config['consumer']['secret']
-            )
-        );
-    }
-);
-
 $app['udb2_entry_api_factory'] = $app->share(
   function ($app) {
+      $uitidConfig = $app['config']['uitid'];
+      $baseUrl =
+          $uitidConfig['base_url'] .
+          $uitidConfig['apis']['entry'];
+
       return new \CultuurNet\UDB3\UDB2\EntryAPIFactory(
-          $app['uitid_consumer']
+          new \CultuurNet\UDB3\UDB2\Consumer(
+              $baseUrl,
+              $app['uitid_consumer_credentials']
+          )
       );
   }
 );
