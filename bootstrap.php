@@ -21,8 +21,9 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 
 
 $app['iri_generator'] = $app->share(
-    function($app) {
-        return new CallableIriGenerator(function ($cdbid) use ($app) {
+    function ($app) {
+        return new CallableIriGenerator(
+            function ($cdbid) use ($app) {
                 /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
                 $urlGenerator = $app['url_generator'];
 
@@ -33,12 +34,13 @@ $app['iri_generator'] = $app->share(
                     ),
                     $urlGenerator::ABSOLUTE_URL
                 );
-            });
+            }
+        );
     }
 );
 
 $app['search_api_2'] = $app->share(
-    function($app) {
+    function ($app) {
         $searchConfig = $app['config']['search'];
         $consumerCredentials = new \CultuurNet\Auth\ConsumerCredentials();
         $consumerCredentials->setKey($searchConfig['consumer']['key']);
@@ -48,14 +50,20 @@ $app['search_api_2'] = $app->share(
 );
 
 $app['search_service'] = $app->share(
-    function($app) {
-        return new PullParsingSearchService($app['search_api_2'], $app['iri_generator']);
+    function ($app) {
+        return new PullParsingSearchService(
+            $app['search_api_2'],
+            $app['iri_generator']
+        );
     }
 );
 
 $app['event_service'] = $app->share(
-    function($app) {
-        $service = new DefaultEventService($app['search_api_2'], $app['iri_generator']);
+    function ($app) {
+        $service = new DefaultEventService(
+            $app['search_api_2'],
+            $app['iri_generator']
+        );
         return new EventServiceCache($service, $app['cache']);
     }
 );
@@ -70,23 +78,27 @@ $app['current_user'] = $app->share(
         /** @var \CultuurNet\Auth\User $minimalUserData */
         $minimalUserData = $session->get('culturefeed_user');
 
-        $userCredentials = $minimalUserData->getTokenCredentials();
+        if ($minimalUserData) {
+            $userCredentials = $minimalUserData->getTokenCredentials();
 
-        $oauthClient = new CultureFeed_DefaultOAuthClient(
-            $config['consumer']['key'],
-            $config['consumer']['secret'],
-            $userCredentials->getToken(),
-            $userCredentials->getSecret()
-        );
-        $oauthClient->setEndpoint($config['base_url']);
+            $oauthClient = new CultureFeed_DefaultOAuthClient(
+                $config['consumer']['key'],
+                $config['consumer']['secret'],
+                $userCredentials->getToken(),
+                $userCredentials->getSecret()
+            );
+            $oauthClient->setEndpoint($config['base_url']);
 
-        $cf = new CultureFeed($oauthClient);
+            $cf = new CultureFeed($oauthClient);
 
-        $user = $cf->getUser($minimalUserData->getId());
+            $user = $cf->getUser($minimalUserData->getId());
 
-        unset($user->following);
+            unset($user->following);
 
-        return $user;
+            return $user;
+        }
+
+        return NULL;
     }
 );
 
@@ -115,20 +127,22 @@ $app['cache'] = $app->share(
 
 $app['dbal_connection'] = $app->share(
     function ($app) {
-        $connection = \Doctrine\DBAL\DriverManager::getConnection($app['config']['database']);
+        $connection = \Doctrine\DBAL\DriverManager::getConnection(
+            $app['config']['database']
+        );
         return $connection;
     }
 );
 
 $app['event_store'] = $app->share(
-  function ($app) {
-    return new \Broadway\EventStore\DBALEventStore(
-        $app['dbal_connection'],
-        new \Broadway\Serializer\SimpleInterfaceSerializer(),
-        new \Broadway\Serializer\SimpleInterfaceSerializer(),
-        'events'
-    );
-  }
+    function ($app) {
+        return new \Broadway\EventStore\DBALEventStore(
+            $app['dbal_connection'],
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            'events'
+        );
+    }
 );
 
 $app['event_bus'] = $app->share(
@@ -137,20 +151,61 @@ $app['event_bus'] = $app->share(
     }
 );
 
+$app['execution_context_metadata_enricher'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher();
+    }
+);
+
+$app['event_stream_metadata_enricher'] = $app->share(
+    function ($app) {
+        $eventStreamDecorator = new \Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator();
+        $eventStreamDecorator->registerEnricher(
+            $app['execution_context_metadata_enricher']
+        );
+        return $eventStreamDecorator;
+    }
+);
+
 $app['event_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\EventRepository(
+            $app['event_store'],
+            $app['event_bus'],
+            $app['search_api_2'],
+            array($app['event_stream_metadata_enricher'])
+        );
+    }
+);
+
+$app['command_bus_event_dispatcher'] = $app->share(
   function ($app) {
-      return new \CultuurNet\UDB3\Event\EventRepository(
-          $app['event_store'],
-          $app['event_bus'],
-          $app['search_api_2']
+      $dispatcher = new \Broadway\EventDispatcher\EventDispatcher();
+      $dispatcher->addListener(
+          \CultuurNet\UDB3\CommandHandling\ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
+          function ($context) use ($app) {
+              $app['execution_context_metadata_enricher']->setContext($context);
+          }
       );
+
+      return $dispatcher;
   }
 );
 
 $app['event_command_bus'] = $app->share(
     function ($app) {
-        $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus('event');
-        $commandBus->subscribe(new \CultuurNet\UDB3\Event\EventCommandHandler($app['event_repository']));
+        $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus();
+        $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus(
+            $mainCommandBus,
+            'event',
+            $app['command_bus_event_dispatcher']
+        );
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Event\EventCommandHandler(
+                $app['event_repository']
+            )
+        );
+
         return $commandBus;
     }
 );
