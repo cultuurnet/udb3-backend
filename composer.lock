@@ -1,8 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
-        "This file is @generated automatically"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
     "hash": "3c9c53e9a108cda323ecc377363bb53d",
     "packages": [
@@ -2656,12 +2655,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6c21c66567031c863f207fb46b3c1c545d5589d1"
+                "reference": "247756f342dfb0a319f8985ef06f21a00d98b59c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6c21c66567031c863f207fb46b3c1c545d5589d1",
-                "reference": "6c21c66567031c863f207fb46b3c1c545d5589d1",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/247756f342dfb0a319f8985ef06f21a00d98b59c",
+                "reference": "247756f342dfb0a319f8985ef06f21a00d98b59c",
                 "shasum": ""
             },
             "require": {
@@ -2720,7 +2719,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-11-05 11:27:10"
+            "time": "2014-11-06 08:43:29"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3110,7 +3109,6 @@
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20
     },
-    "prefer-stable": false,
     "platform": [],
     "platform-dev": []
 }

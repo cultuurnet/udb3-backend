@@ -226,6 +226,72 @@ $app['command_bus_event_dispatcher'] = $app->share(
   }
 );
 
+$app['logger.command_bus'] = $app->share(
+    function ($app) {
+        $logger = new \Monolog\Logger('command_bus');
+
+        $handlers = $app['config']['log.command_bus'];
+        foreach ($handlers as $handler_config) {
+            switch ($handler_config['type']) {
+                case 'hipchat':
+                    $handler = new \Monolog\Handler\HipChatHandler(
+                        $handler_config['token'],
+                        $handler_config['room']
+                    );
+                    break;
+                case 'file':
+                    $handler = new \Monolog\Handler\StreamHandler(
+                        __DIR__ . '/web/' . $handler_config['path']
+                    );
+                    break;
+                case 'socketioemitter':
+                    $redisConfig = isset($handler_config['redis']) ? $handler_config['redis'] : array();
+                    $redisConfig += array(
+                        'host' => '127.0.0.1',
+                        'port' => 6379,
+                    );
+                    if (extension_loaded('redis')) {
+                        $redis = new \Redis();
+                        $redis->connect(
+                            $redisConfig['host'],
+                            $redisConfig['port']
+                        );
+                    } else {
+                        $redis = new Predis\Client(
+                            [
+                                'host' => $redisConfig['host'],
+                                'port' => $redisConfig['port']
+                            ]
+                        );
+                        $redis->connect();
+                    }
+
+                    $emitter = new \SocketIO\Emitter($redis);
+
+                    if (isset($handler_config['namespace'])) {
+                        $emitter->of($handler_config['namespace']);
+                    }
+
+                    if (isset($handler_config['room'])) {
+                        $emitter->in($handler_config['room']);
+                    }
+
+                    $handler = new \CultuurNet\UDB3\Monolog\SocketIOEmitterHandler(
+                        $emitter
+                    );
+                    break;
+                default:
+                    continue 2;
+            }
+
+            $handler->setLevel($handler_config['level']);
+            $logger->pushHandler($handler);
+        }
+
+        return $logger;
+    }
+);
+
 $app['event_command_bus'] = $app->share(
     function ($app) {
         $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus();
@@ -234,12 +300,12 @@ $app['event_command_bus'] = $app->share(
             'event',
             $app['command_bus_event_dispatcher']
         );
+        $commandBus->setLogger($app['logger.command_bus']);
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Event\EventCommandHandler(
                 $app['event_repository']
             )
         );
-
         return $commandBus;
     }
 );
