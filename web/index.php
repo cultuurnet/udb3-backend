@@ -23,6 +23,8 @@ $checkAuthenticated = function (Request $request, Application $app) {
     }
 };
 
+require __DIR__ . '/../debug.php';
+
 $app['logger.search'] = $app->share(
     function ($app) {
         $logger = new \Monolog\Logger('search');
