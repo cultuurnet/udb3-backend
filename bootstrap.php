@@ -134,7 +134,9 @@ $app['auth_service'] = $app->share(
 
 $app['cache'] = $app->share(
     function ($app) {
-        $cacheDirectory = __DIR__ . '/cache';
+        $baseUrl = $app['config']['uitid']['base_url'];
+        $urlParts = parse_url($baseUrl);
+        $cacheDirectory = __DIR__ . '/cache/' . $urlParts['host'];
         $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory);
 
         return $cache;
