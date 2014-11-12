@@ -9,6 +9,7 @@ use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
 use CultuurNet\UDB3\DefaultEventService;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use JDesrosiers\Silex\Provider\CorsServiceProvider;
 
 $app = new Application();
 
@@ -18,6 +19,11 @@ $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
+
+$app->register(new CorsServiceProvider(), array(
+    "cors.allowOrigin" => implode (", ", $app['config']['cors']['origins']),
+    "cors.allowCredentials" => true
+));
 
 
 $app['iri_generator'] = $app->share(
