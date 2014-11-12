@@ -408,18 +408,21 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
-                "reference": "0fe5cd9c52fbf941a2e9c0c116b197b42b5c21fb"
+                "reference": "3ef3fbed05309069536ef57a8fa0f008bd6bd1ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/0fe5cd9c52fbf941a2e9c0c116b197b42b5c21fb.zip",
-                "reference": "0fe5cd9c52fbf941a2e9c0c116b197b42b5c21fb",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/3ef3fbed05309069536ef57a8fa0f008bd6bd1ab.zip",
+                "reference": "3ef3fbed05309069536ef57a8fa0f008bd6bd1ab",
                 "shasum": ""
             },
             "require": {
                 "broadway/broadway": "~0.2.0",
                 "chrisboulton/php-resque": "~1.2",
-                "cultuurnet/search": "~1.1"
+                "cultuurnet/search": "~1.1",
+                "monolog/monolog": "~1.11",
+                "psr/log": "~1.0",
+                "rase/socket.io-emitter": "~0.6"
             },
             "require-dev": {
                 "phpspec/phpspec": "~2.0",
@@ -450,7 +453,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-11-10 16:27:57"
+            "time": "2014-11-10 18:43:56"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
