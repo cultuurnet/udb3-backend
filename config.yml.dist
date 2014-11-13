@@ -6,6 +6,7 @@ uitid:
   apis:
     entry: entry/rest.uitdatabank.be/api/v2
     search: searchv2
+sync_with_udb2: true
 cors:
   origins: []
 log.search: []

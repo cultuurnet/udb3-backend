@@ -199,14 +199,19 @@ $app['event_repository'] = $app->share(
           array($app['event_stream_metadata_enricher'])
       );
 
-      $udb2RepositoryDecorator = new CultuurNet\UDB3\UDB2\EventRepository(
-          $repository,
-          $app['search_api_2'],
-          $app['udb2_entry_api_factory'],
-          array($app['event_stream_metadata_enricher'])
-      );
+      if (true == $app['config']['sync_with_udb2']) {
+          $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\EventRepository(
+              $repository,
+              $app['search_api_2'],
+              $app['udb2_entry_api_factory'],
+              array($app['event_stream_metadata_enricher'])
+          );
 
-      return $udb2RepositoryDecorator;
+          return $udb2RepositoryDecorator;
+      }
+      else {
+          return $repository;
+      }
   }
 );
 
