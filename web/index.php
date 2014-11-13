@@ -362,7 +362,7 @@ $app->post(
         /** @var EventTaggerServiceInterface $eventTagger */
         $eventTagger = $app['event_tagger'];
 
-        $keyword = $request->request->get('keyword');
+        $keyword = new \CultuurNet\UDB3\Keyword($request->request->get('keyword'));
         $eventIds = $request->request->get('events');
 
         $response = new JsonResponse();
