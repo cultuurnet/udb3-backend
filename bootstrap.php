@@ -21,7 +21,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
-    "cors.allowOrigin" => implode (", ", $app['config']['cors']['origins']),
+    "cors.allowOrigin" => implode (" ", $app['config']['cors']['origins']),
     "cors.allowCredentials" => true
 ));
 
