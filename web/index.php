@@ -352,7 +352,7 @@ $app->get(
         $user = $app['current_user'];
         $memory = $usedKeywordsMemoryService->getMemory($user->id);
 
-        return JsonResponse::create($memory->getKeywords());
+        return JsonResponse::create($memory);
     }
 )->before($checkAuthenticated);
 
