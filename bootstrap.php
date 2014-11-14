@@ -322,7 +322,8 @@ $app['event_command_bus'] = $app->share(
         $commandBus->setLogger($app['logger.command_bus']);
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Event\EventCommandHandler(
-                $app['event_repository']
+                $app['event_repository'],
+                $app['search_service']
             )
         );
         return $commandBus;

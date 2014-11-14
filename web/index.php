@@ -398,6 +398,34 @@ $app->post(
     }
 )->before($checkAuthenticated);
 
+$app->post('query/tag',
+    function (Request $request, Application $app) {
+        /** @var EventTaggerServiceInterface $eventTagger */
+        $eventTagger = $app['event_tagger'];
+
+        $query = $request->request->get('query', false);
+        if (!$query) {
+            return new JsonResponse(['error' => "query required"], 400);
+        }
+
+        try {
+            $keyword = new \CultuurNet\UDB3\Keyword($request->request->get('keyword'));
+            $commandId = $eventTagger->tagQuery($query, $keyword);
+
+            /** @var CultureFeed_User $user */
+            $user = $app['current_user'];
+            $app['used_keywords_memory']->rememberKeywordUsed(
+                $user->id,
+                $keyword
+            );
+
+            return new JsonResponse(['commandId' => $commandId]);
+
+        } catch (Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 400);
+        };
+    });
+
 $app->get(
     'command/{token}',
     function (Request $request, Application $app, $token) {
