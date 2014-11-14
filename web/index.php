@@ -330,7 +330,8 @@ $app
             $event = $service->getEvent($cdbid);
 
             $response = JsonLdResponse::create()
-                ->setData($event)
+                ->setContent($event)
+                //->setData($event)
                 ->setPublic()
                 ->setClientTtl(60 * 30)
                 ->setTtl(60 * 5);
