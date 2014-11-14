@@ -30,16 +30,7 @@ $app['iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
-                /** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
-                $urlGenerator = $app['url_generator'];
-
-                return $urlGenerator->generate(
-                    'event',
-                    array(
-                        'cdbid' => $cdbid,
-                    ),
-                    $urlGenerator::ABSOLUTE_URL
-                );
+                return $app['config']['url'] . '/event/' . $cdbid;
             }
         );
     }
