@@ -216,7 +216,7 @@ $app['event_repository'] = $app->share(
           );
 
           if (true == $app['config']['sync_with_udb2']) {
-
+            $udb2RepositoryDecorator->syncBackOn();
           }
           return $udb2RepositoryDecorator;
   }
