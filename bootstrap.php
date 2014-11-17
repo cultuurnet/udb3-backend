@@ -70,11 +70,13 @@ $app['search_service'] = $app->share(
 
 $app['event_service'] = $app->share(
     function ($app) {
-        $service = new DefaultEventService(
-            $app['search_api_2'],
+        $service = new \CultuurNet\UDB3\LocalEventService(
+            $app['eventld_repository'],
+            $app['event_repository'],
             $app['iri_generator']
         );
-        return new EventServiceCache($service, $app['cache']);
+
+        return $service;
     }
 );
 
@@ -160,9 +162,24 @@ $app['event_store'] = $app->share(
     }
 );
 
+$app['eventld_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\ReadModel\DoctrineCacheRepository(
+            $app['cache']
+        );
+    }
+);
+
 $app['event_bus'] = $app->share(
     function ($app) {
-        return new \Broadway\EventHandling\SimpleEventBus();
+        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
+        $eventBus->subscribe(
+            new \CultuurNet\UDB3\Event\EventLDProjector(
+                $app['eventld_repository'],
+                $app['iri_generator']
+            )
+        );
+        return $eventBus;
     }
 );
 
@@ -190,7 +207,7 @@ $app['event_repository'] = $app->share(
           array($app['event_stream_metadata_enricher'])
       );
 
-      if (true == $app['config']['sync_with_udb2']) {
+
           $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\EventRepository(
               $repository,
               $app['search_api_2'],
@@ -198,11 +215,10 @@ $app['event_repository'] = $app->share(
               array($app['event_stream_metadata_enricher'])
           );
 
+          if (true == $app['config']['sync_with_udb2']) {
+            $udb2RepositoryDecorator->syncBackOn();
+          }
           return $udb2RepositoryDecorator;
-      }
-      else {
-          return $repository;
-      }
   }
 );
 
@@ -321,12 +337,19 @@ $app['event_command_bus'] = $app->share(
     }
 );
 
+$app['used_keywords_event_bus'] = $app->share(
+    function ($app) {
+        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
+        return $eventBus;
+    }
+);
+
 $app['used_keywords_memory'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService(
             new \CultuurNet\UDB3\UsedKeywordsMemory\UsedKeywordsMemoryRepository(
                 $app['event_store'],
-                $app['event_bus']
+                $app['used_keywords_event_bus']
             )
         );
     }
