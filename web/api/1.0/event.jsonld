@@ -16,8 +16,8 @@
       "@id": "cf:calendarSummary",
       "@type": "xsd:string"
     },
-    "shortDescription": {
-      "@id": "cf:shortDescription",
+    "description": {
+      "@id": "schema:description",
       "@type": "xsd:string",
       "@container": "@language"
     },
@@ -49,10 +49,6 @@
       "@id": "schema:performer",
       "@type": "xsd:string",
       "_comment": "TO DO: example"
-    },
-    "description": {
-      "@id": "schema:description",
-      "@type": "xsd:string"
     },
     "offers": {
       "@id": "schema:offers",
