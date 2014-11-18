@@ -341,6 +341,72 @@ $app
     )
     ->bind('event');
 
+$app
+    ->post(
+        'event/{cdbid}/{lang}/title',
+        function (Request $request, Application $app, $cdbid, $lang) {
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            $service = $app['event_editor'];
+
+            $response = new JsonResponse();
+
+            $title = $request->request->get('title');
+            if (!$title) {
+                return new JsonResponse(['error' => "title required"], 400);
+            }
+
+            try {
+                $commandId = $service->translateTitle(
+                    $cdbid,
+                    new \CultuurNet\UDB3\Language($lang),
+                    $title
+                );
+
+                $response->setData(['commandId' => $commandId]);
+            }
+            catch (Exception $e) {
+                $response->setStatusCode(400);
+                $response->setData(['error' => $e->getMessage()]);
+            }
+
+            return $response;
+        }
+    )
+    ->before($checkAuthenticated);
+
+$app
+    ->post(
+        'event/{cdbid}/{lang}/description',
+        function (Request $request, Application $app, $cdbid, $lang) {
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            $service = $app['event_editor'];
+
+            $response = new JsonResponse();
+
+            $description = $request->request->get('description');
+            if (!$description) {
+                return new JsonResponse(['error' => "description required"], 400);
+            }
+
+            try {
+                $commandId = $service->translateDescription(
+                    $cdbid,
+                    new \CultuurNet\UDB3\Language($lang),
+                    $request->get('description')
+                );
+
+                $response->setData(['commandId' => $commandId]);
+            }
+            catch (Exception $e) {
+                $response->setStatusCode(400);
+                $response->setData(['error' => $e->getMessage()]);
+            }
+
+            return $response;
+        }
+    )
+    ->before($checkAuthenticated);
+
 $app->get(
     'api/1.0/user',
     function (Request $request, Application $app) {

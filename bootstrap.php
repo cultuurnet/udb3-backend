@@ -364,4 +364,13 @@ $app['event_tagger'] = $app->share(
     }
 );
 
+$app['event_editor'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\DefaultEventEditingService(
+            $app['event_service'],
+            $app['event_command_bus']
+        );
+    }
+);
+
 return $app;
