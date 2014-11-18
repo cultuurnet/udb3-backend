@@ -350,11 +350,16 @@ $app
 
             $response = new JsonResponse();
 
+            $title = $request->request->get('title');
+            if (!$title) {
+                return new JsonResponse(['error' => "title required"], 400);
+            }
+
             try {
                 $commandId = $service->translateTitle(
                     $cdbid,
                     new \CultuurNet\UDB3\Language($lang),
-                    $request->get('title')
+                    $title
                 );
 
                 $response->setData(['commandId' => $commandId]);
@@ -377,6 +382,11 @@ $app
             $service = $app['event_editor'];
 
             $response = new JsonResponse();
+
+            $description = $request->request->get('description');
+            if (!$description) {
+                return new JsonResponse(['error' => "description required"], 400);
+            }
 
             try {
                 $commandId = $service->translateDescription(
