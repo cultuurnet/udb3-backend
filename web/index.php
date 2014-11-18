@@ -341,6 +341,34 @@ $app
     )
     ->bind('event');
 
+$app
+    ->post(
+        'event/{cdbid}/{lang}/title',
+        function (Request $request, Application $app, $cdbid, $lang) {
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            $service = $app['event_editor'];
+
+            $response = new JsonResponse();
+
+            try {
+                $commandId = $service->translateTitle(
+                    $cdbid,
+                    new \CultuurNet\UDB3\Language($lang),
+                    $request->get('title')
+                );
+
+                $response->setData(['commandId' => $commandId]);
+            }
+            catch (Exception $e) {
+                $response->setStatusCode(400);
+                $response->setData(['error' => $e->getMessage()]);
+            }
+
+            return $response;
+        }
+    )
+    ->before($checkAuthenticated);
+
 $app->get(
     'api/1.0/user',
     function (Request $request, Application $app) {
