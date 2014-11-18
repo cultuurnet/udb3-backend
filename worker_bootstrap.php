@@ -1,7 +1,9 @@
 <?php
 
-require __DIR__ . '/bootstrap.php';
+$app = require __DIR__ . '/bootstrap.php';
 
-// Allows to access $app in perform() of queue jobs
-// @todo Find a cleaner way to do this.
-$GLOBALS['app'] = $app;
+$app->boot();
+
+// Allows to access the command bus in perform() of jobs that come out of the
+// queue.
+\CultuurNet\UDB3\CommandHandling\QueueJob::setCommandBus($app['event_command_bus']);
