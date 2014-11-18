@@ -10,7 +10,7 @@
     "name": {
       "@id": "schema:name",
       "@type": "xsd:string",
-      "_comment": "TO DO translations"
+      "@container": "@language"
     },
     "calendarSummary": {
       "@id": "cf:calendarSummary",
@@ -18,7 +18,8 @@
     },
     "shortDescription": {
       "@id": "cf:shortDescription",
-      "@type": "xsd:string"
+      "@type": "xsd:string",
+      "@container": "@language"
     },
     "available": {
       "@id": "dcterms:available",
