@@ -407,6 +407,60 @@ $app
     )
     ->before($checkAuthenticated);
 
+$app
+    ->post(
+        'event/{cdbid}/keywords',
+        function (Request $request, Application $app, $cdbid) {
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            $service = $app['event_editor'];
+
+            $response = new JsonResponse();
+
+            try {
+                $commandId = $service->tag(
+                    $cdbid,
+                    new \CultuurNet\UDB3\Keyword($request->request->get('keyword'))
+                );
+
+                $response->setData(['commandId' => $commandId]);
+            }
+            catch (Exception $e) {
+                $response->setStatusCode(400);
+                $response->setData(['error' => $e->getMessage()]);
+            }
+
+            return $response;
+        }
+    )
+    ->before($checkAuthenticated);
+
+$app
+    ->delete(
+        'event/{cdbid}/keywords/{keyword}',
+        function (Request $request, Application $app, $cdbid, $keyword) {
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            $service = $app['event_editor'];
+
+            $response = new JsonResponse();
+
+            try {
+                $commandId = $service->eraseTag(
+                    $cdbid,
+                    new \CultuurNet\UDB3\Keyword($keyword)
+                );
+
+                $response->setData(['commandId' => $commandId]);
+            }
+            catch (Exception $e) {
+                $response->setStatusCode(400);
+                $response->setData(['error' => $e->getMessage()]);
+            }
+
+            return $response;
+        }
+    )
+    ->before($checkAuthenticated);
+
 $app->get(
     'api/1.0/user',
     function (Request $request, Application $app) {
