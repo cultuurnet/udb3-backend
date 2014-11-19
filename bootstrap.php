@@ -199,6 +199,22 @@ $app['udb2_entry_api_factory'] = $app->share(
   }
 );
 
+$app['udb2_entry_api_improved_factory'] = $app->share(
+    function ($app) {
+        $uitidConfig = $app['config']['uitid'];
+        $baseUrl =
+            $uitidConfig['base_url'] .
+            $uitidConfig['apis']['entry'];
+
+        return new \CultuurNet\UDB3\UDB2\EntryAPIImprovedFactory(
+            new \CultuurNet\UDB3\UDB2\Consumer(
+                $baseUrl,
+                $app['uitid_consumer_credentials']
+            )
+        );
+    }
+);
+
 $app['event_repository'] = $app->share(
   function ($app) {
       $repository = new \CultuurNet\UDB3\Event\EventRepository(
@@ -212,6 +228,7 @@ $app['event_repository'] = $app->share(
               $repository,
               $app['search_api_2'],
               $app['udb2_entry_api_factory'],
+              $app['udb2_entry_api_improved_factory'],
               array($app['event_stream_metadata_enricher'])
           );
 
