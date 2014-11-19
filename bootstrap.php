@@ -227,7 +227,6 @@ $app['event_repository'] = $app->share(
           $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\EventRepository(
               $repository,
               $app['search_api_2'],
-              $app['udb2_entry_api_factory'],
               $app['udb2_entry_api_improved_factory'],
               array($app['event_stream_metadata_enricher'])
           );
