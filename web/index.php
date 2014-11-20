@@ -417,9 +417,17 @@ $app
             $response = new JsonResponse();
 
             try {
+                $keyword = new \CultuurNet\UDB3\Keyword($request->request->get('keyword'));
                 $commandId = $service->tag(
                     $cdbid,
-                    new \CultuurNet\UDB3\Keyword($request->request->get('keyword'))
+                    $keyword
+                );
+
+                /** @var CultureFeed_User $user */
+                $user = $app['current_user'];
+                $app['used_keywords_memory']->rememberKeywordUsed(
+                    $user->id,
+                    $keyword
                 );
 
                 $response->setData(['commandId' => $commandId]);
