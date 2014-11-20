@@ -335,6 +335,8 @@ $app
                 ->setClientTtl(60 * 30)
                 ->setTtl(60 * 5);
 
+            $response->headers->set('Vary', 'Origin');
+
             return $response;
         }
     )
