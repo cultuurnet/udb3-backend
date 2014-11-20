@@ -331,7 +331,6 @@ $app
 
             $response = JsonLdResponse::create()
                 ->setContent($event)
-                //->setData($event)
                 ->setPublic()
                 ->setClientTtl(60 * 30)
                 ->setTtl(60 * 5);
