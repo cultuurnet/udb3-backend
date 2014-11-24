@@ -9,6 +9,24 @@ use \Silex\Application;
 use \CultuurNet\UDB3\UDB2\EntryAPIFactory;
 use \CultuurNet\Auth\User;
 
+/** @var Application $app */
+
+$app['udb2_entry_api_factory'] = $app->share(
+    function ($app) {
+        $uitidConfig = $app['config']['uitid'];
+        $baseUrl =
+            $uitidConfig['base_url'] .
+            $uitidConfig['apis']['entry'];
+
+        return new \CultuurNet\UDB3\UDB2\EntryAPIFactory(
+            new \CultuurNet\UDB3\UDB2\Consumer(
+                $baseUrl,
+                $app['uitid_consumer_credentials']
+            )
+        );
+    }
+);
+
 $app->get(
     'api/1.0/entry/search',
     function (Request $request, Application $app) {
