@@ -3,7 +3,6 @@
 require 'vendor/autoload.php';
 
 use Silex\Application;
-use CultuurNet\UDB3\Doctrine\EventServiceCache;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
@@ -164,7 +163,7 @@ $app['event_store'] = $app->share(
 
 $app['eventld_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\ReadModel\DoctrineCacheRepository(
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
             $app['cache']
         );
     }
