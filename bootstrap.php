@@ -175,7 +175,15 @@ $app['event_bus'] = $app->share(
         $eventBus->subscribe(
             new \CultuurNet\UDB3\Event\EventLDProjector(
                 $app['eventld_repository'],
-                $app['iri_generator']
+                $app['iri_generator'],
+                new \CultuurNet\UDB3\Place\PlaceLDProjector(
+                    $app['eventld_repository'],
+                    $app['place_iri_generator']
+                ),
+                new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
+                    $app['eventld_repository'],
+                    $app['organizer_iri_generator']
+                )
             )
         );
         return $eventBus;
@@ -369,6 +377,147 @@ $app['event_editor'] = $app->share(
             $app['event_service'],
             $app['event_command_bus']
         );
+    }
+);
+
+/** Place **/
+
+$app['place_iri_generator'] = $app->share(
+    function ($app) {
+        return new CallableIriGenerator(
+            function ($cdbid) use ($app) {
+                return $app['config']['url'] . '/place/' . $cdbid;
+            }
+        );
+    }
+);
+
+$app['place_event_bus'] = $app->share(
+    function ($app) {
+        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
+        $eventBus->subscribe(
+            new \CultuurNet\UDB3\Place\PlaceLDProjector(
+                $app['eventld_repository'],
+                $app['place_iri_generator']
+            )
+        );
+        return $eventBus;
+    }
+);
+
+$app['place_store'] = $app->share(
+    function ($app) {
+        return new \Broadway\EventStore\DBALEventStore(
+            $app['dbal_connection'],
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            'places'
+        );
+    }
+);
+
+$app['place_repository'] = $app->share(
+    function ($app) {
+        $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
+            $app['place_store'],
+            $app['place_event_bus'],
+            array($app['event_stream_metadata_enricher'])
+        );
+
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\PlaceRepository(
+            $repository,
+            $app['search_api_2'],
+            $app['udb2_entry_api_improved_factory'],
+            array($app['event_stream_metadata_enricher'])
+        );
+
+        if (true == $app['config']['sync_with_udb2']) {
+            $udb2RepositoryDecorator->syncBackOn();
+        }
+        return $udb2RepositoryDecorator;
+    }
+);
+
+$app['place_service'] = $app->share(
+    function ($app) {
+        $service = new \CultuurNet\UDB3\LocalEntityService(
+            $app['eventld_repository'],
+            $app['place_repository'],
+            $app['iri_generator']
+        );
+
+        return $service;
+    }
+);
+
+/** Organizer **/
+
+$app['organizer_iri_generator'] = $app->share(
+    function ($app) {
+        return new CallableIriGenerator(
+            function ($cdbid) use ($app) {
+                return $app['config']['url'] . '/organizer/' . $cdbid;
+            }
+        );
+    }
+);
+
+$app['organization_event_bus'] = $app->share(
+    function ($app) {
+        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
+        $eventBus->subscribe(
+            new \CultuurNet\UDB3\Place\PlaceLDProjector(
+                $app['eventld_repository'],
+                $app['organizer_iri_generator']
+            )
+        );
+        return $eventBus;
+    }
+);
+
+$app['organizer_store'] = $app->share(
+    function ($app) {
+        return new \Broadway\EventStore\DBALEventStore(
+            $app['dbal_connection'],
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            'organizers'
+        );
+    }
+);
+
+$app['organization_repository'] = $app->share(
+    function ($app) {
+        $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
+            $app['organizer_store'],
+            $app['organizer_event_bus'],
+            array($app['event_stream_metadata_enricher'])
+        );
+
+
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\OrganizerRepository(
+            $repository,
+            $app['search_api_2'],
+            $app['udb2_entry_api_improved_factory'],
+            array($app['event_stream_metadata_enricher'])
+        );
+
+        if (true == $app['config']['sync_with_udb2']) {
+            $udb2RepositoryDecorator->syncBackOn();
+        }
+        return $udb2RepositoryDecorator;
+    }
+);
+
+$app['organizer_service'] = $app->share(
+    function ($app) {
+        $service = new \CultuurNet\UDB3\LocalEntityService(
+            $app['eventld_repository'],
+            $app['organizer_repository'],
+            $app['iri_generator']
+        );
+
+        return $service;
     }
 );
 

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a620e4ff5a058c24977ad69e63d54f1a",
+    "hash": "ba12df2738285132e2f1494459b03a51",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -405,16 +405,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-105",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/2dotstwice/culudb-php.git",
-                "reference": "11812c03fcee2ac9d5ef6e4ef40cb2c0da84fefd"
+                "reference": "251822d0987e1d99dabfd2c3228c039efbd1f0c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/11812c03fcee2ac9d5ef6e4ef40cb2c0da84fefd.zip",
-                "reference": "11812c03fcee2ac9d5ef6e4ef40cb2c0da84fefd",
+                "url": "https://bitbucket.org/2dotstwice/culudb-php/get/251822d0987e1d99dabfd2c3228c039efbd1f0c8.zip",
+                "reference": "251822d0987e1d99dabfd2c3228c039efbd1f0c8",
                 "shasum": ""
             },
             "require": {
@@ -458,7 +458,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2014-11-24 19:33:45"
+            "time": "2014-12-10 16:17:49"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3261,6 +3261,12 @@
             "alias_normalized": "2.0.1.0",
             "version": "dev-feature/keywords-remove-leading-trailing-whitespace",
             "package": "cultuurnet/cdb"
+        },
+        {
+            "alias": "0.2.x-dev",
+            "alias_normalized": "0.2.9999999.9999999-dev",
+            "version": "dev-feature/III-105",
+            "package": "cultuurnet/udb3"
         }
     ],
     "minimum-stability": "dev",

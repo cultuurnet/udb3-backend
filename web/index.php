@@ -265,8 +265,13 @@ $app->get(
 $app->get(
     'db_init',
     function (Request $request, Application $app) {
-        /** @var \Broadway\EventStore\DBALEventStore $eventStore */
-        $eventStore = $app['event_store'];
+
+        /** @var \Broadway\EventStore\DBALEventStore[] $stores */
+        $stores = array(
+            $app['event_store'],
+            $app['place_store'],
+            $app['organizer_store'],
+        );
 
         /** @var \Doctrine\DBAL\Connection $connection */
         $connection = $app['dbal_connection'];
@@ -274,8 +279,12 @@ $app->get(
         $schemaManager = $connection->getSchemaManager();
         $schema = $schemaManager->createSchema();
 
-        $table = $eventStore->configureSchema($schema);
-        $schemaManager->createTable($table);
+        foreach ($stores as $store) {
+            $table = $store->configureSchema($schema);
+            if ($table) {
+                $schemaManager->createTable($table);
+            }
+        }
     }
 );
 
@@ -577,5 +586,49 @@ $app->get(
         return new Response($labels[$code]);
     }
 );
+
+$app
+    ->get(
+        'place/{cdbid}',
+        function (Request $request, Application $app, $cdbid) {
+            /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
+            $service = $app['place_service'];
+
+            $place = $service->getEntity($cdbid);
+
+            $response = JsonLdResponse::create()
+                ->setContent($place)
+                ->setPublic()
+                ->setClientTtl(60 * 30)
+                ->setTtl(60 * 5);
+
+            $response->headers->set('Vary', 'Origin');
+
+            return $response;
+        }
+    )
+    ->bind('place');
+
+$app
+    ->get(
+        'organizer/{cdbid}',
+        function (Request $request, Application $app, $cdbid) {
+            /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
+            $service = $app['organize_service'];
+
+            $organizer = $service->getEntity($cdbid);
+
+            $response = JsonLdResponse::create()
+                ->setContent($organizer)
+                ->setPublic()
+                ->setClientTtl(60 * 30)
+                ->setTtl(60 * 5);
+
+            $response->headers->set('Vary', 'Origin');
+
+            return $response;
+        }
+    )
+    ->bind('organizer');
 
 $app->run();
