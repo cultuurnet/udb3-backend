@@ -197,7 +197,7 @@ $app['event_bus'] = $app->share(
                 $app['eventld_repository'],
                 $app['iri_generator'],
                 $app['place_service'],
-                $app['organizer_service']
+                $app['organization_service']
             )
         );
         return $eventBus;
@@ -523,7 +523,7 @@ $app['organization_repository'] = $app->share(
     }
 );
 
-$app['organizer_service'] = $app->share(
+$app['organization_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\OrganizerService(
             $app['eventld_repository'],
