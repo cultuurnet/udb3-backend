@@ -35,6 +35,26 @@ $app['iri_generator'] = $app->share(
     }
 );
 
+$app['place_iri_generator'] = $app->share(
+    function ($app) {
+        return new CallableIriGenerator(
+            function ($cdbid) use ($app) {
+                return $app['config']['url'] . '/place/' . $cdbid;
+            }
+        );
+    }
+);
+
+$app['organization_iri_generator'] = $app->share(
+    function ($app) {
+        return new CallableIriGenerator(
+            function ($cdbid) use ($app) {
+                return $app['config']['url'] . '/organization/' . $cdbid;
+            }
+        );
+    }
+);
+
 $app['uitid_consumer_credentials'] = $app->share(
     function ($app) {
         $consumerConfig = $app['config']['uitid']['consumer'];
@@ -176,14 +196,8 @@ $app['event_bus'] = $app->share(
             new \CultuurNet\UDB3\Event\EventLDProjector(
                 $app['eventld_repository'],
                 $app['iri_generator'],
-                new \CultuurNet\UDB3\Place\PlaceLDProjector(
-                    $app['eventld_repository'],
-                    $app['place_iri_generator']
-                ),
-                new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
-                    $app['eventld_repository'],
-                    $app['organizer_iri_generator']
-                )
+                $app['place_service'],
+                $app['organizer_service']
             )
         );
         return $eventBus;
@@ -440,10 +454,10 @@ $app['place_repository'] = $app->share(
 
 $app['place_service'] = $app->share(
     function ($app) {
-        $service = new \CultuurNet\UDB3\LocalEntityService(
+        $service = new \CultuurNet\UDB3\PlaceService(
             $app['eventld_repository'],
             $app['place_repository'],
-            $app['iri_generator']
+            $app['place_iri_generator']
         );
 
         return $service;
@@ -452,7 +466,7 @@ $app['place_service'] = $app->share(
 
 /** Organizer **/
 
-$app['organizer_iri_generator'] = $app->share(
+$app['organization_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
@@ -468,7 +482,7 @@ $app['organization_event_bus'] = $app->share(
         $eventBus->subscribe(
             new \CultuurNet\UDB3\Place\PlaceLDProjector(
                 $app['eventld_repository'],
-                $app['organizer_iri_generator']
+                $app['organization_iri_generator']
             )
         );
         return $eventBus;
@@ -490,7 +504,7 @@ $app['organization_repository'] = $app->share(
     function ($app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
-            $app['organizer_event_bus'],
+            $app['organization_event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -511,10 +525,10 @@ $app['organization_repository'] = $app->share(
 
 $app['organizer_service'] = $app->share(
     function ($app) {
-        $service = new \CultuurNet\UDB3\LocalEntityService(
+        $service = new \CultuurNet\UDB3\OrganizerService(
             $app['eventld_repository'],
-            $app['organizer_repository'],
-            $app['iri_generator']
+            $app['organization_repository'],
+            $app['organization_iri_generator']
         );
 
         return $service;
