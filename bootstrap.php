@@ -92,6 +92,7 @@ $app['event_service'] = $app->share(
         $service = new \CultuurNet\UDB3\LocalEventService(
             $app['eventld_repository'],
             $app['event_repository'],
+            $app['event_relations_repository'],
             $app['iri_generator']
         );
 
@@ -189,17 +190,54 @@ $app['eventld_repository'] = $app->share(
     }
 );
 
+$app['event_jsonld_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\EventLDProjector(
+            $app['eventld_repository'],
+            $app['iri_generator'],
+            $app['event_service'],
+            $app['place_service'],
+            $app['organization_service']
+        );
+    }
+);
+
+$app['relations_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
+            $app['event_relations_repository']
+        );
+    }
+);
+
 $app['event_bus'] = $app->share(
     function ($app) {
-        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
-        $eventBus->subscribe(
-            new \CultuurNet\UDB3\Event\EventLDProjector(
-                $app['eventld_repository'],
-                $app['iri_generator'],
-                $app['place_service'],
-                $app['organization_service']
-            )
-        );
+        $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
+
+        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
+            // Subscribe projector for event relations read model as the first one.
+            $eventBus->subscribe(
+                $app['relations_projector']
+            );
+
+            // Subscribe projector for the JSON-LD read model.
+            $eventBus->subscribe(
+                $app['event_jsonld_projector']
+            );
+        });
+
+        return $eventBus;
+    }
+);
+
+$app['read_models_event_bus'] = $app->share(
+    function ($app) {
+        $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
+
+        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
+            $eventBus->subscribe($app['event_jsonld_projector']);
+        });
+
         return $eventBus;
     }
 );
@@ -221,37 +259,41 @@ $app['udb2_entry_api_improved_factory'] = $app->share(
 );
 
 $app['event_repository'] = $app->share(
-  function ($app) {
-      $repository = new \CultuurNet\UDB3\Event\EventRepository(
-          $app['event_store'],
-          $app['event_bus'],
-          array($app['event_stream_metadata_enricher'])
-      );
+    function ($app) {
+        $repository = new \CultuurNet\UDB3\Event\EventRepository(
+            $app['event_store'],
+            $app['event_bus'],
+            array($app['event_stream_metadata_enricher'])
+        );
 
 
-          $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\EventRepository(
-              $repository,
-              $app['search_api_2'],
-              $app['udb2_entry_api_improved_factory'],
-              array($app['event_stream_metadata_enricher'])
-          );
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\EventRepository(
+            $repository,
+            $app['search_api_2'],
+            $app['udb2_entry_api_improved_factory'],
+            $app['place_service'],
+            $app['organization_service'],
+            array($app['event_stream_metadata_enricher'])
+        );
 
-          if (true == $app['config']['sync_with_udb2']) {
+        if (true == $app['config']['sync_with_udb2']) {
             $udb2RepositoryDecorator->syncBackOn();
-          }
-          return $udb2RepositoryDecorator;
-  }
+        }
+        return $udb2RepositoryDecorator;
+    }
 );
 
 $app['execution_context_metadata_enricher'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher();
+        return new \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher(
+        );
     }
 );
 
 $app['event_stream_metadata_enricher'] = $app->share(
     function ($app) {
-        $eventStreamDecorator = new \Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator();
+        $eventStreamDecorator = new \Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator(
+        );
         $eventStreamDecorator->registerEnricher(
             $app['execution_context_metadata_enricher']
         );
@@ -260,17 +302,19 @@ $app['event_stream_metadata_enricher'] = $app->share(
 );
 
 $app['command_bus_event_dispatcher'] = $app->share(
-  function ($app) {
-      $dispatcher = new \Broadway\EventDispatcher\EventDispatcher();
-      $dispatcher->addListener(
-          \CultuurNet\UDB3\CommandHandling\ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
-          function ($context) use ($app) {
-              $app['execution_context_metadata_enricher']->setContext($context);
-          }
-      );
+    function ($app) {
+        $dispatcher = new \Broadway\EventDispatcher\EventDispatcher();
+        $dispatcher->addListener(
+            \CultuurNet\UDB3\CommandHandling\ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
+            function ($context) use ($app) {
+                $app['execution_context_metadata_enricher']->setContext(
+                    $context
+                );
+            }
+        );
 
-      return $dispatcher;
-  }
+        return $dispatcher;
+    }
 );
 
 $app['logger.command_bus'] = $app->share(
@@ -341,7 +385,8 @@ $app['logger.command_bus'] = $app->share(
 
 $app['event_command_bus'] = $app->share(
     function ($app) {
-        $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus();
+        $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus(
+        );
         $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus(
             $mainCommandBus,
             'event',
@@ -406,16 +451,37 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
+$app['place_jsonld_projector'] = $app->share(
+    function ($app) {
+        $projector = new \CultuurNet\UDB3\Place\PlaceLDProjector(
+            $app['eventld_repository'],
+            $app['place_iri_generator'],
+            $app['read_models_event_bus']
+        );
+
+        return $projector;
+    }
+);
+
 $app['place_event_bus'] = $app->share(
     function ($app) {
-        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
-        $eventBus->subscribe(
-            new \CultuurNet\UDB3\Place\PlaceLDProjector(
-                $app['eventld_repository'],
-                $app['place_iri_generator']
-            )
-        );
+        $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
+
+        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
+            $eventBus->subscribe(
+                $app['place_jsonld_projector']
+            );
+        });
+
         return $eventBus;
+    }
+);
+
+$app['event_relations_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository(
+            $app['dbal_connection']
+        );
     }
 );
 
@@ -476,15 +542,25 @@ $app['organization_iri_generator'] = $app->share(
     }
 );
 
+$app['organizer_jsonld_projector'] = $app->share(
+  function ($app) {
+      return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
+          $app['eventld_repository'],
+          $app['organization_iri_generator'],
+          $app['organization_event_bus']
+      );
+  }
+);
+
 $app['organization_event_bus'] = $app->share(
     function ($app) {
-        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
-        $eventBus->subscribe(
-            new \CultuurNet\UDB3\Place\PlaceLDProjector(
-                $app['eventld_repository'],
-                $app['organization_iri_generator']
-            )
-        );
+        $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
+        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
+           $eventBus->subscribe(
+               $app['organizer_jsonld_projector']
+           );
+        });
+
         return $eventBus;
     }
 );
