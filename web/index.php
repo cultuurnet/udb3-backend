@@ -271,6 +271,7 @@ $app->get(
             $app['event_store'],
             $app['place_store'],
             $app['organizer_store'],
+            $app['event_relations_repository']
         );
 
         /** @var \Doctrine\DBAL\Connection $connection */
