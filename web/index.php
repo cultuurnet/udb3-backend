@@ -172,7 +172,6 @@ $app->get(
                 'oauth_verifier'
             )
         ) {
-
             $user = $authService->getAccessToken(
                 $token,
                 $query->get('oauth_verifier')
@@ -310,7 +309,6 @@ $app->get(
                 array('user' => $user->nick)
             );
         } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
-
             $logger->alert(
                 "Search failed with HTTP status {$e->getResponse(
                 )->getStatusCode()}. Query: {$query}",
@@ -374,8 +372,7 @@ $app
                 );
 
                 $response->setData(['commandId' => $commandId]);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 $response->setStatusCode(400);
                 $response->setData(['error' => $e->getMessage()]);
             }
@@ -407,8 +404,7 @@ $app
                 );
 
                 $response->setData(['commandId' => $commandId]);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 $response->setStatusCode(400);
                 $response->setData(['error' => $e->getMessage()]);
             }
@@ -442,8 +438,7 @@ $app
                 );
 
                 $response->setData(['commandId' => $commandId]);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 $response->setStatusCode(400);
                 $response->setData(['error' => $e->getMessage()]);
             }
@@ -469,8 +464,7 @@ $app
                 );
 
                 $response->setData(['commandId' => $commandId]);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 $response->setStatusCode(400);
                 $response->setData(['error' => $e->getMessage()]);
             }
@@ -528,7 +522,6 @@ $app->post(
             );
 
             $response->setData(['commandId' => $commandId]);
-
         } catch (Exception $e) {
             $response->setStatusCode(400);
             $response->setData(['error' => $e->getMessage()]);
@@ -560,7 +553,6 @@ $app->post('query/tag',
             );
 
             return new JsonResponse(['commandId' => $commandId]);
-
         } catch (Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 400);
         };

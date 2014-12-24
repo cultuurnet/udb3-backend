@@ -20,7 +20,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
-    "cors.allowOrigin" => implode (" ", $app['config']['cors']['origins']),
+    "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
     "cors.allowCredentials" => true
 ));
 
@@ -126,8 +126,7 @@ $app['current_user'] = $app->share(
 
             try {
                 $user = $cf->getUser($minimalUserData->getId());
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 return NULL;
             }
 
