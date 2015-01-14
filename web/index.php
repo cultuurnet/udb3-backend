@@ -604,10 +604,10 @@ $app
 
 $app
     ->get(
-        'organization/{cdbid}',
+        'organizer/{cdbid}',
         function (Request $request, Application $app, $cdbid) {
             /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-            $service = $app['organization_service'];
+            $service = $app['organizer_service'];
 
             $organizer = $service->getEntity($cdbid);
 

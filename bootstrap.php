@@ -45,11 +45,11 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
-$app['organization_iri_generator'] = $app->share(
+$app['organizer_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/organization/' . $cdbid;
+                return $app['config']['url'] . '/organizer/' . $cdbid;
             }
         );
     }
@@ -196,7 +196,7 @@ $app['event_jsonld_projector'] = $app->share(
             $app['iri_generator'],
             $app['event_service'],
             $app['place_service'],
-            $app['organization_service']
+            $app['organizer_service']
         );
     }
 );
@@ -271,7 +271,7 @@ $app['event_repository'] = $app->share(
             $app['search_api_2'],
             $app['udb2_entry_api_improved_factory'],
             $app['place_service'],
-            $app['organization_service'],
+            $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -531,7 +531,7 @@ $app['place_service'] = $app->share(
 
 /** Organizer **/
 
-$app['organization_iri_generator'] = $app->share(
+$app['organizer_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
@@ -545,13 +545,13 @@ $app['organizer_jsonld_projector'] = $app->share(
   function ($app) {
       return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
           $app['eventld_repository'],
-          $app['organization_iri_generator'],
-          $app['organization_event_bus']
+          $app['organizer_iri_generator'],
+          $app['organizer_event_bus']
       );
   }
 );
 
-$app['organization_event_bus'] = $app->share(
+$app['organizer_event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
         $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
@@ -575,11 +575,11 @@ $app['organizer_store'] = $app->share(
     }
 );
 
-$app['organization_repository'] = $app->share(
+$app['organizer_repository'] = $app->share(
     function ($app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
-            $app['organization_event_bus'],
+            $app['organizer_event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -598,12 +598,12 @@ $app['organization_repository'] = $app->share(
     }
 );
 
-$app['organization_service'] = $app->share(
+$app['organizer_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\OrganizerService(
             $app['eventld_repository'],
-            $app['organization_repository'],
-            $app['organization_iri_generator']
+            $app['organizer_repository'],
+            $app['organizer_iri_generator']
         );
 
         return $service;
