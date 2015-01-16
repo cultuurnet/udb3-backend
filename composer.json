@@ -8,20 +8,6 @@
       "email": "kristof@2dotstwice.be"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://bitbucket.org/2dotstwice/culudb-php.git"
-    },
-    {
-      "type": "vcs",
-      "url": "https://bitbucket.org/2dotstwice/culudb-php-doctrine.git"
-    },
-    {
-      "type": "vcs",
-      "url": "https://bitbucket.org/2dotstwice/culudb-php-symfony.git"
-    }
-  ],
   "minimum-stability": "dev",
   "require": {
     "cultuurnet/cdb": "dev-feature/keywords-remove-leading-trailing-whitespace as 2.0.1",
