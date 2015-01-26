@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Event\EventTaggerServiceInterface;
+use CultuurNet\UDB3\Event\Title;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -497,6 +498,24 @@ $app->get(
         $memory = $usedKeywordsMemoryService->getMemory($user->id);
 
         return JsonResponse::create($memory);
+    }
+)->before($checkAuthenticated);
+
+$app->post(
+    'events',
+    function (Request $request, Application $app) {
+        /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+        $service = $app['event_editor'];
+
+        $eventId = $service->createEvent(
+            new Title($request->get('name')),
+            $request->get('location'),
+            DateTime::createFromFormat(DateTime::ISO8601, $request->get('date'))
+        );
+
+        return JsonResponse::create(
+            ['eventId' => $eventId]
+        );
     }
 )->before($checkAuthenticated);
 
