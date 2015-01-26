@@ -433,7 +433,8 @@ $app['event_editor'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\DefaultEventEditingService(
             $app['event_service'],
-            $app['event_command_bus']
+            $app['event_command_bus'],
+            new \Broadway\UuidGenerator\Rfc4122\Version4Generator()
         );
     }
 );
