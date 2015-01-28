@@ -435,7 +435,8 @@ $app['event_editor'] = $app->share(
             $app['event_service'],
             $app['event_command_bus'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['event_repository']
+            $app['event_repository'],
+            $app['place_service']
         );
     }
 );
