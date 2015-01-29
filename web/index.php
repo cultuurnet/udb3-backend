@@ -667,4 +667,24 @@ $app->post(
     }
 );
 
+$app->post(
+    'events/export/csv',
+    function (Request $request, Application $app) {
+        $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV(
+            new CultuurNet\UDB3\EventExport\EventExportQuery(
+                $request->request->get('query')
+            ),
+            $request->request->get('email')
+        );
+
+        /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
+        $commandBus = $app['event_command_bus'];
+        $commandId = $commandBus->dispatch($command);
+
+        return JsonResponse::create(
+            ['commandId' => $commandId]
+        );
+    }
+);
+
 $app->run();
