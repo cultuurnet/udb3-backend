@@ -647,4 +647,23 @@ $app
     )
     ->bind('organizer');
 
+$app->post(
+    'events/export/json',
+    function (Request $request, Application $app) {
+        $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD(
+            new CultuurNet\UDB3\EventExport\EventExportQuery(
+                $request->request->get('query')
+            )
+        );
+
+        /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
+        $commandBus = $app['event_command_bus'];
+        $commandId = $commandBus->dispatch($command);
+
+        return JsonResponse::create(
+            ['commandId' => $commandId]
+        );
+    }
+);
+
 $app->run();

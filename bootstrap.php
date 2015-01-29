@@ -398,6 +398,11 @@ $app['event_command_bus'] = $app->share(
                 $app['search_service']
             )
         );
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
+                $app['event_export']
+            )
+        );
         return $commandBus;
     }
 );
@@ -607,6 +612,19 @@ $app['organizer_service'] = $app->share(
             $app['eventld_repository'],
             $app['organizer_repository'],
             $app['organizer_iri_generator']
+        );
+
+        return $service;
+    }
+);
+
+$app['event_export'] = $app->share(
+    function ($app) {
+        $service = new \CultuurNet\UDB3\EventExport\EventExportService(
+            $app['event_service'],
+            $app['search_service'],
+            new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
+            realpath(__DIR__ .  '/web/downloads')
         );
 
         return $service;
