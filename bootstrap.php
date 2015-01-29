@@ -25,6 +25,12 @@ $app->register(new CorsServiceProvider(), array(
 ));
 
 
+$app->register(new Silex\Provider\SwiftmailerServiceProvider());
+$app['swiftmailer.use_spool'] = false;
+if ($app['config']['swiftmailer.options']) {
+    $app['swiftmailer.options'] = $app['config']['swiftmailer.options'];
+}
+
 $app['iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
@@ -624,7 +630,13 @@ $app['event_export'] = $app->share(
             $app['event_service'],
             $app['search_service'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            realpath(__DIR__ .  '/web/downloads')
+            realpath(__DIR__ .  '/web/downloads'),
+            new CallableIriGenerator(
+                function ($fileName) use ($app) {
+                    return $app['config']['url'] . '/web/downloads/' . $fileName;
+                }
+            ),
+            $app['mailer']
         );
 
         return $service;

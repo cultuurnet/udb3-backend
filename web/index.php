@@ -653,7 +653,8 @@ $app->post(
         $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
-            )
+            ),
+            $request->request->get('email')
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
