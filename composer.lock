@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bd1edd6283ac2ac047091f3d63585fde",
+    "hash": "c8dc207d3e42c8a15354564ec19dff8f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -291,16 +291,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.2.0",
+            "version": "v1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "56d8c720f2e7a5cbf77afff3e767d883e54a11ac"
+                "reference": "a6042898e2e33c78407f11e522ef413cb5226189"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/56d8c720f2e7a5cbf77afff3e767d883e54a11ac",
-                "reference": "56d8c720f2e7a5cbf77afff3e767d883e54a11ac",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/a6042898e2e33c78407f11e522ef413cb5226189",
+                "reference": "a6042898e2e33c78407f11e522ef413cb5226189",
                 "shasum": ""
             },
             "require": {
@@ -350,7 +350,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2015-01-16 13:32:19"
+            "time": "2015-01-22 12:33:22"
         },
         {
             "name": "cultuurnet/entry",
@@ -446,16 +446,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-137",
+            "version": "dev-feature/III-24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f7b3c9fb263fb02f2ab0540d7223a82e778da390"
+                "reference": "26c690ec58693a6c93f644ae1c70d7b903eb2fc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f7b3c9fb263fb02f2ab0540d7223a82e778da390",
-                "reference": "f7b3c9fb263fb02f2ab0540d7223a82e778da390",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/26c690ec58693a6c93f644ae1c70d7b903eb2fc6",
+                "reference": "26c690ec58693a6c93f644ae1c70d7b903eb2fc6",
                 "shasum": ""
             },
             "require": {
@@ -503,7 +503,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-01-28 12:56:09"
+            "time": "2015-01-30 06:01:33"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3429,25 +3429,25 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "c484a80f97573ab934e37826dba0135a3301b26a"
+                "reference": "1dd8869519a225f7f2b9eb663e225298fade819e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/c484a80f97573ab934e37826dba0135a3301b26a",
-                "reference": "c484a80f97573ab934e37826dba0135a3301b26a",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/1dd8869519a225f7f2b9eb663e225298fade819e",
+                "reference": "1dd8869519a225f7f2b9eb663e225298fade819e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "sebastian/diff": "~1.1",
-                "sebastian/exporter": "~1.0"
+                "sebastian/diff": "~1.2",
+                "sebastian/exporter": "~1.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.1"
+                "phpunit/phpunit": "~4.4"
             },
             "type": "library",
             "extra": {
@@ -3489,7 +3489,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2014-11-16 21:32:38"
+            "time": "2015-01-29 16:28:08"
         },
         {
             "name": "sebastian/diff",
@@ -3595,16 +3595,16 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "35ab8d385eef068186c83e23ae83c96b0288b3ee"
+                "reference": "84839970d05254c73cde183a721c7af13aede943"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/35ab8d385eef068186c83e23ae83c96b0288b3ee",
-                "reference": "35ab8d385eef068186c83e23ae83c96b0288b3ee",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/84839970d05254c73cde183a721c7af13aede943",
+                "reference": "84839970d05254c73cde183a721c7af13aede943",
                 "shasum": ""
             },
             "require": {
@@ -3617,7 +3617,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -3657,7 +3657,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2015-01-24 09:57:24"
+            "time": "2015-01-27 07:23:06"
         },
         {
             "name": "sebastian/global-state",
@@ -3803,7 +3803,7 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-137",
+            "version": "dev-feature/III-24",
             "package": "cultuurnet/udb3"
         }
     ],
@@ -3811,8 +3811,7 @@
     "stability-flags": {
         "cultuurnet/udb3": 20,
         "cultuurnet/udb3-doctrine": 20,
-        "cultuurnet/udb3-symfony": 20,
-        "swiftmailer/swiftmailer": 20
+        "cultuurnet/udb3-symfony": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
