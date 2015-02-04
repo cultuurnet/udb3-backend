@@ -625,10 +625,10 @@ $app['organizer_service'] = $app->share(
 
 $app['event_export_notification_mail_factory'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\EventExport\Notification\SwiftNotificationMailFactory(
-            new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextNotificationMailFormatter(),
-            new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLNotificationMailFormatter(),
-            new \CultuurNet\UDB3\EventExport\Notification\LiteralNotificationMailSubjectFormatter(
+        return new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(
+            new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory(),
+            new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory(),
+            new \CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory(
                 $app['config']['export']['mail']['subject']
             ),
             $app['config']['mail']['sender']['address'],
@@ -649,7 +649,7 @@ $app['event_export'] = $app->share(
                     return $app['config']['url'] . '/web/downloads/' . $fileName;
                 }
             ),
-            new \CultuurNet\UDB3\EventExport\Notification\SwiftNotificationMailer(
+            new \CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer(
                 $app['mailer'],
                 $app['event_export_notification_mail_factory']
             )
