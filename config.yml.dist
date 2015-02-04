@@ -40,3 +40,10 @@ swiftmailer.options:
   # a great tool for debugging mail. Check it out! http://mailcatcher.me/
   host: 127.0.0.1
   port: 1025
+mail:
+  sender:
+    name: UiTdatabank BETA
+    address: no-reply@uitdatabank.be
+export:
+  mail:
+    subject: Uw export van evenementen

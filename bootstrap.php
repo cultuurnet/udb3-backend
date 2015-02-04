@@ -6,7 +6,6 @@ use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
-use CultuurNet\UDB3\DefaultEventService;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 
@@ -624,6 +623,20 @@ $app['organizer_service'] = $app->share(
     }
 );
 
+$app['event_export_notification_mail_factory'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\EventExport\Notification\SwiftNotificationMailFactory(
+            new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextNotificationMailFormatter(),
+            new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLNotificationMailFormatter(),
+            new \CultuurNet\UDB3\EventExport\Notification\LiteralNotificationMailSubjectFormatter(
+                $app['config']['export']['mail']['subject']
+            ),
+            $app['config']['mail']['sender']['address'],
+            $app['config']['mail']['sender']['name']
+        );
+    }
+);
+
 $app['event_export'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\EventExport\EventExportService(
@@ -636,7 +649,10 @@ $app['event_export'] = $app->share(
                     return $app['config']['url'] . '/web/downloads/' . $fileName;
                 }
             ),
-            $app['mailer']
+            new \CultuurNet\UDB3\EventExport\Notification\SwiftNotificationMailer(
+                $app['mailer'],
+                $app['event_export_notification_mail_factory']
+            )
         );
 
         return $service;
