@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Event\EventTaggerServiceInterface;
 use CultuurNet\UDB3\Event\Title;
+use ValueObjects\Web\EmailAddress;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -654,7 +655,7 @@ $app->post(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
             ),
-            $request->request->get('email')
+            new EmailAddress($request->request->get('email'))
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
@@ -674,7 +675,7 @@ $app->post(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
             ),
-            $request->request->get('email')
+            new EmailAddress($request->request->get('email'))
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
