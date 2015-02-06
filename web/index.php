@@ -652,18 +652,19 @@ $app->post(
     'events/export/json',
     function (Request $request, Application $app) {
 
-        $email = null;
-
         if($request->request->has('email')) {
-            $emailString = $request->request->get('email');
-            $email = new EmailAddress($emailString);
+            $email = new EmailAddress($request->request->get('email'));
+        } else {
+            $email = null;
         }
+        $selection = $request->request->get('selection');
 
         $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
             ),
-            $email
+            $email,
+            $selection
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
@@ -680,18 +681,19 @@ $app->post(
     'events/export/csv',
     function (Request $request, Application $app) {
 
-        $email = null;
-
         if($request->request->has('email')) {
-            $emailString = $request->request->get('email');
-            $email = new EmailAddress($emailString);
+            $email = new EmailAddress($request->request->get('email'));
+        } else {
+            $email = null;
         }
+        $selection = $request->request->get('selection');
 
         $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
             ),
-            $email
+            $email,
+            $selection
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
