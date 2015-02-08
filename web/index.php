@@ -658,13 +658,16 @@ $app->post(
             $email = null;
         }
         $selection = $request->request->get('selection');
+        $include = $request->request->get('include');
+
 
         $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
             ),
             $email,
-            $selection
+            $selection,
+            $include
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
@@ -687,13 +690,15 @@ $app->post(
             $email = null;
         }
         $selection = $request->request->get('selection');
+        $include = $request->request->get('include');
 
         $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
             ),
             $email,
-            $selection
+            $selection,
+            $include
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
