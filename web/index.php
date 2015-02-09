@@ -652,7 +652,7 @@ $app->post(
     'events/export/json',
     function (Request $request, Application $app) {
 
-        if($request->request->has('email')) {
+        if ($request->request->has('email')) {
             $email = new EmailAddress($request->request->get('email'));
         } else {
             $email = null;
