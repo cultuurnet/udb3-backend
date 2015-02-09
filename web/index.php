@@ -721,13 +721,15 @@ $app->post(
             $email = null;
         }
         $selection = $request->request->get('selection');
+        $include = $request->request->get('include');
 
         $command = new \CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML(
             new CultuurNet\UDB3\EventExport\EventExportQuery(
                 $request->request->get('query')
             ),
             $email,
-            $selection
+            $selection,
+            $include
         );
 
         /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
