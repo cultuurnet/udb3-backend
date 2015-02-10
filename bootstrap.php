@@ -130,7 +130,8 @@ $app['current_user'] = $app->share(
             $cf = new CultureFeed($oauthClient);
 
             try {
-                $user = $cf->getUser($minimalUserData->getId());
+                $private = true;
+                $user = $cf->getUser($minimalUserData->getId(), $private);
             } catch (\Exception $e) {
                 return NULL;
             }
