@@ -450,12 +450,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "0bb2d08a06152e81c3e1447f15eef5683ff94bb1"
+                "reference": "ee1f795c87518a812b478d1bec2adced567e6e7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/0bb2d08a06152e81c3e1447f15eef5683ff94bb1",
-                "reference": "0bb2d08a06152e81c3e1447f15eef5683ff94bb1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ee1f795c87518a812b478d1bec2adced567e6e7e",
+                "reference": "ee1f795c87518a812b478d1bec2adced567e6e7e",
                 "shasum": ""
             },
             "require": {
@@ -467,6 +467,7 @@
                 "cultuurnet/search": "~1.1",
                 "monolog/monolog": "~1.11",
                 "nicolopignatelli/valueobjects": "~2.0",
+                "phpoffice/phpexcel": "~1.8",
                 "psr/log": "~1.0",
                 "rase/socket.io-emitter": "~0.6"
             },
@@ -503,7 +504,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-02-09 14:28:18"
+            "time": "2015-02-09 21:20:50"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1942,6 +1943,63 @@
             ],
             "description": "A PHP library/collection of classes aimed to help developers using and undestanding immutable objects.",
             "time": "2014-11-14 13:05:35"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
+                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2014-03-02 15:22:49"
         },
         {
             "name": "pimple/pimple",
