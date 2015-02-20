@@ -197,13 +197,18 @@ $app['eventld_repository'] = $app->share(
 
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\EventLDProjector(
+        $projector = new \CultuurNet\UDB3\Event\EventLDProjector(
             $app['eventld_repository'],
             $app['iri_generator'],
             $app['event_service'],
             $app['place_service'],
             $app['organizer_service']
         );
+
+        $projector->addDescriptionFilter(new \CultuurNet\UDB3\Event\ReadModel\JSONLD\StripSourceDescriptionFilter());
+        $projector->addDescriptionFilter(new \CultuurNet\UDB3\Event\ReadModel\JSONLD\TidyDescriptionFilter());
+
+        return $projector;
     }
 );
 
