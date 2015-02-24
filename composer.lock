@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d41810fc74e0643289bee12bbaeaf6b7",
+    "hash": "9f9c1743d97e24ee3711c345cd4ca817",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -263,12 +263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "b2caa30c85bf90e484998526c9f0d3bd28beecbf"
+                "reference": "a00d990c54f017208a7a6ed78f54f509f22398ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/b2caa30c85bf90e484998526c9f0d3bd28beecbf",
-                "reference": "b2caa30c85bf90e484998526c9f0d3bd28beecbf",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/a00d990c54f017208a7a6ed78f54f509f22398ec",
+                "reference": "a00d990c54f017208a7a6ed78f54f509f22398ec",
                 "shasum": ""
             },
             "require-dev": {
@@ -287,7 +287,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2015-01-28 12:47:45"
+            "time": "2015-02-16 13:11:41"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -351,6 +351,52 @@
             ],
             "description": "Culturefeed PHP library",
             "time": "2015-01-22 12:33:22"
+        },
+        {
+            "name": "cultuurnet/deserializer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/deserializer.git",
+                "reference": "f105c73663106936dc4c39f7649886e8b7a569b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/f105c73663106936dc4c39f7649886e8b7a569b3",
+                "reference": "f105c73663106936dc4c39f7649886e8b7a569b3",
+                "shasum": ""
+            },
+            "require": {
+                "nicolopignatelli/valueobjects": "~2.0"
+            },
+            "require-dev": {
+                "phing/phing": "~2.10",
+                "phpunit/phpunit": "~4.3",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\Deserializer\\": "src\\"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                }
+            ],
+            "description": "Internet media type deserialization library",
+            "time": "2015-02-22 11:54:51"
         },
         {
             "name": "cultuurnet/entry",
@@ -445,17 +491,64 @@
             "time": "2014-10-22 07:19:56"
         },
         {
+            "name": "cultuurnet/udb2-domain-events",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb2-domain-events.git",
+                "reference": "4cc71cb9614c2f58ab6bbc544a109cd12de26eec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/4cc71cb9614c2f58ab6bbc544a109cd12de26eec",
+                "reference": "4cc71cb9614c2f58ab6bbc544a109cd12de26eec",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/deserializer": "~0.1",
+                "nicolopignatelli/valueobjects": "~2.0"
+            },
+            "require-dev": {
+                "phing/phing": "~2.10",
+                "phpunit/phpunit": "~4.3",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB2DomainEvents\\": "src\\"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                }
+            ],
+            "description": "PHP models for domain events in UiTdatabank version 2",
+            "time": "2015-02-23 12:42:06"
+        },
+        {
             "name": "cultuurnet/udb3",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "aa456281958e5b73068ef4fe3114a095cba69e85"
+                "reference": "fa2790843fda82cd1cbe4b06bc695c76260e844e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/aa456281958e5b73068ef4fe3114a095cba69e85",
-                "reference": "aa456281958e5b73068ef4fe3114a095cba69e85",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/fa2790843fda82cd1cbe4b06bc695c76260e844e",
+                "reference": "fa2790843fda82cd1cbe4b06bc695c76260e844e",
                 "shasum": ""
             },
             "require": {
@@ -475,8 +568,10 @@
                 "ext-redis": "*"
             },
             "require-dev": {
+                "phing/phing": "~2.10",
                 "phpspec/phpspec": "~2.0",
-                "phpunit/phpunit": "~4.3"
+                "phpunit/phpunit": "~4.3",
+                "squizlabs/php_codesniffer": "~2.2"
             },
             "type": "library",
             "extra": {
@@ -504,7 +599,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-02-11 10:58:35"
+            "time": "2015-02-23 19:55:25"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1633,6 +1728,48 @@
                 "schema"
             ],
             "time": "2014-08-25 02:48:14"
+        },
+        {
+            "name": "knplabs/console-service-provider",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/ConsoleServiceProvider.git",
+                "reference": "1f1a3315409814d01702a47a8823549c6996de41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/ConsoleServiceProvider/zipball/1f1a3315409814d01702a47a8823549c6996de41",
+                "reference": "1f1a3315409814d01702a47a8823549c6996de41",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/console": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Knp\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs",
+                    "homepage": "http://knplabs.com"
+                }
+            ],
+            "description": "console service provider for Silex",
+            "homepage": "http://knplabs.com",
+            "keywords": [
+                "console",
+                "silex"
+            ],
+            "time": "2013-06-13 12:43:39"
         },
         {
             "name": "league/geotools",
