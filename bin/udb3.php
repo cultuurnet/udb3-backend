@@ -16,6 +16,9 @@ $app->register(
     )
 );
 
+/** @var Knp\Console\Application $console */
 $console = $app['console'];
+
+$console->add(new \CultuurNet\UDB3Silex\Console\AMQPListenCommand());
 
 $console->run();
