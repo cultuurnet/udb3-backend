@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Knp\Command\Command;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,11 +24,11 @@ class AMQPListenCommand extends Command
     {
         $output->writeln('Connecting...');
         $connection = $this->getAMQPConnection();
-
-        $channel = $connection->channel();
-
+        $output->writeln('Connected. Listening for incoming messages...');
+        
+        $channel = $connection->channel(1);
         while (count($channel->callbacks) > 0) {
-            $connection->wait();
+            $channel->wait();
         }
     }
 
