@@ -206,8 +206,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['organizer_service']
         );
 
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\Event\ReadModel\JSONLD\TidyDescriptionFilter());
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\Event\ReadModel\JSONLD\StripSourceDescriptionFilter());
+        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
+        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\StripSourceStringFilter());
 
         return $projector;
     }
