@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "abd08a3ac6d634ca91935bd7d7ddaac4",
+    "hash": "1d382752a263181b7de3c73a35baaa1b",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -539,16 +539,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-196",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "eeb862d1d7b9af392a647a9458d795d85c68cfc2"
+                "reference": "97e80dbd45417771ce783c95fb43fbe5413a9f0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/eeb862d1d7b9af392a647a9458d795d85c68cfc2",
-                "reference": "eeb862d1d7b9af392a647a9458d795d85c68cfc2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/97e80dbd45417771ce783c95fb43fbe5413a9f0c",
+                "reference": "97e80dbd45417771ce783c95fb43fbe5413a9f0c",
                 "shasum": ""
             },
             "require": {
@@ -600,7 +600,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-02-25 15:40:59"
+            "time": "2015-02-25 17:34:36"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -4160,7 +4160,14 @@
             "time": "2014-12-15 14:25:24"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-196",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb2-domain-events": 20,
