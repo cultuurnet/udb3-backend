@@ -691,11 +691,15 @@ $app['amqp-connection'] = $app->share(
             new \CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer()
         );
 
-        new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
+        $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
             $app['event_bus'],
             $deserializerLocator
         );
+
+        $logger = new Monolog\Logger('amqp.event_bus_forwarder');
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
+        $eventBusForwardingConsumer->setLogger($logger);
 
         return $connection;
     }
