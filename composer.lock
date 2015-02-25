@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d41810fc74e0643289bee12bbaeaf6b7",
+    "hash": "ca8dbac02c0490ceb7d270102f8eb121",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -263,12 +263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "a00d990c54f017208a7a6ed78f54f509f22398ec"
+                "reference": "ad3060e83e132a7ab9f2849d3f2501bfce643975"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/a00d990c54f017208a7a6ed78f54f509f22398ec",
-                "reference": "a00d990c54f017208a7a6ed78f54f509f22398ec",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/ad3060e83e132a7ab9f2849d3f2501bfce643975",
+                "reference": "ad3060e83e132a7ab9f2849d3f2501bfce643975",
                 "shasum": ""
             },
             "require-dev": {
@@ -287,7 +287,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2015-02-16 13:11:41"
+            "time": "2015-02-25 15:36:13"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -450,12 +450,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "8fbb88560bd8f53bcc83b312333a993e732b8f69"
+                "reference": "4932ded0b2a572719f770c3a582f610b5d35e582"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/8fbb88560bd8f53bcc83b312333a993e732b8f69",
-                "reference": "8fbb88560bd8f53bcc83b312333a993e732b8f69",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/4932ded0b2a572719f770c3a582f610b5d35e582",
+                "reference": "4932ded0b2a572719f770c3a582f610b5d35e582",
                 "shasum": ""
             },
             "require": {
@@ -507,7 +507,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-02-24 15:28:00"
+            "time": "2015-02-25 12:11:51"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
