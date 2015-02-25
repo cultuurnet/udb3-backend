@@ -4,21 +4,23 @@
  * @file
  */
 
+use Knp\Provider\ConsoleServiceProvider;
+
 /** @var \Silex\Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
 $app->register(
-    new \Knp\Provider\ConsoleServiceProvider(),
-    array(
+    new ConsoleServiceProvider(),
+    [
         'console.name' => 'UDB3',
         'console.version' => '0.0.1',
-        'console.project_directory' => __DIR__ . "/..",
-    )
+        'console.project_directory' => __DIR__ . '/..',
+    ]
 );
 
-/** @var Knp\Console\Application $console */
-$console = $app['console'];
+/** @var \Knp\Console\Application $consoleApp */
+$consoleApp = $app['console'];
 
-$console->add(new \CultuurNet\UDB3Silex\Console\AMQPListenCommand());
+$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\AMQPListenCommand());
 
-$console->run();
+$consoleApp->run();

@@ -47,3 +47,9 @@ mail:
 export:
   mail:
     subject: Uw export van evenementen
+amqp:
+  host: example.com
+  port: 5672
+  user: foo
+  password: bar
+  vhost: example

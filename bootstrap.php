@@ -8,6 +8,7 @@ use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use ValueObjects\String\String;
 
 $app = new Application();
 
@@ -662,6 +663,41 @@ $app['event_export'] = $app->share(
         );
 
         return $service;
+    }
+);
+
+$app['amqp-connection'] = $app->share(
+    function (Application $app) {
+        $amqpConfig = $host = $app['config']['amqp'];
+        $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
+            $amqpConfig['host'],
+            $amqpConfig['port'],
+            $amqpConfig['user'],
+            $amqpConfig['password'],
+            $amqpConfig['vhost']
+        );
+
+        $deserializerLocator = new \CultuurNet\Deserializer\SimpleDeserializerLocator();
+        $deserializerLocator->registerDeserializer(
+            new String(
+                'application/vnd.cultuurnet.udb2-events.event-created+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\EventCreatedJSONDeserializer()
+        );
+        $deserializerLocator->registerDeserializer(
+            new String(
+                'application/vnd.cultuurnet.udb2-events.event-updated+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer()
+        );
+
+        new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
+            $connection,
+            $app['event_bus'],
+            $deserializerLocator
+        );
+
+        return $connection;
     }
 );
 

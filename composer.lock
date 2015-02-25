@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f5e81a272ed6256c2ce2b79df375ed65",
+    "hash": "abd08a3ac6d634ca91935bd7d7ddaac4",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -543,12 +543,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "9a31e41d7dbe2d18e1f2cb74a809035e0deccc46"
+                "reference": "4932ded0b2a572719f770c3a582f610b5d35e582"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9a31e41d7dbe2d18e1f2cb74a809035e0deccc46",
-                "reference": "9a31e41d7dbe2d18e1f2cb74a809035e0deccc46",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/4932ded0b2a572719f770c3a582f610b5d35e582",
+                "reference": "4932ded0b2a572719f770c3a582f610b5d35e582",
                 "shasum": ""
             },
             "require": {
@@ -600,7 +600,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-02-24 18:40:17"
+            "time": "2015-02-25 12:11:51"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3021,6 +3021,60 @@
             "time": "2015-01-25 04:39:26"
         },
         {
+            "name": "videlalvaro/php-amqplib",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/videlalvaro/php-amqplib.git",
+                "reference": "7989ddce7c4aa6038483d8999b12d3b1f7c81ff9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/7989ddce7c4aa6038483d8999b12d3b1f7c81ff9",
+                "reference": "7989ddce7c4aa6038483d8999b12d3b1f7c81ff9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpAmqpLib": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla"
+                }
+            ],
+            "description": "This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/videlalvaro/php-amqplib/",
+            "keywords": [
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2015-02-18 18:16:04"
+        },
+        {
             "name": "willdurand/geocoder",
             "version": "2.8.2",
             "source": {
@@ -4109,6 +4163,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb2-domain-events": 20,
         "cultuurnet/udb3": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20

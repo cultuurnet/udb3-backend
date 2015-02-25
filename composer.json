@@ -10,9 +10,8 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "knplabs/console-service-provider": "~1.0",
     "cultuurnet/culturefeed-php": "~1.0",
-    "cultuurnet/udb2-domain-events": "~0.1",
+    "cultuurnet/udb2-domain-events": "~0.0@dev",
     "cultuurnet/udb3": "~0.0@dev",
     "cultuurnet/udb3-doctrine": "~0.0@dev",
     "cultuurnet/udb3-symfony": "~0.0@dev",
@@ -24,7 +23,9 @@
     "predis/predis": "~1.0",
     "rase/socket.io-emitter": "0.6.1",
     "jdesrosiers/silex-cors-provider": "~0.1",
-    "swiftmailer/swiftmailer": "~5.3"
+    "swiftmailer/swiftmailer": "~5.3",
+    "videlalvaro/php-amqplib": "~2.5",
+    "knplabs/console-service-provider": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.3"
@@ -36,7 +37,7 @@
   },
   "autoload": {
     "psr-4": {
-      "CultuurNet\\UDB3Silex\\": "src\\"
+      "CultuurNet\\UDB3\\Silex\\": "src/"
     }
   }
 }
