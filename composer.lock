@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9f9c1743d97e24ee3711c345cd4ca817",
+    "hash": "f5e81a272ed6256c2ce2b79df375ed65",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -543,12 +543,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "fa2790843fda82cd1cbe4b06bc695c76260e844e"
+                "reference": "9a31e41d7dbe2d18e1f2cb74a809035e0deccc46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/fa2790843fda82cd1cbe4b06bc695c76260e844e",
-                "reference": "fa2790843fda82cd1cbe4b06bc695c76260e844e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9a31e41d7dbe2d18e1f2cb74a809035e0deccc46",
+                "reference": "9a31e41d7dbe2d18e1f2cb74a809035e0deccc46",
                 "shasum": ""
             },
             "require": {
@@ -558,6 +558,7 @@
                 "cultuurnet/culturefeed-php": "~1.0",
                 "cultuurnet/entry": "~0.0@dev",
                 "cultuurnet/search": "~1.1",
+                "ext-tidy": "*",
                 "monolog/monolog": "~1.11",
                 "nicolopignatelli/valueobjects": "~2.0",
                 "phpoffice/phpexcel": "~1.8",
@@ -599,7 +600,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-02-23 19:55:25"
+            "time": "2015-02-24 18:40:17"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
