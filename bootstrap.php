@@ -287,6 +287,14 @@ $app['event_repository'] = $app->share(
             array($app['event_stream_metadata_enricher'])
         );
 
+        $logger = new \Monolog\Logger('udb2');
+        $logger->pushHandler(
+            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log')
+        );
+        $udb2RepositoryDecorator->setLogger(
+            $logger
+        );
+
         if (true == $app['config']['sync_with_udb2']) {
             $udb2RepositoryDecorator->syncBackOn();
         }
