@@ -31,5 +31,10 @@
   "preferred-install": "source",
   "provide": {
     "ext-redis": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "CultuurNet\\UDB3\\Silex\\": "src/"
+    }
   }
 }
