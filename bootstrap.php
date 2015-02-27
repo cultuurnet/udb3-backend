@@ -235,6 +235,13 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['event_jsonld_projector']
             );
+
+            // Subscribe event importer which will listen for event creates and
+            // updates coming from UDB2 and create/update the corresponding
+            // event in our repository as well.
+            $eventBus->subscribe(
+                $app['udb2_event_importer']
+            );
         });
 
         return $eventBus;
@@ -269,30 +276,55 @@ $app['udb2_entry_api_improved_factory'] = $app->share(
     }
 );
 
-$app['event_repository'] = $app->share(
-    function ($app) {
-        $repository = new \CultuurNet\UDB3\Event\EventRepository(
-            $app['event_store'],
-            $app['event_bus'],
-            array($app['event_stream_metadata_enricher'])
+$app['real_event_repository'] = $app->share(
+  function ($app) {
+      $repository = new \CultuurNet\UDB3\Event\EventRepository(
+          $app['event_store'],
+          $app['event_bus'],
+          [
+              $app['event_stream_metadata_enricher']
+          ]
+      );
+
+      return $repository;
+  }
+);
+
+$app['udb2_event_importer'] = $app->share(
+    function (Application $app) {
+        $cdbXmlService = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
+            $app['search_api_2']
         );
 
-
-        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\EventRepository(
-            $repository,
-            $app['search_api_2'],
-            $app['udb2_entry_api_improved_factory'],
+        $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
+            $cdbXmlService,
+            $app['real_event_repository'],
             $app['place_service'],
-            $app['organizer_service'],
-            array($app['event_stream_metadata_enricher'])
+            $app['organizer_service']
         );
 
         $logger = new \Monolog\Logger('udb2');
         $logger->pushHandler(
             new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log')
         );
-        $udb2RepositoryDecorator->setLogger(
+
+        $importer->setLogger(
             $logger
+        );
+
+        return $importer;
+    }
+);
+
+$app['event_repository'] = $app->share(
+    function ($app) {
+        $repository = $app['real_event_repository'];
+
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\EventRepository(
+            $repository,
+            $app['udb2_entry_api_improved_factory'],
+            $app['udb2_event_importer'],
+            array($app['event_stream_metadata_enricher'])
         );
 
         if (true == $app['config']['sync_with_udb2']) {
