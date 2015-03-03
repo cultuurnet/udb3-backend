@@ -357,6 +357,35 @@ $app
     ->bind('event');
 
 $app
+    ->get(
+        'event/{cdbid}/history',
+        function (Request $request, Application $app, $cdbid) {
+            $data = [
+                [
+                    'date' => '2014-10-10T10:59:54+02:00',
+                    'description' => 'aangemaakt',
+                    'author' => 'KristofCoomans',
+                ],
+                [
+                    'date' => '2014-10-22T10:59:54+02:00',
+                    'description' => 'aangepast',
+                    'author' => 'reinout.bossuyt@cultuurnet.be',
+                ],
+            ];
+
+            $response = JsonResponse::create($data)
+                ->setPublic()
+                ->setClientTtl(60 * 5)
+                ->setTtl(60 * 1);
+
+            $response->headers->set('Vary', 'Origin');
+
+            return $response;
+        }
+    )
+    ->bind('event-history');
+
+$app
     ->post(
         'event/{cdbid}/{lang}/title',
         function (Request $request, Application $app, $cdbid, $lang) {
