@@ -221,6 +221,35 @@ $app['relations_projector'] = $app->share(
     }
 );
 
+$app['event_history_projector'] = $app->share(
+    function ($app) {
+        $projector = new \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector(
+            $app['event_history_repository']
+        );
+
+        return $projector;
+    }
+);
+
+$app['event_history_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['event_history_cache']
+        );
+    }
+);
+
+$app['event_history_cache'] = $app->share(
+    function ($app) {
+        $baseUrl = $app['config']['uitid']['base_url'];
+        $urlParts = parse_url($baseUrl);
+        $cacheDirectory = __DIR__ . '/cache/' . $urlParts['host'] . '/history';
+        $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory);
+
+        return $cache;
+    }
+);
+
 $app['event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
@@ -241,6 +270,11 @@ $app['event_bus'] = $app->share(
             // event in our repository as well.
             $eventBus->subscribe(
                 $app['udb2_event_importer']
+            );
+
+            // Subscribe event history projector.
+            $eventBus->subscribe(
+                $app['event_history_projector']
             );
         });
 

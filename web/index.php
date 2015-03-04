@@ -360,20 +360,14 @@ $app
     ->get(
         'event/{cdbid}/history',
         function (Request $request, Application $app, $cdbid) {
-            $data = [
-                [
-                    'date' => '2014-10-10T10:59:54+02:00',
-                    'description' => 'aangemaakt',
-                    'author' => 'KristofCoomans',
-                ],
-                [
-                    'date' => '2014-10-22T10:59:54+02:00',
-                    'description' => 'aangepast',
-                    'author' => 'reinout.bossuyt@cultuurnet.be',
-                ],
-            ];
+            /** @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $repository */
+            $repository = $app['event_history_repository'];
 
-            $response = JsonResponse::create($data)
+            /** @var \CultuurNet\UDB3\Event\ReadModel\JsonDocument $document */
+            $document = $repository->get($cdbid);
+
+            $response = JsonResponse::create()
+                ->setContent($document->getRawBody())
                 ->setPublic()
                 ->setClientTtl(60 * 5)
                 ->setTtl(60 * 1);
