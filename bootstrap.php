@@ -731,6 +731,20 @@ $app['amqp-connection'] = $app->share(
             new \CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer()
         );
 
+        $deserializerLocator->registerDeserializer(
+            new String(
+                'application/vnd.cultuurnet.udb2-events.actor-created+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorCreatedJSONDeserializer()
+        );
+
+        $deserializerLocator->registerDeserializer(
+            new String(
+                'application/vnd.cultuurnet.udb2-events.actor-updated+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer()
+        );
+
         $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
             $app['event_bus'],
