@@ -303,14 +303,10 @@ $app['udb2_event_importer'] = $app->share(
             $app['organizer_service']
         );
 
-        $logger = new \Monolog\Logger('udb2');
-        $logger->pushHandler(
-            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log')
-        );
+        $logger = new \Monolog\Logger('udb2-event-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
 
-        $importer->setLogger(
-            $logger
-        );
+        $importer->setLogger($logger);
 
         return $importer;
     }
@@ -555,18 +551,56 @@ $app['place_store'] = $app->share(
     }
 );
 
-$app['place_repository'] = $app->share(
-    function ($app) {
+$app['udb2_log_handler'] = $app->share(
+    function (Application $app) {
+        return new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log');
+    }
+);
+
+$app['udb2_actor_cdbxml_provider'] = $app->share(
+    function (Application $app) {
+        $cdbXmlService = new \CultuurNet\UDB3\UDB2\ActorCdbXmlFromSearchService(
+            $app['search_api_2']
+        );
+
+        return $cdbXmlService;
+    }
+);
+
+$app['udb2_place_importer'] = $app->share(
+    function (Application $app) {
+        $importer = new \CultuurNet\UDB3\UDB2\PlaceCdbXmlImporter(
+            $app['udb2_actor_cdbxml_provider'],
+            $app['real_place_repository']
+        );
+
+        $logger = new \Monolog\Logger('udb2-place-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        $importer->setLogger($logger);
+
+        return $importer;
+    }
+);
+
+$app['real_place_repository'] = $app->share(
+    function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
             $app['place_store'],
             $app['place_event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
+        return $repository;
+    }
+);
+
+$app['place_repository'] = $app->share(
+    function ($app) {
         $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\PlaceRepository(
-            $repository,
-            $app['search_api_2'],
+            $app['real_place_repository'],
             $app['udb2_entry_api_improved_factory'],
+            $app['udb2_place_importer'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -635,19 +669,40 @@ $app['organizer_store'] = $app->share(
     }
 );
 
-$app['organizer_repository'] = $app->share(
-    function ($app) {
+$app['udb2_organizer_importer'] = $app->share(
+    function (Application $app) {
+        $importer = new \CultuurNet\UDB3\UDB2\OrganizerCdbXmlImporter(
+            $app['udb2_actor_cdbxml_provider'],
+            $app['real_organizer_repository']
+        );
+
+        $logger = new \Monolog\Logger('udb2-organizer-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        $importer->setLogger($logger);
+
+        return $importer;
+    }
+);
+
+$app['real_organizer_repository'] = $app->share(
+    function (Application $app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
             $app['organizer_event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
+        return $repository;
+    }
+);
 
+$app['organizer_repository'] = $app->share(
+    function ($app) {
         $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\OrganizerRepository(
-            $repository,
-            $app['search_api_2'],
+            $app['real_organizer_repository'],
             $app['udb2_entry_api_improved_factory'],
+            $app['udb2_organizer_importer'],
             array($app['event_stream_metadata_enricher'])
         );
 
