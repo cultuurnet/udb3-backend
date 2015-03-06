@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d382752a263181b7de3c73a35baaa1b",
+    "hash": "8a26c2f72fff6135d4d362bfc0ecd592",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -539,16 +539,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-196",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "36cb32668b13651dc5aa831776cf1cbb2b74ea0c"
+                "reference": "35aef7882b108003971b8c7af07d253868ba57cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/36cb32668b13651dc5aa831776cf1cbb2b74ea0c",
-                "reference": "36cb32668b13651dc5aa831776cf1cbb2b74ea0c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/35aef7882b108003971b8c7af07d253868ba57cb",
+                "reference": "35aef7882b108003971b8c7af07d253868ba57cb",
                 "shasum": ""
             },
             "require": {
@@ -561,6 +561,7 @@
                 "ext-tidy": "*",
                 "monolog/monolog": "~1.11",
                 "nicolopignatelli/valueobjects": "~2.0",
+                "php": ">=5.5.0",
                 "phpoffice/phpexcel": "~1.8",
                 "psr/log": "~1.0",
                 "rase/socket.io-emitter": "~0.6"
@@ -600,7 +601,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-02-26 12:46:30"
+            "time": "2015-03-05 21:45:37"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -4160,18 +4161,10 @@
             "time": "2014-12-15 14:25:24"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-196",
-            "package": "cultuurnet/udb3"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb2-domain-events": 20,
-        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20
     },
