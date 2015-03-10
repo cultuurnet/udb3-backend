@@ -493,27 +493,27 @@ $app['event_command_bus'] = $app->share(
     }
 );
 
-$app['used_keywords_event_bus'] = $app->share(
+$app['used_labels_event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \Broadway\EventHandling\SimpleEventBus();
         return $eventBus;
     }
 );
 
-$app['used_keywords_memory'] = $app->share(
+$app['used_labels_memory'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService(
-            new \CultuurNet\UDB3\UsedKeywordsMemory\UsedKeywordsMemoryRepository(
+        return new \CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService(
+            new \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryRepository(
                 $app['event_store'],
-                $app['used_keywords_event_bus']
+                $app['used_labels_event_bus']
             )
         );
     }
 );
 
-$app['event_tagger'] = $app->share(
+$app['event_labeller'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\DefaultEventTaggerService(
+        return new \CultuurNet\UDB3\Event\DefaultEventLabellerService(
             $app['event_service'],
             $app['event_command_bus']
         );
