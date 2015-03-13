@@ -181,7 +181,7 @@ $app['event_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'events'
         );
@@ -582,7 +582,7 @@ $app['place_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'places'
         );
@@ -658,11 +658,17 @@ $app['organizer_event_bus'] = $app->share(
     }
 );
 
+$app['eventstore_payload_serializer'] = $app->share(
+    function () {
+        return \CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory::createSerializer();
+    }
+);
+
 $app['organizer_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'organizers'
         );
