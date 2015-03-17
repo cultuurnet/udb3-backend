@@ -268,33 +268,6 @@ $app->get(
 );
 
 $app->get(
-    'db_init',
-    function (Request $request, Application $app) {
-
-        /** @var \Broadway\EventStore\DBALEventStore[] $stores */
-        $stores = array(
-            $app['event_store'],
-            $app['place_store'],
-            $app['organizer_store'],
-            $app['event_relations_repository']
-        );
-
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = $app['dbal_connection'];
-
-        $schemaManager = $connection->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        foreach ($stores as $store) {
-            $table = $store->configureSchema($schema);
-            if ($table) {
-                $schemaManager->createTable($table);
-            }
-        }
-    }
-);
-
-$app->get(
     'api/1.0/search',
     function (Request $request, Application $app) {
         $query = $request->query->get('query', '*.*');
