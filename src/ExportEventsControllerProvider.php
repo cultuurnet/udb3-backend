@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Silex;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
+use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
@@ -111,6 +112,38 @@ class ExportEventsControllerProvider implements ControllerProviderInterface
                     ['commandId' => $commandId]
                 );
             }
+        );
+
+        $controllers->post(
+            '/pdf',
+          function (Request $request, Application $app) {
+
+              if($request->request->has('email')) {
+                  $email = new EmailAddress($request->request->get('email'));
+              } else {
+                  $email = null;
+              }
+              $selection = $request->request->get('selection');
+              $customizations = $request->request->get('customizations');
+
+              $command = new ExportEventsAsPDF(
+                new EventExportQuery(
+                  $request->request->get('query')
+                ),
+                $email,
+                $selection,
+                null,
+                $customizations
+              );
+
+              /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
+              $commandBus = $app['event_command_bus'];
+              $commandId = $commandBus->dispatch($command);
+
+              return JsonResponse::create(
+                ['commandId' => $commandId]
+              );
+          }
         );
 
         return $controllers;
