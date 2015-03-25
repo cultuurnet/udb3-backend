@@ -5,12 +5,13 @@ namespace CultuurNet\UDB3\Silex;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
+use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use ValueObjects\String\String;
 use ValueObjects\Web\EmailAddress;
 
 class ExportEventsControllerProvider implements ControllerProviderInterface
@@ -117,23 +118,10 @@ class ExportEventsControllerProvider implements ControllerProviderInterface
         $controllers->post(
             '/pdf',
             function (Request $request, Application $app) {
+                $deserializer = new ExportEventsAsPDFJSONDeserializer();
 
-                if($request->request->has('email')) {
-                    $email = new EmailAddress($request->request->get('email'));
-                } else {
-                    $email = null;
-                }
-                $selection = $request->request->get('selection');
-                $customizations = $request->request->get('customizations');
-
-                $command = new ExportEventsAsPDF(
-                    new EventExportQuery(
-                        $request->request->get('query')
-                    ),
-                    $email,
-                    $selection,
-                    null,
-                    $customizations
+                $command = $deserializer->deserialize(
+                    new String($request->getContent())
                 );
 
                 /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
