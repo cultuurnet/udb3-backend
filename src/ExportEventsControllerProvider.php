@@ -116,34 +116,34 @@ class ExportEventsControllerProvider implements ControllerProviderInterface
 
         $controllers->post(
             '/pdf',
-          function (Request $request, Application $app) {
+            function (Request $request, Application $app) {
 
-              if($request->request->has('email')) {
-                  $email = new EmailAddress($request->request->get('email'));
-              } else {
-                  $email = null;
-              }
-              $selection = $request->request->get('selection');
-              $customizations = $request->request->get('customizations');
+                if($request->request->has('email')) {
+                    $email = new EmailAddress($request->request->get('email'));
+                } else {
+                    $email = null;
+                }
+                $selection = $request->request->get('selection');
+                $customizations = $request->request->get('customizations');
 
-              $command = new ExportEventsAsPDF(
-                new EventExportQuery(
-                  $request->request->get('query')
-                ),
-                $email,
-                $selection,
-                null,
-                $customizations
-              );
+                $command = new ExportEventsAsPDF(
+                    new EventExportQuery(
+                        $request->request->get('query')
+                    ),
+                    $email,
+                    $selection,
+                    null,
+                    $customizations
+                );
 
-              /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
-              $commandBus = $app['event_command_bus'];
-              $commandId = $commandBus->dispatch($command);
+                /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
+                $commandBus = $app['event_command_bus'];
+                $commandId = $commandBus->dispatch($command);
 
-              return JsonResponse::create(
-                ['commandId' => $commandId]
-              );
-          }
+                return JsonResponse::create(
+                    ['commandId' => $commandId]
+                );
+            }
         );
 
         return $controllers;
