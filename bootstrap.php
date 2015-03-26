@@ -486,7 +486,8 @@ $app['event_command_bus'] = $app->share(
         );
         $commandBus->subscribe(
             new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
-                $app['event_export']
+                $app['event_export'],
+                $app['config']['prince']['binary']
             )
         );
         return $commandBus;
