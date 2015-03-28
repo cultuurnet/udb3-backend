@@ -53,3 +53,5 @@ amqp:
   user: foo
   password: bar
   vhost: example
+prince:
+  binary: /usr/local/bin/prince
