@@ -10,6 +10,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use Knp\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,7 +23,13 @@ class ReplayCommand extends Command
     {
         $this
             ->setName('replay')
-            ->setDescription('Replay the event stream to the event bus with only read models attached.');
+            ->setDescription('Replay the event stream to the event bus with only read models attached.')
+            ->addArgument(
+                'store',
+                InputArgument::OPTIONAL,
+                'Event store to replay events from',
+                'events'
+            );
     }
 
     /**
@@ -30,7 +37,9 @@ class ReplayCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $stream = $this->getEventStream();
+        $store = $this->getStore($input, $output);
+
+        $stream = $this->getEventStream($store);
 
         $eventBus = $this->getEventBus();
 
@@ -61,9 +70,10 @@ class ReplayCommand extends Command
     }
 
     /**
+     * @param string $store
      * @return EventStream
      */
-    private function getEventStream()
+    private function getEventStream($store = 'events')
     {
         $app = $this->getSilexApplication();
 
@@ -71,7 +81,27 @@ class ReplayCommand extends Command
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'events'
+            $store
         );
+    }
+
+    private function getStore(InputInterface $input, OutputInterface $output)
+    {
+        $validStores = [
+            'events',
+            'places',
+            'organizers',
+        ];
+
+        $store = $input->getArgument('store');
+
+        if (!in_array($store, $validStores)) {
+            throw new \RuntimeException(
+                'Invalid store "' . $store . '"", use one of: ' .
+                implode(', ', $validStores)
+            );
+        }
+
+        return $store;
     }
 }
