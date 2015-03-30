@@ -487,7 +487,10 @@ $app['event_command_bus'] = $app->share(
         $commandBus->subscribe(
             new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
                 $app['event_export'],
-                $app['config']['prince']['binary']
+                $app['config']['prince']['binary'],
+                new \CultuurNet\UDB3\EventExport\Format\HTML\CultureFeedUitpasEventInfoService(
+                    $app['uitpas']
+                )
             )
         );
         return $commandBus;
@@ -783,6 +786,34 @@ $app['amqp-connection'] = $app->share(
         $eventBusForwardingConsumer->setLogger($logger);
 
         return $connection;
+    }
+);
+
+$app['culturefeed'] = $app->share(
+    function (Application $app) {
+        $uitidConfig = $app['config']['uitid'];
+        $baseUrl = $uitidConfig['base_url'];
+
+        /** @var \CultuurNet\Auth\ConsumerCredentials $consumerCredentials */
+        $consumerCredentials = $app['uitid_consumer_credentials'];
+
+        $oauthClient = new \CultureFeed_DefaultOAuthClient(
+            $consumerCredentials->getKey(),
+            $consumerCredentials->getSecret()
+        );
+        $oauthClient->setEndpoint($baseUrl);
+
+        $cultureFeed = new \CultureFeed($oauthClient);
+
+        return $cultureFeed;
+    }
+);
+
+$app['uitpas'] = $app->share(
+    function (Application $app) {
+        /** @var CultureFeed $culturefeed */
+        $cultureFeed = $app['culturefeed'];
+        return $cultureFeed->uitpas();
     }
 );
 
