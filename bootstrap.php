@@ -491,7 +491,7 @@ $app['event_command_bus'] = $app->share(
             new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
                 $app['event_export'],
                 $app['config']['prince']['binary'],
-                new \CultuurNet\UDB3\EventExport\Format\HTML\CultureFeedUitpasEventInfoService(
+                new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\CultureFeedUitpasEventInfoService(
                     $app['uitpas']
                 )
             )
