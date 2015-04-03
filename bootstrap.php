@@ -177,6 +177,10 @@ $app['dbal_connection'] = $app->share(
         $connection = \Doctrine\DBAL\DriverManager::getConnection(
             $app['config']['database']
         );
+
+        $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
+        $connection->executeQuery("SET SESSION sql_mode = '{$sqlMode}'");
+
         return $connection;
     }
 );
