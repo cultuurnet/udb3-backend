@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8a26c2f72fff6135d4d362bfc0ecd592",
+    "hash": "7d73416711d28d72ea2b2e42590b0e0b",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1275,6 +1275,64 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
+        },
+        {
+            "name": "doctrine/migrations",
+            "version": "v1.0.0-alpha3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/migrations.git",
+                "reference": "d2d18ef671b47a7d48fae54806adac87e82fe8e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/d2d18ef671b47a7d48fae54806adac87e82fe8e9",
+                "reference": "d2d18ef671b47a7d48fae54806adac87e82fe8e9",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "~2.0",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "symfony/console": "2.*",
+                "symfony/yaml": "2.*"
+            },
+            "suggest": {
+                "symfony/console": "to run the migration from the console"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Doctrine\\DBAL\\Migrations": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                }
+            ],
+            "description": "Database Schema migrations using Doctrine DBAL",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "database",
+                "migrations"
+            ],
+            "time": "2015-03-22 13:09:02"
         },
         {
             "name": "gridonic/princexml-php",
@@ -4474,7 +4532,8 @@
     "stability-flags": {
         "cultuurnet/udb2-domain-events": 20,
         "cultuurnet/udb3-doctrine": 20,
-        "cultuurnet/udb3-symfony": 20
+        "cultuurnet/udb3-symfony": 20,
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
