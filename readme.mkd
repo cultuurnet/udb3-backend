@@ -1,0 +1,12 @@
+
+# Database migrations
+
+UDB3 Silex uses [Doctrine Migrations](http://doctrine-migrations.readthedocs.org/en/latest/index.html) 
+to manage database schema updates.
+
+Use the Doctrine DBAL command line utility to run one of the available 
+migrations commands. To show all available migrations commands, use:
+
+```
+./vendor/bin/doctrine-dbal list migrations
+```
