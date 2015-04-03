@@ -25,7 +25,8 @@
     "jdesrosiers/silex-cors-provider": "~0.1",
     "swiftmailer/swiftmailer": "~5.3",
     "videlalvaro/php-amqplib": "~2.5",
-    "knplabs/console-service-provider": "~1.0"
+    "knplabs/console-service-provider": "~1.0",
+    "doctrine/migrations": "~1.0@dev"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.3"
