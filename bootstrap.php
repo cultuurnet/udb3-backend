@@ -174,12 +174,18 @@ $app['cache'] = $app->share(
 
 $app['dbal_connection'] = $app->share(
     function ($app) {
-        $connection = \Doctrine\DBAL\DriverManager::getConnection(
-            $app['config']['database']
+        $eventManager = new \Doctrine\Common\EventManager();
+        $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
+        $query = "SET SESSION sql_mode = '{$sqlMode}'";
+        $eventManager->addEventSubscriber(
+            new \Doctrine\DBAL\Event\Listeners\SQLSessionInit($query)
         );
 
-        $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
-        $connection->executeQuery("SET SESSION sql_mode = '{$sqlMode}'");
+        $connection = \Doctrine\DBAL\DriverManager::getConnection(
+            $app['config']['database'],
+            null,
+            $eventManager
+        );
 
         return $connection;
     }
