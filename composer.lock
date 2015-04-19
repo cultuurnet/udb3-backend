@@ -407,12 +407,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "87774b026c12f19eb4a42db08cc4bc7838ffd853"
+                "reference": "f394a86a62cf6b2460c0fee86216d531d6bb1250"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/87774b026c12f19eb4a42db08cc4bc7838ffd853",
-                "reference": "87774b026c12f19eb4a42db08cc4bc7838ffd853",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/f394a86a62cf6b2460c0fee86216d531d6bb1250",
+                "reference": "f394a86a62cf6b2460c0fee86216d531d6bb1250",
                 "shasum": ""
             },
             "require": {
@@ -445,7 +445,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2015-04-01 20:26:07"
+            "time": "2015-03-10 14:02:34"
         },
         {
             "name": "cultuurnet/search",
@@ -546,12 +546,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "90282fab35aa5c607baeb0183c665504cfc8efcf"
+                "reference": "d8047b3680ba901aae45e9e8a9f0cb7e10859adc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/90282fab35aa5c607baeb0183c665504cfc8efcf",
-                "reference": "90282fab35aa5c607baeb0183c665504cfc8efcf",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d8047b3680ba901aae45e9e8a9f0cb7e10859adc",
+                "reference": "d8047b3680ba901aae45e9e8a9f0cb7e10859adc",
                 "shasum": ""
             },
             "require": {
@@ -613,7 +613,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-04-08 11:35:29"
+            "time": "2015-04-19 08:21:09"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
