@@ -247,6 +247,14 @@ $app['event_calendar_cache'] = $app->share(
     }
 );
 
+$app['event_calendar_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\EventCalendarProjector(
+            $app['event_calendar_repository']
+        );
+    }
+);
+
 $app['relations_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
