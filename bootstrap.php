@@ -530,7 +530,8 @@ $app['event_command_bus'] = $app->share(
                 $app['config']['prince']['binary'],
                 new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
                     $app['uitpas']
-                )
+                ),
+                $app['event_calendar_repository']
             )
         );
         return $commandBus;
