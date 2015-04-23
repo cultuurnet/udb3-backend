@@ -323,6 +323,11 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['organizer_jsonld_projector']
             );
+
+            // Subscribe projector for the Calendar read model.
+            $eventBus->subscribe(
+                $app['event_calendar_projector']
+            );
         });
 
         return $eventBus;
