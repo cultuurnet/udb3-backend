@@ -337,29 +337,48 @@ $app['real_event_repository'] = $app->share(
   }
 );
 
+$app['udb2_event_importer_factory'] = $app->share(
+    function (Application $app) {
+        $logger = new \Monolog\Logger('udb2');
+        $logger->pushHandler(
+            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log')
+        );
+
+        return function(\CultuurNet\UDB3\UDB2\EventCdbXmlServiceInterface $cdbXmlService) use ($app, $logger) {
+            $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
+                $cdbXmlService,
+                $app['real_event_repository'],
+                $app['place_service'],
+                $app['organizer_service']
+            );
+
+            $importer->setLogger(
+                $logger
+            );
+
+            return $importer;
+        };
+    }
+);
+
 $app['udb2_event_importer'] = $app->share(
     function (Application $app) {
         $cdbXmlService = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
             $app['search_api_2']
         );
 
-        $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
-            $cdbXmlService,
-            $app['real_event_repository'],
-            $app['place_service'],
-            $app['organizer_service']
+        return $app['udb2_event_importer_factory']($cdbXmlService);
+    }
+);
+
+$app['udb2_event_importer_including_past_events'] = $app->share(
+    function (Application $app) {
+        $cdbXmlService = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
+            $app['search_api_2'],
+            true
         );
 
-        $logger = new \Monolog\Logger('udb2');
-        $logger->pushHandler(
-            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log')
-        );
-
-        $importer->setLogger(
-            $logger
-        );
-
-        return $importer;
+        return $app['udb2_event_importer_factory']($cdbXmlService);
     }
 );
 

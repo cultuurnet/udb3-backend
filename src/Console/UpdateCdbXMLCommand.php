@@ -85,7 +85,7 @@ class UpdateCdbXMLCommand extends Command
     {
         $app = $this->getSilexApplication();
 
-        return $app['udb2_event_importer'];
+        return $app['udb2_event_importer_including_past_events'];
     }
 
 }
