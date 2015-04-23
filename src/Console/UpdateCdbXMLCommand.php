@@ -55,7 +55,7 @@ class UpdateCdbXMLCommand extends Command
                 }
                 catch (EventNotFoundException $e) {
                     $errOutput->writeln(
-                        "<error>{$e->getMessage()} Probably the last occurrence of the event was in the past, and events that occurred in the past are by default not returned by the API. If this is the case, you can ignore this message.</error>"
+                        "<error>{$e->getMessage()} The event probably has been removed from UDB2.</error>"
                     );
                 }
             }
