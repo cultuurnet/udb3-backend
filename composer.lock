@@ -263,12 +263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "dc29eacb64bd2fbad45c4863615cc8e1538f126f"
+                "reference": "2117507d3f1a12358ff5674a6d6c9139f2b93278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/dc29eacb64bd2fbad45c4863615cc8e1538f126f",
-                "reference": "dc29eacb64bd2fbad45c4863615cc8e1538f126f",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/2117507d3f1a12358ff5674a6d6c9139f2b93278",
+                "reference": "2117507d3f1a12358ff5674a6d6c9139f2b93278",
                 "shasum": ""
             },
             "require-dev": {
@@ -288,7 +288,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2015-04-10 07:20:41"
+            "time": "2015-04-21 14:55:08"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -547,12 +547,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c8a13de58574fe1d69c09048560321179628d93e"
+                "reference": "2f65f9630c741aafee0cbbe045370230e198bc54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c8a13de58574fe1d69c09048560321179628d93e",
-                "reference": "c8a13de58574fe1d69c09048560321179628d93e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2f65f9630c741aafee0cbbe045370230e198bc54",
+                "reference": "2f65f9630c741aafee0cbbe045370230e198bc54",
                 "shasum": ""
             },
             "require": {
@@ -614,7 +614,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-04-19 09:32:41"
+            "time": "2015-04-22 13:13:19"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2021,16 +2021,16 @@
         },
         {
             "name": "league/flysystem-ziparchive",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-ziparchive.git",
-                "reference": "e60c233c34af99995d18c57f9e02004466bb16f4"
+                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/e60c233c34af99995d18c57f9e02004466bb16f4",
-                "reference": "e60c233c34af99995d18c57f9e02004466bb16f4",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
+                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
                 "shasum": ""
             },
             "require": {
@@ -2063,7 +2063,7 @@
                 }
             ],
             "description": "Flysystem adapter for ZipArchive's",
-            "time": "2015-01-19 08:17:38"
+            "time": "2015-04-21 12:14:28"
         },
         {
             "name": "league/geotools",
