@@ -258,6 +258,49 @@
             "time": "2014-10-28 13:01:49"
         },
         {
+            "name": "cultuurnet/calendar-summary",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/calendar-summary.git",
+                "reference": "17e540ff80da8443dda7281c4a7cebb1cc98fde4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/17e540ff80da8443dda7281c4a7cebb1cc98fde4",
+                "reference": "17e540ff80da8443dda7281c4a7cebb1cc98fde4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*"
+            },
+            "require-dev": {
+                "phing/phing": "~2.10",
+                "phpunit/phpunit": "~4.5",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev",
+                    "dev-develop": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\CalendarSummary\\": [
+                        "src"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Library to convert a cdbXML input to a readable summary",
+            "time": "2015-04-17 07:05:21"
+        },
+        {
             "name": "cultuurnet/cdb",
             "version": "2.0.x-dev",
             "source": {
@@ -547,17 +590,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2f65f9630c741aafee0cbbe045370230e198bc54"
+                "reference": "270f59c28501ee7256964b9426c39ae8bd82f59a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2f65f9630c741aafee0cbbe045370230e198bc54",
-                "reference": "2f65f9630c741aafee0cbbe045370230e198bc54",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/270f59c28501ee7256964b9426c39ae8bd82f59a",
+                "reference": "270f59c28501ee7256964b9426c39ae8bd82f59a",
                 "shasum": ""
             },
             "require": {
                 "broadway/broadway": "~0.2.0",
                 "chrisboulton/php-resque": "~1.2",
+                "cultuurnet/calendar-summary": "~1.0",
                 "cultuurnet/cdb": "~2.0.3@dev",
                 "cultuurnet/culturefeed-php": "~1.0",
                 "cultuurnet/deserializer": "~0.1",
@@ -614,7 +658,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-04-22 13:13:19"
+            "time": "2015-04-24 13:41:46"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
