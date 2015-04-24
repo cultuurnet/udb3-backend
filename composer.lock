@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7d73416711d28d72ea2b2e42590b0e0b",
+    "hash": "400bc38394a3366c0d8eef91c1bc58cd",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -335,23 +335,24 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.4.0",
+            "version": "1.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "af9b3949bd9adff0b62fac5ae5e4471fb67530a7"
+                "reference": "8935b84b9df857c3d0e3d15807387a918b6629ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/af9b3949bd9adff0b62fac5ae5e4471fb67530a7",
-                "reference": "af9b3949bd9adff0b62fac5ae5e4471fb67530a7",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/8935b84b9df857c3d0e3d15807387a918b6629ab",
+                "reference": "8935b84b9df857c3d0e3d15807387a918b6629ab",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/cdb": "~2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.4.0"
+                "phpunit/phpunit": "~4.4.0",
+                "satooshi/php-coveralls": "~0.7"
             },
             "type": "library",
             "extra": {
@@ -397,7 +398,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2015-03-20 18:07:31"
+            "time": "2015-04-24 14:33:09"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -590,12 +591,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "270f59c28501ee7256964b9426c39ae8bd82f59a"
+                "reference": "3758b841669c0f2e17d67c860af073b937315dd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/270f59c28501ee7256964b9426c39ae8bd82f59a",
-                "reference": "270f59c28501ee7256964b9426c39ae8bd82f59a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3758b841669c0f2e17d67c860af073b937315dd7",
+                "reference": "3758b841669c0f2e17d67c860af073b937315dd7",
                 "shasum": ""
             },
             "require": {
@@ -603,7 +604,7 @@
                 "chrisboulton/php-resque": "~1.2",
                 "cultuurnet/calendar-summary": "~1.0",
                 "cultuurnet/cdb": "~2.0.3@dev",
-                "cultuurnet/culturefeed-php": "~1.0",
+                "cultuurnet/culturefeed-php": "~1.5",
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/entry": "~0.0@dev",
                 "cultuurnet/search": "~1.1",
@@ -658,7 +659,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-04-24 13:41:46"
+            "time": "2015-04-24 15:04:24"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
