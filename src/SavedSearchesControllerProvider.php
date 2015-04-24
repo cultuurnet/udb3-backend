@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\SavedSearch\Command\SubscribeToSavedSearch;
+use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
