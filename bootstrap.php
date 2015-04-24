@@ -233,6 +233,28 @@ $app['event_jsonld_projector'] = $app->share(
     }
 );
 
+$app['event_calendar_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
+            $app['event_calendar_cache']
+        );
+    }
+);
+
+$app['event_calendar_cache'] = $app->share(
+    function (Application $app) {
+        return $app['cache']('event_calendar');
+    }
+);
+
+$app['event_calendar_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector(
+            $app['event_calendar_repository']
+        );
+    }
+);
+
 $app['relations_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
@@ -300,6 +322,11 @@ $app['event_bus'] = $app->share(
             // Subscribe Organizer JSON-LD projector.
             $eventBus->subscribe(
                 $app['organizer_jsonld_projector']
+            );
+
+            // Subscribe projector for the Calendar read model.
+            $eventBus->subscribe(
+                $app['event_calendar_projector']
             );
         });
 
@@ -503,7 +530,8 @@ $app['event_command_bus'] = $app->share(
                 $app['config']['prince']['binary'],
                 new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
                     $app['uitpas']
-                )
+                ),
+                $app['event_calendar_repository']
             )
         );
         return $commandBus;
