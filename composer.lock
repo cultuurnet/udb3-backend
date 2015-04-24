@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7d73416711d28d72ea2b2e42590b0e0b",
+    "hash": "400bc38394a3366c0d8eef91c1bc58cd",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -258,21 +258,65 @@
             "time": "2014-10-28 13:01:49"
         },
         {
+            "name": "cultuurnet/calendar-summary",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/calendar-summary.git",
+                "reference": "17e540ff80da8443dda7281c4a7cebb1cc98fde4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/17e540ff80da8443dda7281c4a7cebb1cc98fde4",
+                "reference": "17e540ff80da8443dda7281c4a7cebb1cc98fde4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*"
+            },
+            "require-dev": {
+                "phing/phing": "~2.10",
+                "phpunit/phpunit": "~4.5",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev",
+                    "dev-develop": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\CalendarSummary\\": [
+                        "src"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Library to convert a cdbXML input to a readable summary",
+            "time": "2015-04-17 07:05:21"
+        },
+        {
             "name": "cultuurnet/cdb",
             "version": "2.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "14d14e22a1bdeffdc0aea084a161c84fb2b7f8ae"
+                "reference": "2117507d3f1a12358ff5674a6d6c9139f2b93278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/14d14e22a1bdeffdc0aea084a161c84fb2b7f8ae",
-                "reference": "14d14e22a1bdeffdc0aea084a161c84fb2b7f8ae",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/2117507d3f1a12358ff5674a6d6c9139f2b93278",
+                "reference": "2117507d3f1a12358ff5674a6d6c9139f2b93278",
                 "shasum": ""
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.3"
+                "phpunit/phpunit": "~4.3",
+                "satooshi/php-coveralls": "~0.7"
             },
             "type": "library",
             "autoload": {
@@ -287,27 +331,28 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2015-03-24 20:12:27"
+            "time": "2015-04-21 14:55:08"
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.4.0",
+            "version": "1.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "af9b3949bd9adff0b62fac5ae5e4471fb67530a7"
+                "reference": "8935b84b9df857c3d0e3d15807387a918b6629ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/af9b3949bd9adff0b62fac5ae5e4471fb67530a7",
-                "reference": "af9b3949bd9adff0b62fac5ae5e4471fb67530a7",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/8935b84b9df857c3d0e3d15807387a918b6629ab",
+                "reference": "8935b84b9df857c3d0e3d15807387a918b6629ab",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/cdb": "~2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.4.0"
+                "phpunit/phpunit": "~4.4.0",
+                "satooshi/php-coveralls": "~0.7"
             },
             "type": "library",
             "extra": {
@@ -353,7 +398,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2015-03-20 18:07:31"
+            "time": "2015-04-24 14:33:09"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -407,12 +452,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "f394a86a62cf6b2460c0fee86216d531d6bb1250"
+                "reference": "87774b026c12f19eb4a42db08cc4bc7838ffd853"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/f394a86a62cf6b2460c0fee86216d531d6bb1250",
-                "reference": "f394a86a62cf6b2460c0fee86216d531d6bb1250",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/87774b026c12f19eb4a42db08cc4bc7838ffd853",
+                "reference": "87774b026c12f19eb4a42db08cc4bc7838ffd853",
                 "shasum": ""
             },
             "require": {
@@ -445,7 +490,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2015-03-10 14:02:34"
+            "time": "2015-04-01 20:26:07"
         },
         {
             "name": "cultuurnet/search",
@@ -546,19 +591,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2f65f9630c741aafee0cbbe045370230e198bc54"
+                "reference": "3758b841669c0f2e17d67c860af073b937315dd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2f65f9630c741aafee0cbbe045370230e198bc54",
-                "reference": "2f65f9630c741aafee0cbbe045370230e198bc54",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3758b841669c0f2e17d67c860af073b937315dd7",
+                "reference": "3758b841669c0f2e17d67c860af073b937315dd7",
                 "shasum": ""
             },
             "require": {
                 "broadway/broadway": "~0.2.0",
                 "chrisboulton/php-resque": "~1.2",
+                "cultuurnet/calendar-summary": "~1.0",
                 "cultuurnet/cdb": "~2.0.3@dev",
-                "cultuurnet/culturefeed-php": "~1.0",
+                "cultuurnet/culturefeed-php": "~1.5",
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/entry": "~0.0@dev",
                 "cultuurnet/search": "~1.1",
@@ -613,7 +659,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-04-22 13:13:19"
+            "time": "2015-04-24 15:04:24"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2020,16 +2066,16 @@
         },
         {
             "name": "league/flysystem-ziparchive",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-ziparchive.git",
-                "reference": "e60c233c34af99995d18c57f9e02004466bb16f4"
+                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/e60c233c34af99995d18c57f9e02004466bb16f4",
-                "reference": "e60c233c34af99995d18c57f9e02004466bb16f4",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
+                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
                 "shasum": ""
             },
             "require": {
@@ -2062,7 +2108,7 @@
                 }
             ],
             "description": "Flysystem adapter for ZipArchive's",
-            "time": "2015-01-19 08:17:38"
+            "time": "2015-04-21 12:14:28"
         },
         {
             "name": "league/geotools",
