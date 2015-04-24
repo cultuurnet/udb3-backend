@@ -43,5 +43,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
                 );
             }
         );
+
+        return $controllers;
     }
 }
