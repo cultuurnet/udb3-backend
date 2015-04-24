@@ -106,9 +106,16 @@ $app['event_service'] = $app->share(
     }
 );
 
-$app['saved_searches_service'] = $app->share(
+$app['saved_searches_service_factory'] = $app->share(
     function ($app) {
-        return new \CultureFeed_SavedSearches_Default($app['culturefeed']);
+        $consumer = new \CultuurNet\UDB3\UDB2\Consumer(
+            $app['config']['uitid']['base_url'],
+            $app['uitid_consumer_credentials']
+        );
+
+        return new \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory(
+            $consumer
+        );
     }
 );
 
@@ -514,7 +521,7 @@ $app['event_command_bus'] = $app->share(
         );
         $commandBus->subscribe(
             new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
-                $app['saved_searches_service']
+                $app['saved_searches_service_factory']
             )
         );
         return $commandBus;
