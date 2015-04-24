@@ -235,7 +235,7 @@ $app['event_jsonld_projector'] = $app->share(
 
 $app['event_calendar_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\ReadModel\CacheCalendarRepository(
+        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
             $app['event_calendar_cache']
         );
     }
@@ -249,7 +249,7 @@ $app['event_calendar_cache'] = $app->share(
 
 $app['event_calendar_projector'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\EventCalendarProjector(
+        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector(
             $app['event_calendar_repository']
         );
     }
