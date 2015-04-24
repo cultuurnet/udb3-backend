@@ -106,6 +106,12 @@ $app['event_service'] = $app->share(
     }
 );
 
+$app['saved_searches_service'] = $app->share(
+    function ($app) {
+        return new \CultureFeed_SavedSearches_Default($app['culturefeed']);
+    }
+);
+
 $app['current_user'] = $app->share(
     function ($app) {
         /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
@@ -504,6 +510,11 @@ $app['event_command_bus'] = $app->share(
                 new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
                     $app['uitpas']
                 )
+            )
+        );
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
+                $app['saved_searches_service']
             )
         );
         return $commandBus;
