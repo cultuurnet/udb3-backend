@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -41,6 +42,16 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
                 return JsonResponse::create(
                     ['commandId' => $commandId]
                 );
+            }
+        );
+
+        $controllers->get(
+            '/',
+            function (Application $app) {
+                /** @var SavedSearchRepositoryInterface $savedSearches */
+                $savedSearches = $app['saved_searches_repository'];
+
+                return JsonResponse::create($savedSearches->ownedByCurrentUser());
             }
         );
 
