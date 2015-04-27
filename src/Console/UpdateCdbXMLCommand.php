@@ -40,7 +40,7 @@ class UpdateCdbXMLCommand extends Command
         foreach ($stream() as $eventStream) {
             /** @var DomainMessage $message */
             foreach ($eventStream->getIterator() as $message) {
-                if ($message->getType() !== 'CultuurNet.UDB3.Event.EventImportedFromUDB2') {
+                if ($message->getType() !== 'CultuurNet.UDB3.Event.Events.EventImportedFromUDB2') {
                     continue;
                 }
 
