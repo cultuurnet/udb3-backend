@@ -2,12 +2,13 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
+use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use ValueObjects\String\String;
 
 class SavedSearchesControllerProvider implements ControllerProviderInterface
 {
@@ -24,15 +25,14 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post(
-            '/subscribe',
+            '/',
             function (Request $request, Application $app) {
                 /* @var \CultureFeed_User $user */
                 $user = $app['current_user'];
 
-                $name = $request->request->get('name');
-                $query = $request->request->get('query');
-
-                $command = new SubscribeToSavedSearch($user->id, $name, $query);
+                $command = (new SubscribeToSavedSearchJSONDeserializer($user->id))->deserialize(
+                    new String($request->getContent())
+                );
 
                 /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
                 $commandBus = $app['event_command_bus'];
