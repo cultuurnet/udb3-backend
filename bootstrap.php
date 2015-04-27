@@ -106,6 +106,19 @@ $app['event_service'] = $app->share(
     }
 );
 
+$app['saved_searches_service_factory'] = $app->share(
+    function ($app) {
+        $consumer = new \CultuurNet\UDB3\UDB2\Consumer(
+            $app['config']['uitid']['base_url'],
+            $app['uitid_consumer_credentials']
+        );
+
+        return new \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory(
+            $consumer
+        );
+    }
+);
+
 $app['current_user'] = $app->share(
     function ($app) {
         /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
@@ -551,6 +564,11 @@ $app['event_command_bus'] = $app->share(
                     $app['uitpas']
                 ),
                 $app['event_calendar_repository']
+            )
+        );
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
+                $app['saved_searches_service_factory']
             )
         );
         return $commandBus;
