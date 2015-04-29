@@ -44,8 +44,18 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             return $serviceFactory->withTokenCredentials($minimalUserData->getTokenCredentials());
         });
 
+        $app['saved_searches_logger'] = $app->share(function(Application $app) {
+            $logger = new \Monolog\Logger('saved_searches');
+            $logger->pushHandler(
+                new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/saved_searches.log')
+            );
+            return $logger;
+        });
+
         $app['saved_searches_repository'] = $app->share(function (Application $app) {
-            return new UiTIDSavedSearchRepository($app['saved_searches']);
+            $repository = new UiTIDSavedSearchRepository($app['saved_searches']);
+            $repository->setLogger($app['saved_searches_logger']);
+            return $repository;
         });
     }
 
