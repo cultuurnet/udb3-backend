@@ -273,6 +273,7 @@ $app->get(
         $query = $request->query->get('query', '*.*');
         $limit = $request->query->get('limit', 30);
         $start = $request->query->get('start', 0);
+        $sort  = $request->query->get('sort', 'lastupdated desc');
 
         /** @var Psr\Log\LoggerInterface $logger */
         $logger = $app['logger.search'];
@@ -282,7 +283,7 @@ $app->get(
         /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
         $searchService = $app['search_service'];
         try {
-            $results = $searchService->search($query, $limit, $start);
+            $results = $searchService->search($query, $limit, $start, $sort);
             $logger->info(
                 "Search for: {$query}",
                 array('user' => $user->nick)
