@@ -95,6 +95,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
 
     /**
      * @param String $commandId
+     * @return JsonResponse
      */
     private function getResponseForCommandId(String $commandId) {
         return JsonResponse::create(
