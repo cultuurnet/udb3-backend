@@ -339,12 +339,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "8935b84b9df857c3d0e3d15807387a918b6629ab"
+                "reference": "35ee0f4deb8d6faa2364a526e4a8c95262cd8a81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/8935b84b9df857c3d0e3d15807387a918b6629ab",
-                "reference": "8935b84b9df857c3d0e3d15807387a918b6629ab",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/35ee0f4deb8d6faa2364a526e4a8c95262cd8a81",
+                "reference": "35ee0f4deb8d6faa2364a526e4a8c95262cd8a81",
                 "shasum": ""
             },
             "require": {
@@ -398,7 +398,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2015-04-24 14:33:09"
+            "time": "2015-04-25 10:53:11"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -494,16 +494,16 @@
         },
         {
             "name": "cultuurnet/search",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Search.git",
-                "reference": "32d454fa8ceafd7d35d8a7795e2b9d9879e5f5d5"
+                "reference": "048ad13ac386c3676dd3236c064f4184a10c1d73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/32d454fa8ceafd7d35d8a7795e2b9d9879e5f5d5",
-                "reference": "32d454fa8ceafd7d35d8a7795e2b9d9879e5f5d5",
+                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/048ad13ac386c3676dd3236c064f4184a10c1d73",
+                "reference": "048ad13ac386c3676dd3236c064f4184a10c1d73",
                 "shasum": ""
             },
             "require": {
@@ -536,7 +536,7 @@
                 "Apache-2.0"
             ],
             "description": "CultuurNet search service",
-            "time": "2015-04-01 09:53:28"
+            "time": "2015-04-24 10:53:19"
         },
         {
             "name": "cultuurnet/udb2-domain-events",
@@ -591,12 +591,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3758b841669c0f2e17d67c860af073b937315dd7"
+                "reference": "c8ac09a78267d20bf8451c4602e13c6dbdb35981"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3758b841669c0f2e17d67c860af073b937315dd7",
-                "reference": "3758b841669c0f2e17d67c860af073b937315dd7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c8ac09a78267d20bf8451c4602e13c6dbdb35981",
+                "reference": "c8ac09a78267d20bf8451c4602e13c6dbdb35981",
                 "shasum": ""
             },
             "require": {
@@ -659,7 +659,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-04-24 15:04:24"
+            "time": "2015-04-30 13:40:30"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3766,16 +3766,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.4.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "8724cd239f8ef4c046f55a3b18b4d91cc7f3e4c5"
+                "reference": "3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/8724cd239f8ef4c046f55a3b18b4d91cc7f3e4c5",
-                "reference": "8724cd239f8ef4c046f55a3b18b4d91cc7f3e4c5",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373",
+                "reference": "3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373",
                 "shasum": ""
             },
             "require": {
@@ -3822,7 +3822,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-03-27 19:31:25"
+            "time": "2015-04-27 22:15:08"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4072,16 +4072,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.6.4",
+            "version": "4.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "163232991e652e6efed2f8470326fffa61e848e2"
+                "reference": "3afe303d873a4d64c62ef84de491b97b006fbdac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/163232991e652e6efed2f8470326fffa61e848e2",
-                "reference": "163232991e652e6efed2f8470326fffa61e848e2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3afe303d873a4d64c62ef84de491b97b006fbdac",
+                "reference": "3afe303d873a4d64c62ef84de491b97b006fbdac",
                 "shasum": ""
             },
             "require": {
@@ -4140,7 +4140,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-04-11 05:23:21"
+            "time": "2015-04-29 15:18:52"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
