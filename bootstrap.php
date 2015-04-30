@@ -18,6 +18,7 @@ $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -103,19 +104,6 @@ $app['event_service'] = $app->share(
         );
 
         return $service;
-    }
-);
-
-$app['saved_searches_service_factory'] = $app->share(
-    function ($app) {
-        $consumer = new \CultuurNet\UDB3\UDB2\Consumer(
-            $app['config']['uitid']['base_url'],
-            $app['uitid_consumer_credentials']
-        );
-
-        return new \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory(
-            $consumer
-        );
     }
 );
 
