@@ -30,10 +30,11 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
             function (Request $request, Application $app) {
                 /* @var \CultureFeed_User $user */
                 $user = $app['current_user'];
+                $userId = new String($user->id);
+                $requestContent = new String($request->getContent());
 
-                $command = (new SubscribeToSavedSearchJSONDeserializer($user->id))->deserialize(
-                    new String($request->getContent())
-                );
+                $deserializer = new SubscribeToSavedSearchJSONDeserializer($userId);
+                $command = $deserializer->deserialize($requestContent);
 
                 /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
                 $commandBus = $app['event_command_bus'];
