@@ -5,7 +5,7 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\SavedSearches\ReadModel\UiTIDSavedSearchRepository;
+use CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory;
 use CultuurNet\UDB3\UDB2\Consumer;
 use Silex\Application;
