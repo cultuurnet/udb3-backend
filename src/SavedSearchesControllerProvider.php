@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\UDB3\SavedSearches\Command\SavedSearchCommand;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
+use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -22,27 +24,35 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        // Creates a new controller based on the default route
+        // Creates a new controller based on the default route.
+        /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
+        $controllerProvider = $this;
 
         $controllers->post(
             '/',
-            function (Request $request, Application $app) {
-                /* @var \CultureFeed_User $user */
-                $user = $app['current_user'];
-                $userId = new String($user->id);
-                $requestContent = new String($request->getContent());
-
+            function (Request $request, Application $app) use ($controllerProvider) {
+                $userId = $controllerProvider->getUserIDFromApp($app);
                 $deserializer = new SubscribeToSavedSearchJSONDeserializer($userId);
-                $command = $deserializer->deserialize($requestContent);
+                $data = new String($request->getContent());
 
-                /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
-                $commandBus = $app['event_command_bus'];
-                $commandId = $commandBus->dispatch($command);
+                $command = $deserializer->deserialize($data);
+                $commandId = $controllerProvider->dispatchEventCommand($command, $app);
 
-                return JsonResponse::create(
-                    ['commandId' => $commandId]
-                );
+                return $controllerProvider->getResponseForCommandId($commandId);
+            }
+        );
+
+        $controllers->delete(
+            '/{id}',
+            function (Application $app, $id) use ($controllerProvider) {
+                $userId = $controllerProvider->getUserIDFromApp($app);
+                $searchId = new String($id);
+
+                $command = new UnsubscribeFromSavedSearch($userId, $searchId);
+                $commandId = $controllerProvider->dispatchEventCommand($command, $app);
+
+                return $controllerProvider->getResponseForCommandId($commandId);
             }
         );
 
@@ -57,5 +67,39 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         );
 
         return $controllers;
+    }
+
+    /**
+     * @param Application $app
+     * @return String
+     */
+    private function getUserIDFromApp(Application $app)
+    {
+        /* @var \CultureFeed_User $user */
+        $user = $app['current_user'];
+        return new String($user->id);
+    }
+
+    /**
+     * @param SavedSearchCommand $command
+     * @param Application $app
+     * @return String
+     */
+    private function dispatchEventCommand(SavedSearchCommand $command, Application $app)
+    {
+        /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
+        $commandBus = $app['event_command_bus'];
+        $commandId = $commandBus->dispatch($command);
+        return new String($commandId);
+    }
+
+    /**
+     * @param String $commandId
+     * @return JsonResponse
+     */
+    private function getResponseForCommandId(String $commandId) {
+        return JsonResponse::create(
+            ['commandId' => (string) $commandId]
+        );
     }
 }
