@@ -1,214 +1,643 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "UiTdatabank v3",
-    "description": "Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\n",
-    "version": "3.0.0",
-    "contact": {
-      "name": "CultuurNet Vlaanderen vzw",
-      "url": "http://www.cultuurnet.be",
-      "email": "info@uitdatabank.be"
-    }
-  },
-  "basePath": "/",
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json",
-    "application/ld+json"
-  ],
-  "paths": {
-    "/event/{cdbid}": {
-      "get": {
-        "summary": "View the details of a specific cultural event.",
-        "operationId": "getEvent",
-        "produces": [
-          "application/ld+json",
-          "application/xml"
-        ],
-        "parameters": [
-          {
-            "name": "cdbid",
-            "in": "path",
-            "description": "The unique identifier of the cultural event.",
-            "required": true,
-            "type": "string",
-            "format": "uuid"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "event detail"
-          }
-        },
-        "tags": [ "events" ]
-      }
-    },
-    "/event/{cdbid}/history": {
-      "get": {
-        "summary": "View the change log / history of a specific cultural event.",
-        "operationId": "getEventHistory",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "cdbid",
-            "in": "path",
-            "description": "The unique identifier of the cultural event.",
-            "required": true,
-            "type": "string",
-            "format": "uuid"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "event history"
-          }
-        },
-        "tags": [ "events" ]
-      }
-    },
-    "/event/{cdbid}/{lang}/title": {
-      "post": {
-        "summary": "Translate the title of a cultural event.",
-        "operationId": "translateEventTitle",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "cdbid",
-            "in": "path",
-            "description": "The unique identifier of the cultural event.",
-            "required": true,
-            "type": "string",
-            "format": "uuid"
-          },
-          {
-            "name": "lang",
-            "in": "path",
-            "description": "The language of the translation.",
-            "required": true,
-            "type": "string",
-            "enum": [ "fr", "de", "en" ]
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "The title.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/title"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Info on the command that was queued.",
-            "schema": {
-              "$ref": "#/definitions/command"
-            }
-          }
-        },
-        "tags": [ "events" ]
-      }
-    },
-    "/event/{cdbid}/{lang}/description": {
-      "post": {
-        "summary": "Translate the description of a cultural event.",
-        "operationId": "translateEventDescription",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "cdbid",
-            "in": "path",
-            "description": "The unique identifier of the cultural event.",
-            "required": true,
-            "type": "string",
-            "format": "uuid"
-          },
-          {
-            "name": "lang",
-            "in": "path",
-            "description": "The language of the translation.",
-            "required": true,
-            "type": "string",
-            "enum": [ "fr", "de", "en" ]
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "The description.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/description"
-            }
-          }
-        ],
-        "tags": [ "events" ]
-      }
-    },
-    "/api/1.0/user/labels": {
-      "get": {
-        "summary": "Retrieve labels used recently by the current user",
-        "operationId": "getRecentlyUsedLabels",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "user"
-        ]
-      }
-    }
-  },
-  "tags": [
-    {
-      "name": "Events",
-      "description": "Operations related to events"
-    },
-    {
-      "name": "Search",
-      "description": "Search actions"
-    },
-    {
-      "name": "User",
-      "description": "Current use data"
-    }
-  ],
-  "definitions": {
-    "command": {
-      "required": [
-        "commandId"
-      ],
-      "properties": {
-        "commandId": {
-          "type": "string"
+    "swagger": "2.0",
+    "info": {
+        "title": "UiTdatabank v3",
+        "description": "Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\n",
+        "version": "3.0.0",
+        "contact": {
+            "name": "CultuurNet Vlaanderen vzw",
+            "url": "http://www.cultuurnet.be",
+            "email": "info@uitdatabank.be"
         }
-      }
     },
-    "description": {
-      "required": [
-        "description"
-      ],
-      "properties": {
+    "basePath": "/",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json",
+        "application/ld+json"
+    ],
+    "paths": {
+        "/event/{cdbid}": {
+            "get": {
+                "summary": "View the details of a specific cultural event.",
+                "operationId": "getEvent",
+                "produces": [
+                    "application/ld+json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "event detail",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Event"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Events"
+                ]
+            }
+        },
+        "/event/{cdbid}/history": {
+            "get": {
+                "summary": "View the change log / history of a specific cultural event.",
+                "operationId": "getEventHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "event history",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/EventHistory"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Events"
+                ]
+            }
+        },
+        "/event/{cdbid}/{lang}/title": {
+            "post": {
+                "summary": "Translate the title of a cultural event.",
+                "operationId": "translateEventTitle",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The title.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/title"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Events"
+                ]
+            }
+        },
+        "/event/{cdbid}/{lang}/description": {
+            "post": {
+                "summary": "Translate the description of a cultural event.",
+                "operationId": "translateEventDescription",
+                "responses": {
+                    "200": {
+                        "description": "??WHAT DOES THIS RETURN??"
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The description.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/description"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Events"
+                ]
+            }
+        },
+        "/api/1.0/user": {
+            "get": {
+                "summary": "Retrieve all information about the current user.",
+                "operationId": "getUserInformation",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The informatioon available about the current user.",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ]
+            }
+        },
+        "/api/1.0/user/labels": {
+            "get": {
+                "summary": "Retrieve labels used recently by the current user.",
+                "operationId": "getRecentlyUsedLabels",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of labels recently used by the current user."
+                    }
+                },
+                "tags": [
+                    "User"
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Events",
+            "description": "Operations related to events"
+        },
+        {
+            "name": "Search",
+            "description": "Search actions"
+        },
+        {
+            "name": "User",
+            "description": "Current use data"
+        }
+    ],
+    "definitions": {
+        "Event": {
+            "properties": {
+                "name:nl": {
+                    "type": "string",
+                    "description": "The title of the event"
+                },
+                "description:nl": {
+                    "type": "string",
+                    "description": "A long desciption of the event. This contains HTML markup"
+                },
+                "location": {
+                    "$ref": "#/definitions/Location"
+                },
+                "terms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Term"
+                    }
+                },
+                "available": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "calendarSummary": {
+                    "type": "string"
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "creator": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "modified": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "publisher": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "calendarType": {
+                    "type": "string",
+                    "enum": [
+                        "unknown",
+                        "permanent",
+                        "periodic",
+                        "single"
+                    ]
+                },
+                "typicalAgeRange": {
+                    "type": "string"
+                },
+                "performer": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Performer"
+                    }
+                },
+                "sameAs": {
+                    "type": "string"
+                },
+                "seeAlso": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "Location": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the location."
+                },
+                "address": {
+                    "$ref": "#/definitions/Address"
+                }
+            }
+        },
+        "Address": {
+            "properties": {
+                "addressCountry": {
+                    "type": "string",
+                    "description": "The country code of the location."
+                },
+                "addressLocality": {
+                    "type": "string",
+                    "description": "The lacality name of the location."
+                },
+                "postalCode": {
+                    "type": "string",
+                    "description": "The postalcode of the location."
+                },
+                "streetAddress": {
+                    "type": "string",
+                    "description": "The street name and number information of the location."
+                }
+            }
+        },
+        "Term": {
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "Performer": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the performer."
+                }
+            }
+        },
+        "EventHistory": {
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string",
+                    "format": "email"
+                }
+            }
+        },
+        "User": {
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "preferredLanguage": {
+                    "type": "string"
+                },
+                "nick": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "givenName": {
+                    "type": "string"
+                },
+                "familyName": {
+                    "type": "string"
+                },
+                "mbox": {
+                    "type": "string"
+                },
+                "mboxVerified": {
+                    "type": "boolean"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "hasChildren": {
+                    "type": "string"
+                },
+                "dob": {
+                    "type": "string"
+                },
+                "depiction": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "lifestyleProfile": {
+                    "type": "string"
+                },
+                "homeLocation": {
+                    "$ref": "#/definitions/UserHomeLocation"
+                },
+                "currentLocation": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "points": {
+                    "type": "string"
+                },
+                "openid": {
+                    "type": "string"
+                },
+                "holdsAccount": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserHoldsAccount"
+                    }
+                },
+                "privacyConfig": {
+                    "$ref": "#/definitions/UserPrivacyConfig"
+                },
+                "pageMemberships": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "adminPagesCount": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "UserHomeLocation": {
+            "properties": {
+                "lat": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "lng": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "radius": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        },
+        "UserHoldsAccount": {
+            "properties": {
+                "accountType": {
+                    "type": "string"
+                },
+                "accountServiceHomepage": {
+                    "type": "string"
+                },
+                "accountName": {
+                    "type": "string"
+                },
+                "accountNick": {
+                    "type": "string"
+                },
+                "accountDepiction": {
+                    "type": "string"
+                },
+                "private": {
+                    "type": "boolean"
+                },
+                "publishActivities": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "UserPrivacyConfig": {
+            "properties": {
+                "nick": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "givenname": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "familyName": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "mbox": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "dob": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "depiction": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "bio": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "homeAddress": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "homeLocation": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "currentLocation": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "openid": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                }
+            }
+        },
+        "command": {
+            "required": [
+                "commandId"
+            ],
+            "properties": {
+                "commandId": {
+                    "type": "string"
+                }
+            }
+        },
         "description": {
-          "type": "string"
-        }
-      }
-    },
-    "title": {
-      "required": [
-        "title"
-      ],
-      "properties": {
+            "required": [
+                "description"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
         "title": {
-          "type": "string"
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string"
+                }
+            }
         }
-      }
     }
-  }
 }
