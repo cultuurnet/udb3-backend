@@ -268,38 +268,12 @@ $app->get(
 );
 
 $app->get(
-    'db_init',
-    function (Request $request, Application $app) {
-
-        /** @var \Broadway\EventStore\DBALEventStore[] $stores */
-        $stores = array(
-            $app['event_store'],
-            $app['place_store'],
-            $app['organizer_store'],
-            $app['event_relations_repository']
-        );
-
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = $app['dbal_connection'];
-
-        $schemaManager = $connection->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        foreach ($stores as $store) {
-            $table = $store->configureSchema($schema);
-            if ($table) {
-                $schemaManager->createTable($table);
-            }
-        }
-    }
-);
-
-$app->get(
     'api/1.0/search',
     function (Request $request, Application $app) {
         $query = $request->query->get('query', '*.*');
         $limit = $request->query->get('limit', 30);
         $start = $request->query->get('start', 0);
+        $sort  = $request->query->get('sort', 'lastupdated desc');
 
         /** @var Psr\Log\LoggerInterface $logger */
         $logger = $app['logger.search'];
@@ -309,7 +283,7 @@ $app->get(
         /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
         $searchService = $app['search_service'];
         try {
-            $results = $searchService->search($query, $limit, $start);
+            $results = $searchService->search($query, $limit, $start, $sort);
             $logger->info(
                 "Search for: {$query}",
                 array('user' => $user->nick)
@@ -686,5 +660,7 @@ $app->get(
         );
     }
 );
+
+$app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
 
 $app->run();
