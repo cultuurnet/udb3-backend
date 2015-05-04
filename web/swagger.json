@@ -1,0 +1,214 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "UiTdatabank v3",
+    "description": "Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\n",
+    "version": "3.0.0",
+    "contact": {
+      "name": "CultuurNet Vlaanderen vzw",
+      "url": "http://www.cultuurnet.be",
+      "email": "info@uitdatabank.be"
+    }
+  },
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json",
+    "application/ld+json"
+  ],
+  "paths": {
+    "/event/{cdbid}": {
+      "get": {
+        "summary": "View the details of a specific cultural event.",
+        "operationId": "getEvent",
+        "produces": [
+          "application/ld+json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "cdbid",
+            "in": "path",
+            "description": "The unique identifier of the cultural event.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "event detail"
+          }
+        },
+        "tags": [ "events" ]
+      }
+    },
+    "/event/{cdbid}/history": {
+      "get": {
+        "summary": "View the change log / history of a specific cultural event.",
+        "operationId": "getEventHistory",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cdbid",
+            "in": "path",
+            "description": "The unique identifier of the cultural event.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "event history"
+          }
+        },
+        "tags": [ "events" ]
+      }
+    },
+    "/event/{cdbid}/{lang}/title": {
+      "post": {
+        "summary": "Translate the title of a cultural event.",
+        "operationId": "translateEventTitle",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cdbid",
+            "in": "path",
+            "description": "The unique identifier of the cultural event.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "The language of the translation.",
+            "required": true,
+            "type": "string",
+            "enum": [ "fr", "de", "en" ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The title.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/title"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Info on the command that was queued.",
+            "schema": {
+              "$ref": "#/definitions/command"
+            }
+          }
+        },
+        "tags": [ "events" ]
+      }
+    },
+    "/event/{cdbid}/{lang}/description": {
+      "post": {
+        "summary": "Translate the description of a cultural event.",
+        "operationId": "translateEventDescription",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cdbid",
+            "in": "path",
+            "description": "The unique identifier of the cultural event.",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "The language of the translation.",
+            "required": true,
+            "type": "string",
+            "enum": [ "fr", "de", "en" ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The description.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/description"
+            }
+          }
+        ],
+        "tags": [ "events" ]
+      }
+    },
+    "/api/1.0/user/labels": {
+      "get": {
+        "summary": "Retrieve labels used recently by the current user",
+        "operationId": "getRecentlyUsedLabels",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Events",
+      "description": "Operations related to events"
+    },
+    {
+      "name": "Search",
+      "description": "Search actions"
+    },
+    {
+      "name": "User",
+      "description": "Current use data"
+    }
+  ],
+  "definitions": {
+    "command": {
+      "required": [
+        "commandId"
+      ],
+      "properties": {
+        "commandId": {
+          "type": "string"
+        }
+      }
+    },
+    "description": {
+      "required": [
+        "description"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "title": {
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
