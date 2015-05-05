@@ -16,7 +16,8 @@
     ],
     "produces": [
         "application/json",
-        "application/ld+json"
+        "application/ld+json",
+        "application/xml"
     ],
     "paths": {
         "/event/{cdbid}": {
@@ -39,17 +40,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "event detail",
+                        "description": "An event detail.",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Event"
-                            }
+                            "$ref": "#/definitions/Event"
                         }
                     }
                 },
                 "tags": [
-                    "Events"
+                    "Event"
                 ]
             }
         },
@@ -82,7 +80,7 @@
                     }
                 },
                 "tags": [
-                    "Events"
+                    "Event"
                 ]
             }
         },
@@ -133,7 +131,7 @@
                     }
                 },
                 "tags": [
-                    "Events"
+                    "Event"
                 ]
             }
         },
@@ -141,11 +139,6 @@
             "post": {
                 "summary": "Translate the description of a cultural event.",
                 "operationId": "translateEventDescription",
-                "responses": {
-                    "200": {
-                        "description": "??WHAT DOES THIS RETURN??"
-                    }
-                },
                 "produces": [
                     "application/json"
                 ],
@@ -180,8 +173,218 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
                 "tags": [
-                    "Events"
+                    "Event"
+                ]
+            }
+        },
+        "/event/{cdbid}/labels": {
+            "post": {
+                "summary": "Add a label to a single cultural event.",
+                "operationId": "addLabelToEvent",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The label to attach to the cultural event.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/label"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Label"
+                ]
+            }
+        },
+        "/events/label": {
+            "post": {
+                "summary": "Add a label to multiple cultural events.",
+                "operationId": "addLabelToEvents",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing information about the label and the cultural events.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/labelMultipleEvents"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Label"
+                ]
+            }
+        },
+        "/event/{cdbid}/labels/{label}": {
+            "delete": {
+                "summary": "Remove a label from a cultural event.",
+                "operationId": "removeLabelFromEvent",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "description": "The label to remove from the cultural event.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Label"
+                ]
+            }
+        },
+        "/query/label": {
+            "post": {
+                "summary": "Add a label to a query",
+                "operationId": "addLabelToQuery",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing information about the label and the query.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/labelQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Query",
+                    "Label"
+                ]
+            }
+        },
+        "/place/{cdbid}": {
+            "get": {
+                "summary": "View the details of a specific place.",
+                "operationId": "getPlace",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Place"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
+        "/organizer/{cdbid}": {
+            "get": {
+                "summary": "View the details of a specific organizer.",
+                "operationId": "getOrganizer",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the organizer.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Organizer"
+                        }
+                    }
+                },
+                "tags": [
+                    "Organizer"
                 ]
             }
         },
@@ -221,50 +424,89 @@
                     "User"
                 ]
             }
+        },
+        "/api/1.0/search": {
+            "get": {
+                "summary": "Retrieve events for a given search query with a given offset.",
+                "operationId": "apiSearch",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The search query to execute.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The number of events to skip from the start of the result set.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of events",
+                        "schema": {
+                            "$ref": "#/definitions/SearchResult"
+                        }
+                    }
+                },
+                "tags": [
+                    "Search"
+                ]
+            }
         }
     },
     "tags": [
         {
-            "name": "Events",
-            "description": "Operations related to events"
+            "name": "Event",
+            "description": "Operations related to events."
         },
         {
             "name": "Search",
-            "description": "Search actions"
+            "description": "Operations related to search actions."
         },
         {
             "name": "User",
-            "description": "Current use data"
+            "description": "Opertions related to users."
+        },
+        {
+            "name": "Label",
+            "description": "Operations related to labels."
+        },
+        {
+            "name": "Query",
+            "description": "Operations related to queries."
+        },
+        {
+            "name": "Place",
+            "description": "Operations related to places."
+        },
+        {
+            "name": "Organizer",
+            "description": "Operations related to organizers."
         }
     ],
     "definitions": {
         "Event": {
             "properties": {
-                "name:nl": {
-                    "type": "string",
-                    "description": "The title of the event"
+                "name": {
+                    "$ref": "#/definitions/TranslatableString"
                 },
-                "description:nl": {
-                    "type": "string",
-                    "description": "A long desciption of the event. This contains HTML markup"
-                },
-                "location": {
-                    "$ref": "#/definitions/Location"
-                },
-                "terms": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Term"
-                    }
+                "description": {
+                    "$ref": "#/definitions/TranslatableString"
                 },
                 "available": {
                     "type": "string",
-                    "format": "date"
+                    "format": "date-time"
                 },
                 "image": {
-                    "type": "string"
-                },
-                "calendarSummary": {
                     "type": "string"
                 },
                 "labels": {
@@ -273,27 +515,45 @@
                         "type": "string"
                     }
                 },
+                "calendarSummary": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/Place"
+                },
+                "organizer": {
+                    "$ref": "#/definitions/Organizer"
+                },
+                "bookingInfo": {
+                    "$ref": "#/definitions/BookingInfo"
+                },
+                "terms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Term"
+                    }
+                },
                 "creator": {
                     "type": "string"
                 },
                 "created": {
                     "type": "string",
-                    "format": "date"
+                    "format": "date-time"
                 },
                 "modified": {
                     "type": "string",
-                    "format": "date"
+                    "format": "date-time"
                 },
                 "publisher": {
                     "type": "string"
                 },
                 "endDate": {
                     "type": "string",
-                    "format": "date"
+                    "format": "date-time"
                 },
                 "startDate": {
                     "type": "string",
-                    "format": "date"
+                    "format": "date-time"
                 },
                 "calendarType": {
                     "type": "string",
@@ -322,18 +582,34 @@
                         "type": "string"
                     }
                 }
-            }
+            },
+            "required": [
+                "name",
+                "description",
+                "creator",
+                "created",
+                "publisher",
+                "calendarType"
+            ]
         },
-        "Location": {
+        "TranslatableString": {
             "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "The name of the location."
+                "nl": {
+                    "type": "string"
                 },
-                "address": {
-                    "$ref": "#/definitions/Address"
+                "de": {
+                    "type": "string"
+                },
+                "en": {
+                    "type": "string"
+                },
+                "fr": {
+                    "type": "string"
                 }
-            }
+            },
+            "required": [
+                "nl"
+            ]
         },
         "Address": {
             "properties": {
@@ -353,7 +629,13 @@
                     "type": "string",
                     "description": "The street name and number information of the location."
                 }
-            }
+            },
+            "required": [
+                "addressCountry",
+                "addressLocality",
+                "postalCode",
+                "streetAddress"
+            ]
         },
         "Term": {
             "properties": {
@@ -366,7 +648,12 @@
                 "id": {
                     "type": "string"
                 }
-            }
+            },
+            "required": [
+                "label",
+                "domain",
+                "id"
+            ]
         },
         "Performer": {
             "properties": {
@@ -374,13 +661,16 @@
                     "type": "string",
                     "description": "The name of the performer."
                 }
-            }
+            },
+            "required": [
+                "name"
+            ]
         },
         "EventHistory": {
             "properties": {
                 "date": {
                     "type": "string",
-                    "format": "date"
+                    "format": "date-time"
                 },
                 "description": {
                     "type": "string"
@@ -389,12 +679,14 @@
                     "type": "string",
                     "format": "email"
                 }
-            }
+            },
+            "required": [
+                "date",
+                "description",
+                "author"
+            ]
         },
         "User": {
-            "required": [
-                "id"
-            ],
             "properties": {
                 "id": {
                     "type": "string",
@@ -485,7 +777,10 @@
                     "type": "integer",
                     "format": "int32"
                 }
-            }
+            },
+            "required": [
+                "id"
+            ]
         },
         "UserHomeLocation": {
             "properties": {
@@ -537,7 +832,7 @@
                         "public"
                     ]
                 },
-                "givenname": {
+                "givenName": {
                     "type": "string",
                     "enum": [
                         "private",
@@ -552,6 +847,13 @@
                     ]
                 },
                 "mbox": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                },
+                "gender": {
                     "type": "string",
                     "enum": [
                         "private",
@@ -606,8 +908,133 @@
                         "private",
                         "public"
                     ]
+                },
+                "calendarId": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
                 }
-            }
+            },
+            "required": [
+                "nick",
+                "givenName",
+                "familyName",
+                "mbox",
+                "gender",
+                "dob",
+                "depiction",
+                "bio",
+                "homeAddress",
+                "homeLocation",
+                "currentLocation",
+                "calendarId"
+            ]
+        },
+        "SearchResult": {
+            "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SearchMember"
+                    }
+                }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
+        },
+        "SearchMember": {
+            "properties": {
+                "@id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "@id"
+            ]
+        },
+        "Place": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "bookingInfo": {
+                    "$ref": "#/definitions/BookingInfo"
+                },
+                "terms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Term"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "address"
+            ]
+        },
+        "Organizer": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "phone": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        "BookingInfo": {
+            "properties": {
+                "currency": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "required": [
+                "price",
+                "currency",
+                "description"
+            ]
         },
         "command": {
             "required": [
@@ -635,6 +1062,47 @@
             ],
             "properties": {
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "label": {
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string"
+                }
+            }
+        },
+        "labelMultipleEvents": {
+            "required": [
+                "label",
+                "events"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "labelQuery": {
+            "required": [
+                "label",
+                "query"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "query": {
                     "type": "string"
                 }
             }
