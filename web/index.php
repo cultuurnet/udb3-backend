@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Event\EventLabellerServiceInterface;
 use CultuurNet\UDB3\Event\Title;
-use ValueObjects\Web\EmailAddress;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -59,22 +58,6 @@ $app['logger.search'] = $app->share(
 
 // Enable CORS.
 $app->after($app["cors"]);
-//$app->after(
-//    function (Request $request, Response $response, Application $app) {
-//        $origin = $request->headers->get('Origin');
-//        $origins = $app['config']['cors']['origins'];
-//        if (!empty($origins) && in_array($origin, $origins)) {
-//            $response->headers->set(
-//                'Access-Control-Allow-Origin',
-//                $origin
-//            );
-//            $response->headers->set(
-//                'Access-Control-Allow-Credentials',
-//                'true'
-//            );
-//        }
-//    }
-//);
 
 $app->before(
     function (Request $request) {
