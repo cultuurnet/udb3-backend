@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Event\EventLabellerServiceInterface;
 use CultuurNet\UDB3\Event\Title;
-use ValueObjects\Web\EmailAddress;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
