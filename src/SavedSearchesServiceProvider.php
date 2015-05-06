@@ -62,8 +62,8 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             $fixedRepository = new FixedSavedSearchRepository($user);
 
             $repository = new CombinedSavedSearchRepository(
-              $UiTIDRepository,
-              $fixedRepository
+              $fixedRepository,
+              $UiTIDRepository
             );
             return $repository;
         });
