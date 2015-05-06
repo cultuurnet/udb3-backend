@@ -70,7 +70,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "event history",
+                        "description": "The event history.",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -461,6 +461,41 @@
                     "Search"
                 ]
             }
+        },
+        "/command/{token}": {
+            "get": {
+                "summary": "View the staus of a an executed command.",
+                "operationId": "getCommandStatus",
+                "produces": [
+                    "text/plain; charset=utf-8"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The unique token (commandId) of a command as returned from POST or DELETE actions.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The command status.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "waiting",
+                                "running",
+                                "complete",
+                                "failed"
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Command"
+                ]
+            }
         }
     },
     "tags": [
@@ -491,6 +526,10 @@
         {
             "name": "Organizer",
             "description": "Operations related to organizers."
+        },
+        {
+            "name": "Command",
+            "description": "Operations related to commands."
         }
     ],
     "definitions": {
