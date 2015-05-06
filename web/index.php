@@ -59,22 +59,6 @@ $app['logger.search'] = $app->share(
 
 // Enable CORS.
 $app->after($app["cors"]);
-//$app->after(
-//    function (Request $request, Response $response, Application $app) {
-//        $origin = $request->headers->get('Origin');
-//        $origins = $app['config']['cors']['origins'];
-//        if (!empty($origins) && in_array($origin, $origins)) {
-//            $response->headers->set(
-//                'Access-Control-Allow-Origin',
-//                $origin
-//            );
-//            $response->headers->set(
-//                'Access-Control-Allow-Credentials',
-//                'true'
-//            );
-//        }
-//    }
-//);
 
 $app->before(
     function (Request $request) {
