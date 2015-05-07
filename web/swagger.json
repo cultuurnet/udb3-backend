@@ -71,7 +71,7 @@
                     "200": {
                         "description": "The event history.",
                         "schema": {
-                          "$ref": "#/definitions/EventHistory"
+                            "$ref": "#/definitions/EventHistory"
                         }
                     }
                 },
@@ -454,11 +454,11 @@
                         "format": "int32"
                     },
                     {
-                      "name": "sort",
-                      "in": "sort",
-                      "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space.\n\nFor example: `lastupdated asc`",
-                      "required": false,
-                      "type": "string"
+                        "name": "sort",
+                        "in": "query",
+                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space.\n\nFor example: `lastupdated asc`",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -594,7 +594,7 @@
                 ]
             }
         },
-        "/events/export/{type}": {
+        "/events/export/csv": {
             "post": {
                 "summary": "Request to generate an event list exported to a file.",
                 "description": "Authentication is required.",
@@ -604,18 +604,104 @@
                 ],
                 "parameters": [
                     {
-                        "name": "type",
-                        "in": "path",
-                        "description": "The type of file to generate.",
+                        "name": "body",
+                        "in": "body",
+                        "description": "A",
                         "required": true,
-                        "type": "string",
-                        "enum": [
-                            "ooxml",
-                            "json",
-                            "csv",
-                            "pdf"
-                        ]
-                    },
+                        "schema": {
+                            "$ref": "#/definitions/exportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Export",
+                    "Event"
+                ]
+            }
+        },
+        "/events/export/json": {
+            "post": {
+                "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
+                "operationId": "getEventExport",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "A",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/exportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Export",
+                    "Event"
+                ]
+            }
+        },
+        "/events/export/ooxml": {
+            "post": {
+                "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
+                "operationId": "getEventExport",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "A",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/exportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Export",
+                    "Event"
+                ]
+            }
+        },
+        "/events/export/pdf": {
+            "post": {
+                "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
+                "operationId": "getEventExport",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
                     {
                         "name": "body",
                         "in": "body",
@@ -694,19 +780,23 @@
                 },
                 "available": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
                 },
                 "image": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "http://media.uitdatabank.be/20150416/153cfa0f-0d22-451e-bfd1-490b7c4ef109.jpg"
                 },
                 "labels": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "tagged"
                     }
                 },
                 "calendarSummary": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Every first day of the month"
                 },
                 "location": {
                     "$ref": "#/definitions/Place"
@@ -724,26 +814,32 @@
                     }
                 },
                 "creator": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "evenementen@stad.diksmuide.be"
                 },
                 "created": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
                 },
                 "modified": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
                 },
                 "publisher": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Invoerders Algemeen"
                 },
                 "endDate": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
                 },
                 "startDate": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
                 },
                 "calendarType": {
                     "type": "string",
@@ -752,10 +848,12 @@
                         "permanent",
                         "periodic",
                         "single"
-                    ]
+                    ],
+                    "example": "permanent"
                 },
                 "typicalAgeRange": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "+18"
                 },
                 "performer": {
                     "type": "array",
@@ -766,13 +864,15 @@
                 "sameAs": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                        "type": "string",
+                        "example": "http://www.uitinvlaanderen.be/agenda/e/zomerse-vrijdagen-den-engel/0823f57e-a6bd-450a-b4f5-8459b4b11043"
                     }
                 },
                 "seeAlso": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "www.leuven.be"
                     }
                 }
             },
@@ -788,16 +888,20 @@
         "TranslatableString": {
             "properties": {
                 "nl": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Nederlands"
                 },
                 "de": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Deutch"
                 },
                 "en": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "English"
                 },
                 "fr": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Français"
                 }
             },
             "required": [
@@ -828,7 +932,13 @@
                 "addressLocality",
                 "postalCode",
                 "streetAddress"
-            ]
+            ],
+            "example": {
+                "addressCountry": "BE",
+                "addressLocality": "Leuven",
+                "postalCode": 3000,
+                "streetAddress": "Sluisstraat"
+            }
         },
         "Term": {
             "properties": {
@@ -846,7 +956,12 @@
                 "label",
                 "domain",
                 "id"
-            ]
+            ],
+            "example": {
+                "label": "Cycling",
+                "domain": "activities",
+                "id": "10.0.0.1"
+            }
         },
         "Performer": {
             "properties": {
@@ -857,13 +972,17 @@
             },
             "required": [
                 "name"
-            ]
+            ],
+            "example": {
+                "name": "Sindicato Sonico",
+                "description": "Sonico Sindicato"
+            }
         },
         "EventHistory": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/EventHistoryLog"
-          }
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/EventHistoryLog"
+            }
         },
         "EventHistoryLog": {
             "properties": {
@@ -1141,11 +1260,13 @@
             "properties": {
                 "itemsPerPage": {
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "example": 30
                 },
                 "totalItems": {
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "example": 3562
                 },
                 "member": {
                     "type": "array",
@@ -1168,7 +1289,10 @@
             },
             "required": [
                 "@id"
-            ]
+            ],
+            "example": {
+                "@id": "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+            }
         },
         "Place": {
             "properties": {
@@ -1194,7 +1318,11 @@
             "required": [
                 "name",
                 "address"
-            ]
+            ],
+            "example": {
+                "description": "This is the place to be",
+                "name": "Or not to be"
+            }
         },
         "Organizer": {
             "properties": {
@@ -1218,7 +1346,14 @@
             },
             "required": [
                 "name"
-            ]
+            ],
+            "example": {
+                "name": "STUK",
+                "email": "info@stuk.be",
+                "phone": [
+                    "016 320 300"
+                ]
+            }
         },
         "BookingInfo": {
             "properties": {
@@ -1232,26 +1367,36 @@
                     "type": "string"
                 },
                 "price": {
-                    "type": "float"
+                    "type": "number",
+                    "format": "float"
                 }
             },
             "required": [
                 "price",
                 "currency",
                 "description"
-            ]
+            ],
+            "example": {
+                "price": 0,
+                "currency": "EUR",
+                "description": "No need to pay anything",
+                "name": "Free"
+            }
         },
         "SavedSearch": {
             "properties": {
                 "id": {
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "example": 105
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Permanent in Rotselaar"
                 },
                 "query": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "city:Rotselaar AND permanent:TRUE"
                 }
             },
             "required": [
@@ -1262,10 +1407,12 @@
         "newSavedSearch": {
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Permanent in Rotselaar"
                 },
                 "query": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "city:Rotselaar AND permanent:TRUE"
                 }
             },
             "required": [
@@ -1276,27 +1423,24 @@
         "exportRequest": {
             "properties": {
                 "query": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "title:bio"
                 },
                 "selection": {
                     "type": "array",
                     "items": {
                         "type": "string",
                         "format": "uuid",
-                        "description": "A universally unique identifier."
+                        "description": "A universally unique identifier.",
+                        "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
                     }
-                },
-                "order": {
-                    "type": "object"
                 },
                 "include": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "author"
                     }
-                },
-                "perDay": {
-                    "type": "boolean"
                 },
                 "customizations": {
                     "$ref": "#/definitions/exportCustomizations"
@@ -1304,31 +1448,38 @@
                 "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email address."
+                    "description": "An email address.",
+                    "example": "evenementen@stad.diksmuide.be"
                 }
             }
         },
         "exportCustomizations": {
             "properties": {
                 "brand": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Uit"
                 },
                 "footer": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Hhmm, lekker"
                 },
                 "publisher": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "De Mechelse Bio boeren"
                 },
                 "subtitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Lekker en gezond eten in Mechelen"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Bio in Mechelen"
                 },
                 "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email address."
+                    "description": "An email address.",
+                    "example": "evenementen@stad.diksmuide.be"
                 }
             }
         },
@@ -1338,7 +1489,8 @@
             ],
             "properties": {
                 "commandId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "8cdc13e62efaecb9d8c21d59a29b9de4"
                 }
             }
         },
@@ -1348,7 +1500,8 @@
             ],
             "properties": {
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "This is a description of a cultural event."
                 }
             }
         },
@@ -1358,7 +1511,8 @@
             ],
             "properties": {
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "An event title"
                 }
             }
         },
@@ -1368,7 +1522,8 @@
             ],
             "properties": {
                 "label": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Bio"
                 }
             }
         },
@@ -1379,12 +1534,15 @@
             ],
             "properties": {
                 "label": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Bio"
                 },
                 "events": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "6e169e4a-32c8-4fca-a1ce-5beb2b2ac2cc"
                     }
                 }
             }
@@ -1396,10 +1554,12 @@
             ],
             "properties": {
                 "label": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Bio"
                 },
                 "query": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "6e169e4a-32c8-4fca-a1ce-5beb2b2ac2cc"
                 }
             }
         }
