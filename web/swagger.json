@@ -455,6 +455,13 @@
                         "required": false,
                         "type": "integer",
                         "format": "int32"
+                    },
+                    {
+                      "name": "sort",
+                      "in": "sort",
+                      "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space.\n\nFor example: `lastupdated asc`",
+                      "required": false,
+                      "type": "string"
                     }
                 ],
                 "responses": {
