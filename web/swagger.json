@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "title": "UiTdatabank v3",
-        "description": "Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\n",
+        "description": "Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\n\nMost operations require that you authenticate first with your UiTID.",
         "version": "3.0.0",
         "contact": {
             "name": "CultuurNet Vlaanderen vzw",
@@ -87,6 +87,7 @@
         "/event/{cdbid}/{lang}/title": {
             "post": {
                 "summary": "Translate the title of a cultural event.",
+                "description": "Authentication is required.",
                 "operationId": "translateEventTitle",
                 "produces": [
                     "application/json"
@@ -131,14 +132,14 @@
                     }
                 },
                 "tags": [
-                    "Event",
-                    "Requires authentication"
+                    "Event"
                 ]
             }
         },
         "/event/{cdbid}/{lang}/description": {
             "post": {
                 "summary": "Translate the description of a cultural event.",
+                "description": "Authentication is required.",
                 "operationId": "translateEventDescription",
                 "produces": [
                     "application/json"
@@ -183,14 +184,14 @@
                     }
                 },
                 "tags": [
-                    "Event",
-                    "Requires authentication"
+                    "Event"
                 ]
             }
         },
         "/event/{cdbid}/labels": {
             "post": {
                 "summary": "Add a label to a single cultural event.",
+                "description": "Authentication is required.",
                 "operationId": "addLabelToEvent",
                 "produces": [
                     "application/json"
@@ -224,14 +225,14 @@
                 },
                 "tags": [
                     "Event",
-                    "Label",
-                    "Requires authentication"
+                    "Label"
                 ]
             }
         },
         "/events/label": {
             "post": {
                 "summary": "Add a label to multiple cultural events.",
+                "description": "Authentication is required",
                 "operationId": "addLabelToEvents",
                 "produces": [
                     "application/json"
@@ -257,14 +258,14 @@
                 },
                 "tags": [
                     "Event",
-                    "Label",
-                    "Requires authentication"
+                    "Label"
                 ]
             }
         },
         "/event/{cdbid}/labels/{label}": {
             "delete": {
                 "summary": "Remove a label from a cultural event.",
+                "description": "Authentication is required.",
                 "operationId": "removeLabelFromEvent",
                 "produces": [
                     "application/json"
@@ -296,14 +297,14 @@
                 },
                 "tags": [
                     "Event",
-                    "Label",
-                    "Requires authentication"
+                    "Label"
                 ]
             }
         },
         "/query/label": {
             "post": {
                 "summary": "Add a label to a query",
+                "description": "Authentication is required.",
                 "operationId": "addLabelToQuery",
                 "produces": [
                     "application/json"
@@ -329,8 +330,7 @@
                 },
                 "tags": [
                     "Query",
-                    "Label",
-                    "Requires authentication"
+                    "Label"
                 ]
             }
         },
@@ -397,6 +397,7 @@
         "/api/1.0/user": {
             "get": {
                 "summary": "Retrieve all information about the current user.",
+                "description": "Authentication is required.",
                 "operationId": "getUserInformation",
                 "produces": [
                     "application/json"
@@ -410,14 +411,14 @@
                     }
                 },
                 "tags": [
-                    "User",
-                    "Requires authentication"
+                    "User"
                 ]
             }
         },
         "/api/1.0/user/labels": {
             "get": {
                 "summary": "Retrieve labels used recently by the current user.",
+                "description": "Authentication is required.",
                 "operationId": "getRecentlyUsedLabels",
                 "produces": [
                     "application/json"
@@ -428,14 +429,14 @@
                     }
                 },
                 "tags": [
-                    "User",
-                    "Requires authentication"
+                    "User"
                 ]
             }
         },
         "/api/1.0/search": {
             "get": {
                 "summary": "Retrieve events for a given search query with a given offset.",
+                "description": "Authentication is required.",
                 "operationId": "apiSearch",
                 "produces": [
                     "application/json"
@@ -473,14 +474,14 @@
                     }
                 },
                 "tags": [
-                    "Search",
-                    "Requires authentication"
+                    "Search"
                 ]
             }
         },
         "/command/{token}": {
             "get": {
                 "summary": "View the staus of a an executed command.",
+                "description": "Authentication is required.",
                 "operationId": "getCommandStatus",
                 "produces": [
                     "text/plain; charset=utf-8"
@@ -509,14 +510,14 @@
                     }
                 },
                 "tags": [
-                    "Command",
-                    "Requires authentication"
+                    "Command"
                 ]
             }
         },
         "/saved-searches": {
             "get": {
                 "summary": "Get a list of saved searches for the current user.",
+                "description": "Authentication is required.",
                 "operationId": "getSavedSearchs",
                 "produces": [
                     "application/json"
@@ -533,12 +534,12 @@
                     }
                 },
                 "tags": [
-                    "Saved search",
-                    "Requires authentication"
+                    "Saved search"
                 ]
             },
             "post": {
                 "summary": "Save a search for the current user.",
+                "description": "Authentication is required.",
                 "operationId": "addSavedSearch",
                 "produces": [
                     "application/json"
@@ -563,14 +564,14 @@
                     }
                 },
                 "tags": [
-                    "Saved search",
-                    "Requires authentication"
+                    "Saved search"
                 ]
             }
         },
         "/saved-searches/{id}": {
             "delete": {
                 "summary": "Remove a saved search for the current user.",
+                "description": "Authentication is required.",
                 "operationId": "removeSavedSearch",
                 "produces": [
                     "application/json"
@@ -593,14 +594,14 @@
                     }
                 },
                 "tags": [
-                    "Saved search",
-                    "Requires authentication"
+                    "Saved search"
                 ]
             }
         },
         "/events/export/{type}": {
             "post": {
                 "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
                 "operationId": "getEventExport",
                 "produces": [
                     "application/json"
@@ -639,8 +640,7 @@
                 },
                 "tags": [
                     "Export",
-                    "Event",
-                    "Requires authentication"
+                    "Event"
                 ]
             }
         }
@@ -685,10 +685,6 @@
         {
             "name": "Export",
             "description": "Operations related to exports."
-        },
-        {
-            "name": "Requires authentication",
-            "description": "Operations that need the user to be authenticated in the browser on the same domain."
         }
     ],
     "definitions": {
