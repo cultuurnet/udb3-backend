@@ -71,10 +71,7 @@
                     "200": {
                         "description": "The event history.",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/EventHistory"
-                            }
+                          "$ref": "#/definitions/EventHistory"
                         }
                     }
                 },
@@ -527,7 +524,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ExistingSavedSearch"
+                                "$ref": "#/definitions/SavedSearch"
                             }
                         }
                     }
@@ -863,6 +860,12 @@
             ]
         },
         "EventHistory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventHistoryLog"
+          }
+        },
+        "EventHistoryLog": {
             "properties": {
                 "date": {
                     "type": "string",
@@ -880,7 +883,12 @@
             "required": [
                 "date",
                 "description"
-            ]
+            ],
+            "example": {
+                "date": "2015-05-07T12:02:53+00:00",
+                "description": "Aangemaakt in UDB2",
+                "author": "johndoe@example.com"
+            }
         },
         "User": {
             "properties": {
@@ -1224,8 +1232,7 @@
                     "type": "string"
                 },
                 "price": {
-                    "type": "integer",
-                    "format": "int32"
+                    "type": "float"
                 }
             },
             "required": [
@@ -1234,7 +1241,7 @@
                 "description"
             ]
         },
-        "ExistingSavedSearch": {
+        "SavedSearch": {
             "properties": {
                 "id": {
                     "type": "integer",
@@ -1248,7 +1255,6 @@
                 }
             },
             "required": [
-                "id",
                 "name",
                 "query"
             ]
