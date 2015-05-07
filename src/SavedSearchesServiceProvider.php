@@ -5,6 +5,8 @@
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
+use CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory;
 use CultuurNet\UDB3\UDB2\Consumer;
@@ -53,8 +55,16 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
         });
 
         $app['saved_searches_repository'] = $app->share(function (Application $app) {
-            $repository = new UiTIDSavedSearchRepository($app['saved_searches']);
-            $repository->setLogger($app['saved_searches_logger']);
+            $UiTIDRepository = new UiTIDSavedSearchRepository($app['saved_searches']);
+            $UiTIDRepository->setLogger($app['saved_searches_logger']);
+
+            $user = $app['current_user'];
+            $fixedRepository = new FixedSavedSearchRepository($user);
+
+            $repository = new CombinedSavedSearchRepository(
+              $fixedRepository,
+              $UiTIDRepository
+            );
             return $repository;
         });
     }
