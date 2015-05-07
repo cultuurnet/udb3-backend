@@ -768,7 +768,10 @@
                     }
                 },
                 "sameAs": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
                 },
                 "seeAlso": {
                     "type": "array",
