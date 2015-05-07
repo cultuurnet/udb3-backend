@@ -25,8 +25,7 @@
                 "summary": "View the details of a specific cultural event.",
                 "operationId": "getEvent",
                 "produces": [
-                    "application/ld+json",
-                    "application/xml"
+                    "application/ld+json"
                 ],
                 "parameters": [
                     {
