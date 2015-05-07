@@ -874,13 +874,12 @@
                 "author": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email address."
+                    "description": "Email address of the author."
                 }
             },
             "required": [
                 "date",
-                "description",
-                "author"
+                "description"
             ]
         },
         "User": {
