@@ -655,7 +655,7 @@
         },
         {
             "name": "User",
-            "description": "Opertions related to users."
+            "description": "Operations related to users."
         },
         {
             "name": "Label",
@@ -815,7 +815,7 @@
                 },
                 "addressLocality": {
                     "type": "string",
-                    "description": "The lacality name of the location."
+                    "description": "The locality name of the location."
                 },
                 "postalCode": {
                     "type": "string",
@@ -874,7 +874,7 @@
                 "author": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email."
+                    "description": "An email address."
                 }
             },
             "required": [
@@ -888,7 +888,7 @@
                 "id": {
                     "type": "string",
                     "format": "uuid",
-                    "description": "A uuid."
+                    "description": "A universally unique identifier."
                 },
                 "preferredLanguage": {
                     "type": "string"
@@ -1200,7 +1200,7 @@
                 "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email."
+                    "description": "An email address."
                 },
                 "phone": {
                     "type": "array",
@@ -1278,7 +1278,7 @@
                     "items": {
                         "type": "string",
                         "format": "uuid",
-                        "description": "A uuid."
+                        "description": "A universally unique identifier."
                     }
                 },
                 "order": {
@@ -1299,7 +1299,7 @@
                 "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email."
+                    "description": "An email address."
                 }
             }
         },
@@ -1323,7 +1323,7 @@
                 "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email."
+                    "description": "An email address."
                 }
             }
         },
