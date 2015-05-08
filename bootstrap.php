@@ -835,14 +835,25 @@ $app['amqp-connection'] = $app->share(
             new \CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer()
         );
 
+        $consumeConfig = $amqpConfig['consume']['udb2'];
+
         $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
             $app['event_bus'],
-            $deserializerLocator
+            $deserializerLocator,
+            new String($amqpConfig['consumer_tag']),
+            new String($consumeConfig['exchange']),
+            new String($consumeConfig['queue'])
         );
 
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
         $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
+
+        $logFileHandler = new \Monolog\Handler\StreamHandler(
+            __DIR__ . '/log/amqp.log',
+            \Monolog\Logger::NOTICE
+        );
+        $logger->pushHandler($logFileHandler);
         $eventBusForwardingConsumer->setLogger($logger);
 
         return $connection;

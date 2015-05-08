@@ -53,5 +53,10 @@ amqp:
   user: foo
   password: bar
   vhost: example
+  consumer_tag: udb3
+    consume:
+      udb2:
+        exchange: udb2.e.prod
+        queue: udb3.q.prod.udb2
 prince:
   binary: /usr/local/bin/prince
