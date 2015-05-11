@@ -160,8 +160,6 @@ $app['auth_service'] = $app->share(
 
 $app['cache'] = $app->share(
     function ($app) {
-        $baseUrl = $app['config']['uitid']['base_url'];
-
         $baseCacheDirectory = __DIR__ . '/cache';
 
         return function ($cacheType) use ($baseCacheDirectory) {
@@ -213,13 +211,8 @@ $app['event_jsonld_repository'] = $app->share(
 );
 
 $app['place_jsonld_cache'] = $app->share(
-    function ($app) {
-        $baseUrl = $app['config']['uitid']['base_url'];
-        $urlParts = parse_url($baseUrl);
-        $cacheDirectory = __DIR__ . '/cache/' . $urlParts['host'];
-        $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory . '/jsonld/place');
-
-        return $cache;
+    function (Application $app) {
+        return $app['cache']('place_jsonld');
     }
 );
 
@@ -232,13 +225,8 @@ $app['place_jsonld_repository'] = $app->share(
 );
 
 $app['organizer_jsonld_cache'] = $app->share(
-    function ($app) {
-        $baseUrl = $app['config']['uitid']['base_url'];
-        $urlParts = parse_url($baseUrl);
-        $cacheDirectory = __DIR__ . '/cache/' . $urlParts['host'];
-        $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory . '/jsonld/organizer');
-
-        return $cache;
+    function (Application $app) {
+        return $app['cache']('organizer_jsonld');
     }
 );
 
