@@ -210,34 +210,6 @@ $app['event_jsonld_repository'] = $app->share(
     }
 );
 
-$app['place_jsonld_cache'] = $app->share(
-    function (Application $app) {
-        return $app['cache']('place_jsonld');
-    }
-);
-
-$app['place_jsonld_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['place_jsonld_cache']
-        );
-    }
-);
-
-$app['organizer_jsonld_cache'] = $app->share(
-    function (Application $app) {
-        return $app['cache']('organizer_jsonld');
-    }
-);
-
-$app['organizer_jsonld_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['organizer_jsonld_cache']
-        );
-    }
-);
-
 $app['event_jsonld_cache'] = $app->share(
     function (Application $app) {
         return $app['cache']('event_jsonld');
