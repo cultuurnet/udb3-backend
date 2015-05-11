@@ -112,10 +112,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "The title.",
+                        "description": "An object containing the title in the given language for the given cultural event.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/title"
+                            "$ref": "#/definitions/postObjectWithEventTitle"
                         }
                     }
                 ],
@@ -164,10 +164,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "The description.",
+                        "description": "An object containing the description in the given language for the given cultural event.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/description"
+                            "$ref": "#/definitions/postObjectWithEventDescription"
                         }
                     }
                 ],
@@ -204,10 +204,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "The label to attach to the cultural event.",
+                        "description": "An object containing the label to attach to the cultural event.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/label"
+                            "$ref": "#/definitions/postObjectWithEventLabel"
                         }
                     }
                 ],
@@ -240,7 +240,7 @@
                         "description": "An object containing information about the label and the cultural events.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/labelMultipleEvents"
+                            "$ref": "#/definitions/postObjectWithlabelAndMultipleEvents"
                         }
                     }
                 ],
@@ -312,7 +312,7 @@
                         "description": "An object containing information about the label and the query.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/labelQuery"
+                            "$ref": "#/definitions/postObjectWithLabelAndQuery"
                         }
                     }
                 ],
@@ -400,7 +400,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "The informatioon available about the current user.",
+                        "description": "The information available about the current user.",
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
@@ -421,7 +421,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A list of labels recently used by the current user."
+                        "description": "A list of labels recently used by the current user.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "example": "Label name"
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -501,7 +508,8 @@
                                 "running",
                                 "complete",
                                 "failed"
-                            ]
+                            ],
+                            "example": "complete"
                         }
                     }
                 },
@@ -544,10 +552,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "A saved search object.",
+                        "description": "An object containing the the required information to create a new saved search.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/newSavedSearch"
+                            "$ref": "#/definitions/postObjectWithNewSavedSearch"
                         }
                     }
                 ],
@@ -606,10 +614,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "A",
+                        "description": "An object containing the required information for an export of cultural events.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/exportRequest"
+                            "$ref": "#/definitions/postObjectForExportRequest"
                         }
                     }
                 ],
@@ -639,10 +647,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "A",
+                        "description": "An object containing the required information for an export of cultural events.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/exportRequest"
+                            "$ref": "#/definitions/postObjectForExportRequest"
                         }
                     }
                 ],
@@ -672,10 +680,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "A",
+                        "description": "An object containing the required information for an export of cultural events.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/exportRequest"
+                            "$ref": "#/definitions/postObjectForExportRequest"
                         }
                     }
                 ],
@@ -705,10 +713,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "A",
+                        "description": "An object containing the required information for an export of cultural events.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/exportRequest"
+                            "$ref": "#/definitions/postObjectForPdfExportRequest"
                         }
                     }
                 ],
@@ -829,7 +837,7 @@
                 },
                 "publisher": {
                     "type": "string",
-                    "example": "Invoerders Algemeen"
+                    "example": "Invoerders Algemeen "
                 },
                 "endDate": {
                     "type": "string",
@@ -912,19 +920,23 @@
             "properties": {
                 "addressCountry": {
                     "type": "string",
-                    "description": "The country code of the location."
+                    "description": "The country code of the location.",
+                    "example": "BE"
                 },
                 "addressLocality": {
                     "type": "string",
-                    "description": "The locality name of the location."
+                    "description": "The locality name of the location.",
+                    "example": "Leuven"
                 },
                 "postalCode": {
                     "type": "string",
-                    "description": "The postalcode of the location."
+                    "description": "The postalcode of the location.",
+                    "example": 3000
                 },
                 "streetAddress": {
                     "type": "string",
-                    "description": "The street name and number information of the location."
+                    "description": "The street name and number information of the location.",
+                    "example": "Sluisstraat 79"
                 }
             },
             "required": [
@@ -932,51 +944,40 @@
                 "addressLocality",
                 "postalCode",
                 "streetAddress"
-            ],
-            "example": {
-                "addressCountry": "BE",
-                "addressLocality": "Leuven",
-                "postalCode": 3000,
-                "streetAddress": "Sluisstraat"
-            }
+            ]
         },
         "Term": {
             "properties": {
                 "label": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Cycling"
                 },
                 "domain": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "activities"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "10.0.0.1"
                 }
             },
             "required": [
                 "label",
                 "domain",
                 "id"
-            ],
-            "example": {
-                "label": "Cycling",
-                "domain": "activities",
-                "id": "10.0.0.1"
-            }
+            ]
         },
         "Performer": {
             "properties": {
                 "name": {
                     "type": "string",
-                    "description": "The name of the performer."
+                    "description": "The name of the performer.",
+                    "example": "Sindicato Sonico"
                 }
             },
             "required": [
                 "name"
-            ],
-            "example": {
-                "name": "Sindicato Sonico",
-                "description": "Sonico Sindicato"
-            }
+            ]
         },
         "EventHistory": {
             "type": "array",
@@ -988,96 +989,114 @@
             "properties": {
                 "date": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Aangemaakt in UDB2"
                 },
                 "author": {
                     "type": "string",
                     "format": "email",
-                    "description": "Email address of the author."
+                    "description": "Email address of the author.",
+                    "example": "johndoe@example.com"
                 }
             },
             "required": [
                 "date",
                 "description"
-            ],
-            "example": {
-                "date": "2015-05-07T12:02:53+00:00",
-                "description": "Aangemaakt in UDB2",
-                "author": "johndoe@example.com"
-            }
+            ]
         },
         "User": {
             "properties": {
                 "id": {
                     "type": "string",
                     "format": "uuid",
-                    "description": "A universally unique identifier."
+                    "description": "A universally unique identifier.",
+                    "example": "6f072ba8-c510-40ac-b387-51f582650e27"
                 },
                 "preferredLanguage": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "nl"
                 },
                 "nick": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "El Pistolero"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": null
                 },
                 "givenName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Alberto"
                 },
                 "familyName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Contador"
                 },
                 "mbox": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "alberto@email.es"
                 },
                 "mboxVerified": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "gender": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "male"
                 },
                 "hasChildren": {
-                    "type": "string"
+                    "type": "boolean",
+                    "example": false
                 },
                 "dob": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "413074800"
                 },
                 "depiction": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "//media.uitid.be/fis/rest/download/ce126667652776f0e9e55160f12f5478/uiv/default.png"
                 },
                 "bio": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Alberto Contador is a Spanish professional cyclist, one of six riders to have won all three Grand Tours of road cycling."
                 },
                 "street": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Camino de San Anton"
                 },
                 "zip": {
-                    "type": "string"
+                    "type": "string",
+                    "example": 28320
                 },
                 "city": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Madrid"
                 },
                 "country": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Spain"
                 },
                 "lifestyleProfile": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Actieve ontspanner"
                 },
                 "homeLocation": {
-                    "$ref": "#/definitions/UserHomeLocation"
+                    "$ref": "#/definitions/UserLocation"
                 },
                 "currentLocation": {
-                    "type": "string"
+                    "$ref": "#/definitions/UserLocation"
                 },
                 "status": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "public"
                 },
                 "points": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "15"
                 },
                 "openid": {
                     "type": "string"
@@ -1085,7 +1104,7 @@
                 "holdsAccount": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/UserHoldsAccount"
+                        "$ref": "#/definitions/UserAccountType"
                     }
                 },
                 "privacyConfig": {
@@ -1099,51 +1118,62 @@
                 },
                 "adminPagesCount": {
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "example": 5
                 }
             },
             "required": [
                 "id"
             ]
         },
-        "UserHomeLocation": {
+        "UserLocation": {
             "properties": {
                 "lat": {
                     "type": "number",
-                    "format": "float"
+                    "format": "float",
+                    "example": "40.2410067"
                 },
                 "lng": {
                     "type": "number",
-                    "format": "float"
+                    "format": "float",
+                    "example": "-3.688426"
                 },
                 "radius": {
                     "type": "number",
-                    "format": "float"
+                    "format": "float",
+                    "example": 3.45
                 }
             }
         },
-        "UserHoldsAccount": {
+        "UserAccountType": {
             "properties": {
                 "accountType": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "google"
                 },
                 "accountServiceHomepage": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "http://www.google.com"
                 },
                 "accountName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": 101802992566828990000
                 },
                 "accountNick": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "El Pistolero"
                 },
                 "accountDepiction": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "//media.uitid.be/fis/download/ce126667652776f0e9e55160f12f5478/6e57ac2f-ca1c-460d-9f28-ad7506da7ed1/photo.jpg"
                 },
                 "private": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "publishActivities": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": false
                 }
             }
         },
@@ -1154,91 +1184,104 @@
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "givenName": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "familyName": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "mbox": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "gender": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "public"
                 },
                 "dob": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "public"
                 },
                 "depiction": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "public"
                 },
                 "bio": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "public"
                 },
                 "homeAddress": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "homeLocation": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "currentLocation": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "openid": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 },
                 "calendarId": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "private"
                 }
             },
             "required": [
@@ -1284,23 +1327,23 @@
         "SearchMember": {
             "properties": {
                 "@id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
                 }
             },
             "required": [
                 "@id"
-            ],
-            "example": {
-                "@id": "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
-            }
+            ]
         },
         "Place": {
             "properties": {
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Or not to be."
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "This is the place to be"
                 },
                 "address": {
                     "$ref": "#/definitions/Address"
@@ -1318,16 +1361,13 @@
             "required": [
                 "name",
                 "address"
-            ],
-            "example": {
-                "description": "This is the place to be",
-                "name": "Or not to be"
-            }
+            ]
         },
         "Organizer": {
             "properties": {
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "STUK"
                 },
                 "address": {
                     "$ref": "#/definitions/Address"
@@ -1335,53 +1375,46 @@
                 "email": {
                     "type": "string",
                     "format": "email",
-                    "description": "An email address."
+                    "description": "An email address.",
+                    "example": "info@stuk.be"
                 },
                 "phone": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "016 320 300"
                     }
                 }
             },
             "required": [
                 "name"
-            ],
-            "example": {
-                "name": "STUK",
-                "email": "info@stuk.be",
-                "phone": [
-                    "016 320 300"
-                ]
-            }
+            ]
         },
         "BookingInfo": {
             "properties": {
                 "currency": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "EUR"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "No need to pay anything"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Free"
                 },
                 "price": {
                     "type": "number",
-                    "format": "float"
+                    "format": "float",
+                    "example": 0
                 }
             },
             "required": [
                 "price",
                 "currency",
                 "description"
-            ],
-            "example": {
-                "price": 0,
-                "currency": "EUR",
-                "description": "No need to pay anything",
-                "name": "Free"
-            }
+            ]
         },
         "SavedSearch": {
             "properties": {
@@ -1400,11 +1433,12 @@
                 }
             },
             "required": [
+                "id",
                 "name",
                 "query"
             ]
         },
-        "newSavedSearch": {
+        "postObjectWithNewSavedSearch": {
             "properties": {
                 "name": {
                     "type": "string",
@@ -1420,7 +1454,7 @@
                 "query"
             ]
         },
-        "exportRequest": {
+        "postObjectForExportRequest": {
             "properties": {
                 "query": {
                     "type": "string",
@@ -1431,7 +1465,7 @@
                     "items": {
                         "type": "string",
                         "format": "uuid",
-                        "description": "A universally unique identifier.",
+                        "description": "A universally unique identifier for a cultural event.",
                         "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
                     }
                 },
@@ -1440,6 +1474,29 @@
                     "items": {
                         "type": "string",
                         "example": "author"
+                    }
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "An email address.",
+                    "example": "evenementen@stad.diksmuide.be"
+                }
+            }
+        },
+        "postObjectForPdfExportRequest": {
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "example": "title:bio"
+                },
+                "selection": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "A universally unique identifier for a cultural event.",
+                        "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
                     }
                 },
                 "customizations": {
@@ -1461,25 +1518,25 @@
                 },
                 "footer": {
                     "type": "string",
-                    "example": "Hhmm, lekker"
+                    "example": "Organic for the win"
                 },
                 "publisher": {
                     "type": "string",
-                    "example": "De Mechelse Bio boeren"
+                    "example": "MechelenOrganic"
                 },
                 "subtitle": {
                     "type": "string",
-                    "example": "Lekker en gezond eten in Mechelen"
+                    "example": "Delicious & healthy food in Mechelen"
                 },
                 "title": {
                     "type": "string",
-                    "example": "Bio in Mechelen"
+                    "example": "Organic in Mechelen"
                 },
                 "email": {
                     "type": "string",
                     "format": "email",
                     "description": "An email address.",
-                    "example": "evenementen@stad.diksmuide.be"
+                    "example": "organic@mechelen.be"
                 }
             }
         },
@@ -1494,29 +1551,29 @@
                 }
             }
         },
-        "description": {
-            "required": [
-                "description"
-            ],
+        "postObjectWithEventDescription": {
             "properties": {
                 "description": {
                     "type": "string",
                     "example": "This is a description of a cultural event."
                 }
-            }
-        },
-        "title": {
+            },
             "required": [
-                "title"
-            ],
+                "description"
+            ]
+        },
+        "postObjectWithEventTitle": {
             "properties": {
                 "title": {
                     "type": "string",
                     "example": "An event title"
                 }
-            }
+            },
+            "required": [
+                "title"
+            ]
         },
-        "label": {
+        "postObjectWithEventLabel": {
             "required": [
                 "label"
             ],
@@ -1527,11 +1584,7 @@
                 }
             }
         },
-        "labelMultipleEvents": {
-            "required": [
-                "label",
-                "events"
-            ],
+        "postObjectWithlabelAndMultipleEvents": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -1545,13 +1598,13 @@
                         "example": "6e169e4a-32c8-4fca-a1ce-5beb2b2ac2cc"
                     }
                 }
-            }
-        },
-        "labelQuery": {
+            },
             "required": [
                 "label",
-                "query"
-            ],
+                "events"
+            ]
+        },
+        "postObjectWithLabelAndQuery": {
             "properties": {
                 "label": {
                     "type": "string",
@@ -1561,7 +1614,11 @@
                     "type": "string",
                     "example": "6e169e4a-32c8-4fca-a1ce-5beb2b2ac2cc"
                 }
-            }
+            },
+            "required": [
+                "label",
+                "query"
+            ]
         }
     }
 }
