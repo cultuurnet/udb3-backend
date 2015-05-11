@@ -668,7 +668,7 @@ $app['udb2_actor_cdbxml_provider'] = $app->share(
 
 $app['udb2_place_importer'] = $app->share(
     function (Application $app) {
-        $importer = new \CultuurNet\UDB3\UDB2\PlaceCdbXmlImporter(
+        $importer = new \CultuurNet\UDB3\UDB2\Place\PlaceCdbXmlImporter(
             $app['udb2_actor_cdbxml_provider'],
             $app['real_place_repository']
         );
@@ -696,7 +696,7 @@ $app['real_place_repository'] = $app->share(
 
 $app['place_repository'] = $app->share(
     function ($app) {
-        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\PlaceRepository(
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\Place\PlaceRepository(
             $app['real_place_repository'],
             $app['udb2_entry_api_improved_factory'],
             $app['udb2_place_importer'],
@@ -777,7 +777,7 @@ $app['organizer_store'] = $app->share(
 
 $app['udb2_organizer_importer'] = $app->share(
     function (Application $app) {
-        $importer = new \CultuurNet\UDB3\UDB2\OrganizerCdbXmlImporter(
+        $importer = new \CultuurNet\UDB3\UDB2\Organizer\OrganizerCdbXmlImporter(
             $app['udb2_actor_cdbxml_provider'],
             $app['real_organizer_repository']
         );
@@ -805,7 +805,7 @@ $app['real_organizer_repository'] = $app->share(
 
 $app['organizer_repository'] = $app->share(
     function ($app) {
-        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\OrganizerRepository(
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\Organizer\OrganizerRepository(
             $app['real_organizer_repository'],
             $app['udb2_entry_api_improved_factory'],
             $app['udb2_organizer_importer'],
