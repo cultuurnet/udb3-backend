@@ -1,0 +1,4 @@
+name: UDB3 Migrations
+migrations_namespace: CultuurNet\UDB3\Silex\Migrations
+table_name: doctrine_migration_versions
+migrations_directory: src/Migrations

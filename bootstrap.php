@@ -18,6 +18,7 @@ $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -96,7 +97,7 @@ $app['search_service'] = $app->share(
 $app['event_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\LocalEventService(
-            $app['eventld_repository'],
+            $app['event_jsonld_repository'],
             $app['event_repository'],
             $app['event_relations_repository'],
             $app['iri_generator']
@@ -157,22 +158,37 @@ $app['auth_service'] = $app->share(
     }
 );
 
-$app['event_jsonld_cache'] = $app->share(
+$app['cache'] = $app->share(
     function ($app) {
         $baseUrl = $app['config']['uitid']['base_url'];
-        $urlParts = parse_url($baseUrl);
-        $cacheDirectory = __DIR__ . '/cache/' . $urlParts['host'];
-        $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory . '/jsonld/event');
 
-        return $cache;
+        $baseCacheDirectory = __DIR__ . '/cache';
+
+        return function ($cacheType) use ($baseCacheDirectory) {
+            $cacheDirectory = $baseCacheDirectory . '/' . $cacheType;
+
+            $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory);
+
+            return $cache;
+        };
     }
 );
 
 $app['dbal_connection'] = $app->share(
     function ($app) {
-        $connection = \Doctrine\DBAL\DriverManager::getConnection(
-            $app['config']['database']
+        $eventManager = new \Doctrine\Common\EventManager();
+        $sqlMode = 'NO_ENGINE_SUBSTITUTION,STRICT_ALL_TABLES';
+        $query = "SET SESSION sql_mode = '{$sqlMode}'";
+        $eventManager->addEventSubscriber(
+            new \Doctrine\DBAL\Event\Listeners\SQLSessionInit($query)
         );
+
+        $connection = \Doctrine\DBAL\DriverManager::getConnection(
+            $app['config']['database'],
+            null,
+            $eventManager
+        );
+
         return $connection;
     }
 );
@@ -181,14 +197,14 @@ $app['event_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'events'
         );
     }
 );
 
-$app['eventld_repository'] = $app->share(
+$app['event_jsonld_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
             $app['event_jsonld_cache']
@@ -234,10 +250,16 @@ $app['organizer_jsonld_repository'] = $app->share(
     }
 );
 
+$app['event_jsonld_cache'] = $app->share(
+    function (Application $app) {
+        return $app['cache']('event_jsonld');
+    }
+);
+
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Event\EventLDProjector(
-            $app['eventld_repository'],
+            $app['event_jsonld_repository'],
             $app['iri_generator'],
             $app['event_service'],
             $app['place_service'],
@@ -248,6 +270,28 @@ $app['event_jsonld_projector'] = $app->share(
         $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\StripSourceStringFilter());
 
         return $projector;
+    }
+);
+
+$app['event_calendar_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
+            $app['event_calendar_cache']
+        );
+    }
+);
+
+$app['event_calendar_cache'] = $app->share(
+    function (Application $app) {
+        return $app['cache']('event_calendar');
+    }
+);
+
+$app['event_calendar_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector(
+            $app['event_calendar_repository']
+        );
     }
 );
 
@@ -278,13 +322,8 @@ $app['event_history_repository'] = $app->share(
 );
 
 $app['event_history_cache'] = $app->share(
-    function ($app) {
-        $baseUrl = $app['config']['uitid']['base_url'];
-        $urlParts = parse_url($baseUrl);
-        $cacheDirectory = __DIR__ . '/cache/' . $urlParts['host'] . '/history';
-        $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory);
-
-        return $cache;
+    function (Application $app) {
+        return $app['cache']('event_history');
     }
 );
 
@@ -314,18 +353,21 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['event_history_projector']
             );
-        });
 
-        return $eventBus;
-    }
-);
+            // Subscribe Place JSON-LD projector.
+            $eventBus->subscribe(
+                $app['place_jsonld_projector']
+            );
 
-$app['read_models_event_bus'] = $app->share(
-    function ($app) {
-        $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
+            // Subscribe Organizer JSON-LD projector.
+            $eventBus->subscribe(
+                $app['organizer_jsonld_projector']
+            );
 
-        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
-            $eventBus->subscribe($app['event_jsonld_projector']);
+            // Subscribe projector for the Calendar read model.
+            $eventBus->subscribe(
+                $app['event_calendar_projector']
+            );
         });
 
         return $eventBus;
@@ -362,25 +404,47 @@ $app['real_event_repository'] = $app->share(
   }
 );
 
+$app['udb2_event_importer_factory'] = $app->share(
+    function (Application $app) {
+        $logger = new \Monolog\Logger('udb2-event-importer');
+
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        return function(\CultuurNet\UDB3\UDB2\EventCdbXmlServiceInterface $cdbXmlService) use ($app, $logger) {
+            $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
+                $cdbXmlService,
+                $app['real_event_repository'],
+                $app['place_service'],
+                $app['organizer_service']
+            );
+
+            $importer->setLogger(
+                $logger
+            );
+
+            return $importer;
+        };
+    }
+);
+
 $app['udb2_event_importer'] = $app->share(
     function (Application $app) {
         $cdbXmlService = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
             $app['search_api_2']
         );
 
-        $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
-            $cdbXmlService,
-            $app['real_event_repository'],
-            $app['place_service'],
-            $app['organizer_service']
+        return $app['udb2_event_importer_factory']($cdbXmlService);
+    }
+);
+
+$app['udb2_event_importer_including_past_events'] = $app->share(
+    function (Application $app) {
+        $cdbXmlService = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
+            $app['search_api_2'],
+            true
         );
 
-        $logger = new \Monolog\Logger('udb2-event-importer');
-        $logger->pushHandler($app['udb2_log_handler']);
-
-        $importer->setLogger($logger);
-
-        return $importer;
+        return $app['udb2_event_importer_factory']($cdbXmlService);
     }
 );
 
@@ -520,34 +584,37 @@ $app['event_command_bus'] = $app->share(
         );
         $commandBus->subscribe(
             new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
-                $app['event_export']
+                $app['event_export'],
+                $app['config']['prince']['binary'],
+                new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
+                    $app['uitpas']
+                ),
+                $app['event_calendar_repository']
+            )
+        );
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
+                $app['saved_searches_service_factory']
             )
         );
         return $commandBus;
     }
 );
 
-$app['used_keywords_event_bus'] = $app->share(
+$app['used_labels_memory'] = $app->share(
     function ($app) {
-        $eventBus = new \Broadway\EventHandling\SimpleEventBus();
-        return $eventBus;
-    }
-);
-
-$app['used_keywords_memory'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\UsedKeywordsMemory\DefaultUsedKeywordsMemoryService(
-            new \CultuurNet\UDB3\UsedKeywordsMemory\UsedKeywordsMemoryRepository(
+        return new \CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService(
+            new \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryRepository(
                 $app['event_store'],
-                $app['used_keywords_event_bus']
+                $app['event_bus']
             )
         );
     }
 );
 
-$app['event_tagger'] = $app->share(
+$app['event_labeller'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Event\DefaultEventTaggerService(
+        return new \CultuurNet\UDB3\Event\DefaultEventLabellerService(
             $app['event_service'],
             $app['event_command_bus']
         );
@@ -583,24 +650,24 @@ $app['place_jsonld_projector'] = $app->share(
         $projector = new \CultuurNet\UDB3\Place\PlaceLDProjector(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
-            $app['read_models_event_bus']
+            $app['event_bus']
         );
 
         return $projector;
     }
 );
 
-$app['place_event_bus'] = $app->share(
+$app['place_jsonld_repository'] = $app->share(
     function ($app) {
-        $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['place_jsonld_cache']
+        );
+    }
+);
 
-        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
-            $eventBus->subscribe(
-                $app['place_jsonld_projector']
-            );
-        });
-
-        return $eventBus;
+$app['place_jsonld_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('place_jsonld');
     }
 );
 
@@ -616,7 +683,7 @@ $app['place_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'places'
         );
@@ -659,7 +726,7 @@ $app['real_place_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
             $app['place_store'],
-            $app['place_event_bus'],
+            $app['event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -712,21 +779,28 @@ $app['organizer_jsonld_projector'] = $app->share(
       return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
           $app['organizer_jsonld_repository'],
           $app['organizer_iri_generator'],
-          $app['organizer_event_bus']
+          $app['event_bus']
       );
   }
 );
 
-$app['organizer_event_bus'] = $app->share(
+$app['organizer_jsonld_repository'] = $app->share(
     function ($app) {
-        $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
-        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
-           $eventBus->subscribe(
-               $app['organizer_jsonld_projector']
-           );
-        });
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['organizer_jsonld_cache']
+        );
+    }
+);
 
-        return $eventBus;
+$app['organizer_jsonld_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('organizer_jsonld');
+    }
+);
+
+$app['eventstore_payload_serializer'] = $app->share(
+    function () {
+        return \CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory::createSerializer();
     }
 );
 
@@ -734,7 +808,7 @@ $app['organizer_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'organizers'
         );
@@ -761,7 +835,7 @@ $app['real_organizer_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
-            $app['organizer_event_bus'],
+            $app['event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -858,6 +932,7 @@ $app['amqp-connection'] = $app->share(
             new \CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer()
         );
 
+
         $deserializerLocator->registerDeserializer(
             new String(
                 'application/vnd.cultuurnet.udb2-events.actor-created+json'
@@ -872,17 +947,56 @@ $app['amqp-connection'] = $app->share(
             new \CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer()
         );
 
+        $consumeConfig = $amqpConfig['consume']['udb2'];
+
         $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
             $app['event_bus'],
-            $deserializerLocator
+            $deserializerLocator,
+            new String($amqpConfig['consumer_tag']),
+            new String($consumeConfig['exchange']),
+            new String($consumeConfig['queue'])
         );
 
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
         $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
+
+        $logFileHandler = new \Monolog\Handler\StreamHandler(
+            __DIR__ . '/log/amqp.log',
+            \Monolog\Logger::NOTICE
+        );
+        $logger->pushHandler($logFileHandler);
         $eventBusForwardingConsumer->setLogger($logger);
 
         return $connection;
+    }
+);
+
+$app['culturefeed'] = $app->share(
+    function (Application $app) {
+        $uitidConfig = $app['config']['uitid'];
+        $baseUrl = $uitidConfig['base_url'];
+
+        /** @var \CultuurNet\Auth\ConsumerCredentials $consumerCredentials */
+        $consumerCredentials = $app['uitid_consumer_credentials'];
+
+        $oauthClient = new \CultureFeed_DefaultOAuthClient(
+            $consumerCredentials->getKey(),
+            $consumerCredentials->getSecret()
+        );
+        $oauthClient->setEndpoint($baseUrl);
+
+        $cultureFeed = new \CultureFeed($oauthClient);
+
+        return $cultureFeed;
+    }
+);
+
+$app['uitpas'] = $app->share(
+    function (Application $app) {
+        /** @var CultureFeed $culturefeed */
+        $cultureFeed = $app['culturefeed'];
+        return $cultureFeed->uitpas();
     }
 );
 

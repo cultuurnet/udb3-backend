@@ -9,9 +9,8 @@ use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
-use CultuurNet\UDB3\Event\EventTaggerServiceInterface;
+use CultuurNet\UDB3\Event\EventLabellerServiceInterface;
 use CultuurNet\UDB3\Event\Title;
-use ValueObjects\Web\EmailAddress;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -59,22 +58,6 @@ $app['logger.search'] = $app->share(
 
 // Enable CORS.
 $app->after($app["cors"]);
-//$app->after(
-//    function (Request $request, Response $response, Application $app) {
-//        $origin = $request->headers->get('Origin');
-//        $origins = $app['config']['cors']['origins'];
-//        if (!empty($origins) && in_array($origin, $origins)) {
-//            $response->headers->set(
-//                'Access-Control-Allow-Origin',
-//                $origin
-//            );
-//            $response->headers->set(
-//                'Access-Control-Allow-Credentials',
-//                'true'
-//            );
-//        }
-//    }
-//);
 
 $app->before(
     function (Request $request) {
@@ -268,38 +251,12 @@ $app->get(
 );
 
 $app->get(
-    'db_init',
-    function (Request $request, Application $app) {
-
-        /** @var \Broadway\EventStore\DBALEventStore[] $stores */
-        $stores = array(
-            $app['event_store'],
-            $app['place_store'],
-            $app['organizer_store'],
-            $app['event_relations_repository']
-        );
-
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = $app['dbal_connection'];
-
-        $schemaManager = $connection->getSchemaManager();
-        $schema = $schemaManager->createSchema();
-
-        foreach ($stores as $store) {
-            $table = $store->configureSchema($schema);
-            if ($table) {
-                $schemaManager->createTable($table);
-            }
-        }
-    }
-);
-
-$app->get(
     'api/1.0/search',
     function (Request $request, Application $app) {
         $query = $request->query->get('query', '*.*');
         $limit = $request->query->get('limit', 30);
         $start = $request->query->get('start', 0);
+        $sort  = $request->query->get('sort', 'lastupdated desc');
 
         /** @var Psr\Log\LoggerInterface $logger */
         $logger = $app['logger.search'];
@@ -309,7 +266,7 @@ $app->get(
         /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
         $searchService = $app['search_service'];
         try {
-            $results = $searchService->search($query, $limit, $start);
+            $results = $searchService->search($query, $limit, $start, $sort);
             $logger->info(
                 "Search for: {$query}",
                 array('user' => $user->nick)
@@ -445,7 +402,7 @@ $app
 
 $app
     ->post(
-        'event/{cdbid}/keywords',
+        'event/{cdbid}/labels',
         function (Request $request, Application $app, $cdbid) {
             /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
             $service = $app['event_editor'];
@@ -453,17 +410,17 @@ $app
             $response = new JsonResponse();
 
             try {
-                $keyword = new \CultuurNet\UDB3\Keyword($request->request->get('keyword'));
-                $commandId = $service->tag(
+                $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
+                $commandId = $service->label(
                     $cdbid,
-                    $keyword
+                    $label
                 );
 
                 /** @var CultureFeed_User $user */
                 $user = $app['current_user'];
-                $app['used_keywords_memory']->rememberKeywordUsed(
+                $app['used_labels_memory']->rememberLabelUsed(
                     $user->id,
-                    $keyword
+                    $label
                 );
 
                 $response->setData(['commandId' => $commandId]);
@@ -479,17 +436,17 @@ $app
 
 $app
     ->delete(
-        'event/{cdbid}/keywords/{keyword}',
-        function (Request $request, Application $app, $cdbid, $keyword) {
+        'event/{cdbid}/labels/{label}',
+        function (Request $request, Application $app, $cdbid, $label) {
             /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
             $service = $app['event_editor'];
 
             $response = new JsonResponse();
 
             try {
-                $commandId = $service->eraseTag(
+                $commandId = $service->unlabel(
                     $cdbid,
-                    new \CultuurNet\UDB3\Keyword($keyword)
+                    new \CultuurNet\UDB3\Label($label)
                 );
 
                 $response->setData(['commandId' => $commandId]);
@@ -518,12 +475,12 @@ $app->get(
 )->before($checkAuthenticated);
 
 $app->get(
-    'api/1.0/user/keywords',
+    'api/1.0/user/labels',
     function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\UsedKeywordsMemory\UsedKeywordsMemoryServiceInterface $usedKeywordsMemoryService */
-        $usedKeywordsMemoryService = $app['used_keywords_memory'];
+        /** @var \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface $usedLabelsMemoryService */
+        $usedLabelsMemoryService = $app['used_labels_memory'];
         $user = $app['current_user'];
-        $memory = $usedKeywordsMemoryService->getMemory($user->id);
+        $memory = $usedLabelsMemoryService->getMemory($user->id);
 
         return JsonResponse::create($memory);
     }
@@ -548,24 +505,24 @@ $app->post(
 )->before($checkAuthenticated);
 
 $app->post(
-    'events/tag',
+    'events/label',
     function (Request $request, Application $app) {
-        /** @var EventTaggerServiceInterface $eventTagger */
-        $eventTagger = $app['event_tagger'];
+        /** @var EventLabellerServiceInterface $eventLabeller */
+        $eventLabeller = $app['event_labeller'];
 
-        $keyword = new \CultuurNet\UDB3\Keyword($request->request->get('keyword'));
+        $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
         $eventIds = $request->request->get('events');
 
         $response = new JsonResponse();
 
         try {
-            $commandId = $eventTagger->tagEventsById($eventIds, $keyword);
+            $commandId = $eventLabeller->labelEventsById($eventIds, $label);
 
             /** @var CultureFeed_User $user */
             $user = $app['current_user'];
-            $app['used_keywords_memory']->rememberKeywordUsed(
+            $app['used_labels_memory']->rememberLabelUsed(
                 $user->id,
-                $keyword
+                $label
             );
 
             $response->setData(['commandId' => $commandId]);
@@ -578,10 +535,10 @@ $app->post(
     }
 )->before($checkAuthenticated);
 
-$app->post('query/tag',
+$app->post('query/label',
     function (Request $request, Application $app) {
-        /** @var EventTaggerServiceInterface $eventTagger */
-        $eventTagger = $app['event_tagger'];
+        /** @var EventLabellerServiceInterface $eventLabeller */
+        $eventLabeller = $app['event_labeller'];
 
         $query = $request->request->get('query', false);
         if (!$query) {
@@ -589,14 +546,14 @@ $app->post('query/tag',
         }
 
         try {
-            $keyword = new \CultuurNet\UDB3\Keyword($request->request->get('keyword'));
-            $commandId = $eventTagger->tagQuery($query, $keyword);
+            $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
+            $commandId = $eventLabeller->labelQuery($query, $label);
 
             /** @var CultureFeed_User $user */
             $user = $app['current_user'];
-            $app['used_keywords_memory']->rememberKeywordUsed(
+            $app['used_labels_memory']->rememberLabelUsed(
                 $user->id,
-                $keyword
+                $label
             );
 
             return new JsonResponse(['commandId' => $commandId]);
@@ -672,5 +629,8 @@ $app
     ->bind('organizer');
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\ExportEventsControllerProvider());
+
+$app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
+$app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 
 $app->run();
