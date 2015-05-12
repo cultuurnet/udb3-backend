@@ -1,0 +1,1626 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "UiTdatabank v3",
+        "description": "Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\n\nMost operations require that you authenticate first with your UiTID.",
+        "version": "3.0.0",
+        "contact": {
+            "name": "CultuurNet Vlaanderen vzw",
+            "url": "http://www.cultuurnet.be",
+            "email": "info@uitdatabank.be"
+        }
+    },
+    "basePath": "/",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json",
+        "application/ld+json",
+        "application/xml"
+    ],
+    "paths": {
+        "/event/{cdbid}": {
+            "get": {
+                "summary": "View the details of a specific cultural event.",
+                "operationId": "getEvent",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Event"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
+        "/event/{cdbid}/history": {
+            "get": {
+                "summary": "View the change log / history of a specific cultural event.",
+                "operationId": "getEventHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The event history.",
+                        "schema": {
+                            "$ref": "#/definitions/EventHistory"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
+        "/event/{cdbid}/{lang}/title": {
+            "post": {
+                "summary": "Translate the title of a cultural event.",
+                "description": "Authentication is required.",
+                "operationId": "translateEventTitle",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the title in the given language for the given cultural event.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithEventTitle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
+        "/event/{cdbid}/{lang}/description": {
+            "post": {
+                "summary": "Translate the description of a cultural event.",
+                "description": "Authentication is required.",
+                "operationId": "translateEventDescription",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the description in the given language for the given cultural event.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithEventDescription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
+        "/event/{cdbid}/labels": {
+            "post": {
+                "summary": "Add a label to a single cultural event.",
+                "description": "Authentication is required.",
+                "operationId": "addLabelToEvent",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the label to attach to the cultural event.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithEventLabel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Label"
+                ]
+            }
+        },
+        "/events/label": {
+            "post": {
+                "summary": "Add a label to multiple cultural events.",
+                "description": "Authentication is required",
+                "operationId": "addLabelToEvents",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing information about the label and the cultural events.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithlabelAndMultipleEvents"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Label"
+                ]
+            }
+        },
+        "/event/{cdbid}/labels/{label}": {
+            "delete": {
+                "summary": "Remove a label from a cultural event.",
+                "description": "Authentication is required.",
+                "operationId": "removeLabelFromEvent",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "description": "The label to remove from the cultural event.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Label"
+                ]
+            }
+        },
+        "/query/label": {
+            "post": {
+                "summary": "Add a label to a query",
+                "description": "Authentication is required.",
+                "operationId": "addLabelToQuery",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing information about the label and the query.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithLabelAndQuery"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Query",
+                    "Label"
+                ]
+            }
+        },
+        "/place/{cdbid}": {
+            "get": {
+                "summary": "View the details of a specific place.",
+                "operationId": "getPlace",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Place"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
+        "/organizer/{cdbid}": {
+            "get": {
+                "summary": "View the details of a specific organizer.",
+                "operationId": "getOrganizer",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the organizer.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Organizer"
+                        }
+                    }
+                },
+                "tags": [
+                    "Organizer"
+                ]
+            }
+        },
+        "/api/1.0/user": {
+            "get": {
+                "summary": "Retrieve all information about the current user.",
+                "description": "Authentication is required.",
+                "operationId": "getUserInformation",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The information available about the current user.",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ]
+            }
+        },
+        "/api/1.0/user/labels": {
+            "get": {
+                "summary": "Retrieve labels used recently by the current user.",
+                "description": "Authentication is required.",
+                "operationId": "getRecentlyUsedLabels",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of labels recently used by the current user.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "example": "Label name"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "User"
+                ]
+            }
+        },
+        "/api/1.0/search": {
+            "get": {
+                "summary": "Retrieve events for a given search query with a given start and limit.",
+                "description": "Authentication is required.",
+                "operationId": "apiSearch",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The search query to execute.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The limit of events included in the result set. When omitted it defaults to 30 items.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "The number of events to skip from the start of the result set.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space. A list of sortable fields is available at: https://docs.google.com/spreadsheets/d/1Y0DPDrPXNx45ePCo7N2fGknFO9AQDuf_m7dK_PpYBzM. The default order is 'lastupdated desc'.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of events",
+                        "schema": {
+                            "$ref": "#/definitions/SearchResult"
+                        }
+                    }
+                },
+                "tags": [
+                    "Search"
+                ]
+            }
+        },
+        "/command/{token}": {
+            "get": {
+                "summary": "View the staus of a an executed command.",
+                "description": "Authentication is required.",
+                "operationId": "getCommandStatus",
+                "produces": [
+                    "text/plain; charset=utf-8"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "The unique token (commandId) of a command as returned from POST or DELETE actions.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The command status.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "waiting",
+                                "running",
+                                "complete",
+                                "failed"
+                            ],
+                            "example": "complete"
+                        }
+                    }
+                },
+                "tags": [
+                    "Command"
+                ]
+            }
+        },
+        "/saved-searches": {
+            "get": {
+                "summary": "Get a list of saved searches for the current user.",
+                "description": "Authentication is required.",
+                "operationId": "getSavedSearchs",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of saved searches.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SavedSearch"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Saved search"
+                ]
+            },
+            "post": {
+                "summary": "Save a search for the current user.",
+                "description": "Authentication is required.",
+                "operationId": "addSavedSearch",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the the required information to create a new saved search.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithNewSavedSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Saved search"
+                ]
+            }
+        },
+        "/saved-searches/{id}": {
+            "delete": {
+                "summary": "Remove a saved search for the current user.",
+                "description": "Authentication is required.",
+                "operationId": "removeSavedSearch",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the saved search to remove.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Saved search"
+                ]
+            }
+        },
+        "/events/export/csv": {
+            "post": {
+                "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
+                "operationId": "getEventExport",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for an export of cultural events.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForExportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Export",
+                    "Event"
+                ]
+            }
+        },
+        "/events/export/json": {
+            "post": {
+                "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
+                "operationId": "getEventExport",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for an export of cultural events.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForExportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Export",
+                    "Event"
+                ]
+            }
+        },
+        "/events/export/ooxml": {
+            "post": {
+                "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
+                "operationId": "getEventExport",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for an export of cultural events.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForExportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Export",
+                    "Event"
+                ]
+            }
+        },
+        "/events/export/pdf": {
+            "post": {
+                "summary": "Request to generate an event list exported to a file.",
+                "description": "Authentication is required.",
+                "operationId": "getEventExport",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for an export of cultural events.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForPdfExportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Export",
+                    "Event"
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Event",
+            "description": "Operations related to events."
+        },
+        {
+            "name": "Search",
+            "description": "Operations related to search actions."
+        },
+        {
+            "name": "User",
+            "description": "Operations related to users."
+        },
+        {
+            "name": "Label",
+            "description": "Operations related to labels."
+        },
+        {
+            "name": "Query",
+            "description": "Operations related to queries."
+        },
+        {
+            "name": "Place",
+            "description": "Operations related to places."
+        },
+        {
+            "name": "Organizer",
+            "description": "Operations related to organizers."
+        },
+        {
+            "name": "Command",
+            "description": "Operations related to commands."
+        },
+        {
+            "name": "Saved search",
+            "description": "Operations related to saved searches."
+        },
+        {
+            "name": "Export",
+            "description": "Operations related to exports."
+        }
+    ],
+    "definitions": {
+        "Event": {
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/TranslatableString"
+                },
+                "description": {
+                    "$ref": "#/definitions/TranslatableString"
+                },
+                "available": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "http://media.uitdatabank.be/20150416/153cfa0f-0d22-451e-bfd1-490b7c4ef109.jpg"
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "example": "tagged"
+                    }
+                },
+                "calendarSummary": {
+                    "type": "string",
+                    "example": "Every first day of the month"
+                },
+                "location": {
+                    "$ref": "#/definitions/Place"
+                },
+                "organizer": {
+                    "$ref": "#/definitions/Organizer"
+                },
+                "bookingInfo": {
+                    "$ref": "#/definitions/BookingInfo"
+                },
+                "terms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Term"
+                    }
+                },
+                "creator": {
+                    "type": "string",
+                    "example": "evenementen@stad.diksmuide.be"
+                },
+                "created": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "modified": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "publisher": {
+                    "type": "string",
+                    "example": "Invoerders Algemeen "
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "calendarType": {
+                    "type": "string",
+                    "enum": [
+                        "unknown",
+                        "permanent",
+                        "periodic",
+                        "single"
+                    ],
+                    "example": "permanent"
+                },
+                "typicalAgeRange": {
+                    "type": "string",
+                    "example": "+18"
+                },
+                "performer": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Performer"
+                    }
+                },
+                "sameAs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "example": "http://www.uitinvlaanderen.be/agenda/e/zomerse-vrijdagen-den-engel/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                    }
+                },
+                "seeAlso": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "example": "www.leuven.be"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "description",
+                "creator",
+                "created",
+                "publisher",
+                "calendarType"
+            ]
+        },
+        "TranslatableString": {
+            "properties": {
+                "nl": {
+                    "type": "string",
+                    "example": "Nederlands"
+                },
+                "de": {
+                    "type": "string",
+                    "example": "Deutch"
+                },
+                "en": {
+                    "type": "string",
+                    "example": "English"
+                },
+                "fr": {
+                    "type": "string",
+                    "example": "Français"
+                }
+            },
+            "required": [
+                "nl"
+            ]
+        },
+        "Address": {
+            "properties": {
+                "addressCountry": {
+                    "type": "string",
+                    "description": "The country code of the location.",
+                    "example": "BE"
+                },
+                "addressLocality": {
+                    "type": "string",
+                    "description": "The locality name of the location.",
+                    "example": "Leuven"
+                },
+                "postalCode": {
+                    "type": "string",
+                    "description": "The postalcode of the location.",
+                    "example": 3000
+                },
+                "streetAddress": {
+                    "type": "string",
+                    "description": "The street name and number information of the location.",
+                    "example": "Sluisstraat 79"
+                }
+            },
+            "required": [
+                "addressCountry",
+                "addressLocality",
+                "postalCode",
+                "streetAddress"
+            ]
+        },
+        "Term": {
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "example": "Cycling"
+                },
+                "domain": {
+                    "type": "string",
+                    "example": "activities"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "10.0.0.1"
+                }
+            },
+            "required": [
+                "label",
+                "domain",
+                "id"
+            ]
+        },
+        "Performer": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the performer.",
+                    "example": "Sindicato Sonico"
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        "EventHistory": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/EventHistoryLog"
+            }
+        },
+        "EventHistoryLog": {
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "Aangemaakt in UDB2"
+                },
+                "author": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address of the author.",
+                    "example": "johndoe@example.com"
+                }
+            },
+            "required": [
+                "date",
+                "description"
+            ]
+        },
+        "User": {
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "A universally unique identifier.",
+                    "example": "6f072ba8-c510-40ac-b387-51f582650e27"
+                },
+                "preferredLanguage": {
+                    "type": "string",
+                    "example": "nl"
+                },
+                "nick": {
+                    "type": "string",
+                    "example": "El Pistolero"
+                },
+                "password": {
+                    "type": "string",
+                    "example": null
+                },
+                "givenName": {
+                    "type": "string",
+                    "example": "Alberto"
+                },
+                "familyName": {
+                    "type": "string",
+                    "example": "Contador"
+                },
+                "mbox": {
+                    "type": "string",
+                    "example": "alberto@email.es"
+                },
+                "mboxVerified": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male"
+                },
+                "hasChildren": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "dob": {
+                    "type": "string",
+                    "example": "413074800"
+                },
+                "depiction": {
+                    "type": "string",
+                    "example": "//media.uitid.be/fis/rest/download/ce126667652776f0e9e55160f12f5478/uiv/default.png"
+                },
+                "bio": {
+                    "type": "string",
+                    "example": "Alberto Contador is a Spanish professional cyclist, one of six riders to have won all three Grand Tours of road cycling."
+                },
+                "street": {
+                    "type": "string",
+                    "example": "Camino de San Anton"
+                },
+                "zip": {
+                    "type": "string",
+                    "example": 28320
+                },
+                "city": {
+                    "type": "string",
+                    "example": "Madrid"
+                },
+                "country": {
+                    "type": "string",
+                    "example": "Spain"
+                },
+                "lifestyleProfile": {
+                    "type": "string",
+                    "example": "Actieve ontspanner"
+                },
+                "homeLocation": {
+                    "$ref": "#/definitions/UserLocation"
+                },
+                "currentLocation": {
+                    "$ref": "#/definitions/UserLocation"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "public"
+                },
+                "points": {
+                    "type": "string",
+                    "example": "15"
+                },
+                "openid": {
+                    "type": "string"
+                },
+                "holdsAccount": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserAccountType"
+                    }
+                },
+                "privacyConfig": {
+                    "$ref": "#/definitions/UserPrivacyConfig"
+                },
+                "pageMemberships": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "adminPagesCount": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 5
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "UserLocation": {
+            "properties": {
+                "lat": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "40.2410067"
+                },
+                "lng": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "-3.688426"
+                },
+                "radius": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 3.45
+                }
+            }
+        },
+        "UserAccountType": {
+            "properties": {
+                "accountType": {
+                    "type": "string",
+                    "example": "google"
+                },
+                "accountServiceHomepage": {
+                    "type": "string",
+                    "example": "http://www.google.com"
+                },
+                "accountName": {
+                    "type": "string",
+                    "example": 101802992566828990000
+                },
+                "accountNick": {
+                    "type": "string",
+                    "example": "El Pistolero"
+                },
+                "accountDepiction": {
+                    "type": "string",
+                    "example": "//media.uitid.be/fis/download/ce126667652776f0e9e55160f12f5478/6e57ac2f-ca1c-460d-9f28-ad7506da7ed1/photo.jpg"
+                },
+                "private": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "publishActivities": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "UserPrivacyConfig": {
+            "properties": {
+                "nick": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "givenName": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "familyName": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "mbox": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "gender": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public"
+                },
+                "dob": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public"
+                },
+                "depiction": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public"
+                },
+                "bio": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public"
+                },
+                "homeAddress": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "homeLocation": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "currentLocation": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "openid": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                },
+                "calendarId": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "private"
+                }
+            },
+            "required": [
+                "nick",
+                "givenName",
+                "familyName",
+                "mbox",
+                "gender",
+                "dob",
+                "depiction",
+                "bio",
+                "homeAddress",
+                "homeLocation",
+                "currentLocation",
+                "calendarId"
+            ]
+        },
+        "SearchResult": {
+            "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3562
+                },
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SearchMember"
+                    }
+                }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
+        },
+        "SearchMember": {
+            "properties": {
+                "@id": {
+                    "type": "string",
+                    "example": "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                }
+            },
+            "required": [
+                "@id"
+            ]
+        },
+        "Place": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Or not to be."
+                },
+                "name": {
+                    "type": "string",
+                    "example": "This is the place to be"
+                },
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "bookingInfo": {
+                    "$ref": "#/definitions/BookingInfo"
+                },
+                "terms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Term"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "address"
+            ]
+        },
+        "Organizer": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "STUK"
+                },
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "An email address.",
+                    "example": "info@stuk.be"
+                },
+                "phone": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "example": "016 320 300"
+                    }
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        "BookingInfo": {
+            "properties": {
+                "priceCurrency": {
+                    "type": "string",
+                    "example": "EUR"
+                },
+                "description": {
+                    "type": "string",
+                    "example": "No need to pay anything"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Free"
+                },
+                "price": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 0
+                }
+            },
+            "required": [
+                "price",
+                "priceCurrency",
+                "description"
+            ]
+        },
+        "SavedSearch": {
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 105
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Permanent in Rotselaar"
+                },
+                "query": {
+                    "type": "string",
+                    "example": "city:Rotselaar AND permanent:TRUE"
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "query"
+            ]
+        },
+        "postObjectWithNewSavedSearch": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Permanent in Rotselaar"
+                },
+                "query": {
+                    "type": "string",
+                    "example": "city:Rotselaar AND permanent:TRUE"
+                }
+            },
+            "required": [
+                "name",
+                "query"
+            ]
+        },
+        "postObjectForExportRequest": {
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "example": "title:bio"
+                },
+                "selection": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "A universally unique identifier for a cultural event.",
+                        "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                    }
+                },
+                "include": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "example": "author"
+                    }
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "An email address.",
+                    "example": "evenementen@stad.diksmuide.be"
+                }
+            }
+        },
+        "postObjectForPdfExportRequest": {
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "example": "title:bio"
+                },
+                "selection": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "A universally unique identifier for a cultural event.",
+                        "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                    }
+                },
+                "customizations": {
+                    "$ref": "#/definitions/exportCustomizations"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "An email address.",
+                    "example": "evenementen@stad.diksmuide.be"
+                }
+            }
+        },
+        "exportCustomizations": {
+            "properties": {
+                "brand": {
+                    "type": "string",
+                    "example": "Uit"
+                },
+                "footer": {
+                    "type": "string",
+                    "example": "Organic for the win"
+                },
+                "publisher": {
+                    "type": "string",
+                    "example": "MechelenOrganic"
+                },
+                "subtitle": {
+                    "type": "string",
+                    "example": "Delicious & healthy food in Mechelen"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Organic in Mechelen"
+                }
+            }
+        },
+        "command": {
+            "required": [
+                "commandId"
+            ],
+            "properties": {
+                "commandId": {
+                    "type": "string",
+                    "example": "8cdc13e62efaecb9d8c21d59a29b9de4"
+                }
+            }
+        },
+        "postObjectWithEventDescription": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "This is a description of a cultural event."
+                }
+            },
+            "required": [
+                "description"
+            ]
+        },
+        "postObjectWithEventTitle": {
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "example": "An event title"
+                }
+            },
+            "required": [
+                "title"
+            ]
+        },
+        "postObjectWithEventLabel": {
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "example": "Bio"
+                }
+            }
+        },
+        "postObjectWithlabelAndMultipleEvents": {
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "example": "Bio"
+                },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "6e169e4a-32c8-4fca-a1ce-5beb2b2ac2cc"
+                    }
+                }
+            },
+            "required": [
+                "label",
+                "events"
+            ]
+        },
+        "postObjectWithLabelAndQuery": {
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "example": "Bio"
+                },
+                "query": {
+                    "type": "string",
+                    "example": "6e169e4a-32c8-4fca-a1ce-5beb2b2ac2cc"
+                }
+            },
+            "required": [
+                "label",
+                "query"
+            ]
+        }
+    }
+}

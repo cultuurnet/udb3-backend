@@ -630,6 +630,20 @@ $app
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\ExportEventsControllerProvider());
 
+$app->get(
+    'swagger.json',
+    function (Request $request) {
+        $file = new SplFileInfo(__DIR__ . '/swagger.json');
+        return new \Symfony\Component\HttpFoundation\BinaryFileResponse(
+            $file,
+            200,
+            [
+                'Content-Type' => 'application/json',
+            ]
+        );
+    }
+);
+
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 
