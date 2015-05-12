@@ -118,7 +118,7 @@ class ExportEventsControllerProvider implements ControllerProviderInterface
         $controllers->post(
             '/pdf',
             function (Request $request, Application $app) {
-                $deserializer = new ExportEventsAsPDFJSONDeserializer();
+                $deserializer = new ExportEvent sAsPDFJSONDeserializer();
 
                 $command = $deserializer->deserialize(
                     new String($request->getContent())
