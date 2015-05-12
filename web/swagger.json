@@ -1400,7 +1400,7 @@
         },
         "BookingInfo": {
             "properties": {
-                "currency": {
+                "priceCurrency": {
                     "type": "string",
                     "example": "EUR"
                 },
@@ -1420,7 +1420,7 @@
             },
             "required": [
                 "price",
-                "currency",
+                "priceCurrency",
                 "description"
             ]
         },
