@@ -309,6 +309,14 @@ $app['event_bus'] = $app->share(
                 $app['udb2_event_importer']
             );
 
+            // Subscribe UDB2 actor event enricher which will listen for actor
+            // creates and updates from UDB2, retrieve the corresponding cdb xml
+            // and publish a new message based on the original one enriched
+            // with the cdb xml.
+            $eventBus->subscribe(
+                $app['udb2_actor_events_cdbxml_enricher']
+            );
+
             // Subscribe event history projector.
             $eventBus->subscribe(
                 $app['event_history_projector']
@@ -395,6 +403,15 @@ $app['udb2_event_importer'] = $app->share(
 
         return $app['udb2_event_importer_factory']($cdbXmlService);
     }
+);
+
+$app['udb2_actor_events_cdbxml_enricher'] = $app->share(
+  function (Application $app) {
+      return new \CultuurNet\UDB3\UDB2\Actor\EventCdbXmlEnricher(
+          $app['udb2_actor_cdbxml_provider'],
+          $app['event_bus']
+      );
+  }
 );
 
 $app['udb2_event_importer_including_past_events'] = $app->share(
