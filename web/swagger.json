@@ -1531,12 +1531,6 @@
                 "title": {
                     "type": "string",
                     "example": "Organic in Mechelen"
-                },
-                "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "An email address.",
-                    "example": "organic@mechelen.be"
                 }
             }
         },
