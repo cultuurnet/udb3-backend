@@ -438,7 +438,7 @@
         },
         "/api/1.0/search": {
             "get": {
-                "summary": "Retrieve events for a given search query with a given offset.",
+                "summary": "Retrieve events for a given search query with a given start and limit.",
                 "description": "Authentication is required.",
                 "operationId": "apiSearch",
                 "produces": [
@@ -453,7 +453,15 @@
                         "type": "string"
                     },
                     {
-                        "name": "offset",
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The limit of events included in the result set. When omitted it defaults to 30 items.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "start",
                         "in": "query",
                         "description": "The number of events to skip from the start of the result set.",
                         "required": false,
@@ -463,9 +471,10 @@
                     {
                         "name": "sort",
                         "in": "query",
-                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space.\n\nFor example: `lastupdated asc`",
+                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space. A list of sortable fields is available at: https://docs.google.com/spreadsheets/d/1Y0DPDrPXNx45ePCo7N2fGknFO9AQDuf_m7dK_PpYBzM. The default order is 'lastupdated desc'.",
                         "required": false,
-                        "type": "string"
+                        "type": "string",
+                        "example": "lastupdated asc"
                     }
                 ],
                 "responses": {
