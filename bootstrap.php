@@ -6,6 +6,7 @@ use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
+use CultuurNet\UDB3\Search\CachedDefaultSearchService;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use ValueObjects\String\String;
@@ -90,6 +91,15 @@ $app['search_service'] = $app->share(
         return new PullParsingSearchService(
             $app['search_api_2'],
             $app['iri_generator']
+        );
+    }
+);
+
+$app['cached_search_service'] = $app->share(
+    function ($app) {
+        return new CachedDefaultSearchService(
+            $app['search_service'],
+            $app['cache']('default_search')
         );
     }
 );
@@ -296,6 +306,10 @@ $app['event_bus'] = $app->share(
             // Subscribe projector for event relations read model as the first one.
             $eventBus->subscribe(
                 $app['relations_projector']
+            );
+
+            $eventBus->subscribe(
+              $app['cached_search_service']
             );
 
             // Subscribe projector for the JSON-LD read model.
