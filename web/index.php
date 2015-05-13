@@ -264,7 +264,7 @@ $app->get(
         $user = $app['current_user'];
 
         /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
-        $searchService = $app['search_service'];
+        $searchService = $app['cached_search_service'];
         try {
             $results = $searchService->search($query, $limit, $start, $sort);
             $logger->info(
