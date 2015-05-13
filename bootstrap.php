@@ -287,6 +287,25 @@ $app['event_history_cache'] = $app->share(
     }
 );
 
+/**
+ * Factory method for instantiating a UDB2 related logger with the specified
+ * name.
+ */
+$app['udb2_logger'] = $app->share(
+    function (Application $app) {
+        return function ($name) use ($app) {
+            $logger = new \Monolog\Logger(
+                $name,
+                [
+                    $app['udb2_log_handler']
+                ]
+            );
+
+            return $logger;
+        };
+    }
+);
+
 $app['event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
@@ -315,6 +334,32 @@ $app['event_bus'] = $app->share(
             // with the cdb xml.
             $eventBus->subscribe(
                 $app['udb2_actor_events_cdbxml_enricher']
+            );
+
+            // Subscribe UDB2 actor event appliers which will actually process actor
+            // creates and updates from UDB2 enriched with cdb xml.
+            $organizerEventApplier = new \CultuurNet\UDB3\UDB2\Actor\ActorEventApplier(
+                $app['real_organizer_repository'],
+                new \CultuurNet\UDB3\UDB2\Organizer\OrganizerFactory(),
+                new \CultuurNet\UDB3\UDB2\Organizer\QualifiesAsOrganizerSpecification()
+            );
+            $organizerEventApplier->setLogger(
+                $app['udb2_logger']('organizer-event-applier')
+            );
+            $eventBus->subscribe(
+                $organizerEventApplier
+            );
+
+            $placeEventApplier = new \CultuurNet\UDB3\UDB2\Actor\ActorEventApplier(
+                $app['real_place_repository'],
+                new \CultuurNet\UDB3\UDB2\Place\PlaceFactory(),
+                new \CultuurNet\UDB3\UDB2\Place\QualifiesAsPlaceSpecification()
+            );
+            $placeEventApplier->setLogger(
+                $app['udb2_logger']('place-event-applier')
+            );
+            $eventBus->subscribe(
+                $placeEventApplier
             );
 
             // Subscribe event history projector.
