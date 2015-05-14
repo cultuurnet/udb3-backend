@@ -264,7 +264,7 @@ $app->get(
         $user = $app['current_user'];
 
         /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
-        $searchService = $app['search_service'];
+        $searchService = $app['cached_search_service'];
         try {
             $results = $searchService->search($query, $limit, $start, $sort);
             $logger->info(
@@ -629,6 +629,20 @@ $app
     ->bind('organizer');
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\ExportEventsControllerProvider());
+
+$app->get(
+    'swagger.json',
+    function (Request $request) {
+        $file = new SplFileInfo(__DIR__ . '/swagger.json');
+        return new \Symfony\Component\HttpFoundation\BinaryFileResponse(
+            $file,
+            200,
+            [
+                'Content-Type' => 'application/json',
+            ]
+        );
+    }
+);
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
