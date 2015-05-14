@@ -10,8 +10,10 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use Knp\Command\Command;
+use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ReplayCommand extends Command
@@ -29,6 +31,12 @@ class ReplayCommand extends Command
                 InputArgument::OPTIONAL,
                 'Event store to replay events from',
                 'events'
+            )
+            ->addOption(
+                'cache',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Alternative cache factory method to use, specify the service suffix, for example "redis"'
             );
     }
 
@@ -37,6 +45,19 @@ class ReplayCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $cache = $input->getOption('cache');
+        if ($cache) {
+            $cacheServiceName = 'cache-' . $cache;
+            /** @var Application $app */
+            $app = $this->getSilexApplication();
+
+            $app['cache'] = $app->share(
+                function (Application $app) use ($cacheServiceName) {
+                    return $app[$cacheServiceName];
+                }
+            );
+        }
+
         $store = $this->getStore($input, $output);
 
         $stream = $this->getEventStream($store);

@@ -168,6 +168,24 @@ $app['auth_service'] = $app->share(
     }
 );
 
+$app['cache-redis'] = $app->share(
+    function (Application $app) {
+        return function ($cacheType) {
+            $redisClient = new Predis\Client(
+                [
+                    'host' => '127.0.0.1',
+                ],
+                [
+                    'prefix' => $cacheType . '_',
+                ]
+            );
+            $cache = new Doctrine\Common\Cache\PredisCache($redisClient);
+
+            return $cache;
+        };
+    }
+);
+
 $app['cache'] = $app->share(
     function ($app) {
         $baseUrl = $app['config']['uitid']['base_url'];
