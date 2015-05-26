@@ -170,11 +170,11 @@ $app['auth_service'] = $app->share(
 
 $app['cache-redis'] = $app->share(
     function (Application $app) {
-        return function ($cacheType) {
+        $parameters = $app['config']['cache']['redis'];
+
+        return function ($cacheType) use ($parameters) {
             $redisClient = new Predis\Client(
-                [
-                    'host' => '127.0.0.1',
-                ],
+                $parameters,
                 [
                     'prefix' => $cacheType . '_',
                 ]
@@ -186,7 +186,7 @@ $app['cache-redis'] = $app->share(
     }
 );
 
-$app['cache'] = $app->share(
+$app['cache-filesystem'] = $app->share(
     function ($app) {
         $baseUrl = $app['config']['uitid']['base_url'];
         $baseCacheDirectory = __DIR__ . '/cache';
@@ -200,6 +200,16 @@ $app['cache'] = $app->share(
         };
     }
 );
+
+$app['cache'] = $app->share(
+    function (Application $app) {
+        $activeCacheType = $app['config']['cache']['active'] ?: 'filesystem';
+
+        $cacheServiceName =  'cache-' . $activeCacheType;
+        return $app[$cacheServiceName];
+    }
+);
+
 
 $app['dbal_connection'] = $app->share(
     function ($app) {

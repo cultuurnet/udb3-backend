@@ -60,3 +60,10 @@ amqp:
         queue: udb3.q.prod.udb2
 prince:
   binary: /usr/local/bin/prince
+
+cache:
+  # Currently supported: "filesystem" or "redis"
+  active: redis
+  redis:
+    host: 127.0.0.1
+    database: 1
