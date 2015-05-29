@@ -741,6 +741,239 @@
                     "Event"
                 ]
             }
+        },
+        "/variations/": {
+            "post": {
+                "summary": "Add a new variation of an existing event.",
+                "description": "Authentication is required",
+                "operationId": "addVariation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Original URL of the event and a custom description",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateVariationCommand"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Variations"
+                ]
+            },
+            "get": {
+                "summary": "List variations.",
+                "description": "Authentication is required",
+                "operationId": "listVariations",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "owner",
+                        "in": "query",
+                        "description": "Limit the list to variations owned by a particular user. Specify the user's universally unique identifier.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "purpose",
+                        "in": "query",
+                        "description": "Limit the list to variations with this purpose.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "same_as",
+                        "in": "query",
+                        "description": "Limit the list to variations of this event url.",
+                        "required": false,
+                        "type": "string",
+                        "format": "url"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of variations matching the supplied criteria.",
+                        "schema": {
+                            "$ref": "#/definitions/VariationsList"
+                        }
+                    }
+                },
+                "tags": [
+                    "Variations"
+                ]
+            }
+        },
+        "variations/{id}": {
+            "get": {
+                "summary": "View the details of a specific variation.",
+                "description": "Authentication is required",
+                "operationId": "getVariation",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The universally unique identifier of the variation.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Event"
+                        },
+                        "examples": {
+                            "@id": "http://culudb-silex.dev:8080/variations/04C47992-B01E-4EE4-96ED-289F22638324",
+                            "name": {
+                                "nl": "Nederlands",
+                                "de": "Deutch",
+                                "en": "English",
+                                "fr": "Français"
+                            },
+                            "description": {
+                                "nl": "Alternatieve beschrijving in het Nederlands",
+                                "de": "Deutch",
+                                "en": "English",
+                                "fr": "Français"
+                            },
+                            "available": "2015-05-07T12:02:53+00:00",
+                            "image": "http://media.uitdatabank.be/20150416/153cfa0f-0d22-451e-bfd1-490b7c4ef109.jpg",
+                            "labels": [
+                                "tagged"
+                            ],
+                            "calendarSummary": "Every first day of the month",
+                            "location": {
+                                "description": "Or not to be.",
+                                "name": "This is the place to be",
+                                "address": {
+                                    "addressCountry": "BE",
+                                    "addressLocality": "Leuven",
+                                    "postalCode": 3000,
+                                    "streetAddress": "Sluisstraat 79"
+                                },
+                                "bookingInfo": {
+                                    "priceCurrency": "EUR",
+                                    "description": "No need to pay anything",
+                                    "name": "Free",
+                                    "price": 0
+                                },
+                                "terms": [
+                                    {
+                                        "label": "Cycling",
+                                        "domain": "activities",
+                                        "id": "10.0.0.1"
+                                    }
+                                ]
+                            },
+                            "organizer": {
+                                "name": "STUK",
+                                "address": {
+                                    "addressCountry": "BE",
+                                    "addressLocality": "Leuven",
+                                    "postalCode": 3000,
+                                    "streetAddress": "Sluisstraat 79"
+                                },
+                                "email": "info@stuk.be",
+                                "phone": [
+                                    "016 320 300"
+                                ]
+                            },
+                            "bookingInfo": {
+                                "priceCurrency": "EUR",
+                                "description": "No need to pay anything",
+                                "name": "Free",
+                                "price": 0
+                            },
+                            "terms": [
+                                {
+                                    "label": "Cycling",
+                                    "domain": "activities",
+                                    "id": "10.0.0.1"
+                                }
+                            ],
+                            "creator": "evenementen@stad.diksmuide.be",
+                            "created": "2015-05-07T12:02:53+00:00",
+                            "modified": "2015-05-07T12:02:53+00:00",
+                            "publisher": "Invoerders Algemeen ",
+                            "endDate": "2015-05-07T12:02:53+00:00",
+                            "startDate": "2015-05-07T12:02:53+00:00",
+                            "calendarType": "permanent",
+                            "typicalAgeRange": "+18",
+                            "performer": [
+                                {
+                                    "name": "Sindicato Sonico"
+                                }
+                            ],
+                            "sameAs": [
+                                "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                            ]
+                        }
+                    },
+                    "410": {
+                        "description": "The variation is no longer available, because it was removed."
+                    },
+                    "404": {
+                        "description": "The variation with the specified identifier was not found."
+                    }
+                },
+                "tags": [
+                    "Variations"
+                ]
+            },
+            "delete": {
+                "summary": "Delete the variation.",
+                "description": "Authentication is required",
+                "operationId": "deleteVariation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The universally unique identifier of the variation.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    },
+                    "410": {
+                        "description": "The variation is no longer available, because it was removed."
+                    },
+                    "404": {
+                        "description": "The variation with the specified identifier was not found."
+                    }
+                },
+                "tags": [
+                    "Variations"
+                ]
+            }
         }
     },
     "tags": [
@@ -783,11 +1016,19 @@
         {
             "name": "Export",
             "description": "Operations related to exports."
+        },
+        {
+            "name": "Variations",
+            "description": "Operations related to variations."
         }
     ],
     "definitions": {
         "Event": {
             "properties": {
+                "@id": {
+                    "type": "string",
+                    "example": "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                },
                 "name": {
                     "$ref": "#/definitions/TranslatableString"
                 },
@@ -893,6 +1134,7 @@
                 }
             },
             "required": [
+                "@id",
                 "name",
                 "description",
                 "creator",
@@ -1620,6 +1862,147 @@
             "required": [
                 "label",
                 "query"
+            ]
+        },
+        "CreateVariationCommand": {
+            "properties": {
+                "owner": {
+                    "description": "The universally unique identifier of the owner of the variation. Currently, only the current user's id is supported.",
+                    "type": "string",
+                    "example": "6f072ba8-c510-40ac-b387-51f582650e27"
+                },
+                "purpose": {
+                    "type": "string",
+                    "description": "A string describing the purpose of the variation.",
+                    "example": "homepage-tips"
+                },
+                "same_as": {
+                    "type": "string",
+                    "description": "URL of the event to create a variation of.",
+                    "example": "https://io.uitdatabank.be/event/0054e567-efc6-4155-b707-9fb4388d9246"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The alternative description of the event.",
+                    "example": "<p>William Kentridge keert terug naar de Met voor zijn eerste nieuwe productie sinds de première door het gezelschap van The Nose, een opera die voor ophef zorgde bij de opening in 2010. Deze vindingrijke visuele kunstenaar regisseert het schokkende meesterwerk van Berg over een seksueel onweerstaanbare jonge vrouw die met haar losbandige gedrag de ondergang teweegbrengt van al wie zich door haar laat bekoren.</p>"
+                }
+            },
+            "required": [
+                "owner",
+                "purpose",
+                "url",
+                "description"
+            ]
+        },
+        "VariationsList": {
+            "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 1
+                },
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Event",
+                        "example": {
+                            "@id": "http://culudb-silex.dev:8080/variations/04C47992-B01E-4EE4-96ED-289F22638324",
+                            "name": {
+                                "nl": "Nederlands",
+                                "de": "Deutch",
+                                "en": "English",
+                                "fr": "Français"
+                            },
+                            "description": {
+                                "nl": "Alternatieve beschrijving in het Nederlands",
+                                "de": "Deutch",
+                                "en": "English",
+                                "fr": "Français"
+                            },
+                            "available": "2015-05-07T12:02:53+00:00",
+                            "image": "http://media.uitdatabank.be/20150416/153cfa0f-0d22-451e-bfd1-490b7c4ef109.jpg",
+                            "labels": [
+                                "tagged"
+                            ],
+                            "calendarSummary": "Every first day of the month",
+                            "location": {
+                                "description": "Or not to be.",
+                                "name": "This is the place to be",
+                                "address": {
+                                    "addressCountry": "BE",
+                                    "addressLocality": "Leuven",
+                                    "postalCode": 3000,
+                                    "streetAddress": "Sluisstraat 79"
+                                },
+                                "bookingInfo": {
+                                    "priceCurrency": "EUR",
+                                    "description": "No need to pay anything",
+                                    "name": "Free",
+                                    "price": 0
+                                },
+                                "terms": [
+                                    {
+                                        "label": "Cycling",
+                                        "domain": "activities",
+                                        "id": "10.0.0.1"
+                                    }
+                                ]
+                            },
+                            "organizer": {
+                                "name": "STUK",
+                                "address": {
+                                    "addressCountry": "BE",
+                                    "addressLocality": "Leuven",
+                                    "postalCode": 3000,
+                                    "streetAddress": "Sluisstraat 79"
+                                },
+                                "email": "info@stuk.be",
+                                "phone": [
+                                    "016 320 300"
+                                ]
+                            },
+                            "bookingInfo": {
+                                "priceCurrency": "EUR",
+                                "description": "No need to pay anything",
+                                "name": "Free",
+                                "price": 0
+                            },
+                            "terms": [
+                                {
+                                    "label": "Cycling",
+                                    "domain": "activities",
+                                    "id": "10.0.0.1"
+                                }
+                            ],
+                            "creator": "evenementen@stad.diksmuide.be",
+                            "created": "2015-05-07T12:02:53+00:00",
+                            "modified": "2015-05-07T12:02:53+00:00",
+                            "publisher": "Invoerders Algemeen ",
+                            "endDate": "2015-05-07T12:02:53+00:00",
+                            "startDate": "2015-05-07T12:02:53+00:00",
+                            "calendarType": "permanent",
+                            "typicalAgeRange": "+18",
+                            "performer": [
+                                {
+                                    "name": "Sindicato Sonico"
+                                }
+                            ],
+                            "sameAs": [
+                                "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                            ]
+                        }
+                    }
+                }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
             ]
         }
     }
