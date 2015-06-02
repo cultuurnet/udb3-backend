@@ -968,6 +968,9 @@
                     },
                     "404": {
                         "description": "The variation with the specified identifier was not found."
+                    },
+                    "403": {
+                        "description": "The user is not allowed to delete this variation."
                     }
                 },
                 "tags": [
