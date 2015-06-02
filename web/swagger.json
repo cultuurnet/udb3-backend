@@ -1893,7 +1893,7 @@
             "required": [
                 "owner",
                 "purpose",
-                "url",
+                "same_as",
                 "description"
             ]
         },
