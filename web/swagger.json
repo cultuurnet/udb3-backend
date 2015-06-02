@@ -817,7 +817,7 @@
                 ]
             }
         },
-        "variations/{id}": {
+        "/variations/{id}": {
             "get": {
                 "summary": "View the details of a specific variation.",
                 "description": "Authentication is required",
