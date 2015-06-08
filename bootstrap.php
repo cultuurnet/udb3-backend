@@ -33,6 +33,22 @@ if ($app['config']['swiftmailer.options']) {
     $app['swiftmailer.options'] = $app['config']['swiftmailer.options'];
 }
 
+$app['timezone'] = $app->share(
+  function (Application $app) {
+      $timezoneName = $app['config']['timezone'] ?: 'Europe/Brussels';
+
+      return new DateTimeZone($timezoneName);
+  }
+);
+
+$app['clock'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\Clock\SystemClock(
+            $app['timezone']
+        );
+    }
+);
+
 $app['iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
@@ -588,7 +604,10 @@ $app['event_command_bus'] = $app->share(
         );
 
         $eventInfoService = new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
-          $app['uitpas']
+          $app['uitpas'],
+          new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
+              $app['clock']
+          )
         );
         $eventInfoService->setLogger($app['logger.uitpas']);
         $commandBus->subscribe(
