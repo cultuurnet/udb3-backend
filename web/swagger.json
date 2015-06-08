@@ -976,6 +976,44 @@
                 "tags": [
                     "Variations"
                 ]
+            },
+            "patch": {
+                "summary": "Patch properties of an existing variation",
+                "description": "Authentication is required",
+                "operationId": "patchVariation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The universally unique identifier of the variation.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    },
+                    "410": {
+                        "description": "The variation is no longer available, because it was removed."
+                    },
+                    "404": {
+                        "description": "The variation with the specified identifier was not found."
+                    },
+                    "403": {
+                       "description": "The user is not allowed to patch this variation."
+                    }
+                },
+                "tags": [
+                    "Variations"
+                ]
             }
         }
     },
