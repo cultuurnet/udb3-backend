@@ -33,6 +33,22 @@ if ($app['config']['swiftmailer.options']) {
     $app['swiftmailer.options'] = $app['config']['swiftmailer.options'];
 }
 
+$app['timezone'] = $app->share(
+  function (Application $app) {
+      $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
+
+      return new DateTimeZone($timezoneName);
+  }
+);
+
+$app['clock'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\Clock\SystemClock(
+            $app['timezone']
+        );
+    }
+);
+
 $app['iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
@@ -586,13 +602,19 @@ $app['event_command_bus'] = $app->share(
                 $app['search_service']
             )
         );
+
+        $eventInfoService = new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
+          $app['uitpas'],
+          new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
+              $app['clock']
+          )
+        );
+        $eventInfoService->setLogger($app['logger.uitpas']);
         $commandBus->subscribe(
             new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
                 $app['event_export'],
                 $app['config']['prince']['binary'],
-                new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
-                    $app['uitpas']
-                ),
+                $eventInfoService,
                 $app['event_calendar_repository']
             )
         );
@@ -928,6 +950,15 @@ $app['uitpas'] = $app->share(
         $cultureFeed = $app['culturefeed'];
         return $cultureFeed->uitpas();
     }
+);
+
+$app['logger.uitpas'] = $app->share(
+  function (Application $app) {
+      $logger = new Monolog\Logger('uitpas');
+      $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
+
+      return $logger;
+  }
 );
 
 return $app;
