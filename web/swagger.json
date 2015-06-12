@@ -767,6 +767,12 @@
                         "schema": {
                             "$ref": "#/definitions/command"
                         }
+                    },
+                    "400": {
+                        "description": "There is an error in the request.",
+                        "schema": {
+                            "$ref": "#/definitions/APIProblem"
+                        }
                     }
                 },
                 "tags": [
@@ -2060,6 +2066,31 @@
                 "itemsPerPage",
                 "totalItems",
                 "member"
+            ]
+        },
+        "APIProblem": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "format": "url"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "validation_messages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "title",
+                "type",
+                "status"
             ]
         }
     }
