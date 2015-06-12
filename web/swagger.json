@@ -1016,6 +1016,12 @@
                             "$ref": "#/definitions/command"
                         }
                     },
+                    "400": {
+                        "description": "There is an error in the request.",
+                        "schema": {
+                            "$ref": "#/definitions/APIProblem"
+                        }
+                    },
                     "410": {
                         "description": "The variation is no longer available, because it was removed."
                     },
