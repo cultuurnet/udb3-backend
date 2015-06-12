@@ -6,7 +6,8 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
-use CultuurNet\UDB3\Variations\Command\ValidationException;
+use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
+use CultuurNet\UDB3\Variations\Model\Properties\Id;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -24,36 +25,65 @@ class VariationsControllerProvider implements ControllerProviderInterface
     {
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
+        $controllerProvider = $this;
 
         $controllers->post(
             '/',
-            function (Application $app, Request $request) {
+            function (Application $app, Request $request) use ($controllerProvider) {
                 $deserializer = new CreateEventVariationJSONDeserializer();
                 $command = $deserializer->deserialize(
                     new String($request->getContent())
                 );
 
-                $data['commandId'] = $app['event_command_bus']->dispatch(
-                    $command
-                );
+                $commandId = $app['event_command_bus']->dispatch($command);
+                return $controllerProvider->getResponseForCommandId($commandId);
+            }
+        )->before(function($request) use ($controllerProvider) {
+            return $controllerProvider->requireJsonContent($request);
+        });
 
-                return new JsonResponse(
-                    $data,
-                    Response::HTTP_ACCEPTED
-                );
+        $controllers->patch(
+            '/{id}',
+            function (Request $request, Application $app, $id) use ($controllerProvider) {
+                $variationId = new Id($id);
+                $jsonCommand = new String($request->getContent());
+                $deserializer = new EditDescriptionJSONDeserializer($variationId);
+                $command = $deserializer->deserialize($jsonCommand);
+
+                $commandId = $app['event_command_bus']->dispatch($command);
+                return $controllerProvider->getResponseForCommandId($commandId);
             }
-        )->before(
-            function (Request $request) {
-                if ($request->getContentType() != 'json') {
-                    return new JsonResponse(
-                        [],
-                        Response::HTTP_UNSUPPORTED_MEDIA_TYPE
-                    );
-                }
-            }
-        );
+        )->before(function($request) use ($controllerProvider) {
+            return $controllerProvider->requireJsonContent($request);
+        });
 
         return $controllers;
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse|null
+     */
+    private function requireJsonContent(Request $request)
+    {
+        if ($request->getContentType() != 'json') {
+            return new JsonResponse(
+                [],
+                Response::HTTP_UNSUPPORTED_MEDIA_TYPE
+            );
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param string $commandId
+     * @return JsonResponse
+     */
+    private function getResponseForCommandId($commandId) {
+        return JsonResponse::create(
+            ['commandId' => $commandId]
+        );
     }
 
 }
