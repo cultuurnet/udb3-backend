@@ -997,9 +997,15 @@
                         "description": "The universally unique identifier of the variation.",
                         "required": true,
                         "type": "string",
-                        "format": "uuid",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "",
+                        "required": true,
                         "schema": {
-                          "$ref": "#/definitions/EditDescriptionCommand"
+                            "$ref": "#/definitions/EditDescriptionCommand"
                         }
                     }
                 ],
