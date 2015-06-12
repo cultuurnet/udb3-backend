@@ -647,4 +647,6 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 
+$app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvider());
+
 $app->run();
