@@ -94,7 +94,8 @@ class VariationsControllerProvider implements ControllerProviderInterface
      */
     private function getResponseForCommandId($commandId) {
         return JsonResponse::create(
-            ['commandId' => $commandId]
+            ['commandId' => $commandId],
+            JsonResponse::HTTP_ACCEPTED
         );
     }
 
