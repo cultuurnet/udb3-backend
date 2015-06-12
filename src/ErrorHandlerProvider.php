@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Silex\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Variations\Command\ValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ValueObjects\Exception\InvalidNativeArgumentException;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
@@ -23,6 +24,12 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(function (ValidationException $e) use ($provider) {
             $problem = new ApiProblem($e->getMessage());
             $problem['validation_messages'] = $e->getErrors();
+
+            return $provider->createBadRequestResponse($problem);
+        });
+
+        $app->error(function (InvalidNativeArgumentException $e) use ($provider) {
+           $problem = new ApiProblem($e->getMessage());
 
             return $provider->createBadRequestResponse($problem);
         });
