@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
+use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\Id;
 use Silex\Application;
@@ -56,6 +57,17 @@ class VariationsControllerProvider implements ControllerProviderInterface
         )->before(function($request) use ($controllerProvider) {
             return $controllerProvider->requireJsonContent($request);
         });
+
+        $controllers->delete(
+            '/{id}',
+            function (Application $app, $id) use ($controllerProvider) {
+                $variationId = new Id($id);
+                $command = new DeleteEventVariation($variationId);
+
+                $commandId = $app['event_command_bus']->dispatch($command);
+                return $controllerProvider->getResponseForCommandId($commandId);
+            }
+        );
 
         return $controllers;
     }
