@@ -43,6 +43,8 @@ class VariationsControllerProvider implements ControllerProviderInterface
             return $controllerProvider->requireJsonContent($request);
         });
 
+        // @todo Verify if the variation with the given id exists, based on a
+        // read model.
         $controllers->patch(
             '/{id}',
             function (Request $request, Application $app, $id) use ($controllerProvider) {
@@ -58,6 +60,8 @@ class VariationsControllerProvider implements ControllerProviderInterface
             return $controllerProvider->requireJsonContent($request);
         });
 
+        // @todo Verify if the variation with the given id exists, based on a
+        // read model.
         $controllers->delete(
             '/{id}',
             function (Application $app, $id) use ($controllerProvider) {
