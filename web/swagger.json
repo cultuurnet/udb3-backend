@@ -991,7 +991,10 @@
                         "description": "The universally unique identifier of the variation.",
                         "required": true,
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "schema": {
+                          "$ref": "#/definitions/EditDescriptionCommand"
+                        }
                     }
                 ],
                 "responses": {
@@ -1934,6 +1937,19 @@
                 "same_as",
                 "description"
             ]
+        },
+        "EditDescriptionCommand": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "The alternative description of the event.",
+                    "example": "<p>William Kentridge keert terug naar de Met voor zijn eerste nieuwe productie sinds de première door het gezelschap van The Nose, een opera die voor ophef zorgde bij de opening in 2010. Deze vindingrijke visuele kunstenaar regisseert het schokkende meesterwerk van Berg over een seksueel onweerstaanbare jonge vrouw die met haar losbandige gedrag de ondergang teweegbrengt van al wie zich door haar laat bekoren.</p>"
+                }
+            },
+            "required": [
+                "description"
+            ],
+            "additionalProperties": false
         },
         "VariationsList": {
             "properties": {
