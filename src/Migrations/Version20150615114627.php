@@ -39,7 +39,15 @@ class Version20150615114627 extends AbstractMigration
             array('notnull' => true)
         );
 
+        $table->addColumn(
+            'inserted',
+            'integer',
+            array('notnull' => true, 'unsigned' => true)
+        );
+
         $table->setPrimaryKey(array('id'));
+
+        $table->addIndex(['inserted']);
     }
 
     /**
