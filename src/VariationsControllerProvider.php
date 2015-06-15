@@ -39,13 +39,29 @@ class VariationsControllerProvider implements ControllerProviderInterface
                 /** @var RepositoryInterface $search */
                 $search = $app['variations.search'];
 
-                return new JsonResponse(
-                    $search->getEventVariations(
-                        $criteria,
-                        $request->query->get('limit', 30),
-                        $request->query->get('offset', 0)
-                    )
+                $itemsPerPage = 30;
+
+                $variations = $search->getEventVariations(
+                    $criteria,
+                    $itemsPerPage,
+                    $request->query->get('offset', 0)
                 );
+
+                $totalItems = $search->countEventVariations(
+                    $criteria
+                );
+
+                // Hydra paged collection.
+                // @todo Move this to a separate class.
+                $result = [
+                    '@context' => "http://www.w3.org/ns/hydra/context.jsonld",
+                    '@type' => 'PagedCollection',
+                    'itemsPerPage' => $itemsPerPage,
+                    'totalItems' => $totalItems,
+                    'member' => $variations,
+                ];
+
+                return new JsonResponse($result);
             }
         );
 
