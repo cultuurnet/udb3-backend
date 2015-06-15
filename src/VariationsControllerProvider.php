@@ -5,6 +5,8 @@
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\UDB3\Hydra\PagedCollection;
+use CultuurNet\UDB3\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
@@ -39,31 +41,37 @@ class VariationsControllerProvider implements ControllerProviderInterface
                 /** @var RepositoryInterface $search */
                 $search = $app['variations.search'];
 
-                $itemsPerPage = 30;
+                $itemsPerPage = 5;
+                $pageNumber = intval($request->query->get('page', 0));
 
                 $variations = $search->getEventVariations(
                     $criteria,
                     $itemsPerPage,
-                    $request->query->get('offset', 0)
+                    $pageNumber
                 );
 
                 $totalItems = $search->countEventVariations(
                     $criteria
                 );
 
-                // Hydra paged collection.
-                // @todo Move this to a separate class.
-                $result = [
-                    '@context' => "http://www.w3.org/ns/hydra/context.jsonld",
-                    '@type' => 'PagedCollection',
-                    'itemsPerPage' => $itemsPerPage,
-                    'totalItems' => $totalItems,
-                    'member' => $variations,
-                ];
+                $pageUrlFactory = new PageUrlGenerator(
+                    $request->query,
+                    $app['url_generator'],
+                    'variations',
+                    'page'
+                );
 
-                return new JsonResponse($result);
+                return new JsonResponse(
+                    new PagedCollection(
+                        $pageNumber,
+                        $itemsPerPage,
+                        $variations,
+                        $totalItems,
+                        $pageUrlFactory
+                    )
+                );
             }
-        );
+        )->bind('variations');
 
         $controllers->post(
             '/',
