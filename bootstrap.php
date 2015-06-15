@@ -388,6 +388,11 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['event_calendar_projector']
             );
+
+            // Subscribe projector for the Variations search read model.
+            $eventBus->subscribe(
+                $app['variations.search.projector']
+            );
         });
 
         return $eventBus;

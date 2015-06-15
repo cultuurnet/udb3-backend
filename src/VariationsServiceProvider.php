@@ -11,6 +11,9 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Variations\Command\EventVariationCommandHandler;
 use CultuurNet\UDB3\Variations\DefaultEventVariationService;
 use CultuurNet\UDB3\Variations\EventVariationRepository;
+use CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\ExpressionFactory;
+use CultuurNet\UDB3\Variations\ReadModel\Search\Projector;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -57,6 +60,23 @@ class VariationsServiceProvider implements ServiceProviderInterface
                     $app['eventstore_payload_serializer'],
                     new SimpleInterfaceSerializer(),
                     'variations'
+                );
+            }
+        );
+
+        $app['variations.search.projector'] = $app->share(
+            function (Application $app) {
+                return new Projector(
+                    $app['variations.search']
+                );
+            }
+        );
+
+        $app['variations.search'] = $app->share(
+            function (Application $app) {
+                return new DBALRepository(
+                    $app['dbal_connection'],
+                    new ExpressionFactory()
                 );
             }
         );

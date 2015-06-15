@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\Id;
+use CultuurNet\UDB3\Variations\ReadModel\Search\CriteriaFromParameterBagFactory;
+use CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -27,6 +29,21 @@ class VariationsControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
         $controllerProvider = $this;
+
+        $controllers->get(
+            '/',
+            function (Application $app, Request $request) {
+                $factory = new CriteriaFromParameterBagFactory();
+                $criteria = $factory->createCriteriaFromParameterBag($request->query);
+
+                /** @var RepositoryInterface $search */
+                $search = $app['variations.search'];
+
+                return new JsonResponse(
+                    $search->getEventVariations($criteria)
+                );
+            }
+        );
 
         $controllers->post(
             '/',
