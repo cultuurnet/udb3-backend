@@ -40,7 +40,11 @@ class VariationsControllerProvider implements ControllerProviderInterface
                 $search = $app['variations.search'];
 
                 return new JsonResponse(
-                    $search->getEventVariations($criteria)
+                    $search->getEventVariations(
+                        $criteria,
+                        $request->query->get('limit', 30),
+                        $request->query->get('offset', 0)
+                    )
                 );
             }
         );
