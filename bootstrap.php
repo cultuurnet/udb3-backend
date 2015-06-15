@@ -20,6 +20,7 @@ $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -623,6 +624,11 @@ $app['event_command_bus'] = $app->share(
                 $app['saved_searches_service_factory']
             )
         );
+
+        $commandBus->subscribe(
+            $app['variations.command_handler']
+        );
+
         return $commandBus;
     }
 );

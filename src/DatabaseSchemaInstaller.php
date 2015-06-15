@@ -24,7 +24,8 @@ class DatabaseSchemaInstaller
             $this->app['event_store'],
             $this->app['place_store'],
             $this->app['organizer_store'],
-            $this->app['event_relations_repository']
+            $this->app['event_relations_repository'],
+            $this->app['variations.event_store'],
         );
 
         /** @var \Doctrine\DBAL\Connection $connection */

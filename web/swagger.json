@@ -767,6 +767,12 @@
                         "schema": {
                             "$ref": "#/definitions/command"
                         }
+                    },
+                    "400": {
+                        "description": "There is an error in the request.",
+                        "schema": {
+                            "$ref": "#/definitions/APIProblem"
+                        }
                     }
                 },
                 "tags": [
@@ -971,6 +977,59 @@
                     },
                     "403": {
                         "description": "The user is not allowed to delete this variation."
+                    }
+                },
+                "tags": [
+                    "Variations"
+                ]
+            },
+            "patch": {
+                "summary": "Patch properties of an existing variation",
+                "description": "Authentication is required",
+                "operationId": "patchVariation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The universally unique identifier of the variation.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/EditDescriptionCommand"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    },
+                    "400": {
+                        "description": "There is an error in the request.",
+                        "schema": {
+                            "$ref": "#/definitions/APIProblem"
+                        }
+                    },
+                    "410": {
+                        "description": "The variation is no longer available, because it was removed."
+                    },
+                    "404": {
+                        "description": "The variation with the specified identifier was not found."
+                    },
+                    "403": {
+                       "description": "The user is not allowed to patch this variation."
                     }
                 },
                 "tags": [
@@ -1897,6 +1956,19 @@
                 "description"
             ]
         },
+        "EditDescriptionCommand": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "The alternative description of the event.",
+                    "example": "<p>William Kentridge keert terug naar de Met voor zijn eerste nieuwe productie sinds de première door het gezelschap van The Nose, een opera die voor ophef zorgde bij de opening in 2010. Deze vindingrijke visuele kunstenaar regisseert het schokkende meesterwerk van Berg over een seksueel onweerstaanbare jonge vrouw die met haar losbandige gedrag de ondergang teweegbrengt van al wie zich door haar laat bekoren.</p>"
+                }
+            },
+            "required": [
+                "description"
+            ],
+            "additionalProperties": false
+        },
         "VariationsList": {
             "properties": {
                 "itemsPerPage": {
@@ -2006,6 +2078,31 @@
                 "itemsPerPage",
                 "totalItems",
                 "member"
+            ]
+        },
+        "APIProblem": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "format": "url"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "validation_messages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "title",
+                "type",
+                "status"
             ]
         }
     }
