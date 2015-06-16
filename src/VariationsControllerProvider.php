@@ -8,6 +8,7 @@ namespace CultuurNet\UDB3\Silex;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Hydra\PagedCollection;
 use CultuurNet\UDB3\Hydra\Symfony\PageUrlGenerator;
+use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
@@ -128,6 +129,21 @@ class VariationsControllerProvider implements ControllerProviderInterface
 
                 $commandId = $app['event_command_bus']->dispatch($command);
                 return $controllerProvider->getResponseForCommandId($commandId);
+            }
+        );
+
+        $controllers->get(
+            '/{id}',
+            function (Application $app, $id) {
+                /** @var DocumentRepositoryInterface $jsonLDRepository */
+                $jsonLDRepository = $app['variations.jsonld_repository'];
+
+                $document = $jsonLDRepository->get($id);
+
+                $response = JsonLdResponse::create()
+                    ->setContent($document->getRawBody());
+
+                return $response;
             }
         );
 
