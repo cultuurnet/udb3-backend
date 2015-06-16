@@ -5,6 +5,7 @@
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Hydra\PagedCollection;
 use CultuurNet\UDB3\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
@@ -44,11 +45,23 @@ class VariationsControllerProvider implements ControllerProviderInterface
                 $itemsPerPage = 5;
                 $pageNumber = intval($request->query->get('page', 0));
 
-                $variations = $search->getEventVariations(
+                $variationIds = $search->getEventVariations(
                     $criteria,
                     $itemsPerPage,
                     $pageNumber
                 );
+
+                /** @var DocumentRepositoryInterface $jsonLDRepository */
+                $jsonLDRepository = $app['variations.jsonld_repository'];
+
+                $variations = [];
+                foreach ($variationIds as $variationId) {
+                    $document = $jsonLDRepository->get($variationId);
+
+                    if ($document) {
+                        $variations[] = $document->getBody();
+                    }
+                }
 
                 $totalItems = $search->countEventVariations(
                     $criteria
