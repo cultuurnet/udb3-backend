@@ -107,6 +107,14 @@ class VariationsServiceProvider implements ServiceProviderInterface
                 );
             }
         );
+
+        $app['variations.id_to_document_converter'] = $app->share(
+            function (Application $app) {
+                return new VariationIdToJSONLDDocumentConverter(
+                    $app['variations.jsonld_repository']
+                );
+            }
+        );
     }
 
     /**

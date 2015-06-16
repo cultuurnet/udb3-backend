@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\Event\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Hydra\PagedCollection;
 use CultuurNet\UDB3\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
@@ -102,12 +103,10 @@ class VariationsControllerProvider implements ControllerProviderInterface
             return $controllerProvider->requireJsonContent($request);
         });
 
-        // @todo Verify if the variation with the given id exists, based on a
-        // read model.
         $controllers->patch(
-            '/{id}',
-            function (Request $request, Application $app, $id) use ($controllerProvider) {
-                $variationId = new Id($id);
+            '/{variation}',
+            function (Request $request, Application $app, JsonDocument $variation) use ($controllerProvider) {
+                $variationId = new Id($variation->getId());
                 $jsonCommand = new String($request->getContent());
                 $deserializer = new EditDescriptionJSONDeserializer($variationId);
                 $command = $deserializer->deserialize($jsonCommand);
@@ -115,37 +114,32 @@ class VariationsControllerProvider implements ControllerProviderInterface
                 $commandId = $app['event_command_bus']->dispatch($command);
                 return $controllerProvider->getResponseForCommandId($commandId);
             }
-        )->before(function($request) use ($controllerProvider) {
-            return $controllerProvider->requireJsonContent($request);
-        });
+        )->before(
+            function($request) use ($controllerProvider) {
+                return $controllerProvider->requireJsonContent($request);
+            }
+        )->convert('variation', 'variations.id_to_document_converter:convert');
 
-        // @todo Verify if the variation with the given id exists, based on a
-        // read model.
         $controllers->delete(
-            '/{id}',
-            function (Application $app, $id) use ($controllerProvider) {
-                $variationId = new Id($id);
+            '/{variation}',
+            function (Application $app, JsonDocument $variation) use ($controllerProvider) {
+                $variationId = new Id($variation->getId());
                 $command = new DeleteEventVariation($variationId);
 
                 $commandId = $app['event_command_bus']->dispatch($command);
                 return $controllerProvider->getResponseForCommandId($commandId);
             }
-        );
+        )->convert('variation', 'variations.id_to_document_converter:convert');
 
         $controllers->get(
-            '/{id}',
-            function (Application $app, $id) {
-                /** @var DocumentRepositoryInterface $jsonLDRepository */
-                $jsonLDRepository = $app['variations.jsonld_repository'];
-
-                $document = $jsonLDRepository->get($id);
-
+            '/{variation}',
+            function (Application $app, JsonDocument $variation) {
                 $response = JsonLdResponse::create()
-                    ->setContent($document->getRawBody());
+                    ->setContent($variation->getRawBody());
 
                 return $response;
             }
-        );
+        )->convert('variation', 'variations.id_to_document_converter:convert');
 
         return $controllers;
     }
@@ -176,5 +170,4 @@ class VariationsControllerProvider implements ControllerProviderInterface
             JsonResponse::HTTP_ACCEPTED
         );
     }
-
 }
