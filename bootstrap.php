@@ -401,6 +401,11 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['variations.search.projector']
             );
+
+            // Subscribe projector for the Variations JSON-LD model.
+            $eventBus->subscribe(
+                $app['variations.jsonld.projector']
+            );
         });
 
         return $eventBus;

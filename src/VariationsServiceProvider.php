@@ -9,6 +9,7 @@ use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Variations\Command\EventVariationCommandHandler;
 use CultuurNet\UDB3\Variations\DefaultEventVariationService;
 use CultuurNet\UDB3\Variations\EventVariationRepository;
@@ -82,10 +83,27 @@ class VariationsServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['variations.jsonld'] = $app->share(
+        $app['variations.jsonld_repository'] = $app->share(
             function (Application $app) {
                 return new CacheDocumentRepository(
                     $app['cache']('variation_jsonld')
+                );
+            }
+        );
+
+        $app['variations.jsonld.projector'] = $app->share(
+            function (Application $app) {
+                $iriGenerator = new CallableIriGenerator(
+                    function ($id) use ($app) {
+                        return $app['config']['url'] . '/variations/' . $id;
+                    }
+                );
+
+                return new \CultuurNet\UDB3\Variations\ReadModel\JSONLD\Projector(
+                    $app['variations.jsonld_repository'],
+                    $app['event_jsonld_repository'],
+                    $app['variations.search'],
+                    $iriGenerator
                 );
             }
         );
