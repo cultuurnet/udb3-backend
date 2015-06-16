@@ -260,9 +260,17 @@ $app['event_store'] = $app->share(
 
 $app['event_jsonld_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        $cachedRepository =  new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
             $app['event_jsonld_cache']
         );
+
+        $broadcastingRepository = new \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator(
+            $cachedRepository,
+            $app['event_bus'],
+            new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory()
+        );
+
+        return $broadcastingRepository;
     }
 );
 
