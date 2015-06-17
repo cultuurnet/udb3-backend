@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
+use CultuurNet\UDB3\Variations\Model\Properties\DefaultUrlValidator;
 use CultuurNet\UDB3\Variations\Model\Properties\Id;
 use CultuurNet\UDB3\Variations\ReadModel\Search\CriteriaFromParameterBagFactory;
 use CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface;
@@ -92,6 +93,12 @@ class VariationsControllerProvider implements ControllerProviderInterface
             '/',
             function (Application $app, Request $request) use ($controllerProvider) {
                 $deserializer = new CreateEventVariationJSONDeserializer();
+                $deserializer->addUrlValidator(
+                    new DefaultUrlValidator(
+                        $app['config']['event_url_regex'],
+                        $app['event_service']
+                    )
+                );
                 $command = $deserializer->deserialize(
                     new String($request->getContent())
                 );
