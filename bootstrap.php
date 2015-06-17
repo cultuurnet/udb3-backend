@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
@@ -131,6 +131,33 @@ $app['event_service'] = $app->share(
         );
 
         return $service;
+    }
+);
+
+$app['personal_variation_decorated_event_service'] = $app->share(
+    function (Application $app) {
+        $decoratedService = $app['event_service'];
+        $session = $app['session'];
+
+        /** @var \CultuurNet\Auth\User $user */
+        $user = $session->get('culturefeed_user');
+        $criteria = (new \CultuurNet\UDB3\Variations\ReadModel\Search\Criteria())
+            ->withPurpose(
+                new \CultuurNet\UDB3\Variations\Model\Properties\Purpose('personal')
+            )
+            ->withOwnerId(
+                new \CultuurNet\UDB3\Variations\Model\Properties\OwnerId(
+                    $user->getId()
+                )
+            );
+
+        return new \CultuurNet\UDB3\Variations\VariationDecoratedEventService(
+            $decoratedService,
+            $app['variations.search'],
+            $criteria,
+            $app['variations.jsonld_repository'],
+            $app['iri_generator']
+        );
     }
 );
 
@@ -879,7 +906,7 @@ $app['event_export_notification_mail_factory'] = $app->share(
 $app['event_export'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\EventExport\EventExportService(
-            $app['event_service'],
+            $app['personal_variation_decorated_event_service'],
             $app['search_service'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
             realpath(__DIR__ .  '/web/downloads'),
@@ -983,6 +1010,16 @@ $app['logger.uitpas'] = $app->share(
 
       return $logger;
   }
+);
+
+// This service is used by the background worker to impersonate the user
+// who initially queued the command.
+$app['impersonator'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\UDB3\Silex\Impersonator(
+            $app['session']
+        );
+    }
 );
 
 return $app;
