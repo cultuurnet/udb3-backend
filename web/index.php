@@ -80,6 +80,10 @@ $app->before(
 // @todo Limit this to the paths where the command bus is used.
 $app->before(
     function (Request $request, Application $app) {
+        if (in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
+            return;
+        }
+
         /** @var \Broadway\CommandHandling\CommandBusInterface|\CultuurNet\UDB3\CommandHandling\ContextAwareInterface $eventCommandBus */
         $eventCommandBus = $app['event_command_bus'];
 
