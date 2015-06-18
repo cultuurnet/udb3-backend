@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "e51617e65f553029a03861068bf96e89",
@@ -432,16 +432,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.5.1",
+            "version": "v1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "4e9e27e7dd92d0f38f084bcf670f1e718f5d9c05"
+                "reference": "21319f0d788877e85b6b8370a1bf54ad0868b8dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/4e9e27e7dd92d0f38f084bcf670f1e718f5d9c05",
-                "reference": "4e9e27e7dd92d0f38f084bcf670f1e718f5d9c05",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/21319f0d788877e85b6b8370a1bf54ad0868b8dc",
+                "reference": "21319f0d788877e85b6b8370a1bf54ad0868b8dc",
                 "shasum": ""
             },
             "require": {
@@ -495,7 +495,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2015-06-09 13:15:47"
+            "time": "2015-06-16 07:59:14"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -688,12 +688,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "a6d98fb0fe102a33e3f0089db38775151bb9cf9c"
+                "reference": "71324972df3b0795c2de08ec7aadb0c1e2ffaabc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a6d98fb0fe102a33e3f0089db38775151bb9cf9c",
-                "reference": "a6d98fb0fe102a33e3f0089db38775151bb9cf9c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/71324972df3b0795c2de08ec7aadb0c1e2ffaabc",
+                "reference": "71324972df3b0795c2de08ec7aadb0c1e2ffaabc",
                 "shasum": ""
             },
             "require": {
@@ -718,6 +718,7 @@
                 "phpoffice/phpexcel": "~1.8",
                 "psr/log": "~1.0",
                 "rase/socket.io-emitter": "0.6.1",
+                "symfony/http-foundation": "~2.6.9",
                 "twig/twig": "~1.0"
             },
             "provide": {
@@ -757,7 +758,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-06-15 09:31:50"
+            "time": "2015-06-17 12:10:25"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -765,12 +766,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-doctrine-php.git",
-                "reference": "9608f5de86da9100320b0efcd27129fe96d60699"
+                "reference": "60e1c4eb16f356d8a94e13527a596ba830445144"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/9608f5de86da9100320b0efcd27129fe96d60699",
-                "reference": "9608f5de86da9100320b0efcd27129fe96d60699",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/60e1c4eb16f356d8a94e13527a596ba830445144",
+                "reference": "60e1c4eb16f356d8a94e13527a596ba830445144",
                 "shasum": ""
             },
             "require": {
@@ -791,6 +792,7 @@
                     "CultuurNet\\UDB3\\Doctrine\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPLv3"
             ],
@@ -801,7 +803,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2014-11-24 17:53:44"
+            "time": "2015-06-16 15:26:04"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -952,16 +954,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.2.4",
+            "version": "v1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "b5202eb9e83f8db52e0e58867e0a46e63be8332e"
+                "reference": "f4a91702ca3cd2e568c3736aa031ed00c3752af4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/b5202eb9e83f8db52e0e58867e0a46e63be8332e",
-                "reference": "b5202eb9e83f8db52e0e58867e0a46e63be8332e",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/f4a91702ca3cd2e568c3736aa031ed00c3752af4",
+                "reference": "f4a91702ca3cd2e568c3736aa031ed00c3752af4",
                 "shasum": ""
             },
             "require": {
@@ -1016,7 +1018,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2014-12-23 22:40:37"
+            "time": "2015-06-17 12:21:22"
         },
         {
             "name": "doctrine/cache",
@@ -3169,20 +3171,21 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.1",
+            "version": "v2.6.9",
+            "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "4f363c426b0ced57e3d14460022feb63937980ff"
+                "reference": "f9b28dcc6d3e50f5568b42dda7292656a9fe8432"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/4f363c426b0ced57e3d14460022feb63937980ff",
-                "reference": "4f363c426b0ced57e3d14460022feb63937980ff",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/f9b28dcc6d3e50f5568b42dda7292656a9fe8432",
+                "reference": "f9b28dcc6d3e50f5568b42dda7292656a9fe8432",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9"
+                "php": ">=5.3.3"
             },
             "require-dev": {
                 "symfony/expression-language": "~2.4",
@@ -3191,15 +3194,15 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
-                "psr-4": {
+                "psr-0": {
                     "Symfony\\Component\\HttpFoundation\\": ""
                 },
                 "classmap": [
-                    "Resources/stubs"
+                    "Symfony/Component/HttpFoundation/Resources/stubs"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3218,7 +3221,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-06-10 15:30:22"
+            "time": "2015-05-22 14:53:08"
         },
         {
             "name": "symfony/http-kernel",
@@ -3538,16 +3541,16 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/videlalvaro/php-amqplib.git",
-                "reference": "7989ddce7c4aa6038483d8999b12d3b1f7c81ff9"
+                "reference": "3eb257444961f1ca7e6415c6e6f3c3e7a8e1d3fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/7989ddce7c4aa6038483d8999b12d3b1f7c81ff9",
-                "reference": "7989ddce7c4aa6038483d8999b12d3b1f7c81ff9",
+                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/3eb257444961f1ca7e6415c6e6f3c3e7a8e1d3fa",
+                "reference": "3eb257444961f1ca7e6415c6e6f3c3e7a8e1d3fa",
                 "shasum": ""
             },
             "require": {
@@ -3588,7 +3591,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2015-02-18 18:16:04"
+            "time": "2015-06-16 08:18:39"
         },
         {
             "name": "willdurand/geocoder",
