@@ -214,12 +214,22 @@ $app->get(
             'type:event'
         );
 
+        //availability filters
+        $past = new \CultuurNet\Search\Parameter\Parameter(
+            'past',
+            $request->query->get('past', 'true')
+        );
+        $unavailable = new \CultuurNet\Search\Parameter\Parameter(
+            'unavailable',
+            $request->query->get('unavailable', 'true')
+        );
+
 
         /** @var SearchAPI2 $service */
         $service = $app['search_api_2'];
         $q = new \CultuurNet\Search\Parameter\Query($q);
         $response = $service->search(
-            array($q, $limit, $start, $group, $typeFilter)
+            array($q, $limit, $start, $group, $typeFilter, $past, $unavailable)
         );
 
         $results = \CultuurNet\Search\SearchResult::fromXml(
@@ -258,9 +268,11 @@ $app->get(
     'api/1.0/search',
     function (Request $request, Application $app) {
         $query = $request->query->get('query', '*.*');
-        $limit = $request->query->get('limit', 30);
-        $start = $request->query->get('start', 0);
+        $limit = $request->query->getInt('limit', 30);
+        $start = $request->query->getInt('start', 0);
         $sort  = $request->query->get('sort', 'lastupdated desc');
+        $unavailable = $request->query->getBoolean('unavailable', true);
+        $past  = $request->query->getBoolean('past', true);
 
         /** @var Psr\Log\LoggerInterface $logger */
         $logger = $app['logger.search'];
@@ -270,7 +282,7 @@ $app->get(
         /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
         $searchService = $app['cached_search_service'];
         try {
-            $results = $searchService->search($query, $limit, $start, $sort);
+            $results = $searchService->search($query, $limit, $start, $sort, $unavailable, $past);
             $logger->info(
                 "Search for: {$query}",
                 array('user' => $user->nick)
