@@ -215,13 +215,13 @@ $app->get(
         );
 
         //availability filters
-        $past = new \CultuurNet\Search\Parameter\Parameter(
+        $past = new \CultuurNet\Search\Parameter\BooleanParameter(
             'past',
-            $request->query->get('past', 'true')
+            $request->query->getBoolean('past', true)
         );
-        $unavailable = new \CultuurNet\Search\Parameter\Parameter(
+        $unavailable = new \CultuurNet\Search\Parameter\BooleanParameter(
             'unavailable',
-            $request->query->get('unavailable', 'true')
+            $request->query->getBoolean('unavailable', true)
         );
 
 
