@@ -469,6 +469,18 @@ $app['real_event_repository'] = $app->share(
   }
 );
 
+$app['udb2_event_cdbxml'] = $app->share(
+    function (Application $app) {
+        $uitidConfig = $app['config']['uitid'];
+        $baseUrl = $uitidConfig['base_url'] . $uitidConfig['apis']['entry'];
+
+        return new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
+            $baseUrl,
+            $app['uitid_consumer_credentials']
+        );
+    }
+);
+
 $app['udb2_event_importer'] = $app->share(
     function (Application $app) {
         $logger = new \Monolog\Logger('udb2');
@@ -477,9 +489,7 @@ $app['udb2_event_importer'] = $app->share(
         );
 
         $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
-            new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
-                $app['search_api_2']
-            ),
+            $app['udb2_event_cdbxml'],
             $app['real_event_repository'],
             $app['place_service'],
             $app['organizer_service']
