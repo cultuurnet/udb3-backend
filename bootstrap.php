@@ -474,9 +474,12 @@ $app['udb2_event_cdbxml'] = $app->share(
         $uitidConfig = $app['config']['uitid'];
         $baseUrl = $uitidConfig['base_url'] . $uitidConfig['apis']['entry'];
 
+        $userId = new String($uitidConfig['impersonation_user_id']);
+
         return new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
             $baseUrl,
-            $app['uitid_consumer_credentials']
+            $app['uitid_consumer_credentials'],
+            $userId
         );
     }
 );
