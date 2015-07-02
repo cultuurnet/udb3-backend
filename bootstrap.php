@@ -349,7 +349,8 @@ $app['event_calendar_projector'] = $app->share(
 $app['relations_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
-            $app['event_relations_repository']
+            $app['event_relations_repository'],
+            $app['event_service']
         );
     }
 );
@@ -388,9 +389,9 @@ $app['event_bus'] = $app->share(
                 $app['relations_projector']
             );
 
-            $eventBus->subscribe(
+            /*$eventBus->subscribe(
               $app['cached_search_service']
-            );
+            );*/
 
             // Subscribe projector for the JSON-LD read model.
             $eventBus->subscribe(
@@ -501,6 +502,8 @@ $app['event_repository'] = $app->share(
             $repository,
             $app['udb2_entry_api_improved_factory'],
             $app['udb2_event_importer'],
+            $app['place_service'],
+            $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -706,6 +709,7 @@ $app['place_jsonld_projector'] = $app->share(
         $projector = new \CultuurNet\UDB3\Place\PlaceLDProjector(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
+            $app['organizer_service'],
             $app['event_bus']
         );
 
@@ -758,6 +762,7 @@ $app['place_repository'] = $app->share(
             $repository,
             $app['search_api_2'],
             $app['udb2_entry_api_improved_factory'],
+            $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
 
