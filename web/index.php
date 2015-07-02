@@ -324,7 +324,7 @@ $app
             /** @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $repository */
             $repository = $app['event_history_repository'];
 
-            /** @var \CultuurNet\UDB3\Event\ReadModel\JsonDocument $document */
+            /** @var \CultuurNet\UDB3\ReadModel\JsonDocument $document */
             $document = $repository->get($cdbid);
 
             $response = JsonResponse::create()
