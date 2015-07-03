@@ -254,47 +254,6 @@ $app->get(
     }
 );
 
-$app->get(
-    'api/1.0/search',
-    function (Request $request, Application $app) {
-        $query = $request->query->get('query', '*.*');
-        $limit = $request->query->get('limit', 30);
-        $start = $request->query->get('start', 0);
-        $sort  = $request->query->get('sort', 'lastupdated desc');
-
-        /** @var Psr\Log\LoggerInterface $logger */
-        $logger = $app['logger.search'];
-        /** @var CultureFeed_User $user */
-        $user = $app['current_user'];
-
-        /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
-        $searchService = $app['cached_search_service'];
-        try {
-            $results = $searchService->search($query, $limit, $start, $sort);
-            $logger->info(
-                "Search for: {$query}",
-                array('user' => $user->nick)
-            );
-        } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
-            $logger->alert(
-                "Search failed with HTTP status {$e->getResponse(
-                )->getStatusCode()}. Query: {$query}",
-                array('user' => $user->nick)
-            );
-
-            return new Response('Error while searching', '400');
-        }
-
-        $response = JsonLdResponse::create()
-            ->setData($results)
-            ->setPublic()
-            ->setClientTtl(60 * 1)
-            ->setTtl(60 * 5);
-
-        return $response;
-    }
-)->before($checkAuthenticated)->bind('api/1.0/search');
-
 $app
     ->get(
         'event/{cdbid}',
@@ -654,5 +613,6 @@ $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
 
 $app->run();
