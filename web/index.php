@@ -615,4 +615,6 @@ $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvide
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
 
+$app->mount('/', new \CultuurNet\UDB3\Silex\DummyControllerProvider());
+
 $app->run();
