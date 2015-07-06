@@ -9,6 +9,9 @@ uitid:
   apis:
     entry: entry/rest.uitdatabank.be/api/v2
     search: searchv2
+  # ID of the user to impersonate for certain requests to the Entry API that use
+  # Light UiTID authentication.
+  impersonation_user_id: ***
 sync_with_udb2: true
 cors:
   origins: []
