@@ -121,6 +121,17 @@ $app['cached_search_service'] = $app->share(
     }
 );
 
+$app['search_cache_manager'] = $app->share(
+    function (Application $app) {
+        $parameters = $app['config']['cache']['redis'];
+
+        return new \CultuurNet\UDB3\Search\CacheManager(
+            $app['cached_search_service'],
+            new Predis\Client($parameters)
+        );
+    }
+);
+
 $app['event_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\LocalEventService(
@@ -389,7 +400,7 @@ $app['event_bus'] = $app->share(
             );
 
             $eventBus->subscribe(
-              $app['cached_search_service']
+                $app['search_cache_manager']
             );
 
             // Subscribe projector for the JSON-LD read model.
