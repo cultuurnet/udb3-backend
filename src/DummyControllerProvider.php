@@ -5,8 +5,11 @@
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\Search\Parameter\FilterQuery;
+use CultuurNet\Search\Parameter\Query;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Hydra\PagedCollection;
+use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -53,28 +56,29 @@ class DummyControllerProvider implements ControllerProviderInterface
 
                 /** @var EntityServiceInterface $placeService */
                 $placeService = $app['place_service'];
+                /** @var SearchServiceInterface $searchService */
+                $searchService = $app['place_search_service'];
 
-                if ($request->query->get('q') === 'zipcode:3000') {
-                    $ids = [
-                        '7540A176-F9DE-A04E-D0592C7E3006528C',
-                        '56AF6D44-0DDA-76D4-2F5EE4184024FD78',
-                        '429A87B3-E3B7-697C-5C94A5159389EF25',
-                        '5023e3af-3fe1-45be-8a72-86ebe9ffa2fe',
-                    ];
+                $query = $request->query->get('q', '*.*');
 
-                    $members = array_map(
-                        function ($id) use ($placeService) {
-                            return json_decode($placeService->getEntity($id));
-                        },
-                        $ids
-                    );
-                }
+                $searchResult = $searchService->search($query, 1000);
+
+                $members = array_map(
+                    function ($searchResult) use ($placeService) {
+                        $uri = $searchResult['@id'];
+                        $uriParts = explode('/', $uri);
+                        $id = array_pop($uriParts);
+                        $place = json_decode($placeService->getEntity($id));
+                        return $place;
+                    },
+                    $searchResult->getItems()
+                );
 
                 $pagedCollection = new PagedCollection(
                     1,
                     1000,
                     $members,
-                    count($members)
+                    $searchResult->getTotalItems()->toNative()
                 );
 
                 return (new JsonLdResponse($pagedCollection));

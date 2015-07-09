@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\CachedDefaultSearchService;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use ValueObjects\String\String;
+use CultuurNet\UDB3\SearchAPI2\PlaceSearchServiceDecorator;
 
 $app = new Application();
 
@@ -103,6 +104,19 @@ $app['search_api_2'] = $app->share(
     }
 );
 
+$app['entity_search_service'] = $app->share(
+    function ($app) {
+        $searchApiUrl =
+            $app['config']['uitid']['base_url'] .
+            $app['config']['uitid']['apis']['search'];
+
+        return new \CultuurNet\UDB3\SearchAPI2\EntitySearchService(
+            $searchApiUrl,
+            $app['uitid_consumer_credentials']
+        );
+    }
+);
+
 $app['search_service'] = $app->share(
     function ($app) {
         return new PullParsingSearchService(
@@ -111,6 +125,16 @@ $app['search_service'] = $app->share(
         );
     }
 );
+
+$app['place_search_service'] = $app->share(
+    function ($app) {
+        return new PullParsingSearchService(
+            new PlaceSearchServiceDecorator($app['entity_search_service']),
+            $app['place_iri_generator']
+        );
+    }
+);
+
 
 $app['cached_search_service'] = $app->share(
     function ($app) {
@@ -773,7 +797,7 @@ $app['place_repository'] = $app->share(
 
         $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\PlaceRepository(
             $repository,
-            $app['search_api_2'],
+            $app['entity_search_service'],
             $app['udb2_entry_api_improved_factory'],
             $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
