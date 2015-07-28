@@ -5,7 +5,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Search\CacheManager;
+use CultuurNet\UDB3\Search\Cache\CacheManager;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +28,7 @@ class CacheWarmCommand extends Command
         $cacheManager = $this->getCacheManager();
 
         while (true) {
-            $cacheManager->warmupCacheIfNeeded();
+            $cacheManager->warmUpCacheIfNeeded();
             pcntl_signal_dispatch();
             sleep(1);
             pcntl_signal_dispatch();
