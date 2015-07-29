@@ -690,12 +690,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d8689a0672364bf513e366f5e0314bd4e83b0802"
+                "reference": "d2fa2f78161f7c309fb437223b4e3aa1c1a9a2d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d8689a0672364bf513e366f5e0314bd4e83b0802",
-                "reference": "d8689a0672364bf513e366f5e0314bd4e83b0802",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d2fa2f78161f7c309fb437223b4e3aa1c1a9a2d0",
+                "reference": "d2fa2f78161f7c309fb437223b4e3aa1c1a9a2d0",
                 "shasum": ""
             },
             "require": {
@@ -761,7 +761,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-07-02 09:03:22"
+            "time": "2015-07-28 07:01:40"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -769,12 +769,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-doctrine-php.git",
-                "reference": "e81a913b95523bbdaaebaaae239e5998bab92e15"
+                "reference": "827bd42cce20c543ea3cf26db03681f4a10c93c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/e81a913b95523bbdaaebaaae239e5998bab92e15",
-                "reference": "e81a913b95523bbdaaebaaae239e5998bab92e15",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/827bd42cce20c543ea3cf26db03681f4a10c93c7",
+                "reference": "827bd42cce20c543ea3cf26db03681f4a10c93c7",
                 "shasum": ""
             },
             "require": {
@@ -806,7 +806,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2015-07-06 08:45:20"
+            "time": "2015-07-29 08:04:07"
         },
         {
             "name": "cultuurnet/udb3-symfony",
