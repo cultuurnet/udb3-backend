@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "e51617e65f553029a03861068bf96e89",
@@ -690,12 +690,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d2fa2f78161f7c309fb437223b4e3aa1c1a9a2d0"
+                "reference": "106f719b39bd011f256b1a6f96cce251d63c8b6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d2fa2f78161f7c309fb437223b4e3aa1c1a9a2d0",
-                "reference": "d2fa2f78161f7c309fb437223b4e3aa1c1a9a2d0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/106f719b39bd011f256b1a6f96cce251d63c8b6f",
+                "reference": "106f719b39bd011f256b1a6f96cce251d63c8b6f",
                 "shasum": ""
             },
             "require": {
@@ -713,6 +713,7 @@
                 "doctrine/dbal": "~2.4",
                 "ext-tidy": "*",
                 "gridonic/princexml-php": "~1.1.1",
+                "justinrainbow/json-schema": "1.4.3",
                 "league/flysystem": "~1.0",
                 "league/flysystem-ziparchive": "~1.0",
                 "monolog/monolog": "~1.11",
@@ -761,7 +762,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-07-28 07:01:40"
+            "time": "2015-07-29 10:10:02"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1984,16 +1985,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "1.4.4",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce"
+                "reference": "44adc6f25592c6990409607c95537f577861f9b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce",
-                "reference": "8dc9b9d85ab639ca60ab4608b34c1279d6ae7bce",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/44adc6f25592c6990409607c95537f577861f9b1",
+                "reference": "44adc6f25592c6990409607c95537f577861f9b1",
                 "shasum": ""
             },
             "require": {
@@ -2046,7 +2047,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2015-07-14 16:29:50"
+            "time": "2015-07-13 05:06:53"
         },
         {
             "name": "knplabs/console-service-provider",
