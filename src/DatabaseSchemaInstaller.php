@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use Silex\Application;
 
-class DatabaseSchemaInstaller
+class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
 {
 
     protected $app;
