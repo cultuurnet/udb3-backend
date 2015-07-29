@@ -1038,4 +1038,15 @@ $app['impersonator'] = $app->share(
     }
 );
 
+$app['database.installer'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\UDB3\Silex\DatabaseSchemaInstaller($app);
+    }
+);
+
+$app->register(
+    new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
+    ['migrations.config_file' => __DIR__ . '/migrations.yml']
+);
+
 return $app;
