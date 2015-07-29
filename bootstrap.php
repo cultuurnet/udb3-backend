@@ -121,6 +121,30 @@ $app['cached_search_service'] = $app->share(
     }
 );
 
+$app['search_cache_manager'] = $app->share(
+    function (Application $app) {
+        $parameters = $app['config']['cache']['redis'];
+
+        return new \CultuurNet\UDB3\Search\Cache\CacheManager(
+            $app['cached_search_service'],
+            new Predis\Client($parameters)
+        );
+    }
+);
+
+$app['search_cache_manager'] = $app->extend(
+    'search_cache_manager',
+    function(\CultuurNet\UDB3\Search\Cache\CacheManager $manager, Application $app) {
+        $logger = new \Monolog\Logger('search_cache_manager');
+        $logger->pushHandler(
+            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/search_cache_manager.log')
+        );
+        $manager->setLogger($logger);
+
+        return $manager;
+    }
+);
+
 $app['event_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\LocalEventService(
@@ -389,7 +413,7 @@ $app['event_bus'] = $app->share(
             );
 
             $eventBus->subscribe(
-              $app['cached_search_service']
+                $app['search_cache_manager']
             );
 
             // Subscribe projector for the JSON-LD read model.
