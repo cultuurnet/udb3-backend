@@ -30,7 +30,7 @@ log.command_bus:
       port: 6379
     #namespace: ***
     #room: ***
-    level: DEBUG
+    level: INFO
 database:
   driver: pdo_mysql
   dbname: ***
