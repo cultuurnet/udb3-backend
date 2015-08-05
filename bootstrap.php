@@ -968,13 +968,20 @@ $app['amqp-connection'] = $app->share(
 
         $consumeConfig = $amqpConfig['consume']['udb2'];
 
+        // Delay the consumption of UDB2 updates with some seconds to prevent a
+        // race condition with the UDB3 worker. Modifications initiated by
+        // commands in the UDB3 queue worker need to finish before their
+        // counterpart UDB2 update is processed.
+        $delay = 4;
+
         $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
             $app['event_bus'],
             $deserializerLocator,
             new String($amqpConfig['consumer_tag']),
             new String($consumeConfig['exchange']),
-            new String($consumeConfig['queue'])
+            new String($consumeConfig['queue']),
+            $delay
         );
 
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
@@ -982,7 +989,7 @@ $app['amqp-connection'] = $app->share(
 
         $logFileHandler = new \Monolog\Handler\StreamHandler(
             __DIR__ . '/log/amqp.log',
-            \Monolog\Logger::NOTICE
+            \Monolog\Logger::DEBUG
         );
         $logger->pushHandler($logFileHandler);
         $eventBusForwardingConsumer->setLogger($logger);
