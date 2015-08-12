@@ -538,6 +538,8 @@ $app['event_repository'] = $app->share(
             $repository,
             $app['udb2_entry_api_improved_factory'],
             $app['udb2_event_importer'],
+            $app['place_service'],
+            $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -795,6 +797,7 @@ $app['place_repository'] = $app->share(
             $repository,
             $app['search_api_2'],
             $app['udb2_entry_api_improved_factory'],
+            $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
 
