@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "86fcf415094834d3466c6a20bee109f9",
+    "hash": "39d47254295887480e9717024eccae66",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -643,12 +643,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb2-domain-events.git",
-                "reference": "6579ec68b65f06941e98860cbaea6da6fbdcd86e"
+                "reference": "eb6012dddf67d7bc5052de545c2afdd5366ce40a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/6579ec68b65f06941e98860cbaea6da6fbdcd86e",
-                "reference": "6579ec68b65f06941e98860cbaea6da6fbdcd86e",
+                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/eb6012dddf67d7bc5052de545c2afdd5366ce40a",
+                "reference": "eb6012dddf67d7bc5052de545c2afdd5366ce40a",
                 "shasum": ""
             },
             "require": {
@@ -682,7 +682,7 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2015-03-05 10:15:46"
+            "time": "2015-08-12 19:02:32"
         },
         {
             "name": "cultuurnet/udb3",
@@ -848,6 +848,67 @@
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
             "time": "2014-10-23 11:14:04"
+        },
+        {
+            "name": "cultuurnet/udb3-udb2-bridge",
+            "version": "dev-feature/III-369",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
+                "reference": "1a47679fac90306001e8af5ddd2d510b65ce02e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/1a47679fac90306001e8af5ddd2d510b65ce02e9",
+                "reference": "1a47679fac90306001e8af5ddd2d510b65ce02e9",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/auth": "~1.2",
+                "cultuurnet/entry": "~0.1",
+                "cultuurnet/udb3": "~0.1"
+            },
+            "require-dev": {
+                "phing/phing": "~2.10",
+                "phpunit/phpunit": "~4.3",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\UDB2\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\UDB2\\": "test/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                },
+                {
+                    "name": "Bram Cordie",
+                    "email": "bram@2dotstwice.be"
+                }
+            ],
+            "description": "PHP libraries for bridging UDB3 with UDB2",
+            "support": {
+                "source": "https://github.com/cultuurnet/udb3-udb2-bridge/tree/feature/III-369",
+                "issues": "https://github.com/cultuurnet/udb3-udb2-bridge/issues"
+            },
+            "time": "2015-08-12 20:53:14"
         },
         {
             "name": "danielstjules/stringy",
@@ -3501,16 +3562,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.19.0",
+            "version": "v1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "edbeaf43b0a606cdaadc32a11d2673614a377b90"
+                "reference": "1ea4e5f81c6d005fe84d0b38e1c4f1955eb86844"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/edbeaf43b0a606cdaadc32a11d2673614a377b90",
-                "reference": "edbeaf43b0a606cdaadc32a11d2673614a377b90",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/1ea4e5f81c6d005fe84d0b38e1c4f1955eb86844",
+                "reference": "1ea4e5f81c6d005fe84d0b38e1c4f1955eb86844",
                 "shasum": ""
             },
             "require": {
@@ -3519,7 +3580,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.19-dev"
+                    "dev-master": "1.20-dev"
                 }
             },
             "autoload": {
@@ -3554,7 +3615,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-07-31 13:45:26"
+            "time": "2015-08-12 15:56:39"
         },
         {
             "name": "videlalvaro/php-amqplib",
@@ -4707,6 +4768,7 @@
         "cultuurnet/udb2-domain-events": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
