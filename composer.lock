@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e51617e65f553029a03861068bf96e89",
+    "hash": "86fcf415094834d3466c6a20bee109f9",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -690,12 +690,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f7c25ec918c9d69767f17872a1a505c1bd8284f4"
+                "reference": "81ffadbac2ac79c72f2ffa0a267b41e03d98984d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f7c25ec918c9d69767f17872a1a505c1bd8284f4",
-                "reference": "f7c25ec918c9d69767f17872a1a505c1bd8284f4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/81ffadbac2ac79c72f2ffa0a267b41e03d98984d",
+                "reference": "81ffadbac2ac79c72f2ffa0a267b41e03d98984d",
                 "shasum": ""
             },
             "require": {
@@ -762,7 +762,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-08-05 09:50:07"
+            "time": "2015-08-12 10:07:07"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2409,16 +2409,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.15.0",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0"
+                "reference": "c0c0b4bee3aabce7182876b0d912ef2595563db7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc5150cc608f2334c72c3b6a553ec9668a4156b0",
-                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c0c0b4bee3aabce7182876b0d912ef2595563db7",
+                "reference": "c0c0b4bee3aabce7182876b0d912ef2595563db7",
                 "shasum": ""
             },
             "require": {
@@ -2455,7 +2455,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.15.x-dev"
+                    "dev-master": "1.16.x-dev"
                 }
             },
             "autoload": {
@@ -2481,7 +2481,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-07-12 13:54:09"
+            "time": "2015-08-09 17:44:44"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -3320,27 +3320,29 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v2.6.11",
-            "target-dir": "Symfony/Component/Routing",
+            "version": "v2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "0a1764d41bbb54f3864808c50569ac382b44d128"
+                "reference": "ea9134f277162b02e5f80ac058b75a77637b0d26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/0a1764d41bbb54f3864808c50569ac382b44d128",
-                "reference": "0a1764d41bbb54f3864808c50569ac382b44d128",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/ea9134f277162b02e5f80ac058b75a77637b0d26",
+                "reference": "ea9134f277162b02e5f80ac058b75a77637b0d26",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.9"
+            },
+            "conflict": {
+                "symfony/config": "<2.7"
             },
             "require-dev": {
                 "doctrine/annotations": "~1.0",
                 "doctrine/common": "~2.2",
                 "psr/log": "~1.0",
-                "symfony/config": "~2.2",
+                "symfony/config": "~2.7",
                 "symfony/expression-language": "~2.4",
                 "symfony/http-foundation": "~2.3",
                 "symfony/phpunit-bridge": "~2.7",
@@ -3355,11 +3357,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
+                "psr-4": {
                     "Symfony\\Component\\Routing\\": ""
                 }
             },
@@ -3385,7 +3387,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2015-07-09 16:02:48"
+            "time": "2015-07-09 16:07:40"
         },
         {
             "name": "symfony/serializer",
@@ -3556,16 +3558,16 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/videlalvaro/php-amqplib.git",
-                "reference": "3eb257444961f1ca7e6415c6e6f3c3e7a8e1d3fa"
+                "reference": "eb8f94d97c8e79900accf77343dbd7eca7f58506"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/3eb257444961f1ca7e6415c6e6f3c3e7a8e1d3fa",
-                "reference": "3eb257444961f1ca7e6415c6e6f3c3e7a8e1d3fa",
+                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/eb8f94d97c8e79900accf77343dbd7eca7f58506",
+                "reference": "eb8f94d97c8e79900accf77343dbd7eca7f58506",
                 "shasum": ""
             },
             "require": {
@@ -3586,8 +3588,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "PhpAmqpLib": ""
+                "psr-4": {
+                    "PhpAmqpLib\\": "PhpAmqpLib/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3606,7 +3608,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2015-06-16 08:18:39"
+            "time": "2015-08-11 12:30:09"
         },
         {
             "name": "willdurand/geocoder",
@@ -4201,16 +4203,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.7.7",
+            "version": "4.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9b97f9d807b862c2de2a36e86690000801c85724"
+                "reference": "fd3050e26e3105f416d74c4d33aea659b406c59d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9b97f9d807b862c2de2a36e86690000801c85724",
-                "reference": "9b97f9d807b862c2de2a36e86690000801c85724",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fd3050e26e3105f416d74c4d33aea659b406c59d",
+                "reference": "fd3050e26e3105f416d74c4d33aea659b406c59d",
                 "shasum": ""
             },
             "require": {
@@ -4220,7 +4222,7 @@
                 "ext-reflection": "*",
                 "ext-spl": "*",
                 "php": ">=5.3.3",
-                "phpspec/prophecy": "~1.3,>=1.3.1",
+                "phpspec/prophecy": "^1.3.1",
                 "phpunit/php-code-coverage": "~2.1",
                 "phpunit/php-file-iterator": "~1.4",
                 "phpunit/php-text-template": "~1.2",
@@ -4228,7 +4230,7 @@
                 "phpunit/phpunit-mock-objects": "~2.3",
                 "sebastian/comparator": "~1.1",
                 "sebastian/diff": "~1.2",
-                "sebastian/environment": "~1.2",
+                "sebastian/environment": "~1.3",
                 "sebastian/exporter": "~1.2",
                 "sebastian/global-state": "~1.0",
                 "sebastian/version": "~1.0",
@@ -4243,7 +4245,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.7.x-dev"
+                    "dev-master": "4.8.x-dev"
                 }
             },
             "autoload": {
@@ -4269,7 +4271,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-07-13 11:28:34"
+            "time": "2015-08-10 09:16:56"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
