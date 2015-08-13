@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0e20ac535e46ec0f8a12733a115bc2f1",
+    "hash": "09d2104b6935a0a0bfb1aa74e925ef56",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -686,16 +686,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-369",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2c1ae1b55e998b3130c86ae6c34bbf203bba258f"
+                "reference": "61c674adb03f82a406251a5b4d66a1b93668de5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2c1ae1b55e998b3130c86ae6c34bbf203bba258f",
-                "reference": "2c1ae1b55e998b3130c86ae6c34bbf203bba258f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/61c674adb03f82a406251a5b4d66a1b93668de5b",
+                "reference": "61c674adb03f82a406251a5b4d66a1b93668de5b",
                 "shasum": ""
             },
             "require": {
@@ -762,7 +762,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-08-13 04:44:41"
+            "time": "2015-08-13 06:11:49"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -4762,18 +4762,10 @@
             "time": "2015-06-21 13:59:46"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-369",
-            "package": "cultuurnet/udb3"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb2-domain-events": 20,
-        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
