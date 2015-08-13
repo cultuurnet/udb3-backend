@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "39d47254295887480e9717024eccae66",
+    "hash": "273dfb96d2b74c50b8f2b98a51be1056",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -550,16 +550,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "6202593d77f6d94fef9bf1885245a01ad7d65c40"
+                "reference": "3305505512a489fb78d24a1b6a750a7f6a1ff95c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/6202593d77f6d94fef9bf1885245a01ad7d65c40",
-                "reference": "6202593d77f6d94fef9bf1885245a01ad7d65c40",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/3305505512a489fb78d24a1b6a750a7f6a1ff95c",
+                "reference": "3305505512a489fb78d24a1b6a750a7f6a1ff95c",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/auth": "~1.1",
+                "cultuurnet/auth": "~1.2",
                 "cultuurnet/cdb": "~2",
                 "php": ">=5.4.0"
             },
@@ -589,7 +589,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2015-07-30 09:52:59"
+            "time": "2015-08-12 21:33:16"
         },
         {
             "name": "cultuurnet/search",
@@ -686,16 +686,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-369",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "bcc6017c2b2dfc3d1e12f265120632d63a031d46"
+                "reference": "2c1ae1b55e998b3130c86ae6c34bbf203bba258f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/bcc6017c2b2dfc3d1e12f265120632d63a031d46",
-                "reference": "bcc6017c2b2dfc3d1e12f265120632d63a031d46",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2c1ae1b55e998b3130c86ae6c34bbf203bba258f",
+                "reference": "2c1ae1b55e998b3130c86ae6c34bbf203bba258f",
                 "shasum": ""
             },
             "require": {
@@ -762,7 +762,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-08-12 14:25:50"
+            "time": "2015-08-13 04:44:41"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -855,12 +855,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "1a47679fac90306001e8af5ddd2d510b65ce02e9"
+                "reference": "5386aac2d0967df99a13e25499a7c51cb867ed67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/1a47679fac90306001e8af5ddd2d510b65ce02e9",
-                "reference": "1a47679fac90306001e8af5ddd2d510b65ce02e9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/5386aac2d0967df99a13e25499a7c51cb867ed67",
+                "reference": "5386aac2d0967df99a13e25499a7c51cb867ed67",
                 "shasum": ""
             },
             "require": {
@@ -908,7 +908,7 @@
                 "source": "https://github.com/cultuurnet/udb3-udb2-bridge/tree/feature/III-369",
                 "issues": "https://github.com/cultuurnet/udb3-udb2-bridge/issues"
             },
-            "time": "2015-08-12 20:53:14"
+            "time": "2015-08-13 05:23:00"
         },
         {
             "name": "danielstjules/stringy",
@@ -4762,10 +4762,18 @@
             "time": "2015-06-21 13:59:46"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-369",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb2-domain-events": 20,
+        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20,
         "cultuurnet/udb3-udb2-bridge": 20,
