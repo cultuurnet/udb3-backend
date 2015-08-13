@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0c2c13484a5c9759e8ef327c4f929f17",
+    "hash": "dfd464668a5249b5e776984a282502eb",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -592,6 +592,44 @@
             "time": "2015-08-12 21:33:16"
         },
         {
+            "name": "cultuurnet/hydra",
+            "version": "dev-feature/III-402",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/Hydra.git",
+                "reference": "0efe67831522f7950fcbfaaae45e9307479926cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/0efe67831522f7950fcbfaaae45e9307479926cf",
+                "reference": "0efe67831522f7950fcbfaaae45e9307479926cf",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\Hydra\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                }
+            ],
+            "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
+            "time": "2015-08-13 14:20:54"
+        },
+        {
             "name": "cultuurnet/search",
             "version": "v1.2.1",
             "source": {
@@ -690,12 +728,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "61c674adb03f82a406251a5b4d66a1b93668de5b"
+                "reference": "353a5d173c13037b115a2125ac89c548277cf673"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/61c674adb03f82a406251a5b4d66a1b93668de5b",
-                "reference": "61c674adb03f82a406251a5b4d66a1b93668de5b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/353a5d173c13037b115a2125ac89c548277cf673",
+                "reference": "353a5d173c13037b115a2125ac89c548277cf673",
                 "shasum": ""
             },
             "require": {
@@ -762,7 +800,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-08-13 06:11:49"
+            "time": "2015-08-13 07:26:59"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3964,16 +4002,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.4.1",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373"
+                "reference": "4745ded9307786b730d7a60df5cb5a6c43cf95f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373",
-                "reference": "3132b1f44c7bf2ec4c7eb2d3cb78fdeca760d373",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4745ded9307786b730d7a60df5cb5a6c43cf95f7",
+                "reference": "4745ded9307786b730d7a60df5cb5a6c43cf95f7",
                 "shasum": ""
             },
             "require": {
@@ -4020,7 +4058,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-04-27 22:15:08"
+            "time": "2015-08-13 10:07:40"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4215,16 +4253,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.3",
+            "version": "1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "7a9b0969488c3c54fd62b4d504b3ec758fd005d9"
+                "reference": "09fc125d65c344c53a7c7ad8f261e3f3af9f76c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/7a9b0969488c3c54fd62b4d504b3ec758fd005d9",
-                "reference": "7a9b0969488c3c54fd62b4d504b3ec758fd005d9",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/09fc125d65c344c53a7c7ad8f261e3f3af9f76c5",
+                "reference": "09fc125d65c344c53a7c7ad8f261e3f3af9f76c5",
                 "shasum": ""
             },
             "require": {
@@ -4260,7 +4298,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-06-19 03:43:16"
+            "time": "2015-08-13 14:23:08"
         },
         {
             "name": "phpunit/phpunit",
@@ -4762,12 +4800,20 @@
             "time": "2015-06-21 13:59:46"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "~0.0@dev",
+            "alias_normalized": "dev-~0.0@",
+            "version": "dev-feature/III-402",
+            "package": "cultuurnet/hydra"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb2-domain-events": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20,
+        "cultuurnet/hydra": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
