@@ -9,12 +9,6 @@
     }
   ],
   "minimum-stability": "dev",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/cultuurnet/udb3-udb2-bridge"
-    }
-  ],
   "require": {
     "cultuurnet/udb2-domain-events": "~0.0@dev",
     "cultuurnet/udb3": "~0.1",
