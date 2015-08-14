@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
+use CultuurNet\UDB3\Silex\DatabaseSchemaInstallerInterface;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,11 +28,12 @@ class InstallCommand extends Command
     }
 
     /**
-     * @return DatabaseSchemaInstaller
+     * @return DatabaseSchemaInstallerInterface
      */
     protected function getDatabaseSchemaInstaller()
     {
-        return new DatabaseSchemaInstaller($this->getSilexApplication());
+        $app = $this->getSilexApplication();
+        return $app['database.installer'];
     }
 
 }

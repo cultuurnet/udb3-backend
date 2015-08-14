@@ -121,6 +121,30 @@ $app['cached_search_service'] = $app->share(
     }
 );
 
+$app['search_cache_manager'] = $app->share(
+    function (Application $app) {
+        $parameters = $app['config']['cache']['redis'];
+
+        return new \CultuurNet\UDB3\Search\Cache\CacheManager(
+            $app['cached_search_service'],
+            new Predis\Client($parameters)
+        );
+    }
+);
+
+$app['search_cache_manager'] = $app->extend(
+    'search_cache_manager',
+    function(\CultuurNet\UDB3\Search\Cache\CacheManager $manager, Application $app) {
+        $logger = new \Monolog\Logger('search_cache_manager');
+        $logger->pushHandler(
+            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/search_cache_manager.log')
+        );
+        $manager->setLogger($logger);
+
+        return $manager;
+    }
+);
+
 $app['event_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\LocalEventService(
@@ -389,9 +413,9 @@ $app['event_bus'] = $app->share(
                 $app['relations_projector']
             );
 
-            /*$eventBus->subscribe(
-              $app['cached_search_service']
-            );*/
+            $eventBus->subscribe(
+                $app['search_cache_manager']
+            );
 
             // Subscribe projector for the JSON-LD read model.
             $eventBus->subscribe(
@@ -949,13 +973,20 @@ $app['amqp-connection'] = $app->share(
 
         $consumeConfig = $amqpConfig['consume']['udb2'];
 
+        // Delay the consumption of UDB2 updates with some seconds to prevent a
+        // race condition with the UDB3 worker. Modifications initiated by
+        // commands in the UDB3 queue worker need to finish before their
+        // counterpart UDB2 update is processed.
+        $delay = 4;
+
         $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
             $app['event_bus'],
             $deserializerLocator,
             new String($amqpConfig['consumer_tag']),
             new String($consumeConfig['exchange']),
-            new String($consumeConfig['queue'])
+            new String($consumeConfig['queue']),
+            $delay
         );
 
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
@@ -963,7 +994,7 @@ $app['amqp-connection'] = $app->share(
 
         $logFileHandler = new \Monolog\Handler\StreamHandler(
             __DIR__ . '/log/amqp.log',
-            \Monolog\Logger::NOTICE
+            \Monolog\Logger::DEBUG
         );
         $logger->pushHandler($logFileHandler);
         $eventBusForwardingConsumer->setLogger($logger);
@@ -1017,6 +1048,17 @@ $app['impersonator'] = $app->share(
             $app['session']
         );
     }
+);
+
+$app['database.installer'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\UDB3\Silex\DatabaseSchemaInstaller($app);
+    }
+);
+
+$app->register(
+    new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
+    ['migrations.config_file' => __DIR__ . '/migrations.yml']
 );
 
 return $app;
