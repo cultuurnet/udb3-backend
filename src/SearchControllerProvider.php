@@ -6,7 +6,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Hydra\PagedCollection;
+use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\Silex\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Silex\Application;
