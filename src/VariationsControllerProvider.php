@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Hydra\PagedCollection;
-use CultuurNet\UDB3\Hydra\Symfony\PageUrlGenerator;
+use CultuurNet\Hydra\PagedCollection;
+use CultuurNet\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
@@ -83,7 +83,8 @@ class VariationsControllerProvider implements ControllerProviderInterface
                         $itemsPerPage,
                         $variations,
                         $totalItems,
-                        $pageUrlFactory
+                        $pageUrlFactory,
+                        true
                     )
                 );
             }
