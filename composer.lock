@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "74b201ebf8bb85bb6336f1816ad8fb6c",
+    "hash": "05d080cb465902c3e39bd828554a5ee1",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -742,7 +742,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c3e0d99025732beda18dae7b7f25a7cae5ed6c58",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/59241c4fdfe9fa60b3b08e9ea05941c730c36454",
                 "reference": "c3e0d99025732beda18dae7b7f25a7cae5ed6c58",
                 "shasum": ""
             },
@@ -813,16 +813,16 @@
         },
         {
             "name": "cultuurnet/udb3-doctrine",
-            "version": "dev-master",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-doctrine-php.git",
-                "reference": "827bd42cce20c543ea3cf26db03681f4a10c93c7"
+                "reference": "6be7303482ad1be76e1148dba9b66efe2c1cd9ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/827bd42cce20c543ea3cf26db03681f4a10c93c7",
-                "reference": "827bd42cce20c543ea3cf26db03681f4a10c93c7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/6be7303482ad1be76e1148dba9b66efe2c1cd9ba",
+                "reference": "6be7303482ad1be76e1148dba9b66efe2c1cd9ba",
                 "shasum": ""
             },
             "require": {
@@ -854,7 +854,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2015-07-29 08:04:07"
+            "time": "2015-08-16 07:54:38"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -4815,6 +4815,12 @@
             "alias_normalized": "0.1.0.0",
             "version": "dev-develop",
             "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-develop",
+            "package": "cultuurnet/udb3-doctrine"
         }
     ],
     "minimum-stability": "dev",
