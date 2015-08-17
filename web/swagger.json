@@ -330,6 +330,36 @@
                 ]
             }
         },
+        "/places": {
+            "get": {
+                "summary": "List places.",
+                "description": "",
+                "operationId": "listPlaces",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "zipcode",
+                        "in": "query",
+                        "description": "Limit the list to places located in the area with this postal code.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of places matching the supplied criteria.",
+                        "schema": {
+                            "$ref": "#/definitions/PlacesList"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
         "/place/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific place.",
@@ -1029,7 +1059,7 @@
                         "description": "The variation with the specified identifier was not found."
                     },
                     "403": {
-                       "description": "The user is not allowed to patch this variation."
+                        "description": "The user is not allowed to patch this variation."
                     }
                 },
                 "tags": [
@@ -2080,30 +2110,72 @@
                 "member"
             ]
         },
-        "APIProblem": {
+        "PagedCollection": {
             "properties": {
-                "type": {
-                    "type": "string",
-                    "format": "url"
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
                 },
-                "title": {
-                    "type": "string"
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 1
                 },
-                "status": {
-                    "type": "integer"
-                },
-                "validation_messages": {
+                "member": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/Place"
                     }
                 }
             },
             "required": [
-                "title",
-                "type",
-                "status"
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
+        },
+        "PlacesList": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/PagedCollection"
+                },
+                {
+                    "properties": {
+                        "member": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Place"
+                            }
+                        }
+                    }
+                }
             ]
         }
+    },
+    "APIProblem": {
+        "properties": {
+            "type": {
+                "type": "string",
+                "format": "url"
+            },
+            "title": {
+                "type": "string"
+            },
+            "status": {
+                "type": "integer"
+            },
+            "validation_messages": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "required": [
+            "title",
+            "type",
+            "status"
+        ]
     }
 }
