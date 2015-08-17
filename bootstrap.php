@@ -1062,6 +1062,7 @@ $app['database.installer'] = $app->share(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\PlaceLookupServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
