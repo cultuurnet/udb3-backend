@@ -458,6 +458,11 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['variations.jsonld.projector']
             );
+
+            // Subscribe projector for the multi-purpose index read model.
+            $eventBus->subscribe(
+                $app['index.projector']
+            );
         });
 
         return $eventBus;
@@ -1055,6 +1060,8 @@ $app['database.installer'] = $app->share(
         return new \CultuurNet\UDB3\Silex\DatabaseSchemaInstaller($app);
     }
 );
+
+$app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
