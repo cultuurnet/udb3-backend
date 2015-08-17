@@ -5,7 +5,6 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\ReadModel\Index\Doctrine\SchemaConfigurator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
