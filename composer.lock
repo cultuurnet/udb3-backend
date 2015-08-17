@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "a7b05ebdaa9f6572b1f29e9ada9b2695",
@@ -738,12 +738,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "99c8ee4d499a4c7b1a760d71a6fe1c58685239a0"
+                "reference": "5b40352e83c28d2622a039e96a0de52b04c03396"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/99c8ee4d499a4c7b1a760d71a6fe1c58685239a0",
-                "reference": "99c8ee4d499a4c7b1a760d71a6fe1c58685239a0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/5b40352e83c28d2622a039e96a0de52b04c03396",
+                "reference": "5b40352e83c28d2622a039e96a0de52b04c03396",
                 "shasum": ""
             },
             "require": {
@@ -810,7 +810,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-08-14 12:11:25"
+            "time": "2015-08-17 10:03:42"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -4263,16 +4263,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "09fc125d65c344c53a7c7ad8f261e3f3af9f76c5"
+                "reference": "3ab72c62e550370a6cd5dc873e1a04ab57562f5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/09fc125d65c344c53a7c7ad8f261e3f3af9f76c5",
-                "reference": "09fc125d65c344c53a7c7ad8f261e3f3af9f76c5",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/3ab72c62e550370a6cd5dc873e1a04ab57562f5b",
+                "reference": "3ab72c62e550370a6cd5dc873e1a04ab57562f5b",
                 "shasum": ""
             },
             "require": {
@@ -4308,20 +4308,20 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-08-13 14:23:08"
+            "time": "2015-08-16 08:51:00"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.3",
+            "version": "4.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fd3050e26e3105f416d74c4d33aea659b406c59d"
+                "reference": "55bf1d6092b0e13a1f26bd5eaffeef3d8ad85ea7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fd3050e26e3105f416d74c4d33aea659b406c59d",
-                "reference": "fd3050e26e3105f416d74c4d33aea659b406c59d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/55bf1d6092b0e13a1f26bd5eaffeef3d8ad85ea7",
+                "reference": "55bf1d6092b0e13a1f26bd5eaffeef3d8ad85ea7",
                 "shasum": ""
             },
             "require": {
@@ -4380,7 +4380,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-08-10 09:16:56"
+            "time": "2015-08-15 04:21:23"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
