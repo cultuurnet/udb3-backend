@@ -61,6 +61,26 @@ class PlacesControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app->get(
+            'place/{cdbid}',
+            function (Application $app, $cdbid) {
+                /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
+                $service = $app['place_service'];
+
+                $place = $service->getEntity($cdbid);
+
+                $response = JsonLdResponse::create()
+                    ->setContent($place)
+                    ->setPublic()
+                    ->setClientTtl(60 * 30)
+                    ->setTtl(60 * 5);
+
+                $response->headers->set('Vary', 'Origin');
+
+                return $response;
+            }
+        )->bind('place');
+
         return $controllers;
     }
 }

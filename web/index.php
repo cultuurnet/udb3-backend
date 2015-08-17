@@ -549,28 +549,6 @@ $app->get(
 
 $app
     ->get(
-        'place/{cdbid}',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-            $service = $app['place_service'];
-
-            $place = $service->getEntity($cdbid);
-
-            $response = JsonLdResponse::create()
-                ->setContent($place)
-                ->setPublic()
-                ->setClientTtl(60 * 30)
-                ->setTtl(60 * 5);
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('place');
-
-$app
-    ->get(
         'organizer/{cdbid}',
         function (Request $request, Application $app, $cdbid) {
             /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
