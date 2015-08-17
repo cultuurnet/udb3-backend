@@ -613,7 +613,12 @@ $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvide
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
 
+/**
+ * Dummy endpoint implementations. Make sure you keep this as the last one,
+ * already implemented routes will not be overridden.
+ */
 $app->mount('/', new \CultuurNet\UDB3\Silex\DummyControllerProvider());
 
 $app->run();
