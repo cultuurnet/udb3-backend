@@ -19,13 +19,19 @@ class IndexServiceProvider implements ServiceProviderInterface
     {
         $app['index.table_name'] = new StringLiteral('index_readmodel');
 
+        $app['index.repository'] = $app->share(
+            function (Application $app) {
+                return new \CultuurNet\UDB3\ReadModel\Index\Doctrine\DBALRepository(
+                    $app['dbal_connection'],
+                    $app['index.table_name']
+                );
+            }
+        );
+
         $app['index.projector'] = $app->share(
             function (Application $app) {
                 $projector = new \CultuurNet\UDB3\ReadModel\Index\Projector(
-                    new \CultuurNet\UDB3\ReadModel\Index\Doctrine\DBALRepository(
-                        $app['dbal_connection'],
-                        $app['index.table_name']
-                    )
+                    $app['index.repository']
                 );
 
                 return $projector;
