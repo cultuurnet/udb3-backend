@@ -256,7 +256,6 @@ $app['cache-redis'] = $app->share(
 
 $app['cache-filesystem'] = $app->share(
     function ($app) {
-        $baseUrl = $app['config']['uitid']['base_url'];
         $baseCacheDirectory = __DIR__ . '/cache';
 
         return function ($cacheType) use ($baseCacheDirectory) {
@@ -403,6 +402,25 @@ $app['event_history_cache'] = $app->share(
     }
 );
 
+/**
+ * Factory method for instantiating a UDB2 related logger with the specified
+ * name.
+ */
+$app['udb2_logger'] = $app->share(
+    function (Application $app) {
+        return function ($name) use ($app) {
+            $logger = new \Monolog\Logger(
+                $name,
+                [
+                    $app['udb2_log_handler']
+                ]
+            );
+
+            return $logger;
+        };
+    }
+);
+
 $app['event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
@@ -427,6 +445,40 @@ $app['event_bus'] = $app->share(
             // event in our repository as well.
             $eventBus->subscribe(
                 $app['udb2_event_importer']
+            );
+
+            // Subscribe UDB2 actor event enricher which will listen for actor
+            // creates and updates from UDB2, retrieve the corresponding cdb xml
+            // and publish a new message based on the original one enriched
+            // with the cdb xml.
+            $eventBus->subscribe(
+                $app['udb2_actor_events_cdbxml_enricher']
+            );
+
+            // Subscribe UDB2 actor event appliers which will actually process actor
+            // creates and updates from UDB2 enriched with cdb xml.
+            $organizerEventApplier = new \CultuurNet\UDB3\UDB2\Actor\ActorEventApplier(
+                $app['real_organizer_repository'],
+                new \CultuurNet\UDB3\UDB2\Organizer\OrganizerFactory(),
+                new \CultuurNet\UDB3\UDB2\Organizer\QualifiesAsOrganizerSpecification()
+            );
+            $organizerEventApplier->setLogger(
+                $app['udb2_logger']('organizer-event-applier')
+            );
+            $eventBus->subscribe(
+                $organizerEventApplier
+            );
+
+            $placeEventApplier = new \CultuurNet\UDB3\UDB2\Actor\ActorEventApplier(
+                $app['real_place_repository'],
+                new \CultuurNet\UDB3\UDB2\Place\PlaceFactory(),
+                new \CultuurNet\UDB3\UDB2\Place\QualifiesAsPlaceSpecification()
+            );
+            $placeEventApplier->setLogger(
+                $app['udb2_logger']('place-event-applier')
+            );
+            $eventBus->subscribe(
+                $placeEventApplier
             );
 
             // Subscribe event history projector.
@@ -516,10 +568,9 @@ $app['udb2_event_cdbxml'] = $app->share(
 
 $app['udb2_event_importer'] = $app->share(
     function (Application $app) {
-        $logger = new \Monolog\Logger('udb2');
-        $logger->pushHandler(
-            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log')
-        );
+        $logger = new \Monolog\Logger('udb2-event-importer');
+
+        $logger->pushHandler($app['udb2_log_handler']);
 
         $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
             $app['udb2_event_cdbxml'],
@@ -528,12 +579,19 @@ $app['udb2_event_importer'] = $app->share(
             $app['organizer_service']
         );
 
-        $importer->setLogger(
-            $logger
-        );
+        $importer->setLogger($logger);
 
         return $importer;
     }
+);
+
+$app['udb2_actor_events_cdbxml_enricher'] = $app->share(
+  function (Application $app) {
+      return new \CultuurNet\UDB3\UDB2\Actor\EventCdbXmlEnricher(
+          $app['udb2_actor_cdbxml_provider'],
+          $app['event_bus']
+      );
+  }
 );
 
 $app['event_repository'] = $app->share(
@@ -792,18 +850,56 @@ $app['place_store'] = $app->share(
     }
 );
 
-$app['place_repository'] = $app->share(
-    function ($app) {
+$app['udb2_log_handler'] = $app->share(
+    function (Application $app) {
+        return new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log');
+    }
+);
+
+$app['udb2_actor_cdbxml_provider'] = $app->share(
+    function (Application $app) {
+        $cdbXmlService = new \CultuurNet\UDB3\UDB2\ActorCdbXmlFromSearchService(
+            $app['search_api_2']
+        );
+
+        return $cdbXmlService;
+    }
+);
+
+$app['udb2_place_importer'] = $app->share(
+    function (Application $app) {
+        $importer = new \CultuurNet\UDB3\UDB2\Place\PlaceCdbXmlImporter(
+            $app['udb2_actor_cdbxml_provider'],
+            $app['real_place_repository']
+        );
+
+        $logger = new \Monolog\Logger('udb2-place-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        $importer->setLogger($logger);
+
+        return $importer;
+    }
+);
+
+$app['real_place_repository'] = $app->share(
+    function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
             $app['place_store'],
             $app['event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
-        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\PlaceRepository(
-            $repository,
-            $app['search_api_2'],
+        return $repository;
+    }
+);
+
+$app['place_repository'] = $app->share(
+    function ($app) {
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\Place\PlaceRepository(
+            $app['real_place_repository'],
             $app['udb2_entry_api_improved_factory'],
+            $app['udb2_place_importer'],
             $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
@@ -880,19 +976,40 @@ $app['organizer_store'] = $app->share(
     }
 );
 
-$app['organizer_repository'] = $app->share(
-    function ($app) {
+$app['udb2_organizer_importer'] = $app->share(
+    function (Application $app) {
+        $importer = new \CultuurNet\UDB3\UDB2\Organizer\OrganizerCdbXmlImporter(
+            $app['udb2_actor_cdbxml_provider'],
+            $app['real_organizer_repository']
+        );
+
+        $logger = new \Monolog\Logger('udb2-organizer-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        $importer->setLogger($logger);
+
+        return $importer;
+    }
+);
+
+$app['real_organizer_repository'] = $app->share(
+    function (Application $app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
             $app['event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
+        return $repository;
+    }
+);
 
-        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\OrganizerRepository(
-            $repository,
-            $app['search_api_2'],
+$app['organizer_repository'] = $app->share(
+    function ($app) {
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\Organizer\OrganizerRepository(
+            $app['real_organizer_repository'],
             $app['udb2_entry_api_improved_factory'],
+            $app['udb2_organizer_importer'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -974,6 +1091,21 @@ $app['amqp-connection'] = $app->share(
                 'application/vnd.cultuurnet.udb2-events.event-updated+json'
             ),
             new \CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer()
+        );
+
+
+        $deserializerLocator->registerDeserializer(
+            new String(
+                'application/vnd.cultuurnet.udb2-events.actor-created+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorCreatedJSONDeserializer()
+        );
+
+        $deserializerLocator->registerDeserializer(
+            new String(
+                'application/vnd.cultuurnet.udb2-events.actor-updated+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer()
         );
 
         $consumeConfig = $amqpConfig['consume']['udb2'];
