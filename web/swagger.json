@@ -20,6 +20,68 @@
         "application/xml"
     ],
     "paths": {
+        "/event": {
+            "post": {
+                "summary": "Create a new cultural event.",
+                "operationId": "createEvent",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the necessary information to create a new cultural event.",
+                        "required": true,
+                        "schema": {
+                          "properties": {
+                              "name": {
+
+                              },
+                              "type": {
+
+                              },
+                              "location": {
+
+                              },
+                              "calendarType": {
+
+                              },
+
+                          }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Details of the created event.",
+                        "schema": {
+                            "properties": {
+                                "eventId": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "description": "The unique identifier of the cultural event.",
+                                    "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                                },
+                                "url": {
+                                    "type": "string",
+                                    "format": "url",
+                                    "description": "The URL of the cultural event.",
+                                    "example": "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                                }
+                            },
+                            "required": [
+                                "eventId",
+                                "url"
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
         "/event/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific cultural event.",
