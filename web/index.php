@@ -80,6 +80,10 @@ $app->before(
 // @todo Limit this to the paths where the command bus is used.
 $app->before(
     function (Request $request, Application $app) {
+        if (in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
+            return;
+        }
+
         /** @var \Broadway\CommandHandling\CommandBusInterface|\CultuurNet\UDB3\CommandHandling\ContextAwareInterface $eventCommandBus */
         $eventCommandBus = $app['event_command_bus'];
 
@@ -645,6 +649,9 @@ $app->get(
 );
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
-$app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
+
+$app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvider());
+
+$app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 
 $app->run();

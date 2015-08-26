@@ -9,6 +9,9 @@ uitid:
   apis:
     entry: entry/rest.uitdatabank.be/api/v2
     search: searchv2
+  # ID of the user to impersonate for certain requests to the Entry API that use
+  # Light UiTID authentication.
+  impersonation_user_id: ***
 sync_with_udb2: true
 cors:
   origins: []
@@ -27,7 +30,7 @@ log.command_bus:
       port: 6379
     #namespace: ***
     #room: ***
-    level: DEBUG
+    level: INFO
 database:
   driver: pdo_mysql
   dbname: ***
@@ -60,3 +63,13 @@ amqp:
         queue: udb3.q.prod.udb2
 prince:
   binary: /usr/local/bin/prince
+
+cache:
+  # Currently supported: "filesystem" or "redis"
+  active: redis
+  redis:
+    host: 127.0.0.1
+    database: 1
+# Regular expression pattern to match valid event URLs.
+# Use a capturing group named 'eventid' to extract the event's ID.
+event_url_regex: https?://example\.com/event/(?<eventid>[a-zA-Z0-9\-]+)

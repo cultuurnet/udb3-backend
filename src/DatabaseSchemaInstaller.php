@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use Silex\Application;
 
-class DatabaseSchemaInstaller
+class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
 {
 
     protected $app;
@@ -24,7 +24,9 @@ class DatabaseSchemaInstaller
             $this->app['event_store'],
             $this->app['place_store'],
             $this->app['organizer_store'],
-            $this->app['event_relations_repository']
+            $this->app['event_relations_repository'],
+            $this->app['variations.event_store'],
+            $this->app['variations.search'],
         );
 
         /** @var \Doctrine\DBAL\Connection $connection */

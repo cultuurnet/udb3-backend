@@ -1,6 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
@@ -20,6 +20,7 @@ $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -32,6 +33,22 @@ $app['swiftmailer.use_spool'] = false;
 if ($app['config']['swiftmailer.options']) {
     $app['swiftmailer.options'] = $app['config']['swiftmailer.options'];
 }
+
+$app['timezone'] = $app->share(
+  function (Application $app) {
+      $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
+
+      return new DateTimeZone($timezoneName);
+  }
+);
+
+$app['clock'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\Clock\SystemClock(
+            $app['timezone']
+        );
+    }
+);
 
 $app['iri_generator'] = $app->share(
     function ($app) {
@@ -104,6 +121,30 @@ $app['cached_search_service'] = $app->share(
     }
 );
 
+$app['search_cache_manager'] = $app->share(
+    function (Application $app) {
+        $parameters = $app['config']['cache']['redis'];
+
+        return new \CultuurNet\UDB3\Search\Cache\CacheManager(
+            $app['cached_search_service'],
+            new Predis\Client($parameters)
+        );
+    }
+);
+
+$app['search_cache_manager'] = $app->extend(
+    'search_cache_manager',
+    function(\CultuurNet\UDB3\Search\Cache\CacheManager $manager, Application $app) {
+        $logger = new \Monolog\Logger('search_cache_manager');
+        $logger->pushHandler(
+            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/search_cache_manager.log')
+        );
+        $manager->setLogger($logger);
+
+        return $manager;
+    }
+);
+
 $app['event_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\LocalEventService(
@@ -114,6 +155,33 @@ $app['event_service'] = $app->share(
         );
 
         return $service;
+    }
+);
+
+$app['personal_variation_decorated_event_service'] = $app->share(
+    function (Application $app) {
+        $decoratedService = $app['event_service'];
+        $session = $app['session'];
+
+        /** @var \CultuurNet\Auth\User $user */
+        $user = $session->get('culturefeed_user');
+        $criteria = (new \CultuurNet\UDB3\Variations\ReadModel\Search\Criteria())
+            ->withPurpose(
+                new \CultuurNet\UDB3\Variations\Model\Properties\Purpose('personal')
+            )
+            ->withOwnerId(
+                new \CultuurNet\UDB3\Variations\Model\Properties\OwnerId(
+                    $user->getId()
+                )
+            );
+
+        return new \CultuurNet\UDB3\Variations\VariationDecoratedEventService(
+            $decoratedService,
+            $app['variations.search'],
+            $criteria,
+            $app['variations.jsonld_repository'],
+            $app['iri_generator']
+        );
     }
 );
 
@@ -168,7 +236,25 @@ $app['auth_service'] = $app->share(
     }
 );
 
-$app['cache'] = $app->share(
+$app['cache-redis'] = $app->share(
+    function (Application $app) {
+        $parameters = $app['config']['cache']['redis'];
+
+        return function ($cacheType) use ($parameters) {
+            $redisClient = new Predis\Client(
+                $parameters,
+                [
+                    'prefix' => $cacheType . '_',
+                ]
+            );
+            $cache = new Doctrine\Common\Cache\PredisCache($redisClient);
+
+            return $cache;
+        };
+    }
+);
+
+$app['cache-filesystem'] = $app->share(
     function ($app) {
         $baseCacheDirectory = __DIR__ . '/cache';
 
@@ -181,6 +267,16 @@ $app['cache'] = $app->share(
         };
     }
 );
+
+$app['cache'] = $app->share(
+    function (Application $app) {
+        $activeCacheType = $app['config']['cache']['active'] ?: 'filesystem';
+
+        $cacheServiceName =  'cache-' . $activeCacheType;
+        return $app[$cacheServiceName];
+    }
+);
+
 
 $app['dbal_connection'] = $app->share(
     function ($app) {
@@ -214,9 +310,17 @@ $app['event_store'] = $app->share(
 
 $app['event_jsonld_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        $cachedRepository =  new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
             $app['event_jsonld_cache']
         );
+
+        $broadcastingRepository = new \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator(
+            $cachedRepository,
+            $app['event_bus'],
+            new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory()
+        );
+
+        return $broadcastingRepository;
     }
 );
 
@@ -327,7 +431,7 @@ $app['event_bus'] = $app->share(
             );
 
             $eventBus->subscribe(
-              $app['cached_search_service']
+                $app['search_cache_manager']
             );
 
             // Subscribe projector for the JSON-LD read model.
@@ -395,6 +499,16 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['event_calendar_projector']
             );
+
+            // Subscribe projector for the Variations search read model.
+            $eventBus->subscribe(
+                $app['variations.search.projector']
+            );
+
+            // Subscribe projector for the Variations JSON-LD model.
+            $eventBus->subscribe(
+                $app['variations.jsonld.projector']
+            );
         });
 
         return $eventBus;
@@ -431,36 +545,37 @@ $app['real_event_repository'] = $app->share(
   }
 );
 
-$app['udb2_event_importer_factory'] = $app->share(
+$app['udb2_event_cdbxml'] = $app->share(
     function (Application $app) {
-        $logger = new \Monolog\Logger('udb2-event-importer');
+        $uitidConfig = $app['config']['uitid'];
+        $baseUrl = $uitidConfig['base_url'] . $uitidConfig['apis']['entry'];
 
-        $logger->pushHandler($app['udb2_log_handler']);
+        $userId = new String($uitidConfig['impersonation_user_id']);
 
-        return function(\CultuurNet\UDB3\UDB2\EventCdbXmlServiceInterface $cdbXmlService) use ($app, $logger) {
-            $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
-                $cdbXmlService,
-                $app['real_event_repository'],
-                $app['place_service'],
-                $app['organizer_service']
-            );
-
-            $importer->setLogger(
-                $logger
-            );
-
-            return $importer;
-        };
+        return new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
+            $baseUrl,
+            $app['uitid_consumer_credentials'],
+            $userId
+        );
     }
 );
 
 $app['udb2_event_importer'] = $app->share(
     function (Application $app) {
-        $cdbXmlService = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
-            $app['search_api_2']
+        $logger = new \Monolog\Logger('udb2-event-importer');
+
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
+            $app['udb2_event_cdbxml'],
+            $app['real_event_repository'],
+            $app['place_service'],
+            $app['organizer_service']
         );
 
-        return $app['udb2_event_importer_factory']($cdbXmlService);
+        $importer->setLogger($logger);
+
+        return $importer;
     }
 );
 
@@ -473,17 +588,6 @@ $app['udb2_actor_events_cdbxml_enricher'] = $app->share(
   }
 );
 
-$app['udb2_event_importer_including_past_events'] = $app->share(
-    function (Application $app) {
-        $cdbXmlService = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromSearchService(
-            $app['search_api_2'],
-            true
-        );
-
-        return $app['udb2_event_importer_factory']($cdbXmlService);
-    }
-);
-
 $app['event_repository'] = $app->share(
     function ($app) {
         $repository = $app['real_event_repository'];
@@ -492,6 +596,8 @@ $app['event_repository'] = $app->share(
             $repository,
             $app['udb2_entry_api_improved_factory'],
             $app['udb2_event_importer'],
+            $app['place_service'],
+            $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -618,13 +724,19 @@ $app['event_command_bus'] = $app->share(
                 $app['search_service']
             )
         );
+
+        $eventInfoService = new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
+          $app['uitpas'],
+          new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
+              $app['clock']
+          )
+        );
+        $eventInfoService->setLogger($app['logger.uitpas']);
         $commandBus->subscribe(
             new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
                 $app['event_export'],
                 $app['config']['prince']['binary'],
-                new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
-                    $app['uitpas']
-                ),
+                $eventInfoService,
                 $app['event_calendar_repository']
             )
         );
@@ -633,6 +745,11 @@ $app['event_command_bus'] = $app->share(
                 $app['saved_searches_service_factory']
             )
         );
+
+        $commandBus->subscribe(
+            $app['variations.command_handler']
+        );
+
         return $commandBus;
     }
 );
@@ -776,6 +893,7 @@ $app['place_repository'] = $app->share(
             $app['real_place_repository'],
             $app['udb2_entry_api_improved_factory'],
             $app['udb2_place_importer'],
+            $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -924,7 +1042,7 @@ $app['event_export_notification_mail_factory'] = $app->share(
 $app['event_export'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\EventExport\EventExportService(
-            $app['event_service'],
+            $app['personal_variation_decorated_event_service'],
             $app['search_service'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
             realpath(__DIR__ .  '/web/downloads'),
@@ -985,13 +1103,20 @@ $app['amqp-connection'] = $app->share(
 
         $consumeConfig = $amqpConfig['consume']['udb2'];
 
+        // Delay the consumption of UDB2 updates with some seconds to prevent a
+        // race condition with the UDB3 worker. Modifications initiated by
+        // commands in the UDB3 queue worker need to finish before their
+        // counterpart UDB2 update is processed.
+        $delay = 4;
+
         $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
             $app['event_bus'],
             $deserializerLocator,
             new String($amqpConfig['consumer_tag']),
             new String($consumeConfig['exchange']),
-            new String($consumeConfig['queue'])
+            new String($consumeConfig['queue']),
+            $delay
         );
 
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
@@ -999,7 +1124,7 @@ $app['amqp-connection'] = $app->share(
 
         $logFileHandler = new \Monolog\Handler\StreamHandler(
             __DIR__ . '/log/amqp.log',
-            \Monolog\Logger::NOTICE
+            \Monolog\Logger::DEBUG
         );
         $logger->pushHandler($logFileHandler);
         $eventBusForwardingConsumer->setLogger($logger);
@@ -1034,6 +1159,36 @@ $app['uitpas'] = $app->share(
         $cultureFeed = $app['culturefeed'];
         return $cultureFeed->uitpas();
     }
+);
+
+$app['logger.uitpas'] = $app->share(
+  function (Application $app) {
+      $logger = new Monolog\Logger('uitpas');
+      $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
+
+      return $logger;
+  }
+);
+
+// This service is used by the background worker to impersonate the user
+// who initially queued the command.
+$app['impersonator'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\UDB3\Silex\Impersonator(
+            $app['session']
+        );
+    }
+);
+
+$app['database.installer'] = $app->share(
+    function (Application $app) {
+        return new \CultuurNet\UDB3\Silex\DatabaseSchemaInstaller($app);
+    }
+);
+
+$app->register(
+    new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
+    ['migrations.config_file' => __DIR__ . '/migrations.yml']
 );
 
 return $app;
