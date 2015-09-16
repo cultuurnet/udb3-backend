@@ -1005,7 +1005,7 @@ $app['event_export'] = $app->share(
             realpath(__DIR__ .  '/web/downloads'),
             new CallableIriGenerator(
                 function ($fileName) use ($app) {
-                    return $app['config']['url'] . '/web/downloads/' . $fileName;
+                    return $app['config']['url'] . '/downloads/' . $fileName;
                 }
             ),
             new \CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer(
