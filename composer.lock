@@ -696,12 +696,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-service-provider-oauth.git",
-                "reference": "7f79e0412a5cb4aa8fa9b3c419641ecda82b2143"
+                "reference": "af49f3364faa480685fcc939c7c662a753c0349d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-oauth/zipball/7f79e0412a5cb4aa8fa9b3c419641ecda82b2143",
-                "reference": "7f79e0412a5cb4aa8fa9b3c419641ecda82b2143",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-oauth/zipball/af49f3364faa480685fcc939c7c662a753c0349d",
+                "reference": "af49f3364faa480685fcc939c7c662a753c0349d",
                 "shasum": ""
             },
             "require": {
@@ -732,7 +732,7 @@
                 "Apache-2.0"
             ],
             "description": "A Silex service provider for our OAuth component.",
-            "time": "2015-09-30 06:58:40"
+            "time": "2015-09-30 13:31:12"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -740,12 +740,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/symfony-security-oauth.git",
-                "reference": "d5793b4e2842322d8ad4cf9e21a281650dbcd4f7"
+                "reference": "8661e07c5d027dbd68d042b6ac5b02ab0bb68f35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/symfony-security-oauth/zipball/d5793b4e2842322d8ad4cf9e21a281650dbcd4f7",
-                "reference": "d5793b4e2842322d8ad4cf9e21a281650dbcd4f7",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-oauth/zipball/8661e07c5d027dbd68d042b6ac5b02ab0bb68f35",
+                "reference": "8661e07c5d027dbd68d042b6ac5b02ab0bb68f35",
                 "shasum": ""
             },
             "require": {
@@ -789,7 +789,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2015-09-29 12:51:04"
+            "time": "2015-09-30 12:15:31"
         },
         {
             "name": "cultuurnet/symfony-security-oauth-redis",
@@ -944,12 +944,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "cb87719de48a987c8c683664e885f362a48e6d7f"
+                "reference": "62dd5748ecca2ffe4ef031843e5e6663112b86af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cb87719de48a987c8c683664e885f362a48e6d7f",
-                "reference": "cb87719de48a987c8c683664e885f362a48e6d7f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/62dd5748ecca2ffe4ef031843e5e6663112b86af",
+                "reference": "62dd5748ecca2ffe4ef031843e5e6663112b86af",
                 "shasum": ""
             },
             "require": {
@@ -1016,7 +1016,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-09-04 05:31:48"
+            "time": "2015-09-30 12:17:22"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1109,12 +1109,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "e0df2784cee5926f0044853f364504f599891b8c"
+                "reference": "18436e9974d9887d178943bacf22a236d5887f6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/e0df2784cee5926f0044853f364504f599891b8c",
-                "reference": "e0df2784cee5926f0044853f364504f599891b8c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/18436e9974d9887d178943bacf22a236d5887f6b",
+                "reference": "18436e9974d9887d178943bacf22a236d5887f6b",
                 "shasum": ""
             },
             "require": {
@@ -1155,7 +1155,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2015-09-04 05:18:04"
+            "time": "2015-09-30 13:35:40"
         },
         {
             "name": "cultuurnet/uitid-credentials",
