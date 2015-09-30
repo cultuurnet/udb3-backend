@@ -1163,12 +1163,4 @@ $app->extend(
     }
 );
 
-$app->register(new Silex\Provider\SecurityServiceProvider(), array(
-    'security.firewalls' => array(
-        'default' => array(
-            'oauth' => true,
-        ),
-    ),
-));
-
 return $app;
