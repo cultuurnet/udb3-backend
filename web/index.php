@@ -21,6 +21,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         'entryapi' => array(
             'pattern' => '^/rest/entry/.*',
             'oauth' => true,
+            'stateless' => true,
         ),
     ),
 ));
