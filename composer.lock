@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "503c6a42e7817d56e87827cd01067e0e",
-    "content-hash": "37b4626c9f6e356ab517a06952c041e3",
+    "hash": "bf77a6708485c2349f51078e4f8a23a2",
+    "content-hash": "0ff19f0d186c673b287194353fc21416",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -696,12 +696,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-service-provider-oauth.git",
-                "reference": "af49f3364faa480685fcc939c7c662a753c0349d"
+                "reference": "3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-oauth/zipball/af49f3364faa480685fcc939c7c662a753c0349d",
-                "reference": "af49f3364faa480685fcc939c7c662a753c0349d",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-oauth/zipball/3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc",
+                "reference": "3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc",
                 "shasum": ""
             },
             "require": {
@@ -732,7 +732,7 @@
                 "Apache-2.0"
             ],
             "description": "A Silex service provider for our OAuth component.",
-            "time": "2015-09-30 13:31:12"
+            "time": "2015-09-30 15:05:45"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -1062,6 +1062,55 @@
             ],
             "description": "UDB3 integration with Doctrine Cache",
             "time": "2015-07-29 08:04:07"
+        },
+        {
+            "name": "cultuurnet/udb3-silex-entryapi",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-silex-entryapi.git",
+                "reference": "77b59e5684cbd85072c810e0d6d777ef22af764f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/77b59e5684cbd85072c810e0d6d777ef22af764f",
+                "reference": "77b59e5684cbd85072c810e0d6d777ef22af764f",
+                "shasum": ""
+            },
+            "require": {
+                "silex/silex": "~1.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/php-token-stream": "1.4.6",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vendor\\Package\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Vendor\\Package\\": "tests/"
+                }
+            },
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "EntryAPI for UDB3 Silex",
+            "support": {
+                "source": "https://github.com/cultuurnet/udb3-silex-entryapi/tree/master"
+            },
+            "time": "2015-10-01 08:13:16"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -2447,16 +2496,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.14",
+            "version": "1.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "202c7775d959f377e2e302d93e7127c47604438a"
+                "reference": "31525caf9e8772683672fefd8a1ca0c0736020f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/202c7775d959f377e2e302d93e7127c47604438a",
-                "reference": "202c7775d959f377e2e302d93e7127c47604438a",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/31525caf9e8772683672fefd8a1ca0c0736020f4",
+                "reference": "31525caf9e8772683672fefd8a1ca0c0736020f4",
                 "shasum": ""
             },
             "require": {
@@ -2527,7 +2576,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-09-22 19:18:28"
+            "time": "2015-09-30 22:26:59"
         },
         {
             "name": "league/flysystem-ziparchive",
