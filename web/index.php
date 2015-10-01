@@ -663,6 +663,8 @@ $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesController
 
 $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvider());
 
+$app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
+
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 
 $app->run();

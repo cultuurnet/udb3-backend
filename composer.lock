@@ -1069,12 +1069,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-silex-entryapi.git",
-                "reference": "77b59e5684cbd85072c810e0d6d777ef22af764f"
+                "reference": "3337c333678acc5c99b28a53d6dfbefd5b0e8799"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/77b59e5684cbd85072c810e0d6d777ef22af764f",
-                "reference": "77b59e5684cbd85072c810e0d6d777ef22af764f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/3337c333678acc5c99b28a53d6dfbefd5b0e8799",
+                "reference": "3337c333678acc5c99b28a53d6dfbefd5b0e8799",
                 "shasum": ""
             },
             "require": {
@@ -1095,12 +1095,12 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Vendor\\Package\\": "src/"
+                    "CultuurNet\\UDB3SilexEntryAPI\\": "src/"
                 }
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Vendor\\Package\\": "tests/"
+                    "CultuurNet\\UDB3SilexEntryAPI\\": "tests/"
                 }
             },
             "license": [
@@ -1110,7 +1110,7 @@
             "support": {
                 "source": "https://github.com/cultuurnet/udb3-silex-entryapi/tree/master"
             },
-            "time": "2015-10-01 08:13:16"
+            "time": "2015-10-01 09:02:38"
         },
         {
             "name": "cultuurnet/udb3-symfony",
