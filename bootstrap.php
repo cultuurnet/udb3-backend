@@ -669,16 +669,41 @@ $app['logger.command_bus'] = $app->share(
     }
 );
 
+$app['event_command_bus_base'] = function (Application $app) {
+    $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus(
+    );
+
+    $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus(
+        $mainCommandBus,
+        'event',
+        $app['command_bus_event_dispatcher']
+    );
+    $commandBus->setLogger($app['logger.command_bus']);
+
+    return $commandBus;
+};
+
+/**
+ * Command bus serving command publishers.
+ */
 $app['event_command_bus'] = $app->share(
     function ($app) {
-        $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus(
+        $commandBus = $app['event_command_bus_base'];
+
+        return new \CultuurNet\UDB3\Silex\ContextDecoratedCommandBus(
+            $commandBus,
+            $app
         );
-        $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus(
-            $mainCommandBus,
-            'event',
-            $app['command_bus_event_dispatcher']
-        );
-        $commandBus->setLogger($app['logger.command_bus']);
+    }
+);
+
+/**
+ * Command bus serving command handlers.
+ */
+$app['event_command_bus_out'] = $app->share(
+    function (Application $app) {
+        $commandBus = $app['event_command_bus_base'];
+
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Event\EventCommandHandler(
                 $app['event_repository'],
@@ -687,10 +712,10 @@ $app['event_command_bus'] = $app->share(
         );
 
         $eventInfoService = new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
-          $app['uitpas'],
-          new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
-              $app['clock']
-          )
+            $app['uitpas'],
+            new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
+                $app['clock']
+            )
         );
         $eventInfoService->setLogger($app['logger.uitpas']);
         $commandBus->subscribe(
