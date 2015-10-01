@@ -4,6 +4,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
+use CultuurNet\UDB3\SearchAPI2\Filters\UDB3Place as UDB3PlaceFilter;
+use CultuurNet\UDB3\SearchAPI2\FilteredSearchService;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
 use CultuurNet\UDB3\Search\CachedDefaultSearchService;
@@ -103,10 +105,20 @@ $app['search_api_2'] = $app->share(
     }
 );
 
+$app['filtered_search_api_2'] = $app->share(
+    function ($app) {
+        $filteredSearchService = new FilteredSearchService(
+            $app['search_api_2']
+        );
+        $filteredSearchService->filter(new UDB3PlaceFilter());
+        return $filteredSearchService;
+    }
+);
+
 $app['search_service'] = $app->share(
     function ($app) {
         return new PullParsingSearchService(
-            $app['search_api_2'],
+            $app['filtered_search_api_2'],
             $app['iri_generator']
         );
     }
