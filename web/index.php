@@ -15,6 +15,17 @@ use CultuurNet\UDB3\Event\Title;
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
+// Register firewall.
+$app->register(new Silex\Provider\SecurityServiceProvider(), array(
+    'security.firewalls' => array(
+        'entryapi' => array(
+            'pattern' => '^/rest/entry/.*',
+            'oauth' => true,
+            'stateless' => true,
+        ),
+    ),
+));
+
 $checkAuthenticated = function (Request $request, Application $app) {
     /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
     $session = $app['session'];

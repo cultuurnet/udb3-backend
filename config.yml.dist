@@ -73,3 +73,11 @@ cache:
 # Regular expression pattern to match valid event URLs.
 # Use a capturing group named 'eventid' to extract the event's ID.
 event_url_regex: https?://example\.com/event/(?<eventid>[a-zA-Z0-9\-]+)
+
+oauth:
+  base_url:
+  consumer:
+    key:
+    secret:
+redis:
+  # uri: tcp://127.0.0.1:6379
