@@ -27,6 +27,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
