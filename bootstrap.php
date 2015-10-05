@@ -522,10 +522,17 @@ $app['udb2_event_cdbxml'] = $app->share(
 
         $userId = new String($uitidConfig['impersonation_user_id']);
 
-        return new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
+        $cdbXmlFromEntryAPI = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
             $baseUrl,
             $app['uitid_consumer_credentials'],
             $userId
+        );
+
+        $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
+
+        return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
+            $cdbXmlFromEntryAPI,
+            new \CultuurNet\UDB3\Cdb\Event\Not($labeledAsUDB3Place)
         );
     }
 );
