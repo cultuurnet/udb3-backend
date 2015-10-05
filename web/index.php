@@ -15,6 +15,11 @@ use CultuurNet\UDB3\Event\Title;
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
+/**
+ * Allow to use services as controllers.
+ */
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
 // Register firewall.
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
