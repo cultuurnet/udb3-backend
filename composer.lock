@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75477e512b84cee4c31f01454357079a",
-    "content-hash": "1238746a2bdb7f8a71054079053c4a58",
+    "hash": "503c6a42e7817d56e87827cd01067e0e",
+    "content-hash": "37b4626c9f6e356ab517a06952c041e3",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -691,6 +691,207 @@
             "time": "2015-05-27 16:14:23"
         },
         {
+            "name": "cultuurnet/silex-service-provider-oauth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/silex-service-provider-oauth.git",
+                "reference": "3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-oauth/zipball/3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc",
+                "reference": "3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/symfony-security-oauth": "dev-feature/III-413",
+                "cultuurnet/symfony-security-oauth-redis": "~0.1",
+                "cultuurnet/symfony-security-oauth-uitid": "~0.1",
+                "silex/silex": "~1.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\SilexServiceProviderOAuth\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "A Silex service provider for our OAuth component.",
+            "time": "2015-09-30 15:05:45"
+        },
+        {
+            "name": "cultuurnet/symfony-security-oauth",
+            "version": "dev-feature/III-413",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/symfony-security-oauth.git",
+                "reference": "8661e07c5d027dbd68d042b6ac5b02ab0bb68f35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-oauth/zipball/8661e07c5d027dbd68d042b6ac5b02ab0bb68f35",
+                "reference": "8661e07c5d027dbd68d042b6ac5b02ab0bb68f35",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/clock": "~0.1",
+                "symfony/security": "~2.7.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/php-token-stream": "1.4.6",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\SymfonySecurityOAuth\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                },
+                {
+                    "name": "Nicolas Leroy",
+                    "email": "nicolas.leroy@gmail.com"
+                },
+                {
+                    "name": "Jonas Verhaeghe",
+                    "email": "Jonas@cultuurnet.be"
+                }
+            ],
+            "description": "Brief description of this PHP library",
+            "time": "2015-09-30 12:15:31"
+        },
+        {
+            "name": "cultuurnet/symfony-security-oauth-redis",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/symfony-security-oauth-redis.git",
+                "reference": "ae1aa4f4bb49a1542004474c9f2ef50c0b8bce23"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-oauth-redis/zipball/ae1aa4f4bb49a1542004474c9f2ef50c0b8bce23",
+                "reference": "ae1aa4f4bb49a1542004474c9f2ef50c0b8bce23",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/symfony-security-oauth": "dev-feature/III-413",
+                "predis/predis": "~1.0"
+            },
+            "require-dev": {
+                "m6web/redis-mock": "~2.3",
+                "phing/phing": "~2.11",
+                "phpunit/php-token-stream": "1.4.6",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\SymfonySecurityOAuthRedis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Implementations for interfaces provided by cultuurnet/symfony-security-oauth based on Redis storage",
+            "time": "2015-09-18 11:37:13"
+        },
+        {
+            "name": "cultuurnet/symfony-security-oauth-uitid",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/symfony-security-oauth-uitid.git",
+                "reference": "84dd123e8e41a07a7be10d39ec679f2e72f7e98b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-oauth-uitid/zipball/84dd123e8e41a07a7be10d39ec679f2e72f7e98b",
+                "reference": "84dd123e8e41a07a7be10d39ec679f2e72f7e98b",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/symfony-security-oauth": "dev-feature/III-413",
+                "cultuurnet/uitid-credentials": "~0.1"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\SymfonySecurityOAuthUitid\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                },
+                {
+                    "name": "Nicolas Leroy",
+                    "email": "nicolas.leroy@gmail.com"
+                },
+                {
+                    "name": "Jonas Verhaeghe",
+                    "email": "Jonas@cultuurnet.be"
+                }
+            ],
+            "description": "The UiTiD implementation for the SymfonySecurityOAuth component",
+            "time": "2015-09-18 11:21:22"
+        },
+        {
             "name": "cultuurnet/udb2-domain-events",
             "version": "dev-master",
             "source": {
@@ -955,6 +1156,48 @@
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
             "time": "2015-09-30 13:35:40"
+        },
+        {
+            "name": "cultuurnet/uitid-credentials",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/uitid-credentials.git",
+                "reference": "9d743d092ffe6f5aae57f0cf2b692030cfd82a72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/9d743d092ffe6f5aae57f0cf2b692030cfd82a72",
+                "reference": "9d743d092ffe6f5aae57f0cf2b692030cfd82a72",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/auth": "~1.2"
+            },
+            "require-dev": {
+                "guzzle/plugin-mock": "dev-master",
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UitidCredentials\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Brief description of this PHP library",
+            "time": "2015-09-28 09:39:18"
         },
         {
             "name": "danielstjules/stringy",
@@ -3489,6 +3732,82 @@
                 "url"
             ],
             "time": "2015-09-14 14:14:09"
+        },
+        {
+            "name": "symfony/security",
+            "version": "v2.7.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/security.git",
+                "reference": "db16d7ce3ea2faac274650a7c57ff49dde82f853"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/security/zipball/db16d7ce3ea2faac274650a7c57ff49dde82f853",
+                "reference": "db16d7ce3ea2faac274650a7c57ff49dde82f853",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/event-dispatcher": "~2.2",
+                "symfony/http-foundation": "~2.1",
+                "symfony/http-kernel": "~2.4"
+            },
+            "replace": {
+                "symfony/security-acl": "self.version",
+                "symfony/security-core": "self.version",
+                "symfony/security-csrf": "self.version",
+                "symfony/security-http": "self.version"
+            },
+            "require-dev": {
+                "doctrine/common": "~2.2",
+                "doctrine/dbal": "~2.2",
+                "ircmaxell/password-compat": "~1.0",
+                "psr/log": "~1.0",
+                "symfony/expression-language": "~2.6",
+                "symfony/intl": "~2.3",
+                "symfony/phpunit-bridge": "~2.7",
+                "symfony/routing": "~2.2",
+                "symfony/translation": "~2.0,>=2.0.5",
+                "symfony/validator": "~2.5,>=2.5.5"
+            },
+            "suggest": {
+                "doctrine/dbal": "For using the built-in ACL implementation",
+                "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+                "symfony/class-loader": "For using the ACL generateSql script",
+                "symfony/expression-language": "For using the expression voter",
+                "symfony/finder": "For using the ACL generateSql script",
+                "symfony/routing": "For using the HttpUtils class to create sub-requests, redirect the user, and match URLs",
+                "symfony/validator": "For using the user password constraint"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Security\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Security Component",
+            "homepage": "https://symfony.com",
+            "time": "2015-09-25 06:52:54"
         },
         {
             "name": "symfony/serializer",

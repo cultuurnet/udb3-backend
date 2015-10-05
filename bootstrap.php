@@ -2,6 +2,10 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
+use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
+use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
+use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use CultuurNet\UDB3\SearchAPI2\Filters\UDB3Place as UDB3PlaceFilter;
@@ -1150,6 +1154,32 @@ $app['database.installer'] = $app->share(
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
     ['migrations.config_file' => __DIR__ . '/migrations.yml']
+);
+
+// Add the oauth service provider.
+$app->register(new OAuthServiceProvider(), array(
+    'oauth.fetcher.base_url' => $app['config']['oauth']['base_url'],
+    'oauth.fetcher.consumer' => $app['config']['oauth']['consumer'],
+));
+
+$app['predis.client'] = $app->share(function ($app) {
+    $redisURI = isset($app['config']['redis']['uri']) ?
+        $app['config']['redis']['uri'] : 'tcp://127.0.0.1:6379';
+
+    return new Predis\Client($redisURI);
+});
+
+$app['oauth.model.provider.nonce_provider'] = $app->share(function (Application $app) {
+    return new NonceProvider(
+        $app['predis.client']
+    );
+});
+
+$app->extend(
+    'oauth.model.provider.token_provider',
+    function (TokenProviderInterface $tokenProvider, Application $app) {
+        return new TokenProviderCache($tokenProvider, $app['predis.client']);
+    }
 );
 
 return $app;
