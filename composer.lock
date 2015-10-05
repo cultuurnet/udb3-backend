@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "34a8bfaf2378dc2231e75b811b604d7a",
-    "content-hash": "5eeb5205ba529c16ab8601ff70791e45",
+    "hash": "e0d6254fba4faab909078c5b7042e6a9",
+    "content-hash": "e1638b2bbad08d8366fc2e1c9063260a",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1064,7 +1064,7 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-422",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
@@ -1090,6 +1090,7 @@
                     "CultuurNet\\UDB3\\Symfony\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPLv3"
             ],
@@ -5194,6 +5195,12 @@
             "alias_normalized": "0.1.0.0",
             "version": "dev-develop",
             "package": "cultuurnet/udb3-doctrine"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-422",
+            "package": "cultuurnet/udb3-symfony"
         }
     ],
     "minimum-stability": "dev",
