@@ -2,8 +2,14 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
+use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
+use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
+use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
+use CultuurNet\UDB3\SearchAPI2\Filters\UDB3Place as UDB3PlaceFilter;
+use CultuurNet\UDB3\SearchAPI2\FilteredSearchService;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
 use CultuurNet\UDB3\Search\CachedDefaultSearchService;
@@ -103,10 +109,20 @@ $app['search_api_2'] = $app->share(
     }
 );
 
+$app['filtered_search_api_2'] = $app->share(
+    function ($app) {
+        $filteredSearchService = new FilteredSearchService(
+            $app['search_api_2']
+        );
+        $filteredSearchService->filter(new UDB3PlaceFilter());
+        return $filteredSearchService;
+    }
+);
+
 $app['search_service'] = $app->share(
     function ($app) {
         return new PullParsingSearchService(
-            $app['search_api_2'],
+            $app['filtered_search_api_2'],
             $app['iri_generator']
         );
     }
@@ -256,7 +272,6 @@ $app['cache-redis'] = $app->share(
 
 $app['cache-filesystem'] = $app->share(
     function ($app) {
-        $baseUrl = $app['config']['uitid']['base_url'];
         $baseCacheDirectory = __DIR__ . '/cache';
 
         return function ($cacheType) use ($baseCacheDirectory) {
@@ -403,6 +418,25 @@ $app['event_history_cache'] = $app->share(
     }
 );
 
+/**
+ * Factory method for instantiating a UDB2 related logger with the specified
+ * name.
+ */
+$app['udb2_logger'] = $app->share(
+    function (Application $app) {
+        return function ($name) use ($app) {
+            $logger = new \Monolog\Logger(
+                $name,
+                [
+                    $app['udb2_log_handler']
+                ]
+            );
+
+            return $logger;
+        };
+    }
+);
+
 $app['event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
@@ -506,20 +540,26 @@ $app['udb2_event_cdbxml'] = $app->share(
 
         $userId = new String($uitidConfig['impersonation_user_id']);
 
-        return new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
+        $cdbXmlFromEntryAPI = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
             $baseUrl,
             $app['uitid_consumer_credentials'],
             $userId
+        );
+
+        $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
+
+        return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
+            $cdbXmlFromEntryAPI,
+            new \CultuurNet\UDB3\Cdb\Event\Not($labeledAsUDB3Place)
         );
     }
 );
 
 $app['udb2_event_importer'] = $app->share(
     function (Application $app) {
-        $logger = new \Monolog\Logger('udb2');
-        $logger->pushHandler(
-            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log')
-        );
+        $logger = new \Monolog\Logger('udb2-event-importer');
+
+        $logger->pushHandler($app['udb2_log_handler']);
 
         $importer = new \CultuurNet\UDB3\UDB2\EventImporter(
             $app['udb2_event_cdbxml'],
@@ -528,9 +568,7 @@ $app['udb2_event_importer'] = $app->share(
             $app['organizer_service']
         );
 
-        $importer->setLogger(
-            $logger
-        );
+        $importer->setLogger($logger);
 
         return $importer;
     }
@@ -792,18 +830,56 @@ $app['place_store'] = $app->share(
     }
 );
 
-$app['place_repository'] = $app->share(
-    function ($app) {
+$app['udb2_log_handler'] = $app->share(
+    function (Application $app) {
+        return new \Monolog\Handler\StreamHandler(__DIR__ . '/log/udb2.log');
+    }
+);
+
+$app['udb2_actor_cdbxml_provider'] = $app->share(
+    function (Application $app) {
+        $cdbXmlService = new \CultuurNet\UDB3\UDB2\ActorCdbXmlFromSearchService(
+            $app['search_api_2']
+        );
+
+        return $cdbXmlService;
+    }
+);
+
+$app['udb2_place_importer'] = $app->share(
+    function (Application $app) {
+        $importer = new \CultuurNet\UDB3\UDB2\Place\PlaceCdbXmlImporter(
+            $app['udb2_actor_cdbxml_provider'],
+            $app['real_place_repository']
+        );
+
+        $logger = new \Monolog\Logger('udb2-place-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        $importer->setLogger($logger);
+
+        return $importer;
+    }
+);
+
+$app['real_place_repository'] = $app->share(
+    function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
             $app['place_store'],
             $app['event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
-        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\PlaceRepository(
-            $repository,
-            $app['search_api_2'],
+        return $repository;
+    }
+);
+
+$app['place_repository'] = $app->share(
+    function ($app) {
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\Place\PlaceRepository(
+            $app['real_place_repository'],
             $app['udb2_entry_api_improved_factory'],
+            $app['udb2_place_importer'],
             $app['organizer_service'],
             array($app['event_stream_metadata_enricher'])
         );
@@ -880,19 +956,40 @@ $app['organizer_store'] = $app->share(
     }
 );
 
-$app['organizer_repository'] = $app->share(
-    function ($app) {
+$app['udb2_organizer_importer'] = $app->share(
+    function (Application $app) {
+        $importer = new \CultuurNet\UDB3\UDB2\Organizer\OrganizerCdbXmlImporter(
+            $app['udb2_actor_cdbxml_provider'],
+            $app['real_organizer_repository']
+        );
+
+        $logger = new \Monolog\Logger('udb2-organizer-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
+
+        $importer->setLogger($logger);
+
+        return $importer;
+    }
+);
+
+$app['real_organizer_repository'] = $app->share(
+    function (Application $app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
             $app['event_bus'],
             array($app['event_stream_metadata_enricher'])
         );
 
+        return $repository;
+    }
+);
 
-        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\OrganizerRepository(
-            $repository,
-            $app['search_api_2'],
+$app['organizer_repository'] = $app->share(
+    function ($app) {
+        $udb2RepositoryDecorator = new \CultuurNet\UDB3\UDB2\Organizer\OrganizerRepository(
+            $app['real_organizer_repository'],
             $app['udb2_entry_api_improved_factory'],
+            $app['udb2_organizer_importer'],
             array($app['event_stream_metadata_enricher'])
         );
 
@@ -938,7 +1035,7 @@ $app['event_export'] = $app->share(
             realpath(__DIR__ .  '/web/downloads'),
             new CallableIriGenerator(
                 function ($fileName) use ($app) {
-                    return $app['config']['url'] . '/web/downloads/' . $fileName;
+                    return $app['config']['url'] . '/downloads/' . $fileName;
                 }
             ),
             new \CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer(
@@ -1067,6 +1164,32 @@ $app->register(new \CultuurNet\UDB3\Silex\PlaceLookupServiceProvider());
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
     ['migrations.config_file' => __DIR__ . '/migrations.yml']
+);
+
+// Add the oauth service provider.
+$app->register(new OAuthServiceProvider(), array(
+    'oauth.fetcher.base_url' => $app['config']['oauth']['base_url'],
+    'oauth.fetcher.consumer' => $app['config']['oauth']['consumer'],
+));
+
+$app['predis.client'] = $app->share(function ($app) {
+    $redisURI = isset($app['config']['redis']['uri']) ?
+        $app['config']['redis']['uri'] : 'tcp://127.0.0.1:6379';
+
+    return new Predis\Client($redisURI);
+});
+
+$app['oauth.model.provider.nonce_provider'] = $app->share(function (Application $app) {
+    return new NonceProvider(
+        $app['predis.client']
+    );
+});
+
+$app->extend(
+    'oauth.model.provider.token_provider',
+    function (TokenProviderInterface $tokenProvider, Application $app) {
+        return new TokenProviderCache($tokenProvider, $app['predis.client']);
+    }
 );
 
 return $app;
