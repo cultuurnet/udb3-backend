@@ -696,12 +696,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-service-provider-oauth.git",
-                "reference": "af49f3364faa480685fcc939c7c662a753c0349d"
+                "reference": "3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-oauth/zipball/af49f3364faa480685fcc939c7c662a753c0349d",
-                "reference": "af49f3364faa480685fcc939c7c662a753c0349d",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-oauth/zipball/3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc",
+                "reference": "3bc3f7311ab0eae371275cdc5a213e6b4ff8b2fc",
                 "shasum": ""
             },
             "require": {
@@ -732,7 +732,7 @@
                 "Apache-2.0"
             ],
             "description": "A Silex service provider for our OAuth component.",
-            "time": "2015-09-30 13:31:12"
+            "time": "2015-09-30 15:05:45"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -944,12 +944,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "62dd5748ecca2ffe4ef031843e5e6663112b86af"
+                "reference": "99f9eba6a5956cb633a78c05ad169fd988ea6017"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/62dd5748ecca2ffe4ef031843e5e6663112b86af",
-                "reference": "62dd5748ecca2ffe4ef031843e5e6663112b86af",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/99f9eba6a5956cb633a78c05ad169fd988ea6017",
+                "reference": "99f9eba6a5956cb633a78c05ad169fd988ea6017",
                 "shasum": ""
             },
             "require": {
@@ -1016,7 +1016,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-09-30 12:17:22"
+            "time": "2015-10-05 07:32:31"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2447,16 +2447,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.14",
+            "version": "1.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "202c7775d959f377e2e302d93e7127c47604438a"
+                "reference": "31525caf9e8772683672fefd8a1ca0c0736020f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/202c7775d959f377e2e302d93e7127c47604438a",
-                "reference": "202c7775d959f377e2e302d93e7127c47604438a",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/31525caf9e8772683672fefd8a1ca0c0736020f4",
+                "reference": "31525caf9e8772683672fefd8a1ca0c0736020f4",
                 "shasum": ""
             },
             "require": {
@@ -2527,7 +2527,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-09-22 19:18:28"
+            "time": "2015-09-30 22:26:59"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -2649,16 +2649,16 @@
         },
         {
             "name": "marc-mabe/php-enum",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marc-mabe/php-enum.git",
-                "reference": "071b26a2fd0f8fc57ab89fa7d399792a73e37f6d"
+                "reference": "fdbd9eafc8772dacc37236c5f0118edad455f00e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/071b26a2fd0f8fc57ab89fa7d399792a73e37f6d",
-                "reference": "071b26a2fd0f8fc57ab89fa7d399792a73e37f6d",
+                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/fdbd9eafc8772dacc37236c5f0118edad455f00e",
+                "reference": "fdbd9eafc8772dacc37236c5f0118edad455f00e",
                 "shasum": ""
             },
             "require": {
@@ -2671,12 +2671,13 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-1.x": "1.3-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "MabeEnum\\": "src/"
+                "psr-4": {
+                    "MabeEnum\\": "src/MabeEnum/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2703,7 +2704,7 @@
                 "type-hint",
                 "typehint"
             ],
-            "time": "2014-05-22 16:22:21"
+            "time": "2015-10-04 17:35:32"
         },
         {
             "name": "mathiasverraes/money",
@@ -4684,16 +4685,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.9",
+            "version": "4.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b"
+                "reference": "463163747474815c5ccd4ae12b5b355ec12158e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/73fad41adb5b7bc3a494bb930d90648df1d5e74b",
-                "reference": "73fad41adb5b7bc3a494bb930d90648df1d5e74b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/463163747474815c5ccd4ae12b5b355ec12158e8",
+                "reference": "463163747474815c5ccd4ae12b5b355ec12158e8",
                 "shasum": ""
             },
             "require": {
@@ -4752,20 +4753,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-09-20 12:56:44"
+            "time": "2015-10-01 09:14:30"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "2.3.7",
+            "version": "2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "5e2645ad49d196e020b85598d7c97e482725786a"
+                "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5e2645ad49d196e020b85598d7c97e482725786a",
-                "reference": "5e2645ad49d196e020b85598d7c97e482725786a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/ac8e7a3db35738d56ee9a76e78a4e03d97628983",
+                "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983",
                 "shasum": ""
             },
             "require": {
@@ -4808,7 +4809,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-08-19 09:14:08"
+            "time": "2015-10-02 06:51:40"
         },
         {
             "name": "sebastian/comparator",
