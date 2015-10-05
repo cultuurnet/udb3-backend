@@ -34,21 +34,7 @@
                         "description": "An object containing the necessary information to create a new cultural event.",
                         "required": true,
                         "schema": {
-                          "properties": {
-                              "name": {
-
-                              },
-                              "type": {
-
-                              },
-                              "location": {
-
-                              },
-                              "calendarType": {
-
-                              },
-
-                          }
+                            "$ref": "#/definitions/eventCreationData"
                         }
                     }
                 ],
@@ -706,7 +692,7 @@
             "post": {
                 "summary": "Request to generate an event list exported to a file.",
                 "description": "Authentication is required.",
-                "operationId": "getEventExport",
+                "operationId": "getEventCSVExport",
                 "produces": [
                     "application/json"
                 ],
@@ -739,7 +725,7 @@
             "post": {
                 "summary": "Request to generate an event list exported to a file.",
                 "description": "Authentication is required.",
-                "operationId": "getEventExport",
+                "operationId": "getEventJSONExport",
                 "produces": [
                     "application/json"
                 ],
@@ -772,7 +758,7 @@
             "post": {
                 "summary": "Request to generate an event list exported to a file.",
                 "description": "Authentication is required.",
-                "operationId": "getEventExport",
+                "operationId": "getEventOOXMLExport",
                 "produces": [
                     "application/json"
                 ],
@@ -805,7 +791,7 @@
             "post": {
                 "summary": "Request to generate an event list exported to a file.",
                 "description": "Authentication is required.",
-                "operationId": "getEventExport",
+                "operationId": "getEventPDFExport",
                 "produces": [
                     "application/json"
                 ],
@@ -2226,31 +2212,202 @@
                     }
                 }
             ]
-        }
-    },
-    "APIProblem": {
-        "properties": {
-            "type": {
-                "type": "string",
-                "format": "url"
-            },
-            "title": {
-                "type": "string"
-            },
-            "status": {
-                "type": "integer"
-            },
-            "validation_messages": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                }
-            }
         },
-        "required": [
-            "title",
-            "type",
-            "status"
-        ]
+        "APIProblem": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "format": "url"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "validation_messages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "title",
+                "type",
+                "status"
+            ]
+        },
+        "eventCreationData": {
+            "properties": {
+                "name": {
+                    "type": "object",
+                    "properties": {
+                        "nl": {
+                            "type": "string",
+                            "example": "Super Awesome Party Night"
+                        }
+                    }
+                },
+                "type": {
+                    "type": "object",
+                    "description": "One of the event types available at: http://taxonomy.uitdatabank.be/api/domain/eventtype/classification",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "example": "0.50.4.0.0"
+                        },
+                        "label": {
+                            "type": "string",
+                            "example": "Concert"
+                        },
+                        "domain": {
+                            "type": "string",
+                            "enum": [
+                                "eventtype"
+                            ]
+                        }
+                    }
+
+                },
+                "location": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "A universally unique identifier.",
+                            "example": "6f072ba8-c510-40ac-b387-51f582650e27"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "The name of the location.",
+                            "example": "Versuz"
+                        },
+                        "address": {
+                            "type": "object",
+                            "properties": {
+                                "addressCountry": {
+                                    "type": "string",
+                                    "example": "BE",
+                                    "format": "ISO 3166-1 alpha-2"
+                                },
+                                "addressLocality": {
+                                    "type": "string",
+                                    "example": "Hasselt"
+                                },
+                                "postalCode": {
+                                    "type": "string",
+                                    "format": "postal code",
+                                    "example": "3500"
+                                },
+                                "streetAddress": {
+                                    "type": "string",
+                                    "example": "Gouverneur Verwilghensingel 70",
+                                    "format": "street name and number"
+                                }
+                            }
+                        }
+                    }
+                },
+                "calendarType": {
+                    "type": "string",
+                    "enum": [
+                        "single",
+                        "multiple",
+                        "periodic",
+                        "permanent"
+                    ]
+                },
+                "openingHours": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "dayOfWeek": {
+                                "type": "string",
+                                "enum": [
+                                    "maandag",
+                                    "dinsdag",
+                                    "woensdag",
+                                    "donderdag",
+                                    "vrijdag",
+                                    "zaterdag",
+                                    "zondag"
+                                ]
+                            },
+                            "opens": {
+                                "type": "string",
+                                "example": "04:20"
+                            },
+                            "closes": {
+                                "type": "string",
+                                "example": "06:66"
+                            }
+                        }
+                    }
+                },
+                "timestamps": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "date": {
+                                "type": "string",
+                                "format": "date",
+                                "example": "2000-12-30"
+                            },
+                            "startHour": {
+                                "type": "string",
+                                "example": "04:20"
+                            },
+                            "endHour": {
+                                "type": "string",
+                                "example": "06:66"
+                            }
+                        }
+                    }
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2015-05-07T12:02:53+00:00"
+                },
+                "theme": {
+                    "type": "object",
+                    "description": "One of the available themes from http://taxonomy.uitdatabank.be/api/domain/theme/classification",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "example": "1.2.1.0.0"
+                        },
+                        "label": {
+                            "type": "string",
+                            "example": "Architectuur"
+                        },
+                        "domain": {
+                            "type": "string",
+                            "enum": [
+                                "thema"
+                            ],
+                            "description": "This is hardcoded to 'thema' in the current application. It is passed to the API and then overwritten."
+                        }
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "type",
+                "theme",
+                "location",
+                "calendarType",
+                "startDate"
+            ]
+        }
     }
 }
