@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "31ccb9df3d3d9b4c3d7629f609cf2c1e",
+    "hash": "75477e512b84cee4c31f01454357079a",
+    "content-hash": "1238746a2bdb7f8a71054079053c4a58",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -738,16 +739,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-420",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "5ec549336ee239e3fc6f85119f70155d9c5599ea"
+                "reference": "99f9eba6a5956cb633a78c05ad169fd988ea6017"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/5ec549336ee239e3fc6f85119f70155d9c5599ea",
-                "reference": "5ec549336ee239e3fc6f85119f70155d9c5599ea",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/99f9eba6a5956cb633a78c05ad169fd988ea6017",
+                "reference": "99f9eba6a5956cb633a78c05ad169fd988ea6017",
                 "shasum": ""
             },
             "require": {
@@ -814,7 +815,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-10-01 19:24:21"
+            "time": "2015-10-05 07:32:31"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2405,16 +2406,16 @@
         },
         {
             "name": "marc-mabe/php-enum",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marc-mabe/php-enum.git",
-                "reference": "071b26a2fd0f8fc57ab89fa7d399792a73e37f6d"
+                "reference": "fdbd9eafc8772dacc37236c5f0118edad455f00e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/071b26a2fd0f8fc57ab89fa7d399792a73e37f6d",
-                "reference": "071b26a2fd0f8fc57ab89fa7d399792a73e37f6d",
+                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/fdbd9eafc8772dacc37236c5f0118edad455f00e",
+                "reference": "fdbd9eafc8772dacc37236c5f0118edad455f00e",
                 "shasum": ""
             },
             "require": {
@@ -2427,12 +2428,13 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "2.2-dev",
+                    "dev-1.x": "1.3-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "MabeEnum\\": "src/"
+                "psr-4": {
+                    "MabeEnum\\": "src/MabeEnum/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2459,7 +2461,7 @@
                 "type-hint",
                 "typehint"
             ],
-            "time": "2014-05-22 16:22:21"
+            "time": "2015-10-04 17:35:32"
         },
         {
             "name": "mathiasverraes/money",
@@ -3289,12 +3291,12 @@
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/HttpFoundation.git",
+                "url": "https://github.com/symfony/http-foundation.git",
                 "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
                 "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
                 "shasum": ""
             },
@@ -4436,16 +4438,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "2.3.7",
+            "version": "2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "5e2645ad49d196e020b85598d7c97e482725786a"
+                "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5e2645ad49d196e020b85598d7c97e482725786a",
-                "reference": "5e2645ad49d196e020b85598d7c97e482725786a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/ac8e7a3db35738d56ee9a76e78a4e03d97628983",
+                "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983",
                 "shasum": ""
             },
             "require": {
@@ -4488,7 +4490,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-08-19 09:14:08"
+            "time": "2015-10-02 06:51:40"
         },
         {
             "name": "sebastian/comparator",
@@ -4862,17 +4864,9 @@
             "time": "2015-06-21 13:59:46"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-420",
-            "package": "cultuurnet/udb3"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-doctrine": 20,
         "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
