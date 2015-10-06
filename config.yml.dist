@@ -2,6 +2,10 @@
 # events.
 url: http://example.com
 uitid:
+  # The oauth consumer needs to be configured correctly in order for UDB3 to be
+  # able to synchronize data to UDB2:
+  # - it has to be added to a privileged list of consumers in UDB2 that is
+  #   allowed to set the cdbid of new events submitted via EntryAPI (in web.config)
   consumer:
     key: ***
     secret: ***
