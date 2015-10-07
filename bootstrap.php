@@ -763,6 +763,12 @@ $app['event_command_bus'] = $app->share(
             $app['variations.command_handler']
         );
 
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Place\CommandHandler(
+                $app['place_repository']
+            )
+        );
+
         return $commandBus;
     }
 );
