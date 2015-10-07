@@ -76,6 +76,9 @@ class PlacesControllerProvider implements ControllerProviderInterface
         // @todo Reduce path to /place.
         $controllers->post('api/1.0/place', 'places_controller:createPlace');
 
+        $controllers->post('place/{cdbid}/image', 'places_controller:addImage');
+        $controllers->post('place/{cdbid}/nl/description', 'places_controller:updateDescription');
+
         $controllers->get(
             'place/{cdbid}',
             function (Application $app, $cdbid) {
