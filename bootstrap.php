@@ -1188,4 +1188,8 @@ $app->extend(
     }
 );
 
+$app['entryapi.link_base_url'] = $app->share(function (Application $app) {
+    return $app['config']['entryapi']['link_base_url'];
+});
+
 return $app;
