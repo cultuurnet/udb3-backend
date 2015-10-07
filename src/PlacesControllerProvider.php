@@ -80,6 +80,7 @@ class PlacesControllerProvider implements ControllerProviderInterface
         $controllers->post('place/{cdbid}/nl/description', 'places_controller:updateDescription');
         $controllers->post('place/{cdbid}/typicalAgeRange', 'places_controller:updateTypicalAgeRange');
         $controllers->post('place/{cdbid}/bookingInfo', 'places_controller:updateBookingInfo');
+        $controllers->post('place/{cdbid}/contactPoint', 'places_controller:updateContactPoint');
 
         $controllers->get(
             'place/{cdbid}',
