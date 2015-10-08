@@ -82,4 +82,4 @@ oauth:
 redis:
   # uri: tcp://127.0.0.1:6379
 entryapi:
-  link_base_url:
+  link_base_url: http://www.uitdatabank.be/rest/v3/
