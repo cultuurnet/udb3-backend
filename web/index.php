@@ -87,6 +87,39 @@ $app->before(
     }
 );
 
+$app->before(
+    function (Request $request, Application $app) {
+        $contextValues = [];
+
+        $contextValues['client_ip'] = $request->getClientIp();
+        $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
+
+        /** @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage $tokenStorage */
+        $tokenStorage = $app['security.token_storage'];
+        $authToken = $tokenStorage->getToken();
+
+        if ($authToken instanceof \CultuurNet\SymfonySecurityOAuth\Security\OAuthToken &&
+            $authToken->isAuthenticated()
+        ) {
+            $contextValues['consumer'] = [
+                'key' => $authToken->getAccessToken()->getConsumer()->getConsumerKey(),
+                'name' => $authToken->getAccessToken()->getConsumer()->getName()
+            ];
+            $user = $authToken->getUser();
+
+            if ($user instanceof \CultuurNet\SymfonySecurityOAuthUitid\User) {
+                $contextValues['user_id'] = $user->getUid();
+                $contextValues['user_nick'] = $user->getUsername();
+                $contextValues['user_email'] = $user->getEmail();
+            }
+        }
+
+        /** @var \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher $metadataEnricher */
+        $metadataEnricher = $app['execution_context_metadata_enricher'];
+        $metadataEnricher->setContext(new \Broadway\Domain\Metadata($contextValues));
+    }
+);
+
 $app->get(
     'culturefeed/oauth/connect',
     function (Request $request, Application $app) {
