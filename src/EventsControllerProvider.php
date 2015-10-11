@@ -6,6 +6,8 @@ use CultuurNet\UDB3\Symfony\EventRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class EventsControllerProvider implements ControllerProviderInterface
 {
@@ -30,7 +32,46 @@ class EventsControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/event', "event_controller:createEvent");
+        $controllers->post('api/1.0/event', "event_controller:createEvent");
+
+        $controllers->post('api/1.0/event/{cdbid}/image', 'event_controller:addImage');
+
+        $controllers->post('event/{cdbid}/nl/description', 'event_controller:updateDescription');
+        $controllers->post('event/{cdbid}/typicalAgeRange', 'event_controller:updateTypicalAgeRange');
+        $controllers->post('event/{cdbid}/bookingInfo', 'event_controller:updateBookingInfo');
+        $controllers->post('event/{cdbid}/contactPoint', 'event_controller:updateContactPoint');
+        $controllers->post('event/{cdbid}/facilities', 'event_controller:updateFacilities');
+        $controllers->post('event/{cdbid}/organizer', 'event_controller:updateOrganizer');
+
+        $controllers->post(
+            'event/{cdbid}/{lang}/description',
+            function (Request $request, Application $app, $cdbid, $lang) {
+                /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+                $service = $app['event_editor'];
+
+                $response = new JsonResponse();
+
+                $description = $request->request->get('description');
+                if (!$description) {
+                    return new JsonResponse(['error' => "description required"], 400);
+                }
+
+                try {
+                    $commandId = $service->translateDescription(
+                        $cdbid,
+                        new \CultuurNet\UDB3\Language($lang),
+                        $request->get('description')
+                    );
+
+                    $response->setData(['commandId' => $commandId]);
+                } catch (\Exception $e) {
+                    $response->setStatusCode(400);
+                    $response->setData(['error' => $e->getMessage()]);
+                }
+
+                return $response;
+            }
+        );
 
         return $controllers;
     }
