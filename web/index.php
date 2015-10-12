@@ -87,37 +87,36 @@ $app->before(
     }
 );
 
-// Set execution context for the asynchronous command bus.
-// @todo Limit this to the paths where the command bus is used.
 $app->before(
     function (Request $request, Application $app) {
-        if (in_array($request->getMethod(), ['GET', 'OPTIONS'])) {
-            return;
-        }
+        $contextValues = [];
 
-        /** @var \Broadway\CommandHandling\CommandBusInterface|\CultuurNet\UDB3\CommandHandling\ContextAwareInterface $eventCommandBus */
-        $eventCommandBus = $app['event_command_bus'];
-
-        /** @var CultureFeed_User $user */
-        $user = $app['current_user'];
-
-        $contextValues = array();
-        if ($user) {
-            $contextValues['user_id'] = $user->id;
-            $contextValues['user_nick'] = $user->nick;
-
-            /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
-            $session = $app['session'];
-            /** @var \CultuurNet\Auth\User $minimalUserData */
-            $minimalUserData = $session->get('culturefeed_user');
-            $userCredentials = $minimalUserData->getTokenCredentials();
-
-            $contextValues['uitid_token_credentials'] = $userCredentials;
-        }
         $contextValues['client_ip'] = $request->getClientIp();
         $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
-        $context = new \Broadway\Domain\Metadata($contextValues);
-        $eventCommandBus->setContext($context);
+
+        /** @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage $tokenStorage */
+        $tokenStorage = $app['security.token_storage'];
+        $authToken = $tokenStorage->getToken();
+
+        if ($authToken instanceof \CultuurNet\SymfonySecurityOAuth\Security\OAuthToken &&
+            $authToken->isAuthenticated()
+        ) {
+            $contextValues['consumer'] = [
+                'key' => $authToken->getAccessToken()->getConsumer()->getConsumerKey(),
+                'name' => $authToken->getAccessToken()->getConsumer()->getName()
+            ];
+            $user = $authToken->getUser();
+
+            if ($user instanceof \CultuurNet\SymfonySecurityOAuthUitid\User) {
+                $contextValues['user_id'] = $user->getUid();
+                $contextValues['user_nick'] = $user->getUsername();
+                $contextValues['user_email'] = $user->getEmail();
+            }
+        }
+
+        /** @var \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher $metadataEnricher */
+        $metadataEnricher = $app['execution_context_metadata_enricher'];
+        $metadataEnricher->setContext(new \Broadway\Domain\Metadata($contextValues));
     }
 );
 
@@ -662,6 +661,8 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
 
 $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvider());
+
+$app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 
