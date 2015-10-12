@@ -9,6 +9,7 @@ use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Place\ReadModel\Lookup\PlaceLookupServiceInterface;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Symfony\PlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -21,6 +22,17 @@ class PlacesControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        $app['places_controller'] = $app->share(
+            function (Application $app) {
+                return new PlaceRestController(
+                    $app['place_service'],
+                    $app['place_editing_service'],
+                    $app['event_relations_repository'],
+                    $app['current_user']
+                );
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -61,7 +73,19 @@ class PlacesControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app->get(
+        // @todo Reduce path to /place.
+        $controllers->post('api/1.0/place', 'places_controller:createPlace');
+        $controllers->post('api/1.0/place/{cdbid}/image', 'places_controller:addImage');
+
+        $controllers->post('place/{cdbid}/nl/description', 'places_controller:updateDescription');
+        $controllers->post('place/{cdbid}/typicalAgeRange', 'places_controller:updateTypicalAgeRange');
+        $controllers->delete('api/1.0/place/{cdbid}/typicalAgeRange', 'places_controller:deleteTypicalAgeRange');
+        $controllers->post('place/{cdbid}/bookingInfo', 'places_controller:updateBookingInfo');
+        $controllers->post('place/{cdbid}/contactPoint', 'places_controller:updateContactPoint');
+        $controllers->post('place/{cdbid}/facilities', 'places_controller:updateFacilities');
+        $controllers->post('place/{cdbid}/organizer', 'places_controller:updateOrganizer');
+
+        $controllers->get(
             'place/{cdbid}',
             function (Application $app, $cdbid) {
                 /** @var \CultuurNet\UDB3\EntityServiceInterface $service */

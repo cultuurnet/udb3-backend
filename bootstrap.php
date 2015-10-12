@@ -27,6 +27,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -519,6 +520,29 @@ $app['udb2_entry_api_improved_factory'] = $app->share(
     }
 );
 
+$app->extend(
+    'udb2_entry_api_improved_factory',
+    function (
+        \CultuurNet\UDB3\UDB2\EntryAPIImprovedFactoryInterface $factory,
+        Application $app
+    ) {
+        $file = __DIR__ . '/log/entryapi.log';
+
+        $format = "\n\n# Request:\n{request}\n\n# Response:\n{response}\n\n# Errors: {curl_code} {curl_error}\n\n";
+        $logAdapter = new \Guzzle\Log\ClosureLogAdapter(function ($message, $priority, $extra) use ($file) {
+            file_put_contents($file, $message, FILE_APPEND);
+        });
+
+        return new \CultuurNet\UDB3\UDB2\EventSubscriberDecoratedEntryAPIImprovedFactory(
+            $factory,
+            new \Guzzle\Plugin\Log\LogPlugin(
+                $logAdapter,
+                $format
+            )
+        );
+    }
+);
+
 $app['real_event_repository'] = $app->share(
   function ($app) {
       $repository = new \CultuurNet\UDB3\Event\EventRepository(
@@ -543,7 +567,10 @@ $app['udb2_event_cdbxml'] = $app->share(
         $cdbXmlFromEntryAPI = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
             $baseUrl,
             $app['uitid_consumer_credentials'],
-            $userId
+            $userId,
+            // @todo Move the cdbxml version to configuration file. Use the same
+            // setting when instantiating the ImprovedEntryApiFactory.
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
         $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
@@ -736,6 +763,12 @@ $app['event_command_bus'] = $app->share(
             $app['variations.command_handler']
         );
 
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Place\CommandHandler(
+                $app['place_repository']
+            )
+        );
+
         return $commandBus;
     }
 );
@@ -900,6 +933,16 @@ $app['place_service'] = $app->share(
         );
 
         return $service;
+    }
+);
+
+$app['place_editing_service'] = $app->share(
+    function ($app) {
+        return new CultuurNet\UDB3\Place\DefaultPlaceEditingService(
+            $app['event_command_bus'],
+            new Broadway\UuidGenerator\Rfc4122\Version4Generator(),
+            $app['place_repository']
+        );
     }
 );
 
@@ -1160,6 +1203,7 @@ $app['database.installer'] = $app->share(
 
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\PlaceLookupServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\OrganizerLookupServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
