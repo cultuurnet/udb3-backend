@@ -15,6 +15,11 @@ use CultuurNet\UDB3\Event\Title;
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
+/**
+ * Allow to use services as controllers.
+ */
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
 // Register firewall.
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
@@ -264,47 +269,6 @@ $app->get(
     }
 );
 
-$app->get(
-    'api/1.0/search',
-    function (Request $request, Application $app) {
-        $query = $request->query->get('query', '*.*');
-        $limit = $request->query->get('limit', 30);
-        $start = $request->query->get('start', 0);
-        $sort  = $request->query->get('sort', 'lastupdated desc');
-
-        /** @var Psr\Log\LoggerInterface $logger */
-        $logger = $app['logger.search'];
-        /** @var CultureFeed_User $user */
-        $user = $app['current_user'];
-
-        /** @var \CultuurNet\UDB3\Search\SearchServiceInterface $searchService */
-        $searchService = $app['cached_search_service'];
-        try {
-            $results = $searchService->search($query, $limit, $start, $sort);
-            $logger->info(
-                "Search for: {$query}",
-                array('user' => $user->nick)
-            );
-        } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
-            $logger->alert(
-                "Search failed with HTTP status {$e->getResponse(
-                )->getStatusCode()}. Query: {$query}",
-                array('user' => $user->nick)
-            );
-
-            return new Response('Error while searching', '400');
-        }
-
-        $response = JsonLdResponse::create()
-            ->setData($results)
-            ->setPublic()
-            ->setClientTtl(60 * 1)
-            ->setTtl(60 * 5);
-
-        return $response;
-    }
-)->before($checkAuthenticated)->bind('api/1.0/search');
-
 $app
     ->get(
         'event/{cdbid}',
@@ -334,7 +298,7 @@ $app
             /** @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $repository */
             $repository = $app['event_history_repository'];
 
-            /** @var \CultuurNet\UDB3\Event\ReadModel\JsonDocument $document */
+            /** @var \CultuurNet\UDB3\ReadModel\JsonDocument $document */
             $document = $repository->get($cdbid);
 
             $response = JsonResponse::create()
@@ -369,38 +333,6 @@ $app
                     $cdbid,
                     new \CultuurNet\UDB3\Language($lang),
                     $title
-                );
-
-                $response->setData(['commandId' => $commandId]);
-            } catch (Exception $e) {
-                $response->setStatusCode(400);
-                $response->setData(['error' => $e->getMessage()]);
-            }
-
-            return $response;
-        }
-    )
-    ->before($checkAuthenticated);
-
-$app
-    ->post(
-        'event/{cdbid}/{lang}/description',
-        function (Request $request, Application $app, $cdbid, $lang) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
-            $service = $app['event_editor'];
-
-            $response = new JsonResponse();
-
-            $description = $request->request->get('description');
-            if (!$description) {
-                return new JsonResponse(['error' => "description required"], 400);
-            }
-
-            try {
-                $commandId = $service->translateDescription(
-                    $cdbid,
-                    new \CultuurNet\UDB3\Language($lang),
-                    $request->get('description')
                 );
 
                 $response->setData(['commandId' => $commandId]);
@@ -600,28 +532,6 @@ $app->get(
 
 $app
     ->get(
-        'place/{cdbid}',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-            $service = $app['place_service'];
-
-            $place = $service->getEntity($cdbid);
-
-            $response = JsonLdResponse::create()
-                ->setContent($place)
-                ->setPublic()
-                ->setClientTtl(60 * 30)
-                ->setTtl(60 * 5);
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('place');
-
-$app
-    ->get(
         'organizer/{cdbid}',
         function (Request $request, Application $app, $cdbid) {
             /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
@@ -665,5 +575,15 @@ $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvide
 $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\EventsControllerProvider());
+
+/**
+ * Dummy endpoint implementations. Make sure you keep this as the last one,
+ * already implemented routes will not be overridden.
+ */
+$app->mount('/', new \CultuurNet\UDB3\Silex\DummyControllerProvider());
 
 $app->run();

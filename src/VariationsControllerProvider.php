@@ -6,7 +6,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\Event\ReadModel\JsonDocument;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
