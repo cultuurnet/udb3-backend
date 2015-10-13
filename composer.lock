@@ -555,12 +555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "a7d4cd06ed857bff326b413d4a7f819a81ea228a"
+                "reference": "5dc3f95587d95c6835e5b49fa964ac2b1737d186"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/a7d4cd06ed857bff326b413d4a7f819a81ea228a",
-                "reference": "a7d4cd06ed857bff326b413d4a7f819a81ea228a",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/5dc3f95587d95c6835e5b49fa964ac2b1737d186",
+                "reference": "5dc3f95587d95c6835e5b49fa964ac2b1737d186",
                 "shasum": ""
             },
             "require": {
@@ -570,7 +570,10 @@
             },
             "require-dev": {
                 "guzzle/plugin-mock": "~3.9.2",
-                "phpunit/phpunit": "~4.3"
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
             },
             "type": "library",
             "extra": {
@@ -594,7 +597,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2015-10-09 18:23:28"
+            "time": "2015-10-13 19:24:14"
         },
         {
             "name": "cultuurnet/hydra",
@@ -944,12 +947,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "31109ff99740b4b2c654bb7a566840673e20963b"
+                "reference": "8fcb8370e834054f07ab2a0e0e6fb6daedbc32a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/31109ff99740b4b2c654bb7a566840673e20963b",
-                "reference": "31109ff99740b4b2c654bb7a566840673e20963b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/8fcb8370e834054f07ab2a0e0e6fb6daedbc32a3",
+                "reference": "8fcb8370e834054f07ab2a0e0e6fb6daedbc32a3",
                 "shasum": ""
             },
             "require": {
@@ -1015,7 +1018,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-10-13 14:44:24"
+            "time": "2015-10-13 18:03:26"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
