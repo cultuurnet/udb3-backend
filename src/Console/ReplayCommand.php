@@ -37,6 +37,12 @@ class ReplayCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Alternative cache factory method to use, specify the service suffix, for example "redis"'
+            )
+            ->addOption(
+                'subscriber',
+                null,
+                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
+                'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
             );
     }
 
@@ -56,6 +62,14 @@ class ReplayCommand extends Command
                     return $app[$cacheServiceName];
                 }
             );
+        }
+
+        $subscribers = $input->getOption('subscriber');
+        if (!empty($subscribers)) {
+            $output->writeln(
+                'Registering the following subscribers with the event bus: ' . implode(', ', $subscribers)
+            );
+            $this->setSubscribers($subscribers);
         }
 
         $store = $this->getStore($input, $output);
@@ -88,6 +102,14 @@ class ReplayCommand extends Command
 
         // @todo Limit the event bus to read projections.
         return $app['event_bus'];
+    }
+
+    private function setSubscribers($subscribers) {
+        $app = $this->getSilexApplication();
+
+        $config = $app['config'];
+        $config['event_bus']['subscribers'] = $subscribers;
+        $app['config'] = $config;
     }
 
     /**

@@ -443,14 +443,15 @@ $app['event_bus'] = $app->share(
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
 
         $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
-            // Subscribe projector for event relations read model as the first one.
-            $eventBus->subscribe(
-                $app['relations_projector']
-            );
+            // Allow to override event bus subscribers through configuration.
+            // The event replay command line utility uses this.
+            if (isset($app['config']['event_bus']) &&
+                isset($app['config']['event_bus']['subscribers'])) {
 
-            $eventBus->subscribe(
-                $app['search_cache_manager']
-            );
+                foreach ($app['config']['event_bus']['subscribers'] as $subscriberServiceId) {
+                    $eventBus->subscribe($app[$subscriberServiceId]);
+                }
+            }
 
             // Subscribe projector for the JSON-LD read model.
             $eventBus->subscribe(
