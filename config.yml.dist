@@ -11,7 +11,7 @@ uitid:
     secret: ***
   base_url: http://www.uitid.be/uitid/rest/
   apis:
-    entry: entry/rest.uitdatabank.be/api/v2
+    entry: entry/rest.uitdatabank.be/api/v3
     search: searchv2
   # ID of the user to impersonate for certain requests to the Entry API that use
   # Light UiTID authentication.
