@@ -103,9 +103,14 @@ $app->before(
         $tokenStorage = $app['security.token_storage'];
         $authToken = $tokenStorage->getToken();
 
+        // Web service consumer authenticated with OAuth.
         if ($authToken instanceof \CultuurNet\SymfonySecurityOAuth\Security\OAuthToken &&
             $authToken->isAuthenticated()
         ) {
+            $contextValues['uitid_token_credentials'] = new \CultuurNet\Auth\TokenCredentials(
+                $authToken->getAccessToken()->getToken(),
+                $authToken->getAccessToken()->getSecret()
+            );
             $contextValues['consumer'] = [
                 'key' => $authToken->getAccessToken()->getConsumer()->getConsumerKey(),
                 'name' => $authToken->getAccessToken()->getConsumer()->getName()
@@ -118,6 +123,23 @@ $app->before(
                 $contextValues['user_email'] = $user->getEmail();
             }
         }
+
+        // Regular user authenticated with UiTID.
+        /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
+        $session = $app['session'];
+        /** @var \CultuurNet\Auth\User $minimalUserData */
+        $minimalUserData = $session->get('culturefeed_user');
+        if ($minimalUserData) {
+            $contextValues['uitid_token_credentials'] = $minimalUserData->getTokenCredentials();
+            /** @var \CultureFeed_User $user */
+            $user = $app['current_user'];
+            $contextValues['user_id'] = $user->id;
+            $contextValues['user_nick'] = $user->nick;
+            $contextValues['user_email'] = $user->mbox;
+        }
+
+        $contextValues['client_ip'] = $request->getClientIp();
+        $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
 
         /** @var \CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher $metadataEnricher */
         $metadataEnricher = $app['execution_context_metadata_enricher'];
