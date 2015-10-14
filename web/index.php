@@ -113,6 +113,7 @@ $app->before(
             );
             $contextValues['consumer'] = [
                 'key' => $authToken->getAccessToken()->getConsumer()->getConsumerKey(),
+                'secret' => $authToken->getAccessToken()->getConsumer()->getConsumerSecret(),
                 'name' => $authToken->getAccessToken()->getConsumer()->getName()
             ];
             $user = $authToken->getUser();
