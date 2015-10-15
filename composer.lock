@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d28c4b714ec55e6943486967685fe81c",
-    "content-hash": "9ba6f00612bd4c8367b829ae5c40c447",
+    "hash": "0f3a491dfc690909d1cb550e639d004b",
+    "content-hash": "802d3e3ea97559f4c46d05292f7e5927",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -555,12 +555,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "5dc3f95587d95c6835e5b49fa964ac2b1737d186"
+                "reference": "8b1844dc1a7e0adbe9e6adb0c481357887da1fd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/5dc3f95587d95c6835e5b49fa964ac2b1737d186",
-                "reference": "5dc3f95587d95c6835e5b49fa964ac2b1737d186",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/8b1844dc1a7e0adbe9e6adb0c481357887da1fd7",
+                "reference": "8b1844dc1a7e0adbe9e6adb0c481357887da1fd7",
                 "shasum": ""
             },
             "require": {
@@ -597,7 +597,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2015-10-13 19:24:14"
+            "time": "2015-10-14 11:22:53"
         },
         {
             "name": "cultuurnet/hydra",
@@ -947,12 +947,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "8fcb8370e834054f07ab2a0e0e6fb6daedbc32a3"
+                "reference": "0902d3a0d979905759e7e69267be45aa7ef51988"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/8fcb8370e834054f07ab2a0e0e6fb6daedbc32a3",
-                "reference": "8fcb8370e834054f07ab2a0e0e6fb6daedbc32a3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/0902d3a0d979905759e7e69267be45aa7ef51988",
+                "reference": "0902d3a0d979905759e7e69267be45aa7ef51988",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1018,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-10-13 18:03:26"
+            "time": "2015-10-14 14:25:59"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1160,16 +1160,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-449",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "ca455d1e4551f87ab32341ca24b7c2d67fc8c8cb"
+                "reference": "b76299acd09800941acc98bd7376b6276b34b093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/ca455d1e4551f87ab32341ca24b7c2d67fc8c8cb",
-                "reference": "ca455d1e4551f87ab32341ca24b7c2d67fc8c8cb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/b76299acd09800941acc98bd7376b6276b34b093",
+                "reference": "b76299acd09800941acc98bd7376b6276b34b093",
                 "shasum": ""
             },
             "require": {
@@ -1210,7 +1210,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2015-10-13 12:58:02"
+            "time": "2015-10-14 11:45:54"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2832,16 +2832,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.17.1",
+            "version": "1.17.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "0524c87587ab85bc4c2d6f5b41253ccb930a5422"
+                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0524c87587ab85bc4c2d6f5b41253ccb930a5422",
-                "reference": "0524c87587ab85bc4c2d6f5b41253ccb930a5422",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
                 "shasum": ""
             },
             "require": {
@@ -2855,10 +2855,11 @@
                 "aws/aws-sdk-php": "^2.4.9",
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
                 "php-console/php-console": "^3.1.3",
                 "phpunit/phpunit": "~4.5",
                 "phpunit/phpunit-mock-objects": "2.3.0",
-                "raven/raven": "~0.11",
+                "raven/raven": "^0.13",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "swiftmailer/swiftmailer": "~5.3",
                 "videlalvaro/php-amqplib": "~2.4"
@@ -2904,7 +2905,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-08-31 09:17:37"
+            "time": "2015-10-14 12:51:02"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -4754,16 +4755,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.12",
+            "version": "4.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "00194eb95989190a73198390ceca081ad3441a7f"
+                "reference": "be067d6105286b74272facefc2697038f8807b77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/00194eb95989190a73198390ceca081ad3441a7f",
-                "reference": "00194eb95989190a73198390ceca081ad3441a7f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/be067d6105286b74272facefc2697038f8807b77",
+                "reference": "be067d6105286b74272facefc2697038f8807b77",
                 "shasum": ""
             },
             "require": {
@@ -4822,7 +4823,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-12 03:36:47"
+            "time": "2015-10-14 13:49:40"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -5264,12 +5265,19 @@
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-449",
             "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-449",
+            "package": "cultuurnet/udb3-udb2-bridge"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/entry": 20,
         "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
