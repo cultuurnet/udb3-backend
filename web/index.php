@@ -436,7 +436,11 @@ $app->get(
         $user = $app['current_user'];
 
         $response = JsonLdResponse::create()
-            ->setData($user)
+            ->setData([
+                'id' => $user->id,
+                'nick' => $user->nick,
+                'mbox' => $user->mbox,
+            ])
             ->setPrivate();
 
         return $response;
