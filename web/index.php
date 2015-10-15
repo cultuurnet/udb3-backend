@@ -123,20 +123,21 @@ $app->before(
                 $contextValues['user_nick'] = $user->getUsername();
                 $contextValues['user_email'] = $user->getEmail();
             }
-        }
-
-        // Regular user authenticated with UiTID.
-        /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
-        $session = $app['session'];
-        /** @var \CultuurNet\Auth\User $minimalUserData */
-        $minimalUserData = $session->get('culturefeed_user');
-        if ($minimalUserData) {
-            $contextValues['uitid_token_credentials'] = $minimalUserData->getTokenCredentials();
-            /** @var \CultureFeed_User $user */
-            $user = $app['current_user'];
-            $contextValues['user_id'] = $user->id;
-            $contextValues['user_nick'] = $user->nick;
-            $contextValues['user_email'] = $user->mbox;
+        } else {
+            // Regular user authenticated with UiTID.
+            /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
+            $session = $app['session'];
+            /** @var \CultuurNet\Auth\User $minimalUserData */
+            $minimalUserData = $session->get('culturefeed_user');
+            if ($minimalUserData) {
+                $contextValues['uitid_token_credentials'] = $minimalUserData->getTokenCredentials(
+                );
+                /** @var \CultureFeed_User $user */
+                $user = $app['current_user'];
+                $contextValues['user_id'] = $user->id;
+                $contextValues['user_nick'] = $user->nick;
+                $contextValues['user_email'] = $user->mbox;
+            }
         }
 
         $contextValues['client_ip'] = $request->getClientIp();
