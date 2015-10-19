@@ -6,6 +6,8 @@ use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use Guzzle\Log\ClosureLogAdapter;
+use Guzzle\Plugin\Log\LogPlugin;
 use Silex\Application;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
 use CultuurNet\UDB3\SearchAPI2\Filters\UDB3Place as UDB3PlaceFilter;
@@ -541,6 +543,33 @@ $app->extend(
                 $format
             )
         );
+    }
+);
+
+$app->extend(
+    'udb2_entry_api_improved_factory',
+    function (
+        \CultuurNet\UDB3\UDB2\EntryAPIImprovedFactoryInterface $factory,
+        Application $app
+    ) {
+        // Print request and response for debugging purposes. Only on CLI.
+        if (PHP_SAPI === 'cli') {
+            $adapter = new ClosureLogAdapter(
+                function ($message, $priority, $extras) {
+                    print $message;
+                }
+            );
+
+            $format = "\n\n# Request:\n{request}\n\n# Response:\n{response}\n\n# Errors: {curl_code} {curl_error}\n\n";
+            $log = new LogPlugin($adapter, $format);
+
+            return new \CultuurNet\UDB3\UDB2\EventSubscriberDecoratedEntryAPIImprovedFactory(
+                $factory,
+                $log
+            );
+        } else {
+            return $factory;
+        }
     }
 );
 
