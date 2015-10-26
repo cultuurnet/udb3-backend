@@ -65,6 +65,9 @@ amqp:
     udb2:
       exchange: udb2.e.prod
       queue: udb3.q.prod.udb2
+  publish:
+    udb3:
+      exchange: udb3.e.prod
 prince:
   binary: /usr/local/bin/prince
 

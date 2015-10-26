@@ -501,9 +501,56 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['index.projector']
             );
+
+            $eventBus->subscribe(
+                $app['amqp.publisher']
+            );
         });
 
         return $eventBus;
+    }
+);
+
+$app['amqp.publisher'] = $app->share(
+    function (Application $app) {
+        $amqpConfig = $host = $app['config']['amqp'];
+        $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
+            $amqpConfig['host'],
+            $amqpConfig['port'],
+            $amqpConfig['user'],
+            $amqpConfig['password'],
+            $amqpConfig['vhost']
+        );
+        $exchange = $amqpConfig['publish']['udb3']['exchange'];
+
+        $channel = $connection->channel();
+
+        $specification = new \CultuurNet\UDB3\EventHandling\DomainMessage\AnyOf(
+            new \CultuurNet\UDB3\EventHandling\DomainMessage\PayloadIsInstanceOf(
+                \CultuurNet\UDB3\Event\Events\EventWasLabelled::class
+            ),
+            new \CultuurNet\UDB3\EventHandling\DomainMessage\PayloadIsInstanceOf(
+                \CultuurNet\UDB3\Event\Events\Unlabelled::class
+            )
+        );
+
+        $publisher = new \CultuurNet\UDB3\EventHandling\AMQPPublisher(
+            $channel,
+            $exchange,
+            $specification
+        );
+
+        $publisher = $publisher
+            ->withContentType(
+                \CultuurNet\UDB3\Event\Events\EventWasLabelled::class,
+                'application/vnd.cultuurnet.udb3-events.event-labelled+json'
+            )
+            ->withContentType(
+                \CultuurNet\UDB3\Event\Events\Unlabelled::class,
+                'application/vnd.cultuurnet.udb3-events.event-unlabelled+json'
+            );
+
+        return $publisher;
     }
 );
 
