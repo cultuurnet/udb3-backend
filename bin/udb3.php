@@ -26,5 +26,6 @@ $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\InstallCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ReplayCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\CacheWarmCommand());
+$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand());
 
 $consoleApp->run();
