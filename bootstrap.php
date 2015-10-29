@@ -501,6 +501,11 @@ $app['event_bus'] = $app->share(
             $eventBus->subscribe(
                 $app['index.projector']
             );
+
+            // Subscribe projector for the permission read model.
+            $eventBus->subscribe(
+                $app['event_permission.projector']
+            );
         });
 
         return $eventBus;
@@ -1259,6 +1264,8 @@ $app['database.installer'] = $app->share(
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\OrganizerLookupServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\UsersServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\PermissionServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
