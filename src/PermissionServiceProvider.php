@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Event\ReadModel\Permission\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -31,8 +32,8 @@ class PermissionServiceProvider implements ServiceProviderInterface
         $app['event_permission.projector'] = $app->share(
             function (Application $app) {
                 $projector = new \CultuurNet\UDB3\Event\ReadModel\Permission\Projector(
-                    $app['uitid_users'],
-                    $app['event_permission.repository']
+                    $app['event_permission.repository'],
+                    new CdbXmlCreatedByToUserIdResolver($app['uitid_users'])
                 );
 
                 return $projector;
