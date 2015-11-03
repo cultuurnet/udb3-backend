@@ -57,6 +57,17 @@ class PermissionServiceProvider implements ServiceProviderInterface
                 return $installer;
             }
         );
+
+        $app['event.security'] = $app->share(
+            function (Application $app) {
+                $security = new \CultuurNet\UDB3\Event\Security(
+                    $app['security.token_storage'],
+                    $app['event_permission.repository']
+                );
+
+                return $security;
+            }
+        );
     }
 
     /**
