@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\CommandHandling\CommandBusDecoratorBase;
 use CultuurNet\UDB3\CommandHandling\ContextAwareInterface;
 use Silex\Application;
@@ -44,13 +45,9 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
                 $contextValues['user_id'] = $user->id;
                 $contextValues['user_nick'] = $user->nick;
 
-                /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
-                $session = $this->application['session'];
-                /** @var \CultuurNet\Auth\User $minimalUserData */
-                $minimalUserData = $session->get('culturefeed_user');
-                $userCredentials = $minimalUserData->getTokenCredentials();
-
-                $contextValues['uitid_token_credentials'] = $userCredentials;
+                /** @var TokenCredentials $tokenCredentials */
+                $tokenCredentials = $this->application['culturefeed_token_credentials'];
+                $contextValues['uitid_token_credentials'] = $tokenCredentials;
             }
 
             /** @var RequestStack $requestStack */

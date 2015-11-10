@@ -26,7 +26,13 @@ $app['debug'] = true;
 $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+
+/**
+ * Session service.
+ */
 $app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new CultuurNet\UiTIDProvider\Session\SessionConfigurationProvider());
+
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
@@ -36,7 +42,31 @@ $app->register(new CorsServiceProvider(), array(
     "cors.allowCredentials" => true
 ));
 
+/**
+ * UiTID Authentication services.
+ */
+$app->register(new CultuurNet\UiTIDProvider\Auth\AuthServiceProvider());
 
+/**
+ * Security services.
+ */
+$app->register(new \CultuurNet\UiTIDProvider\Security\UiTIDSecurityServiceProvider());
+
+/**
+ * CultureFeed services.
+ */
+$app->register(
+  new \CultuurNet\UiTIDProvider\CultureFeed\CultureFeedServiceProvider(),
+  array(
+    'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
+    'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
+    'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
+  )
+);
+
+/**
+ * Mailing service.
+ */
 $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 $app['swiftmailer.use_spool'] = false;
 if ($app['config']['swiftmailer.options']) {
@@ -204,45 +234,12 @@ $app['personal_variation_decorated_event_service'] = $app->share(
     }
 );
 
-$app['current_user'] = $app->share(
-    function ($app) {
-        /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
-        $session = $app['session'];
-        $config = $app['config']['uitid'];
+/**
+ * UiTID User services.
+ */
+$app->register(new CultuurNet\UiTIDProvider\User\UserServiceProvider());
 
-        /** @var \CultuurNet\Auth\User $minimalUserData */
-        $minimalUserData = $session->get('culturefeed_user');
-
-        if ($minimalUserData) {
-            /** @var \CultuurNet\Auth\ConsumerCredentials $consumerCredentials */
-            $consumerCredentials = $app['uitid_consumer_credentials'];
-            $userCredentials = $minimalUserData->getTokenCredentials();
-
-            $oauthClient = new CultureFeed_DefaultOAuthClient(
-                $consumerCredentials->getKey(),
-                $consumerCredentials->getSecret(),
-                $userCredentials->getToken(),
-                $userCredentials->getSecret()
-            );
-            $oauthClient->setEndpoint($config['base_url']);
-
-            $cf = new CultureFeed($oauthClient);
-
-            try {
-                $private = true;
-                $user = $cf->getUser($minimalUserData->getId(), $private);
-            } catch (\Exception $e) {
-                return NULL;
-            }
-
-            unset($user->following);
-
-            return $user;
-        }
-
-        return NULL;
-    }
-);
+$app['current_user'] = $app['uitid_user'];
 
 $app['auth_service'] = $app->share(
     function ($app) {
@@ -1169,26 +1166,6 @@ $app['amqp-connection'] = $app->share(
         $eventBusForwardingConsumer->setLogger($logger);
 
         return $connection;
-    }
-);
-
-$app['culturefeed'] = $app->share(
-    function (Application $app) {
-        $uitidConfig = $app['config']['uitid'];
-        $baseUrl = $uitidConfig['base_url'];
-
-        /** @var \CultuurNet\Auth\ConsumerCredentials $consumerCredentials */
-        $consumerCredentials = $app['uitid_consumer_credentials'];
-
-        $oauthClient = new \CultureFeed_DefaultOAuthClient(
-            $consumerCredentials->getKey(),
-            $consumerCredentials->getSecret()
-        );
-        $oauthClient->setEndpoint($baseUrl);
-
-        $cultureFeed = new \CultureFeed($oauthClient);
-
-        return $cultureFeed;
     }
 );
 
