@@ -445,67 +445,32 @@ $app['event_bus'] = $app->share(
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
 
         $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
+            $subscribers = [
+                'search_cache_manager',
+                'relations_projector',
+                'event_jsonld_projector',
+                'udb2_event_importer',
+                'event_history_projector',
+                'place_jsonld_projector',
+                'organizer_jsonld_projector',
+                'event_calendar_projector',
+                'variations.search.projector',
+                'variations.jsonld.projector',
+                'index.projector',
+                'event_permission.projector',
+            ];
+
             // Allow to override event bus subscribers through configuration.
             // The event replay command line utility uses this.
             if (isset($app['config']['event_bus']) &&
                 isset($app['config']['event_bus']['subscribers'])) {
 
-                foreach ($app['config']['event_bus']['subscribers'] as $subscriberServiceId) {
-                    $eventBus->subscribe($app[$subscriberServiceId]);
-                }
+                $subscribers = $app['config']['event_bus']['subscribers'];
             }
 
-            // Subscribe projector for the JSON-LD read model.
-            $eventBus->subscribe(
-                $app['event_jsonld_projector']
-            );
-
-            // Subscribe event importer which will listen for event creates and
-            // updates coming from UDB2 and create/update the corresponding
-            // event in our repository as well.
-            $eventBus->subscribe(
-                $app['udb2_event_importer']
-            );
-
-            // Subscribe event history projector.
-            $eventBus->subscribe(
-                $app['event_history_projector']
-            );
-
-            // Subscribe Place JSON-LD projector.
-            $eventBus->subscribe(
-                $app['place_jsonld_projector']
-            );
-
-            // Subscribe Organizer JSON-LD projector.
-            $eventBus->subscribe(
-                $app['organizer_jsonld_projector']
-            );
-
-            // Subscribe projector for the Calendar read model.
-            $eventBus->subscribe(
-                $app['event_calendar_projector']
-            );
-
-            // Subscribe projector for the Variations search read model.
-            $eventBus->subscribe(
-                $app['variations.search.projector']
-            );
-
-            // Subscribe projector for the Variations JSON-LD model.
-            $eventBus->subscribe(
-                $app['variations.jsonld.projector']
-            );
-
-            // Subscribe projector for the multi-purpose index read model.
-            $eventBus->subscribe(
-                $app['index.projector']
-            );
-
-            // Subscribe projector for the permission read model.
-            $eventBus->subscribe(
-                $app['event_permission.projector']
-            );
+            foreach ($subscribers as $subscriberServiceId) {
+                $eventBus->subscribe($app[$subscriberServiceId]);
+            }
         });
 
         return $eventBus;
