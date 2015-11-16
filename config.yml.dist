@@ -66,7 +66,7 @@ amqp:
       exchange: udb2.e.prod
       queue: udb3.q.prod.udb2
 prince:
-  binary: /usr/local/bin/prince
+  binary: /usr/bin/prince
 
 cache:
   # Currently supported: "filesystem" or "redis"
