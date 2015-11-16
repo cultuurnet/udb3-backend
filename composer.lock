@@ -950,12 +950,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3e0f69a33eda14b163672d6a80a740da17a044eb"
+                "reference": "2828fe0ef2d060d202b101c95a344503c62fccd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3e0f69a33eda14b163672d6a80a740da17a044eb",
-                "reference": "3e0f69a33eda14b163672d6a80a740da17a044eb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2828fe0ef2d060d202b101c95a344503c62fccd9",
+                "reference": "2828fe0ef2d060d202b101c95a344503c62fccd9",
                 "shasum": ""
             },
             "require": {
@@ -1021,7 +1021,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-11-13 14:19:51"
+            "time": "2015-11-16 19:17:49"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1074,12 +1074,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-silex-entryapi.git",
-                "reference": "cc7c1552e1df4ef5527255d0854095a0fd9cf9e7"
+                "reference": "4274434338552c3e649afe99a3c03db20d485d32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/cc7c1552e1df4ef5527255d0854095a0fd9cf9e7",
-                "reference": "cc7c1552e1df4ef5527255d0854095a0fd9cf9e7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/4274434338552c3e649afe99a3c03db20d485d32",
+                "reference": "4274434338552c3e649afe99a3c03db20d485d32",
                 "shasum": ""
             },
             "require": {
@@ -1111,7 +1111,7 @@
                 "Apache-2.0"
             ],
             "description": "EntryAPI for UDB3 Silex",
-            "time": "2015-11-13 14:24:17"
+            "time": "2015-11-16 19:31:32"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -1160,12 +1160,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "3026475f6f2a60ddb74fe63972800cc0f1e7cf9a"
+                "reference": "42077d8ba663eda250071d617368c5f56c7baab9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/3026475f6f2a60ddb74fe63972800cc0f1e7cf9a",
-                "reference": "3026475f6f2a60ddb74fe63972800cc0f1e7cf9a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/42077d8ba663eda250071d617368c5f56c7baab9",
+                "reference": "42077d8ba663eda250071d617368c5f56c7baab9",
                 "shasum": ""
             },
             "require": {
@@ -1206,7 +1206,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2015-11-13 07:23:37"
+            "time": "2015-11-16 19:42:55"
         },
         {
             "name": "cultuurnet/uitid-credentials",
