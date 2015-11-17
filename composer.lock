@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "f8488990ec0c04184a2cbfaff7437f03",
+    "content-hash": "406d314ca5542735486a2a0d31da8045",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -319,24 +320,27 @@
         },
         {
             "name": "cultuurnet/calendar-summary",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary.git",
-                "reference": "1c09392d846cffd407ef6c181b52cc42f72aee89"
+                "reference": "208885b8b73730c18337883f9927fef4bf913577"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/1c09392d846cffd407ef6c181b52cc42f72aee89",
-                "reference": "1c09392d846cffd407ef6c181b52cc42f72aee89",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/208885b8b73730c18337883f9927fef4bf913577",
+                "reference": "208885b8b73730c18337883f9927fef4bf913577",
                 "shasum": ""
             },
             "require": {
-                "ext-intl": "*"
+                "cultuurnet/cdb": "~2.0",
+                "ext-intl": "*",
+                "php": ">=5.5.0"
             },
             "require-dev": {
                 "phing/phing": "~2.10",
                 "phpunit/phpunit": "~4.5",
+                "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.2"
             },
             "type": "library",
@@ -358,7 +362,7 @@
                 "Apache-2.0"
             ],
             "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2015-06-01 14:20:21"
+            "time": "2015-11-13 08:49:40"
         },
         {
             "name": "cultuurnet/cdb",
@@ -436,16 +440,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.5.2",
+            "version": "v1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "21319f0d788877e85b6b8370a1bf54ad0868b8dc"
+                "reference": "46f8c4d61ba06ebfa97fb643e34986e39d0145ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/21319f0d788877e85b6b8370a1bf54ad0868b8dc",
-                "reference": "21319f0d788877e85b6b8370a1bf54ad0868b8dc",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/46f8c4d61ba06ebfa97fb643e34986e39d0145ba",
+                "reference": "46f8c4d61ba06ebfa97fb643e34986e39d0145ba",
                 "shasum": ""
             },
             "require": {
@@ -499,7 +503,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2015-06-16 07:59:14"
+            "time": "2015-11-13 09:17:54"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -554,18 +558,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "abc247dfd3b07cf6380199eb20b9af811e3b3d42"
+                "reference": "cbe06043ac936c50301bf98394ee0bba2673b947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/abc247dfd3b07cf6380199eb20b9af811e3b3d42",
-                "reference": "abc247dfd3b07cf6380199eb20b9af811e3b3d42",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/cbe06043ac936c50301bf98394ee0bba2673b947",
+                "reference": "cbe06043ac936c50301bf98394ee0bba2673b947",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/auth": "~1.2",
                 "cultuurnet/cdb": "~2",
-                "php": ">=5.4.0"
+                "php": ">=5.5.0"
             },
             "require-dev": {
                 "guzzle/plugin-mock": "~3.9.2",
@@ -596,7 +600,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2015-10-23 05:51:27"
+            "time": "2015-11-13 16:28:48"
         },
         {
             "name": "cultuurnet/hydra",
@@ -742,12 +746,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-uitid-provider.git",
-                "reference": "a6582ff97e9bb934000122dc8a845ae9a77e75af"
+                "reference": "83fa357bfac7793960d33fc47815455d6cfbe5b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/a6582ff97e9bb934000122dc8a845ae9a77e75af",
-                "reference": "a6582ff97e9bb934000122dc8a845ae9a77e75af",
+                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/83fa357bfac7793960d33fc47815455d6cfbe5b3",
+                "reference": "83fa357bfac7793960d33fc47815455d6cfbe5b3",
                 "shasum": ""
             },
             "require": {
@@ -778,7 +782,7 @@
                 "GPL-3.0"
             ],
             "description": "Silex UiTID authentication provider.",
-            "time": "2015-11-10 14:14:37"
+            "time": "2015-11-17 09:30:20"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -990,12 +994,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "87c08cf47e87447b047d8f735ce9b96761631064"
+                "reference": "2828fe0ef2d060d202b101c95a344503c62fccd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/87c08cf47e87447b047d8f735ce9b96761631064",
-                "reference": "87c08cf47e87447b047d8f735ce9b96761631064",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2828fe0ef2d060d202b101c95a344503c62fccd9",
+                "reference": "2828fe0ef2d060d202b101c95a344503c62fccd9",
                 "shasum": ""
             },
             "require": {
@@ -1061,7 +1065,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-10-23 07:26:00"
+            "time": "2015-11-16 19:17:49"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1114,12 +1118,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-silex-entryapi.git",
-                "reference": "ec0f5320c27978495c37dac2d94f8903e6f68e79"
+                "reference": "4274434338552c3e649afe99a3c03db20d485d32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/ec0f5320c27978495c37dac2d94f8903e6f68e79",
-                "reference": "ec0f5320c27978495c37dac2d94f8903e6f68e79",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/4274434338552c3e649afe99a3c03db20d485d32",
+                "reference": "4274434338552c3e649afe99a3c03db20d485d32",
                 "shasum": ""
             },
             "require": {
@@ -1151,7 +1155,7 @@
                 "Apache-2.0"
             ],
             "description": "EntryAPI for UDB3 Silex",
-            "time": "2015-10-26 18:38:53"
+            "time": "2015-11-16 19:31:32"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -1200,12 +1204,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "9e2bd10ce7ff4c1ff359d9a61e01c80099e1e017"
+                "reference": "42077d8ba663eda250071d617368c5f56c7baab9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/9e2bd10ce7ff4c1ff359d9a61e01c80099e1e017",
-                "reference": "9e2bd10ce7ff4c1ff359d9a61e01c80099e1e017",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/42077d8ba663eda250071d617368c5f56c7baab9",
+                "reference": "42077d8ba663eda250071d617368c5f56c7baab9",
                 "shasum": ""
             },
             "require": {
@@ -1246,7 +1250,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2015-11-05 13:11:26"
+            "time": "2015-11-16 19:42:55"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2685,12 +2689,12 @@
             "version": "0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/Geotools.git",
+                "url": "https://github.com/thephpleague/geotools.git",
                 "reference": "cd3cb252000d50a3db819218de1dbb96e6316449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/Geotools/zipball/cd3cb252000d50a3db819218de1dbb96e6316449",
+                "url": "https://api.github.com/repos/thephpleague/geotools/zipball/cd3cb252000d50a3db819218de1dbb96e6316449",
                 "reference": "cd3cb252000d50a3db819218de1dbb96e6316449",
                 "shasum": ""
             },
@@ -3637,12 +3641,12 @@
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/HttpFoundation.git",
+                "url": "https://github.com/symfony/http-foundation.git",
                 "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
                 "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
                 "shasum": ""
             },
@@ -4784,16 +4788,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.16",
+            "version": "4.8.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "625f8c345606ed0f3a141dfb88f4116f0e22978e"
+                "reference": "fa33d4ad96481b91df343d83e8c8aabed6b1dfd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/625f8c345606ed0f3a141dfb88f4116f0e22978e",
-                "reference": "625f8c345606ed0f3a141dfb88f4116f0e22978e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fa33d4ad96481b91df343d83e8c8aabed6b1dfd3",
+                "reference": "fa33d4ad96481b91df343d83e8c8aabed6b1dfd3",
                 "shasum": ""
             },
             "require": {
@@ -4852,7 +4856,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-23 06:48:33"
+            "time": "2015-11-11 11:32:49"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
