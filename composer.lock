@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f74e97aac077943b014c3ec8fb859179",
-    "content-hash": "d444f76f07b0a5e937ffbfdeef6acf6d",
+    "hash": "ebe31f697ace9d0f4906d90d67b9a664",
+    "content-hash": "23808647a23454cb3bce47f63fe6b3ce",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -739,6 +739,55 @@
             ],
             "description": "A Silex service provider for our OAuth component.",
             "time": "2015-10-12 13:19:57"
+        },
+        {
+            "name": "cultuurnet/silex-uitid-provider",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/silex-uitid-provider.git",
+                "reference": "6b651c386cdcfa1c1b02664a6ceabec0930a8357"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/6b651c386cdcfa1c1b02664a6ceabec0930a8357",
+                "reference": "6b651c386cdcfa1c1b02664a6ceabec0930a8357",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/auth": "~1.2",
+                "cultuurnet/culturefeed-php": "~1.5",
+                "cultuurnet/udb3-symfony": "~0.0@dev",
+                "php": ">=5.5.0",
+                "silex/silex": "~1.3",
+                "symfony/security": "~2.6"
+            },
+            "require-dev": {
+                "phing/phing": "~2.10",
+                "phpunit/phpunit": "~4.3",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UiTIDProvider\\": [
+                        "src",
+                        "app"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "Silex UiTID authentication provider.",
+            "time": "2015-11-17 10:03:27"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -5245,6 +5294,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/silex-uitid-provider": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,

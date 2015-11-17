@@ -56,4 +56,4 @@ $app->get(
 
         return JsonResponse::create()->setData($content);
     }
-)->before($checkAuthenticated);
+);
