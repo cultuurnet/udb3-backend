@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f8488990ec0c04184a2cbfaff7437f03",
-    "content-hash": "406d314ca5542735486a2a0d31da8045",
+    "hash": "ebe31f697ace9d0f4906d90d67b9a664",
+    "content-hash": "23808647a23454cb3bce47f63fe6b3ce",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -742,16 +742,16 @@
         },
         {
             "name": "cultuurnet/silex-uitid-provider",
-            "version": "dev-feature/III-347",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-uitid-provider.git",
-                "reference": "83fa357bfac7793960d33fc47815455d6cfbe5b3"
+                "reference": "6b651c386cdcfa1c1b02664a6ceabec0930a8357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/83fa357bfac7793960d33fc47815455d6cfbe5b3",
-                "reference": "83fa357bfac7793960d33fc47815455d6cfbe5b3",
+                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/6b651c386cdcfa1c1b02664a6ceabec0930a8357",
+                "reference": "6b651c386cdcfa1c1b02664a6ceabec0930a8357",
                 "shasum": ""
             },
             "require": {
@@ -769,6 +769,11 @@
                 "squizlabs/php_codesniffer": "~2.2"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "CultuurNet\\UiTIDProvider\\": [
@@ -782,7 +787,7 @@
                 "GPL-3.0"
             ],
             "description": "Silex UiTID authentication provider.",
-            "time": "2015-11-17 09:30:20"
+            "time": "2015-11-17 10:03:27"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
