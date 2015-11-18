@@ -24,7 +24,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             function ($app) {
                 $consumer = new Consumer(
                     $app['config']['uitid']['base_url'],
-                    $app['uitid_consumer_credentials']
+                    $app['culturefeed_consumer_credentials']
                 );
 
                 return new SavedSearchesServiceFactory(
@@ -34,16 +34,11 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
         );
 
         $app['saved_searches'] = $app->share(function (Application $app) {
-            /** @var \Symfony\Component\HttpFoundation\Session\SessionInterface $session */
-            $session = $app['session'];
-
-            /** @var \CultuurNet\Auth\User $minimalUserData */
-            $minimalUserData = $session->get('culturefeed_user');
-
             /* @var \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory $serviceFactory */
             $serviceFactory = $app['saved_searches_service_factory'];
+            $tokenCredentials = $app['culturefeed_token_credentials'];
 
-            return $serviceFactory->withTokenCredentials($minimalUserData->getTokenCredentials());
+            return $serviceFactory->withTokenCredentials($tokenCredentials);
         });
 
         $app['saved_searches_logger'] = $app->share(function(Application $app) {
