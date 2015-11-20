@@ -849,8 +849,7 @@ $app['place_jsonld_projector'] = $app->share(
         $projector = new \CultuurNet\UDB3\Place\PlaceLDProjector(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
-            $app['organizer_service'],
-            $app['event_bus']
+            $app['organizer_service']
         );
 
         return $projector;
@@ -859,8 +858,14 @@ $app['place_jsonld_projector'] = $app->share(
 
 $app['place_jsonld_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        $repository = new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
             $app['place_jsonld_cache']
+        );
+
+        return new \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator(
+            $repository,
+            $app['event_bus'],
+            new \CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory()
         );
     }
 );

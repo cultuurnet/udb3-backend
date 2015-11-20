@@ -84,6 +84,7 @@ class PlacesControllerProvider implements ControllerProviderInterface
         $controllers->post('place/{cdbid}/contactPoint', 'places_controller:updateContactPoint');
         $controllers->post('place/{cdbid}/facilities', 'places_controller:updateFacilities');
         $controllers->post('place/{cdbid}/organizer', 'places_controller:updateOrganizer');
+        $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'places_controller:deleteOrganizer');
 
         $controllers->get(
             'place/{cdbid}',
