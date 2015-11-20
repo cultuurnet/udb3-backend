@@ -89,6 +89,12 @@ $app['clock'] = $app->share(
     }
 );
 
+$app['uuid_generator'] = $app->share(
+    function () {
+        return new \Broadway\UuidGenerator\Rfc4122\Version4Generator();
+    }
+);
+
 $app['iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
@@ -975,6 +981,16 @@ $app['organizer_iri_generator'] = $app->share(
             function ($cdbid) use ($app) {
                 return $app['config']['url'] . '/organizer/' . $cdbid;
             }
+        );
+    }
+);
+
+$app['organizer_editing_service'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService(
+            $app['event_command_bus'],
+            $app['uuid_generator'],
+            $app['organizer_repository']
         );
     }
 );
