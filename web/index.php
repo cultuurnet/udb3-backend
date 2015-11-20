@@ -32,11 +32,12 @@ $app['security.firewalls'] = array(
   'public' => array(
     'pattern' => new MultiPathRequestMatcher(
         [
-          '^/api/1.0/event.jsonld',
-          '^/event/'.$app['uuid_pattern'],
-          '^/event/'.$app['uuid_pattern'].'/history',
-          '^/organizer/'.$app['uuid_pattern'],
-          '^/places$',
+              '^/api/1.0/event.jsonld',
+              '^/event/'.$app['uuid_pattern'],
+              '^/event/'.$app['uuid_pattern'].'/history',
+              '^/organizer/'.$app['uuid_pattern'],
+              '^/places$',
+              '^/api/1.0/organizer/suggest/.*'
         ]
     )
   ),

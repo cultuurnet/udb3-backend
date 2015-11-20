@@ -43,6 +43,7 @@ class EventsControllerProvider implements ControllerProviderInterface
         $controllers->post('event/{cdbid}/contactPoint', 'event_controller:updateContactPoint');
         $controllers->post('event/{cdbid}/facilities', 'event_controller:updateFacilities');
         $controllers->post('event/{cdbid}/organizer', 'event_controller:updateOrganizer');
+        $controllers->delete('event/{cdbid}/organizer/{organizerId}', 'event_controller:deleteOrganizer');
 
         $controllers->post(
             'event/{cdbid}/{lang}/description',
