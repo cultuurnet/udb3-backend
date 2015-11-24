@@ -24,7 +24,7 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 /**
  * Firewall configuration.
  */
-$app['uuid_pattern'] = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}';
+$app['uuid_pattern'] = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}';
 $app['security.firewalls'] = array(
   'authentication' => array(
     'pattern' => '^/culturefeed/oauth',
