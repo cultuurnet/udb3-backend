@@ -23,8 +23,13 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 /**
  * Firewall configuration.
+ *
+ * We can not expect the UUID of events, places and organizers
+ * to be correctly formatted, because there is no exhaustive documentation
+ * about how this is handled in UDB2. Therefore we take a rather liberal
+ * approach and allow all alphanumeric characters and a dash.
  */
-$app['uuid_pattern'] = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}';
+$app['id_pattern'] = '[\w\-]+';
 $app['security.firewalls'] = array(
   'authentication' => array(
     'pattern' => '^/culturefeed/oauth',
@@ -33,9 +38,9 @@ $app['security.firewalls'] = array(
     'pattern' => new MultiPathRequestMatcher(
         [
               '^/api/1.0/event.jsonld',
-              '^/event/'.$app['uuid_pattern'],
-              '^/event/'.$app['uuid_pattern'].'/history',
-              '^/organizer/'.$app['uuid_pattern'],
+              '^/event/'.$app['id_pattern'],
+              '^/event/'.$app['id_pattern'].'/history',
+              '^/organizer/'.$app['id_pattern'],
               '^/places$',
               '^/api/1.0/organizer/suggest/.*'
         ]
