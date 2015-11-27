@@ -39,6 +39,7 @@ class EventsControllerProvider implements ControllerProviderInterface
         $controllers->post('event/{cdbid}/nl/description', 'event_controller:updateDescription');
         $controllers->post('event/{cdbid}/typicalAgeRange', 'event_controller:updateTypicalAgeRange');
         $controllers->delete('api/1.0/event/{cdbid}/typicalAgeRange', 'event_controller:deleteTypicalAgeRange');
+        $controllers->post('event/{cdbid}/major-info', 'event_controller:updateMajorInfo');
         $controllers->post('event/{cdbid}/bookingInfo', 'event_controller:updateBookingInfo');
         $controllers->post('event/{cdbid}/contactPoint', 'event_controller:updateContactPoint');
         $controllers->post('event/{cdbid}/facilities', 'event_controller:updateFacilities');
