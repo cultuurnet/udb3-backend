@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex;
 
@@ -10,6 +7,7 @@ use CultuurNet\UDB3\Silex\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Variations\Command\ValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
@@ -30,6 +28,12 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(function (InvalidNativeArgumentException $e) use ($provider) {
            $problem = new ApiProblem($e->getMessage());
+
+            return $provider->createBadRequestResponse($problem);
+        });
+
+        $app->error(function (\Exception $e) use ($provider) {
+            $problem = new ApiProblem($e->getMessage());
 
             return $provider->createBadRequestResponse($problem);
         });
