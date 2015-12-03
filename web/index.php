@@ -238,10 +238,7 @@ $app
             $event = $service->getEvent($cdbid);
 
             $response = JsonLdResponse::create()
-                ->setContent($event)
-                ->setPublic()
-                ->setClientTtl(60 * 30)
-                ->setTtl(60 * 5);
+                ->setContent($event);
 
             $response->headers->set('Vary', 'Origin');
 
@@ -261,10 +258,7 @@ $app
             $document = $repository->get($cdbid);
 
             $response = JsonResponse::create()
-                ->setContent($document->getRawBody())
-                ->setPublic()
-                ->setClientTtl(60 * 5)
-                ->setTtl(60 * 1);
+                ->setContent($document->getRawBody());
 
             $response->headers->set('Vary', 'Origin');
 
