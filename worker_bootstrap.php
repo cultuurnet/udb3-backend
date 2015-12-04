@@ -27,6 +27,11 @@ Resque_Event::listen(
 
             if ($error["type"] == E_ERROR) {
                 $app['logger.fatal_job_error']->error('job_failed');
+
+                $app['logger.fatal_job_error']->debug(
+                    'error caused job failure',
+                    ['error' => $error]
+                );
             }
         };
 
