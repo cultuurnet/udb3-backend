@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "ebe31f697ace9d0f4906d90d67b9a664",
-    "content-hash": "23808647a23454cb3bce47f63fe6b3ce",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -999,12 +998,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "1580742839f3066f6e83f1b09aae1dbcc894c8dc"
+                "reference": "9ea25ea5e7e132db1f15876066ad4074f1897dfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1580742839f3066f6e83f1b09aae1dbcc894c8dc",
-                "reference": "1580742839f3066f6e83f1b09aae1dbcc894c8dc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9ea25ea5e7e132db1f15876066ad4074f1897dfc",
+                "reference": "9ea25ea5e7e132db1f15876066ad4074f1897dfc",
                 "shasum": ""
             },
             "require": {
@@ -1070,7 +1069,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2015-12-01 15:08:50"
+            "time": "2015-12-04 10:27:44"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2736,12 +2735,12 @@
             "version": "0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/geotools.git",
+                "url": "https://github.com/thephpleague/Geotools.git",
                 "reference": "cd3cb252000d50a3db819218de1dbb96e6316449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/geotools/zipball/cd3cb252000d50a3db819218de1dbb96e6316449",
+                "url": "https://api.github.com/repos/thephpleague/Geotools/zipball/cd3cb252000d50a3db819218de1dbb96e6316449",
                 "reference": "cd3cb252000d50a3db819218de1dbb96e6316449",
                 "shasum": ""
             },
