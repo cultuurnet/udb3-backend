@@ -24,7 +24,8 @@ class EventsControllerProvider implements ControllerProviderInterface
                     $app['used_labels_memory'],
                     $app['current_user'],
                     null,
-                    $app['iri_generator']
+                    $app['iri_generator'],
+                    $app['event.security']
                 );
             }
         );
@@ -33,6 +34,8 @@ class EventsControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('api/1.0/event', "event_controller:createEvent");
+
+        $controllers->get('event/{cdbid}/permission', 'event_controller:hasPermission');
 
         $controllers->post('api/1.0/event/{cdbid}/image', 'event_controller:addImage');
 
