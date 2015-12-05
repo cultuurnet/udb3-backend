@@ -1133,6 +1133,8 @@ $app['event_export'] = $app->share(
     }
 );
 
+$app['amqp-execution-delay'] = 4;
+
 $app['amqp-connection'] = $app->share(
     function (Application $app) {
         $amqpConfig = $host = $app['config']['amqp'];
@@ -1164,7 +1166,7 @@ $app['amqp-connection'] = $app->share(
         // race condition with the UDB3 worker. Modifications initiated by
         // commands in the UDB3 queue worker need to finish before their
         // counterpart UDB2 update is processed.
-        $delay = 4;
+        $delay = $app['amqp-execution-delay'];
 
         $eventBusForwardingConsumer = new \CultuurNet\UDB3\UDB2\AMQP\EventBusForwardingConsumer(
             $connection,
