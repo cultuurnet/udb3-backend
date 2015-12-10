@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "ebe31f697ace9d0f4906d90d67b9a664",
+    "content-hash": "23808647a23454cb3bce47f63fe6b3ce",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1122,12 +1123,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-silex-entryapi.git",
-                "reference": "d42850c04d24f2e7806a35a86db04f20c0b23ffc"
+                "reference": "96979ad75f95cfbcac302798c3f56726101e6917"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/d42850c04d24f2e7806a35a86db04f20c0b23ffc",
-                "reference": "d42850c04d24f2e7806a35a86db04f20c0b23ffc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/96979ad75f95cfbcac302798c3f56726101e6917",
+                "reference": "96979ad75f95cfbcac302798c3f56726101e6917",
                 "shasum": ""
             },
             "require": {
@@ -1159,7 +1160,7 @@
                 "Apache-2.0"
             ],
             "description": "EntryAPI for UDB3 Silex",
-            "time": "2015-11-20 07:01:03"
+            "time": "2015-12-05 08:13:35"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -1208,12 +1209,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "5b9f7e083b2f6171893bdbee241b135c7d8872f0"
+                "reference": "2dafdcff4fffb72740d446ce9b44ab02e5dd9053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/5b9f7e083b2f6171893bdbee241b135c7d8872f0",
-                "reference": "5b9f7e083b2f6171893bdbee241b135c7d8872f0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/2dafdcff4fffb72740d446ce9b44ab02e5dd9053",
+                "reference": "2dafdcff4fffb72740d446ce9b44ab02e5dd9053",
                 "shasum": ""
             },
             "require": {
@@ -1254,7 +1255,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2015-11-17 14:23:23"
+            "time": "2015-12-05 11:09:26"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -1626,16 +1627,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "0009b8f0d4a917aabc971fb089eba80e872f83f9"
+                "reference": "311001fd9865a4d0d59efff4eac6d7dcb3f5270c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/0009b8f0d4a917aabc971fb089eba80e872f83f9",
-                "reference": "0009b8f0d4a917aabc971fb089eba80e872f83f9",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/311001fd9865a4d0d59efff4eac6d7dcb3f5270c",
+                "reference": "311001fd9865a4d0d59efff4eac6d7dcb3f5270c",
                 "shasum": ""
             },
             "require": {
@@ -1652,7 +1653,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6.x-dev"
+                    "dev-master": "2.5.x-dev"
                 }
             },
             "autoload": {
@@ -1695,7 +1696,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-08-31 13:00:22"
+            "time": "2015-12-04 12:49:42"
         },
         {
             "name": "doctrine/dbal",
@@ -2735,12 +2736,12 @@
             "version": "0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/Geotools.git",
+                "url": "https://github.com/thephpleague/geotools.git",
                 "reference": "cd3cb252000d50a3db819218de1dbb96e6316449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/Geotools/zipball/cd3cb252000d50a3db819218de1dbb96e6316449",
+                "url": "https://api.github.com/repos/thephpleague/geotools/zipball/cd3cb252000d50a3db819218de1dbb96e6316449",
                 "reference": "cd3cb252000d50a3db819218de1dbb96e6316449",
                 "shasum": ""
             },
@@ -5164,28 +5165,28 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "1.3.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "863df9687835c62aa423a22412d26fa2ebde3fd3"
+                "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/863df9687835c62aa423a22412d26fa2ebde3fd3",
-                "reference": "863df9687835c62aa423a22412d26fa2ebde3fd3",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/13edfd8706462032c2f52b4b862974dd46b71c9e",
+                "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.2"
+                "phpunit/phpunit": "~4.8"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -5208,11 +5209,11 @@
                 }
             ],
             "description": "Diff implementation",
-            "homepage": "http://www.github.com/sebastianbergmann/diff",
+            "homepage": "https://github.com/sebastianbergmann/diff",
             "keywords": [
                 "diff"
             ],
-            "time": "2015-02-22 15:13:53"
+            "time": "2015-12-08 07:14:41"
         },
         {
             "name": "sebastian/environment",
@@ -5383,16 +5384,16 @@
         },
         {
             "name": "sebastian/recursion-context",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/recursion-context.git",
-                "reference": "994d4a811bafe801fb06dccbee797863ba2792ba"
+                "reference": "913401df809e99e4f47b27cdd781f4a258d58791"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/994d4a811bafe801fb06dccbee797863ba2792ba",
-                "reference": "994d4a811bafe801fb06dccbee797863ba2792ba",
+                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/913401df809e99e4f47b27cdd781f4a258d58791",
+                "reference": "913401df809e99e4f47b27cdd781f4a258d58791",
                 "shasum": ""
             },
             "require": {
@@ -5432,7 +5433,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2015-06-21 08:04:50"
+            "time": "2015-11-11 19:50:13"
         },
         {
             "name": "sebastian/version",
