@@ -5,11 +5,12 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Doctrine\DBAL\Driver\Connection;
 use Knp\Command\Command;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class AMQPListenCommand extends Command
@@ -58,10 +59,22 @@ class AMQPListenCommand extends Command
         $connection = $this->getAMQPConnection();
         $output->writeln('Connected. Listening for incoming messages...');
 
+        $db = $this->getDBALConnection();
+
         $channel = $connection->channel(1);
         while (count($channel->callbacks) > 0) {
+
+            // Ensure the database connection is kept alive.
+            $db->query('SELECT 1')->execute();
+
             pcntl_signal_dispatch();
-            $channel->wait();
+
+            try {
+                $channel->wait(null, true, 4);
+            }
+            catch (AMQPTimeoutException $e) {
+                // Ignore this one.
+            }
         }
     }
 
@@ -73,6 +86,16 @@ class AMQPListenCommand extends Command
         $app = $this->getSilexApplication();
 
         return $app['amqp-connection'];
+    }
+
+    /**
+     * @return Connection
+     */
+    protected function getDBALConnection()
+    {
+        $app = $this->getSilexApplication();
+
+        return $app['dbal_connection'];
     }
 }
 
