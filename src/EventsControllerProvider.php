@@ -24,7 +24,8 @@ class EventsControllerProvider implements ControllerProviderInterface
                     $app['used_labels_memory'],
                     $app['current_user'],
                     null,
-                    $app['iri_generator']
+                    $app['iri_generator'],
+                    $app['event.security']
                 );
             }
         );
@@ -34,11 +35,14 @@ class EventsControllerProvider implements ControllerProviderInterface
 
         $controllers->post('api/1.0/event', "event_controller:createEvent");
 
+        $controllers->get('event/{cdbid}/permission', 'event_controller:hasPermission');
+
         $controllers->post('api/1.0/event/{cdbid}/image', 'event_controller:addImage');
 
         $controllers->post('event/{cdbid}/nl/description', 'event_controller:updateDescription');
         $controllers->post('event/{cdbid}/typicalAgeRange', 'event_controller:updateTypicalAgeRange');
         $controllers->delete('api/1.0/event/{cdbid}/typicalAgeRange', 'event_controller:deleteTypicalAgeRange');
+        $controllers->post('event/{cdbid}/major-info', 'event_controller:updateMajorInfo');
         $controllers->post('event/{cdbid}/bookingInfo', 'event_controller:updateBookingInfo');
         $controllers->post('event/{cdbid}/contactPoint', 'event_controller:updateContactPoint');
         $controllers->post('event/{cdbid}/facilities', 'event_controller:updateFacilities');

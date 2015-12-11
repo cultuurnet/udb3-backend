@@ -25,7 +25,11 @@ Resque_Event::listen(
         $errorLoggingShutdownHandler = function () use ($app) {
             $error = error_get_last();
 
-            if ($error["type"] == E_ERROR) {
+            $fatalErrors = E_ERROR | E_RECOVERABLE_ERROR;
+
+            $wasFatal = $fatalErrors & $error['type'];
+
+            if ($wasFatal) {
                 $app['logger.fatal_job_error']->error('job_failed');
 
                 $app['logger.fatal_job_error']->debug(
