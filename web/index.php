@@ -515,6 +515,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\EventsControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\ImageAsset\ControllerProvider());
 
 /**
  * API callbacks for authentication.

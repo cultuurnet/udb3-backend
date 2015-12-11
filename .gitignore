@@ -3,4 +3,6 @@ config.yml
 /cache/
 /log/
 /web/downloads/
+/web/uploads/
+/web/image-assets/
 /web/swagger/
