@@ -796,7 +796,7 @@ $app['event_command_bus_out'] = $app->share(
             )
         );
 
-        $commandBus->subscribe($app['image_uploader']);
+        $commandBus->subscribe($app['media_manager']);
 
         return $commandBus;
     }
@@ -1244,7 +1244,7 @@ $app->register(new OAuthServiceProvider(), array(
     'oauth.fetcher.consumer' => $app['config']['oauth']['consumer'],
 ));
 
-$app->register(new \CultuurNet\UDB3\Silex\ImageAsset\ServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider());
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?

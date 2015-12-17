@@ -1,34 +1,35 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\UDB3\Silex\ImageAsset;
+namespace CultuurNet\UDB3\Silex\Media;
 
-use CultuurNet\UDB3\Symfony\ImageAssetController;
+use CultuurNet\UDB3\Symfony\MediaController;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class ControllerProvider implements ControllerProviderInterface
+class MediaControllerProvider implements ControllerProviderInterface
 {
     /**
      * @inheritdoc
      */
     public function connect(Application $app)
     {
-        $app['image_asset_controller'] = $app->share(
+        $app['media_controller'] = $app->share(
             function (Application $app) {
-                return new ImageAssetController($app['image_uploader']);
+                return new MediaController(
+                    $app['image_uploader'],
+                    $app['media_manager']
+                );
             }
         );
 
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/images', 'image_asset_controller:upload');
+        $controllers->post('/images', 'media_controller:upload');
+        $controllers->get('/images/{id}', 'media_controller:get');
 
         return $controllers;
     }

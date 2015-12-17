@@ -4,5 +4,5 @@ config.yml
 /log/
 /web/downloads/
 /web/uploads/
-/web/image-assets/
+/web/media/
 /web/swagger/
