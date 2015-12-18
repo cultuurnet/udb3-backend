@@ -3,11 +3,9 @@
 namespace CultuurNet\UDB3\Silex\Media;
 
 use CultuurNet\UDB3\Symfony\MediaController;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class MediaControllerProvider implements ControllerProviderInterface
 {

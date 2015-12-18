@@ -5,11 +5,10 @@ namespace CultuurNet\UDB3\Silex\Media;
 use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
-use CultuurNet\UDB3\Media\ImageUploadHandler;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Silex\Application;
@@ -22,7 +21,7 @@ class MediaServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $adapter = new Local(__DIR__.'/../..');
+        $adapter = new Local(__DIR__ . '/../..');
         $app['local_file_system'] = new Filesystem($adapter);
         $app['upload_directory'] = '/web/uploads';
         $app['media_directory'] = '/web/media';
