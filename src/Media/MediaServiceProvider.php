@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
+use CultuurNet\UDB3\Media\SimplePathGenerator;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Silex\Application;
@@ -21,7 +22,7 @@ class MediaServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $adapter = new Local(__DIR__ . '/../..');
+        $adapter = new Local(__DIR__.'/../..');
         $app['local_file_system'] = new Filesystem($adapter);
         $app['upload_directory'] = '/web/uploads';
         $app['media_directory'] = '/web/media';
@@ -60,19 +61,21 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['media_manager'] = $app->share(function (Application $app) {
-            return new MediaManager(
-                new CallableIriGenerator(
-                    function ($fileName) use ($app) {
-                        return $app['config']['url'] . '/media/' . $fileName;
-                    }
-                ),
-                $app['media_object_repository'],
-                $app['local_file_system'],
-                $app['upload_directory'],
-                $app['media_directory']
-            );
-        });
+        $app['media_manager'] = $app->share(
+            function (Application $app) {
+                return new MediaManager(
+                    new CallableIriGenerator(
+                        function ($fileName) use ($app) {
+                            return $app['config']['url'] . '/media/' . $fileName;
+                        }
+                    ),
+                    new SimplePathGenerator(),
+                    $app['media_object_repository'],
+                    $app['local_file_system'],
+                    $app['media_directory']
+                );
+            }
+        );
     }
 
     /**
