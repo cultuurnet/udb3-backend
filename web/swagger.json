@@ -1114,6 +1114,44 @@
                     "Variations"
                 ]
             }
+        },
+        "/images": {
+            "post": {
+                "summary": "Create a new media object for an image.",
+                "description": "Authentication is required",
+                "operationId": "createImage",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The image and some additional meta data.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/createImageCommand"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    },
+                    "400": {
+                        "description": "There is an error in the request.",
+                        "schema": {
+                            "$ref": "#/definitions/APIProblem"
+                        }
+                    }
+                },
+                "tags": [
+                    "Media"
+                ]
+            }
         }
     },
     "tags": [
@@ -1160,6 +1198,10 @@
         {
             "name": "Variations",
             "description": "Operations related to variations."
+        },
+        {
+            "name": "Media",
+            "description": "Operations related to media."
         }
     ],
     "definitions": {
@@ -2407,6 +2449,29 @@
                 "location",
                 "calendarType",
                 "startDate"
+            ]
+        },
+        "createImageCommand": {
+            "properties": {
+                "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The image file data."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "A description of the image."
+                },
+                "copyrightHolder": {
+                    "type": "string",
+                    "example": "Dirk Dirkington",
+                    "description": "The name of the copyright holder."
+                }
+            },
+            "required": [
+                "file",
+                "description",
+                "copyrightHolder"
             ]
         }
     }

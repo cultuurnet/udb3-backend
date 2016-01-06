@@ -5,11 +5,11 @@ namespace CultuurNet\UDB3\Silex\Media;
 use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
-use CultuurNet\UDB3\Media\ImageUploadHandler;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Media\SimplePathGenerator;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Silex\Application;
@@ -61,19 +61,21 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['media_manager'] = $app->share(function (Application $app) {
-            return new MediaManager(
-                new CallableIriGenerator(
-                    function ($fileName) use ($app) {
-                        return $app['config']['url'] . '/media/' . $fileName;
-                    }
-                ),
-                $app['media_object_repository'],
-                $app['local_file_system'],
-                $app['upload_directory'],
-                $app['media_directory']
-            );
-        });
+        $app['media_manager'] = $app->share(
+            function (Application $app) {
+                return new MediaManager(
+                    new CallableIriGenerator(
+                        function ($fileName) use ($app) {
+                            return $app['config']['url'] . '/media/' . $fileName;
+                        }
+                    ),
+                    new SimplePathGenerator(),
+                    $app['media_object_repository'],
+                    $app['local_file_system'],
+                    $app['media_directory']
+                );
+            }
+        );
     }
 
     /**
