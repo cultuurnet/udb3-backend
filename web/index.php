@@ -38,7 +38,7 @@ $app['security.firewalls'] = array(
     'pattern' => new MultiPathRequestMatcher(
         [
               '^/api/1.0/event.jsonld',
-              '^/event/'.$app['id_pattern'].'$',
+              '^/(event|place)/'.$app['id_pattern'].'$',
               '^/event/'.$app['id_pattern'].'/history',
               '^/organizer/'.$app['id_pattern'],
               '^/places$',
