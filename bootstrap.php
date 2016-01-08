@@ -162,7 +162,8 @@ $app['search_service'] = $app->share(
     function ($app) {
         return new PullParsingSearchService(
             $app['filtered_search_api_2'],
-            $app['iri_generator']
+            $app['iri_generator'],
+            $app['place_iri_generator']
         );
     }
 );
