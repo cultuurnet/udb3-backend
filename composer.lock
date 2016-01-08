@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ebe31f697ace9d0f4906d90d67b9a664",
-    "content-hash": "23808647a23454cb3bce47f63fe6b3ce",
+    "hash": "a451161cfd8a171811685f9945c37540",
+    "content-hash": "511360d34f72ebc5aafdfc46f3476e7e",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -490,16 +490,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.6.0",
+            "version": "v1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "d28345855cd4af172d5398b6f858585a3b8a0847"
+                "reference": "aa0656aa939fdff13ec3770d0cc8229c32d0278a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/d28345855cd4af172d5398b6f858585a3b8a0847",
-                "reference": "d28345855cd4af172d5398b6f858585a3b8a0847",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/aa0656aa939fdff13ec3770d0cc8229c32d0278a",
+                "reference": "aa0656aa939fdff13ec3770d0cc8229c32d0278a",
                 "shasum": ""
             },
             "require": {
@@ -553,7 +553,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2015-12-17 12:56:38"
+            "time": "2016-01-08 12:08:20"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1045,16 +1045,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-636",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3735b4bc9b938ee9d9df293bc0eae461bd83c1c3"
+                "reference": "c86f322033243074d474cba619900b6098130681"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3735b4bc9b938ee9d9df293bc0eae461bd83c1c3",
-                "reference": "3735b4bc9b938ee9d9df293bc0eae461bd83c1c3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c86f322033243074d474cba619900b6098130681",
+                "reference": "c86f322033243074d474cba619900b6098130681",
                 "shasum": ""
             },
             "require": {
@@ -1121,7 +1121,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-01-06 13:21:33"
+            "time": "2016-01-08 13:22:46"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1943,16 +1943,16 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "v1.2.1",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "bffd726e2193c04f88a23154deb1c618a966996d"
+                "reference": "6b70c2c4484c02878743929bb3cd3fdbf41193a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/bffd726e2193c04f88a23154deb1c618a966996d",
-                "reference": "bffd726e2193c04f88a23154deb1c618a966996d",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/6b70c2c4484c02878743929bb3cd3fdbf41193a6",
+                "reference": "6b70c2c4484c02878743929bb3cd3fdbf41193a6",
                 "shasum": ""
             },
             "require": {
@@ -2007,7 +2007,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2015-12-23 17:08:58"
+            "time": "2016-01-07 21:28:50"
         },
         {
             "name": "gridonic/princexml-php",
@@ -3439,16 +3439,16 @@
         },
         {
             "name": "silex/silex",
-            "version": "v1.3.4",
+            "version": "v1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "d6de62716fcda76084f3015165125f30b1563517"
+                "reference": "374c7e04040a6f781c90f7d746726a5daa78e783"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/d6de62716fcda76084f3015165125f30b1563517",
-                "reference": "d6de62716fcda76084f3015165125f30b1563517",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/374c7e04040a6f781c90f7d746726a5daa78e783",
+                "reference": "374c7e04040a6f781c90f7d746726a5daa78e783",
                 "shasum": ""
             },
             "require": {
@@ -3512,7 +3512,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2015-09-15 06:53:42"
+            "time": "2016-01-06 14:59:35"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5526,10 +5526,18 @@
             "time": "2015-06-21 13:59:46"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-636",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
