@@ -559,14 +559,14 @@ $app['real_event_repository'] = $app->share(
   }
 );
 
-$app['udb2_event_cdbxml'] = $app->share(
+$app['udb2_event_cdbxml_provicer'] = $app->share(
     function (Application $app) {
         $uitidConfig = $app['config']['uitid'];
         $baseUrl = $uitidConfig['base_url'] . $uitidConfig['apis']['entry'];
 
         $userId = new String($uitidConfig['impersonation_user_id']);
 
-        $cdbXmlFromEntryAPI = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
+        return new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
             $baseUrl,
             $app['uitid_consumer_credentials'],
             $userId,
@@ -574,12 +574,27 @@ $app['udb2_event_cdbxml'] = $app->share(
             // setting when instantiating the ImprovedEntryApiFactory.
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
+    }
+);
 
+$app['udb2_event_cdbxml'] = $app->share(
+    function (Application $app) {
         $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
 
         return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
-            $cdbXmlFromEntryAPI,
+            $app['udb2_event_cdbxml_provicer'],
             new \CultuurNet\UDB3\Cdb\Event\Not($labeledAsUDB3Place)
+        );
+    }
+);
+
+$app['udb2_place_event_cdbxml'] = $app->share(
+    function (Application $app) {
+        $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
+
+        return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
+            $app['udb2_event_cdbxml_provicer'],
+            $labeledAsUDB3Place
         );
     }
 );
@@ -914,8 +929,9 @@ $app['udb2_actor_cdbxml_provider'] = $app->share(
 $app['udb2_place_importer'] = $app->share(
     function (Application $app) {
         $importer = new \CultuurNet\UDB3\UDB2\Place\PlaceCdbXmlImporter(
+            $app['real_place_repository'],
             $app['udb2_actor_cdbxml_provider'],
-            $app['real_place_repository']
+            $app['udb2_place_event_cdbxml']
         );
 
         $logger = new \Monolog\Logger('udb2-place-importer');
