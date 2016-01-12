@@ -148,6 +148,16 @@ $app['search_api_2'] = $app->share(
     }
 );
 
+$app['filtered_search_api_2'] = $app->share(
+    function ($app) {
+        $filteredSearchService = new FilteredSearchService(
+            $app['search_api_2']
+        );
+        $filteredSearchService->filter(new \CultuurNet\UDB3\SearchAPI2\Filters\NotUDB3Place());
+        return $filteredSearchService;
+    }
+);
+
 $app['search_service'] = $app->share(
     function ($app) {
         return new PullParsingSearchService(
