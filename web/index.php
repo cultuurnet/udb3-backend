@@ -527,6 +527,11 @@ $app->mount('culturefeed/oauth', new \CultuurNet\UiTIDProvider\Auth\AuthControll
 $app->mount('uitid', new \CultuurNet\UiTIDProvider\User\UserControllerProvider());
 
 /**
+ * Basic REST API for feature toggles.
+ */
+$app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
+
+/**
  * Dummy endpoint implementations. Make sure you keep this as the last one,
  * already implemented routes will not be overridden.
  */

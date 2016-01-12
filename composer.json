@@ -32,7 +32,8 @@
     "knplabs/console-service-provider": "~1.0",
     "doctrine/migrations": "~1.0@dev",
     "crell/api-problem": "~1.7",
-    "cultuurnet/silex-service-provider-oauth": "~0.1"
+    "cultuurnet/silex-service-provider-oauth": "~0.1",
+    "2dotstwice/silex-feature-toggles-provider": "~0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.3"
