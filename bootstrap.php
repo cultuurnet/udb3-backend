@@ -153,16 +153,27 @@ $app['filtered_search_api_2'] = $app->share(
         $filteredSearchService = new FilteredSearchService(
             $app['search_api_2']
         );
-        $filteredSearchService->filter(new UDB3PlaceFilter());
+        $filteredSearchService->filter(new \CultuurNet\UDB3\SearchAPI2\Filters\NotUDB3Place());
         return $filteredSearchService;
     }
 );
 
 $app['search_service'] = $app->share(
     function ($app) {
+        /** @var \Qandidate\Toggle\ToggleManager $toggles */
+        $toggles = $app['toggles'];
+
+        $includePlaces = $toggles->active(
+            'search-include-places',
+            $app['toggles.context']
+        );
+
+        $searchAPI = $includePlaces ? 'search_api_2' : 'filtered_search_api_2';
+
         return new PullParsingSearchService(
-            $app['filtered_search_api_2'],
-            $app['iri_generator']
+            $app[$searchAPI],
+            $app['iri_generator'],
+            $app['place_iri_generator']
         );
     }
 );
@@ -1265,5 +1276,11 @@ $app->extend(
 $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
     return $app['config']['entryapi']['link_base_url'];
 });
+
+$app->register(
+    new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider(
+        $app['config']['toggles']
+    )
+);
 
 return $app;
