@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a451161cfd8a171811685f9945c37540",
-    "content-hash": "511360d34f72ebc5aafdfc46f3476e7e",
+    "hash": "8dd42f5bf9427c00043b90b3ed8c91f1",
+    "content-hash": "9a94859fb91330d6debb67fea604622f",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -56,6 +56,48 @@
             ],
             "description": " Library for creating collection classes with strict typing.",
             "time": "2015-12-16 09:28:40"
+        },
+        {
+            "name": "2dotstwice/silex-feature-toggles-provider",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2dotstwice/silex-feature-toggles-provider.git",
+                "reference": "7813e6bb066dd01a8fa3b10837abf4c7c47b0ad9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2dotstwice/silex-feature-toggles-provider/zipball/7813e6bb066dd01a8fa3b10837abf4c7c47b0ad9",
+                "reference": "7813e6bb066dd01a8fa3b10837abf4c7c47b0ad9",
+                "shasum": ""
+            },
+            "require": {
+                "qandidate/toggle": "0.4.0",
+                "silex/silex": "~1.2"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TwoDotsTwice\\SilexFeatureToggles\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Feature toggles for Silex",
+            "time": "2016-01-12 11:58:27"
         },
         {
             "name": "beberlei/assert",
@@ -1049,12 +1091,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c86f322033243074d474cba619900b6098130681"
+                "reference": "ea128633c45a79984ef0cccbc2b4e0685fdc33d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c86f322033243074d474cba619900b6098130681",
-                "reference": "c86f322033243074d474cba619900b6098130681",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ea128633c45a79984ef0cccbc2b4e0685fdc33d1",
+                "reference": "ea128633c45a79984ef0cccbc2b4e0685fdc33d1",
                 "shasum": ""
             },
             "require": {
@@ -1121,7 +1163,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-01-08 13:22:46"
+            "time": "2016-01-08 16:09:43"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3291,6 +3333,63 @@
             "time": "2012-12-21 11:40:51"
         },
         {
+            "name": "qandidate/toggle",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qandidate-labs/qandidate-toggle.git",
+                "reference": "c38b16fa252470e331475964400e466555382df1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qandidate-labs/qandidate-toggle/zipball/c38b16fa252470e331475964400e466555382df1",
+                "reference": "c38b16fa252470e331475964400e466555382df1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "predis/predis": "~0.8",
+                "symfony/expression-language": "~2.4"
+            },
+            "suggest": {
+                "predis/predis": "To use the PredisCollection to persist toggles in redis",
+                "symfony/expression-language": "To use the ExpressionCondition to add conditions as a symfony language expression"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Qandidate\\Toggle\\": "lib/Qandidate/Toggle/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
+                },
+                {
+                    "name": "Qandidate.com",
+                    "homepage": "http://labs.qandidate.com/"
+                }
+            ],
+            "description": "Feature toggling for your PHP application.",
+            "keywords": [
+                "bits",
+                "feature",
+                "flip",
+                "flipping",
+                "switch",
+                "toggle",
+                "trigger"
+            ],
+            "time": "2015-12-28 15:54:08"
+        },
+        {
             "name": "rase/socket.io-emitter",
             "version": "0.6.1",
             "source": {
@@ -4264,16 +4363,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.23.1",
+            "version": "v1.23.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6"
+                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
-                "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ae53fc2c312fdee63773b75cb570304f85388b08",
+                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08",
                 "shasum": ""
             },
             "require": {
@@ -4321,7 +4420,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-11-05 12:49:06"
+            "time": "2016-01-11 14:02:19"
         },
         {
             "name": "videlalvaro/php-amqplib",
