@@ -861,7 +861,7 @@ $app['place_iri_generator'] = $app->share(
 
 $app['place_jsonld_projector'] = $app->share(
     function ($app) {
-        $projector = new \CultuurNet\UDB3\Place\PlaceLDProjector(
+        $projector = new \CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
             $app['organizer_service']
