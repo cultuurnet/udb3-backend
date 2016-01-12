@@ -160,8 +160,18 @@ $app['filtered_search_api_2'] = $app->share(
 
 $app['search_service'] = $app->share(
     function ($app) {
+        /** @var \Qandidate\Toggle\ToggleManager $toggles */
+        $toggles = $app['toggles'];
+
+        $includePlaces = $toggles->active(
+            'search-include-places',
+            $app['toggles.context']
+        );
+
+        $searchAPI = $includePlaces ? 'search_api_2' : 'filtered_search_api_2';
+
         return new PullParsingSearchService(
-            $app['search_api_2'],
+            $app[$searchAPI],
             $app['iri_generator'],
             $app['place_iri_generator']
         );
