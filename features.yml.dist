@@ -1,4 +1,5 @@
 toggles:
-  - name: search-include-places
+  search-include-places:
+    name: search-include-places
     conditions: {}
     status: inactive
