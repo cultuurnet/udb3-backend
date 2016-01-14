@@ -1295,7 +1295,7 @@ $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
 
 $app->register(
     new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider(
-        $app['config']['toggles']
+        isset($app['config']['toggles']) ? $app['config']['toggles'] : []
     )
 );
 
