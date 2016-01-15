@@ -38,7 +38,7 @@ $app['security.firewalls'] = array(
     'pattern' => new MultiPathRequestMatcher(
         [
               '^/api/1.0/event.jsonld',
-              '^/event/'.$app['id_pattern'].'$',
+              '^/(event|place)/'.$app['id_pattern'].'$',
               '^/event/'.$app['id_pattern'].'/history',
               '^/organizer/'.$app['id_pattern'],
               '^/images/'.$app['id_pattern'],
@@ -527,6 +527,11 @@ $app->mount('culturefeed/oauth', new \CultuurNet\UiTIDProvider\Auth\AuthControll
  * API callbacks for UiTID user data and methods.
  */
 $app->mount('uitid', new \CultuurNet\UiTIDProvider\User\UserControllerProvider());
+
+/**
+ * Basic REST API for feature toggles.
+ */
+$app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
 
 /**
  * Dummy endpoint implementations. Make sure you keep this as the last one,

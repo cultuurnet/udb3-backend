@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
+use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
@@ -22,17 +23,12 @@ class MediaServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $adapter = new Local(__DIR__.'/../..');
-        $app['local_file_system'] = new Filesystem($adapter);
-        $app['upload_directory'] = '/web/uploads';
-        $app['media_directory'] = '/web/media';
-
         $app['image_uploader'] = $app->share(function (Application $app) {
             return new ImageUploaderService(
                 new Version4Generator(),
                 $app['event_command_bus'],
                 $app['local_file_system'],
-                $app['upload_directory']
+                $app['media.upload_directory']
             );
         });
 
@@ -61,21 +57,33 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['media_manager'] = $app->share(
+        $app['media_object_iri_generator'] = $app->share(
             function (Application $app) {
-                return new MediaManager(
-                    new CallableIriGenerator(
-                        function ($fileName) use ($app) {
-                            return $app['config']['url'] . '/media/' . $fileName;
-                        }
-                    ),
-                    new SimplePathGenerator(),
-                    $app['media_object_repository'],
-                    $app['local_file_system'],
-                    $app['media_directory']
+                return new CallableIriGenerator(
+                    function ($filePath) use ($app) {
+                        return $app['config']['url'] . '/media/' . $filePath;
+                    }
                 );
             }
         );
+
+        $app['media_object_serializer'] = $app->share(
+            function (Application $app) {
+                return new MediaObjectSerializer(
+                    $app['media_object_iri_generator']
+                );
+            }
+        );
+
+        $app['media_manager'] = $app->share(function (Application $app) {
+            return new MediaManager(
+                $app['media_object_iri_generator'],
+                new SimplePathGenerator(),
+                $app['media_object_repository'],
+                $app['local_file_system'],
+                $app['media.media_directory']
+            );
+        });
     }
 
     /**

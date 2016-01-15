@@ -21,6 +21,9 @@ use ValueObjects\String\String;
 
 $app = new Application();
 
+$adapter = new \League\Flysystem\Adapter\Local(__DIR__);
+$app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
+
 $app['debug'] = true;
 
 $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
@@ -153,16 +156,27 @@ $app['filtered_search_api_2'] = $app->share(
         $filteredSearchService = new FilteredSearchService(
             $app['search_api_2']
         );
-        $filteredSearchService->filter(new UDB3PlaceFilter());
+        $filteredSearchService->filter(new \CultuurNet\UDB3\SearchAPI2\Filters\NotUDB3Place());
         return $filteredSearchService;
     }
 );
 
 $app['search_service'] = $app->share(
     function ($app) {
+        /** @var \Qandidate\Toggle\ToggleManager $toggles */
+        $toggles = $app['toggles'];
+
+        $includePlaces = $toggles->active(
+            'search-include-places',
+            $app['toggles.context']
+        );
+
+        $searchAPI = $includePlaces ? 'search_api_2' : 'filtered_search_api_2';
+
         return new PullParsingSearchService(
-            $app['filtered_search_api_2'],
-            $app['iri_generator']
+            $app[$searchAPI],
+            $app['iri_generator'],
+            $app['place_iri_generator']
         );
     }
 );
@@ -359,7 +373,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['iri_generator'],
             $app['event_service'],
             $app['place_service'],
-            $app['organizer_service']
+            $app['organizer_service'],
+            $app['media_object_serializer']
         );
 
         $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
@@ -559,14 +574,14 @@ $app['real_event_repository'] = $app->share(
   }
 );
 
-$app['udb2_event_cdbxml'] = $app->share(
+$app['udb2_event_cdbxml_provicer'] = $app->share(
     function (Application $app) {
         $uitidConfig = $app['config']['uitid'];
         $baseUrl = $uitidConfig['base_url'] . $uitidConfig['apis']['entry'];
 
         $userId = new String($uitidConfig['impersonation_user_id']);
 
-        $cdbXmlFromEntryAPI = new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
+        return new \CultuurNet\UDB3\UDB2\EventCdbXmlFromEntryAPI(
             $baseUrl,
             $app['uitid_consumer_credentials'],
             $userId,
@@ -574,12 +589,27 @@ $app['udb2_event_cdbxml'] = $app->share(
             // setting when instantiating the ImprovedEntryApiFactory.
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
+    }
+);
 
+$app['udb2_event_cdbxml'] = $app->share(
+    function (Application $app) {
         $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
 
         return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
-            $cdbXmlFromEntryAPI,
+            $app['udb2_event_cdbxml_provicer'],
             new \CultuurNet\UDB3\Cdb\Event\Not($labeledAsUDB3Place)
+        );
+    }
+);
+
+$app['udb2_place_event_cdbxml'] = $app->share(
+    function (Application $app) {
+        $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
+
+        return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
+            $app['udb2_event_cdbxml_provicer'],
+            $labeledAsUDB3Place
         );
     }
 );
@@ -848,10 +878,11 @@ $app['place_iri_generator'] = $app->share(
 
 $app['place_jsonld_projector'] = $app->share(
     function ($app) {
-        $projector = new \CultuurNet\UDB3\Place\PlaceLDProjector(
+        $projector = new \CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
-            $app['organizer_service']
+            $app['organizer_service'],
+            $app['media_object_serializer']
         );
 
         return $projector;
@@ -916,8 +947,9 @@ $app['udb2_actor_cdbxml_provider'] = $app->share(
 $app['udb2_place_importer'] = $app->share(
     function (Application $app) {
         $importer = new \CultuurNet\UDB3\UDB2\Place\PlaceCdbXmlImporter(
+            $app['real_place_repository'],
             $app['udb2_actor_cdbxml_provider'],
-            $app['real_place_repository']
+            $app['udb2_place_event_cdbxml']
         );
 
         $logger = new \Monolog\Logger('udb2-place-importer');
@@ -1244,7 +1276,13 @@ $app->register(new OAuthServiceProvider(), array(
     'oauth.fetcher.consumer' => $app['config']['oauth']['consumer'],
 ));
 
-$app->register(new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider());
+$app->register(
+    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
+    array(
+        'media.upload_directory' => $app['config']['media']['upload_directory'],
+        'media.media_directory' => $app['config']['media']['media_directory'],
+    )
+);
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
@@ -1269,5 +1307,11 @@ $app->extend(
 $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
     return $app['config']['entryapi']['link_base_url'];
 });
+
+$app->register(
+    new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider(
+        isset($app['config']['toggles']) ? $app['config']['toggles'] : []
+    )
+);
 
 return $app;

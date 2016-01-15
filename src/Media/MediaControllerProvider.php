@@ -18,7 +18,8 @@ class MediaControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new MediaController(
                     $app['image_uploader'],
-                    $app['media_manager']
+                    $app['media_manager'],
+                    $app['media_object_serializer']
                 );
             }
         );
@@ -27,7 +28,7 @@ class MediaControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('images', 'media_controller:upload');
-        $controllers->get('images/{id}', 'media_controller:get');
+        $controllers->get('media/{id}', 'media_controller:get');
 
         return $controllers;
     }

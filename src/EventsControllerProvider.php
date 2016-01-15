@@ -23,7 +23,7 @@ class EventsControllerProvider implements ControllerProviderInterface
                     $app['event_editor'],
                     $app['used_labels_memory'],
                     $app['current_user'],
-                    null,
+                    $app['media_manager'],
                     $app['iri_generator'],
                     $app['event.security']
                 );
