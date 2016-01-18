@@ -41,7 +41,7 @@ $app['security.firewalls'] = array(
               '^/(event|place)/'.$app['id_pattern'].'$',
               '^/event/'.$app['id_pattern'].'/history',
               '^/organizer/'.$app['id_pattern'],
-              '^/images/'.$app['id_pattern'],
+              '^/media/'.$app['id_pattern'].'$',
               '^/places$',
               '^/api/1.0/organizer/suggest/.*'
         ]
