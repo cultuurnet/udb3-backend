@@ -1125,13 +1125,25 @@
                 ],
                 "parameters": [
                     {
-                        "name": "body",
-                        "in": "body",
-                        "description": "The image and some additional meta data.",
+                        "name": "file",
+                        "in": "formData",
+                        "description": "The image",
                         "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/createImageCommand"
-                        }
+                        "type": "file"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "The description",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "copyrightHolder",
+                        "in": "formData",
+                        "description": "The copyright holder",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1146,6 +1158,48 @@
                         "schema": {
                             "$ref": "#/definitions/APIProblem"
                         }
+                    }
+                },
+                "tags": [
+                    "Media"
+                ]
+            }
+        },
+        "/media/{id}": {
+            "get": {
+                "summary": "View the details of a specific media object.",
+                "description": "Authentication is required",
+                "operationId": "getImage",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The universally unique identifier of the media object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An media object detail.",
+                        "schema": {
+                            "$ref": "#/definitions/MediaObject"
+                        },
+                        "examples": {
+                            "@id": "http://culudb-silex.dev:8080/images/04C47992-B01E-4EE4-96ED-289F22638324",
+                            "@type": "schema:MediaObject",
+                            "contentUrl": "http://culudb-silex.dev:8080/media/de305d54-75b4-431b-adb2-eb6b9e546014.png",
+                            "thumbnailUrl": "http://culudb-silex.dev:8080/media/de305d54-75b4-431b-adb2-eb6b9e546014.png",
+                            "description": "Allemaal Roze konijnen",
+                            "copyrightHolder": "Toto het roze konijn"
+                        }
+                    },
+                    "400": {
+                        "description": "Media with id: {id} not found."
                     }
                 },
                 "tags": [
@@ -2310,7 +2364,6 @@
                             ]
                         }
                     }
-
                 },
                 "location": {
                     "type": "object",
@@ -2451,28 +2504,33 @@
                 "startDate"
             ]
         },
-        "createImageCommand": {
+        "MediaObject": {
             "properties": {
-                "file": {
+                "@id": {
                     "type": "string",
-                    "format": "binary",
-                    "description": "The image file data."
+                    "example": "http://culudb-silex.dev:8080/images/04C47992-B01E-4EE4-96ED-289F22638324"
+                },
+                "@type": {
+                    "type": "string",
+                    "example": "schema:MediaObject"
+                },
+                "contentUrl": {
+                    "type": "string",
+                    "example": "http://culudb-silex.dev:8080/media/de305d54-75b4-431b-adb2-eb6b9e546014.png"
+                },
+                "thumbnailUrl": {
+                    "type": "string",
+                    "example": "http://culudb-silex.dev:8080/media/de305d54-75b4-431b-adb2-eb6b9e546014.png"
                 },
                 "description": {
                     "type": "string",
-                    "description": "A description of the image."
+                    "example": "Allemaal Roze konijnen"
                 },
                 "copyrightHolder": {
                     "type": "string",
-                    "example": "Dirk Dirkington",
-                    "description": "The name of the copyright holder."
+                    "example": "Toto het roze konijn"
                 }
-            },
-            "required": [
-                "file",
-                "description",
-                "copyrightHolder"
-            ]
+            }
         }
     }
 }
