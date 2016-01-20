@@ -1198,8 +1198,8 @@
                             "copyrightHolder": "Toto het roze konijn"
                         }
                     },
-                    "404": {
-                        "description": "media with id:{$id} not found"
+                    "400": {
+                        "description": "Media with id: {id} not found."
                     }
                 },
                 "tags": [
