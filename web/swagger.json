@@ -306,6 +306,49 @@
                 ]
             }
         },
+        "/event/{cdbid}/images": {
+            "post": {
+                "summary": "Add an MediaObject to the Event",
+                "description": "Authentication is required",
+                "operationId": "EventAddImage",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The universally unique identifier of the event object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The UUID of the image to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/addImageToOffer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    },
+                    "400": {
+                        "description": "Media with id: {id} not found."
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
         "/event/{cdbid}/labels/{label}": {
             "delete": {
                 "summary": "Remove a label from a cultural event.",
@@ -2531,6 +2574,17 @@
                     "example": "Toto het roze konijn"
                 }
             }
+        },
+        "addImageToOffer": {
+            "properties": {
+                "mediaObjectId": {
+                    "type": "string",
+                    "example": "73695986-e4cf-4b29-8699-13d7cd77af8c"
+                }
+            },
+            "required": [
+                "description"
+            ]
         }
     }
 }
