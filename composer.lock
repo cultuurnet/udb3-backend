@@ -1263,16 +1263,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "8107621cb65e084e1a86ecde0dffe5921d10a036"
+                "reference": "bf95c447650b680b0fe2df5ffb344e6717e7eb16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/8107621cb65e084e1a86ecde0dffe5921d10a036",
-                "reference": "8107621cb65e084e1a86ecde0dffe5921d10a036",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/bf95c447650b680b0fe2df5ffb344e6717e7eb16",
+                "reference": "bf95c447650b680b0fe2df5ffb344e6717e7eb16",
                 "shasum": ""
             },
             "require": {
+                "cultuurnet/udb3": "~0.1",
                 "symfony/http-foundation": "~2.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/php-token-stream": "1.4.6",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
             },
             "type": "library",
             "extra": {
@@ -1293,10 +1301,14 @@
                 {
                     "name": "Kristof Coomans",
                     "email": "kristof@2dotstwice.be"
+                },
+                {
+                    "name": "Bert Ramakers",
+                    "email": "bert@2dotstwice.be"
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2015-12-11 11:59:08"
+            "time": "2016-01-20 14:07:57"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",

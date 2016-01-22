@@ -511,7 +511,7 @@ $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvide
 $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\EventsControllerProvider());
