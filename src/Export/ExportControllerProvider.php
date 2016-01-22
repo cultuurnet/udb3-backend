@@ -2,137 +2,67 @@
 
 namespace CultuurNet\UDB3\Silex\Export;
 
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
+use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSVJSONDeserializer;
+use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
+use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXMLJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
-use CultuurNet\UDB3\EventExport\EventExportQuery;
+use CultuurNet\UDB3\Symfony\CommandDeserializerController;
 use Silex\Application;
+use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\String\String;
-use ValueObjects\Web\EmailAddress;
 
 class ExportControllerProvider implements ControllerProviderInterface
 {
+    /**
+     * @param Application $app
+     * @return ControllerCollection
+     */
     public function connect(Application $app)
     {
-        // Creates a new controller based on the default route
+        $app['json_export_controller'] = $app->share(
+            function (Application $app) {
+                return new CommandDeserializerController(
+                    new ExportEventsAsJsonLDJSONDeserializer(),
+                    $app['event_command_bus']
+                );
+            }
+        );
+
+        $app['csv_export_controller'] = $app->share(
+            function (Application $app) {
+                return new CommandDeserializerController(
+                    new ExportEventsAsCSVJSONDeserializer(),
+                    $app['event_command_bus']
+                );
+            }
+        );
+
+        $app['ooxml_export_controller'] = $app->share(
+            function (Application $app) {
+                return new CommandDeserializerController(
+                    new ExportEventsAsOOXMLJSONDeserializer(),
+                    $app['event_command_bus']
+                );
+            }
+        );
+
+        $app['pdf_export_controller'] = $app->share(
+            function (Application $app) {
+                return new CommandDeserializerController(
+                    new ExportEventsAsPDFJSONDeserializer(),
+                    $app['event_command_bus']
+                );
+            }
+        );
+
         $controllers = $app['controllers_factory'];
 
-        $controllers->post(
-            '/json',
-            function (Request $request, Application $app) {
-
-                if ($request->request->has('email')) {
-                    $email = new EmailAddress($request->request->get('email'));
-                } else {
-                    $email = null;
-                }
-                $selection = $request->request->get('selection');
-                $include = $request->request->get('include');
-
-
-                $command = new ExportEventsAsJsonLD(
-                    new EventExportQuery(
-                        $request->request->get('query')
-                    ),
-                    $email,
-                    $selection,
-                    $include
-                );
-
-                /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
-                $commandBus = $app['event_command_bus'];
-                $commandId = $commandBus->dispatch($command);
-
-                return JsonResponse::create(
-                    ['commandId' => $commandId]
-                );
-            }
-        );
-
-        $controllers->post(
-            '/csv',
-            function (Request $request, Application $app) {
-
-                if($request->request->has('email')) {
-                    $email = new EmailAddress($request->request->get('email'));
-                } else {
-                    $email = null;
-                }
-                $selection = $request->request->get('selection');
-                $include = $request->request->get('include');
-
-                $command = new ExportEventsAsCSV(
-                    new EventExportQuery(
-                        $request->request->get('query')
-                    ),
-                    $email,
-                    $selection,
-                    $include
-                );
-
-                /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
-                $commandBus = $app['event_command_bus'];
-                $commandId = $commandBus->dispatch($command);
-
-                return JsonResponse::create(
-                    ['commandId' => $commandId]
-                );
-            }
-        );
-
-        $controllers->post(
-            '/ooxml',
-            function (Request $request, Application $app) {
-
-                if($request->request->has('email')) {
-                    $email = new EmailAddress($request->request->get('email'));
-                } else {
-                    $email = null;
-                }
-                $selection = $request->request->get('selection');
-                $include = $request->request->get('include');
-
-                $command = new ExportEventsAsOOXML(
-                    new EventExportQuery(
-                        $request->request->get('query')
-                    ),
-                    $email,
-                    $selection,
-                    $include
-                );
-
-                /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
-                $commandBus = $app['event_command_bus'];
-                $commandId = $commandBus->dispatch($command);
-
-                return JsonResponse::create(
-                    ['commandId' => $commandId]
-                );
-            }
-        );
-
-        $controllers->post(
-            '/pdf',
-            function (Request $request, Application $app) {
-                $deserializer = new ExportEventsAsPDFJSONDeserializer();
-
-                $command = $deserializer->deserialize(
-                    new String($request->getContent())
-                );
-
-                /** @var \Broadway\CommandHandling\CommandBusInterface $commandBus */
-                $commandBus = $app['event_command_bus'];
-                $commandId = $commandBus->dispatch($command);
-
-                return JsonResponse::create(
-                    ['commandId' => $commandId]
-                );
-            }
-        );
+        $controllers->post('/json', 'json_export_controller:handle');
+        $controllers->post('/csv', 'csv_export_controller:handle');
+        $controllers->post('/ooxml', 'ooxml_export_controller:handle');
+        $controllers->post('/pdf', 'pdf_export_controller:handle');
 
         return $controllers;
     }
