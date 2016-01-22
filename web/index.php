@@ -488,7 +488,7 @@ $app
     )
     ->bind('organizer');
 
-$app->mount('events/export', new \CultuurNet\UDB3\Silex\ExportEventsControllerProvider());
+$app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->get(
     'swagger.json',

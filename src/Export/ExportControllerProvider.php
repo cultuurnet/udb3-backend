@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Export;
 
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\String\String;
 use ValueObjects\Web\EmailAddress;
 
-class ExportEventsControllerProvider implements ControllerProviderInterface
+class ExportControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
