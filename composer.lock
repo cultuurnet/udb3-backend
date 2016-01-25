@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4a7a216561378c54b8939843821f6582",
-    "content-hash": "81f557e562a1ffe45710d37fdbbfda84",
+    "hash": "dfe6df970eccee3392acffb57c90f742",
+    "content-hash": "77170210dd38a41a0278433bee2ec9a9",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1089,16 +1089,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-639",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "1aff42f1adc1df0275d7df78a3ef4ea16d62286a"
+                "reference": "f8da1f3548270ce7f6d464db699e71dc5a50d55e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1aff42f1adc1df0275d7df78a3ef4ea16d62286a",
-                "reference": "1aff42f1adc1df0275d7df78a3ef4ea16d62286a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f8da1f3548270ce7f6d464db699e71dc5a50d55e",
+                "reference": "f8da1f3548270ce7f6d464db699e71dc5a50d55e",
                 "shasum": ""
             },
             "require": {
@@ -1165,7 +1165,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-01-25 14:40:17"
+            "time": "2016-01-25 17:58:35"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1259,16 +1259,16 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-639",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "7acb25c08c789cb53850753782f090b42be23e6f"
+                "reference": "5d9e74b5c8ca4593de981a48bcac0910a4df1789"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/7acb25c08c789cb53850753782f090b42be23e6f",
-                "reference": "7acb25c08c789cb53850753782f090b42be23e6f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/5d9e74b5c8ca4593de981a48bcac0910a4df1789",
+                "reference": "5d9e74b5c8ca4593de981a48bcac0910a4df1789",
                 "shasum": ""
             },
             "require": {
@@ -1308,7 +1308,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-01-25 13:57:09"
+            "time": "2016-01-25 17:57:51"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -5860,10 +5860,25 @@
             "time": "2015-06-21 13:59:46"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-639",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-639",
+            "package": "cultuurnet/udb3-symfony"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
