@@ -11,7 +11,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
 
-class PermissionServiceProvider implements ServiceProviderInterface
+class EventPermissionServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inheritdoc
