@@ -481,6 +481,44 @@
                 ]
             }
         },
+        "/place/{cdbid}/permission": {
+            "get": {
+                "summary": "Whether the current user has permission to update.",
+                "operationId": "hasPermission",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "has permission.",
+                        "schema": {
+                            "properties": {
+                                "hasPermission": {
+                                    "type": "boolean",
+                                    "example": false
+                                }
+                            },
+                            "required": [
+                                "hasPermission"
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
         "/organizer/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific organizer.",
