@@ -41,6 +41,7 @@ $app['security.firewalls'] = array(
               '^/(event|place)/'.$app['id_pattern'].'$',
               '^/event/'.$app['id_pattern'].'/history',
               '^/organizer/'.$app['id_pattern'],
+              '^/media/'.$app['id_pattern'].'$',
               '^/places$',
               '^/api/1.0/organizer/suggest/.*'
         ]
@@ -515,6 +516,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\EventsControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 
 /**
  * API callbacks for authentication.
