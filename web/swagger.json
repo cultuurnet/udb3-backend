@@ -1163,6 +1163,9 @@
                 "summary": "Create a new media object for an image.",
                 "description": "Authentication is required",
                 "operationId": "createImage",
+                "consumes": [
+                    "multipart/form-data"
+                ],
                 "produces": [
                     "application/json"
                 ],
