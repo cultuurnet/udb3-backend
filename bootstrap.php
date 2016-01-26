@@ -21,6 +21,9 @@ use ValueObjects\String\String;
 
 $app = new Application();
 
+$adapter = new \League\Flysystem\Adapter\Local(__DIR__);
+$app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
+
 $app['debug'] = true;
 
 $app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
@@ -370,7 +373,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['iri_generator'],
             $app['event_service'],
             $app['place_service'],
-            $app['organizer_service']
+            $app['organizer_service'],
+            $app['media_object_serializer']
         );
 
         $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
@@ -822,6 +826,8 @@ $app['event_command_bus_out'] = $app->share(
             )
         );
 
+        $commandBus->subscribe($app['media_manager']);
+
         return $commandBus;
     }
 );
@@ -875,7 +881,8 @@ $app['place_jsonld_projector'] = $app->share(
         $projector = new \CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
-            $app['organizer_service']
+            $app['organizer_service'],
+            $app['media_object_serializer']
         );
 
         return $projector;
@@ -1268,6 +1275,14 @@ $app->register(new OAuthServiceProvider(), array(
     'oauth.fetcher.base_url' => $app['config']['oauth']['base_url'],
     'oauth.fetcher.consumer' => $app['config']['oauth']['consumer'],
 ));
+
+$app->register(
+    new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
+    array(
+        'media.upload_directory' => $app['config']['media']['upload_directory'],
+        'media.media_directory' => $app['config']['media']['media_directory'],
+    )
+);
 
 $app['predis.client'] = $app->share(function ($app) {
     $redisURI = isset($app['config']['redis']['uri']) ?
