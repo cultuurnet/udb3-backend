@@ -1167,7 +1167,7 @@ $app['event_export'] = $app->share(
     }
 );
 
-$app['amqp-execution-delay'] = 4;
+$app['amqp-execution-delay'] = 10;
 
 $app['amqp-connection'] = $app->share(
     function (Application $app) {
