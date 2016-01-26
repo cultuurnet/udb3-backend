@@ -3,4 +3,6 @@
 /cache/
 /log/
 /web/downloads/
+/web/uploads/
+/web/media/
 /web/swagger/
