@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\Symfony\EventRestController;
+use CultuurNet\UDB3\Symfony\EventEditingRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -16,12 +16,11 @@ class EventsControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['event_controller'] = $app->share(
+        $app['event_editing_controller'] = $app->share(
             function (Application $app) {
-                return new EventRestController(
+                return new EventEditingRestController(
                     $app['event_service'],
                     $app['event_editor'],
-                    $app['event_history_repository'],
                     $app['used_labels_memory'],
                     $app['current_user'],
                     $app['media_manager'],
@@ -34,7 +33,7 @@ class EventsControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('api/1.0/event', "event_controller:createEvent");
+        $controllers->post('api/1.0/event', "event_editing_controller:createEvent");
 
         $controllers
             ->get('event/{cdbid}', 'event_controller:get')
@@ -44,19 +43,19 @@ class EventsControllerProvider implements ControllerProviderInterface
             ->get('event/{cdbid}/history', 'event_controller:history')
             ->bind('event-history');
 
-        $controllers->get('event/{cdbid}/permission', 'event_controller:hasPermission');
+        $controllers->get('event/{cdbid}/permission', 'event_editing_controller:hasPermission');
 
-        $controllers->post('event/{eventId}/images', 'event_controller:addImage');
+        $controllers->post('event/{eventId}/images', 'event_editing_controller:addImage');
 
-        $controllers->post('event/{cdbid}/nl/description', 'event_controller:updateDescription');
-        $controllers->post('event/{cdbid}/typicalAgeRange', 'event_controller:updateTypicalAgeRange');
-        $controllers->delete('api/1.0/event/{cdbid}/typicalAgeRange', 'event_controller:deleteTypicalAgeRange');
-        $controllers->post('event/{cdbid}/major-info', 'event_controller:updateMajorInfo');
-        $controllers->post('event/{cdbid}/bookingInfo', 'event_controller:updateBookingInfo');
-        $controllers->post('event/{cdbid}/contactPoint', 'event_controller:updateContactPoint');
-        $controllers->post('event/{cdbid}/facilities', 'event_controller:updateFacilities');
-        $controllers->post('event/{cdbid}/organizer', 'event_controller:updateOrganizer');
-        $controllers->delete('event/{cdbid}/organizer/{organizerId}', 'event_controller:deleteOrganizer');
+        $controllers->post('event/{cdbid}/nl/description', 'event_editing_controller:updateDescription');
+        $controllers->post('event/{cdbid}/typicalAgeRange', 'event_editing_controller:updateTypicalAgeRange');
+        $controllers->delete('api/1.0/event/{cdbid}/typicalAgeRange', 'event_editing_controller:deleteTypicalAgeRange');
+        $controllers->post('event/{cdbid}/major-info', 'event_editing_controller:updateMajorInfo');
+        $controllers->post('event/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
+        $controllers->post('event/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
+        $controllers->post('event/{cdbid}/facilities', 'event_editing_controller:updateFacilities');
+        $controllers->post('event/{cdbid}/organizer', 'event_editing_controller:updateOrganizer');
+        $controllers->delete('event/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
 
         $controllers->post(
             'event/{cdbid}/{lang}/description',
