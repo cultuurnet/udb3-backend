@@ -331,24 +331,6 @@ $app->get(
 );
 
 $app->post(
-    'events',
-    function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
-        $service = $app['event_editor'];
-
-        $eventId = $service->createEvent(
-            new Title($request->get('name')),
-            $request->get('location'),
-            DateTime::createFromFormat(DateTime::ISO8601, $request->get('date'))
-        );
-
-        return JsonResponse::create(
-            ['eventId' => $eventId]
-        );
-    }
-);
-
-$app->post(
     'events/label',
     function (Request $request, Application $app) {
         /** @var EventLabellerServiceInterface $eventLabeller */
