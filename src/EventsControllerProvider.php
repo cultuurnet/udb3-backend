@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\Symfony\EventEditingRestController;
+use CultuurNet\UDB3\Symfony\Event\EventEditingRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
