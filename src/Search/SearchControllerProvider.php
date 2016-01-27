@@ -5,9 +5,6 @@
 
 namespace CultuurNet\UDB3\Silex\Search;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\Hydra\PagedCollection;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Symfony\Search\SearchController;
 use Silex\Application;
 use Silex\ControllerCollection;
