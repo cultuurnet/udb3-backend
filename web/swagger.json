@@ -1910,10 +1910,18 @@
                 "@id": {
                     "type": "string",
                     "example": "http://culudb-silex.dev:8080/event/0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                },
+                "@type": {
+                    "type": "string",
+                    "enum": [
+                        "Event",
+                        "Place"
+                    ]
                 }
             },
             "required": [
-                "@id"
+                "@id",
+                "@type"
             ]
         },
         "Place": {
