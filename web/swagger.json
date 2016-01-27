@@ -388,6 +388,55 @@
                 ]
             }
         },
+        "/event/{eventId}/images/{mediaObjectId}": {
+            "post": {
+                "summary": "Update the info of an event image.",
+                "description": "Authentication is required.",
+                "operationId": "updateEventImage",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "description": "The unique identifier of the event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "mediaObjectId",
+                        "in": "path",
+                        "description": "The unique identifier of the image media object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the image information that has to be changed.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/imageUpdateInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Media"
+                ]
+            }
+        },
         "/query/label": {
             "post": {
                 "summary": "Add a label to a query",
@@ -2587,6 +2636,23 @@
             },
             "required": [
                 "description"
+            ]
+        },
+        "imageUpdateInfo": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "A description of the image."
+                },
+                "copyrightHolder": {
+                    "type": "string",
+                    "example": "Dirk Dirkington",
+                    "description": "The name of the copyright holder."
+                }
+            },
+            "required": [
+                "description",
+                "copyrightHolder"
             ]
         }
     }
