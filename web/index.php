@@ -230,45 +230,6 @@ $app->get(
 );
 
 $app
-    ->get(
-        'event/{cdbid}',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\EventServiceInterface $service */
-            $service = $app['event_service'];
-
-            $event = $service->getEvent($cdbid);
-
-            $response = JsonLdResponse::create()
-                ->setContent($event);
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('event');
-
-$app
-    ->get(
-        'event/{cdbid}/history',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $repository */
-            $repository = $app['event_history_repository'];
-
-            /** @var \CultuurNet\UDB3\ReadModel\JsonDocument $document */
-            $document = $repository->get($cdbid);
-
-            $response = JsonResponse::create()
-                ->setContent($document->getRawBody());
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('event-history');
-
-$app
     ->post(
         'event/{cdbid}/{lang}/title',
         function (Request $request, Application $app, $cdbid, $lang) {

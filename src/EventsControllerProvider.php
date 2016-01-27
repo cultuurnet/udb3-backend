@@ -21,6 +21,7 @@ class EventsControllerProvider implements ControllerProviderInterface
                 return new EventRestController(
                     $app['event_service'],
                     $app['event_editor'],
+                    $app['event_history_repository'],
                     $app['used_labels_memory'],
                     $app['current_user'],
                     $app['media_manager'],
@@ -34,6 +35,14 @@ class EventsControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('api/1.0/event', "event_controller:createEvent");
+
+        $controllers
+            ->get('event/{cdbid}', 'event_controller:get')
+            ->bind('event');
+
+        $controllers
+            ->get('event/{cdbid}/history', 'event_controller:history')
+            ->bind('event-history');
 
         $controllers->get('event/{cdbid}/permission', 'event_controller:hasPermission');
 
