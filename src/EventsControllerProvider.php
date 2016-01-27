@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Symfony\Event\EventEditingRestController;
+use CultuurNet\UDB3\Symfony\Event\EventRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -16,6 +17,15 @@ class EventsControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        $app['event_controller'] = $app->share(
+            function (Application $app) {
+                return new EventRestController(
+                    $app['event_service'],
+                    $app['event_history_repository']
+                );
+            }
+        );
+
         $app['event_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EventEditingRestController(
@@ -33,8 +43,6 @@ class EventsControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('api/1.0/event', "event_editing_controller:createEvent");
-
         $controllers
             ->get('event/{cdbid}', 'event_controller:get')
             ->bind('event');
@@ -42,6 +50,8 @@ class EventsControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('event/{cdbid}/history', 'event_controller:history')
             ->bind('event-history');
+
+        $controllers->post('api/1.0/event', "event_editing_controller:createEvent");
 
         $controllers->get('event/{cdbid}/permission', 'event_editing_controller:hasPermission');
 
