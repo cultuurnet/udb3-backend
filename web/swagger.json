@@ -2602,7 +2602,7 @@
                 }
             },
             "required": [
-                "description"
+                "mediaObjectId"
             ]
         },
         "imageUpdateInfo": {
