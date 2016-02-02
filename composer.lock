@@ -1126,7 +1126,7 @@
                 "phpoffice/phpexcel": "~1.8",
                 "psr/log": "~1.0",
                 "rase/socket.io-emitter": "0.6.1",
-                "symfony/http-foundation": "~2.6.9",
+                "symfony/http-foundation": "~2.7.2",
                 "twig/twig": "~1.0"
             },
             "provide": {
@@ -1272,8 +1272,10 @@
                 "shasum": ""
             },
             "require": {
+                "crell/api-problem": "~1.7",
+                "cultuurnet/hydra": "~0.1",
                 "cultuurnet/udb3": "~0.1",
-                "symfony/http-foundation": "~2.3"
+                "symfony/http-foundation": "~2.7.2"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -1316,12 +1318,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "9e1be198d2944d8bf638f6c478514e9e06c02a22"
+                "reference": "d58997cebd748491fe0fca3592eb4ae9ecabeed0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/9e1be198d2944d8bf638f6c478514e9e06c02a22",
-                "reference": "9e1be198d2944d8bf638f6c478514e9e06c02a22",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/d58997cebd748491fe0fca3592eb4ae9ecabeed0",
+                "reference": "d58997cebd748491fe0fca3592eb4ae9ecabeed0",
                 "shasum": ""
             },
             "require": {
@@ -1365,7 +1367,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-01-25 14:48:44"
+            "time": "2016-01-27 12:32:52"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2673,21 +2675,21 @@
         },
         {
             "name": "knplabs/console-service-provider",
-            "version": "v1.0",
+            "version": "1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/ConsoleServiceProvider.git",
-                "reference": "1f1a3315409814d01702a47a8823549c6996de41"
+                "reference": "7a839206270755483f6a06a6cfb3308fa6f9c562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/ConsoleServiceProvider/zipball/1f1a3315409814d01702a47a8823549c6996de41",
-                "reference": "1f1a3315409814d01702a47a8823549c6996de41",
+                "url": "https://api.github.com/repos/KnpLabs/ConsoleServiceProvider/zipball/7a839206270755483f6a06a6cfb3308fa6f9c562",
+                "reference": "7a839206270755483f6a06a6cfb3308fa6f9c562",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/console": "~2.1"
+                "symfony/console": "~2.3|~3.0"
             },
             "type": "library",
             "autoload": {
@@ -2711,7 +2713,7 @@
                 "console",
                 "silex"
             ],
-            "time": "2013-06-13 12:43:39"
+            "time": "2016-02-01 15:38:27"
         },
         {
             "name": "league/flysystem",
@@ -2976,16 +2978,16 @@
         },
         {
             "name": "mathiasverraes/money",
-            "version": "1.2.1",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathiasverraes/money.git",
-                "reference": "b9e258119041fed20e4704f72e3ebb94ed10bea2"
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathiasverraes/money/zipball/b9e258119041fed20e4704f72e3ebb94ed10bea2",
-                "reference": "b9e258119041fed20e4704f72e3ebb94ed10bea2",
+                "url": "https://api.github.com/repos/mathiasverraes/money/zipball/1926c54143da8eec322ae4985014cd73a98b0792",
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792",
                 "shasum": ""
             },
             "require": {
@@ -3027,7 +3029,7 @@
                 "Value Object",
                 "money"
             ],
-            "time": "2014-10-07 12:54:10"
+            "time": "2016-01-16 22:03:46"
         },
         {
             "name": "monolog/monolog",
@@ -3224,16 +3226,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "1.1.5",
+            "version": "1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "dd8998b7c846f6909f4e7a5f67fabebfc412a4f7"
+                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/dd8998b7c846f6909f4e7a5f67fabebfc412a4f7",
-                "reference": "dd8998b7c846f6909f4e7a5f67fabebfc412a4f7",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/e6f80ab77885151908d0ec743689ca700886e8b0",
+                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0",
                 "shasum": ""
             },
             "require": {
@@ -3268,7 +3270,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-01-06 13:31:20"
+            "time": "2016-01-29 16:19:52"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -3974,38 +3976,39 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.6.13",
-            "target-dir": "Symfony/Component/HttpFoundation",
+            "version": "v2.7.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c"
+                "reference": "2f9d240056f026af5f7ba7f7052b0c6709bf288c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
-                "reference": "e8fd1b73ac1c3de1f76c73801ddf1a8ecb1c1c9c",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/2f9d240056f026af5f7ba7f7052b0c6709bf288c",
+                "reference": "2f9d240056f026af5f7ba7f7052b0c6709bf288c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.9"
             },
             "require-dev": {
-                "symfony/expression-language": "~2.4",
-                "symfony/phpunit-bridge": "~2.7"
+                "symfony/expression-language": "~2.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
+                "psr-4": {
                     "Symfony\\Component\\HttpFoundation\\": ""
                 },
                 "classmap": [
-                    "Symfony/Component/HttpFoundation/Resources/stubs"
+                    "Resources/stubs"
+                ],
+                "exclude-from-classmap": [
+                    "/Tests/"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4024,7 +4027,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-22 10:08:40"
+            "time": "2016-01-13 10:26:43"
         },
         {
             "name": "symfony/http-kernel",
@@ -4492,16 +4495,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.23.3",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08"
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ae53fc2c312fdee63773b75cb570304f85388b08",
-                "reference": "ae53fc2c312fdee63773b75cb570304f85388b08",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
                 "shasum": ""
             },
             "require": {
@@ -4514,7 +4517,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.23-dev"
+                    "dev-master": "1.24-dev"
                 }
             },
             "autoload": {
@@ -4549,7 +4552,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-01-11 14:02:19"
+            "time": "2016-01-25 21:22:18"
         },
         {
             "name": "videlalvaro/php-amqplib",

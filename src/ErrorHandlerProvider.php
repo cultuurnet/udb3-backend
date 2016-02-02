@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Silex\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Variations\Command\ValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
