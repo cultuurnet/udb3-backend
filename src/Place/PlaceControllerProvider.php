@@ -50,7 +50,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
             ->get('place/{cdbid}', 'place_controller:get')
             ->bind('place');
 
-        $controllers->get('/places', 'place_controller:getByPostalCode');
+        $controllers->get('places', 'place_controller:getByPostalCode');
 
         // @todo Reduce path to /place.
         $controllers->post('api/1.0/place', 'place_editing_controller:createPlace');
