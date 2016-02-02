@@ -746,6 +746,10 @@ $app['logger.command_bus'] = $app->share(
             }
 
             $handler->setLevel($handler_config['level']);
+            $handler->pushProcessor(
+                new \Monolog\Processor\PsrLogMessageProcessor()
+            );
+
             $logger->pushHandler($handler);
         }
 
