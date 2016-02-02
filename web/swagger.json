@@ -659,43 +659,6 @@
                 ]
             }
         },
-        "/command/{token}": {
-            "get": {
-                "summary": "View the staus of a an executed command.",
-                "description": "Authentication is required.",
-                "operationId": "getCommandStatus",
-                "produces": [
-                    "text/plain; charset=utf-8"
-                ],
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "path",
-                        "description": "The unique token (commandId) of a command as returned from POST or DELETE actions.",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The command status.",
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "waiting",
-                                "running",
-                                "complete",
-                                "failed"
-                            ],
-                            "example": "complete"
-                        }
-                    }
-                },
-                "tags": [
-                    "Command"
-                ]
-            }
-        },
         "/saved-searches": {
             "get": {
                 "summary": "Get a list of saved searches for the current user.",
@@ -1331,10 +1294,6 @@
         {
             "name": "Organizer",
             "description": "Operations related to organizers."
-        },
-        {
-            "name": "Command",
-            "description": "Operations related to commands."
         },
         {
             "name": "Saved search",
