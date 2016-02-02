@@ -3,7 +3,7 @@
  * @file
  */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\EntityServiceInterface;
@@ -15,7 +15,7 @@ use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class PlacesControllerProvider implements ControllerProviderInterface
+class PlaceControllerProvider implements ControllerProviderInterface
 {
     /**
      * @inheritdoc
