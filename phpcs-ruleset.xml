@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<ruleset name="UDB3-Silex">
+    <rule ref="PSR2" />
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>*/test/*</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+        <exclude-pattern>*/test/*</exclude-pattern>
+    </rule>
+
+    <rule ref="Symfony2.Arrays.MultiLineArrayComma" />
+    <rule ref="Symfony2.Classes.PropertyDeclaration" />
+    <rule ref="Symfony2.NamingConventions.ValidClassName" />
+    <rule ref="Symfony2.NamingConventions.ValidClassName.InvalidAbstractName">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
+    <rule ref="Symfony2.Objects.ObjectInstantiation" />
+    <rule ref="Symfony2.WhiteSpace.BinaryOperatorSpacing" />
+
+    <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+    <rule ref="Generic.Formatting.SpaceAfterCast"/>
+    <rule ref="Generic.Functions.CallTimePassByReference"/>
+    <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+    <rule ref="Generic.PHP.LowerCaseConstant"/>
+
+    <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
+    <rule ref="Squiz.ControlStructures.ControlSignature"/>
+    <rule ref="Squiz.ControlStructures.ForEachLoopDeclaration"/>
+    <rule ref="Squiz.ControlStructures.ForLoopDeclaration"/>
+    <rule ref="Squiz.ControlStructures.LowercaseDeclaration"/>
+    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
+    <rule ref="Squiz.Scope.MemberVarScope"/>
+
+    <rule ref="Zend">
+        <exclude name="Generic.Files.LineLength" />
+        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman" />
+
+        <exclude name="PEAR.Functions.FunctionDeclaration" />
+        <exclude name="PEAR.ControlStructures.ControlSignature" />
+        <exclude name="PEAR.Commenting.FunctionComment.SpacingBeforeTags" />
+
+        <exclude name="Zend.Debug.CodeAnalyzer" />
+        <exclude name="Zend.NamingConventions.ValidVariableName.PrivateNoUnderscore" />
+        <exclude name="Zend.NamingConventions.ValidVariableName.ContainsNumbers" />
+    </rule>
+</ruleset>

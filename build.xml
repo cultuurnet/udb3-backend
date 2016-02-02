@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="UDB3-Silex" default="test">
+    <fileset id="php" dir=".">
+        <include name="src/**/*.php"/>
+    </fileset>
+
+    <target name="coding-standards">
+        <exec command="vendor/bin/phpcs --config-set installed_paths vendor/escapestudios/symfony2-coding-standard"
+              passthru="true"/>
+        <phpcodesniffer
+                standard="phpcs-ruleset.xml"
+                format="full"
+                allowedFileExtensions="php"
+                haltonerror="true">
+            <fileset refid="php"/>
+        </phpcodesniffer>
+    </target>
+
+    <target name="lint">
+        <phplint>
+            <fileset refid="php"/>
+        </phplint>
+    </target>
+
+    <target name="swagger-validate">
+        <exec executable="npm" passthru="true" checkreturn="true">
+            <arg value="run"/>
+            <arg value="validate-swagger-lint"/>
+        </exec>
+        <exec executable="npm" passthru="true" checkreturn="true">
+            <arg value="run"/>
+            <arg value="validate-swagger-schema"/>
+        </exec>
+    </target>
+
+    <target name="test">
+        <phingcall target="lint"/>
+        <phingcall target="swagger-validate"/>
+        <phingcall target="coding-standards"/>
+    </target>
+
+</project>
