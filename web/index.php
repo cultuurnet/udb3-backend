@@ -259,14 +259,14 @@ $app
     ->post(
         'event/{cdbid}/labels',
         function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
             $service = $app['event_editor'];
 
             $response = new JsonResponse();
 
             try {
                 $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-                $commandId = $service->label(
+                $commandId = $service->addLabel(
                     $cdbid,
                     $label
                 );
@@ -292,13 +292,13 @@ $app
     ->delete(
         'event/{cdbid}/labels/{label}',
         function (Request $request, Application $app, $cdbid, $label) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
             $service = $app['event_editor'];
 
             $response = new JsonResponse();
 
             try {
-                $commandId = $service->unlabel(
+                $commandId = $service->deleteLabel(
                     $cdbid,
                     new \CultuurNet\UDB3\Label($label)
                 );
@@ -317,14 +317,14 @@ $app
     ->post(
         'place/{cdbid}/labels',
         function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface $service */
-            $service = $app['place_editor'];
+            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
+            $service = $app['place_editing_service'];
 
             $response = new JsonResponse();
 
             try {
                 $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-                $commandId = $service->label(
+                $commandId = $service->addLabel(
                     $cdbid,
                     $label
                 );
@@ -350,13 +350,13 @@ $app
     ->delete(
         'place/{cdbid}/labels/{label}',
         function (Request $request, Application $app, $cdbid, $label) {
-            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface $service */
-            $service = $app['place_editor'];
+            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
+            $service = $app['place_editing_service'];
 
             $response = new JsonResponse();
 
             try {
-                $commandId = $service->unlabel(
+                $commandId = $service->deleteLabel(
                     $cdbid,
                     new \CultuurNet\UDB3\Label($label)
                 );

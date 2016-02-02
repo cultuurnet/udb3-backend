@@ -368,7 +368,7 @@ $app['event_jsonld_cache'] = $app->share(
 
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
-        $projector = new \CultuurNet\UDB3\Event\EventLDProjector(
+        $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
             $app['event_jsonld_repository'],
             $app['iri_generator'],
             $app['event_service'],
@@ -990,6 +990,12 @@ $app['place_repository'] = $app->share(
     }
 );
 
+$app['place_document_repository'] = $app->share(
+    function ($app) {
+
+    }
+);
+
 $app['place_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\PlaceService(
@@ -1007,7 +1013,8 @@ $app['place_editing_service'] = $app->share(
         return new CultuurNet\UDB3\Place\DefaultPlaceEditingService(
             $app['event_command_bus'],
             new Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['place_repository']
+            $app['place_jsonld_repository'],
+            new \CultuurNet\UDB3\Place\Commands\PlaceCommandFactory()
         );
     }
 );
