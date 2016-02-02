@@ -175,50 +175,6 @@ $app->before(
 );
 
 $app->get(
-    'search',
-    function (Request $request, Application $app) {
-        $q = $request->query->get('q');
-        $limit = new \CultuurNet\Search\Parameter\Rows(
-            $request->query->get('limit', 30)
-        );
-        $start = new \CultuurNet\Search\Parameter\Start(
-            $request->query->get('start', 0)
-        );
-        $group = new \CultuurNet\Search\Parameter\Group();
-        $typeFilter = new \CultuurNet\Search\Parameter\FilterQuery(
-            'type:event'
-        );
-
-
-        /** @var SearchAPI2 $service */
-        $service = $app['search_api_2'];
-        $q = new \CultuurNet\Search\Parameter\Query($q);
-        $response = $service->search(
-            array($q, $limit, $start, $group, $typeFilter)
-        );
-
-        $results = \CultuurNet\Search\SearchResult::fromXml(
-            new SimpleXMLElement(
-                $response->getBody(true),
-                0,
-                false,
-                \CultureFeed_Cdb_Default::CDB_SCHEME_URL
-            )
-        );
-
-        $response = Response::create()
-            ->setContent($results->getXml())
-            ->setPublic()
-            ->setClientTtl(60 * 1)
-            ->setTtl(60 * 5);
-
-        $response->headers->set('Content-Type', 'text/xml');
-
-        return $response;
-    }
-);
-
-$app->get(
     'api/1.0/event.jsonld',
     function (Request $request, Application $app) {
         $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse(
@@ -432,7 +388,7 @@ $app
     )
     ->bind('organizer');
 
-$app->mount('events/export', new \CultuurNet\UDB3\Silex\ExportEventsControllerProvider());
+$app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->get(
     'swagger.json',
@@ -455,7 +411,7 @@ $app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvide
 $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\SearchControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\EventsControllerProvider());
