@@ -313,6 +313,64 @@ $app
         }
     );
 
+$app
+    ->post(
+        'place/{cdbid}/labels',
+        function (Request $request, Application $app, $cdbid) {
+            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface $service */
+            $service = $app['place_editor'];
+
+            $response = new JsonResponse();
+
+            try {
+                $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
+                $commandId = $service->label(
+                    $cdbid,
+                    $label
+                );
+
+                /** @var CultureFeed_User $user */
+                $user = $app['current_user'];
+                $app['used_labels_memory']->rememberLabelUsed(
+                    $user->id,
+                    $label
+                );
+
+                $response->setData(['commandId' => $commandId]);
+            } catch (Exception $e) {
+                $response->setStatusCode(400);
+                $response->setData(['error' => $e->getMessage()]);
+            }
+
+            return $response;
+        }
+    );
+
+$app
+    ->delete(
+        'place/{cdbid}/labels/{label}',
+        function (Request $request, Application $app, $cdbid, $label) {
+            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface $service */
+            $service = $app['place_editor'];
+
+            $response = new JsonResponse();
+
+            try {
+                $commandId = $service->unlabel(
+                    $cdbid,
+                    new \CultuurNet\UDB3\Label($label)
+                );
+
+                $response->setData(['commandId' => $commandId]);
+            } catch (Exception $e) {
+                $response->setStatusCode(400);
+                $response->setData(['error' => $e->getMessage()]);
+            }
+
+            return $response;
+        }
+    );
+
 $app->get(
     'api/1.0/user/labels',
     function (Request $request, Application $app) {
