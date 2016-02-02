@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Symfony\Event\EventEditingRestController;
 use CultuurNet\UDB3\Symfony\Event\EventRestController;
@@ -10,7 +10,7 @@ use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class EventsControllerProvider implements ControllerProviderInterface
+class EventControllerProvider implements ControllerProviderInterface
 {
     /**
      * @inheritdoc

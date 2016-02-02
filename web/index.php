@@ -414,7 +414,7 @@ $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\EventsControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 
 /**
