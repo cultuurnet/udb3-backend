@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\SavedSearches\Command\SavedSearchCommand;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;

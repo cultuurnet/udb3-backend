@@ -36,7 +36,7 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new CultuurNet\UiTIDProvider\Session\SessionConfigurationProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\SavedSearchesServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
