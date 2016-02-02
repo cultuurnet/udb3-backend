@@ -10,7 +10,7 @@ use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Place\ReadModel\Lookup\PlaceLookupServiceInterface;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Symfony\Place\PlaceEditingRestController;
-use CultuurNet\UDB3\Symfony\PlaceRestController;
+use CultuurNet\UDB3\Symfony\Place\PlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -23,6 +23,15 @@ class PlaceControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        $app['place_controller'] = $app->share(
+            function (Application $app) {
+                return new PlaceRestController(
+                    $app['place_service'],
+                    $app['place_lookup']
+                );
+            }
+        );
+
         $app['place_editing_controller'] = $app->share(
             function (Application $app) {
                 return new PlaceEditingRestController(
@@ -37,42 +46,11 @@ class PlaceControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get(
-            '/places',
-            function (Application $app, Request $request) {
-                /** @var PlaceLookupServiceInterface $placeLookupService */
-                $placeLookupService = $app['place_lookup'];
+        $controllers
+            ->get('place/{cdbid}', 'place_controller:get')
+            ->bind('place');
 
-                // @todo Add & process pagination parameters
-
-                // @todo Validate zipcode
-                $zipCode = $request->query->get('zipcode');
-
-                $ids = $placeLookupService->findPlacesByPostalCode($zipCode);
-
-                $members = [];
-                if (!empty($ids)) {
-                    /** @var EntityServiceInterface $placeService */
-                    $placeService = $app['place_service'];
-
-                    $members = array_map(
-                        function ($id) use ($placeService) {
-                            return json_decode($placeService->getEntity($id));
-                        },
-                        $ids
-                    );
-                }
-
-                $pagedCollection = new PagedCollection(
-                    1,
-                    1000,
-                    $members,
-                    count($members)
-                );
-
-                return (new JsonLdResponse($pagedCollection));
-            }
-        );
+        $controllers->get('/places', 'place_controller:getByPostalCode');
 
         // @todo Reduce path to /place.
         $controllers->post('api/1.0/place', 'place_editing_controller:createPlace');
@@ -87,26 +65,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->post('place/{cdbid}/facilities', 'place_editing_controller:updateFacilities');
         $controllers->post('place/{cdbid}/organizer', 'place_editing_controller:updateOrganizer');
         $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
-
-        $controllers->get(
-            'place/{cdbid}',
-            function (Application $app, $cdbid) {
-                /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-                $service = $app['place_service'];
-
-                $place = $service->getEntity($cdbid);
-
-                $response = JsonLdResponse::create()
-                    ->setContent($place)
-                    ->setPublic()
-                    ->setClientTtl(60 * 30)
-                    ->setTtl(60 * 5);
-
-                $response->headers->set('Vary', 'Origin');
-
-                return $response;
-            }
-        )->bind('place');
 
         return $controllers;
     }
