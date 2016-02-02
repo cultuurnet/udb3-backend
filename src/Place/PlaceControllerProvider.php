@@ -9,6 +9,7 @@ use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Place\ReadModel\Lookup\PlaceLookupServiceInterface;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Symfony\Place\PlaceEditingRestController;
 use CultuurNet\UDB3\Symfony\PlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -22,9 +23,9 @@ class PlaceControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['places_controller'] = $app->share(
+        $app['place_editing_controller'] = $app->share(
             function (Application $app) {
-                return new PlaceRestController(
+                return new PlaceEditingRestController(
                     $app['place_service'],
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
@@ -74,18 +75,18 @@ class PlaceControllerProvider implements ControllerProviderInterface
         );
 
         // @todo Reduce path to /place.
-        $controllers->post('api/1.0/place', 'places_controller:createPlace');
-        $controllers->post('api/1.0/place/{cdbid}/image', 'places_controller:addImage');
+        $controllers->post('api/1.0/place', 'place_editing_controller:createPlace');
+        $controllers->post('api/1.0/place/{cdbid}/image', 'place_editing_controller:addImage');
 
-        $controllers->post('place/{cdbid}/nl/description', 'places_controller:updateDescription');
-        $controllers->post('place/{cdbid}/typicalAgeRange', 'places_controller:updateTypicalAgeRange');
-        $controllers->delete('api/1.0/place/{cdbid}/typicalAgeRange', 'places_controller:deleteTypicalAgeRange');
-        $controllers->post('place/{cdbid}/major-info', 'places_controller:updateMajorInfo');
-        $controllers->post('place/{cdbid}/bookingInfo', 'places_controller:updateBookingInfo');
-        $controllers->post('place/{cdbid}/contactPoint', 'places_controller:updateContactPoint');
-        $controllers->post('place/{cdbid}/facilities', 'places_controller:updateFacilities');
-        $controllers->post('place/{cdbid}/organizer', 'places_controller:updateOrganizer');
-        $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'places_controller:deleteOrganizer');
+        $controllers->post('place/{cdbid}/nl/description', 'place_editing_controller:updateDescription');
+        $controllers->post('place/{cdbid}/typicalAgeRange', 'place_editing_controller:updateTypicalAgeRange');
+        $controllers->delete('api/1.0/place/{cdbid}/typicalAgeRange', 'place_editing_controller:deleteTypicalAgeRange');
+        $controllers->post('place/{cdbid}/major-info', 'place_editing_controller:updateMajorInfo');
+        $controllers->post('place/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
+        $controllers->post('place/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
+        $controllers->post('place/{cdbid}/facilities', 'place_editing_controller:updateFacilities');
+        $controllers->post('place/{cdbid}/organizer', 'place_editing_controller:updateOrganizer');
+        $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
 
         $controllers->get(
             'place/{cdbid}',
