@@ -3,7 +3,7 @@
  * @file
  */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Place;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
