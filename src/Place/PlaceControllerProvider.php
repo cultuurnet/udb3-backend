@@ -5,14 +5,11 @@
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Place\ReadModel\Lookup\PlaceLookupServiceInterface;
 use CultuurNet\UDB3\Symfony\Place\PlaceEditingRestController;
 use CultuurNet\UDB3\Symfony\Place\PlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class PlaceControllerProvider implements ControllerProviderInterface
 {
