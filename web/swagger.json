@@ -605,8 +605,8 @@
                     }
                 },
                 "tags": [
-                    "Event",
-                    "Place"
+                    "Place",
+                    "Label"
                 ]
             }
         },
