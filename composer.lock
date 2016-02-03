@@ -1264,12 +1264,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "56ee0f97530b3c2101e5421a629b521c05992fe0"
+                "reference": "58e2742b6e5f309704c326bf514d929d3dd30de7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/56ee0f97530b3c2101e5421a629b521c05992fe0",
-                "reference": "56ee0f97530b3c2101e5421a629b521c05992fe0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/58e2742b6e5f309704c326bf514d929d3dd30de7",
+                "reference": "58e2742b6e5f309704c326bf514d929d3dd30de7",
                 "shasum": ""
             },
             "require": {
@@ -1311,7 +1311,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-02 18:31:50"
+            "time": "2016-02-03 19:45:51"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -2982,12 +2982,12 @@
             "version": "v1.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mathiasverraes/money.git",
+                "url": "https://github.com/moneyphp/money.git",
                 "reference": "1926c54143da8eec322ae4985014cd73a98b0792"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathiasverraes/money/zipball/1926c54143da8eec322ae4985014cd73a98b0792",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/1926c54143da8eec322ae4985014cd73a98b0792",
                 "reference": "1926c54143da8eec322ae4985014cd73a98b0792",
                 "shasum": ""
             },
@@ -4229,16 +4229,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "3b1bac52f42cb0f54df1a2dbabd55a1d214e2a59"
+                "reference": "4686baa55a835e1c1ede9b86ba02415c8c8d6166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/3b1bac52f42cb0f54df1a2dbabd55a1d214e2a59",
-                "reference": "3b1bac52f42cb0f54df1a2dbabd55a1d214e2a59",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/4686baa55a835e1c1ede9b86ba02415c8c8d6166",
+                "reference": "4686baa55a835e1c1ede9b86ba02415c8c8d6166",
                 "shasum": ""
             },
             "require": {
@@ -4299,7 +4299,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2015-12-23 08:00:11"
+            "time": "2016-01-27 05:14:46"
         },
         {
             "name": "symfony/security",
