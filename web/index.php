@@ -344,28 +344,6 @@ $app->post('query/label',
         };
     });
 
-$app->get(
-    'command/{token}',
-    function (Request $request, Application $app, $token) {
-        $status = new Resque_Job_Status($token);
-
-        $code = $status->get();
-
-        if (false === $code) {
-            // @todo 404 not found response
-        }
-
-        $labels = array(
-            Resque_Job_Status::STATUS_WAITING => 'waiting',
-            Resque_Job_Status::STATUS_RUNNING => 'running',
-            Resque_Job_Status::STATUS_COMPLETE => 'complete',
-            Resque_Job_Status::STATUS_FAILED => 'failed'
-        );
-
-        return new Response($labels[$code]);
-    }
-);
-
 $app
     ->get(
         'organizer/{cdbid}',
@@ -412,7 +390,7 @@ $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvi
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
