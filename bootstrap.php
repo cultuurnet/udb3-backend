@@ -858,8 +858,9 @@ $app['event_editor'] = $app->share(
             $app['event_service'],
             $app['event_command_bus'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['event_repository'],
-            $app['place_service']
+            $app['event_jsonld_repository'],
+            $app['place_service'],
+            new \CultuurNet\UDB3\Event\Commands\EventCommandFactory()
         );
     }
 );
@@ -987,12 +988,6 @@ $app['place_repository'] = $app->share(
             $udb2RepositoryDecorator->syncBackOn();
         }
         return $udb2RepositoryDecorator;
-    }
-);
-
-$app['place_document_repository'] = $app->share(
-    function ($app) {
-
     }
 );
 
