@@ -186,45 +186,6 @@ $app->get(
 );
 
 $app
-    ->get(
-        'event/{cdbid}',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\EventServiceInterface $service */
-            $service = $app['event_service'];
-
-            $event = $service->getEvent($cdbid);
-
-            $response = JsonLdResponse::create()
-                ->setContent($event);
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('event');
-
-$app
-    ->get(
-        'event/{cdbid}/history',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $repository */
-            $repository = $app['event_history_repository'];
-
-            /** @var \CultuurNet\UDB3\ReadModel\JsonDocument $document */
-            $document = $repository->get($cdbid);
-
-            $response = JsonResponse::create()
-                ->setContent($document->getRawBody());
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('event-history');
-
-$app
     ->post(
         'event/{cdbid}/{lang}/title',
         function (Request $request, Application $app, $cdbid, $lang) {
@@ -384,24 +345,6 @@ $app->get(
 );
 
 $app->post(
-    'events',
-    function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
-        $service = $app['event_editor'];
-
-        $eventId = $service->createEvent(
-            new Title($request->get('name')),
-            $request->get('location'),
-            DateTime::createFromFormat(DateTime::ISO8601, $request->get('date'))
-        );
-
-        return JsonResponse::create(
-            ['eventId' => $eventId]
-        );
-    }
-);
-
-$app->post(
     'events/label',
     function (Request $request, Application $app) {
         /** @var EventLabellerServiceInterface $eventLabeller */
@@ -459,28 +402,6 @@ $app->post('query/label',
         };
     });
 
-$app->get(
-    'command/{token}',
-    function (Request $request, Application $app, $token) {
-        $status = new Resque_Job_Status($token);
-
-        $code = $status->get();
-
-        if (false === $code) {
-            // @todo 404 not found response
-        }
-
-        $labels = array(
-            Resque_Job_Status::STATUS_WAITING => 'waiting',
-            Resque_Job_Status::STATUS_RUNNING => 'running',
-            Resque_Job_Status::STATUS_COMPLETE => 'complete',
-            Resque_Job_Status::STATUS_FAILED => 'failed'
-        );
-
-        return new Response($labels[$code]);
-    }
-);
-
 $app
     ->get(
         'organizer/{cdbid}',
@@ -527,9 +448,9 @@ $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvi
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\PlacesControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\EventsControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 
 /**
