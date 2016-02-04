@@ -1,15 +1,13 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Variations;
 
 use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Silex\VariationIdToJSONLDDocumentConverter;
 use CultuurNet\UDB3\Variations\Command\EventVariationCommandHandler;
 use CultuurNet\UDB3\Variations\DefaultEventVariationService;
 use CultuurNet\UDB3\Variations\EventVariationRepository;
