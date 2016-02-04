@@ -2640,7 +2640,7 @@
                 }
             },
             "required": [
-                "description"
+                "mediaObjectId"
             ]
         },
         "imageUpdateInfo": {
