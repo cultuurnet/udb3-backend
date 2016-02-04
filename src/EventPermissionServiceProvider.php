@@ -65,7 +65,7 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
 
         $app['event.security'] = $app->share(
             function (Application $app) {
-                $security = new \CultuurNet\UDB3\Event\Security(
+                $security = new \CultuurNet\UDB3\Offer\Security(
                     $app['security.token_storage'],
                     $app['event_permission.repository']
                 );

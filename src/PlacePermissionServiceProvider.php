@@ -65,7 +65,7 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
 
         $app['place.security'] = $app->share(
             function (Application $app) {
-                $security = new \CultuurNet\UDB3\Place\Security(
+                $security = new \CultuurNet\UDB3\Offer\Security(
                     $app['security.token_storage'],
                     $app['place_permission.repository']
                 );
