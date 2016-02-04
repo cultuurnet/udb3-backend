@@ -5,7 +5,7 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\Event\ReadModel\Permission\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -19,12 +19,14 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['event_permission.table_name'] = new StringLiteral('event_permission_readmodel');
+        $app['event_permission.id_field'] = new StringLiteral('event_id');
 
         $app['event_permission.repository'] = $app->share(
             function (Application $app) {
-                return new \CultuurNet\UDB3\Event\ReadModel\Permission\Doctrine\DBALRepository(
+                return new \CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository(
                     $app['event_permission.table_name'],
-                    $app['dbal_connection']
+                    $app['dbal_connection'],
+                    $app['event_permission.id_field']
                 );
             }
         );
@@ -42,7 +44,10 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
 
         $app['event_permission.schema_configurator'] = $app->share(
             function (Application $app) {
-                return new SchemaConfigurator($app['event_permission.table_name']);
+                return new SchemaConfigurator(
+                    $app['event_permission.table_name'],
+                    $app['event_permission.id_field']
+                );
             }
         );
 

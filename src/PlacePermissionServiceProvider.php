@@ -5,7 +5,7 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\Place\ReadModel\Permission\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -19,12 +19,14 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['place_permission.table_name'] = new StringLiteral('place_permission_readmodel');
+        $app['place_permission.id_field'] = new StringLiteral('place_id');
 
         $app['place_permission.repository'] = $app->share(
             function (Application $app) {
-                return new \CultuurNet\UDB3\Place\ReadModel\Permission\Doctrine\DBALRepository(
+                return new \CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository(
                     $app['place_permission.table_name'],
-                    $app['dbal_connection']
+                    $app['dbal_connection'],
+                    $app['place_permission.id_field']
                 );
             }
         );
@@ -42,7 +44,10 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
 
         $app['place_permission.schema_configurator'] = $app->share(
             function (Application $app) {
-                return new SchemaConfigurator($app['place_permission.table_name']);
+                return new SchemaConfigurator(
+                    $app['place_permission.table_name'],
+                    $app['place_permission.id_field']
+                );
             }
         );
 
