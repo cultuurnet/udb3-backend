@@ -3,9 +3,13 @@
  * @file
  */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Offer\Security;
+use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
+use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -23,7 +27,7 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
 
         $app['place_permission.repository'] = $app->share(
             function (Application $app) {
-                return new \CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository(
+                return new DBALRepository(
                     $app['place_permission.table_name'],
                     $app['dbal_connection'],
                     $app['place_permission.id_field']
@@ -33,7 +37,7 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
 
         $app['place_permission.projector'] = $app->share(
             function (Application $app) {
-                $projector = new \CultuurNet\UDB3\Place\ReadModel\Permission\Projector(
+                $projector = new Projector(
                     $app['place_permission.repository'],
                     new CdbXmlCreatedByToUserIdResolver($app['uitid_users'])
                 );
@@ -65,7 +69,7 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
 
         $app['place.security'] = $app->share(
             function (Application $app) {
-                $security = new \CultuurNet\UDB3\Offer\Security(
+                $security = new Security(
                     $app['security.token_storage'],
                     $app['place_permission.repository']
                 );

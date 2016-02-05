@@ -1268,8 +1268,8 @@ $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\UsersServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\EventPermissionServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\PlacePermissionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
