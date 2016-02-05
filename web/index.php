@@ -382,7 +382,7 @@ $app->get(
     }
 );
 
-$app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearchesControllerProvider());
+$app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $app->mount('variations', new \CultuurNet\UDB3\Silex\Variations\VariationsControllerProvider());
 

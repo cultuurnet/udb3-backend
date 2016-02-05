@@ -31,5 +31,4 @@ class PlaceLookupServiceProvider implements ServiceProviderInterface
     {
 
     }
-
 }
