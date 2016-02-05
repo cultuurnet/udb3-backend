@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "de7fde159b8cfaef962e28f375454738",
-    "content-hash": "87d0ac4d7fc5fe2e89026f0ecce4efbb",
+    "hash": "61f652de39d9982aaffe28a1cfcf2424",
+    "content-hash": "350257bf6b40c81b42db88bbfff912d0",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1260,23 +1260,25 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-feature/III-702",
+            "version": "dev-feature/III-703",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "f3150dc8d978553f92046358f9efa39f4b43491e"
+                "reference": "f3ec0df43fa4f4a9c3ea20a72e662cbe22c1b91f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/f3150dc8d978553f92046358f9efa39f4b43491e",
-                "reference": "f3150dc8d978553f92046358f9efa39f4b43491e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/f3ec0df43fa4f4a9c3ea20a72e662cbe22c1b91f",
+                "reference": "f3ec0df43fa4f4a9c3ea20a72e662cbe22c1b91f",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
                 "cultuurnet/udb3": "~0.1",
-                "symfony/http-foundation": "~2.7.2"
+                "symfony/http-foundation": "~2.7.2",
+                "symfony/http-kernel": "~2.3",
+                "symfony/routing": "~2.3"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -1311,7 +1313,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-03 12:47:58"
+            "time": "2016-02-05 11:08:19"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -4229,32 +4231,32 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v3.0.2",
+            "version": "v2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "4686baa55a835e1c1ede9b86ba02415c8c8d6166"
+                "reference": "5451a8a1874fd4e6a4dd347ea611d86cd8441735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/4686baa55a835e1c1ede9b86ba02415c8c8d6166",
-                "reference": "4686baa55a835e1c1ede9b86ba02415c8c8d6166",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/5451a8a1874fd4e6a4dd347ea611d86cd8441735",
+                "reference": "5451a8a1874fd4e6a4dd347ea611d86cd8441735",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.3.9"
             },
             "conflict": {
-                "symfony/config": "<2.8"
+                "symfony/config": "<2.7"
             },
             "require-dev": {
                 "doctrine/annotations": "~1.0",
                 "doctrine/common": "~2.2",
                 "psr/log": "~1.0",
-                "symfony/config": "~2.8|~3.0",
-                "symfony/expression-language": "~2.8|~3.0",
-                "symfony/http-foundation": "~2.8|~3.0",
-                "symfony/yaml": "~2.8|~3.0"
+                "symfony/config": "~2.7|~3.0.0",
+                "symfony/expression-language": "~2.4|~3.0.0",
+                "symfony/http-foundation": "~2.3|~3.0.0",
+                "symfony/yaml": "~2.0,>=2.0.5|~3.0.0"
             },
             "suggest": {
                 "doctrine/annotations": "For using the annotation loader",
@@ -4266,7 +4268,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "2.8-dev"
                 }
             },
             "autoload": {
@@ -4299,7 +4301,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-01-27 05:14:46"
+            "time": "2016-01-11 16:43:36"
         },
         {
             "name": "symfony/security",
@@ -5179,7 +5181,7 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-702",
+            "version": "dev-feature/III-703",
             "package": "cultuurnet/udb3-symfony"
         }
     ],
