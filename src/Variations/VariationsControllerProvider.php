@@ -77,7 +77,7 @@ class VariationsControllerProvider implements ControllerProviderInterface
             ->bind('variations');
 
         $controllers
-            ->post('/', 'variations_write_controller:write')
+            ->post('/', 'variations_write_controller:handle')
             ->before(
                 function($request) use ($controllerProvider) {
                     return $controllerProvider->requireJsonContent($request);
