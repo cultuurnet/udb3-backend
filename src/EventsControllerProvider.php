@@ -8,6 +8,7 @@ use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use ValueObjects\String\String;
 
 class EventsControllerProvider implements ControllerProviderInterface
 {
@@ -66,7 +67,7 @@ class EventsControllerProvider implements ControllerProviderInterface
                     $commandId = $service->translateDescription(
                         $cdbid,
                         new \CultuurNet\UDB3\Language($lang),
-                        $request->get('description')
+                        new String($request->get('description'))
                     );
 
                     $response->setData(['commandId' => $commandId]);
