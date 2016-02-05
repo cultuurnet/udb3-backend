@@ -6,7 +6,10 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\Hydra\Symfony\PageUrlGenerator;
+use CultuurNet\UDB3\Symfony\CommandDeserializerController;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController;
+use CultuurNet\UDB3\Symfony\Variations\ReadVariationsRestController;
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
@@ -29,67 +32,18 @@ class VariationsControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        /* @var ControllerCollection $controllers */
-        $controllers = $app['controllers_factory'];
-        $controllerProvider = $this;
-
-        $controllers->get(
-            '/',
-            function (Application $app, Request $request) {
-                $factory = new CriteriaFromParameterBagFactory();
-                $criteria = $factory->createCriteriaFromParameterBag($request->query);
-
-                /** @var RepositoryInterface $search */
-                $search = $app['variations.search'];
-
-                $itemsPerPage = 5;
-                $pageNumber = intval($request->query->get('page', 0));
-
-                $variationIds = $search->getEventVariations(
-                    $criteria,
-                    $itemsPerPage,
-                    $pageNumber
-                );
-
-                /** @var DocumentRepositoryInterface $jsonLDRepository */
-                $jsonLDRepository = $app['variations.jsonld_repository'];
-
-                $variations = [];
-                foreach ($variationIds as $variationId) {
-                    $document = $jsonLDRepository->get($variationId);
-
-                    if ($document) {
-                        $variations[] = $document->getBody();
-                    }
-                }
-
-                $totalItems = $search->countEventVariations(
-                    $criteria
-                );
-
-                $pageUrlFactory = new PageUrlGenerator(
-                    $request->query,
-                    $app['url_generator'],
-                    'variations',
-                    'page'
-                );
-
-                return new JsonResponse(
-                    new PagedCollection(
-                        $pageNumber,
-                        $itemsPerPage,
-                        $variations,
-                        $totalItems,
-                        $pageUrlFactory,
-                        true
-                    )
+        $app['variations_read_controller'] = $app->share(
+            function (Application $app) {
+                return new ReadVariationsRestController(
+                    $app['variations.jsonld_repository'],
+                    $app['variations.search'],
+                    $app['url_generator']
                 );
             }
-        )->bind('variations');
+        );
 
-        $controllers->post(
-            '/',
-            function (Application $app, Request $request) use ($controllerProvider) {
+        $app['variations_write_controller'] = $app->share(
+            function (Application $app) {
                 $deserializer = new CreateEventVariationJSONDeserializer();
                 $deserializer->addUrlValidator(
                     new DefaultUrlValidator(
@@ -97,54 +51,50 @@ class VariationsControllerProvider implements ControllerProviderInterface
                         $app['event_service']
                     )
                 );
-                $command = $deserializer->deserialize(
-                    new String($request->getContent())
+
+                return new CommandDeserializerController(
+                    $deserializer,
+                    $app['event_command_bus']
                 );
-
-                $commandId = $app['event_command_bus']->dispatch($command);
-                return $controllerProvider->getResponseForCommandId($commandId);
             }
-        )->before(function($request) use ($controllerProvider) {
-            return $controllerProvider->requireJsonContent($request);
-        });
+        );
 
-        $controllers->patch(
-            '/{variation}',
-            function (Request $request, Application $app, JsonDocument $variation) use ($controllerProvider) {
-                $variationId = new Id($variation->getId());
-                $jsonCommand = new String($request->getContent());
-                $deserializer = new EditDescriptionJSONDeserializer($variationId);
-                $command = $deserializer->deserialize($jsonCommand);
-
-                $commandId = $app['event_command_bus']->dispatch($command);
-                return $controllerProvider->getResponseForCommandId($commandId);
+        $app['variations_edit_controller'] = $app->share(
+            function (Application $app) {
+                return new EditVariationsRestController(
+                    $app['variations.jsonld_repository'],
+                    $app['event_command_bus']
+                );
             }
-        )->before(
-            function($request) use ($controllerProvider) {
-                return $controllerProvider->requireJsonContent($request);
-            }
-        )->convert('variation', 'variations.id_to_document_converter:convert');
+        );
 
-        $controllers->delete(
-            '/{variation}',
-            function (Application $app, JsonDocument $variation) use ($controllerProvider) {
-                $variationId = new Id($variation->getId());
-                $command = new DeleteEventVariation($variationId);
+        /* @var ControllerCollection $controllers */
+        $controllers = $app['controllers_factory'];
+        $controllerProvider = $this;
 
-                $commandId = $app['event_command_bus']->dispatch($command);
-                return $controllerProvider->getResponseForCommandId($commandId);
-            }
-        )->convert('variation', 'variations.id_to_document_converter:convert');
+        $controllers
+            ->get('/', 'variations_read_controller:search')
+            ->bind('variations');
 
-        $controllers->get(
-            '/{variation}',
-            function (Application $app, JsonDocument $variation) {
-                $response = JsonLdResponse::create()
-                    ->setContent($variation->getRawBody());
+        $controllers
+            ->post('/', 'variations_write_controller:write')
+            ->before(
+                function($request) use ($controllerProvider) {
+                    return $controllerProvider->requireJsonContent($request);
+                }
+            );
 
-                return $response;
-            }
-        )->convert('variation', 'variations.id_to_document_converter:convert');
+        $controllers->get('/{id}', 'variations_read_controller:get');
+
+        $controllers
+            ->patch('/{id}', 'variations_edit_controller:edit')
+            ->before(
+                function($request) use ($controllerProvider) {
+                    return $controllerProvider->requireJsonContent($request);
+                }
+            );
+
+        $controllers->delete('/{id}', 'variations_edit_controller:delete');
 
         return $controllers;
     }
@@ -163,16 +113,5 @@ class VariationsControllerProvider implements ControllerProviderInterface
         } else {
             return null;
         }
-    }
-
-    /**
-     * @param string $commandId
-     * @return JsonResponse
-     */
-    private function getResponseForCommandId($commandId) {
-        return JsonResponse::create(
-            ['commandId' => $commandId],
-            JsonResponse::HTTP_ACCEPTED
-        );
     }
 }
