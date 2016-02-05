@@ -606,6 +606,86 @@
                 ]
             }
         },
+        "/place/{cdbid}/labels": {
+            "post": {
+                "summary": "Add a label to a single place.",
+                "description": "Authentication is required.",
+                "operationId": "addLabelToPlace",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the label to attach to the place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithPlaceLabel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place",
+                    "Label"
+                ]
+            }
+        },
+        "/place/{cdbid}/labels/{label}": {
+            "delete": {
+                "summary": "Remove a label from a place.",
+                "description": "Authentication is required.",
+                "operationId": "removeLabelFromPlace",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "description": "The label to remove from the place.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place",
+                    "Label"
+                ]
+            }
+        },
         "/organizer/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific organizer.",
@@ -2205,6 +2285,17 @@
             ]
         },
         "postObjectWithEventLabel": {
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "example": "Bio"
+                }
+            }
+        },
+        "postObjectWithPlaceLabel": {
             "required": [
                 "label"
             ],
