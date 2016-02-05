@@ -70,48 +70,17 @@ class VariationsControllerProvider implements ControllerProviderInterface
 
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
-        $controllerProvider = $this;
 
         $controllers
             ->get('/', 'variations_read_controller:search')
             ->bind('variations');
 
-        $controllers
-            ->post('/', 'variations_write_controller:handle')
-            ->before(
-                function($request) use ($controllerProvider) {
-                    return $controllerProvider->requireJsonContent($request);
-                }
-            );
+        $controllers->post('/', 'variations_write_controller:handle');
 
         $controllers->get('/{id}', 'variations_read_controller:get');
-
-        $controllers
-            ->patch('/{id}', 'variations_edit_controller:edit')
-            ->before(
-                function($request) use ($controllerProvider) {
-                    return $controllerProvider->requireJsonContent($request);
-                }
-            );
-
+        $controllers->patch('/{id}', 'variations_edit_controller:edit');
         $controllers->delete('/{id}', 'variations_edit_controller:delete');
 
         return $controllers;
-    }
-
-    /**
-     * @param Request $request
-     * @return JsonResponse|null
-     */
-    private function requireJsonContent(Request $request)
-    {
-        if ($request->getContentType() != 'json') {
-            return new JsonResponse(
-                [],
-                Response::HTTP_UNSUPPORTED_MEDIA_TYPE
-            );
-        } else {
-            return null;
-        }
     }
 }
