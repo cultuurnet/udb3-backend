@@ -475,6 +475,7 @@ $app['event_bus'] = $app->share(
                 'variations.jsonld.projector',
                 'index.projector',
                 'event_permission.projector',
+                'place_permission.projector'
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -1267,7 +1268,8 @@ $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\UsersServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\PermissionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),

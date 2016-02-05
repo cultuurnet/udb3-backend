@@ -33,7 +33,8 @@ class PlaceControllerProvider implements ControllerProviderInterface
                     $app['place_service'],
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
-                    $app['current_user']
+                    $app['current_user'],
+                    $app['place.security']
                 );
             }
         );
@@ -60,6 +61,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->post('place/{cdbid}/facilities', 'place_editing_controller:updateFacilities');
         $controllers->post('place/{cdbid}/organizer', 'place_editing_controller:updateOrganizer');
         $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
+        $controllers->get('place/{cdbid}/permission', 'place_editing_controller:hasPermission');
 
         return $controllers;
     }
