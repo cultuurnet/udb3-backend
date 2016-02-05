@@ -203,7 +203,7 @@ $app
                 $commandId = $service->translateTitle(
                     $cdbid,
                     new \CultuurNet\UDB3\Language($lang),
-                    $title
+                    new \ValueObjects\String\String($title)
                 );
 
                 $response->setData(['commandId' => $commandId]);
