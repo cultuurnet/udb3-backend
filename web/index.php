@@ -344,28 +344,6 @@ $app->post('query/label',
         };
     });
 
-$app
-    ->get(
-        'organizer/{cdbid}',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-            $service = $app['organizer_service'];
-
-            $organizer = $service->getEntity($cdbid);
-
-            $response = JsonLdResponse::create()
-                ->setContent($organizer)
-                ->setPublic()
-                ->setClientTtl(60 * 30)
-                ->setTtl(60 * 5);
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('organizer');
-
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->get(

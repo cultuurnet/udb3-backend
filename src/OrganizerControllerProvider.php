@@ -26,6 +26,28 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
+        $controllers
+            ->get(
+                '/organizer/{cdbid}',
+                function (Request $request, Application $app, $cdbid) {
+                    /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
+                    $service = $app['organizer_service'];
+
+                    $organizer = $service->getEntity($cdbid);
+
+                    $response = JsonLdResponse::create()
+                        ->setContent($organizer)
+                        ->setPublic()
+                        ->setClientTtl(60 * 30)
+                        ->setTtl(60 * 5);
+
+                    $response->headers->set('Vary', 'Origin');
+
+                    return $response;
+                }
+            )
+            ->bind('organizer');
+
         $controllers->get(
             '/api/1.0/organizer/suggest/{term}',
             function (Request $request, $term, Application $app) {
