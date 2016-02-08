@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Organizer\ReadModel\Lookup\OrganizerLookupServiceInterface;
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Symfony\Organizer\OrganizerController;
 use CultuurNet\UDB3\Title;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -23,29 +24,19 @@ class OrganizerControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
+        $app['organizer_controller'] = $app->share(
+            function (Application $app) {
+                return new OrganizerController(
+                    $app['organizer_service']
+                );
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers
-            ->get(
-                '/organizer/{cdbid}',
-                function (Request $request, Application $app, $cdbid) {
-                    /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-                    $service = $app['organizer_service'];
-
-                    $organizer = $service->getEntity($cdbid);
-
-                    $response = JsonLdResponse::create()
-                        ->setContent($organizer)
-                        ->setPublic()
-                        ->setClientTtl(60 * 30)
-                        ->setTtl(60 * 5);
-
-                    $response->headers->set('Vary', 'Origin');
-
-                    return $response;
-                }
-            )
+            ->get('/organizer/{cdbid}', 'organizer_controller:get')
             ->bind('organizer');
 
         $controllers->get(
