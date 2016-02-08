@@ -606,6 +606,53 @@
                 ]
             }
         },
+        "/place/{cdbid}/major-info": {
+            "post": {
+                "summary": "Get the place major info.",
+                "operationId": "getMajorInfo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing major info for a place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postPlaceObjectMajorInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "has permission.",
+                        "schema": {
+                            "properties": {
+                                "hasPermission": {
+                                    "type": "boolean",
+                                    "example": false
+                                }
+                            },
+                            "required": [
+                                "hasPermission"
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
         "/organizer/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific organizer.",
@@ -2696,6 +2743,117 @@
             "required": [
                 "description",
                 "copyrightHolder"
+            ]
+        },
+        "postPlaceObjectMajorInfo": {
+            "properties": {
+                "name": {
+                    "type": "object",
+                    "properties": {
+                        "nl": {
+                            "type": "string",
+                            "example": "Test place"
+                        }
+                    }
+                },
+                "type": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "example": "0.14.0.0.0"
+                        },
+                        "label": {
+                            "type": "string",
+                            "example": "Monument"
+                        },
+                        "domain": {
+                            "type": "string",
+                            "enum": [
+                                "eventtype"
+                            ]
+                        }
+                    }
+                },
+                "location": {
+                    "type": "object",
+                    "properties": {
+                        "address": {
+                            "type": "object",
+                            "properties": {
+                                "addressCountry": {
+                                    "type": "string",
+                                    "example": "BE",
+                                    "format": "ISO 3166-1 alpha-2"
+                                },
+                                "addressLocality": {
+                                    "type": "string",
+                                    "example": "Leuven"
+                                },
+                                "postalCode": {
+                                    "type": "string",
+                                    "format": "postal code",
+                                    "example": "3000"
+                                },
+                                "streetAddress": {
+                                    "type": "string",
+                                    "example": "Teststraat 5",
+                                    "format": "street name and number"
+                                }
+                            }
+                        }
+                    }
+                },
+                "calendarType": {
+                    "type": "string",
+                    "enum": [
+                        "single",
+                        "multiple",
+                        "periodic",
+                        "permanent"
+                    ],
+                    "example": "permanent"
+                },
+                "openingHours": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "dayOfWeek": {
+                                "type": "string",
+                                "enum": [
+                                    "maandag",
+                                    "dinsdag",
+                                    "woensdag",
+                                    "donderdag",
+                                    "vrijdag",
+                                    "zaterdag",
+                                    "zondag"
+                                ],
+                                "example": ["tuesday"]
+                            },
+                            "opens": {
+                                "type": "string",
+                                "example": "00:30"
+                            },
+                            "closes": {
+                                "type": "string",
+                                "example": "12:30"
+                            },
+                            "label": {
+                                "type": "string",
+                                "example": "Dinsdag"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "type",
+                "location",
+                "calendarType",
+                "openingHours"
             ]
         }
     }
