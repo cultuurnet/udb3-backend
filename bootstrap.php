@@ -1268,7 +1268,7 @@ $app['database.installer'] = $app->share(
 
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\OrganizerLookupServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\UsersServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());

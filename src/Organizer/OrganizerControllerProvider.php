@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Symfony\Organizer\EditOrganizerRestController;
 use CultuurNet\UDB3\Symfony\Organizer\ReadOrganizerRestController;
