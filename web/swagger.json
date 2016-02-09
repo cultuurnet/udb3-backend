@@ -2986,20 +2986,35 @@
                     "type": "object",
                     "properties": {
                         "url": {
-                            "type": "string",
-                            "format": "url",
-                            "example": "http://google.be"
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "url",
+                                "example": "http://google.be"
+                            }
                         },
                         "email": {
-                            "type": "string",
-                            "format": "email",
-                            "example": "joske@2dotstwice.be"
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "email",
+                                "example": "joske@2dotstwice.be"
+                            }
                         },
                         "phone": {
-                            "type": "string",
-                            "example": "0123456789"
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "phone",
+                                "example": ["0123456789"]
+                            }
                         }
-                    }
+                    },
+                    "required": [
+                        "url",
+                        "email",
+                        "phone"
+                    ]
                 }
             },
             "required": [
