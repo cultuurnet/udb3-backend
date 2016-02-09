@@ -608,8 +608,8 @@
         },
         "/place/{cdbid}/major-info": {
             "post": {
-                "summary": "Get the place major info.",
-                "operationId": "getMajorInfo",
+                "summary": "Update the place major info.",
+                "operationId": "updateMajorInfo",
                 "produces": [
                     "application/json"
                 ],
@@ -634,16 +634,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "has permission.",
+                        "description": "the command id.",
                         "schema": {
                             "properties": {
-                                "hasPermission": {
-                                    "type": "boolean",
-                                    "example": false
+                                "commandId": {
+                                    "type": "string",
+                                    "example": "f45d25fba17acd1742b2a89a0058dbc4"
                                 }
                             },
                             "required": [
-                                "hasPermission"
+                                "commandId"
                             ]
                         }
                     }
