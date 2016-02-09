@@ -700,6 +700,53 @@
                 ]
             }
         },
+        "/place/{cdbid}/contactPoint": {
+            "post": {
+                "summary": "Update the place contact point.",
+                "operationId": "updateContactPoint",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the contact point for a place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postPlaceObjectContactPoint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "the command id.",
+                        "schema": {
+                            "properties": {
+                                "commandId": {
+                                    "type": "string",
+                                    "example": "f45d25fba17acd1742b2a89a0058dbc4"
+                                }
+                            },
+                            "required": [
+                                "commandId"
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
         "/organizer/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific organizer.",
@@ -2931,6 +2978,32 @@
             },
             "required": [
                 "bookingInfo"
+            ]
+        },
+        "postPlaceObjectContactPoint": {
+            "properties": {
+                "contactPoint": {
+                    "type": "object",
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "format": "url",
+                            "example": "http://google.be"
+                        },
+                        "email": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "joske@2dotstwice.be"
+                        },
+                        "phone": {
+                            "type": "string",
+                            "example": "0123456789"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "contactPoint"
             ]
         }
     }
