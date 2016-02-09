@@ -653,6 +653,53 @@
                 ]
             }
         },
+        "/place/{cdbid}/bookingInfo": {
+            "post": {
+                "summary": "Update the place booking info.",
+                "operationId": "updateBookingInfo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing bookinginfo for a place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postPlaceObjectBookingInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "the command id.",
+                        "schema": {
+                            "properties": {
+                                "commandId": {
+                                    "type": "string",
+                                    "example": "f45d25fba17acd1742b2a89a0058dbc4"
+                                }
+                            },
+                            "required": [
+                                "commandId"
+                            ]
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
         "/organizer/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific organizer.",
@@ -2854,6 +2901,36 @@
                 "location",
                 "calendarType",
                 "openingHours"
+            ]
+        },
+        "postPlaceObjectBookingInfo": {
+            "properties": {
+                "bookingInfo": {
+                    "type": "object",
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "format": "url",
+                            "example": "http://google.be"
+                        },
+                        "urlLabel": {
+                            "type": "string",
+                            "example": "Reserveer plaatsen"
+                        },
+                        "email": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "joske@2dotstwice.be"
+                        },
+                        "phone": {
+                            "type": "string",
+                            "example": "0123456789"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "bookingInfo"
             ]
         }
     }
