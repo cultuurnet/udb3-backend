@@ -308,18 +308,6 @@ $app
         }
     );
 
-$app->get(
-    'api/1.0/user/labels',
-    function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface $usedLabelsMemoryService */
-        $usedLabelsMemoryService = $app['used_labels_memory'];
-        $user = $app['current_user'];
-        $memory = $usedLabelsMemoryService->getMemory($user->id);
-
-        return JsonResponse::create($memory);
-    }
-);
-
 $app->post(
     'events/label',
     function (Request $request, Application $app) {
@@ -419,6 +407,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 
 /**
  * API callbacks for authentication.
