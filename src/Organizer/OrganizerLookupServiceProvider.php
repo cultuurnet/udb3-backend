@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Organizer;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -25,5 +22,4 @@ class OrganizerLookupServiceProvider implements ServiceProviderInterface
     {
 
     }
-
 }
