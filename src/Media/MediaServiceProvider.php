@@ -15,7 +15,6 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\Number\Natural;
 
 class MediaServiceProvider implements ServiceProviderInterface
 {
