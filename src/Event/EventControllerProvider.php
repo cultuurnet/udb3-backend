@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
-use CultuurNet\UDB3\Symfony\Event\EventEditingRestController;
-use CultuurNet\UDB3\Symfony\Event\EventRestController;
+use CultuurNet\UDB3\Symfony\Event\EditEventRestController;
+use CultuurNet\UDB3\Symfony\Event\ReadEventRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -19,7 +19,7 @@ class EventControllerProvider implements ControllerProviderInterface
     {
         $app['event_controller'] = $app->share(
             function (Application $app) {
-                return new EventRestController(
+                return new ReadEventRestController(
                     $app['event_service'],
                     $app['event_history_repository']
                 );
@@ -28,7 +28,7 @@ class EventControllerProvider implements ControllerProviderInterface
 
         $app['event_editing_controller'] = $app->share(
             function (Application $app) {
-                return new EventEditingRestController(
+                return new EditEventRestController(
                     $app['event_service'],
                     $app['event_editor'],
                     $app['used_labels_memory'],
