@@ -716,6 +716,68 @@
                 ]
             }
         },
+        "/api/1.0/organizer/suggest/{term}": {
+            "get": {
+                "summary": "Get the list of organizers which contain {term} in their title.",
+                "operationId": "findByPartOfTitle",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "term",
+                        "in": "path",
+                        "description": "The term which will be or be part of the title of the organizer.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The list of organizers whose title contains {term}.",
+                        "schema": {
+                            "$ref": "#/definitions/ListOfOrganizers"
+                        }
+                    }
+                },
+                "tags": [
+                    "Organizer"
+                ]
+            }
+        },
+        "/api/1.0/organizer": {
+            "post": {
+                "summary": "Create an organizer.",
+                "operationId": "createOrganizer",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing information about Organizer.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Organizer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The organizerId and it's url.",
+                        "schema": {
+                            "$ref": "#/definitions/OrganizerId"
+                        }
+                    }
+
+
+                },
+                "tags": [
+                    "Organizer"
+                ]
+            }
+        },
         "/uitid/user": {
             "get": {
                 "summary": "Retrieve all information about the current user.",
@@ -2776,6 +2838,49 @@
             "required": [
                 "description",
                 "copyrightHolder"
+            ]
+        },
+        "ListOfOrganizers": {
+            "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3562
+                },
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Organizer"
+                    }
+                }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
+        },
+        "OrganizerId": {
+            "properties": {
+                "organizerId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "f8597ef0-9364-4ab5-a3cc-1e344e599fc7"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "url",
+                    "example": "http://culudb-silex.dev:8080/organizer/f8597ef0-9364-4ab5-a3cc-1e344e599fc7"
+                }
+            },
+            "required": [
+                "organizerId",
+                "url"
             ]
         }
     }
