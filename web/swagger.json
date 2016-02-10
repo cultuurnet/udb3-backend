@@ -778,7 +778,7 @@
                 ]
             }
         },
-        "/api/1.0/user": {
+        "/uitid/user": {
             "get": {
                 "summary": "Retrieve all information about the current user.",
                 "description": "Authentication is required.",
