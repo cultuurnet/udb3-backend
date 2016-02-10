@@ -293,7 +293,7 @@
                         "description": "An object containing the label to attach to the cultural event.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/postObjectWithEventLabel"
+                            "$ref": "#/definitions/labelCommand"
                         }
                     }
                 ],
@@ -629,7 +629,7 @@
                         "description": "An object containing the label to attach to the place.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/postObjectWithPlaceLabel"
+                            "$ref": "#/definitions/labelCommand"
                         }
                     }
                 ],
@@ -820,7 +820,7 @@
                 ]
             }
         },
-        "/api/1.0/user": {
+        "/uitid/user": {
             "get": {
                 "summary": "Retrieve all information about the current user.",
                 "description": "Authentication is required.",
@@ -2388,18 +2388,7 @@
                 "title"
             ]
         },
-        "postObjectWithEventLabel": {
-            "required": [
-                "label"
-            ],
-            "properties": {
-                "label": {
-                    "type": "string",
-                    "example": "Bio"
-                }
-            }
-        },
-        "postObjectWithPlaceLabel": {
+        "labelCommand": {
             "required": [
                 "label"
             ],
