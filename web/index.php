@@ -289,7 +289,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvide
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Label\LabelControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 
 /**
  * API callbacks for authentication.

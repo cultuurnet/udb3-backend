@@ -3,14 +3,14 @@
  * @file
  */
 
-namespace CultuurNet\UDB3\Silex\Label;
+namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
-class LabelControllerProvider implements ControllerProviderInterface
+class OfferControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
