@@ -12,50 +12,38 @@ class OfferControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app['event_offer_controller'] = $app->share(
-            function (Application $app) {
-                return new EditOfferRestController(
-                    $app['event_editor_with_label_memory'],
-                    new LabelJSONDeserializer()
-                );
-            }
-        );
-
-        $app['place_offer_controller'] = $app->share(
-            function (Application $app) {
-                return new EditOfferRestController(
-                    $app['place_editing_service_with_label_memory'],
-                    new LabelJSONDeserializer()
-                );
-            }
-        );
-
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers
-            ->post(
-                'event/{cdbid}/labels',
-                'event_offer_controller:addLabel'
+        $offer_services = [
+            'event' => 'event_editor_with_label_memory',
+            'place' => 'place_editing_service_with_label_memory',
+        ];
+
+        foreach ($offer_services as $offerType => $serviceName) {
+            $controllerName = "{$offerType}_offer_controller";
+
+            $app[$controllerName] = $app->share(
+                function (Application $app) use ($serviceName) {
+                    return new EditOfferRestController(
+                        $app[$serviceName],
+                        new LabelJSONDeserializer()
+                    );
+                }
             );
 
-        $controllers
-            ->delete(
-                'event/{cdbid}/labels/{label}',
-                'event_offer_controller:removeLabel'
-            );
+            $controllers
+                ->post(
+                    "{$offerType}/{cdbid}/labels",
+                    "{$controllerName}:addLabel"
+                );
 
-        $controllers
-            ->post(
-                'place/{cdbid}/labels',
-                'place_offer_controller:addlabel'
-            );
-
-        $controllers
-            ->delete(
-                'place/{cdbid}/labels/{label}',
-                'place_offer_controller:removeLabel'
-            );
+            $controllers
+                ->delete(
+                    "{$offerType}/{cdbid}/labels/{label}",
+                    "{$controllerName}:removeLabel"
+                );
+        }
 
         return $controllers;
     }
