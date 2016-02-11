@@ -1,10 +1,8 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -19,7 +17,8 @@ class OfferControllerProvider implements ControllerProviderInterface
                 return new EditOfferRestController(
                     $app['event_editor'],
                     $app['current_user'],
-                    $app['used_labels_memory']
+                    $app['used_labels_memory'],
+                    new LabelJSONDeserializer()
                 );
             }
         );
@@ -29,7 +28,8 @@ class OfferControllerProvider implements ControllerProviderInterface
                 return new EditOfferRestController(
                     $app['place_editing_service'],
                     $app['current_user'],
-                    $app['used_labels_memory']
+                    $app['used_labels_memory'],
+                    new LabelJSONDeserializer()
                 );
             }
         );
