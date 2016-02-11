@@ -12,23 +12,19 @@ class OfferControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app['event_label_controller'] = $app->share(
+        $app['event_offer_controller'] = $app->share(
             function (Application $app) {
                 return new EditOfferRestController(
-                    $app['event_editor'],
-                    $app['current_user'],
-                    $app['used_labels_memory'],
+                    $app['event_editor_with_label_memory'],
                     new LabelJSONDeserializer()
                 );
             }
         );
 
-        $app['place_label_controller'] = $app->share(
+        $app['place_offer_controller'] = $app->share(
             function (Application $app) {
                 return new EditOfferRestController(
-                    $app['place_editing_service'],
-                    $app['current_user'],
-                    $app['used_labels_memory'],
+                    $app['place_editing_service_with_label_memory'],
                     new LabelJSONDeserializer()
                 );
             }
@@ -40,25 +36,25 @@ class OfferControllerProvider implements ControllerProviderInterface
         $controllers
             ->post(
                 'event/{cdbid}/labels',
-                'event_label_controller:addLabel'
+                'event_offer_controller:addLabel'
             );
 
         $controllers
             ->delete(
                 'event/{cdbid}/labels/{label}',
-                'event_label_controller:removeLabel'
+                'event_offer_controller:removeLabel'
             );
 
         $controllers
             ->post(
                 'place/{cdbid}/labels',
-                'place_label_controller:addlabel'
+                'place_offer_controller:addlabel'
             );
 
         $controllers
             ->delete(
                 'place/{cdbid}/labels/{label}',
-                'place_label_controller:removeLabel'
+                'place_offer_controller:removeLabel'
             );
 
         return $controllers;
