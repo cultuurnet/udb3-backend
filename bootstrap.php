@@ -857,19 +857,6 @@ $app['event_labeller'] = $app->share(
     }
 );
 
-$app['event_editor'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\DefaultEventEditingService(
-            $app['event_service'],
-            $app['event_command_bus'],
-            new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['event_jsonld_repository'],
-            $app['place_service'],
-            new \CultuurNet\UDB3\Event\Commands\EventCommandFactory()
-        );
-    }
-);
-
 /** Place **/
 
 $app['place_iri_generator'] = $app->share(
@@ -1267,6 +1254,7 @@ $app['database.installer'] = $app->share(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
