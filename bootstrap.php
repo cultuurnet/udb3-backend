@@ -995,17 +995,6 @@ $app['place_service'] = $app->share(
     }
 );
 
-$app['place_editing_service'] = $app->share(
-    function ($app) {
-        return new CultuurNet\UDB3\Place\DefaultPlaceEditingService(
-            $app['event_command_bus'],
-            new Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['place_jsonld_repository'],
-            new \CultuurNet\UDB3\Place\Commands\PlaceCommandFactory()
-        );
-    }
-);
-
 /** Organizer **/
 
 $app['organizer_iri_generator'] = $app->share(
@@ -1255,6 +1244,7 @@ $app['database.installer'] = $app->share(
 
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
