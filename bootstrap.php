@@ -368,7 +368,7 @@ $app['event_jsonld_cache'] = $app->share(
 
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
-        $projector = new \CultuurNet\UDB3\Event\EventLDProjector(
+        $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
             $app['event_jsonld_repository'],
             $app['iri_generator'],
             $app['event_service'],
@@ -863,8 +863,9 @@ $app['event_editor'] = $app->share(
             $app['event_service'],
             $app['event_command_bus'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['event_repository'],
-            $app['place_service']
+            $app['event_jsonld_repository'],
+            $app['place_service'],
+            new \CultuurNet\UDB3\Event\Commands\EventCommandFactory()
         );
     }
 );
@@ -1012,7 +1013,8 @@ $app['place_editing_service'] = $app->share(
         return new CultuurNet\UDB3\Place\DefaultPlaceEditingService(
             $app['event_command_bus'],
             new Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['place_repository']
+            $app['place_jsonld_repository'],
+            new \CultuurNet\UDB3\Place\Commands\PlaceCommandFactory()
         );
     }
 );
@@ -1266,8 +1268,8 @@ $app['database.installer'] = $app->share(
 
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\OrganizerLookupServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\UsersServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 

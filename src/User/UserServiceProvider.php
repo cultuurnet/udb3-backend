@@ -3,7 +3,7 @@
  * @file
  */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\User;
 
 use CultuurNet\UDB3\UiTID\InMemoryCacheDecoratedUsers;
 use CultuurNet\UDB3\UiTID\CultureFeedUsers;
@@ -11,7 +11,7 @@ use CultuurNet\UDB3\UiTID\UsersInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class UsersServiceProvider implements ServiceProviderInterface
+class UserServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

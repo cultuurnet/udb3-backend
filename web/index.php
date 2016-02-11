@@ -199,18 +199,13 @@ $app
                 return new JsonResponse(['error' => "title required"], 400);
             }
 
-            try {
-                $commandId = $service->translateTitle(
-                    $cdbid,
-                    new \CultuurNet\UDB3\Language($lang),
-                    $title
-                );
+            $commandId = $service->translateTitle(
+                $cdbid,
+                new \CultuurNet\UDB3\Language($lang),
+                $title
+            );
 
-                $response->setData(['commandId' => $commandId]);
-            } catch (Exception $e) {
-                $response->setStatusCode(400);
-                $response->setData(['error' => $e->getMessage()]);
-            }
+            $response->setData(['commandId' => $commandId]);
 
             return $response;
         }
@@ -220,30 +215,25 @@ $app
     ->post(
         'event/{cdbid}/labels',
         function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
             $service = $app['event_editor'];
 
             $response = new JsonResponse();
 
-            try {
-                $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-                $commandId = $service->label(
-                    $cdbid,
-                    $label
-                );
+            $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
+            $commandId = $service->addLabel(
+                $cdbid,
+                $label
+            );
 
-                /** @var CultureFeed_User $user */
-                $user = $app['current_user'];
-                $app['used_labels_memory']->rememberLabelUsed(
-                    $user->id,
-                    $label
-                );
+            /** @var CultureFeed_User $user */
+            $user = $app['current_user'];
+            $app['used_labels_memory']->rememberLabelUsed(
+                $user->id,
+                $label
+            );
 
-                $response->setData(['commandId' => $commandId]);
-            } catch (Exception $e) {
-                $response->setStatusCode(400);
-                $response->setData(['error' => $e->getMessage()]);
-            }
+            $response->setData(['commandId' => $commandId]);
 
             return $response;
         }
@@ -253,38 +243,70 @@ $app
     ->delete(
         'event/{cdbid}/labels/{label}',
         function (Request $request, Application $app, $cdbid, $label) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
+            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
             $service = $app['event_editor'];
 
             $response = new JsonResponse();
 
-            try {
-                $commandId = $service->unlabel(
-                    $cdbid,
-                    new \CultuurNet\UDB3\Label($label)
-                );
+            $commandId = $service->deleteLabel(
+                $cdbid,
+                new \CultuurNet\UDB3\Label($label)
+            );
 
-                $response->setData(['commandId' => $commandId]);
-            } catch (Exception $e) {
-                $response->setStatusCode(400);
-                $response->setData(['error' => $e->getMessage()]);
-            }
+            $response->setData(['commandId' => $commandId]);
 
             return $response;
         }
     );
 
-$app->get(
-    'api/1.0/user/labels',
-    function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface $usedLabelsMemoryService */
-        $usedLabelsMemoryService = $app['used_labels_memory'];
-        $user = $app['current_user'];
-        $memory = $usedLabelsMemoryService->getMemory($user->id);
+$app
+    ->post(
+        'place/{cdbid}/labels',
+        function (Request $request, Application $app, $cdbid) {
+            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
+            $service = $app['place_editing_service'];
 
-        return JsonResponse::create($memory);
-    }
-);
+            $response = new JsonResponse();
+
+            $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
+
+            $commandId = $service->addLabel(
+                $cdbid,
+                $label
+            );
+
+            /** @var CultureFeed_User $user */
+            $user = $app['current_user'];
+            $app['used_labels_memory']->rememberLabelUsed(
+                $user->id,
+                $label
+            );
+
+            $response->setData(['commandId' => $commandId]);
+
+            return $response;
+        }
+    );
+
+$app
+    ->delete(
+        'place/{cdbid}/labels/{label}',
+        function (Request $request, Application $app, $cdbid, $label) {
+            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
+            $service = $app['place_editing_service'];
+
+            $response = new JsonResponse();
+
+            $commandId = $service->deleteLabel(
+                $cdbid,
+                new \CultuurNet\UDB3\Label($label)
+            );
+
+            $response->setData(['commandId' => $commandId]);
+
+            return $response;
+        }
+    );
 
 $app->post(
     'events/label',
@@ -297,21 +319,16 @@ $app->post(
 
         $response = new JsonResponse();
 
-        try {
-            $commandId = $eventLabeller->labelEventsById($eventIds, $label);
+        $commandId = $eventLabeller->labelEventsById($eventIds, $label);
 
-            /** @var CultureFeed_User $user */
-            $user = $app['current_user'];
-            $app['used_labels_memory']->rememberLabelUsed(
-                $user->id,
-                $label
-            );
+        /** @var CultureFeed_User $user */
+        $user = $app['current_user'];
+        $app['used_labels_memory']->rememberLabelUsed(
+            $user->id,
+            $label
+        );
 
-            $response->setData(['commandId' => $commandId]);
-        } catch (Exception $e) {
-            $response->setStatusCode(400);
-            $response->setData(['error' => $e->getMessage()]);
-        };
+        $response->setData(['commandId' => $commandId]);
 
         return $response;
     }
@@ -327,44 +344,18 @@ $app->post('query/label',
             return new JsonResponse(['error' => "query required"], 400);
         }
 
-        try {
-            $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-            $commandId = $eventLabeller->labelQuery($query, $label);
+        $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
+        $commandId = $eventLabeller->labelQuery($query, $label);
 
-            /** @var CultureFeed_User $user */
-            $user = $app['current_user'];
-            $app['used_labels_memory']->rememberLabelUsed(
-                $user->id,
-                $label
-            );
+        /** @var CultureFeed_User $user */
+        $user = $app['current_user'];
+        $app['used_labels_memory']->rememberLabelUsed(
+            $user->id,
+            $label
+        );
 
-            return new JsonResponse(['commandId' => $commandId]);
-        } catch (Exception $e) {
-            return new JsonResponse(['error' => $e->getMessage()], 400);
-        };
+        return new JsonResponse(['commandId' => $commandId]);
     });
-
-$app
-    ->get(
-        'organizer/{cdbid}',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-            $service = $app['organizer_service'];
-
-            $organizer = $service->getEntity($cdbid);
-
-            $response = JsonLdResponse::create()
-                ->setContent($organizer)
-                ->setPublic()
-                ->setClientTtl(60 * 30)
-                ->setTtl(60 * 5);
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('organizer');
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
@@ -391,9 +382,10 @@ $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvi
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 
 /**
  * API callbacks for authentication.
