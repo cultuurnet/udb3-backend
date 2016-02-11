@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Variations;
 
 use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
@@ -104,14 +101,6 @@ class VariationsServiceProvider implements ServiceProviderInterface
                     $app['event_jsonld_repository'],
                     $app['variations.search'],
                     $iriGenerator
-                );
-            }
-        );
-
-        $app['variations.id_to_document_converter'] = $app->share(
-            function (Application $app) {
-                return new VariationIdToJSONLDDocumentConverter(
-                    $app['variations.jsonld_repository']
                 );
             }
         );

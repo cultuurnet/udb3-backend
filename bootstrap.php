@@ -37,7 +37,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new CultuurNet\UiTIDProvider\Session\SessionConfigurationProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(

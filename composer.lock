@@ -1092,12 +1092,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "97012f70fcc5f7e3641e3e634f2bdb8bfb898c7a"
+                "reference": "cf78c29532383a6c042f3fea52f711dc96090e73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/97012f70fcc5f7e3641e3e634f2bdb8bfb898c7a",
-                "reference": "97012f70fcc5f7e3641e3e634f2bdb8bfb898c7a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cf78c29532383a6c042f3fea52f711dc96090e73",
+                "reference": "cf78c29532383a6c042f3fea52f711dc96090e73",
                 "shasum": ""
             },
             "require": {
@@ -1165,7 +1165,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-02-09 08:17:54"
+            "time": "2016-02-10 14:51:25"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1263,19 +1263,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "e1af5696ffcfae7d459d44bf676b68aed3b135ad"
+                "reference": "42a2b73e407dbd078c50116cc3bc688e894f0b81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/e1af5696ffcfae7d459d44bf676b68aed3b135ad",
-                "reference": "e1af5696ffcfae7d459d44bf676b68aed3b135ad",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/42a2b73e407dbd078c50116cc3bc688e894f0b81",
+                "reference": "42a2b73e407dbd078c50116cc3bc688e894f0b81",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
                 "cultuurnet/udb3": "~0.1",
-                "symfony/http-foundation": "~2.7.2"
+                "symfony/http-foundation": "~2.7.2",
+                "symfony/http-kernel": "~2.3",
+                "symfony/routing": "~2.3"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -1310,7 +1312,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-10 11:52:37"
+            "time": "2016-02-11 12:27:23"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -4228,32 +4230,32 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v3.0.2",
+            "version": "v2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "4686baa55a835e1c1ede9b86ba02415c8c8d6166"
+                "reference": "5451a8a1874fd4e6a4dd347ea611d86cd8441735"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/4686baa55a835e1c1ede9b86ba02415c8c8d6166",
-                "reference": "4686baa55a835e1c1ede9b86ba02415c8c8d6166",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/5451a8a1874fd4e6a4dd347ea611d86cd8441735",
+                "reference": "5451a8a1874fd4e6a4dd347ea611d86cd8441735",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": ">=5.3.9"
             },
             "conflict": {
-                "symfony/config": "<2.8"
+                "symfony/config": "<2.7"
             },
             "require-dev": {
                 "doctrine/annotations": "~1.0",
                 "doctrine/common": "~2.2",
                 "psr/log": "~1.0",
-                "symfony/config": "~2.8|~3.0",
-                "symfony/expression-language": "~2.8|~3.0",
-                "symfony/http-foundation": "~2.8|~3.0",
-                "symfony/yaml": "~2.8|~3.0"
+                "symfony/config": "~2.7|~3.0.0",
+                "symfony/expression-language": "~2.4|~3.0.0",
+                "symfony/http-foundation": "~2.3|~3.0.0",
+                "symfony/yaml": "~2.0,>=2.0.5|~3.0.0"
             },
             "suggest": {
                 "doctrine/annotations": "For using the annotation loader",
@@ -4265,7 +4267,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "2.8-dev"
                 }
             },
             "autoload": {
@@ -4298,7 +4300,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-01-27 05:14:46"
+            "time": "2016-01-11 16:43:36"
         },
         {
             "name": "symfony/security",
@@ -4559,12 +4561,12 @@
             "version": "v2.6.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/videlalvaro/php-amqplib.git",
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
                 "reference": "8a6e89ad46130eb365b7f57d313f2a795f5e3269"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/8a6e89ad46130eb365b7f57d313f2a795f5e3269",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/8a6e89ad46130eb365b7f57d313f2a795f5e3269",
                 "reference": "8a6e89ad46130eb365b7f57d313f2a795f5e3269",
                 "shasum": ""
             },
