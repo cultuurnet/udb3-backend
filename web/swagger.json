@@ -20,7 +20,7 @@
         "application/xml"
     ],
     "paths": {
-        "/event": {
+        "/api/1.0/event": {
             "post": {
                 "summary": "Create a new cultural event.",
                 "operationId": "createEvent",
@@ -877,7 +877,7 @@
                 ]
             }
         },
-        "/saved-searches": {
+        "/saved-searches/": {
             "get": {
                 "summary": "Get a list of saved searches for the current user.",
                 "description": "Authentication is required.",
