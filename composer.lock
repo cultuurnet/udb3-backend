@@ -1092,12 +1092,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d534cb2c62c85ce1a4aec71ed285212745a5876b"
+                "reference": "f4bc40469ff684ae6d6660ce6377d9e335c1d83c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d534cb2c62c85ce1a4aec71ed285212745a5876b",
-                "reference": "d534cb2c62c85ce1a4aec71ed285212745a5876b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f4bc40469ff684ae6d6660ce6377d9e335c1d83c",
+                "reference": "f4bc40469ff684ae6d6660ce6377d9e335c1d83c",
                 "shasum": ""
             },
             "require": {
@@ -1165,7 +1165,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-02-11 15:19:50"
+            "time": "2016-02-15 14:54:47"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1263,12 +1263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "f6481339eb31fcefb997d6a48de64fefbb7989d2"
+                "reference": "06f01aa5acb579e906ffb801cd3adefb4b9f40cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/f6481339eb31fcefb997d6a48de64fefbb7989d2",
-                "reference": "f6481339eb31fcefb997d6a48de64fefbb7989d2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/06f01aa5acb579e906ffb801cd3adefb4b9f40cd",
+                "reference": "06f01aa5acb579e906ffb801cd3adefb4b9f40cd",
                 "shasum": ""
             },
             "require": {
@@ -1312,7 +1312,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-11 14:57:31"
+            "time": "2016-02-15 14:39:58"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1320,12 +1320,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "1f83502ebc000c57bce346f718e8b9f4439f8eaf"
+                "reference": "889b909cdbd9f4702dda0120c622a30e0507e2a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/1f83502ebc000c57bce346f718e8b9f4439f8eaf",
-                "reference": "1f83502ebc000c57bce346f718e8b9f4439f8eaf",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/889b909cdbd9f4702dda0120c622a30e0507e2a0",
+                "reference": "889b909cdbd9f4702dda0120c622a30e0507e2a0",
                 "shasum": ""
             },
             "require": {
@@ -1369,7 +1369,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-02-09 11:26:27"
+            "time": "2016-02-15 15:06:49"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -4558,16 +4558,16 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-amqplib/php-amqplib.git",
-                "reference": "8a6e89ad46130eb365b7f57d313f2a795f5e3269"
+                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/8a6e89ad46130eb365b7f57d313f2a795f5e3269",
-                "reference": "8a6e89ad46130eb365b7f57d313f2a795f5e3269",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
+                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
                 "shasum": ""
             },
             "require": {
@@ -4575,8 +4575,12 @@
                 "ext-mbstring": "*",
                 "php": ">=5.3.0"
             },
+            "replace": {
+                "videlalvaro/php-amqplib": "self.version"
+            },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "^3.7",
+                "scrutinizer/ocular": "^1.1"
             },
             "suggest": {
                 "ext-sockets": "Use AMQPSocketConnection"
@@ -4584,7 +4588,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -4598,17 +4602,29 @@
             ],
             "authors": [
                 {
-                    "name": "Alvaro Videla"
+                    "name": "Alvaro Videla",
+                    "role": "Original Maintainer"
+                },
+                {
+                    "name": "John Kelly",
+                    "email": "johnmkelly86@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Raúl Araya",
+                    "email": "nubeiro@gmail.com",
+                    "role": "Maintainer"
                 }
             ],
-            "description": "This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
-            "homepage": "https://github.com/videlalvaro/php-amqplib/",
+            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/php-amqplib/php-amqplib/",
             "keywords": [
                 "message",
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2015-09-23 02:25:31"
+            "abandoned": "php-amqplib/php-amqplib",
+            "time": "2016-02-12 16:54:39"
         },
         {
             "name": "willdurand/geocoder",

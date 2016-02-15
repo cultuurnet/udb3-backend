@@ -436,28 +436,6 @@ $app->post('query/label',
         return new JsonResponse(['commandId' => $commandId]);
     });
 
-$app
-    ->get(
-        'organizer/{cdbid}',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\EntityServiceInterface $service */
-            $service = $app['organizer_service'];
-
-            $organizer = $service->getEntity($cdbid);
-
-            $response = JsonLdResponse::create()
-                ->setContent($organizer)
-                ->setPublic()
-                ->setClientTtl(60 * 30)
-                ->setTtl(60 * 5);
-
-            $response->headers->set('Vary', 'Origin');
-
-            return $response;
-        }
-    )
-    ->bind('organizer');
-
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->get(
@@ -476,17 +454,18 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-$app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvider());
+$app->mount('variations', new \CultuurNet\UDB3\Silex\Variations\VariationsControllerProvider());
 
 $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\OrganizerControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 
 /**
  * API callbacks for authentication.
