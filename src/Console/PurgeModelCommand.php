@@ -2,31 +2,37 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Doctrine\DBAL\Connection;
 use Knp\Command\Command;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use CultuurNet\UDB3\Silex\PurgeServiceProvider;
+use CultuurNet\UDB3\Storage\PurgeServiceInterface;
+use CultuurNet\UDB3\Storage\PurgeServiceManager;
 
+/**
+ * Class PurgeModelCommand
+ * @package CultuurNet\UDB3\Silex\Console
+ */
 class PurgeModelCommand extends Command
 {
     const MODEL_OPTION = 'model';
 
-    const MYSQL_WRITE_MODEL = 1;
-    const MYSQL_READ_MODEL = 2;
+    const WRITE_MODEL = 1;
+    const READ_MODEL = 2;
     const REDIS_READ_MODEL = 3;
 
     protected function configure()
     {
         $this
-            ->setName('clean')
-            ->setDescription('Clean the specified model')
+            ->setName('purge')
+            ->setDescription('Purge the specified model')
             ->addOption(
                 self::MODEL_OPTION,
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Which model to clean (1 = MySQL Write, 2 = MySQL Read, 3 = Redis Read)'
+                'Which model to purge (1 = MySQL Write, 2 = MySQL Read, 3 = Redis Read)'
             );
     }
 
@@ -40,8 +46,8 @@ class PurgeModelCommand extends Command
         $model = intval($input->getOption(self::MODEL_OPTION));
 
         if ($this->isModelValid($model)) {
-            $models = $this->getMySQLModels($model);
-            $this->cleanModels($models);
+            $purgeServices = $this->getPurgeServices($model);
+            $this->purgeServices($purgeServices);
         } else {
             $output->writeln('Model option is not valid!');
         }
@@ -50,64 +56,35 @@ class PurgeModelCommand extends Command
     }
 
     /**
-     * @param int $model
-     * @return null|\string[]
+     * @param $model
+     * @return PurgeServiceInterface[]
      */
-    private function getMySQLModels($model)
+    private function getPurgeServices($model)
     {
-        $models = null;
+        $purgeServices = array();
 
-        if (self::MYSQL_WRITE_MODEL === $model) {
-            $models = $this->getMySQLWriteModels();
-        } else if (self::MYSQL_READ_MODEL === $model) {
-            $models = $this->getMySQLReadModels();
-        }
-
-        return $models;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getMySQLWriteModels()
-    {
-        return array(
-            'events',
-            'media_objects',
-            'organizers',
-            'places',
-            'variations'
-        );
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getMySQLReadModels()
-    {
-        return array(
-            'event_permission_readmodel',
-            'event_relations',
-            'event_variation_search_index',
-            'index_readmodel'
-        );
-    }
-
-    /**
-     * @param string[] $models
-     */
-    private function cleanModels($models)
-    {
         $application = $this->getSilexApplication();
         /**
-         * @var Connection $connection
+         * @var PurgeServiceManager $purgeServiceManager
          */
-        $connection = $application['dbal_connection'];
-        $queryBuilder = $connection->createQueryBuilder();
+        $purgeServiceManager = $application[PurgeServiceProvider::PURGE_SERVICE_MANAGER];
 
-        foreach($models as $model) {
-            $queryBuilder->delete($model);
-            $queryBuilder->execute();
+        if (self::READ_MODEL === $model) {
+            $purgeServices = $purgeServiceManager->getReadModelPurgeServices();
+        } else  if (self::WRITE_MODEL === $model) {
+            $purgeServices = $purgeServiceManager->getWriteModelPurgeServices();
+        }
+
+        return $purgeServices;
+    }
+
+    /**
+     * @param PurgeServiceInterface[] $purgeServices
+     */
+    private function purgeServices($purgeServices)
+    {
+        foreach($purgeServices as $purgeService) {
+            $purgeService->purgeAll();
         }
     }
 
@@ -118,8 +95,8 @@ class PurgeModelCommand extends Command
     private function isModelValid($model)
     {
         return (
-            self::MYSQL_READ_MODEL === $model ||
-            self::MYSQL_WRITE_MODEL === $model
+            self::READ_MODEL === $model ||
+            self::WRITE_MODEL === $model
         );
     }
 }
