@@ -185,31 +185,17 @@ $app->get(
     }
 );
 
-$app
-    ->post(
-        'event/{cdbid}/{lang}/title',
-        function (Request $request, Application $app, $cdbid, $lang) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
-            $service = $app['event_editor'];
+$app->get(
+    'api/1.0/user/labels',
+    function (Request $request, Application $app) {
+        /** @var \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface $usedLabelsMemoryService */
+        $usedLabelsMemoryService = $app['used_labels_memory'];
+        $user = $app['current_user'];
+        $memory = $usedLabelsMemoryService->getMemory($user->id);
 
-            $response = new JsonResponse();
-
-            $title = $request->request->get('title');
-            if (!$title) {
-                return new JsonResponse(['error' => "title required"], 400);
-            }
-
-            $commandId = $service->translateTitle(
-                $cdbid,
-                new \CultuurNet\UDB3\Language($lang),
-                $title
-            );
-
-            $response->setData(['commandId' => $commandId]);
-
-            return $response;
-        }
-    );
+        return JsonResponse::create($memory);
+    }
+);
 
 $app->post(
     'events/label',
