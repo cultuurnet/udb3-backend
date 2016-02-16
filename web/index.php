@@ -280,10 +280,4 @@ $app->mount('uitid', new \CultuurNet\UiTIDProvider\User\UserControllerProvider()
  */
 $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
 
-/**
- * Dummy endpoint implementations. Make sure you keep this as the last one,
- * already implemented routes will not be overridden.
- */
-$app->mount('/', new \CultuurNet\UDB3\Silex\DummyControllerProvider());
-
 $app->run();
