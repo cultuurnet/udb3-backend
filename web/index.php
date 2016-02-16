@@ -185,18 +185,6 @@ $app->get(
     }
 );
 
-$app->get(
-    'api/1.0/user/labels',
-    function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface $usedLabelsMemoryService */
-        $usedLabelsMemoryService = $app['used_labels_memory'];
-        $user = $app['current_user'];
-        $memory = $usedLabelsMemoryService->getMemory($user->id);
-
-        return JsonResponse::create($memory);
-    }
-);
-
 $app->post(
     'events/label',
     function (Request $request, Application $app) {
@@ -291,11 +279,5 @@ $app->mount('uitid', new \CultuurNet\UiTIDProvider\User\UserControllerProvider()
  * Basic REST API for feature toggles.
  */
 $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
-
-/**
- * Dummy endpoint implementations. Make sure you keep this as the last one,
- * already implemented routes will not be overridden.
- */
-$app->mount('/', new \CultuurNet\UDB3\Silex\DummyControllerProvider());
 
 $app->run();
