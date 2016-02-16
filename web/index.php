@@ -185,18 +185,6 @@ $app->get(
     }
 );
 
-$app->get(
-    'api/1.0/user/labels',
-    function (Request $request, Application $app) {
-        /** @var \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryServiceInterface $usedLabelsMemoryService */
-        $usedLabelsMemoryService = $app['used_labels_memory'];
-        $user = $app['current_user'];
-        $memory = $usedLabelsMemoryService->getMemory($user->id);
-
-        return JsonResponse::create($memory);
-    }
-);
-
 $app->post(
     'events/label',
     function (Request $request, Application $app) {
