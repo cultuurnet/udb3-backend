@@ -70,36 +70,6 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->post('event/{cdbid}/organizer', 'event_editing_controller:updateOrganizer');
         $controllers->delete('event/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
 
-        $controllers->post(
-            'event/{cdbid}/{lang}/description',
-            function (Request $request, Application $app, $cdbid, $lang) {
-                /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
-                $service = $app['event_editor'];
-
-                $response = new JsonResponse();
-
-                $description = $request->request->get('description');
-                if (!$description) {
-                    return new JsonResponse(['error' => "description required"], 400);
-                }
-
-                try {
-                    $commandId = $service->translateDescription(
-                        $cdbid,
-                        new \CultuurNet\UDB3\Language($lang),
-                        new String($request->get('description'))
-                    );
-
-                    $response->setData(['commandId' => $commandId]);
-                } catch (\Exception $e) {
-                    $response->setStatusCode(400);
-                    $response->setData(['error' => $e->getMessage()]);
-                }
-
-                return $response;
-            }
-        );
-
         return $controllers;
     }
 }
