@@ -575,7 +575,7 @@ $app['real_event_repository'] = $app->share(
   }
 );
 
-$app['udb2_event_cdbxml_provicer'] = $app->share(
+$app['udb2_event_cdbxml_provider'] = $app->share(
     function (Application $app) {
         $uitidConfig = $app['config']['uitid'];
         $baseUrl = $uitidConfig['base_url'] . $uitidConfig['apis']['entry'];
@@ -598,7 +598,7 @@ $app['udb2_event_cdbxml'] = $app->share(
         $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
 
         return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
-            $app['udb2_event_cdbxml_provicer'],
+            $app['udb2_event_cdbxml_provider'],
             new \CultuurNet\UDB3\Cdb\Event\Not($labeledAsUDB3Place)
         );
     }
@@ -609,7 +609,7 @@ $app['udb2_place_event_cdbxml'] = $app->share(
         $labeledAsUDB3Place = new \CultuurNet\UDB3\UDB2\LabeledAsUDB3Place();
 
         return new \CultuurNet\UDB3\UDB2\Event\SpecificationDecoratedEventCdbXml(
-            $app['udb2_event_cdbxml_provicer'],
+            $app['udb2_event_cdbxml_provider'],
             $labeledAsUDB3Place
         );
     }
