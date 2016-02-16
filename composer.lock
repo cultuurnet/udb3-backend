@@ -1092,12 +1092,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "0d97464ab339a87e6d4504f43ef8572f07edb1a1"
+                "reference": "bfece9c24d8f0ed4c0ecdc5bf6cb27389ca4c2ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/0d97464ab339a87e6d4504f43ef8572f07edb1a1",
-                "reference": "0d97464ab339a87e6d4504f43ef8572f07edb1a1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/bfece9c24d8f0ed4c0ecdc5bf6cb27389ca4c2ec",
+                "reference": "bfece9c24d8f0ed4c0ecdc5bf6cb27389ca4c2ec",
                 "shasum": ""
             },
             "require": {
@@ -1165,7 +1165,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-02-16 10:34:58"
+            "time": "2016-02-16 19:39:55"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1263,12 +1263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "d9d287851148ac7fe9cfaebd3f12d610095b664f"
+                "reference": "a2dc1ca30a1dda8141c07ad6d9c91341f75804e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/d9d287851148ac7fe9cfaebd3f12d610095b664f",
-                "reference": "d9d287851148ac7fe9cfaebd3f12d610095b664f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/a2dc1ca30a1dda8141c07ad6d9c91341f75804e7",
+                "reference": "a2dc1ca30a1dda8141c07ad6d9c91341f75804e7",
                 "shasum": ""
             },
             "require": {
@@ -1312,7 +1312,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-16 10:32:12"
+            "time": "2016-02-16 19:47:20"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -4854,20 +4854,20 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "2.7.4",
+            "version": "2.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "cae029346a33663b998507f94962eb27de060683"
+                "reference": "b894a85f3ef8a52e7aa62c3c5aa245e383c70cca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cae029346a33663b998507f94962eb27de060683",
-                "reference": "cae029346a33663b998507f94962eb27de060683",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/b894a85f3ef8a52e7aa62c3c5aa245e383c70cca",
+                "reference": "b894a85f3ef8a52e7aa62c3c5aa245e383c70cca",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5",
+                "php": "^5.5 || ^7.0",
                 "zendframework/zend-hydrator": "~1.0"
             },
             "require-dev": {
@@ -4890,8 +4890,9 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev",
-                    "dev-develop": "2.8-dev"
+                    "dev-release-2.7": "2.7-dev",
+                    "dev-master": "3.0-dev",
+                    "dev-develop": "3.1-dev"
                 }
             },
             "autoload": {
@@ -4908,7 +4909,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2015-10-15 15:57:32"
+            "time": "2016-02-16 18:25:48"
         },
         {
             "name": "zendframework/zend-validator",
