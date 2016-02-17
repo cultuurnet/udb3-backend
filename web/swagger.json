@@ -20,7 +20,7 @@
         "application/xml"
     ],
     "paths": {
-        "/event": {
+        "/api/1.0/event": {
             "post": {
                 "summary": "Create a new cultural event.",
                 "operationId": "createEvent",
@@ -686,6 +686,110 @@
                 ]
             }
         },
+        "/place/{cdbid}/{lang}/title": {
+            "post": {
+                "summary": "Translate the title of a place.",
+                "description": "Authentication is required.",
+                "operationId": "translatePlaceTitle",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the title in the given language for the given place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithPlaceTitle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
+        "/place/{cdbid}/{lang}/description": {
+            "post": {
+                "summary": "Translate the description of a place.",
+                "description": "Authentication is required.",
+                "operationId": "translatePlaceDescription",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the description in the given language for the given place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithPlaceDescription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
         "/place/{cdbid}/major-info": {
             "post": {
                 "summary": "Update the place major info.",
@@ -857,7 +961,69 @@
                 ]
             }
         },
-        "/api/1.0/user": {
+        "/api/1.0/organizer/suggest/{term}": {
+            "get": {
+                "summary": "Get the list of organizers which contain {term} in their title.",
+                "operationId": "findByPartOfTitle",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "term",
+                        "in": "path",
+                        "description": "The term which will be or be part of the title of the organizer.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The list of organizers whose title contains {term}.",
+                        "schema": {
+                            "$ref": "#/definitions/ListOfOrganizers"
+                        }
+                    }
+                },
+                "tags": [
+                    "Organizer"
+                ]
+            }
+        },
+        "/api/1.0/organizer": {
+            "post": {
+                "summary": "Create an organizer.",
+                "operationId": "createOrganizer",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing information about Organizer.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Organizer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The organizerId and it's url.",
+                        "schema": {
+                            "$ref": "#/definitions/OrganizerId"
+                        }
+                    }
+
+
+                },
+                "tags": [
+                    "Organizer"
+                ]
+            }
+        },
+        "/uitid/user": {
             "get": {
                 "summary": "Retrieve all information about the current user.",
                 "description": "Authentication is required.",
@@ -956,7 +1122,7 @@
                 ]
             }
         },
-        "/saved-searches": {
+        "/saved-searches/": {
             "get": {
                 "summary": "Get a list of saved searches for the current user.",
                 "description": "Authentication is required.",
@@ -2436,6 +2602,28 @@
                 }
             }
         },
+        "postObjectWithPlaceDescription": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "This is a description of a place."
+                }
+            },
+            "required": [
+                "description"
+            ]
+        },
+        "postObjectWithPlaceTitle": {
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "example": "A place title"
+                }
+            },
+            "required": [
+                "title"
+            ]
+        },
         "postObjectWithlabelAndMultipleEvents": {
             "properties": {
                 "label": {
@@ -2917,6 +3105,49 @@
             "required": [
                 "description",
                 "copyrightHolder"
+            ]
+        },
+        "ListOfOrganizers": {
+            "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3562
+                },
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Organizer"
+                    }
+                }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
+        },
+        "OrganizerId": {
+            "properties": {
+                "organizerId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "f8597ef0-9364-4ab5-a3cc-1e344e599fc7"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "url",
+                    "example": "http://culudb-silex.dev:8080/organizer/f8597ef0-9364-4ab5-a3cc-1e344e599fc7"
+                }
+            },
+            "required": [
+                "organizerId",
+                "url"
             ]
         },
         "postPlaceObjectMajorInfo": {
