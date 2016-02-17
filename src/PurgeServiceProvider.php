@@ -57,33 +57,21 @@ class PurgeServiceProvider implements ServiceProviderInterface
      */
     private function addReadModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
     {
-        $purgeServiceManager->addReadModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'event_permission_readmodel'
-            )
-        );
+        $dbalReadModels = [
+            'event_permission_readmodel',
+            'event_relations',
+            'event_variation_search_index',
+            'index_readmodel'
+        ];
 
-        $purgeServiceManager->addReadModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'event_relations'
-            )
-        );
-
-        $purgeServiceManager->addReadModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'event_variation_search_index'
-            )
-        );
-
-        $purgeServiceManager->addReadModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'index_readmodel'
-            )
-        );
+        foreach ($dbalReadModels as $dbalReadModel) {
+            $purgeServiceManager->addReadModelPurgeService(
+                new DBALPurgeService(
+                    $connection,
+                    $dbalReadModel
+                )
+            );
+        }
     }
 
     /**
@@ -92,39 +80,21 @@ class PurgeServiceProvider implements ServiceProviderInterface
      */
     private function addWriteModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
     {
-        $purgeServiceManager->addWriteModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'events'
-            )
-        );
+        $dbalWriteModels = [
+            'events',
+            'media_objects',
+            'organizers',
+            'places',
+            'variations',
+        ];
 
-        $purgeServiceManager->addWriteModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'media_objects'
-            )
-        );
-
-        $purgeServiceManager->addWriteModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'organizers'
-            )
-        );
-
-        $purgeServiceManager->addWriteModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'places'
-            )
-        );
-
-        $purgeServiceManager->addWriteModelPurgeService(
-            new DBALPurgeService(
-                $connection,
-                'variations'
-            )
-        );
+        foreach ($dbalWriteModels as $dbalWriteModel) {
+            $purgeServiceManager->addWriteModelPurgeService(
+                new DBALPurgeService(
+                    $connection,
+                    $dbalWriteModel
+                )
+            );
+        }
     }
 }
