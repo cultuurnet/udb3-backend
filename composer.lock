@@ -412,16 +412,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary",
-            "version": "v1.0.4",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary.git",
-                "reference": "208885b8b73730c18337883f9927fef4bf913577"
+                "reference": "0b6f3eda84c52fcb3e7ef5397df6b9389feaaa4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/208885b8b73730c18337883f9927fef4bf913577",
-                "reference": "208885b8b73730c18337883f9927fef4bf913577",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/0b6f3eda84c52fcb3e7ef5397df6b9389feaaa4c",
+                "reference": "0b6f3eda84c52fcb3e7ef5397df6b9389feaaa4c",
                 "shasum": ""
             },
             "require": {
@@ -454,7 +454,7 @@
                 "Apache-2.0"
             ],
             "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2015-11-13 08:49:40"
+            "time": "2016-02-16 08:18:15"
         },
         {
             "name": "cultuurnet/cdb",
@@ -462,12 +462,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "15714342dfda0e92c59402008c83641a558a116c"
+                "reference": "267541bb8e35993c7f7be99834cc549f496854c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/15714342dfda0e92c59402008c83641a558a116c",
-                "reference": "15714342dfda0e92c59402008c83641a558a116c",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/267541bb8e35993c7f7be99834cc549f496854c7",
+                "reference": "267541bb8e35993c7f7be99834cc549f496854c7",
                 "shasum": ""
             },
             "require-dev": {
@@ -489,7 +489,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-01-15 12:57:24"
+            "time": "2016-02-16 08:33:45"
         },
         {
             "name": "cultuurnet/clock",
@@ -1092,12 +1092,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "1f8bbf15d7e0c56640ca5a20194f6cb26c3e63d9"
+                "reference": "1d9ba534ca5e87ce72880385920d533f0ac081cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1f8bbf15d7e0c56640ca5a20194f6cb26c3e63d9",
-                "reference": "1f8bbf15d7e0c56640ca5a20194f6cb26c3e63d9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1d9ba534ca5e87ce72880385920d533f0ac081cf",
+                "reference": "1d9ba534ca5e87ce72880385920d533f0ac081cf",
                 "shasum": ""
             },
             "require": {
@@ -1165,7 +1165,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-02-10 15:56:08"
+            "time": "2016-02-12 17:51:40"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1263,12 +1263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "87dfc60baa775defab06fd0cc9e72e4928beaff7"
+                "reference": "ede5e30c6a53009940f8bb5b65229190f80fd009"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/87dfc60baa775defab06fd0cc9e72e4928beaff7",
-                "reference": "87dfc60baa775defab06fd0cc9e72e4928beaff7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/ede5e30c6a53009940f8bb5b65229190f80fd009",
+                "reference": "ede5e30c6a53009940f8bb5b65229190f80fd009",
                 "shasum": ""
             },
             "require": {
@@ -1310,7 +1310,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-09 09:23:30"
+            "time": "2016-02-13 12:05:24"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -4556,16 +4556,16 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/videlalvaro/php-amqplib.git",
-                "reference": "8a6e89ad46130eb365b7f57d313f2a795f5e3269"
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
+                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/videlalvaro/php-amqplib/zipball/8a6e89ad46130eb365b7f57d313f2a795f5e3269",
-                "reference": "8a6e89ad46130eb365b7f57d313f2a795f5e3269",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
+                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
                 "shasum": ""
             },
             "require": {
@@ -4573,8 +4573,12 @@
                 "ext-mbstring": "*",
                 "php": ">=5.3.0"
             },
+            "replace": {
+                "videlalvaro/php-amqplib": "self.version"
+            },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "^3.7",
+                "scrutinizer/ocular": "^1.1"
             },
             "suggest": {
                 "ext-sockets": "Use AMQPSocketConnection"
@@ -4582,7 +4586,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -4596,17 +4600,29 @@
             ],
             "authors": [
                 {
-                    "name": "Alvaro Videla"
+                    "name": "Alvaro Videla",
+                    "role": "Original Maintainer"
+                },
+                {
+                    "name": "John Kelly",
+                    "email": "johnmkelly86@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Raúl Araya",
+                    "email": "nubeiro@gmail.com",
+                    "role": "Maintainer"
                 }
             ],
-            "description": "This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
-            "homepage": "https://github.com/videlalvaro/php-amqplib/",
+            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/php-amqplib/php-amqplib/",
             "keywords": [
                 "message",
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2015-09-23 02:25:31"
+            "abandoned": "php-amqplib/php-amqplib",
+            "time": "2016-02-12 16:54:39"
         },
         {
             "name": "willdurand/geocoder",
@@ -4836,20 +4852,20 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "2.7.4",
+            "version": "2.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "cae029346a33663b998507f94962eb27de060683"
+                "reference": "b894a85f3ef8a52e7aa62c3c5aa245e383c70cca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cae029346a33663b998507f94962eb27de060683",
-                "reference": "cae029346a33663b998507f94962eb27de060683",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/b894a85f3ef8a52e7aa62c3c5aa245e383c70cca",
+                "reference": "b894a85f3ef8a52e7aa62c3c5aa245e383c70cca",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5",
+                "php": "^5.5 || ^7.0",
                 "zendframework/zend-hydrator": "~1.0"
             },
             "require-dev": {
@@ -4872,8 +4888,9 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev",
-                    "dev-develop": "2.8-dev"
+                    "dev-release-2.7": "2.7-dev",
+                    "dev-master": "3.0-dev",
+                    "dev-develop": "3.1-dev"
                 }
             },
             "autoload": {
@@ -4890,7 +4907,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2015-10-15 15:57:32"
+            "time": "2016-02-16 18:25:48"
         },
         {
             "name": "zendframework/zend-validator",
