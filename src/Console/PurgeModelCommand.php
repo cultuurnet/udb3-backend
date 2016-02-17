@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Knp\Command\Command;
-use Silex\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Storage\PurgeServiceInterface;
 use CultuurNet\UDB3\Storage\PurgeServiceManager;
+use Knp\Command\Command;
+use Silex\Application;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class PurgeModelCommand
@@ -21,18 +21,16 @@ class PurgeModelCommand extends Command
 
     const WRITE_MODEL = 1;
     const READ_MODEL = 2;
-    const REDIS_READ_MODEL = 3;
 
     protected function configure()
     {
         $this
             ->setName('purge')
             ->setDescription('Purge the specified model')
-            ->addOption(
+            ->addArgument(
                 self::MODEL_OPTION,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Which model to purge (1 = MySQL Write, 2 = MySQL Read, 3 = Redis Read)'
+                InputArgument::REQUIRED,
+                'Which model to purge (1 = MySQL Write, 2 = MySQL Read)'
             );
     }
 
@@ -43,11 +41,11 @@ class PurgeModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $model = intval($input->getOption(self::MODEL_OPTION));
+        $model = intval($input->getArgument(self::MODEL_OPTION));
 
         if ($this->isModelValid($model)) {
             $purgeServices = $this->getPurgeServices($model);
-            $this->purgeServices($purgeServices);
+            $this->purge($purgeServices);
         } else {
             $output->writeln('Model option is not valid!');
         }
@@ -63,11 +61,7 @@ class PurgeModelCommand extends Command
     {
         $purgeServices = array();
 
-        $application = $this->getSilexApplication();
-        /**
-         * @var PurgeServiceManager $purgeServiceManager
-         */
-        $purgeServiceManager = $application[PurgeServiceProvider::PURGE_SERVICE_MANAGER];
+        $purgeServiceManager = $this->getPurgeServiceManager();
 
         if (self::READ_MODEL === $model) {
             $purgeServices = $purgeServiceManager->getReadModelPurgeServices();
@@ -79,9 +73,19 @@ class PurgeModelCommand extends Command
     }
 
     /**
+     * @return PurgeServiceManager
+     */
+    private function getPurgeServiceManager()
+    {
+        $application = $this->getSilexApplication();
+
+        return $application[PurgeServiceProvider::PURGE_SERVICE_MANAGER];
+    }
+
+    /**
      * @param PurgeServiceInterface[] $purgeServices
      */
-    private function purgeServices($purgeServices)
+    private function purge($purgeServices)
     {
         foreach($purgeServices as $purgeService) {
             $purgeService->purgeAll();
