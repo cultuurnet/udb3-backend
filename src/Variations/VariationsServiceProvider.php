@@ -7,7 +7,7 @@ use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Variations\Command\EventVariationCommandHandler;
+use CultuurNet\UDB3\Variations\Command\OfferVariationCommandHandler;
 use CultuurNet\UDB3\Variations\DefaultEventVariationService;
 use CultuurNet\UDB3\Variations\EventVariationRepository;
 use CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\DBALRepository;
@@ -46,7 +46,7 @@ class VariationsServiceProvider implements ServiceProviderInterface
 
         $app['variations.command_handler'] = $app->share(
             function (Application $app) {
-                return new EventVariationCommandHandler(
+                return new OfferVariationCommandHandler(
                     $app['variations']
                 );
             }
