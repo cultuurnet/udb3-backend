@@ -49,5 +49,10 @@
     "psr-4": {
       "CultuurNet\\UDB3\\Silex\\": "src/"
     }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.x-dev"
+    }
   }
 }
