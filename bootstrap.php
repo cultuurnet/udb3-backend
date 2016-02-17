@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
