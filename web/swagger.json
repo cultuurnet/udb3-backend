@@ -20,7 +20,7 @@
         "application/xml"
     ],
     "paths": {
-        "/event": {
+        "/api/1.0/event": {
             "post": {
                 "summary": "Create a new cultural event.",
                 "operationId": "createEvent",
@@ -686,6 +686,110 @@
                 ]
             }
         },
+        "/place/{cdbid}/{lang}/title": {
+            "post": {
+                "summary": "Translate the title of a place.",
+                "description": "Authentication is required.",
+                "operationId": "translatePlaceTitle",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the title in the given language for the given place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithPlaceTitle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
+        "/place/{cdbid}/{lang}/description": {
+            "post": {
+                "summary": "Translate the description of a place.",
+                "description": "Authentication is required.",
+                "operationId": "translatePlaceDescription",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "description": "The language of the translation.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "fr",
+                            "de",
+                            "en"
+                        ]
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the description in the given language for the given place.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectWithPlaceDescription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
         "/organizer/{cdbid}": {
             "get": {
                 "summary": "View the details of a specific organizer.",
@@ -877,7 +981,7 @@
                 ]
             }
         },
-        "/saved-searches": {
+        "/saved-searches/": {
             "get": {
                 "summary": "Get a list of saved searches for the current user.",
                 "description": "Authentication is required.",
@@ -2356,6 +2460,28 @@
                     "example": "Bio"
                 }
             }
+        },
+        "postObjectWithPlaceDescription": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "This is a description of a place."
+                }
+            },
+            "required": [
+                "description"
+            ]
+        },
+        "postObjectWithPlaceTitle": {
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "example": "A place title"
+                }
+            },
+            "required": [
+                "title"
+            ]
         },
         "postObjectWithlabelAndMultipleEvents": {
             "properties": {

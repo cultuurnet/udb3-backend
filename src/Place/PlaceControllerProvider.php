@@ -5,8 +5,8 @@
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Symfony\Place\PlaceEditingRestController;
-use CultuurNet\UDB3\Symfony\Place\PlaceRestController;
+use CultuurNet\UDB3\Symfony\Place\EditPlaceRestController;
+use CultuurNet\UDB3\Symfony\Place\ReadPlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -20,7 +20,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
     {
         $app['place_controller'] = $app->share(
             function (Application $app) {
-                return new PlaceRestController(
+                return new ReadPlaceRestController(
                     $app['place_service'],
                     $app['place_lookup']
                 );
@@ -29,7 +29,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
 
         $app['place_editing_controller'] = $app->share(
             function (Application $app) {
-                return new PlaceEditingRestController(
+                return new EditPlaceRestController(
                     $app['place_service'],
                     $app['place_editing_service'],
                     $app['event_relations_repository'],

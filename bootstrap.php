@@ -37,7 +37,7 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new CultuurNet\UiTIDProvider\Session\SessionConfigurationProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\VariationsServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
@@ -859,19 +859,6 @@ $app['event_labeller'] = $app->share(
     }
 );
 
-$app['event_editor'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\DefaultEventEditingService(
-            $app['event_service'],
-            $app['event_command_bus'],
-            new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['event_jsonld_repository'],
-            $app['place_service'],
-            new \CultuurNet\UDB3\Event\Commands\EventCommandFactory()
-        );
-    }
-);
-
 /** Place **/
 
 $app['place_iri_generator'] = $app->share(
@@ -1007,17 +994,6 @@ $app['place_service'] = $app->share(
         );
 
         return $service;
-    }
-);
-
-$app['place_editing_service'] = $app->share(
-    function ($app) {
-        return new CultuurNet\UDB3\Place\DefaultPlaceEditingService(
-            $app['event_command_bus'],
-            new Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            $app['place_jsonld_repository'],
-            new \CultuurNet\UDB3\Place\Commands\PlaceCommandFactory()
-        );
     }
 );
 
@@ -1269,6 +1245,8 @@ $app['database.installer'] = $app->share(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
