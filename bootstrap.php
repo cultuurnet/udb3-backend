@@ -333,6 +333,8 @@ $app['dbal_connection'] = $app->share(
     }
 );
 
+$app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
+
 $app['event_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
