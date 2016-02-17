@@ -24,7 +24,10 @@ $app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
 
 $app['debug'] = true;
 
-$app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
+if (!isset($udb3ConfigLocation)) {
+    $udb3ConfigLocation =  __DIR__;
+}
+$app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
