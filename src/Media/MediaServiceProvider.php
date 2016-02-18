@@ -28,7 +28,8 @@ class MediaServiceProvider implements ServiceProviderInterface
                 new Version4Generator(),
                 $app['event_command_bus'],
                 $app['local_file_system'],
-                $app['media.upload_directory']
+                $app['media.upload_directory'],
+                $app['media.file_size_limit']
             );
         });
 
