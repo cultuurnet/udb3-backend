@@ -1270,7 +1270,9 @@ $app->register(
         'media.upload_directory' => $app['config']['media']['upload_directory'],
         'media.media_directory' => $app['config']['media']['media_directory'],
         'media.file_size_limit' => new \ValueObjects\Number\Natural(
-            $app['config']['media']['file_size_limit']
+            isset($app['config']['media']['file_size_limit']) ?
+                $app['config']['media']['file_size_limit'] :
+                1000000
         ),
     )
 );
