@@ -185,129 +185,6 @@ $app->get(
     }
 );
 
-$app
-    ->post(
-        'event/{cdbid}/{lang}/title',
-        function (Request $request, Application $app, $cdbid, $lang) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
-            $service = $app['event_editor'];
-
-            $response = new JsonResponse();
-
-            $title = $request->request->get('title');
-            if (!$title) {
-                return new JsonResponse(['error' => "title required"], 400);
-            }
-
-            $commandId = $service->translateTitle(
-                $cdbid,
-                new \CultuurNet\UDB3\Language($lang),
-                $title
-            );
-
-            $response->setData(['commandId' => $commandId]);
-
-            return $response;
-        }
-    );
-
-$app
-    ->post(
-        'event/{cdbid}/labels',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
-            $service = $app['event_editor'];
-
-            $response = new JsonResponse();
-
-            $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-            $commandId = $service->addLabel(
-                $cdbid,
-                $label
-            );
-
-            /** @var CultureFeed_User $user */
-            $user = $app['current_user'];
-            $app['used_labels_memory']->rememberLabelUsed(
-                $user->id,
-                $label
-            );
-
-            $response->setData(['commandId' => $commandId]);
-
-            return $response;
-        }
-    );
-
-$app
-    ->delete(
-        'event/{cdbid}/labels/{label}',
-        function (Request $request, Application $app, $cdbid, $label) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
-            $service = $app['event_editor'];
-
-            $response = new JsonResponse();
-
-            $commandId = $service->deleteLabel(
-                $cdbid,
-                new \CultuurNet\UDB3\Label($label)
-            );
-
-            $response->setData(['commandId' => $commandId]);
-
-            return $response;
-        }
-    );
-
-$app
-    ->post(
-        'place/{cdbid}/labels',
-        function (Request $request, Application $app, $cdbid) {
-            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
-            $service = $app['place_editing_service'];
-
-            $response = new JsonResponse();
-
-            $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-
-            $commandId = $service->addLabel(
-                $cdbid,
-                $label
-            );
-
-            /** @var CultureFeed_User $user */
-            $user = $app['current_user'];
-            $app['used_labels_memory']->rememberLabelUsed(
-                $user->id,
-                $label
-            );
-
-            $response->setData(['commandId' => $commandId]);
-
-            return $response;
-        }
-    );
-
-$app
-    ->delete(
-        'place/{cdbid}/labels/{label}',
-        function (Request $request, Application $app, $cdbid, $label) {
-            /** @var \CultuurNet\UDB3\Place\PlaceEditingServiceInterface|\CultuurNet\UDB3\Offer\OfferEditingServiceInterface $service */
-            $service = $app['place_editing_service'];
-
-            $response = new JsonResponse();
-
-            $commandId = $service->deleteLabel(
-                $cdbid,
-                new \CultuurNet\UDB3\Label($label)
-            );
-
-            $response->setData(['commandId' => $commandId]);
-
-            return $response;
-        }
-    );
-
 $app->post(
     'events/label',
     function (Request $request, Application $app) {
@@ -375,7 +252,7 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-$app->mount('variations', new \CultuurNet\UDB3\Silex\VariationsControllerProvider());
+$app->mount('variations', new \CultuurNet\UDB3\Silex\Variations\VariationsControllerProvider());
 
 $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
@@ -386,6 +263,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvide
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 
 /**
  * API callbacks for authentication.
@@ -401,11 +279,5 @@ $app->mount('uitid', new \CultuurNet\UiTIDProvider\User\UserControllerProvider()
  * Basic REST API for feature toggles.
  */
 $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
-
-/**
- * Dummy endpoint implementations. Make sure you keep this as the last one,
- * already implemented routes will not be overridden.
- */
-$app->mount('/', new \CultuurNet\UDB3\Silex\DummyControllerProvider());
 
 $app->run();
