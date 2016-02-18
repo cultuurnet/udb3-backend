@@ -185,32 +185,6 @@ $app->get(
     }
 );
 
-$app
-    ->post(
-        'event/{cdbid}/{lang}/title',
-        function (Request $request, Application $app, $cdbid, $lang) {
-            /** @var \CultuurNet\UDB3\Event\EventEditingServiceInterface $service */
-            $service = $app['event_editor'];
-
-            $response = new JsonResponse();
-
-            $title = $request->request->get('title');
-            if (!$title) {
-                return new JsonResponse(['error' => "title required"], 400);
-            }
-
-            $commandId = $service->translateTitle(
-                $cdbid,
-                new \CultuurNet\UDB3\Language($lang),
-                $title
-            );
-
-            $response->setData(['commandId' => $commandId]);
-
-            return $response;
-        }
-    );
-
 $app->post(
     'events/label',
     function (Request $request, Application $app) {
@@ -305,11 +279,5 @@ $app->mount('uitid', new \CultuurNet\UiTIDProvider\User\UserControllerProvider()
  * Basic REST API for feature toggles.
  */
 $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
-
-/**
- * Dummy endpoint implementations. Make sure you keep this as the last one,
- * already implemented routes will not be overridden.
- */
-$app->mount('/', new \CultuurNet\UDB3\Silex\DummyControllerProvider());
 
 $app->run();
