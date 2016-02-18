@@ -56,9 +56,9 @@ class EventControllerProvider implements ControllerProviderInterface
 
         $controllers->get('event/{cdbid}/permission', 'event_editing_controller:hasPermission');
 
-        $controllers->post('event/{eventId}/images', 'event_editing_controller:addImage');
-        $controllers->post('event/{eventId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
-        $controllers->delete('event/{eventId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
+        $controllers->post('event/{itemId}/images', 'event_editing_controller:addImage');
+        $controllers->post('event/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
+        $controllers->delete('event/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
 
         $controllers->post('event/{cdbid}/nl/description', 'event_editing_controller:updateDescription');
         $controllers->post('event/{cdbid}/typicalAgeRange', 'event_editing_controller:updateTypicalAgeRange');

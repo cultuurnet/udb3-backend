@@ -1119,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "da326039e1c2cba3addcd3f1f3b7ff6c0753b06a"
+                "reference": "296b7c6dbede683ef662e847ef1558f294467188"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/da326039e1c2cba3addcd3f1f3b7ff6c0753b06a",
-                "reference": "da326039e1c2cba3addcd3f1f3b7ff6c0753b06a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/296b7c6dbede683ef662e847ef1558f294467188",
+                "reference": "296b7c6dbede683ef662e847ef1558f294467188",
                 "shasum": ""
             },
             "require": {
@@ -1192,7 +1192,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-02-17 19:21:54"
+            "time": "2016-02-18 13:17:45"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "16ed2633fb0ea6bcd45807cd6686d995f80fbf83"
+                "reference": "add03c97a92220df6095d72c7a3009f8cbe53f7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/16ed2633fb0ea6bcd45807cd6686d995f80fbf83",
-                "reference": "16ed2633fb0ea6bcd45807cd6686d995f80fbf83",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/add03c97a92220df6095d72c7a3009f8cbe53f7f",
+                "reference": "add03c97a92220df6095d72c7a3009f8cbe53f7f",
                 "shasum": ""
             },
             "require": {
@@ -1339,7 +1339,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-17 19:23:06"
+            "time": "2016-02-18 13:17:52"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1347,12 +1347,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "69fb49987c1819addd628d47b6969719f8d716d8"
+                "reference": "f2e386612db130bd624af08bbe0ed09ee43046ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/69fb49987c1819addd628d47b6969719f8d716d8",
-                "reference": "69fb49987c1819addd628d47b6969719f8d716d8",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/f2e386612db130bd624af08bbe0ed09ee43046ce",
+                "reference": "f2e386612db130bd624af08bbe0ed09ee43046ce",
                 "shasum": ""
             },
             "require": {
@@ -1396,7 +1396,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-02-17 19:22:37"
+            "time": "2016-02-18 13:22:48"
         },
         {
             "name": "cultuurnet/uitid-credentials",
