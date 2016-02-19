@@ -932,7 +932,8 @@ $app['udb2_log_handler'] = $app->share(
 $app['udb2_actor_cdbxml_provider'] = $app->share(
     function (Application $app) {
         $cdbXmlService = new \CultuurNet\UDB3\UDB2\ActorCdbXmlFromSearchService(
-            $app['search_api_2']
+            $app['search_api_2'],
+            CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3')
         );
 
         return $cdbXmlService;
