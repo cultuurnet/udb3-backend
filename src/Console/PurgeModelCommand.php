@@ -17,10 +17,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeModelCommand extends Command
 {
-    const MODEL_OPTION = 'model';
+    const MODEL_ARGUMENT = 'model';
 
-    const WRITE_MODEL = 1;
-    const READ_MODEL = 2;
+    const WRITE_MODEL = 'mysql-write';
+    const READ_MODEL = 'mysql-read';
 
     protected function configure()
     {
@@ -28,9 +28,9 @@ class PurgeModelCommand extends Command
             ->setName('purge')
             ->setDescription('Purge the specified model')
             ->addArgument(
-                self::MODEL_OPTION,
+                self::MODEL_ARGUMENT,
                 InputArgument::REQUIRED,
-                'Which model to purge (1 = MySQL Write, 2 = MySQL Read)'
+                'Which model to purge: mysql-write, mysql-read'
             );
     }
 
@@ -41,7 +41,7 @@ class PurgeModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $model = intval($input->getArgument(self::MODEL_OPTION));
+        $model = $input->getArgument(self::MODEL_ARGUMENT);
 
         if ($this->isModelValid($model)) {
             $purgeServices = $this->getPurgeServices($model);
@@ -93,7 +93,7 @@ class PurgeModelCommand extends Command
     }
 
     /**
-     * @param int $model
+     * @param string $model
      * @return bool
      */
     private function isModelValid($model)
