@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController;
 use CultuurNet\UDB3\Symfony\Variations\ReadVariationsRestController;
 use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
+use CultuurNet\UDB3\Variations\Command\CreateOfferVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\DefaultUrlValidator;
@@ -44,7 +45,7 @@ class VariationsControllerProvider implements ControllerProviderInterface
 
         $app['variations_write_controller'] = $app->share(
             function (Application $app) {
-                $deserializer = new CreateEventVariationJSONDeserializer();
+                $deserializer = new CreateOfferVariationJSONDeserializer();
                 $deserializer->addUrlValidator(
                     new DefaultUrlValidator(
                         $app['config']['event_url_regex'],

@@ -352,7 +352,7 @@ $app['event_jsonld_repository'] = $app->share(
             $app['event_jsonld_cache']
         );
 
-        $broadcastingRepository = new \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator(
+        $broadcastingRepository = new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $cachedRepository,
             $app['event_bus'],
             new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory()
@@ -890,7 +890,7 @@ $app['place_jsonld_repository'] = $app->share(
             $app['place_jsonld_cache']
         );
 
-        return new \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator(
+        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $repository,
             $app['event_bus'],
             new \CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory()
