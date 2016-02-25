@@ -835,6 +835,8 @@ $app['event_command_bus_out'] = $app->share(
 
         $commandBus->subscribe($app['media_manager']);
 
+        $commandBus->subscribe($app['bulk_label_offer_command_handler']);
+
         return $commandBus;
     }
 );
@@ -1301,6 +1303,9 @@ $app->extend(
 $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
     return $app['config']['entryapi']['link_base_url'];
 });
+
+$app->register(new \CultuurNet\UDB3\Silex\Search\SearchServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 $app->register(
     new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider(
