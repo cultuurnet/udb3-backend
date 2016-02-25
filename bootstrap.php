@@ -852,15 +852,6 @@ $app['used_labels_memory'] = $app->share(
     }
 );
 
-$app['event_labeller'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\DefaultEventLabellerService(
-            $app['event_service'],
-            $app['event_command_bus']
-        );
-    }
-);
-
 /** Place **/
 
 $app['place_iri_generator'] = $app->share(
