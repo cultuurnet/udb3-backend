@@ -7,7 +7,11 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Search\Cache\CacheManager;
 use Knp\Command\Command;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CacheWarmCommand extends Command
@@ -18,6 +22,18 @@ class CacheWarmCommand extends Command
             ->setName('search:warmup')
             ->setDescription(
                 'Ensures the search cache is warmed up after it was marked as outdated.'
+            )
+            ->addOption(
+                'once',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, the command will exit after warmup and not warmup again when the cache is invalidated.'
+            )
+            ->addOption(
+                'sleep',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Amount of seconds to sleep between warmup checks. Defaults to 2.'
             );
     }
 
@@ -25,16 +41,42 @@ class CacheWarmCommand extends Command
     {
         $this->registerSignalHandlers($output);
 
+        $repeat = !$input->getOption('once');
+
+        $sleep = (int) $input->getOption('sleep');
+        if (empty($sleep)) {
+            $sleep = 2;
+        }
+
+        $verbose = (bool) $input->getOption('verbose');
+
         $cacheManager = $this->getCacheManager();
 
-        while (true) {
+        if ($cacheManager instanceof LoggerAwareInterface && $verbose) {
+            $cacheManager->setLogger(
+                new ConsoleLogger(
+                    $output,
+                    [
+                        LogLevel::INFO => OutputInterface::VERBOSITY_NORMAL,
+                        LogLevel::DEBUG => OutputInterface::VERBOSITY_NORMAL,
+                    ]
+                )
+            );
+        }
+
+        do {
             $cacheManager->warmUpCacheIfNeeded();
             pcntl_signal_dispatch();
-            sleep(1);
-            pcntl_signal_dispatch();
-            sleep(1);
-            pcntl_signal_dispatch();
-        }
+
+            if ($repeat) {
+                if ($verbose) {
+                    $output->writeln("Sleeping for {$sleep} seconds...");
+                }
+
+                sleep($sleep);
+                pcntl_signal_dispatch();
+            }
+        } while ($repeat);
     }
 
     /**
