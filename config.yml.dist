@@ -92,3 +92,4 @@ entryapi:
 media:
   upload_directory: "/web/uploads"
   media_directory: "/web/media"
+  file_size_limit: 1000000
