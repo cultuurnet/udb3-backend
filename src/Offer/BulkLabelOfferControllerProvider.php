@@ -4,6 +4,8 @@ namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultipleJSONDeserializer;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToQueryJSONDeserializer;
+use CultuurNet\UDB3\Offer\IriOfferIdentifier;
+use CultuurNet\UDB3\Offer\IriOfferIdentifierJSONDeserializer;
 use CultuurNet\UDB3\Symfony\CommandDeserializerController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -25,7 +27,9 @@ class BulkLabelOfferControllerProvider implements ControllerProviderInterface
         $app['bulk_label_selection_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new AddLabelToMultipleJSONDeserializer(),
+                    new AddLabelToMultipleJSONDeserializer(
+                        new IriOfferIdentifierJSONDeserializer()
+                    ),
                     $app['event_command_bus']
                 );
             }
