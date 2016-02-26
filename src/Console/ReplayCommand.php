@@ -23,9 +23,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReplayCommand extends Command
 {
-    const DISABLE_OPTION = 'disable';
-    const DISABLE_OPTION_PUBLISHING = 'publishing';
-    const DISABLE_OPTION_LOGGING = 'logging';
+    const DISABLE_OPTION_PUBLISHING = 'disable-publishing';
+    const DISABLE_OPTION_LOGGING = 'disable-logging';
 
     /**
      * @inheritdoc
@@ -54,10 +53,16 @@ class ReplayCommand extends Command
                 'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
             )
             ->addOption(
-                self::DISABLE_OPTION,
+                self::DISABLE_OPTION_PUBLISHING,
                 null,
-                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
-                'It is possible to disable publishing and/or logging'
+                InputOption::VALUE_NONE,
+                'It is possible to disable publishing'
+            )
+            ->addOption(
+                self::DISABLE_OPTION_LOGGING,
+                null,
+                InputOption::VALUE_NONE,
+                'It is possible to disable logging'
             );
     }
 
@@ -182,7 +187,7 @@ class ReplayCommand extends Command
      */
     private function isPublishDisabled(InputInterface $input)
     {
-        return $this->isDisabled($input, self::DISABLE_OPTION_PUBLISHING);
+        return $input->getOption(self::DISABLE_OPTION_PUBLISHING);
     }
 
     /**
@@ -191,18 +196,6 @@ class ReplayCommand extends Command
      */
     private function isLoggingDisabled(InputInterface $input)
     {
-        return $this->isDisabled($input, self::DISABLE_OPTION_LOGGING);
-    }
-
-    /**
-     * @param InputInterface $input
-     * @param $name
-     * @return bool
-     */
-    private function isDisabled(InputInterface $input, $name)
-    {
-        $disabledOptions = $input->getOption(self::DISABLE_OPTION);
-
-        return in_array($name, $disabledOptions);
+        return $input->getOption(self::DISABLE_OPTION_LOGGING);
     }
 }
