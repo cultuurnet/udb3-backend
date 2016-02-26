@@ -90,7 +90,7 @@ class SearchServiceProvider implements ServiceProviderInterface
             function(CacheManager $manager, Application $app) {
                 $logger = new Logger('search_cache_manager');
                 $logger->pushHandler(
-                    new StreamHandler(__DIR__ . '/log/search_cache_manager.log')
+                    new StreamHandler(__DIR__ . '/../../log/search_cache_manager.log')
                 );
                 $manager->setLogger($logger);
 
