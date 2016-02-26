@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Search\Cache\CacheManager;
-use Knp\Command\Command;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SearchCacheWarmCommand extends Command
+class SearchCacheWarmCommand extends AbstractSearchCacheCommand
 {
     protected function configure()
     {
@@ -74,15 +73,6 @@ class SearchCacheWarmCommand extends Command
                 pcntl_signal_dispatch();
             }
         } while ($repeat);
-    }
-
-    /**
-     * @return CacheManager
-     */
-    protected function getCacheManager()
-    {
-        $app = $this->getSilexApplication();
-        return $app['search_cache_manager'];
     }
 
     private function handleSignal(OutputInterface $output, $signal)
