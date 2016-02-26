@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReplayCommand extends Command
 {
     const DISABLE_OPTION_PUBLISHING = 'disable-publishing';
-    const DISABLE_OPTION_LOGGING = 'disable-logging';
 
     /**
      * @inheritdoc
@@ -56,13 +55,7 @@ class ReplayCommand extends Command
                 self::DISABLE_OPTION_PUBLISHING,
                 null,
                 InputOption::VALUE_NONE,
-                'It is possible to disable publishing'
-            )
-            ->addOption(
-                self::DISABLE_OPTION_LOGGING,
-                null,
-                InputOption::VALUE_NONE,
-                'It is possible to disable logging'
+                'Disable publishing to the event bus.'
             );
     }
 
@@ -102,13 +95,11 @@ class ReplayCommand extends Command
         foreach ($stream() as $eventStream) {
             /** @var DomainMessage $message */
             foreach ($eventStream->getIterator() as $message) {
-                if (!$this->isLoggingDisabled($input)) {
-                    $output->writeln(
-                        $message->getRecordedOn()->toString() . ' ' .
-                        $message->getType() .
-                        ' (' . $message->getId() . ')'
-                    );
-                }
+                $output->writeln(
+                    $message->getRecordedOn()->toString() . ' ' .
+                    $message->getType() .
+                    ' (' . $message->getId() . ')'
+                );
             }
 
             if (!$this->isPublishDisabled($input)) {
@@ -188,14 +179,5 @@ class ReplayCommand extends Command
     private function isPublishDisabled(InputInterface $input)
     {
         return $input->getOption(self::DISABLE_OPTION_PUBLISHING);
-    }
-
-    /**
-     * @param InputInterface $input
-     * @return bool
-     */
-    private function isLoggingDisabled(InputInterface $input)
-    {
-        return $input->getOption(self::DISABLE_OPTION_LOGGING);
     }
 }
