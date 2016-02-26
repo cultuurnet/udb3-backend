@@ -2,12 +2,15 @@
 
 namespace CultuurNet\UDB3\Silex\Search;
 
+use CultuurNet\UDB3\Search\Cache\CacheManager;
 use CultuurNet\UDB3\Search\CachedDefaultSearchService;
 use CultuurNet\UDB3\Search\PullParsingSearchService;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
-use CultuurNet\UDB3\SearchAPI2\Filters\UDB3Place as UDB3PlaceFilter;
+use CultuurNet\UDB3\SearchAPI2\Filters\NotUDB3Place;
 use CultuurNet\UDB3\SearchAPI2\FilteredSearchService;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Predis\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -37,7 +40,7 @@ class SearchServiceProvider implements ServiceProviderInterface
                 $filteredSearchService = new FilteredSearchService(
                     $app['search_api_2']
                 );
-                $filteredSearchService->filter(new \CultuurNet\UDB3\SearchAPI2\Filters\NotUDB3Place());
+                $filteredSearchService->filter(new NotUDB3Place());
                 return $filteredSearchService;
             }
         );
@@ -75,7 +78,7 @@ class SearchServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 $parameters = $app['config']['cache']['redis'];
 
-                return new \CultuurNet\UDB3\Search\Cache\CacheManager(
+                return new CacheManager(
                     $app['cached_search_service'],
                     new Client($parameters)
                 );
@@ -84,10 +87,10 @@ class SearchServiceProvider implements ServiceProviderInterface
 
         $app['search_cache_manager'] = $app->extend(
             'search_cache_manager',
-            function(\CultuurNet\UDB3\Search\Cache\CacheManager $manager, Application $app) {
-                $logger = new \Monolog\Logger('search_cache_manager');
+            function(CacheManager $manager, Application $app) {
+                $logger = new Logger('search_cache_manager');
                 $logger->pushHandler(
-                    new \Monolog\Handler\StreamHandler(__DIR__ . '/log/search_cache_manager.log')
+                    new StreamHandler(__DIR__ . '/log/search_cache_manager.log')
                 );
                 $manager->setLogger($logger);
 
