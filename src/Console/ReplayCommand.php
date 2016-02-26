@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReplayCommand extends Command
 {
-    const DISABLE_OPTION_PUBLISHING = 'disable-publishing';
+    const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
 
     /**
      * @inheritdoc
@@ -52,7 +52,7 @@ class ReplayCommand extends Command
                 'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
             )
             ->addOption(
-                self::DISABLE_OPTION_PUBLISHING,
+                self::OPTION_DISABLE_PUBLISHING,
                 null,
                 InputOption::VALUE_NONE,
                 'Disable publishing to the event bus.'
@@ -178,6 +178,6 @@ class ReplayCommand extends Command
      */
     private function isPublishDisabled(InputInterface $input)
     {
-        return $input->getOption(self::DISABLE_OPTION_PUBLISHING);
+        return $input->getOption(self::OPTION_DISABLE_PUBLISHING);
     }
 }
