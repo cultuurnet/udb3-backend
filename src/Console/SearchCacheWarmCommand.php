@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\Console;
 
@@ -14,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CacheWarmCommand extends Command
+class SearchCacheWarmCommand extends Command
 {
     protected function configure()
     {
