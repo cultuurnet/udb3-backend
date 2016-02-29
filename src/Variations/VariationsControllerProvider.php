@@ -48,7 +48,7 @@ class VariationsControllerProvider implements ControllerProviderInterface
                 $deserializer = new CreateOfferVariationJSONDeserializer();
                 $deserializer->addUrlValidator(
                     new DefaultUrlValidator(
-                        $app['config']['event_url_regex'],
+                        $app['config']['offer_url_regex'],
                         $app['event_service']
                     )
                 );
