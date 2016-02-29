@@ -57,6 +57,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->get('event/{cdbid}/permission', 'event_editing_controller:hasPermission');
 
         $controllers->post('event/{itemId}/images', 'event_editing_controller:addImage');
+        $controllers->post('event/{itemId}/images/main', 'event_editing_controller:selectMainImage');
         $controllers->post('event/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
         $controllers->delete('event/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
 
