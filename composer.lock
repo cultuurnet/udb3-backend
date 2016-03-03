@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "472408c4b6fcd2dc56bd284ff4857875",
-    "content-hash": "a773be719e30445e106b571fa35e5c41",
+    "hash": "f4d341da97c4474e1d490fcb6a546465",
+    "content-hash": "cc56307075c682b15c4ea4b66308ea0e",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1119,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "82f14f53280f0de0b5729c0e5a27257e5bbe61ed"
+                "reference": "636df46b8f93089fcb06beb857516e52783a981d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/82f14f53280f0de0b5729c0e5a27257e5bbe61ed",
-                "reference": "82f14f53280f0de0b5729c0e5a27257e5bbe61ed",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/636df46b8f93089fcb06beb857516e52783a981d",
+                "reference": "636df46b8f93089fcb06beb857516e52783a981d",
                 "shasum": ""
             },
             "require": {
@@ -1193,7 +1193,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-02 14:54:27"
+            "time": "2016-03-03 21:01:53"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -4591,16 +4591,16 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.6.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-amqplib/php-amqplib.git",
-                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171"
+                "reference": "ba9468b08b5ff90859ef5069a6b9a70bcdd98fa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
-                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/ba9468b08b5ff90859ef5069a6b9a70bcdd98fa1",
+                "reference": "ba9468b08b5ff90859ef5069a6b9a70bcdd98fa1",
                 "shasum": ""
             },
             "require": {
@@ -4612,7 +4612,7 @@
                 "videlalvaro/php-amqplib": "self.version"
             },
             "require-dev": {
-                "phpunit/phpunit": "^3.7",
+                "phpunit/phpunit": "^4.8",
                 "scrutinizer/ocular": "^1.1"
             },
             "suggest": {
@@ -4657,7 +4657,7 @@
                 "rabbitmq"
             ],
             "abandoned": "php-amqplib/php-amqplib",
-            "time": "2016-02-12 16:54:39"
+            "time": "2016-03-02 16:36:48"
         },
         {
             "name": "willdurand/geocoder",
@@ -5166,5 +5166,10 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "platform-overrides": {
+        "php": "5.5.9",
+        "ext-redis": "2.2.7.0",
+        "ext-intl": "1.1.0"
+    }
 }
