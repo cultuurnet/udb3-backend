@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b90ad402beb0c961d102bbcb0e025f1d",
-    "content-hash": "221049ff62e2ad85dd7aa3e64b621d41",
+    "hash": "bba1b7d67d62e4518dee2cfbe01bb895",
+    "content-hash": "dc2635fa60fd8f88b5bf15aa2286ccaf",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1119,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "adccd6a4f4292278ffa7b5c0acb199089dff2729"
+                "reference": "a50cec9bb81767827c07dcaf167a9151538acf1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/adccd6a4f4292278ffa7b5c0acb199089dff2729",
-                "reference": "adccd6a4f4292278ffa7b5c0acb199089dff2729",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a50cec9bb81767827c07dcaf167a9151538acf1c",
+                "reference": "a50cec9bb81767827c07dcaf167a9151538acf1c",
                 "shasum": ""
             },
             "require": {
@@ -1192,7 +1192,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-02-29 16:23:10"
+            "time": "2016-03-02 15:08:31"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1286,16 +1286,16 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-717",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "add03c97a92220df6095d72c7a3009f8cbe53f7f"
+                "reference": "72f0b5f3fdb68315cfe4bc8893da44069fd6d5d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/add03c97a92220df6095d72c7a3009f8cbe53f7f",
-                "reference": "add03c97a92220df6095d72c7a3009f8cbe53f7f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/72f0b5f3fdb68315cfe4bc8893da44069fd6d5d6",
+                "reference": "72f0b5f3fdb68315cfe4bc8893da44069fd6d5d6",
                 "shasum": ""
             },
             "require": {
@@ -1339,7 +1339,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-02-18 13:17:52"
+            "time": "2016-02-29 16:00:41"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3066,16 +3066,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.17.2",
+            "version": "1.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24"
+                "reference": "e19b764b5c855580e8ffa7e615f72c10fd2f99cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/e19b764b5c855580e8ffa7e615f72c10fd2f99cc",
+                "reference": "e19b764b5c855580e8ffa7e615f72c10fd2f99cc",
                 "shasum": ""
             },
             "require": {
@@ -3104,6 +3104,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
                 "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "raven/raven": "Allow sending log messages to a Sentry server",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
@@ -3113,7 +3114,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -3139,7 +3140,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-10-14 12:51:02"
+            "time": "2016-03-01 18:00:40"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -3259,16 +3260,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "b0e69d10852716b2ccbdff69c75c477637220790"
+                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b0e69d10852716b2ccbdff69c75c477637220790",
-                "reference": "b0e69d10852716b2ccbdff69c75c477637220790",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
+                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
                 "shasum": ""
             },
             "require": {
@@ -3303,7 +3304,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-02-06 03:52:05"
+            "time": "2016-02-29 17:25:04"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -4590,16 +4591,16 @@
         },
         {
             "name": "videlalvaro/php-amqplib",
-            "version": "v2.6.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-amqplib/php-amqplib.git",
-                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171"
+                "reference": "ba9468b08b5ff90859ef5069a6b9a70bcdd98fa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
-                "reference": "2acff762b2cd15e5a57fce7e3ea6e8d8fb3d7171",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/ba9468b08b5ff90859ef5069a6b9a70bcdd98fa1",
+                "reference": "ba9468b08b5ff90859ef5069a6b9a70bcdd98fa1",
                 "shasum": ""
             },
             "require": {
@@ -4611,7 +4612,7 @@
                 "videlalvaro/php-amqplib": "self.version"
             },
             "require-dev": {
-                "phpunit/phpunit": "^3.7",
+                "phpunit/phpunit": "^4.8",
                 "scrutinizer/ocular": "^1.1"
             },
             "suggest": {
@@ -4656,7 +4657,7 @@
                 "rabbitmq"
             ],
             "abandoned": "php-amqplib/php-amqplib",
-            "time": "2016-02-12 16:54:39"
+            "time": "2016-03-02 16:36:48"
         },
         {
             "name": "willdurand/geocoder",
@@ -5167,6 +5168,12 @@
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-717",
+            "package": "cultuurnet/udb3-symfony"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-717",
             "package": "cultuurnet/udb3-udb2-bridge"
         },
         {
@@ -5180,6 +5187,7 @@
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
         "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-symfony": 20,
         "cultuurnet/udb3-udb2-bridge": 20,
         "cultuurnet/cdb": 20,
         "doctrine/migrations": 20
