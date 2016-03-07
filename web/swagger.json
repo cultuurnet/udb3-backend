@@ -476,7 +476,7 @@
                 ]
             }
         },
-        "/query/label": {
+        "/query/labels": {
             "post": {
                 "summary": "Add a label to a query",
                 "description": "Authentication is required.",
