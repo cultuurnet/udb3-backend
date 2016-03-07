@@ -53,6 +53,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->post('api/1.0/place', 'place_editing_controller:createPlace');
 
         $controllers->post('place/{itemId}/images', 'place_editing_controller:addImage');
+        $controllers->post('place/{itemId}/images/main', 'place_editing_controller:selectMainImage');
         $controllers->post('place/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
         $controllers->delete('place/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
 

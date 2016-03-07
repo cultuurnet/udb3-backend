@@ -131,7 +131,7 @@
         "/event/{cdbid}/permission": {
             "get": {
                 "summary": "Whether the current user has permission to update.",
-                "operationId": "hasPermission",
+                "operationId": "hasEventEditingPermission",
                 "produces": [
                     "application/json"
                 ],
@@ -384,33 +384,36 @@
                     }
                 },
                 "tags": [
-                    "Event"
+                    "Event",
+                    "Media"
                 ]
             }
         },
-        "/event/{cdbid}/labels/{label}": {
-            "delete": {
-                "summary": "Remove a label from a cultural event.",
-                "description": "Authentication is required.",
-                "operationId": "removeLabelFromEvent",
+        "/event/{cdbid}/images/main": {
+            "post": {
+                "summary": "Select the main image of an event.",
+                "description": "Authentication is required",
+                "operationId": "SelectEventMainImage",
                 "produces": [
-                    "application/json"
+                    "application/ld+json"
                 ],
                 "parameters": [
                     {
                         "name": "cdbid",
                         "in": "path",
-                        "description": "The unique identifier of the cultural event.",
+                        "description": "The universally unique identifier of the event object.",
                         "required": true,
                         "type": "string",
                         "format": "uuid"
                     },
                     {
-                        "name": "label",
-                        "in": "path",
-                        "description": "The label to remove from the cultural event.",
+                        "name": "body",
+                        "in": "body",
+                        "description": "The UUID of the image to select as main.",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "$ref": "#/definitions/selectMainImage"
+                        }
                     }
                 ],
                 "responses": {
@@ -419,11 +422,14 @@
                         "schema": {
                             "$ref": "#/definitions/command"
                         }
+                    },
+                    "400": {
+                        "description": "Media with id: {id} not found."
                     }
                 },
                 "tags": [
                     "Event",
-                    "Label"
+                    "Media"
                 ]
             }
         },
@@ -473,6 +479,83 @@
                 "tags": [
                     "Event",
                     "Media"
+                ]
+            },
+            "delete": {
+                "summary": "Remove an image from the event.",
+                "description": "Authentication is required",
+                "operationId": "EventRemoveImage",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "eventId",
+                        "in": "path",
+                        "description": "The universally unique identifier of the event object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "mediaObjectId",
+                        "in": "path",
+                        "description": "The universally unique identifier of an event's image.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Media"
+                ]
+            }
+        },
+        "/event/{cdbid}/labels/{label}": {
+            "delete": {
+                "summary": "Remove a label from a cultural event.",
+                "description": "Authentication is required.",
+                "operationId": "removeLabelFromEvent",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the cultural event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "label",
+                        "in": "path",
+                        "description": "The label to remove from the cultural event.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event",
+                    "Label"
                 ]
             }
         },
@@ -572,7 +655,7 @@
         "/place/{cdbid}/permission": {
             "get": {
                 "summary": "Whether the current user has permission to update.",
-                "operationId": "hasPermission",
+                "operationId": "hasPlaceEditingPermission",
                 "produces": [
                     "application/json"
                 ],
@@ -604,6 +687,181 @@
                 },
                 "tags": [
                     "Place"
+                ]
+            }
+        },
+        "/place/{cdbid}/images": {
+            "post": {
+                "summary": "Add an MediaObject to the Place",
+                "description": "Authentication is required",
+                "operationId": "PlaceAddImage",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The universally unique identifier of the place object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The UUID of the image to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/addImageToOffer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    },
+                    "400": {
+                        "description": "Media with id: {id} not found."
+                    }
+                },
+                "tags": [
+                    "Place",
+                    "Media"
+                ]
+            }
+        },
+        "/place/{cdbid}/images/main": {
+            "post": {
+                "summary": "Select the main image of a place.",
+                "description": "Authentication is required",
+                "operationId": "SelectPlaceMainImage",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The universally unique identifier of the place object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The UUID of the image to select as main.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/selectMainImage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    },
+                    "400": {
+                        "description": "Media with id: {id} not found."
+                    }
+                },
+                "tags": [
+                    "Place",
+                    "Media"
+                ]
+            }
+        },
+        "/place/{placeId}/images/{mediaObjectId}": {
+            "post": {
+                "summary": "Update the info of a place image.",
+                "description": "Authentication is required.",
+                "operationId": "updatePlaceImage",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "mediaObjectId",
+                        "in": "path",
+                        "description": "The unique identifier of the image media object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the image information that has to be changed.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/imageUpdateInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place",
+                    "Media"
+                ]
+            },
+            "delete": {
+                "summary": "Remove an image from the place.",
+                "description": "Authentication is required",
+                "operationId": "PlaceRemoveImage",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "placeId",
+                        "in": "path",
+                        "description": "The universally unique identifier of the place object.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "mediaObjectId",
+                        "in": "path",
+                        "description": "The universally unique identifier of a place's image.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place",
+                    "Media"
                 ]
             }
         },
@@ -3079,6 +3337,17 @@
             }
         },
         "addImageToOffer": {
+            "properties": {
+                "mediaObjectId": {
+                    "type": "string",
+                    "example": "73695986-e4cf-4b29-8699-13d7cd77af8c"
+                }
+            },
+            "required": [
+                "mediaObjectId"
+            ]
+        },
+        "selectMainImage": {
             "properties": {
                 "mediaObjectId": {
                     "type": "string",
