@@ -43,9 +43,6 @@
   },
   "prefer-stable": true,
   "preferred-install": "source",
-  "provide": {
-    "ext-redis": "*"
-  },
   "autoload": {
     "psr-4": {
       "CultuurNet\\UDB3\\Silex\\": "src/"
@@ -54,6 +51,13 @@
   "extra": {
     "branch-alias": {
       "dev-master": "0.x-dev"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "5.5.9",
+      "ext-redis": "2.2.7.0",
+      "ext-intl": "1.1.0"
     }
   }
 }

@@ -311,11 +311,11 @@
                 ]
             }
         },
-        "/events/label": {
+        "/offers/labels": {
             "post": {
                 "summary": "Add a label to multiple cultural events.",
                 "description": "Authentication is required",
-                "operationId": "addLabelToEvents",
+                "operationId": "addLabelToOffers",
                 "produces": [
                     "application/json"
                 ],
@@ -326,7 +326,7 @@
                         "description": "An object containing information about the label and the cultural events.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/postObjectWithlabelAndMultipleEvents"
+                            "$ref": "#/definitions/postObjectWithlabelAndMultipleOffers"
                         }
                     }
                 ],
@@ -340,6 +340,7 @@
                 },
                 "tags": [
                     "Event",
+                    "Place",
                     "Label"
                 ]
             }
@@ -558,7 +559,7 @@
                 ]
             }
         },
-        "/query/label": {
+        "/query/labels": {
             "post": {
                 "summary": "Add a label to a query",
                 "description": "Authentication is required.",
@@ -2882,24 +2883,22 @@
                 "title"
             ]
         },
-        "postObjectWithlabelAndMultipleEvents": {
+        "postObjectWithlabelAndMultipleOffers": {
             "properties": {
                 "label": {
                     "type": "string",
                     "example": "Bio"
                 },
-                "events": {
+                "offers": {
                     "type": "array",
                     "items": {
-                        "type": "string",
-                        "format": "uuid",
-                        "example": "6e169e4a-32c8-4fca-a1ce-5beb2b2ac2cc"
+                        "$ref": "#/definitions/SearchMember"
                     }
                 }
             },
             "required": [
                 "label",
-                "events"
+                "offers"
             ]
         },
         "postObjectWithLabelAndQuery": {
