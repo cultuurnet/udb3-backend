@@ -1,22 +1,14 @@
 <?php
-
-require_once __DIR__ . '/vendor/autoload.php';
-
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Search\CachedDefaultSearchService;
-use CultuurNet\UDB3\Search\PullParsingSearchService;
-use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
-use CultuurNet\UDB3\SearchAPI2\FilteredSearchService;
-use CultuurNet\UDB3\SearchAPI2\Filters\UDB3Place as UDB3PlaceFilter;
-use DerAlex\Silex\YamlConfigServiceProvider;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
-use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Silex\Application;
+use DerAlex\Silex\YamlConfigServiceProvider;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use ValueObjects\String\String;
 
 $app = new Application();
@@ -26,7 +18,10 @@ $app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
 
 $app['debug'] = true;
 
-$app->register(new YamlConfigServiceProvider(__DIR__ . '/config.yml'));
+if (!isset($udb3ConfigLocation)) {
+    $udb3ConfigLocation =  __DIR__;
+}
+$app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
@@ -77,11 +72,11 @@ if ($app['config']['swiftmailer.options']) {
 }
 
 $app['timezone'] = $app->share(
-  function (Application $app) {
-      $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
+    function (Application $app) {
+        $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
 
-      return new DateTimeZone($timezoneName);
-  }
+        return new DateTimeZone($timezoneName);
+    }
 );
 
 $app['clock'] = $app->share(
@@ -135,82 +130,6 @@ $app['uitid_consumer_credentials'] = $app->share(
             $consumerConfig['key'],
             $consumerConfig['secret']
         );
-    }
-);
-
-$app['search_api_2'] = $app->share(
-    function ($app) {
-        $searchApiUrl =
-            $app['config']['uitid']['base_url'] .
-            $app['config']['uitid']['apis']['search'];
-
-        return new SearchAPI2(
-            $searchApiUrl,
-            $app['uitid_consumer_credentials']
-        );
-    }
-);
-
-$app['filtered_search_api_2'] = $app->share(
-    function ($app) {
-        $filteredSearchService = new FilteredSearchService(
-            $app['search_api_2']
-        );
-        $filteredSearchService->filter(new \CultuurNet\UDB3\SearchAPI2\Filters\NotUDB3Place());
-        return $filteredSearchService;
-    }
-);
-
-$app['search_service'] = $app->share(
-    function ($app) {
-        /** @var \Qandidate\Toggle\ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
-        $includePlaces = $toggles->active(
-            'search-include-places',
-            $app['toggles.context']
-        );
-
-        $searchAPI = $includePlaces ? 'search_api_2' : 'filtered_search_api_2';
-
-        return new PullParsingSearchService(
-            $app[$searchAPI],
-            $app['iri_generator'],
-            $app['place_iri_generator']
-        );
-    }
-);
-
-$app['cached_search_service'] = $app->share(
-    function ($app) {
-        return new CachedDefaultSearchService(
-            $app['search_service'],
-            $app['cache']('default_search')
-        );
-    }
-);
-
-$app['search_cache_manager'] = $app->share(
-    function (Application $app) {
-        $parameters = $app['config']['cache']['redis'];
-
-        return new \CultuurNet\UDB3\Search\Cache\CacheManager(
-            $app['cached_search_service'],
-            new Predis\Client($parameters)
-        );
-    }
-);
-
-$app['search_cache_manager'] = $app->extend(
-    'search_cache_manager',
-    function(\CultuurNet\UDB3\Search\Cache\CacheManager $manager, Application $app) {
-        $logger = new \Monolog\Logger('search_cache_manager');
-        $logger->pushHandler(
-            new \Monolog\Handler\StreamHandler(__DIR__ . '/log/search_cache_manager.log')
-        );
-        $manager->setLogger($logger);
-
-        return $manager;
     }
 );
 
@@ -835,6 +754,8 @@ $app['event_command_bus_out'] = $app->share(
 
         $commandBus->subscribe($app['media_manager']);
 
+        $commandBus->subscribe($app['bulk_label_offer_command_handler']);
+
         return $commandBus;
     }
 );
@@ -846,15 +767,6 @@ $app['used_labels_memory'] = $app->share(
                 $app['event_store'],
                 $app['event_bus']
             )
-        );
-    }
-);
-
-$app['event_labeller'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Event\DefaultEventLabellerService(
-            $app['event_service'],
-            $app['event_command_bus']
         );
     }
 );
@@ -1021,13 +933,13 @@ $app['organizer_editing_service'] = $app->share(
 );
 
 $app['organizer_jsonld_projector'] = $app->share(
-  function ($app) {
-      return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
-          $app['organizer_jsonld_repository'],
-          $app['organizer_iri_generator'],
-          $app['event_bus']
-      );
-  }
+    function ($app) {
+        return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
+            $app['organizer_jsonld_repository'],
+            $app['organizer_iri_generator'],
+            $app['event_bus']
+        );
+    }
 );
 
 $app['organizer_jsonld_repository'] = $app->share(
@@ -1221,12 +1133,12 @@ $app['uitpas'] = $app->share(
 );
 
 $app['logger.uitpas'] = $app->share(
-  function (Application $app) {
-      $logger = new Monolog\Logger('uitpas');
-      $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
+    function (Application $app) {
+        $logger = new Monolog\Logger('uitpas');
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
 
-      return $logger;
-  }
+        return $logger;
+    }
 );
 
 // This service is used by the background worker to impersonate the user
@@ -1301,6 +1213,9 @@ $app->extend(
 $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
     return $app['config']['entryapi']['link_base_url'];
 });
+
+$app->register(new \CultuurNet\UDB3\Silex\Search\SearchServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 $app->register(
     new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider(

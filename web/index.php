@@ -105,23 +105,6 @@ $app['logger.search'] = $app->share(
 // Enable CORS.
 $app->after($app["cors"]);
 
-$app->before(
-    function (Request $request) {
-        if (0 === strpos(
-                $request->headers->get('Content-Type'),
-                'application/json'
-            )
-        ) {
-            $data = json_decode($request->getContent(), true);
-            if (NULL === $data) {
-                // Decoding failed. Probably the submitted JSON is not correct.
-                return Response::create('Unable to decode the submitted body. Is it valid JSON?', 400);
-            }
-            $request->request->replace(is_array($data) ? $data : array());
-        }
-    }
-);
-
 /**
  * Bootstrap metadata based on user context.
  */
@@ -185,55 +168,6 @@ $app->get(
     }
 );
 
-$app->post(
-    'events/label',
-    function (Request $request, Application $app) {
-        /** @var EventLabellerServiceInterface $eventLabeller */
-        $eventLabeller = $app['event_labeller'];
-
-        $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-        $eventIds = $request->request->get('events');
-
-        $response = new JsonResponse();
-
-        $commandId = $eventLabeller->labelEventsById($eventIds, $label);
-
-        /** @var CultureFeed_User $user */
-        $user = $app['current_user'];
-        $app['used_labels_memory']->rememberLabelUsed(
-            $user->id,
-            $label
-        );
-
-        $response->setData(['commandId' => $commandId]);
-
-        return $response;
-    }
-);
-
-$app->post('query/label',
-    function (Request $request, Application $app) {
-        /** @var EventLabellerServiceInterface $eventLabeller */
-        $eventLabeller = $app['event_labeller'];
-
-        $query = $request->request->get('query', false);
-        if (!$query) {
-            return new JsonResponse(['error' => "query required"], 400);
-        }
-
-        $label = new \CultuurNet\UDB3\Label($request->request->get('label'));
-        $commandId = $eventLabeller->labelQuery($query, $label);
-
-        /** @var CultureFeed_User $user */
-        $user = $app['current_user'];
-        $app['used_labels_memory']->rememberLabelUsed(
-            $user->id,
-            $label
-        );
-
-        return new JsonResponse(['commandId' => $commandId]);
-    });
-
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->get(
@@ -264,6 +198,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
 
 /**
  * API callbacks for authentication.

@@ -17,6 +17,7 @@
     "cultuurnet/udb3-doctrine": "~0.1",
     "cultuurnet/udb3-symfony": "~0.1",
     "cultuurnet/udb3-udb2-bridge": "~0.1",
+    "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/udb3-silex-entryapi": "~0.1",
     "cultuurnet/hydra": "~0.1",
     "silex/silex": "~1.2",
@@ -42,9 +43,6 @@
   },
   "prefer-stable": true,
   "preferred-install": "source",
-  "provide": {
-    "ext-redis": "*"
-  },
   "autoload": {
     "psr-4": {
       "CultuurNet\\UDB3\\Silex\\": "src/"
@@ -53,6 +51,13 @@
   "extra": {
     "branch-alias": {
       "dev-master": "0.x-dev"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "5.5.9",
+      "ext-redis": "2.2.7.0",
+      "ext-intl": "1.1.0"
     }
   }
 }
