@@ -1119,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "41528fe609218fd07c58400874e40bc0800fb1df"
+                "reference": "0635f4065f6a6c562a4714f95903943540861faa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/41528fe609218fd07c58400874e40bc0800fb1df",
-                "reference": "41528fe609218fd07c58400874e40bc0800fb1df",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/0635f4065f6a6c562a4714f95903943540861faa",
+                "reference": "0635f4065f6a6c562a4714f95903943540861faa",
                 "shasum": ""
             },
             "require": {
@@ -1193,7 +1193,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-08 14:17:53"
+            "time": "2016-03-10 11:00:28"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -4148,7 +4148,7 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -4207,7 +4207,7 @@
         },
         {
             "name": "symfony/polyfill-php55",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php55.git",
