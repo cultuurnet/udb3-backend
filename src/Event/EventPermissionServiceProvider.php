@@ -39,7 +39,7 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 $projector = new Projector(
                     $app['event_permission.repository'],
-                    new CdbXmlCreatedByToUserIdResolver($app['uitid_users'])
+                    $app['uitid_users.cdbxml_created_by_resolver']
                 );
 
                 return $projector;

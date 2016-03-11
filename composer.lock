@@ -1119,12 +1119,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "35d57b274f97f8c80e8b9add3e90caabe15a658e"
+                "reference": "217dce9d5520809c080860d17a2eaf08fb8b0355"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/35d57b274f97f8c80e8b9add3e90caabe15a658e",
-                "reference": "35d57b274f97f8c80e8b9add3e90caabe15a658e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/217dce9d5520809c080860d17a2eaf08fb8b0355",
+                "reference": "217dce9d5520809c080860d17a2eaf08fb8b0355",
                 "shasum": ""
             },
             "require": {
@@ -1193,7 +1193,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-08 08:24:49"
+            "time": "2016-03-11 14:40:25"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1348,12 +1348,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "14d82a507e0d343af26d1044e4a5bfa4fe28f792"
+                "reference": "45c9750b5ac5b3660527372dc51b8a7febe56cdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/14d82a507e0d343af26d1044e4a5bfa4fe28f792",
-                "reference": "14d82a507e0d343af26d1044e4a5bfa4fe28f792",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/45c9750b5ac5b3660527372dc51b8a7febe56cdd",
+                "reference": "45c9750b5ac5b3660527372dc51b8a7febe56cdd",
                 "shasum": ""
             },
             "require": {
@@ -1398,7 +1398,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-03-08 08:26:44"
+            "time": "2016-03-09 08:13:15"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -4148,7 +4148,7 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -4207,7 +4207,7 @@
         },
         {
             "name": "symfony/polyfill-php55",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php55.git",
@@ -4992,16 +4992,16 @@
         },
         {
             "name": "phing/phing",
-            "version": "2.13.0",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c"
+                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/a5b10a50160c8a4744545aacb33ef158349e655c",
-                "reference": "a5b10a50160c8a4744545aacb33ef158349e655c",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/7dd73c83c377623def54b58121f46b4dcb35dd61",
+                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61",
                 "shasum": ""
             },
             "require": {
@@ -5010,6 +5010,7 @@
             "require-dev": {
                 "ext-pdo_sqlite": "*",
                 "lastcraft/simpletest": "@dev",
+                "mikey179/vfsstream": "^1.6",
                 "pdepend/pdepend": "2.x",
                 "pear/archive_tar": "1.4.x",
                 "pear/http_request2": "dev-trunk",
@@ -5045,7 +5046,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.13.x-dev"
+                    "dev-master": "2.14.x-dev"
                 }
             },
             "autoload": {
@@ -5078,7 +5079,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2015-12-04 09:45:44"
+            "time": "2016-03-10 21:39:23"
         },
         {
             "name": "squizlabs/php_codesniffer",
