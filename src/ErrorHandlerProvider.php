@@ -19,24 +19,27 @@ class ErrorHandlerProvider implements ServiceProviderInterface
     {
         $provider = $this;
 
-        $app->error(function (ValidationException $e) use ($provider) {
-            $problem = new ApiProblem($e->getMessage());
-            $problem['validation_messages'] = $e->getErrors();
+        $app->error(
+            function (ValidationException $e) use ($provider) {
+                $problem = new ApiProblem($e->getMessage());
+                $problem['validation_messages'] = $e->getErrors();
+                return $provider->createBadRequestResponse($problem);
+            }
+        );
 
-            return $provider->createBadRequestResponse($problem);
-        });
+        $app->error(
+            function (InvalidNativeArgumentException $e) use ($provider) {
+                $problem = new ApiProblem($e->getMessage());
+                return $provider->createBadRequestResponse($problem);
+            }
+        );
 
-        $app->error(function (InvalidNativeArgumentException $e) use ($provider) {
-           $problem = new ApiProblem($e->getMessage());
-
-            return $provider->createBadRequestResponse($problem);
-        });
-
-        $app->error(function (\Exception $e) use ($provider) {
-            $problem = new ApiProblem($e->getMessage());
-
-            return $provider->createBadRequestResponse($problem);
-        });
+        $app->error(
+            function (\Exception $e) use ($provider) {
+                $problem = new ApiProblem($e->getMessage());
+                return $provider->createBadRequestResponse($problem);
+            }
+        );
     }
 
     private function createBadRequestResponse(ApiProblem $problem)

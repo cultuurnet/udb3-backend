@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class ReplayCommand
+ *
  * @package CultuurNet\UDB3\Silex\Console
  */
 class ReplayCommand extends Command
@@ -122,7 +123,8 @@ class ReplayCommand extends Command
     /**
      * @param $subscribers
      */
-    private function setSubscribers($subscribers) {
+    private function setSubscribers($subscribers)
+    {
         $app = $this->getSilexApplication();
 
         $config = $app['config'];
@@ -147,7 +149,7 @@ class ReplayCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @return mixed
      */
@@ -157,7 +159,7 @@ class ReplayCommand extends Command
             'events',
             'places',
             'organizers',
-            'variations'
+            'variations',
         ];
 
         $store = $input->getArgument('store');

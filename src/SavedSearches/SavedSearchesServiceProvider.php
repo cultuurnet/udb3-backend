@@ -33,35 +33,38 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['saved_searches'] = $app->share(function (Application $app) {
-            /* @var \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory $serviceFactory */
-            $serviceFactory = $app['saved_searches_service_factory'];
-            $tokenCredentials = $app['culturefeed_token_credentials'];
+        $app['saved_searches'] = $app->share(
+            function (Application $app) {
+                /* @var \CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory $serviceFactory */
+                $serviceFactory = $app['saved_searches_service_factory'];
+                $tokenCredentials = $app['culturefeed_token_credentials'];
+                return $serviceFactory->withTokenCredentials($tokenCredentials);
+            }
+        );
 
-            return $serviceFactory->withTokenCredentials($tokenCredentials);
-        });
+        $app['saved_searches_logger'] = $app->share(
+            function (Application $app) {
+                $logger = new \Monolog\Logger('saved_searches');
+                $logger->pushHandler(
+                    new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/saved_searches.log')
+                );
+                return $logger;
+            }
+        );
 
-        $app['saved_searches_logger'] = $app->share(function(Application $app) {
-            $logger = new \Monolog\Logger('saved_searches');
-            $logger->pushHandler(
-                new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/saved_searches.log')
-            );
-            return $logger;
-        });
-
-        $app['saved_searches_repository'] = $app->share(function (Application $app) {
-            $UiTIDRepository = new UiTIDSavedSearchRepository($app['saved_searches']);
-            $UiTIDRepository->setLogger($app['saved_searches_logger']);
-
-            $user = $app['current_user'];
-            $fixedRepository = new FixedSavedSearchRepository($user);
-
-            $repository = new CombinedSavedSearchRepository(
-              $fixedRepository,
-              $UiTIDRepository
-            );
-            return $repository;
-        });
+        $app['saved_searches_repository'] = $app->share(
+            function (Application $app) {
+                $uitIDRepository = new UiTIDSavedSearchRepository($app['saved_searches']);
+                $uitIDRepository->setLogger($app['saved_searches_logger']);
+                $user = $app['current_user'];
+                $fixedRepository = new FixedSavedSearchRepository($user);
+                $repository = new CombinedSavedSearchRepository(
+                    $fixedRepository,
+                    $uitIDRepository
+                );
+                return $repository;
+            }
+        );
     }
 
     /**

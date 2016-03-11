@@ -17,12 +17,12 @@ class OfferControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $offer_services = [
+        $offerServices = [
             'event' => 'event_editor_with_label_memory',
             'place' => 'place_editing_service_with_label_memory',
         ];
 
-        foreach ($offer_services as $offerType => $serviceName) {
+        foreach ($offerServices as $offerType => $serviceName) {
             $controllerName = "{$offerType}_offer_controller";
 
             $app[$controllerName] = $app->share(

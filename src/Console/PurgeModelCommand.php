@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class PurgeModelCommand
+ *
  * @package CultuurNet\UDB3\Silex\Console
  */
 class PurgeModelCommand extends Command
@@ -35,7 +36,7 @@ class PurgeModelCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @return int
      */
@@ -65,7 +66,7 @@ class PurgeModelCommand extends Command
 
         if (self::READ_MODEL === $model) {
             $purgeServices = $purgeServiceManager->getReadModelPurgeServices();
-        } else  if (self::WRITE_MODEL === $model) {
+        } elseif (self::WRITE_MODEL === $model) {
             $purgeServices = $purgeServiceManager->getWriteModelPurgeServices();
         }
 
@@ -87,7 +88,7 @@ class PurgeModelCommand extends Command
      */
     private function purge($purgeServices)
     {
-        foreach($purgeServices as $purgeService) {
+        foreach ($purgeServices as $purgeService) {
             $purgeService->purgeAll();
         }
     }
