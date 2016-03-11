@@ -20,14 +20,14 @@ class Version20160224144108 extends AbstractMigration
         // The renameColumn function does not work here.
         // It will drop the column and recreate it.
         $table->addColumn(
-            'offer',
+            'origin_url',
             'text'
         );
 
         $table->addColumn(
             'type',
             'string',
-            array('length' => 100, 'default' => 'event', 'notnull' => true)
+            array('notnull' => false)
         );
     }
 
@@ -37,7 +37,7 @@ class Version20160224144108 extends AbstractMigration
     public function postUp(Schema $schema)
     {
         // copy data from "event" to "offer" column.
-        $this->connection->executeQuery("UPDATE event_variation_search_index SET offer = event");
+        $this->connection->executeQuery("UPDATE event_variation_search_index SET origin_url = event");
     }
 
     /**
@@ -48,11 +48,7 @@ class Version20160224144108 extends AbstractMigration
         $table = $schema->getTable('event_variation_search_index');
 
         $table->dropColumn(
-            'offer'
-        );
-
-        $table->dropColumn(
-            'type'
+            'origin_url'
         );
     }
 }

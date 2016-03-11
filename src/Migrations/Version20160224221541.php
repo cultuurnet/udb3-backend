@@ -19,7 +19,7 @@ class Version20160224221541 extends AbstractMigration
 
         // Since we copied data in previous migrations, we can alter the "offer" column and drop the "event" column.
         $table->changeColumn(
-            'offer',
+            'origin_url',
             array('notnull' => true)
         );
 
@@ -37,7 +37,7 @@ class Version20160224221541 extends AbstractMigration
         $table = $schema->getTable('event_variation_search_index');
 
         $table->changeColumn(
-            'offer',
+            'origin_url',
             array('notnull' => false)
         );
 
@@ -52,6 +52,6 @@ class Version20160224221541 extends AbstractMigration
      */
     public function postDown(Schema $schema)
     {
-        $this->connection->executeQuery("UPDATE event_variation_search_index SET event = offer");
+        $this->connection->executeQuery("UPDATE event_variation_search_index SET event = origin_url");
     }
 }
