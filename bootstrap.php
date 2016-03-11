@@ -274,7 +274,9 @@ $app['event_jsonld_repository'] = $app->share(
         $broadcastingRepository = new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $cachedRepository,
             $app['event_bus'],
-            new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory()
+            new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory(
+                $app['iri_generator']
+            )
         );
 
         return $broadcastingRepository;
@@ -805,7 +807,9 @@ $app['place_jsonld_repository'] = $app->share(
         return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $repository,
             $app['event_bus'],
-            new \CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory()
+            new \CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory(
+                $app['place_iri_generator']
+            )
         );
     }
 );
