@@ -22,7 +22,7 @@ class MigrationsDecoratedDatabaseSchemaInstaller implements DatabaseSchemaInstal
     /**
      * @param DatabaseSchemaInstaller $databaseSchemaInstaller
      */
-    function __construct(
+    public function __construct(
         DatabaseSchemaInstaller $databaseSchemaInstaller,
         Configuration $migrations
     ) {

@@ -35,5 +35,4 @@ class InstallCommand extends Command
         $app = $this->getSilexApplication();
         return $app['database.installer'];
     }
-
 }
