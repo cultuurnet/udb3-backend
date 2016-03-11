@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Variations;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\Hydra\Symfony\PageUrlGenerator;
@@ -45,12 +46,13 @@ class VariationsControllerProvider implements ControllerProviderInterface
 
         $app['variations_write_controller'] = $app->share(
             function (Application $app) {
+                $urlValidator = (new DefaultUrlValidator($app['iri_offer_identifier_factory']))
+                    ->withEntityService(OfferType::EVENT(), $app['event_service'])
+                    ->withEntityService(OfferType::PLACE(), $app['place_service']);
+
                 $deserializer = new CreateOfferVariationJSONDeserializer();
                 $deserializer->addUrlValidator(
-                    new DefaultUrlValidator(
-                        $app['config']['offer_url_regex'],
-                        $app['event_service']
-                    )
+                    $urlValidator
                 );
 
                 return new CommandDeserializerController(
