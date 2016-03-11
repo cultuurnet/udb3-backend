@@ -23,12 +23,6 @@ class Version20160224144108 extends AbstractMigration
             'origin_url',
             'text'
         );
-
-        $table->addColumn(
-            'type',
-            'string',
-            array('notnull' => false)
-        );
     }
 
     /**
