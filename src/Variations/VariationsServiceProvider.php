@@ -7,9 +7,9 @@ use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Variations\Command\OfferVariationCommandHandler;
-use CultuurNet\UDB3\Variations\DefaultEventVariationService;
-use CultuurNet\UDB3\Variations\EventVariationRepository;
+use CultuurNet\UDB3\Variations\DefaultOfferVariationService;
+use CultuurNet\UDB3\Variations\OfferVariationCommandHandler;
+use CultuurNet\UDB3\Variations\OfferVariationRepository;
 use CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\ExpressionFactory;
 use CultuurNet\UDB3\Variations\ReadModel\Search\Projector;
@@ -25,7 +25,7 @@ class VariationsServiceProvider implements ServiceProviderInterface
     {
         $app['variations'] = $app->share(
             function (Application $app) {
-                return new DefaultEventVariationService(
+                return new DefaultOfferVariationService(
                     $app['variations.repository'],
                     new Version4Generator()
                 );
@@ -34,7 +34,7 @@ class VariationsServiceProvider implements ServiceProviderInterface
 
         $app['variations.repository'] = $app->share(
             function (Application $app) {
-                return new EventVariationRepository(
+                return new OfferVariationRepository(
                     $app['variations.event_store'],
                     $app['event_bus'],
                     [
@@ -98,7 +98,7 @@ class VariationsServiceProvider implements ServiceProviderInterface
 
                 return new \CultuurNet\UDB3\Variations\ReadModel\JSONLD\Projector(
                     $app['variations.jsonld_repository'],
-                    $app['event_jsonld_repository'],
+                    $app['offer_reading_service'],
                     $app['variations.search'],
                     $iriGenerator
                 );
