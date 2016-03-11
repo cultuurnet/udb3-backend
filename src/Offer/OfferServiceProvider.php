@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
