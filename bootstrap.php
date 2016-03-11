@@ -297,7 +297,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['event_service'],
             $app['place_service'],
             $app['organizer_service'],
-            $app['media_object_serializer']
+            $app['media_object_serializer'],
+            $app['iri_offer_identifier_factory']
         );
 
         $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
