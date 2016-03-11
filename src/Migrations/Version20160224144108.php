@@ -30,7 +30,7 @@ class Version20160224144108 extends AbstractMigration
      */
     public function postUp(Schema $schema)
     {
-        // copy data from "event" to "offer" column.
+        // copy data from "event" to "origin_url" column.
         $this->connection->executeQuery("UPDATE event_variation_search_index SET origin_url = event");
     }
 
