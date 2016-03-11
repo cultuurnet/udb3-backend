@@ -17,7 +17,8 @@ class Version20160224221541 extends AbstractMigration
     {
         $table = $schema->getTable('event_variation_search_index');
 
-        // Since we copied data in previous migrations, we can alter the "offer" column and drop the "event" column.
+        // Since we copied data in previous migrations, we can alter the "origin_url" column and drop the "event"
+        // column.
         $table->changeColumn(
             'origin_url',
             array('notnull' => true)
