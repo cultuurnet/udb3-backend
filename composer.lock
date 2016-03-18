@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3cd1b66bcaa157c4d5f1ddfd30ee7b47",
-    "content-hash": "558d504c96750f3d05edbe07bf491dc1",
+    "hash": "cc2d689436b39472ae742f87020fdf2b",
+    "content-hash": "c91c68412475051e4601d1900cc99c08",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1115,16 +1115,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-545",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "5e738edc5bc75cf4ed50e08e06c14addc12b60a3"
+                "reference": "c3fc8c8188c5b7a4d4a0e4064fb93864d57c5025"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/5e738edc5bc75cf4ed50e08e06c14addc12b60a3",
-                "reference": "5e738edc5bc75cf4ed50e08e06c14addc12b60a3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c3fc8c8188c5b7a4d4a0e4064fb93864d57c5025",
+                "reference": "c3fc8c8188c5b7a4d4a0e4064fb93864d57c5025",
                 "shasum": ""
             },
             "require": {
@@ -1193,7 +1193,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-11 18:43:16"
+            "time": "2016-03-18 10:01:42"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1287,22 +1287,22 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-545",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "7dd2c4c3a4ff3d6e4e8d47c03edd02b2f13e8921"
+                "reference": "4f9242b4bd0720f11f6ea865e4657ad19a267044"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/7dd2c4c3a4ff3d6e4e8d47c03edd02b2f13e8921",
-                "reference": "7dd2c4c3a4ff3d6e4e8d47c03edd02b2f13e8921",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/4f9242b4bd0720f11f6ea865e4657ad19a267044",
+                "reference": "4f9242b4bd0720f11f6ea865e4657ad19a267044",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-545 as 0.1",
                 "symfony/http-foundation": "~2.7.2",
                 "symfony/http-kernel": "~2.3",
                 "symfony/routing": "~2.3"
@@ -1340,7 +1340,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-03-07 21:03:08"
+            "time": "2016-03-18 10:11:12"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -2035,16 +2035,16 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "v1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "abc571dadd45df42f19baac7a0a1a371216dd93d"
+                "reference": "0d0ff5da10c5d30846da32060bd9e357abf70a05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/abc571dadd45df42f19baac7a0a1a371216dd93d",
-                "reference": "abc571dadd45df42f19baac7a0a1a371216dd93d",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/0d0ff5da10c5d30846da32060bd9e357abf70a05",
+                "reference": "0d0ff5da10c5d30846da32060bd9e357abf70a05",
                 "shasum": ""
             },
             "require": {
@@ -2104,7 +2104,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2016-02-23 15:28:39"
+            "time": "2016-03-14 12:29:11"
         },
         {
             "name": "gridonic/princexml-php",
@@ -2752,16 +2752,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.18",
+            "version": "1.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "b334d6c5f95364948e06d2f620ab93d084074c6e"
+                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/b334d6c5f95364948e06d2f620ab93d084074c6e",
-                "reference": "b334d6c5f95364948e06d2f620ab93d084074c6e",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
+                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
                 "shasum": ""
             },
             "require": {
@@ -2831,7 +2831,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-03-07 21:01:43"
+            "time": "2016-03-14 21:54:11"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -3067,16 +3067,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.18.0",
+            "version": "1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "e19b764b5c855580e8ffa7e615f72c10fd2f99cc"
+                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/e19b764b5c855580e8ffa7e615f72c10fd2f99cc",
-                "reference": "e19b764b5c855580e8ffa7e615f72c10fd2f99cc",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
+                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
                 "shasum": ""
             },
             "require": {
@@ -3141,7 +3141,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-03-01 18:00:40"
+            "time": "2016-03-13 16:08:35"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -3261,16 +3261,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.2.1",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc"
+                "reference": "ff76e1a660669bb56ba74ba0583fd8d41417bf39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
-                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/ff76e1a660669bb56ba74ba0583fd8d41417bf39",
+                "reference": "ff76e1a660669bb56ba74ba0583fd8d41417bf39",
                 "shasum": ""
             },
             "require": {
@@ -3305,7 +3305,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-02-29 17:25:04"
+            "time": "2016-03-17 16:11:57"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -4946,16 +4946,16 @@
     "packages-dev": [
         {
             "name": "escapestudios/symfony2-coding-standard",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/escapestudios/Symfony2-coding-standard.git",
-                "reference": "c91624f1bf4a5fbf6bf7c796c541f15d3763bc94"
+                "reference": "03bd93ece3dc004fd49e766bf546f8cf58c64cb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/escapestudios/Symfony2-coding-standard/zipball/c91624f1bf4a5fbf6bf7c796c541f15d3763bc94",
-                "reference": "c91624f1bf4a5fbf6bf7c796c541f15d3763bc94",
+                "url": "https://api.github.com/repos/escapestudios/Symfony2-coding-standard/zipball/03bd93ece3dc004fd49e766bf546f8cf58c64cb8",
+                "reference": "03bd93ece3dc004fd49e766bf546f8cf58c64cb8",
                 "shasum": ""
             },
             "require": {
@@ -4988,7 +4988,7 @@
                 "Symfony2",
                 "phpcs"
             ],
-            "time": "2016-01-22 12:43:53"
+            "time": "2016-03-14 16:38:04"
         },
         {
             "name": "phing/phing",
@@ -5159,10 +5159,25 @@
             "time": "2016-01-19 23:39:10"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-545",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-545",
+            "package": "cultuurnet/udb3-symfony"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,

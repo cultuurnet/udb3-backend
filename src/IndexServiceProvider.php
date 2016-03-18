@@ -1,11 +1,9 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\ReadModel\Index\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -31,7 +29,8 @@ class IndexServiceProvider implements ServiceProviderInterface
         $app['index.projector'] = $app->share(
             function (Application $app) {
                 $projector = new \CultuurNet\UDB3\ReadModel\Index\Projector(
-                    $app['index.repository']
+                    $app['index.repository'],
+                    new CdbXmlCreatedByToUserIdResolver($app['uitid_users'])
                 );
 
                 return $projector;
