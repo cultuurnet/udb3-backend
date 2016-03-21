@@ -103,16 +103,6 @@ $app['iri_generator'] = $app->share(
     }
 );
 
-$app['place_iri_generator'] = $app->share(
-    function ($app) {
-        return new CallableIriGenerator(
-            function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/place/' . $cdbid;
-            }
-        );
-    }
-);
-
 $app['organizer_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
