@@ -32,5 +32,4 @@ class MediaControllerProvider implements ControllerProviderInterface
 
         return $controllers;
     }
-
 }

@@ -38,7 +38,7 @@ class VariationsServiceProvider implements ServiceProviderInterface
                     $app['variations.event_store'],
                     $app['event_bus'],
                     [
-                        $app['event_stream_metadata_enricher']
+                        $app['event_stream_metadata_enricher'],
                     ]
                 );
             }

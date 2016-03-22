@@ -35,5 +35,4 @@ class SearchControllerProvider implements ControllerProviderInterface
 
         return $controllers;
     }
-
 }

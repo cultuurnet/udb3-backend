@@ -71,8 +71,7 @@ class AMQPListenCommand extends Command
 
             try {
                 $channel->wait(null, true, 4);
-            }
-            catch (AMQPTimeoutException $e) {
+            } catch (AMQPTimeoutException $e) {
                 // Ignore this one.
             }
         }
@@ -98,4 +97,3 @@ class AMQPListenCommand extends Command
         return $app['dbal_connection'];
     }
 }
-

@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Storage\PurgeServiceManager;
 
 /**
  * Class PurgeServiceProvider
+ *
  * @package CultuurNet\UDB3\Silex
  */
 class PurgeServiceProvider implements ServiceProviderInterface
@@ -53,7 +54,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
 
     /**
      * @param PurgeServiceManager $purgeServiceManager
-     * @param Connection $connection
+     * @param Connection          $connection
      */
     private function addReadModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
     {
@@ -61,7 +62,8 @@ class PurgeServiceProvider implements ServiceProviderInterface
             'event_permission_readmodel',
             'event_relations',
             'event_variation_search_index',
-            'index_readmodel'
+            'index_readmodel',
+            'place_permission_readmodel',
         ];
 
         foreach ($dbalReadModels as $dbalReadModel) {
@@ -76,7 +78,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
 
     /**
      * @param PurgeServiceManager $purgeServiceManager
-     * @param Connection $connection
+     * @param Connection          $connection
      */
     private function addWriteModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
     {

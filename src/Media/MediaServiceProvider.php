@@ -23,15 +23,17 @@ class MediaServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['image_uploader'] = $app->share(function (Application $app) {
-            return new ImageUploaderService(
-                new Version4Generator(),
-                $app['event_command_bus'],
-                $app['local_file_system'],
-                $app['media.upload_directory'],
-                $app['media.file_size_limit']
-            );
-        });
+        $app['image_uploader'] = $app->share(
+            function (Application $app) {
+                return new ImageUploaderService(
+                    new Version4Generator(),
+                    $app['event_command_bus'],
+                    $app['local_file_system'],
+                    $app['media.upload_directory'],
+                    $app['media.file_size_limit']
+                );
+            }
+        );
 
         $app['media_object_store'] = $app->share(
             function ($app) {
@@ -50,7 +52,7 @@ class MediaServiceProvider implements ServiceProviderInterface
                     $app['media_object_store'],
                     $app['event_bus'],
                     [
-                        $app['event_stream_metadata_enricher']
+                        $app['event_stream_metadata_enricher'],
                     ]
                 );
 
@@ -76,15 +78,17 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['media_manager'] = $app->share(function (Application $app) {
-            return new MediaManager(
-                $app['media_object_iri_generator'],
-                new SimplePathGenerator(),
-                $app['media_object_repository'],
-                $app['local_file_system'],
-                $app['media.media_directory']
-            );
-        });
+        $app['media_manager'] = $app->share(
+            function (Application $app) {
+                return new MediaManager(
+                    $app['media_object_iri_generator'],
+                    new SimplePathGenerator(),
+                    $app['media_object_repository'],
+                    $app['local_file_system'],
+                    $app['media.media_directory']
+                );
+            }
+        );
     }
 
     /**
