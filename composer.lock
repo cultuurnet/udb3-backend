@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.4",
+            "version": "v2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "7281b1fd8118b31cb9162c2fb5a4cc6f01d62ed6"
+                "reference": "91e2690c4ecc8a4e3e2d333430069f6a0c694a7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/7281b1fd8118b31cb9162c2fb5a4cc6f01d62ed6",
-                "reference": "7281b1fd8118b31cb9162c2fb5a4cc6f01d62ed6",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/91e2690c4ecc8a4e3e2d333430069f6a0c694a7a",
+                "reference": "91e2690c4ecc8a4e3e2d333430069f6a0c694a7a",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2015-08-21 16:50:17"
+            "time": "2016-03-22 14:34:51"
         },
         {
             "name": "broadway/broadway",
@@ -1072,12 +1072,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb2-domain-events.git",
-                "reference": "eb6012dddf67d7bc5052de545c2afdd5366ce40a"
+                "reference": "1f2857b4cd957c17e051536a8402d8e595d08453"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/eb6012dddf67d7bc5052de545c2afdd5366ce40a",
-                "reference": "eb6012dddf67d7bc5052de545c2afdd5366ce40a",
+                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/1f2857b4cd957c17e051536a8402d8e595d08453",
+                "reference": "1f2857b4cd957c17e051536a8402d8e595d08453",
                 "shasum": ""
             },
             "require": {
@@ -1087,6 +1087,7 @@
             "require-dev": {
                 "phing/phing": "~2.10",
                 "phpunit/phpunit": "~4.3",
+                "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.2"
             },
             "type": "library",
@@ -1111,7 +1112,7 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2015-08-12 19:02:32"
+            "time": "2016-03-22 08:50:32"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1119,12 +1120,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c3fc8c8188c5b7a4d4a0e4064fb93864d57c5025"
+                "reference": "ff0abd4ac4318a9d407573ac2662fc0fdb0b95c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c3fc8c8188c5b7a4d4a0e4064fb93864d57c5025",
-                "reference": "c3fc8c8188c5b7a4d4a0e4064fb93864d57c5025",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ff0abd4ac4318a9d407573ac2662fc0fdb0b95c7",
+                "reference": "ff0abd4ac4318a9d407573ac2662fc0fdb0b95c7",
                 "shasum": ""
             },
             "require": {
@@ -1193,7 +1194,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-18 10:01:42"
+            "time": "2016-03-22 16:23:17"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3261,16 +3262,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.3.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "ff76e1a660669bb56ba74ba0583fd8d41417bf39"
+                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/ff76e1a660669bb56ba74ba0583fd8d41417bf39",
-                "reference": "ff76e1a660669bb56ba74ba0583fd8d41417bf39",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c7e26a21ba357863de030f0b9e701c7d04593774",
+                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774",
                 "shasum": ""
             },
             "require": {
@@ -3305,7 +3306,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-03-17 16:11:57"
+            "time": "2016-03-18 20:34:03"
         },
         {
             "name": "phpoffice/phpexcel",

@@ -78,7 +78,7 @@ cache:
     database: 1
 # Regular expression pattern to match valid event URLs.
 # Use a capturing group named 'eventid' to extract the event's ID.
-event_url_regex: https?://example\.com/event/(?<eventid>[a-zA-Z0-9\-]+)
+offer_url_regex: https?://example\.com/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)
 
 oauth:
   base_url:

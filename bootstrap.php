@@ -1,5 +1,4 @@
 <?php
-
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
@@ -73,11 +72,11 @@ if ($app['config']['swiftmailer.options']) {
 }
 
 $app['timezone'] = $app->share(
-  function (Application $app) {
-      $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
+    function (Application $app) {
+        $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
 
-      return new DateTimeZone($timezoneName);
-  }
+        return new DateTimeZone($timezoneName);
+    }
 );
 
 $app['clock'] = $app->share(
@@ -99,16 +98,6 @@ $app['iri_generator'] = $app->share(
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
                 return $app['config']['url'] . '/event/' . $cdbid;
-            }
-        );
-    }
-);
-
-$app['place_iri_generator'] = $app->share(
-    function ($app) {
-        return new CallableIriGenerator(
-            function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/place/' . $cdbid;
             }
         );
     }
@@ -272,10 +261,12 @@ $app['event_jsonld_repository'] = $app->share(
             $app['event_jsonld_cache']
         );
 
-        $broadcastingRepository = new \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator(
+        $broadcastingRepository = new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $cachedRepository,
             $app['event_bus'],
-            new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory()
+            new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory(
+                $app['iri_generator']
+            )
         );
 
         return $broadcastingRepository;
@@ -296,7 +287,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['event_service'],
             $app['place_service'],
             $app['organizer_service'],
-            $app['media_object_serializer']
+            $app['media_object_serializer'],
+            $app['iri_offer_identifier_factory']
         );
 
         $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
@@ -803,10 +795,12 @@ $app['place_jsonld_repository'] = $app->share(
             $app['place_jsonld_cache']
         );
 
-        return new \CultuurNet\UDB3\Event\ReadModel\BroadcastingDocumentRepositoryDecorator(
+        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $repository,
             $app['event_bus'],
-            new \CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory()
+            new \CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory(
+                $app['place_iri_generator']
+            )
         );
     }
 );
@@ -934,13 +928,13 @@ $app['organizer_editing_service'] = $app->share(
 );
 
 $app['organizer_jsonld_projector'] = $app->share(
-  function ($app) {
-      return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
-          $app['organizer_jsonld_repository'],
-          $app['organizer_iri_generator'],
-          $app['event_bus']
-      );
-  }
+    function ($app) {
+        return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
+            $app['organizer_jsonld_repository'],
+            $app['organizer_iri_generator'],
+            $app['event_bus']
+        );
+    }
 );
 
 $app['organizer_jsonld_repository'] = $app->share(
@@ -1134,12 +1128,12 @@ $app['uitpas'] = $app->share(
 );
 
 $app['logger.uitpas'] = $app->share(
-  function (Application $app) {
-      $logger = new Monolog\Logger('uitpas');
-      $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
+    function (Application $app) {
+        $logger = new Monolog\Logger('uitpas');
+        $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
 
-      return $logger;
-  }
+        return $logger;
+    }
 );
 
 // This service is used by the background worker to impersonate the user
@@ -1166,6 +1160,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvid
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
