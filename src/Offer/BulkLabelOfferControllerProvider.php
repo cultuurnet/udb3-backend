@@ -27,7 +27,9 @@ class BulkLabelOfferControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new AddLabelToMultipleJSONDeserializer(
-                        new IriOfferIdentifierJSONDeserializer()
+                        new IriOfferIdentifierJSONDeserializer(
+                            $app['iri_offer_identifier_factory']
+                        )
                     ),
                     $app['event_command_bus']
                 );
