@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3cd1b66bcaa157c4d5f1ddfd30ee7b47",
-    "content-hash": "558d504c96750f3d05edbe07bf491dc1",
+    "hash": "c4660441c5433e67d8e53870877a6848",
+    "content-hash": "a3316191099ba1c6617e6a01da33a0fa",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.4",
+            "version": "v2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "7281b1fd8118b31cb9162c2fb5a4cc6f01d62ed6"
+                "reference": "91e2690c4ecc8a4e3e2d333430069f6a0c694a7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/7281b1fd8118b31cb9162c2fb5a4cc6f01d62ed6",
-                "reference": "7281b1fd8118b31cb9162c2fb5a4cc6f01d62ed6",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/91e2690c4ecc8a4e3e2d333430069f6a0c694a7a",
+                "reference": "91e2690c4ecc8a4e3e2d333430069f6a0c694a7a",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2015-08-21 16:50:17"
+            "time": "2016-03-22 14:34:51"
         },
         {
             "name": "broadway/broadway",
@@ -436,6 +436,45 @@
             ],
             "description": "Authentication service for CultuurNet web services",
             "time": "2015-08-24 20:22:37"
+        },
+        {
+            "name": "cultuurnet/broadway-amqp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/broadway-amqp.git",
+                "reference": "d53c15a3452921ee507c191a6509b5737a36378c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/d53c15a3452921ee507c191a6509b5737a36378c",
+                "reference": "d53c15a3452921ee507c191a6509b5737a36378c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/php-token-stream": "1.4.6",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vendor\\Package\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "AMQP integration for Broadway library",
+            "time": "2016-03-23 10:42:28"
         },
         {
             "name": "cultuurnet/calendar-summary",
