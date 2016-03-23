@@ -248,8 +248,6 @@ $app['dbal_connection:keepalive'] = $app->protect(
         $db = $app['dbal_connection'];
 
         $db->query('SELECT 1')->execute();
-
-        echo 'db keepalive sent' . PHP_EOL;
     }
 );
 
