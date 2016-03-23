@@ -1,3 +1,5 @@
+imports:
+  - resource: features.yml
 # Base URL of the silex application. Necessary to generate the IRIs of JSON-LD
 # events.
 url: http://example.com
@@ -69,7 +71,7 @@ amqp:
     udb3:
       exchange: udb3.e.prod
 prince:
-  binary: /usr/local/bin/prince
+  binary: /usr/bin/prince
 
 cache:
   # Currently supported: "filesystem" or "redis"
@@ -79,7 +81,7 @@ cache:
     database: 1
 # Regular expression pattern to match valid event URLs.
 # Use a capturing group named 'eventid' to extract the event's ID.
-event_url_regex: https?://example\.com/event/(?<eventid>[a-zA-Z0-9\-]+)
+offer_url_regex: https?://example\.com/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)
 
 oauth:
   base_url:
@@ -90,3 +92,7 @@ redis:
   # uri: tcp://127.0.0.1:6379
 entryapi:
   link_base_url: http://www.uitdatabank.be/rest/v3/event
+media:
+  upload_directory: "/web/uploads"
+  media_directory: "/web/media"
+  file_size_limit: 1000000

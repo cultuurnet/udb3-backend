@@ -41,6 +41,7 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
             $this->app['event_relations_repository'],
             $this->app['variations.event_store'],
             $this->app['variations.search'],
+            $this->app['media_object_store'],
         );
 
         /** @var \Doctrine\DBAL\Connection $connection */

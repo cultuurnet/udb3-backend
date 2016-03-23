@@ -52,8 +52,7 @@ class UpdateCdbXMLCommand extends Command
 
                 try {
                     $eventImporter->updateEventFromUDB2($message->getId());
-                }
-                catch (EventNotFoundException $e) {
+                } catch (EventNotFoundException $e) {
                     $errOutput->writeln(
                         "<error>{$e->getMessage()} The event probably has been removed from UDB2.</error>"
                     );
@@ -63,7 +62,6 @@ class UpdateCdbXMLCommand extends Command
     }
 
     /**
-     * @param string $store
      * @return EventStream
      */
     private function getEventStream()
@@ -87,5 +85,4 @@ class UpdateCdbXMLCommand extends Command
 
         return $app['udb2_event_importer'];
     }
-
 }

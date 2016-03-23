@@ -1,6 +1,9 @@
 /vendor/
-config.yml
+/*.yml
+!/.travis.yml
 /cache/
 /log/
 /web/downloads/
+/web/uploads/
+/web/media/
 /web/swagger/

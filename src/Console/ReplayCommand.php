@@ -8,6 +8,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
+use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use Knp\Command\Command;
 use Silex\Application;
@@ -16,8 +17,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class ReplayCommand
+ *
+ * @package CultuurNet\UDB3\Silex\Console
+ */
 class ReplayCommand extends Command
 {
+    const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
+
     /**
      * @inheritdoc
      */
@@ -43,6 +51,12 @@ class ReplayCommand extends Command
                 null,
                 InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
                 'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
+            )
+            ->addOption(
+                self::OPTION_DISABLE_PUBLISHING,
+                null,
+                InputOption::VALUE_NONE,
+                'Disable publishing to the event bus.'
             );
     }
 
@@ -89,7 +103,9 @@ class ReplayCommand extends Command
                 );
             }
 
-            $eventBus->publish($eventStream);
+            if (!$this->isPublishDisabled($input)) {
+                $eventBus->publish($eventStream);
+            }
         }
     }
 
@@ -104,7 +120,11 @@ class ReplayCommand extends Command
         return $app['event_bus'];
     }
 
-    private function setSubscribers($subscribers) {
+    /**
+     * @param $subscribers
+     */
+    private function setSubscribers($subscribers)
+    {
         $app = $this->getSilexApplication();
 
         $config = $app['config'];
@@ -123,17 +143,23 @@ class ReplayCommand extends Command
         return new EventStream(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            new SimpleInterfaceSerializer(),
             $store
         );
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @return mixed
+     */
     private function getStore(InputInterface $input, OutputInterface $output)
     {
         $validStores = [
             'events',
             'places',
             'organizers',
+            'variations',
         ];
 
         $store = $input->getArgument('store');
@@ -146,5 +172,14 @@ class ReplayCommand extends Command
         }
 
         return $store;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @return bool
+     */
+    private function isPublishDisabled(InputInterface $input)
+    {
+        return $input->getOption(self::OPTION_DISABLE_PUBLISHING);
     }
 }

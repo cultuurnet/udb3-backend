@@ -10,12 +10,14 @@
   ],
   "minimum-stability": "dev",
   "require": {
+    "cultuurnet/silex-uitid-provider": "0.x-dev",
     "cultuurnet/entry": "~0.1",
     "cultuurnet/udb2-domain-events": "~0.1",
     "cultuurnet/udb3": "~0.1",
     "cultuurnet/udb3-doctrine": "~0.1",
     "cultuurnet/udb3-symfony": "~0.1",
     "cultuurnet/udb3-udb2-bridge": "~0.1",
+    "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/udb3-silex-entryapi": "~0.1",
     "cultuurnet/hydra": "~0.1",
     "silex/silex": "~1.2",
@@ -31,19 +33,31 @@
     "knplabs/console-service-provider": "~1.0",
     "doctrine/migrations": "~1.0@dev",
     "crell/api-problem": "~1.7",
-    "cultuurnet/silex-service-provider-oauth": "~0.1"
+    "cultuurnet/silex-service-provider-oauth": "~0.1",
+    "2dotstwice/silex-feature-toggles-provider": "~0.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.3"
+    "escapestudios/symfony2-coding-standard": "~2.9",
+    "squizlabs/php_codesniffer": "~2.2",
+    "phing/phing": "~2.10"
   },
   "prefer-stable": true,
   "preferred-install": "source",
-  "provide": {
-    "ext-redis": "*"
-  },
   "autoload": {
     "psr-4": {
       "CultuurNet\\UDB3\\Silex\\": "src/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.x-dev"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "5.5.9",
+      "ext-redis": "2.2.7.0",
+      "ext-intl": "1.1.0"
     }
   }
 }

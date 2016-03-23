@@ -1,22 +1,16 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Organizer;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class PlaceLookupServiceProvider implements ServiceProviderInterface
+class OrganizerLookupServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function register(Application $app)
     {
-        $app['place_lookup'] = $app->share(
-            function ($app) {
+        $app['organizer_lookup'] = $app->share(
+            function (Application $app) {
                 // At the moment, the index.repository service maintains
                 // an index of data for various purposes.
                 return $app['index.repository'];
@@ -24,12 +18,8 @@ class PlaceLookupServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function boot(Application $app)
     {
 
     }
-
 }
