@@ -388,7 +388,6 @@ $app['event_bus'] = $app->share(
                 'search_cache_manager',
                 'relations_projector',
                 'event_jsonld_projector',
-                'udb2_event_importer',
                 'event_history_projector',
                 'place_jsonld_projector',
                 'organizer_jsonld_projector',
@@ -397,7 +396,10 @@ $app['event_bus'] = $app->share(
                 'variations.jsonld.projector',
                 'index.projector',
                 'event_permission.projector',
-                'place_permission.projector'
+                'place_permission.projector',
+                'udb2_events_cdbxml_enricher',
+                'udb2_events_to_udb3_place_applier',
+                'udb2_events_to_udb3_event_applier',
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -1223,5 +1225,7 @@ $app->register(
         isset($app['config']['toggles']) ? $app['config']['toggles'] : []
     )
 );
+
+$app->register(new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider());
 
 return $app;
