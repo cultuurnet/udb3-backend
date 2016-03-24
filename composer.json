@@ -35,7 +35,8 @@
     "crell/api-problem": "~1.7",
     "cultuurnet/silex-service-provider-oauth": "~0.1",
     "2dotstwice/silex-feature-toggles-provider": "~0.1",
-    "cultuurnet/silex-amqp": "~0.1"
+    "cultuurnet/silex-amqp": "~0.1",
+    "cultuurnet/broadway-amqp": "dev-feature/III-844 as 0.1"
   },
   "require-dev": {
     "escapestudios/symfony2-coding-standard": "~2.9",
