@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c4660441c5433e67d8e53870877a6848",
-    "content-hash": "a3316191099ba1c6617e6a01da33a0fa",
+    "hash": "8946a67b116cc5da58cebf2fd615ec96",
+    "content-hash": "a13c9f3d3f7fc7a6610397014b39148e",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -439,17 +439,21 @@
         },
         {
             "name": "cultuurnet/broadway-amqp",
-            "version": "dev-master",
+            "version": "dev-feature/III-536",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "d53c15a3452921ee507c191a6509b5737a36378c"
+                "reference": "5a27c1fbb1401937ff569d524831a976887b55d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/d53c15a3452921ee507c191a6509b5737a36378c",
-                "reference": "d53c15a3452921ee507c191a6509b5737a36378c",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/5a27c1fbb1401937ff569d524831a976887b55d5",
+                "reference": "5a27c1fbb1401937ff569d524831a976887b55d5",
                 "shasum": ""
+            },
+            "require": {
+                "broadway/broadway": "~0.5.2",
+                "php-amqplib/php-amqplib": "2.5.*"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -466,7 +470,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Vendor\\Package\\": "src/"
+                    "CultuurNet\\BroadwayAMQP\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -474,7 +478,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-03-23 10:42:28"
+            "time": "2016-03-24 14:03:57"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -1155,16 +1159,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-844",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "6fa57b13ade91eb53acb3c149f30c83b1907bc1e"
+                "reference": "5336ffc523acfe3b76e626e43dfb97815facca84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/6fa57b13ade91eb53acb3c149f30c83b1907bc1e",
-                "reference": "6fa57b13ade91eb53acb3c149f30c83b1907bc1e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/5336ffc523acfe3b76e626e43dfb97815facca84",
+                "reference": "5336ffc523acfe3b76e626e43dfb97815facca84",
                 "shasum": ""
             },
             "require": {
@@ -1233,7 +1237,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-22 13:30:53"
+            "time": "2016-03-24 13:57:30"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3348,6 +3352,60 @@
             "time": "2016-03-18 20:34:03"
         },
         {
+            "name": "php-amqplib/php-amqplib",
+            "version": "v2.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
+                "reference": "eb8f94d97c8e79900accf77343dbd7eca7f58506"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/eb8f94d97c8e79900accf77343dbd7eca7f58506",
+                "reference": "eb8f94d97c8e79900accf77343dbd7eca7f58506",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpAmqpLib\\": "PhpAmqpLib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla"
+                }
+            ],
+            "description": "This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/videlalvaro/php-amqplib/",
+            "keywords": [
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2015-08-11 12:30:09"
+        },
+        {
             "name": "phpoffice/phpexcel",
             "version": "1.8.1",
             "source": {
@@ -5199,11 +5257,26 @@
             "time": "2016-01-19 23:39:10"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-844",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-536",
+            "package": "cultuurnet/broadway-amqp"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "doctrine/migrations": 20
+        "cultuurnet/udb3": 20,
+        "doctrine/migrations": 20,
+        "cultuurnet/broadway-amqp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
