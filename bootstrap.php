@@ -1072,7 +1072,9 @@ $app['event_export'] = $app->share(
     }
 );
 
-$app['amqp-execution-delay'] = 10;
+$app['amqp-execution-delay'] = isset($app['config']['consumerExecutionDelay']) ?
+    Natural::fromNative($app['config']['consumerExecutionDelay']) :
+    Natural::fromNative(10);
 
 $app['logger.amqp.event_bus_forwarder'] = $app->share(
     function (Application $app) {
@@ -1111,7 +1113,7 @@ $app['udb2_deserializer_locator'] = $app->share(
 $app['event_bus_forwarding_consumer_factory'] = $app->share(
     function (Application $app) {
         return new EventBusForwardingConsumerFactory(
-            Natural::fromNative($app['config']['consumerExecutionDelay']),
+            $app['amqp-execution-delay'],
             $app['config']['amqp'],
             $app['logger.amqp.event_bus_forwarder'],
             $app['udb2_deserializer_locator'],
