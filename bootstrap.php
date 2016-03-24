@@ -1072,8 +1072,8 @@ $app['event_export'] = $app->share(
     }
 );
 
-$app['amqp-execution-delay'] = isset($app['config']['consumerExecutionDelay']) ?
-    Natural::fromNative($app['config']['consumerExecutionDelay']) :
+$app['amqp-execution-delay'] = isset($app['config']['amqp_execution_delay']) ?
+    Natural::fromNative($app['config']['amqp_execution_delay']) :
     Natural::fromNative(10);
 
 $app['logger.amqp.event_bus_forwarder'] = $app->share(
