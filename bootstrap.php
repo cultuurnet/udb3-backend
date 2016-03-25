@@ -424,30 +424,27 @@ $app['amqp.publisher'] = $app->share(
 
         $channel = $connection->channel();
 
-        $specification = new \CultuurNet\UDB3\EventHandling\DomainMessage\AnyOf(
-            new \CultuurNet\UDB3\EventHandling\DomainMessage\PayloadIsInstanceOf(
-                \CultuurNet\UDB3\Event\Events\EventWasLabelled::class
+        $specification = new \CultuurNet\BroadwayAMQP\DomainMessage\AnyOf(
+            new \CultuurNet\BroadwayAMQP\DomainMessage\PayloadInNamespace(
+                "CultuurNet\\UDB3\\Event\\Events"
             ),
-            new \CultuurNet\UDB3\EventHandling\DomainMessage\PayloadIsInstanceOf(
-                \CultuurNet\UDB3\Event\Events\Unlabelled::class
+            new \CultuurNet\BroadwayAMQP\DomainMessage\PayloadInNamespace(
+                "CultuurNet\\UDB3\\Place\\Events"
             )
         );
 
-        $publisher = new \CultuurNet\UDB3\EventHandling\AMQPPublisher(
+        $map =
+            \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Place\Events\ContentTypes::map();
+
+        $contentTypeLookup = new \CultuurNet\BroadwayAMQP\ContentTypeLookup($map);
+
+        $publisher = new \CultuurNet\BroadwayAMQP\AMQPPublisher(
             $channel,
             $exchange,
-            $specification
+            $specification,
+            $contentTypeLookup
         );
-
-        $publisher = $publisher
-            ->withContentType(
-                \CultuurNet\UDB3\Event\Events\EventWasLabelled::class,
-                'application/vnd.cultuurnet.udb3-events.event-labelled+json'
-            )
-            ->withContentType(
-                \CultuurNet\UDB3\Event\Events\Unlabelled::class,
-                'application/vnd.cultuurnet.udb3-events.event-unlabelled+json'
-            );
 
         return $publisher;
     }
