@@ -424,18 +424,18 @@ $app['amqp.publisher'] = $app->share(
 
         $channel = $connection->channel();
 
-        $specification = new \CultuurNet\BroadwayAMQP\DomainMessage\AnyOf(
-            new \CultuurNet\BroadwayAMQP\DomainMessage\PayloadInNamespace(
-                "CultuurNet\\UDB3\\Event\\Events"
-            ),
-            new \CultuurNet\BroadwayAMQP\DomainMessage\PayloadInNamespace(
-                "CultuurNet\\UDB3\\Place\\Events"
-            )
-        );
-
         $map =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
             \CultuurNet\UDB3\Place\Events\ContentTypes::map();
+
+        $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
+        foreach (array_keys($map) as $className) {
+            $classes = $classes->with(
+                new \CultuurNet\BroadwayAMQP\DomainMessage\PayloadIsInstanceOf($className)
+            );
+        }
+
+        $specification = new \CultuurNet\BroadwayAMQP\DomainMessage\AnyOf($classes);
 
         $contentTypeLookup = new \CultuurNet\BroadwayAMQP\ContentTypeLookup($map);
 
