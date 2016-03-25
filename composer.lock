@@ -443,15 +443,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "5a27c1fbb1401937ff569d524831a976887b55d5"
+                "reference": "06b9df9090380948092b1da539423d05cce17e2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/5a27c1fbb1401937ff569d524831a976887b55d5",
-                "reference": "5a27c1fbb1401937ff569d524831a976887b55d5",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/06b9df9090380948092b1da539423d05cce17e2c",
+                "reference": "06b9df9090380948092b1da539423d05cce17e2c",
                 "shasum": ""
             },
             "require": {
+                "2dotstwice/collection": "~1.1",
                 "broadway/broadway": "~0.5.2",
                 "php-amqplib/php-amqplib": "2.5.*"
             },
@@ -478,7 +479,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-03-24 14:03:57"
+            "time": "2016-03-25 09:29:28"
         },
         {
             "name": "cultuurnet/calendar-summary",
