@@ -30,7 +30,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     [
                         'handler' => $handlerStack,
                         'timeout' => 3,
-                        'connect_timeout' => 1
+                        'connect_timeout' => 1,
                     ]
                 );
 
