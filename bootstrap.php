@@ -443,7 +443,8 @@ $app['amqp.publisher'] = $app->share(
             $channel,
             $exchange,
             $specification,
-            $contentTypeLookup
+            $contentTypeLookup,
+            new \CultuurNet\BroadwayAMQP\Message\EntireDomainMessageBodyFactory()
         );
 
         return $publisher;
