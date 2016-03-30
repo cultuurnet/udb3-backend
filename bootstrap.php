@@ -1232,6 +1232,4 @@ $app->register(
     )
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider());
-
 return $app;
