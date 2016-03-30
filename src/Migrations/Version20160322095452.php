@@ -15,13 +15,25 @@ class Version20160322095452 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $schema
-            ->getTable('index_readmodel')
-            ->addColumn(
-                'updated',
-                'text',
-                array('length' => 36, 'notnull' => true)
-            );
+        $table = $schema->getTable('index_readmodel');
+
+        $table->addColumn(
+            'updated',
+            'text',
+            array('length' => 36, 'notnull' => true)
+        );
+
+        $table->addColumn(
+            'owning_domain',
+            'text',
+            array('length' => 36, 'notnull' => true)
+        );
+
+        $table->addColumn(
+            'entity_iri',
+            'text'
+        );
+
     }
 
     /**
@@ -31,6 +43,8 @@ class Version20160322095452 extends AbstractMigration
     {
         $schema
             ->getTable('index_readmodel')
-            ->dropColumn('updated');
+            ->dropColumn('updated')
+            ->dropColumn('owning_domain')
+            ->dropColumn('entity_iri');
     }
 }

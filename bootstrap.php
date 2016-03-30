@@ -3,6 +3,7 @@ use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use Silex\Application;
@@ -39,6 +40,12 @@ $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
     "cors.allowCredentials" => true
 ));
+
+$app['local_domain'] = \ValueObjects\Web\Domain::specifyType(
+    parse_url($app['config']['url'])['host']
+);
+
+$app['udb2_domain'] = \ValueObjects\Web\Domain::specifyType('uitdatabank.be');
 
 /**
  * UiTID Authentication services.
@@ -100,6 +107,12 @@ $app['iri_generator'] = $app->share(
                 return $app['config']['url'] . '/event/' . $cdbid;
             }
         );
+    }
+);
+
+$app['entity_iri_generator_factory'] = $app->share(
+    function ($app) {
+        return new EntityIriGeneratorFactory($app['config']['url']);
     }
 );
 
@@ -1218,5 +1231,7 @@ $app->register(
         isset($app['config']['toggles']) ? $app['config']['toggles'] : []
     )
 );
+
+$app->register(new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider());
 
 return $app;
