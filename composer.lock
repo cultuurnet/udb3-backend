@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "45906f29d590fc32a12f09ce3f8ea3e2",
-    "content-hash": "e9e15d847ea5e9404f8534cbd051677f",
+    "hash": "ae34c1ab48208fecfcab11cc68906384",
+    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -439,19 +439,20 @@
         },
         {
             "name": "cultuurnet/broadway-amqp",
-            "version": "dev-feature/III-844",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "25da0dc1e6cb4dd8af0ca4fb233fa8f3766d5d47"
+                "reference": "8952b7f545ff5324233301a05eadb3f13094b4d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/25da0dc1e6cb4dd8af0ca4fb233fa8f3766d5d47",
-                "reference": "25da0dc1e6cb4dd8af0ca4fb233fa8f3766d5d47",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/8952b7f545ff5324233301a05eadb3f13094b4d2",
+                "reference": "8952b7f545ff5324233301a05eadb3f13094b4d2",
                 "shasum": ""
             },
             "require": {
+                "2dotstwice/collection": "~1.1",
                 "broadway/broadway": "~0.5.2",
                 "cultuurnet/deserializer": "~0.1",
                 "nicolopignatelli/valueobjects": "~2.0",
@@ -481,7 +482,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-03-24 11:45:33"
+            "time": "2016-03-31 11:54:04"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -1208,12 +1209,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2ebba217413360617ac9506e5538fa649d813c72"
+                "reference": "097c5547ef5c9c10523b4a5823ce1ae24377ba1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2ebba217413360617ac9506e5538fa649d813c72",
-                "reference": "2ebba217413360617ac9506e5538fa649d813c72",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/097c5547ef5c9c10523b4a5823ce1ae24377ba1a",
+                "reference": "097c5547ef5c9c10523b4a5823ce1ae24377ba1a",
                 "shasum": ""
             },
             "require": {
@@ -1282,7 +1283,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-29 13:24:38"
+            "time": "2016-03-31 12:57:03"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1380,12 +1381,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "6096693ea632ef66e07d472710e5e7398fa5e4fd"
+                "reference": "13e0e8f8d72fee5641077eb85c90dfe29a86799d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/6096693ea632ef66e07d472710e5e7398fa5e4fd",
-                "reference": "6096693ea632ef66e07d472710e5e7398fa5e4fd",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/13e0e8f8d72fee5641077eb85c90dfe29a86799d",
+                "reference": "13e0e8f8d72fee5641077eb85c90dfe29a86799d",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1430,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-03-29 08:01:25"
+            "time": "2016-03-31 10:11:27"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1437,12 +1438,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "7f611f9088c9447d086a12e5ec1d9a3f42c4efdc"
+                "reference": "67f70990e86a0a2925f04d7f8d83b151f16ae076"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/7f611f9088c9447d086a12e5ec1d9a3f42c4efdc",
-                "reference": "7f611f9088c9447d086a12e5ec1d9a3f42c4efdc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/67f70990e86a0a2925f04d7f8d83b151f16ae076",
+                "reference": "67f70990e86a0a2925f04d7f8d83b151f16ae076",
                 "shasum": ""
             },
             "require": {
@@ -1489,7 +1490,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-03-31 09:42:10"
+            "time": "2016-03-31 10:11:31"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -3000,7 +3001,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -5621,19 +5622,11 @@
             "time": "2016-01-19 23:39:10"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-844",
-            "package": "cultuurnet/broadway-amqp"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "doctrine/migrations": 20,
-        "cultuurnet/broadway-amqp": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -401,6 +401,7 @@ $app['event_bus'] = $app->share(
                 'index.projector',
                 'event_permission.projector',
                 'place_permission.projector',
+                'amqp.publisher',
                 'udb2_events_cdbxml_enricher',
                 'udb2_events_to_udb3_place_applier',
                 'udb2_events_to_udb3_event_applier',
@@ -420,6 +421,47 @@ $app['event_bus'] = $app->share(
         });
 
         return $eventBus;
+    }
+);
+
+$app['amqp.publisher'] = $app->share(
+    function (Application $app) {
+        $amqpConfig = $host = $app['config']['amqp'];
+        $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
+            $amqpConfig['host'],
+            $amqpConfig['port'],
+            $amqpConfig['user'],
+            $amqpConfig['password'],
+            $amqpConfig['vhost']
+        );
+        $exchange = $amqpConfig['publish']['udb3']['exchange'];
+
+        $channel = $connection->channel();
+
+        $map =
+            \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Place\Events\ContentTypes::map();
+
+        $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
+        foreach (array_keys($map) as $className) {
+            $classes = $classes->with(
+                new \CultuurNet\BroadwayAMQP\DomainMessage\PayloadIsInstanceOf($className)
+            );
+        }
+
+        $specification = new \CultuurNet\BroadwayAMQP\DomainMessage\AnyOf($classes);
+
+        $contentTypeLookup = new \CultuurNet\BroadwayAMQP\ContentTypeLookup($map);
+
+        $publisher = new \CultuurNet\BroadwayAMQP\AMQPPublisher(
+            $channel,
+            $exchange,
+            $specification,
+            $contentTypeLookup,
+            new \CultuurNet\BroadwayAMQP\Message\EntireDomainMessageBodyFactory()
+        );
+
+        return $publisher;
     }
 );
 
