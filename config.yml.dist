@@ -63,7 +63,7 @@ amqp:
   password: bar
   vhost: example
   consumer_tag: udb3
-  consume:
+  consumers:
     udb2:
       exchange: udb2.e.prod
       queue: udb3.q.prod.udb2
