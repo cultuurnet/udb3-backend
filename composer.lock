@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3de8f16cbcb995fdfd1af8cd4de9775e",
-    "content-hash": "f627ce099321bbc9453ecb66fd99a812",
+    "hash": "ae34c1ab48208fecfcab11cc68906384",
+    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1205,16 +1205,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-844",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f5236080d1337fa0e99e9c68f7810fd981a82c2e"
+                "reference": "097c5547ef5c9c10523b4a5823ce1ae24377ba1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f5236080d1337fa0e99e9c68f7810fd981a82c2e",
-                "reference": "f5236080d1337fa0e99e9c68f7810fd981a82c2e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/097c5547ef5c9c10523b4a5823ce1ae24377ba1a",
+                "reference": "097c5547ef5c9c10523b4a5823ce1ae24377ba1a",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-03-31 09:53:51"
+            "time": "2016-03-31 12:57:03"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -5622,18 +5622,10 @@
             "time": "2016-01-19 23:39:10"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-844",
-            "package": "cultuurnet/udb3"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
