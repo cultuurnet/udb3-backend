@@ -56,6 +56,7 @@ mail:
 export:
   mail:
     subject: Uw export van evenementen
+amqp_execution_delay: 10 # Optional config param with default value of 10 seconds
 amqp:
   host: example.com
   port: 5672
@@ -63,10 +64,13 @@ amqp:
   password: bar
   vhost: example
   consumer_tag: udb3
-  consume:
+  consumers:
     udb2:
       exchange: udb2.e.prod
       queue: udb3.q.prod.udb2
+  publish:
+    udb3:
+      exchange: udb3.e.prod
 prince:
   binary: /usr/bin/prince
 
