@@ -199,6 +199,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
+$app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
 
 /**
  * API callbacks for authentication.

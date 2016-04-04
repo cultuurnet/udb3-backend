@@ -1,11 +1,9 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\ReadModel\Index\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -23,7 +21,8 @@ class IndexServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new \CultuurNet\UDB3\ReadModel\Index\Doctrine\DBALRepository(
                     $app['dbal_connection'],
-                    $app['index.table_name']
+                    $app['index.table_name'],
+                    $app['entity_iri_generator_factory']
                 );
             }
         );
@@ -31,7 +30,11 @@ class IndexServiceProvider implements ServiceProviderInterface
         $app['index.projector'] = $app->share(
             function (Application $app) {
                 $projector = new \CultuurNet\UDB3\ReadModel\Index\Projector(
-                    $app['index.repository']
+                    $app['index.repository'],
+                    new CdbXmlCreatedByToUserIdResolver($app['uitid_users']),
+                    $app['local_domain'],
+                    $app['udb2_domain'],
+                    $app['iri_offer_identifier_factory']
                 );
 
                 return $projector;
