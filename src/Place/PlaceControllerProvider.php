@@ -47,6 +47,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
             ->get('place/{cdbid}', 'place_controller:get')
             ->bind('place');
         $controllers->delete('place/{cdbid}','place_editing_controller:deletePlace');
+        $controllers->get('place/{cdbid}/events', 'place_editing_controller:getEvents');
 
         $controllers->get('places', 'place_controller:getByPostalCode');
 
