@@ -47,6 +47,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('event/{cdbid}', 'event_controller:get')
             ->bind('event');
+        $controllers->delete('event/{cdbid}', 'event_editing_controller:deleteEvent');
 
         $controllers
             ->get('event/{cdbid}/history', 'event_controller:history')

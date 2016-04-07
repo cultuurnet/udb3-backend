@@ -40,6 +40,7 @@ $app['security.firewalls'] = array(
               '^/api/1.0/event.jsonld',
               '^/(event|place)/'.$app['id_pattern'].'$',
               '^/event/'.$app['id_pattern'].'/history',
+              '^/place/'.$app['id_pattern'].'/events',
               '^/organizer/'.$app['id_pattern'],
               '^/media/'.$app['id_pattern'].'$',
               '^/places$',
