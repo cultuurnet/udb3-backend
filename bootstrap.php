@@ -15,6 +15,8 @@ use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use ValueObjects\Number\Natural;
 use ValueObjects\String\String as StringLiteral;
 
+date_default_timezone_set('Europe/Brussels');
+
 $app = new Application();
 
 $adapter = new \League\Flysystem\Adapter\Local(__DIR__);
