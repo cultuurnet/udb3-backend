@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ae34c1ab48208fecfcab11cc68906384",
-    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
+    "hash": "c925c86b76557dc570999848abc34192",
+    "content-hash": "119b627d9fe9b7054b3e294e1df09d50",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1205,16 +1205,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-845",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2d3119bfe39725c7cc69f540c96afc818c42fc62"
+                "reference": "0633fe5f26694a49464e8c2df0124a74c6c06662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2d3119bfe39725c7cc69f540c96afc818c42fc62",
-                "reference": "2d3119bfe39725c7cc69f540c96afc818c42fc62",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/0633fe5f26694a49464e8c2df0124a74c6c06662",
+                "reference": "0633fe5f26694a49464e8c2df0124a74c6c06662",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-06 15:47:13"
+            "time": "2016-04-13 12:03:32"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1291,16 +1291,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-doctrine-php.git",
-                "reference": "6a587cea8d7825601cc33817e7da69c9f770fd37"
+                "reference": "e82d58550de83f3a20415c6060cb2c26a93e72f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/6a587cea8d7825601cc33817e7da69c9f770fd37",
-                "reference": "6a587cea8d7825601cc33817e7da69c9f770fd37",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/e82d58550de83f3a20415c6060cb2c26a93e72f1",
+                "reference": "e82d58550de83f3a20415c6060cb2c26a93e72f1",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3": "~0.0",
+                "cultuurnet/udb3": "~0.1",
                 "doctrine/cache": "~1.3"
             },
             "require-dev": {
@@ -1328,7 +1328,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2015-10-12 15:31:07"
+            "time": "2016-04-13 11:52:34"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
@@ -2284,6 +2284,7 @@
                 "event",
                 "exception"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2341,6 +2342,7 @@
                 "http",
                 "http client"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2393,6 +2395,7 @@
                 "adapter",
                 "log"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2437,6 +2440,7 @@
                 "message",
                 "url"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2486,6 +2490,7 @@
                 "Guzzle",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2537,6 +2542,7 @@
                 "log",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2587,6 +2593,7 @@
                 "oauth",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2640,6 +2647,7 @@
                 "component",
                 "stream"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -3330,16 +3338,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.18.2",
+            "version": "1.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09"
+                "reference": "5f56ed5212dc509c8dc8caeba2715732abb32dbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/064b38c16790249488e7a8b987acf1c9d7383c09",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/5f56ed5212dc509c8dc8caeba2715732abb32dbf",
+                "reference": "5f56ed5212dc509c8dc8caeba2715732abb32dbf",
                 "shasum": ""
             },
             "require": {
@@ -3404,7 +3412,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-04-02 13:12:58"
+            "time": "2016-04-12 18:29:35"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -5295,16 +5303,16 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "22eb098958980fbbe6b9a06f209f5a4b496cc0c1"
+                "reference": "8bafa58574204bdff03c275d1d618aaa601588ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/22eb098958980fbbe6b9a06f209f5a4b496cc0c1",
-                "reference": "22eb098958980fbbe6b9a06f209f5a4b496cc0c1",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/8bafa58574204bdff03c275d1d618aaa601588ae",
+                "reference": "8bafa58574204bdff03c275d1d618aaa601588ae",
                 "shasum": ""
             },
             "require": {
@@ -5336,7 +5344,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2016-02-03 16:53:37"
+            "time": "2016-04-12 21:19:36"
         },
         {
             "name": "zendframework/zend-validator",
@@ -5627,10 +5635,18 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-845",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
