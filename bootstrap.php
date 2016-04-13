@@ -440,18 +440,26 @@ $app['event_bus'] = $app->share(
     }
 );
 
-$app['amqp.publisher'] = $app->share(
+$app['amqp.connection'] = $app->share(
     function (Application $app) {
         $amqpConfig = $host = $app['config']['amqp'];
-        $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection(
+
+        $connection = new AMQPStreamConnection(
             $amqpConfig['host'],
             $amqpConfig['port'],
             $amqpConfig['user'],
             $amqpConfig['password'],
             $amqpConfig['vhost']
         );
-        $exchange = $amqpConfig['publish']['udb3']['exchange'];
 
+        return $connection;
+    }
+);
+
+$app['amqp.publisher'] = $app->share(
+    function (Application $app) {
+        $connection = $app['amqp.connection'];
+        $exchange = $app['config']['amqp']['publish']['udb3']['exchange'];
         $channel = $connection->channel();
 
         $map =
@@ -1174,7 +1182,7 @@ $app['event_bus_forwarding_consumer_factory'] = $app->share(
     function (Application $app) {
         return new EventBusForwardingConsumerFactory(
             $app['amqp-execution-delay'],
-            $app['config']['amqp'],
+            $app['amqp.connection'],
             $app['logger.amqp.event_bus_forwarder'],
             $app['udb2_deserializer_locator'],
             $app['event_bus']
@@ -1182,7 +1190,7 @@ $app['event_bus_forwarding_consumer_factory'] = $app->share(
     }
 );
 
-$app['amqp-connection'] = $app->share(
+$app['amqp.udb2_event_bus_forwarding_consumer'] = $app->share(
     function (Application $app) {
         $consumerConfig = $app['config']['amqp']['consumers']['udb2'];
         $exchange = new StringLiteral($consumerConfig['exchange']);
@@ -1191,9 +1199,7 @@ $app['amqp-connection'] = $app->share(
         /** @var EventBusForwardingConsumerFactory $consumerFactory */
         $consumerFactory = $app['event_bus_forwarding_consumer_factory'];
 
-        $eventBusForwardingConsumer = $consumerFactory->create($exchange, $queue);
-
-        return $eventBusForwardingConsumer->getConnection();
+        return $consumerFactory->create($exchange, $queue);
     }
 );
 
