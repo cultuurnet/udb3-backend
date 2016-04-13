@@ -25,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReplayCommand extends Command
 {
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
+    const OPTION_START_ID = 'start-id';
 
     /**
      * @inheritdoc
@@ -57,6 +58,12 @@ class ReplayCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Disable publishing to the event bus.'
+            )
+            ->addOption(
+                self::OPTION_START_ID,
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The id of the row to start the replay from.'
             );
     }
 
@@ -88,7 +95,8 @@ class ReplayCommand extends Command
 
         $store = $this->getStore($input, $output);
 
-        $stream = $this->getEventStream($store);
+        $startId = $input->getOption(self::OPTION_START_ID);
+        $stream = $this->getEventStream($store, $startId);
 
         $eventBus = $this->getEventBus();
 
@@ -97,6 +105,7 @@ class ReplayCommand extends Command
             /** @var DomainMessage $message */
             foreach ($eventStream->getIterator() as $message) {
                 $output->writeln(
+                    $stream->getPreviousId() . '. ' .
                     $message->getRecordedOn()->toString() . ' ' .
                     $message->getType() .
                     ' (' . $message->getId() . ')'
@@ -134,9 +143,10 @@ class ReplayCommand extends Command
 
     /**
      * @param string $store
+     * @param int $startId
      * @return EventStream
      */
-    private function getEventStream($store = 'events')
+    private function getEventStream($store = 'events', $startId = null)
     {
         $app = $this->getSilexApplication();
 
@@ -144,7 +154,8 @@ class ReplayCommand extends Command
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new SimpleInterfaceSerializer(),
-            $store
+            $store,
+            $startId !== null ? $startId : 0
         );
     }
 
