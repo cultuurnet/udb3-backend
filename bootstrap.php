@@ -1288,6 +1288,19 @@ $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
     return $app['config']['entryapi']['link_base_url'];
 });
 
+$app['cdbxml_proxy'] = $app->share(
+    function ($app) {
+        $accept = $app['config']['cdbxml_proxy']['accept'];
+        $redirectUrl = $app['config']['cdbxml_proxy']['redirect_url'];
+
+        return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
+            new StringLiteral($accept),
+            \ValueObjects\Web\Url::fromNative($redirectUrl),
+            new \CultuurNet\UDB3\Symfony\Proxy\Redirect\SilexRedirect()
+        );
+    }
+);
+
 $app->register(new \CultuurNet\UDB3\Silex\Search\SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
