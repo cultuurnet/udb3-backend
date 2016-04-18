@@ -101,4 +101,4 @@ media:
 cdbxml_proxy:
   enabled: "true"
   accept: "application/xml"
-  redirect_url: "http://www.google.be"
+  redirect_domain: "www.domain-cdbxml-service.be"

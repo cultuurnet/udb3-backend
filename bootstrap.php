@@ -1290,12 +1290,18 @@ $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
 
 $app['cdbxml_proxy'] = $app->share(
     function ($app) {
-        $accept = $app['config']['cdbxml_proxy']['accept'];
-        $redirectUrl = $app['config']['cdbxml_proxy']['redirect_url'];
+        $accept = new StringLiteral(
+            $app['config']['cdbxml_proxy']['accept']
+        );
+
+        /** @var \ValueObjects\Web\Hostname $redirectDomain */
+        $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
+            $app['config']['cdbxml_proxy']['redirect_domain']
+        );
 
         return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
-            new StringLiteral($accept),
-            \ValueObjects\Web\Url::fromNative($redirectUrl),
+            $accept,
+            $redirectDomain,
             new \CultuurNet\UDB3\Symfony\Proxy\Redirect\SilexRedirect()
         );
     }
