@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ae34c1ab48208fecfcab11cc68906384",
-    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
+    "hash": "058ca3259e3dba586012ba7f9b987842",
+    "content-hash": "8104aeab51848bf06b80d179c1a3a0f2",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -439,16 +439,16 @@
         },
         {
             "name": "cultuurnet/broadway-amqp",
-            "version": "dev-master",
+            "version": "dev-feature/III-836",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "8952b7f545ff5324233301a05eadb3f13094b4d2"
+                "reference": "8815cee2ee894f3344dc93507cdce4d1a7ab277c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/8952b7f545ff5324233301a05eadb3f13094b4d2",
-                "reference": "8952b7f545ff5324233301a05eadb3f13094b4d2",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/8815cee2ee894f3344dc93507cdce4d1a7ab277c",
+                "reference": "8815cee2ee894f3344dc93507cdce4d1a7ab277c",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-03-31 11:54:04"
+            "time": "2016-04-18 07:24:59"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -536,12 +536,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "c8a654d953a0b7bed677a0b4d2476b5ff0683cf4"
+                "reference": "5fcd9bd1be7325d1cde495cdc01461046eb3bb33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/c8a654d953a0b7bed677a0b4d2476b5ff0683cf4",
-                "reference": "c8a654d953a0b7bed677a0b4d2476b5ff0683cf4",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/5fcd9bd1be7325d1cde495cdc01461046eb3bb33",
+                "reference": "5fcd9bd1be7325d1cde495cdc01461046eb3bb33",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-03-08 08:20:51"
+            "time": "2016-04-15 12:23:47"
         },
         {
             "name": "cultuurnet/clock",
@@ -1209,12 +1209,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2d3119bfe39725c7cc69f540c96afc818c42fc62"
+                "reference": "b7967502d6529c2f6b99ffea4ba34e2fd238dcc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2d3119bfe39725c7cc69f540c96afc818c42fc62",
-                "reference": "2d3119bfe39725c7cc69f540c96afc818c42fc62",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b7967502d6529c2f6b99ffea4ba34e2fd238dcc7",
+                "reference": "b7967502d6529c2f6b99ffea4ba34e2fd238dcc7",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-06 15:47:13"
+            "time": "2016-04-14 15:04:44"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1291,16 +1291,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-doctrine-php.git",
-                "reference": "6a587cea8d7825601cc33817e7da69c9f770fd37"
+                "reference": "e82d58550de83f3a20415c6060cb2c26a93e72f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/6a587cea8d7825601cc33817e7da69c9f770fd37",
-                "reference": "6a587cea8d7825601cc33817e7da69c9f770fd37",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-doctrine-php/zipball/e82d58550de83f3a20415c6060cb2c26a93e72f1",
+                "reference": "e82d58550de83f3a20415c6060cb2c26a93e72f1",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3": "~0.0",
+                "cultuurnet/udb3": "~0.1",
                 "doctrine/cache": "~1.3"
             },
             "require-dev": {
@@ -1328,7 +1328,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2015-10-12 15:31:07"
+            "time": "2016-04-13 11:52:34"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
@@ -3330,16 +3330,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.18.2",
+            "version": "1.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09"
+                "reference": "5f56ed5212dc509c8dc8caeba2715732abb32dbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/064b38c16790249488e7a8b987acf1c9d7383c09",
-                "reference": "064b38c16790249488e7a8b987acf1c9d7383c09",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/5f56ed5212dc509c8dc8caeba2715732abb32dbf",
+                "reference": "5f56ed5212dc509c8dc8caeba2715732abb32dbf",
                 "shasum": ""
             },
             "require": {
@@ -3404,7 +3404,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-04-02 13:12:58"
+            "time": "2016-04-12 18:29:35"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -5295,16 +5295,16 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "22eb098958980fbbe6b9a06f209f5a4b496cc0c1"
+                "reference": "8bafa58574204bdff03c275d1d618aaa601588ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/22eb098958980fbbe6b9a06f209f5a4b496cc0c1",
-                "reference": "22eb098958980fbbe6b9a06f209f5a4b496cc0c1",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/8bafa58574204bdff03c275d1d618aaa601588ae",
+                "reference": "8bafa58574204bdff03c275d1d618aaa601588ae",
                 "shasum": ""
             },
             "require": {
@@ -5336,7 +5336,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2016-02-03 16:53:37"
+            "time": "2016-04-12 21:19:36"
         },
         {
             "name": "zendframework/zend-validator",
@@ -5627,11 +5627,19 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-836",
+            "package": "cultuurnet/broadway-amqp"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "doctrine/migrations": 20
+        "doctrine/migrations": 20,
+        "cultuurnet/broadway-amqp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -8,6 +8,7 @@ use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -1185,7 +1186,8 @@ $app['event_bus_forwarding_consumer_factory'] = $app->share(
             $app['amqp.connection'],
             $app['logger.amqp.event_bus_forwarder'],
             $app['udb2_deserializer_locator'],
-            $app['event_bus']
+            $app['event_bus'],
+            $app['config']['amqp']['consumer_tag']
         );
     }
 );
