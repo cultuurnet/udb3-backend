@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7f2f0f54fb910818bd54fa1603ce9fa",
-    "content-hash": "3161acffc5a6d8475f9bc031bd1dc4fd",
+    "hash": "ae34c1ab48208fecfcab11cc68906384",
+    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1205,16 +1205,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-845",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "32853b424e43397e4f1a2db2a7d210a7a7c25048"
+                "reference": "dcd7e6d5d65e165e562e8a88de3ed5cbad19bde0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/32853b424e43397e4f1a2db2a7d210a7a7c25048",
-                "reference": "32853b424e43397e4f1a2db2a7d210a7a7c25048",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/dcd7e6d5d65e165e562e8a88de3ed5cbad19bde0",
+                "reference": "dcd7e6d5d65e165e562e8a88de3ed5cbad19bde0",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-15 15:47:07"
+            "time": "2016-04-19 08:21:37"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1434,16 +1434,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-feature/III-845",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "65aa0b65224359909b53038d778a83d8556c7215"
+                "reference": "6292b7e3116d24be4df1c6b6fc78b41802dcc37b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/65aa0b65224359909b53038d778a83d8556c7215",
-                "reference": "65aa0b65224359909b53038d778a83d8556c7215",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/6292b7e3116d24be4df1c6b6fc78b41802dcc37b",
+                "reference": "6292b7e3116d24be4df1c6b6fc78b41802dcc37b",
                 "shasum": ""
             },
             "require": {
@@ -1490,7 +1490,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-04-15 16:11:30"
+            "time": "2016-04-19 07:12:07"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2284,7 +2284,6 @@
                 "event",
                 "exception"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2342,7 +2341,6 @@
                 "http",
                 "http client"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2395,7 +2393,6 @@
                 "adapter",
                 "log"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2440,7 +2437,6 @@
                 "message",
                 "url"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2490,7 +2486,6 @@
                 "Guzzle",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2542,7 +2537,6 @@
                 "log",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2593,7 +2587,6 @@
                 "oauth",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2647,7 +2640,6 @@
                 "component",
                 "stream"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -5348,16 +5340,16 @@
         },
         {
             "name": "zendframework/zend-validator",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-validator.git",
-                "reference": "dbacb36514ebc0ec96b9263730eaaa6f0c502197"
+                "reference": "063694d3c781f284ab8f846b8af64c45d94aaf51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/dbacb36514ebc0ec96b9263730eaaa6f0c502197",
-                "reference": "dbacb36514ebc0ec96b9263730eaaa6f0c502197",
+                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/063694d3c781f284ab8f846b8af64c45d94aaf51",
+                "reference": "063694d3c781f284ab8f846b8af64c45d94aaf51",
                 "shasum": ""
             },
             "require": {
@@ -5415,7 +5407,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2016-04-06 15:44:10"
+            "time": "2016-04-18 17:28:37"
         }
     ],
     "packages-dev": [
@@ -5635,25 +5627,10 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-845",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-845",
-            "package": "cultuurnet/udb3-udb2-bridge"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "cultuurnet/udb3": 20,
-        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
