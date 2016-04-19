@@ -418,8 +418,10 @@ $app['event_bus'] = $app->share(
                 'place_permission.projector',
                 'amqp.publisher',
                 'udb2_events_cdbxml_enricher',
+                'udb2_actor_events_cdbxml_enricher',
                 'udb2_events_to_udb3_place_applier',
                 'udb2_events_to_udb3_event_applier',
+                'udb2_actor_events_to_udb3_organizer_applier',
                 'place_permission.projector'
             ];
 
@@ -456,7 +458,8 @@ $app['amqp.publisher'] = $app->share(
 
         $map =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Place\Events\ContentTypes::map();
+            \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
 
         $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
         foreach (array_keys($map) as $className) {
@@ -1154,6 +1157,18 @@ $app['logger.amqp.event_bus_forwarder'] = $app->share(
 $app['udb2_deserializer_locator'] = $app->share(
     function (Application $app) {
         $deserializerLocator = new SimpleDeserializerLocator();
+        $deserializerLocator->registerDeserializer(
+            new StringLiteral(
+                'application/vnd.cultuurnet.udb2-events.actor-created+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorCreatedJSONDeserializer()
+        );
+        $deserializerLocator->registerDeserializer(
+            new StringLiteral(
+                'application/vnd.cultuurnet.udb2-events.actor-updated+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer()
+        );
         $deserializerLocator->registerDeserializer(
             new StringLiteral(
                 'application/vnd.cultuurnet.udb2-events.event-created+json'
