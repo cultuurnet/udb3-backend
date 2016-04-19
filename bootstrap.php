@@ -1302,7 +1302,7 @@ $app['cdbxml_proxy'] = $app->share(
         return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
             $accept,
             $redirectDomain,
-            new \CultuurNet\UDB3\Symfony\Proxy\Redirect\SimpleRedirect()
+            new \CultuurNet\UDB3\Symfony\Proxy\Responder\RedirectResponder()
         );
     }
 );
