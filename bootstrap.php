@@ -419,8 +419,10 @@ $app['event_bus'] = $app->share(
                 'place_permission.projector',
                 'amqp.publisher',
                 'udb2_events_cdbxml_enricher',
+                'udb2_actor_events_cdbxml_enricher',
                 'udb2_events_to_udb3_place_applier',
                 'udb2_events_to_udb3_event_applier',
+                'udb2_actor_events_to_udb3_organizer_applier',
                 'place_permission.projector'
             ];
 
@@ -465,7 +467,8 @@ $app['amqp.publisher'] = $app->share(
 
         $map =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Place\Events\ContentTypes::map();
+            \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
 
         $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
         foreach (array_keys($map) as $className) {
@@ -1165,6 +1168,18 @@ $app['udb2_deserializer_locator'] = $app->share(
         $deserializerLocator = new SimpleDeserializerLocator();
         $deserializerLocator->registerDeserializer(
             new StringLiteral(
+                'application/vnd.cultuurnet.udb2-events.actor-created+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorCreatedJSONDeserializer()
+        );
+        $deserializerLocator->registerDeserializer(
+            new StringLiteral(
+                'application/vnd.cultuurnet.udb2-events.actor-updated+json'
+            ),
+            new \CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer()
+        );
+        $deserializerLocator->registerDeserializer(
+            new StringLiteral(
                 'application/vnd.cultuurnet.udb2-events.event-created+json'
             ),
             new \CultuurNet\UDB2DomainEvents\EventCreatedJSONDeserializer()
@@ -1295,6 +1310,27 @@ $app->extend(
 $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
     return $app['config']['entryapi']['link_base_url'];
 });
+
+$app['cdbxml_proxy'] = $app->share(
+    function ($app) {
+        $accept = new StringLiteral(
+            $app['config']['cdbxml_proxy']['accept']
+        );
+
+        /** @var \ValueObjects\Web\Hostname $redirectDomain */
+        $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
+            $app['config']['cdbxml_proxy']['redirect_domain']
+        );
+
+        return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
+            $accept,
+            $redirectDomain,
+            new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
+            new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
+            new \GuzzleHttp\Client()
+        );
+    }
+);
 
 $app->register(new \CultuurNet\UDB3\Silex\Search\SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());

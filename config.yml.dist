@@ -97,3 +97,8 @@ media:
   upload_directory: "/web/uploads"
   media_directory: "/web/media"
   file_size_limit: 1000000
+
+cdbxml_proxy:
+  enabled: "true"
+  accept: "application/xml"
+  redirect_domain: "www.domain-cdbxml-service.be"

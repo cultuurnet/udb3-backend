@@ -106,6 +106,19 @@ $app['logger.search'] = $app->share(
 // Enable CORS.
 $app->after($app["cors"]);
 
+if (isset($app['config']['cdbxml_proxy']) && 
+    $app['config']['cdbxml_proxy']['enabled']) {
+    $app->before(
+        function (Request $request, Application $app) {
+            /** @var \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy $cdbXmlProxy */
+            $cdbXmlProxy = $app['cdbxml_proxy'];
+
+            return $cdbXmlProxy->handle($request);
+        },
+        Application::EARLY_EVENT
+    );
+}
+
 /**
  * Bootstrap metadata based on user context.
  */

@@ -1209,12 +1209,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "b7967502d6529c2f6b99ffea4ba34e2fd238dcc7"
+                "reference": "f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b7967502d6529c2f6b99ffea4ba34e2fd238dcc7",
-                "reference": "b7967502d6529c2f6b99ffea4ba34e2fd238dcc7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979",
+                "reference": "f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-14 15:04:44"
+            "time": "2016-04-19 09:49:30"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1381,21 +1381,25 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "0d23cc78f9ed77005e8e27adb3c05d107904934c"
+                "reference": "a062385f24fbc3453e8ab183e47fc7eaa6216fd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/0d23cc78f9ed77005e8e27adb3c05d107904934c",
-                "reference": "0d23cc78f9ed77005e8e27adb3c05d107904934c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/a062385f24fbc3453e8ab183e47fc7eaa6216fd6",
+                "reference": "a062385f24fbc3453e8ab183e47fc7eaa6216fd6",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
                 "cultuurnet/udb3": "~0.1",
+                "guzzlehttp/guzzle": "~6.2",
+                "guzzlehttp/psr7": "~1.2.3",
                 "symfony/http-foundation": "~2.7.2",
                 "symfony/http-kernel": "~2.3",
-                "symfony/routing": "~2.3"
+                "symfony/psr-http-message-bridge": "~0.2.0",
+                "symfony/routing": "~2.3",
+                "zendframework/zend-diactoros": "^1.3"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -1430,7 +1434,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-04-06 15:51:42"
+            "time": "2016-04-20 06:34:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1438,12 +1442,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "d6a7ee893ce194bcb3ea34287d279321bef9c608"
+                "reference": "6292b7e3116d24be4df1c6b6fc78b41802dcc37b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/d6a7ee893ce194bcb3ea34287d279321bef9c608",
-                "reference": "d6a7ee893ce194bcb3ea34287d279321bef9c608",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/6292b7e3116d24be4df1c6b6fc78b41802dcc37b",
+                "reference": "6292b7e3116d24be4df1c6b6fc78b41802dcc37b",
                 "shasum": ""
             },
             "require": {
@@ -1490,7 +1494,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-04-07 10:08:38"
+            "time": "2016-04-19 07:12:07"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2284,6 +2288,7 @@
                 "event",
                 "exception"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2341,6 +2346,7 @@
                 "http",
                 "http client"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2393,6 +2399,7 @@
                 "adapter",
                 "log"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2437,6 +2444,7 @@
                 "message",
                 "url"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2486,6 +2494,7 @@
                 "Guzzle",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2537,6 +2546,7 @@
                 "log",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2587,6 +2597,7 @@
                 "oauth",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2640,6 +2651,7 @@
                 "component",
                 "stream"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -4795,6 +4807,60 @@
             "time": "2016-01-20 09:13:37"
         },
         {
+            "name": "symfony/psr-http-message-bridge",
+            "version": "v0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/psr-http-message-bridge.git",
+                "reference": "dc7e308e1dc2898a46776e2221a643cb08315453"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/dc7e308e1dc2898a46776e2221a643cb08315453",
+                "reference": "dc7e308e1dc2898a46776e2221a643cb08315453",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "psr/http-message": "~1.0",
+                "symfony/http-foundation": "~2.3|~3.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7|~3.0"
+            },
+            "suggest": {
+                "zendframework/zend-diactoros": "To use the Zend Diactoros factory"
+            },
+            "type": "symfony-bridge",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Bridge\\PsrHttpMessage\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "PSR HTTP message bridge",
+            "homepage": "http://symfony.com",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr-7"
+            ],
+            "time": "2015-05-29 17:57:12"
+        },
+        {
             "name": "symfony/routing",
             "version": "v2.8.4",
             "source": {
@@ -5240,6 +5306,56 @@
             "time": "2016-01-05 05:58:37"
         },
         {
+            "name": "zendframework/zend-diactoros",
+            "version": "1.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-diactoros.git",
+                "reference": "b1d59735b672865dbeb930805029c24f226e3e77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/b1d59735b672865dbeb930805029c24f226e3e77",
+                "reference": "b1d59735b672865dbeb930805029c24f226e3e77",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0",
+                "psr/http-message": "~1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "~1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6",
+                "squizlabs/php_codesniffer": "^2.3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3-dev",
+                    "dev-develop": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Diactoros\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "PSR HTTP Message implementations",
+            "homepage": "https://github.com/zendframework/zend-diactoros",
+            "keywords": [
+                "http",
+                "psr",
+                "psr-7"
+            ],
+            "time": "2016-03-17 18:02:05"
+        },
+        {
             "name": "zendframework/zend-eventmanager",
             "version": "3.0.1",
             "source": {
@@ -5340,16 +5456,16 @@
         },
         {
             "name": "zendframework/zend-validator",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-validator.git",
-                "reference": "dbacb36514ebc0ec96b9263730eaaa6f0c502197"
+                "reference": "063694d3c781f284ab8f846b8af64c45d94aaf51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/dbacb36514ebc0ec96b9263730eaaa6f0c502197",
-                "reference": "dbacb36514ebc0ec96b9263730eaaa6f0c502197",
+                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/063694d3c781f284ab8f846b8af64c45d94aaf51",
+                "reference": "063694d3c781f284ab8f846b8af64c45d94aaf51",
                 "shasum": ""
             },
             "require": {
@@ -5407,7 +5523,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2016-04-06 15:44:10"
+            "time": "2016-04-18 17:28:37"
         }
     ],
     "packages-dev": [
