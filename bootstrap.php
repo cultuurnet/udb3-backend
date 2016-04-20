@@ -1303,6 +1303,27 @@ $app['entryapi.link_base_url'] = $app->share(function (Application $app) {
     return $app['config']['entryapi']['link_base_url'];
 });
 
+$app['cdbxml_proxy'] = $app->share(
+    function ($app) {
+        $accept = new StringLiteral(
+            $app['config']['cdbxml_proxy']['accept']
+        );
+
+        /** @var \ValueObjects\Web\Hostname $redirectDomain */
+        $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
+            $app['config']['cdbxml_proxy']['redirect_domain']
+        );
+
+        return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
+            $accept,
+            $redirectDomain,
+            new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
+            new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
+            new \GuzzleHttp\Client()
+        );
+    }
+);
+
 $app->register(new \CultuurNet\UDB3\Silex\Search\SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
