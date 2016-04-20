@@ -1202,7 +1202,7 @@ $app['event_bus_forwarding_consumer_factory'] = $app->share(
             $app['logger.amqp.event_bus_forwarder'],
             $app['udb2_deserializer_locator'],
             $app['event_bus'],
-            $app['config']['amqp']['consumer_tag']
+            new StringLiteral($app['config']['amqp']['consumer_tag'])
         );
     }
 );

@@ -25,7 +25,7 @@ $app->register(
 $consoleApp = $app['console'];
 
 $consoleApp->add(
-    (new ConsumeCommand('amqp-listen', 'amqp.connection'))->withHeartBeat('dbal_connection:keepalive')
+    (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))->withHeartBeat('dbal_connection:keepalive')
 );
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\InstallCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ReplayCommand());
