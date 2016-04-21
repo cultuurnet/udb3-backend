@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "625188dadf1d5a4b6a276e6e3cae1d99",
-    "content-hash": "c16c4c9bbc5985bf6fa953a2cc8beaa8",
+    "hash": "ae34c1ab48208fecfcab11cc68906384",
+    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -439,16 +439,16 @@
         },
         {
             "name": "cultuurnet/broadway-amqp",
-            "version": "dev-feature/III-836",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "1a6d4988e1ef1fcd13fa8e751df2507e9b00f9e9"
+                "reference": "cc1beccf57669c808f8f6f0af7f2f121e50f19f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/1a6d4988e1ef1fcd13fa8e751df2507e9b00f9e9",
-                "reference": "1a6d4988e1ef1fcd13fa8e751df2507e9b00f9e9",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/cc1beccf57669c808f8f6f0af7f2f121e50f19f2",
+                "reference": "cc1beccf57669c808f8f6f0af7f2f121e50f19f2",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-04-20 13:24:09"
+            "time": "2016-04-21 13:04:43"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -866,16 +866,16 @@
         },
         {
             "name": "cultuurnet/silex-amqp",
-            "version": "dev-feature/III-836",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-amqp.git",
-                "reference": "66b922578e924e0f7591072da2e52cb02f9aa893"
+                "reference": "96feea621b267c82de07a613ef8998dc2800ac38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/66b922578e924e0f7591072da2e52cb02f9aa893",
-                "reference": "66b922578e924e0f7591072da2e52cb02f9aa893",
+                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/96feea621b267c82de07a613ef8998dc2800ac38",
+                "reference": "96feea621b267c82de07a613ef8998dc2800ac38",
                 "shasum": ""
             },
             "require": {
@@ -904,7 +904,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2016-04-20 11:50:18"
+            "time": "2016-04-21 13:04:37"
         },
         {
             "name": "cultuurnet/silex-service-provider-oauth",
@@ -1161,15 +1161,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb2-domain-events.git",
-                "reference": "1f2857b4cd957c17e051536a8402d8e595d08453"
+                "reference": "5254e81f506a535c362e49a9ce4eb242c1e38967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/1f2857b4cd957c17e051536a8402d8e595d08453",
-                "reference": "1f2857b4cd957c17e051536a8402d8e595d08453",
+                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/5254e81f506a535c362e49a9ce4eb242c1e38967",
+                "reference": "5254e81f506a535c362e49a9ce4eb242c1e38967",
                 "shasum": ""
             },
             "require": {
+                "broadway/broadway": "~0.5.2",
                 "cultuurnet/deserializer": "~0.1",
                 "nicolopignatelli/valueobjects": "~2.0"
             },
@@ -1201,7 +1202,7 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2016-03-22 08:50:32"
+            "time": "2016-04-21 13:04:31"
         },
         {
             "name": "cultuurnet/udb3",
@@ -5743,26 +5744,11 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-836",
-            "package": "cultuurnet/broadway-amqp"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-836",
-            "package": "cultuurnet/silex-amqp"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "doctrine/migrations": 20,
-        "cultuurnet/broadway-amqp": 20,
-        "cultuurnet/silex-amqp": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
