@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "058ca3259e3dba586012ba7f9b987842",
-    "content-hash": "8104aeab51848bf06b80d179c1a3a0f2",
+    "hash": "625188dadf1d5a4b6a276e6e3cae1d99",
+    "content-hash": "c16c4c9bbc5985bf6fa953a2cc8beaa8",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -443,12 +443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "8815cee2ee894f3344dc93507cdce4d1a7ab277c"
+                "reference": "1a6d4988e1ef1fcd13fa8e751df2507e9b00f9e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/8815cee2ee894f3344dc93507cdce4d1a7ab277c",
-                "reference": "8815cee2ee894f3344dc93507cdce4d1a7ab277c",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/1a6d4988e1ef1fcd13fa8e751df2507e9b00f9e9",
+                "reference": "1a6d4988e1ef1fcd13fa8e751df2507e9b00f9e9",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-04-18 07:24:59"
+            "time": "2016-04-20 13:24:09"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -866,16 +866,16 @@
         },
         {
             "name": "cultuurnet/silex-amqp",
-            "version": "dev-master",
+            "version": "dev-feature/III-836",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-amqp.git",
-                "reference": "c5966e2213631d26243b60998d35694ab96dc594"
+                "reference": "66b922578e924e0f7591072da2e52cb02f9aa893"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/c5966e2213631d26243b60998d35694ab96dc594",
-                "reference": "c5966e2213631d26243b60998d35694ab96dc594",
+                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/66b922578e924e0f7591072da2e52cb02f9aa893",
+                "reference": "66b922578e924e0f7591072da2e52cb02f9aa893",
                 "shasum": ""
             },
             "require": {
@@ -904,7 +904,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2016-03-23 15:49:39"
+            "time": "2016-04-20 11:50:18"
         },
         {
             "name": "cultuurnet/silex-service-provider-oauth",
@@ -5255,27 +5255,27 @@
         },
         {
             "name": "zendframework/zend-code",
-            "version": "2.6.2",
+            "version": "2.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-code.git",
-                "reference": "c4e8f976a772cfb14b47dabd69b5245a423082b4"
+                "reference": "95033f061b083e16cdee60530ec260d7d628b887"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/c4e8f976a772cfb14b47dabd69b5245a423082b4",
-                "reference": "c4e8f976a772cfb14b47dabd69b5245a423082b4",
+                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/95033f061b083e16cdee60530ec260d7d628b887",
+                "reference": "95033f061b083e16cdee60530ec260d7d628b887",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5",
-                "zendframework/zend-eventmanager": "^2.6|^3.0"
+                "php": "^5.5 || 7.0.0 - 7.0.4 || ^7.0.6",
+                "zendframework/zend-eventmanager": "^2.6 || ^3.0"
             },
             "require-dev": {
                 "doctrine/annotations": "~1.0",
                 "fabpot/php-cs-fixer": "1.7.*",
-                "phpunit/phpunit": "~4.0",
-                "zendframework/zend-stdlib": "~2.7"
+                "phpunit/phpunit": "^4.8.21",
+                "zendframework/zend-stdlib": "^2.7 || ^3.0"
             },
             "suggest": {
                 "doctrine/annotations": "Doctrine\\Common\\Annotations >=1.0 for annotation features",
@@ -5303,7 +5303,7 @@
                 "code",
                 "zf2"
             ],
-            "time": "2016-01-05 05:58:37"
+            "time": "2016-04-20 17:26:42"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -5749,13 +5749,20 @@
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-836",
             "package": "cultuurnet/broadway-amqp"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-836",
+            "package": "cultuurnet/silex-amqp"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
         "doctrine/migrations": 20,
-        "cultuurnet/broadway-amqp": 20
+        "cultuurnet/broadway-amqp": 20,
+        "cultuurnet/silex-amqp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
