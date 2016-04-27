@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ae34c1ab48208fecfcab11cc68906384",
-    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
+    "hash": "bfb08916efa2e084f27dcca24caee516",
+    "content-hash": "34f81b3d44d57b2a0d7c6dd5886d3af5",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -536,12 +536,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "5fcd9bd1be7325d1cde495cdc01461046eb3bb33"
+                "reference": "3adc295929c781202d2686818fc8823a7c792d61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/5fcd9bd1be7325d1cde495cdc01461046eb3bb33",
-                "reference": "5fcd9bd1be7325d1cde495cdc01461046eb3bb33",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/3adc295929c781202d2686818fc8823a7c792d61",
+                "reference": "3adc295929c781202d2686818fc8823a7c792d61",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-04-15 12:23:47"
+            "time": "2016-04-25 09:06:59"
         },
         {
             "name": "cultuurnet/clock",
@@ -1206,16 +1206,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-910",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979"
+                "reference": "96704cb19b0503c8def3c852bd81f9503193884c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979",
-                "reference": "f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/96704cb19b0503c8def3c852bd81f9503193884c",
+                "reference": "96704cb19b0503c8def3c852bd81f9503193884c",
                 "shasum": ""
             },
             "require": {
@@ -1284,7 +1284,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-19 09:49:30"
+            "time": "2016-04-26 12:57:59"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2289,7 +2289,6 @@
                 "event",
                 "exception"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2347,7 +2346,6 @@
                 "http",
                 "http client"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2400,7 +2398,6 @@
                 "adapter",
                 "log"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2445,7 +2442,6 @@
                 "message",
                 "url"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2495,7 +2491,6 @@
                 "Guzzle",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2547,7 +2542,6 @@
                 "log",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2598,7 +2592,6 @@
                 "oauth",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2652,7 +2645,6 @@
                 "component",
                 "stream"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -3028,16 +3020,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.20",
+            "version": "1.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a"
+                "reference": "35a83cf67d80d7040f306c77b0a84b9fbcc4fbfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
-                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/35a83cf67d80d7040f306c77b0a84b9fbcc4fbfb",
+                "reference": "35a83cf67d80d7040f306c77b0a84b9fbcc4fbfb",
                 "shasum": ""
             },
             "require": {
@@ -3107,7 +3099,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-03-14 21:54:11"
+            "time": "2016-04-22 10:56:25"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -5744,10 +5736,18 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-910",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,

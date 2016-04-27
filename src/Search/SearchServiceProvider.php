@@ -59,7 +59,7 @@ class SearchServiceProvider implements ServiceProviderInterface
 
                 return new PullParsingSearchService(
                     $app[$searchAPI],
-                    $app['iri_generator'],
+                    $app['event_iri_generator'],
                     $app['place_iri_generator']
                 );
             }
