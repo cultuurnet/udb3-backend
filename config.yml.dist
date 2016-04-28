@@ -102,3 +102,10 @@ cdbxml_proxy:
   enabled: "true"
   accept: "application/xml"
   redirect_domain: "www.domain-cdbxml-service.be"
+
+jwt:
+  keys:
+    public:
+      file: public.pem
+  validation:
+    iss: http://culudb-jwt-provider.dev

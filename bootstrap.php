@@ -2,7 +2,9 @@
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
+use CultuurNet\SymfonySecurityJWT\Authentication\JWTUserToken;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
+use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
@@ -13,6 +15,7 @@ use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\String\String as StringLiteral;
 
@@ -187,7 +190,35 @@ $app['personal_variation_decorated_event_service'] = $app->share(
  */
 $app->register(new CultuurNet\UiTIDProvider\User\UserServiceProvider());
 
-$app['current_user'] = $app['uitid_user'];
+$app['current_user'] = $app->share(
+    function (Application $app) {
+        /* @var TokenStorageInterface $tokenStorage */
+        $tokenStorage = $app['security.token_storage'];
+        $token = $tokenStorage->getToken();
+
+        $cfUser = new \CultureFeed_User();
+
+        if ($token instanceof JWTUserToken) {
+            $jwt = $token->getCredentials();
+
+            $cfUser->id = $jwt->getClaim('uid');
+            $cfUser->nick = $jwt->getClaim('nick');
+            $cfUser->mbox = $jwt->getClaim('email');
+
+            return $cfUser;
+        } else if ($token instanceof OAuthToken) {
+            $tokenUser = $token->getUser();
+
+            if ($tokenUser instanceof \CultuurNet\SymfonySecurityOAuthUitid\User) {
+                $cfUser->id = $tokenUser->getUid();
+                $cfUser->nick = $tokenUser->getUsername();
+                $cfUser->mbox = $tokenUser->getEmail();
+            }
+        } else {
+            return null;
+        }
+    }
+);
 
 $app['auth_service'] = $app->share(
     function ($app) {

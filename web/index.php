@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\Auth\TokenCredentials;
+use CultuurNet\SymfonySecurityJWT\Authentication\JWTUserToken;
+use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\UiTIDProvider\Security\MultiPathRequestMatcher;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,38 +34,39 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
  */
 $app['id_pattern'] = '[\w\-]+';
 $app['security.firewalls'] = array(
-  'authentication' => array(
-    'pattern' => '^/culturefeed/oauth',
-  ),
-  'public' => array(
-    'pattern' => new MultiPathRequestMatcher(
-        [
-              '^/api/1.0/event.jsonld',
-              '^/(event|place)/'.$app['id_pattern'].'$',
-              '^/event/'.$app['id_pattern'].'/history',
-              '^/place/'.$app['id_pattern'].'/events',
-              '^/organizer/'.$app['id_pattern'],
-              '^/media/'.$app['id_pattern'].'$',
-              '^/places$',
-              '^/api/1.0/organizer/suggest/.*'
-        ]
-    )
-  ),
-  'entryapi' => array(
-    'pattern' => '^/rest/entry/.*',
-    'oauth' => true,
-    'stateless' => true,
-  ),
-  'cors-preflight' => array(
-    'pattern' => $app['cors_preflight_request_matcher'],
-  ),
-  'secured' => array(
-    'pattern' => '^.*$',
-    'uitid' => [
-      'roles' => isset($app['config']['roles']) ? $app['config']['roles'] : [],
-    ],
-    'users' => $app['uitid_firewall_user_provider'],
-  ),
+    'authentication' => array(
+        'pattern' => '^/culturefeed/oauth',
+    ),
+    'public' => array(
+        'pattern' => new MultiPathRequestMatcher(
+            [
+                '^/api/1.0/event.jsonld',
+                '^/(event|place)/' . $app['id_pattern'] . '$',
+                '^/event/' . $app['id_pattern'] . '/history',
+                '^/place/' . $app['id_pattern'] . '/events',
+                '^/organizer/' . $app['id_pattern'],
+                '^/media/' . $app['id_pattern'] . '$',
+                '^/places$',
+                '^/api/1.0/organizer/suggest/.*'
+            ]
+        )
+    ),
+    'entryapi' => array(
+        'pattern' => '^/rest/entry/.*',
+        'oauth' => true,
+        'stateless' => true,
+    ),
+    'cors-preflight' => array(
+        'pattern' => $app['cors_preflight_request_matcher'],
+    ),
+    'secured' => array(
+        'pattern' => '^.*$',
+        'jwt' => [
+            'validation' => $app['config']['jwt']['validation'],
+            'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['keys']['public']['file'],
+        ],
+        'stateless' => true,
+    ),
 );
 
 /**
@@ -70,6 +74,7 @@ $app['security.firewalls'] = array(
  */
 $app->register(new \Silex\Provider\SecurityServiceProvider());
 $app->register(new \CultuurNet\UiTIDProvider\Security\UiTIDSecurityServiceProvider());
+$app->register(new \CultuurNet\SilexServiceProviderJWT\JWTServiceProvider());
 
 require __DIR__ . '/../debug.php';
 
@@ -106,7 +111,7 @@ $app['logger.search'] = $app->share(
 // Enable CORS.
 $app->after($app["cors"]);
 
-if (isset($app['config']['cdbxml_proxy']) && 
+if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
@@ -134,10 +139,10 @@ $app->before(
         $authToken = $tokenStorage->getToken();
 
         // Web service consumer authenticated with OAuth.
-        if ($authToken instanceof \CultuurNet\SymfonySecurityOAuth\Security\OAuthToken &&
+        if ($authToken instanceof OAuthToken &&
             $authToken->isAuthenticated()
         ) {
-            $contextValues['uitid_token_credentials'] = new \CultuurNet\Auth\TokenCredentials(
+            $contextValues['uitid_token_credentials'] = new TokenCredentials(
                 $authToken->getAccessToken()->getToken(),
                 $authToken->getAccessToken()->getSecret()
             );
@@ -153,6 +158,11 @@ $app->before(
                 $contextValues['user_nick'] = $user->getUsername();
                 $contextValues['user_email'] = $user->getEmail();
             }
+        } else if ($authToken instanceof JWTUserToken && $authToken->isAuthenticated()) {
+            $jwt = $authToken->getCredentials();
+            $contextValues['user_id'] = $jwt->getClaim('uid');
+            $contextValues['user_nick'] = $jwt->getClaim('nick');
+            $contextValues['user_email'] = $jwt->getClaim('email');
         } else if ($app['uitid_user']) {
             $contextValues['uitid_token_credentials'] = $app['culturefeed_token_credentials'];
             /** @var \CultureFeed_User $user */
