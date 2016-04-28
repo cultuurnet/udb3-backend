@@ -36,7 +36,8 @@
     "2dotstwice/silex-feature-toggles-provider": "~0.1",
     "php-http/guzzle6-adapter": "^1.0",
     "cultuurnet/broadway-amqp": "~0.1",
-    "cultuurnet/silex-amqp": "~0.1"
+    "cultuurnet/silex-amqp": "~0.1",
+    "cultuurnet/silex-service-provider-jwt": "~0.1"
   },
   "require-dev": {
     "escapestudios/symfony2-coding-standard": "~2.9",
