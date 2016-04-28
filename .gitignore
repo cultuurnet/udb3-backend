@@ -7,3 +7,4 @@
 /web/uploads/
 /web/media/
 /web/swagger/
+*.pem
