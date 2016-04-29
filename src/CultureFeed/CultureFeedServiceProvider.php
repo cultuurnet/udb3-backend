@@ -37,30 +37,32 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['culturefeed_oauth_client'] = $app->share(function (Application $app) {
-            /* @var ConsumerCredentials $consumerCredentials */
-            $consumerCredentials = $app['culturefeed_consumer_credentials'];
+        $app['culturefeed_oauth_client'] = $app->share(
+            function (Application $app) {
+                /* @var ConsumerCredentials $consumerCredentials */
+                $consumerCredentials = $app['culturefeed_consumer_credentials'];
 
-            /* @var TokenCredentials $tokenCredentials */
-            $tokenCredentials = $app['culturefeed_token_credentials'];
+                /* @var TokenCredentials $tokenCredentials */
+                $tokenCredentials = $app['culturefeed_token_credentials'];
 
-            $userCredentialsToken = null;
-            $userCredentialsSecret = null;
-            if ($tokenCredentials) {
-                $userCredentialsToken = $tokenCredentials->getToken();
-                $userCredentialsSecret = $tokenCredentials->getSecret();
+                $userCredentialsToken = null;
+                $userCredentialsSecret = null;
+                if ($tokenCredentials) {
+                    $userCredentialsToken = $tokenCredentials->getToken();
+                    $userCredentialsSecret = $tokenCredentials->getSecret();
+                }
+
+                $oauthClient = new \CultureFeed_DefaultOAuthClient(
+                    $consumerCredentials->getKey(),
+                    $consumerCredentials->getSecret(),
+                    $userCredentialsToken,
+                    $userCredentialsSecret
+                );
+                $oauthClient->setEndpoint($app['culturefeed.endpoint']);
+
+                return $oauthClient;
             }
-
-            $oauthClient = new \CultureFeed_DefaultOAuthClient(
-                $consumerCredentials->getKey(),
-                $consumerCredentials->getSecret(),
-                $userCredentialsToken,
-                $userCredentialsSecret
-            );
-            $oauthClient->setEndpoint($app['culturefeed.endpoint']);
-
-            return $oauthClient;
-        });
+        );
     }
 
     /**
