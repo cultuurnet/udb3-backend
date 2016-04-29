@@ -6,15 +6,10 @@ use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\SymfonySecurityJWT\Authentication\JWTUserToken;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\UiTIDProvider\Security\MultiPathRequestMatcher;
+use CultuurNet\UiTIDProvider\Security\PreflightRequestMatcher;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use CultuurNet\UDB3\SearchAPI2\DefaultSearchService as SearchAPI2;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
-use CultuurNet\UDB3\Event\EventLabellerServiceInterface;
-use CultuurNet\UDB3\Event\Title;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -32,6 +27,12 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
  * about how this is handled in UDB2. Therefore we take a rather liberal
  * approach and allow all alphanumeric characters and a dash.
  */
+$app['cors_preflight_request_matcher'] = $app->share(
+    function () {
+        return new PreflightRequestMatcher();
+    }
+);
+
 $app['id_pattern'] = '[\w\-]+';
 $app['security.firewalls'] = array(
     'authentication' => array(
@@ -73,7 +74,6 @@ $app['security.firewalls'] = array(
  * Security services.
  */
 $app->register(new \Silex\Provider\SecurityServiceProvider());
-$app->register(new \CultuurNet\UiTIDProvider\Security\UiTIDSecurityServiceProvider());
 $app->register(new \CultuurNet\SilexServiceProviderJWT\JWTServiceProvider());
 
 require __DIR__ . '/../debug.php';
@@ -163,13 +163,6 @@ $app->before(
             $contextValues['user_id'] = $jwt->getClaim('uid');
             $contextValues['user_nick'] = $jwt->getClaim('nick');
             $contextValues['user_email'] = $jwt->getClaim('email');
-        } else if ($app['uitid_user']) {
-            $contextValues['uitid_token_credentials'] = $app['culturefeed_token_credentials'];
-            /** @var \CultureFeed_User $user */
-            $user = $app['uitid_user'];
-            $contextValues['user_id'] = $user->id;
-            $contextValues['user_nick'] = $user->nick;
-            $contextValues['user_email'] = $user->mbox;
         }
 
         $contextValues['client_ip'] = $request->getClientIp();
@@ -220,20 +213,18 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
 $app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
 
-/**
- * API callbacks for authentication.
- */
-$app->mount('culturefeed/oauth', new \CultuurNet\UiTIDProvider\Auth\AuthControllerProvider());
-
-/**
- * API callbacks for UiTID user data and methods.
- */
-$app->mount('uitid', new \CultuurNet\UiTIDProvider\User\UserControllerProvider());
+$app->get(
+    '/user',
+    function (Application $app) {
+        return (new JsonResponse())
+            ->setData($app['current_user'])
+            ->setPrivate();
+    }
+);
 
 /**
  * Basic REST API for feature toggles.

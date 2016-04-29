@@ -8,6 +8,7 @@ use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
+use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -35,12 +36,7 @@ $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-/**
- * Session service.
- */
-$app->register(new Silex\Provider\SessionServiceProvider());
-$app->register(new CultuurNet\UiTIDProvider\Session\SessionConfigurationProvider());
-
+$app->register(new CultureFeedServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
@@ -57,25 +53,15 @@ $app['local_domain'] = \ValueObjects\Web\Domain::specifyType(
 $app['udb2_domain'] = \ValueObjects\Web\Domain::specifyType('uitdatabank.be');
 
 /**
- * UiTID Authentication services.
- */
-$app->register(new CultuurNet\UiTIDProvider\Auth\AuthServiceProvider());
-
-/**
- * Security services.
- */
-$app->register(new \CultuurNet\UiTIDProvider\Security\UiTIDSecurityServiceProvider());
-
-/**
  * CultureFeed services.
  */
 $app->register(
-  new \CultuurNet\UiTIDProvider\CultureFeed\CultureFeedServiceProvider(),
-  array(
+  new CultureFeedServiceProvider(),
+  [
     'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
     'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
     'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
-  )
+  ]
 );
 
 /**
@@ -184,11 +170,6 @@ $app['personal_variation_decorated_event_service'] = $app->share(
         );
     }
 );
-
-/**
- * UiTID User services.
- */
-$app->register(new CultuurNet\UiTIDProvider\User\UserServiceProvider());
 
 $app['current_user'] = $app->share(
     function (Application $app) {
