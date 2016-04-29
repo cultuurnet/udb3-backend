@@ -912,16 +912,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-service-provider-jwt.git",
-                "reference": "13b0ec9613b53c38fbb584f6ab956132fb04c877"
+                "reference": "ebdd566da971e28c65742aabea4d0222730410c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/13b0ec9613b53c38fbb584f6ab956132fb04c877",
-                "reference": "13b0ec9613b53c38fbb584f6ab956132fb04c877",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/ebdd566da971e28c65742aabea4d0222730410c2",
+                "reference": "ebdd566da971e28c65742aabea4d0222730410c2",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/symfony-security-jwt": "~0.1"
+                "cultuurnet/symfony-security-jwt": "~0.1",
+                "silex/silex": "~1.3"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -945,7 +946,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2016-04-28 07:59:19"
+            "time": "2016-04-28 14:49:30"
         },
         {
             "name": "cultuurnet/silex-service-provider-oauth",
@@ -1045,12 +1046,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/symfony-security-jwt.git",
-                "reference": "74d5f94bab6b5573bf74c2f3e30163ce1e8d5035"
+                "reference": "2a4fd80c2a25b4ed6b3f9aebb483c2a10c4c42b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/74d5f94bab6b5573bf74c2f3e30163ce1e8d5035",
-                "reference": "74d5f94bab6b5573bf74c2f3e30163ce1e8d5035",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/2a4fd80c2a25b4ed6b3f9aebb483c2a10c4c42b4",
+                "reference": "2a4fd80c2a25b4ed6b3f9aebb483c2a10c4c42b4",
                 "shasum": ""
             },
             "require": {
@@ -1079,7 +1080,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2016-04-28 12:49:34"
+            "time": "2016-04-28 14:48:51"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
