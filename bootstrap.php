@@ -2,7 +2,7 @@
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
-use CultuurNet\SymfonySecurityJWT\Authentication\JWTUserToken;
+use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
@@ -179,7 +179,7 @@ $app['current_user'] = $app->share(
 
         $cfUser = new \CultureFeed_User();
 
-        if ($token instanceof JWTUserToken) {
+        if ($token instanceof JwtUserToken) {
             $jwt = $token->getCredentials();
 
             $cfUser->id = $jwt->getClaim('uid');

@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use CultuurNet\Auth\TokenCredentials;
-use CultuurNet\SymfonySecurityJWT\Authentication\JWTUserToken;
+use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\UiTIDProvider\Security\MultiPathRequestMatcher;
 use CultuurNet\UiTIDProvider\Security\PreflightRequestMatcher;
@@ -74,7 +74,7 @@ $app['security.firewalls'] = array(
  * Security services.
  */
 $app->register(new \Silex\Provider\SecurityServiceProvider());
-$app->register(new \CultuurNet\SilexServiceProviderJWT\JWTServiceProvider());
+$app->register(new \CultuurNet\SilexServiceProviderJwt\JwtServiceProvider());
 
 require __DIR__ . '/../debug.php';
 
@@ -158,7 +158,7 @@ $app->before(
                 $contextValues['user_nick'] = $user->getUsername();
                 $contextValues['user_email'] = $user->getEmail();
             }
-        } else if ($authToken instanceof JWTUserToken && $authToken->isAuthenticated()) {
+        } else if ($authToken instanceof JwtUserToken && $authToken->isAuthenticated()) {
             $jwt = $authToken->getCredentials();
             $contextValues['user_id'] = $jwt->getClaim('uid');
             $contextValues['user_nick'] = $jwt->getClaim('nick');

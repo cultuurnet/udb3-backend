@@ -912,12 +912,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-service-provider-jwt.git",
-                "reference": "ebdd566da971e28c65742aabea4d0222730410c2"
+                "reference": "b85513a8e40865021b3f9ecd9725f1e5ad2cb186"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/ebdd566da971e28c65742aabea4d0222730410c2",
-                "reference": "ebdd566da971e28c65742aabea4d0222730410c2",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/b85513a8e40865021b3f9ecd9725f1e5ad2cb186",
+                "reference": "b85513a8e40865021b3f9ecd9725f1e5ad2cb186",
                 "shasum": ""
             },
             "require": {
@@ -938,7 +938,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "CultuurNet\\SilexServiceProviderJWT\\": "src/"
+                    "CultuurNet\\SilexServiceProviderJwt\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -946,7 +946,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2016-04-28 14:49:30"
+            "time": "2016-04-29 13:18:27"
         },
         {
             "name": "cultuurnet/silex-service-provider-oauth",
@@ -1046,12 +1046,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/symfony-security-jwt.git",
-                "reference": "2a4fd80c2a25b4ed6b3f9aebb483c2a10c4c42b4"
+                "reference": "932c724f7c199ad99866268285793855c41b9ec8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/2a4fd80c2a25b4ed6b3f9aebb483c2a10c4c42b4",
-                "reference": "2a4fd80c2a25b4ed6b3f9aebb483c2a10c4c42b4",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/932c724f7c199ad99866268285793855c41b9ec8",
+                "reference": "932c724f7c199ad99866268285793855c41b9ec8",
                 "shasum": ""
             },
             "require": {
@@ -1072,7 +1072,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "CultuurNet\\SymfonySecurityJWT\\": "src/"
+                    "CultuurNet\\SymfonySecurityJwt\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1080,7 +1080,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2016-04-28 14:48:51"
+            "time": "2016-04-29 13:13:55"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "95730bcc4701c23a31525d82001402ebb2bcccd8"
+                "reference": "2a40677185b2babc49e10636db05d5ede017965d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/95730bcc4701c23a31525d82001402ebb2bcccd8",
-                "reference": "95730bcc4701c23a31525d82001402ebb2bcccd8",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2a40677185b2babc49e10636db05d5ede017965d",
+                "reference": "2a40677185b2babc49e10636db05d5ede017965d",
                 "shasum": ""
             },
             "require": {
@@ -1370,7 +1370,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-29 09:59:06"
+            "time": "2016-04-29 13:21:28"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2423,6 +2423,7 @@
                 "event",
                 "exception"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2480,6 +2481,7 @@
                 "http",
                 "http client"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2532,6 +2534,7 @@
                 "adapter",
                 "log"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2576,6 +2579,7 @@
                 "message",
                 "url"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2625,6 +2629,7 @@
                 "Guzzle",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2676,6 +2681,7 @@
                 "log",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2726,6 +2732,7 @@
                 "oauth",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2779,6 +2786,7 @@
                 "component",
                 "stream"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
