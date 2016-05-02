@@ -1333,9 +1333,15 @@ $app['cdbxml_proxy'] = $app->share(
             $app['config']['cdbxml_proxy']['redirect_domain']
         );
 
+        /** @var \ValueObjects\Web\Hostname $redirectDomain */
+        $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
+            $app['config']['cdbxml_proxy']['redirect_port']
+        );
+
         return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
             $accept,
             $redirectDomain,
+            $redirectPort,
             new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
             new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
             new \GuzzleHttp\Client()

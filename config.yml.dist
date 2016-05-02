@@ -102,6 +102,7 @@ cdbxml_proxy:
   enabled: "true"
   accept: "application/xml"
   redirect_domain: "www.domain-cdbxml-service.be"
+  redirect_port: 80
 
 jwt:
   keys:

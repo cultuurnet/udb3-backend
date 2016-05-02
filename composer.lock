@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "82f86750b5befe89ae2ef7bb4a61e700",
-    "content-hash": "2c8508ffcb3c468eeec4453374698d30",
+    "hash": "2b7e5f0ae0673348201cec5710438048",
+    "content-hash": "a14fb669fbae97e5da0d71d7665535eb",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -536,12 +536,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "3adc295929c781202d2686818fc8823a7c792d61"
+                "reference": "4b9c76d98aaa2f09f6626020f26c6a612487ed2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/3adc295929c781202d2686818fc8823a7c792d61",
-                "reference": "3adc295929c781202d2686818fc8823a7c792d61",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/4b9c76d98aaa2f09f6626020f26c6a612487ed2d",
+                "reference": "4b9c76d98aaa2f09f6626020f26c6a612487ed2d",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-04-25 09:06:59"
+            "time": "2016-05-02 13:42:36"
         },
         {
             "name": "cultuurnet/clock",
@@ -912,12 +912,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-service-provider-jwt.git",
-                "reference": "b85513a8e40865021b3f9ecd9725f1e5ad2cb186"
+                "reference": "04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/b85513a8e40865021b3f9ecd9725f1e5ad2cb186",
-                "reference": "b85513a8e40865021b3f9ecd9725f1e5ad2cb186",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514",
+                "reference": "04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514",
                 "shasum": ""
             },
             "require": {
@@ -946,7 +946,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2016-04-29 13:18:27"
+            "time": "2016-05-02 10:06:43"
         },
         {
             "name": "cultuurnet/silex-service-provider-oauth",
@@ -1046,12 +1046,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/symfony-security-jwt.git",
-                "reference": "932c724f7c199ad99866268285793855c41b9ec8"
+                "reference": "8e79565b80bfb091da02677c605973f468e9392f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/932c724f7c199ad99866268285793855c41b9ec8",
-                "reference": "932c724f7c199ad99866268285793855c41b9ec8",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/8e79565b80bfb091da02677c605973f468e9392f",
+                "reference": "8e79565b80bfb091da02677c605973f468e9392f",
                 "shasum": ""
             },
             "require": {
@@ -1080,7 +1080,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2016-04-29 13:13:55"
+            "time": "2016-05-02 14:33:28"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -1290,16 +1290,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-887",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2a40677185b2babc49e10636db05d5ede017965d"
+                "reference": "a12331dfed4cd7cdd695dcd5a373d3daec6b4da0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2a40677185b2babc49e10636db05d5ede017965d",
-                "reference": "2a40677185b2babc49e10636db05d5ede017965d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a12331dfed4cd7cdd695dcd5a373d3daec6b4da0",
+                "reference": "a12331dfed4cd7cdd695dcd5a373d3daec6b4da0",
                 "shasum": ""
             },
             "require": {
@@ -1370,7 +1370,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-29 13:21:28"
+            "time": "2016-05-02 14:41:31"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1423,12 +1423,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "2259b4ebbb8bdcf1b11311001672aeb3953733c8"
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/2259b4ebbb8bdcf1b11311001672aeb3953733c8",
-                "reference": "2259b4ebbb8bdcf1b11311001672aeb3953733c8",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
                 "shasum": ""
             },
             "require": {
@@ -1463,7 +1463,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-04-28 07:40:01"
+            "time": "2016-05-02 13:56:20"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
@@ -1512,16 +1512,16 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-feature/III-887",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "fc62c6fa3c0929b470cdcb64d04f3942bddf1b2c"
+                "reference": "be16731c6ea56ff99512634c5defc0914e65ef22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/fc62c6fa3c0929b470cdcb64d04f3942bddf1b2c",
-                "reference": "fc62c6fa3c0929b470cdcb64d04f3942bddf1b2c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/be16731c6ea56ff99512634c5defc0914e65ef22",
+                "reference": "be16731c6ea56ff99512634c5defc0914e65ef22",
                 "shasum": ""
             },
             "require": {
@@ -1569,7 +1569,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-04-29 09:48:01"
+            "time": "2016-05-02 14:41:20"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -4518,16 +4518,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.1",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421"
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0697e6aa65c83edf97bb0f23d8763f94e3f11421",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d8db871a54619458a805229a057ea2af33c753e8",
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
                 "shasum": ""
             },
             "require": {
@@ -4567,7 +4567,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06 14:19:39"
+            "time": "2016-05-01 08:45:47"
         },
         {
             "name": "symfony/console",
@@ -5936,25 +5936,10 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-887",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-887",
-            "package": "cultuurnet/udb3-symfony"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "cultuurnet/udb3": 20,
-        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
