@@ -36,7 +36,6 @@ $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-$app->register(new CultureFeedServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
