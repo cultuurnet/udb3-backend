@@ -536,12 +536,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "5fcd9bd1be7325d1cde495cdc01461046eb3bb33"
+                "reference": "4b9c76d98aaa2f09f6626020f26c6a612487ed2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/5fcd9bd1be7325d1cde495cdc01461046eb3bb33",
-                "reference": "5fcd9bd1be7325d1cde495cdc01461046eb3bb33",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/4b9c76d98aaa2f09f6626020f26c6a612487ed2d",
+                "reference": "4b9c76d98aaa2f09f6626020f26c6a612487ed2d",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-04-15 12:23:47"
+            "time": "2016-05-02 13:42:36"
         },
         {
             "name": "cultuurnet/clock",
@@ -1210,12 +1210,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979"
+                "reference": "95e1d076a20295c252b0e1fe9a625e28dd6dc278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979",
-                "reference": "f56cefaca2f4de0e2af3a5a33dd6c65d2fea3979",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/95e1d076a20295c252b0e1fe9a625e28dd6dc278",
+                "reference": "95e1d076a20295c252b0e1fe9a625e28dd6dc278",
                 "shasum": ""
             },
             "require": {
@@ -1284,7 +1284,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-19 09:49:30"
+            "time": "2016-04-26 14:04:42"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1382,12 +1382,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "a062385f24fbc3453e8ab183e47fc7eaa6216fd6"
+                "reference": "dd2ab37651f412bae17a4f74a47b562f11997928"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/a062385f24fbc3453e8ab183e47fc7eaa6216fd6",
-                "reference": "a062385f24fbc3453e8ab183e47fc7eaa6216fd6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/dd2ab37651f412bae17a4f74a47b562f11997928",
+                "reference": "dd2ab37651f412bae17a4f74a47b562f11997928",
                 "shasum": ""
             },
             "require": {
@@ -1435,7 +1435,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-04-20 06:34:00"
+            "time": "2016-05-02 13:11:02"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3028,16 +3028,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.20",
+            "version": "1.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a"
+                "reference": "bd73a91703969a2d20ab4bfbf971d6c2cbe36612"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
-                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/bd73a91703969a2d20ab4bfbf971d6c2cbe36612",
+                "reference": "bd73a91703969a2d20ab4bfbf971d6c2cbe36612",
                 "shasum": ""
             },
             "require": {
@@ -3107,7 +3107,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-03-14 21:54:11"
+            "time": "2016-04-28 06:53:12"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -4326,16 +4326,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.1",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421"
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0697e6aa65c83edf97bb0f23d8763f94e3f11421",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d8db871a54619458a805229a057ea2af33c753e8",
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
                 "shasum": ""
             },
             "require": {
@@ -4375,7 +4375,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06 14:19:39"
+            "time": "2016-05-01 08:45:47"
         },
         {
             "name": "symfony/console",
@@ -4556,16 +4556,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.11",
+            "version": "v2.7.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "b69b6e103712870a3137e9132115d800b2713aac"
+                "reference": "dea1508c965603051e359f2a5f8b7d923ba358fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b69b6e103712870a3137e9132115d800b2713aac",
-                "reference": "b69b6e103712870a3137e9132115d800b2713aac",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/dea1508c965603051e359f2a5f8b7d923ba358fb",
+                "reference": "dea1508c965603051e359f2a5f8b7d923ba358fb",
                 "shasum": ""
             },
             "require": {
@@ -4608,7 +4608,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-25 17:55:03"
+            "time": "2016-04-05 16:36:43"
         },
         {
             "name": "symfony/http-kernel",
@@ -4938,16 +4938,16 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.11",
+            "version": "v2.7.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "d41391616712f23df16277d674280cea6cb5f139"
+                "reference": "5b789c31e791c6e499644f203b51e8302e467039"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/d41391616712f23df16277d674280cea6cb5f139",
-                "reference": "d41391616712f23df16277d674280cea6cb5f139",
+                "url": "https://api.github.com/repos/symfony/security/zipball/5b789c31e791c6e499644f203b51e8302e467039",
+                "reference": "5b789c31e791c6e499644f203b51e8302e467039",
                 "shasum": ""
             },
             "require": {
@@ -5014,7 +5014,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-25 15:52:47"
+            "time": "2016-04-09 10:56:56"
         },
         {
             "name": "symfony/serializer",
