@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ae34c1ab48208fecfcab11cc68906384",
-    "content-hash": "55cad3efc2a6dfa3d1b205b361230dd9",
+    "hash": "2b7e5f0ae0673348201cec5710438048",
+    "content-hash": "a14fb669fbae97e5da0d71d7665535eb",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -907,6 +907,48 @@
             "time": "2016-04-21 13:04:37"
         },
         {
+            "name": "cultuurnet/silex-service-provider-jwt",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/silex-service-provider-jwt.git",
+                "reference": "04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514",
+                "reference": "04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/symfony-security-jwt": "~0.1",
+                "silex/silex": "~1.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\SilexServiceProviderJwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "JWT authentication for Silex",
+            "time": "2016-05-02 10:06:43"
+        },
+        {
             "name": "cultuurnet/silex-service-provider-oauth",
             "version": "dev-master",
             "source": {
@@ -997,6 +1039,48 @@
             ],
             "description": "Silex UiTID authentication provider.",
             "time": "2016-02-08 12:27:43"
+        },
+        {
+            "name": "cultuurnet/symfony-security-jwt",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/symfony-security-jwt.git",
+                "reference": "8e79565b80bfb091da02677c605973f468e9392f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/8e79565b80bfb091da02677c605973f468e9392f",
+                "reference": "8e79565b80bfb091da02677c605973f468e9392f",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/udb3-jwt": "~0.1",
+                "symfony/security": "~2.7.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\SymfonySecurityJwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "JWT implementation for the Symfony Security component",
+            "time": "2016-05-02 14:33:28"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -1210,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "95e1d076a20295c252b0e1fe9a625e28dd6dc278"
+                "reference": "a12331dfed4cd7cdd695dcd5a373d3daec6b4da0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/95e1d076a20295c252b0e1fe9a625e28dd6dc278",
-                "reference": "95e1d076a20295c252b0e1fe9a625e28dd6dc278",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a12331dfed4cd7cdd695dcd5a373d3daec6b4da0",
+                "reference": "a12331dfed4cd7cdd695dcd5a373d3daec6b4da0",
                 "shasum": ""
             },
             "require": {
@@ -1230,6 +1314,8 @@
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/search": "~1.1",
+                "cultuurnet/symfony-security-jwt": "~0.1",
+                "cultuurnet/symfony-security-oauth-uitid": "~0.1",
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
                 "ext-tidy": "*",
@@ -1284,7 +1370,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-04-26 14:04:42"
+            "time": "2016-05-02 14:41:31"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1330,6 +1416,54 @@
             ],
             "description": "UDB3 integration with Doctrine Cache",
             "time": "2016-04-13 11:52:34"
+        },
+        {
+            "name": "cultuurnet/udb3-jwt",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-jwt.git",
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "shasum": ""
+            },
+            "require": {
+                "lcobucci/jwt": "~3.1",
+                "nicolopignatelli/valueobjects": "~2.0"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Jwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Bert Ramakers",
+                    "email": "bert@2dotstwice.be"
+                }
+            ],
+            "description": "Provides JWT service classes",
+            "time": "2016-05-02 13:56:20"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
@@ -1382,12 +1516,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "dd2ab37651f412bae17a4f74a47b562f11997928"
+                "reference": "be16731c6ea56ff99512634c5defc0914e65ef22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/dd2ab37651f412bae17a4f74a47b562f11997928",
-                "reference": "dd2ab37651f412bae17a4f74a47b562f11997928",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/be16731c6ea56ff99512634c5defc0914e65ef22",
+                "reference": "be16731c6ea56ff99512634c5defc0914e65ef22",
                 "shasum": ""
             },
             "require": {
@@ -1435,7 +1569,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-05-02 13:11:02"
+            "time": "2016-05-02 14:41:20"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3025,6 +3159,64 @@
                 "silex"
             ],
             "time": "2016-02-01 15:38:27"
+        },
+        {
+            "name": "lcobucci/jwt",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lcobucci/jwt.git",
+                "reference": "afea8e682e911a21574fd8519321b32522fa25b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/afea8e682e911a21574fd8519321b32522fa25b5",
+                "reference": "afea8e682e911a21574fd8519321b32522fa25b5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "mdanter/ecc": "~0.3",
+                "mikey179/vfsstream": "~1.5",
+                "phpmd/phpmd": "~2.2",
+                "phpunit/php-invoker": "~1.1",
+                "phpunit/phpunit": "~4.5",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "suggest": {
+                "mdanter/ecc": "Required to use Elliptic Curves based algorithms."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lcobucci\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Luís Otávio Cobucci Oblonczyk",
+                    "email": "lcobucci@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+            "keywords": [
+                "JWS",
+                "jwt"
+            ],
+            "time": "2016-03-24 22:46:13"
         },
         {
             "name": "league/flysystem",
