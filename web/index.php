@@ -64,6 +64,11 @@ $app['security.firewalls'] = array(
         'pattern' => '^.*$',
         'jwt' => [
             'validation' => $app['config']['jwt']['validation'],
+            'required_claims' => [
+                'uid',
+                'nick',
+                'email',
+            ],
             'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['keys']['public']['file'],
         ],
         'stateless' => true,
