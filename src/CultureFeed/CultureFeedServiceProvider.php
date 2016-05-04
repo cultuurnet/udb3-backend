@@ -25,7 +25,8 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
 
         $app['culturefeed_token_credentials'] = $app->share(
             function (Application $app) {
-                // @todo decode & decrypt from JWT in III-923
+                // @todo Fetch from UiTID using JWT
+                // @see https://jira.uitdatabank.be/browse/III-923
                 // return new CultuurNet\Auth\TokenCredentials\TokenCredentials();
                 return null;
             }
