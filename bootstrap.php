@@ -94,7 +94,7 @@ $app['uuid_generator'] = $app->share(
     }
 );
 
-$app['iri_generator'] = $app->share(
+$app['event_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
@@ -136,7 +136,7 @@ $app['event_service'] = $app->share(
             $app['event_jsonld_repository'],
             $app['event_repository'],
             $app['event_relations_repository'],
-            $app['iri_generator']
+            $app['event_iri_generator']
         );
 
         return $service;
@@ -165,7 +165,7 @@ $app['personal_variation_decorated_event_service'] = $app->share(
             $app['variations.search'],
             $criteria,
             $app['variations.jsonld_repository'],
-            $app['iri_generator']
+            $app['event_iri_generator']
         );
     }
 );
@@ -304,7 +304,7 @@ $app['event_jsonld_repository'] = $app->share(
             $cachedRepository,
             $app['event_bus'],
             new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory(
-                $app['iri_generator']
+                $app['event_iri_generator']
             )
         );
 
@@ -322,7 +322,7 @@ $app['event_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
             $app['event_jsonld_repository'],
-            $app['iri_generator'],
+            $app['event_iri_generator'],
             $app['event_service'],
             $app['place_service'],
             $app['organizer_service'],
@@ -576,7 +576,8 @@ $app['real_event_repository'] = $app->share(
           $app['event_store'],
           $app['event_bus'],
           [
-              $app['event_stream_metadata_enricher']
+              $app['event_stream_metadata_enricher'],
+              new \CultuurNet\UDB3\Offer\OfferLocator($app['event_iri_generator'])
           ]
       );
 
@@ -964,7 +965,10 @@ $app['real_place_repository'] = $app->share(
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
             $app['place_store'],
             $app['event_bus'],
-            array($app['event_stream_metadata_enricher'])
+            array(
+                $app['event_stream_metadata_enricher'],
+                new \CultuurNet\UDB3\Offer\OfferLocator($app['place_iri_generator'])
+            )
         );
 
         return $repository;
@@ -1084,7 +1088,10 @@ $app['real_organizer_repository'] = $app->share(
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
             $app['organizer_store'],
             $app['event_bus'],
-            array($app['event_stream_metadata_enricher'])
+            array(
+                $app['event_stream_metadata_enricher'],
+                new \CultuurNet\UDB3\Offer\OfferLocator($app['organizer_iri_generator'])
+            )
         );
 
         return $repository;
