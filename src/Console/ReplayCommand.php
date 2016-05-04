@@ -171,6 +171,7 @@ class ReplayCommand extends Command
             'places',
             'organizers',
             'variations',
+            'media_objects',
         ];
 
         $store = $input->getArgument('store');

@@ -2,10 +2,13 @@
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
+use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
+use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
+use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -13,6 +16,7 @@ use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\String\String as StringLiteral;
 
@@ -32,12 +36,6 @@ $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-/**
- * Session service.
- */
-$app->register(new Silex\Provider\SessionServiceProvider());
-$app->register(new CultuurNet\UiTIDProvider\Session\SessionConfigurationProvider());
-
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
@@ -54,25 +52,15 @@ $app['local_domain'] = \ValueObjects\Web\Domain::specifyType(
 $app['udb2_domain'] = \ValueObjects\Web\Domain::specifyType('uitdatabank.be');
 
 /**
- * UiTID Authentication services.
- */
-$app->register(new CultuurNet\UiTIDProvider\Auth\AuthServiceProvider());
-
-/**
- * Security services.
- */
-$app->register(new \CultuurNet\UiTIDProvider\Security\UiTIDSecurityServiceProvider());
-
-/**
  * CultureFeed services.
  */
 $app->register(
-  new \CultuurNet\UiTIDProvider\CultureFeed\CultureFeedServiceProvider(),
-  array(
+  new CultureFeedServiceProvider(),
+  [
     'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
     'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
     'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
-  )
+  ]
 );
 
 /**
@@ -182,12 +170,35 @@ $app['personal_variation_decorated_event_service'] = $app->share(
     }
 );
 
-/**
- * UiTID User services.
- */
-$app->register(new CultuurNet\UiTIDProvider\User\UserServiceProvider());
+$app['current_user'] = $app->share(
+    function (Application $app) {
+        /* @var TokenStorageInterface $tokenStorage */
+        $tokenStorage = $app['security.token_storage'];
+        $token = $tokenStorage->getToken();
 
-$app['current_user'] = $app['uitid_user'];
+        $cfUser = new \CultureFeed_User();
+
+        if ($token instanceof JwtUserToken) {
+            $jwt = $token->getCredentials();
+
+            $cfUser->id = $jwt->getClaim('uid');
+            $cfUser->nick = $jwt->getClaim('nick');
+            $cfUser->mbox = $jwt->getClaim('email');
+
+            return $cfUser;
+        } else if ($token instanceof OAuthToken) {
+            $tokenUser = $token->getUser();
+
+            if ($tokenUser instanceof \CultuurNet\SymfonySecurityOAuthUitid\User) {
+                $cfUser->id = $tokenUser->getUid();
+                $cfUser->nick = $tokenUser->getUsername();
+                $cfUser->mbox = $tokenUser->getEmail();
+            }
+        } else {
+            return null;
+        }
+    }
+);
 
 $app['auth_service'] = $app->share(
     function ($app) {
@@ -1329,9 +1340,15 @@ $app['cdbxml_proxy'] = $app->share(
             $app['config']['cdbxml_proxy']['redirect_domain']
         );
 
+        /** @var \ValueObjects\Web\Hostname $redirectDomain */
+        $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
+            $app['config']['cdbxml_proxy']['redirect_port']
+        );
+
         return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
             $accept,
             $redirectDomain,
+            $redirectPort,
             new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
             new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
             new \GuzzleHttp\Client()
