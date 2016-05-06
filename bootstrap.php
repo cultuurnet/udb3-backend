@@ -915,6 +915,14 @@ $app['event_relations_repository'] = $app->share(
     }
 );
 
+$app['place_relations_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine\DBALRepository(
+            $app['dbal_connection']
+        );
+    }
+);
+
 $app['place_store'] = $app->share(
     function ($app) {
         return new \Broadway\EventStore\DBALEventStore(
