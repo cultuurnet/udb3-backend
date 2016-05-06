@@ -61,6 +61,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
         $dbalReadModels = [
             'event_permission_readmodel',
             'event_relations',
+            'place_relations',
             'event_variation_search_index',
             'index_readmodel',
             'place_permission_readmodel',
