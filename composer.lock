@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2b7e5f0ae0673348201cec5710438048",
-    "content-hash": "a14fb669fbae97e5da0d71d7665535eb",
+    "hash": "88bfc91a4c435a9d1f23499315514673",
+    "content-hash": "629dd3c40596279a1a560f1085cbbe9e",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1290,16 +1290,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-943",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3d6e2f3e3a9ca8129041a013242e6b2ec2c19efc"
+                "reference": "fa2a6c389c085cd10f3573d3919b65c54faab361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3d6e2f3e3a9ca8129041a013242e6b2ec2c19efc",
-                "reference": "3d6e2f3e3a9ca8129041a013242e6b2ec2c19efc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/fa2a6c389c085cd10f3573d3919b65c54faab361",
+                "reference": "fa2a6c389c085cd10f3573d3919b65c54faab361",
                 "shasum": ""
             },
             "require": {
@@ -1370,7 +1370,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-05-04 12:12:27"
+            "time": "2016-05-06 12:23:26"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1423,15 +1423,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e"
+                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
-                "reference": "0f3c2e3155c326e2b6b9f3a60df2a0fdf92df70e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
+                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
                 "shasum": ""
             },
             "require": {
+                "cultuurnet/clock": "~0.1",
                 "lcobucci/jwt": "~3.1",
                 "nicolopignatelli/valueobjects": "~2.0"
             },
@@ -1463,7 +1464,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-05-02 13:56:20"
+            "time": "2016-05-04 12:22:32"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
@@ -3140,7 +3141,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -5928,10 +5929,18 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-943",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
