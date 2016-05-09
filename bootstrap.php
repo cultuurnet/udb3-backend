@@ -359,10 +359,18 @@ $app['event_calendar_projector'] = $app->share(
     }
 );
 
-$app['relations_projector'] = $app->share(
+$app['event_relations_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
             $app['event_relations_repository']
+        );
+    }
+);
+
+$app['place_relations_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Place\ReadModel\Relations\Projector(
+            $app['place_relations_repository']
         );
     }
 );
@@ -417,7 +425,8 @@ $app['event_bus'] = $app->share(
         $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
             $subscribers = [
                 'search_cache_manager',
-                'relations_projector',
+                'event_relations_projector',
+                'place_relations_projector',
                 'event_jsonld_projector',
                 'event_history_projector',
                 'place_jsonld_projector',
