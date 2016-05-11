@@ -45,6 +45,7 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
                 $contextValues['user_id'] = $user->id;
                 $contextValues['user_nick'] = $user->nick;
                 $contextValues['user_email'] = $user->mbox;
+                $contextValues['auth_jwt'] = $this->application['jwt'];
 
                 /** @var TokenCredentials $tokenCredentials */
                 $tokenCredentials = $this->application['culturefeed_token_credentials'];
