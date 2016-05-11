@@ -9,6 +9,7 @@ use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
+use CultuurNet\UDB3\Silex\Impersonator;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -175,13 +176,20 @@ $app['personal_variation_decorated_event_service'] = $app->share(
 $app['current_user'] = $app->share(
     function (Application $app) {
         // Check first if we're impersonating someone.
+        /* @var Impersonator $impersonator */
         $impersonator = $app['impersonator'];
         if ($impersonator->getUser()) {
             return $impersonator->getUser();
         }
 
-        /* @var TokenStorageInterface $tokenStorage */
-        $tokenStorage = $app['security.token_storage'];
+        try {
+            /* @var TokenStorageInterface $tokenStorage */
+            $tokenStorage = $app['security.token_storage'];
+        } catch (\InvalidArgumentException $e) {
+            // Running from CLI.
+            return null;
+        }
+
         $token = $tokenStorage->getToken();
 
         $cfUser = new \CultureFeed_User();
