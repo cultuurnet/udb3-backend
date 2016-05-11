@@ -146,17 +146,17 @@ $app['event_service'] = $app->share(
 $app['personal_variation_decorated_event_service'] = $app->share(
     function (Application $app) {
         $decoratedService = $app['event_service'];
-        $session = $app['session'];
 
-        /** @var \CultuurNet\Auth\User $user */
-        $user = $session->get('culturefeed_user');
+        /* @var \CultureFeed_User $user */
+        $user = $app['current_user'];
+
         $criteria = (new \CultuurNet\UDB3\Variations\ReadModel\Search\Criteria())
             ->withPurpose(
                 new \CultuurNet\UDB3\Variations\Model\Properties\Purpose('personal')
             )
             ->withOwnerId(
                 new \CultuurNet\UDB3\Variations\Model\Properties\OwnerId(
-                    $user->getId()
+                    $user->id
                 )
             );
 
@@ -172,6 +172,12 @@ $app['personal_variation_decorated_event_service'] = $app->share(
 
 $app['current_user'] = $app->share(
     function (Application $app) {
+        // Check first if we're impersonating someone.
+        $impersonator = $app['impersonator'];
+        if ($impersonator->getUser()) {
+            return $impersonator->getUser();
+        }
+
         /* @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $app['security.token_storage'];
         $token = $tokenStorage->getToken();
@@ -194,6 +200,8 @@ $app['current_user'] = $app->share(
                 $cfUser->nick = $tokenUser->getUsername();
                 $cfUser->mbox = $tokenUser->getEmail();
             }
+
+            return $cfUser;
         } else {
             return null;
         }
@@ -1258,10 +1266,8 @@ $app['logger.uitpas'] = $app->share(
 // This service is used by the background worker to impersonate the user
 // who initially queued the command.
 $app['impersonator'] = $app->share(
-    function (Application $app) {
-        return new \CultuurNet\UDB3\Silex\Impersonator(
-            $app['session']
-        );
+    function () {
+        return new \CultuurNet\UDB3\Silex\Impersonator();
     }
 );
 
