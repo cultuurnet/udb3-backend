@@ -1,38 +1,59 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex;
 
 use Broadway\Domain\Metadata;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use CultuurNet\Auth\TokenCredentials;
 
 class Impersonator
 {
     /**
-     * @var SessionInterface
+     * @var \CultureFeed_User
      */
-    private $session;
+    private $user;
 
     /**
-     * @param SessionInterface $session
+     * @var TokenCredentials|null
      */
-    public function __construct(SessionInterface $session)
+    private $tokenCredentials;
+
+    public function __construct()
     {
-        $this->session = $session;
+        $this->user = null;
+        $this->tokenCredentials = null;
     }
 
+    /**
+     * @return \CultureFeed_User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @return TokenCredentials|null
+     */
+    public function getTokenCredentials()
+    {
+        return $this->tokenCredentials;
+    }
+
+    /**
+     * @param Metadata $metadata
+     */
     public function impersonate(Metadata $metadata)
     {
         $metadata = $metadata->serialize();
 
-        $this->session->set(
-            'culturefeed_user',
-            new \CultuurNet\Auth\User(
-                $metadata['user_id'],
-                $metadata['uitid_token_credentials']
-            )
-        );
+        $this->user = new \CultureFeed_User();
+        $this->user->id = $metadata['user_id'];
+        $this->user->nick = $metadata['user_nick'];
+
+        // There might still be queued commands without this metadata because
+        // it was added later.
+        $this->user->mbox = isset($metadata['user_email']) ? $metadata['user_email'] : null;
+
+        $this->tokenCredentials = $metadata['uitid_token_credentials'];
     }
 }

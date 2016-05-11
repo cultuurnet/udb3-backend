@@ -33,12 +33,7 @@ $app->get(
         /** @var EntryAPIFactory $entryAPIFactory */
         $entryAPIFactory = $app['udb2_entry_api_factory'];
 
-        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
-        $session = $app['session'];
-        /** @var User $minimalUserData */
-        $minimalUserData = $session->get('culturefeed_user');
-
-        $tokenCredentials = $minimalUserData->getTokenCredentials();
+        $tokenCredentials = $app['culturefeed_token_credentials'];
 
         $entryAPI = $entryAPIFactory->withTokenCredentials($tokenCredentials);
 
