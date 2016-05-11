@@ -38,6 +38,8 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
+
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
@@ -197,6 +199,20 @@ $app['current_user'] = $app->share(
         } else {
             return null;
         }
+    }
+);
+
+$app['jwt'] = $app->share(
+    function(Application $app) {
+        /* @var TokenStorageInterface $tokenStorage */
+        $tokenStorage = $app['security.token_storage'];
+        $token = $tokenStorage->getToken();
+
+        if ($token instanceof JwtUserToken) {
+            return $token->getCredentials();
+        }
+
+        return null;
     }
 );
 
