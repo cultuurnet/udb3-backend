@@ -9,6 +9,7 @@ use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
+use CultuurNet\UDB3\Silex\Impersonator;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -146,17 +147,17 @@ $app['event_service'] = $app->share(
 $app['personal_variation_decorated_event_service'] = $app->share(
     function (Application $app) {
         $decoratedService = $app['event_service'];
-        $session = $app['session'];
 
-        /** @var \CultuurNet\Auth\User $user */
-        $user = $session->get('culturefeed_user');
+        /* @var \CultureFeed_User $user */
+        $user = $app['current_user'];
+
         $criteria = (new \CultuurNet\UDB3\Variations\ReadModel\Search\Criteria())
             ->withPurpose(
                 new \CultuurNet\UDB3\Variations\Model\Properties\Purpose('personal')
             )
             ->withOwnerId(
                 new \CultuurNet\UDB3\Variations\Model\Properties\OwnerId(
-                    $user->getId()
+                    $user->id
                 )
             );
 
@@ -172,8 +173,21 @@ $app['personal_variation_decorated_event_service'] = $app->share(
 
 $app['current_user'] = $app->share(
     function (Application $app) {
-        /* @var TokenStorageInterface $tokenStorage */
-        $tokenStorage = $app['security.token_storage'];
+        // Check first if we're impersonating someone.
+        /* @var Impersonator $impersonator */
+        $impersonator = $app['impersonator'];
+        if ($impersonator->getUser()) {
+            return $impersonator->getUser();
+        }
+
+        try {
+            /* @var TokenStorageInterface $tokenStorage */
+            $tokenStorage = $app['security.token_storage'];
+        } catch (\InvalidArgumentException $e) {
+            // Running from CLI.
+            return null;
+        }
+
         $token = $tokenStorage->getToken();
 
         $cfUser = new \CultureFeed_User();
@@ -194,6 +208,8 @@ $app['current_user'] = $app->share(
                 $cfUser->nick = $tokenUser->getUsername();
                 $cfUser->mbox = $tokenUser->getEmail();
             }
+
+            return $cfUser;
         } else {
             return null;
         }
@@ -1258,10 +1274,8 @@ $app['logger.uitpas'] = $app->share(
 // This service is used by the background worker to impersonate the user
 // who initially queued the command.
 $app['impersonator'] = $app->share(
-    function (Application $app) {
-        return new \CultuurNet\UDB3\Silex\Impersonator(
-            $app['session']
-        );
+    function () {
+        return new \CultuurNet\UDB3\Silex\Impersonator();
     }
 );
 
