@@ -443,12 +443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "cc1beccf57669c808f8f6f0af7f2f121e50f19f2"
+                "reference": "b2900a041848783defd3419a3e4772c68d289699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/cc1beccf57669c808f8f6f0af7f2f121e50f19f2",
-                "reference": "cc1beccf57669c808f8f6f0af7f2f121e50f19f2",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/b2900a041848783defd3419a3e4772c68d289699",
+                "reference": "b2900a041848783defd3419a3e4772c68d289699",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-04-21 13:04:43"
+            "time": "2016-05-12 13:12:36"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -3149,7 +3149,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],

@@ -39,6 +39,7 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
             $this->app['place_store'],
             $this->app['organizer_store'],
             $this->app['event_relations_repository'],
+            $this->app['place_relations_repository'],
             $this->app['variations.event_store'],
             $this->app['variations.search'],
             $this->app['media_object_store'],
