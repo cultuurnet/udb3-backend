@@ -238,7 +238,7 @@ $app['jwt'] = $app->share(
         if ($token instanceof JwtUserToken) {
             return $token->getCredentials();
         }
-
+        
         return null;
     }
 );
