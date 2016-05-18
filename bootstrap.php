@@ -217,6 +217,33 @@ $app['current_user'] = $app->share(
     }
 );
 
+$app['jwt'] = $app->share(
+    function(Application $app) {
+        // Check first if we're impersonating someone.
+        /* @var Impersonator $impersonator */
+        $impersonator = $app['impersonator'];
+        if ($impersonator->getJwt()) {
+            return $impersonator->getJwt();
+        }
+
+        try {
+            /* @var TokenStorageInterface $tokenStorage */
+            $tokenStorage = $app['security.token_storage'];
+        } catch (\InvalidArgumentException $e) {
+            // Running from CLI.
+            return null;
+        }
+
+        $token = $tokenStorage->getToken();
+
+        if ($token instanceof JwtUserToken) {
+            return $token->getCredentials();
+        }
+        
+        return null;
+    }
+);
+
 $app['auth_service'] = $app->share(
     function ($app) {
         $uitidConfig = $app['config']['uitid'];

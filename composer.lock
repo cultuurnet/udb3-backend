@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2b7e5f0ae0673348201cec5710438048",
-    "content-hash": "a14fb669fbae97e5da0d71d7665535eb",
+    "hash": "ee8ed66ee16de04177d2f9361b3f9fae",
+    "content-hash": "b071c10fb3508f85ab6b3fe189883bc6",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1634,16 +1634,16 @@
         },
         {
             "name": "cultuurnet/uitid-credentials",
-            "version": "dev-master",
+            "version": "dev-feature/III-923",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/uitid-credentials.git",
-                "reference": "fc611fa74012bb07c1e35a1e38eaf12521c49ae4"
+                "reference": "db2b7cfd969008fefd83279394dde18294006ff7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/fc611fa74012bb07c1e35a1e38eaf12521c49ae4",
-                "reference": "fc611fa74012bb07c1e35a1e38eaf12521c49ae4",
+                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/db2b7cfd969008fefd83279394dde18294006ff7",
+                "reference": "db2b7cfd969008fefd83279394dde18294006ff7",
                 "shasum": ""
             },
             "require": {
@@ -1686,7 +1686,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2015-10-08 14:07:30"
+            "time": "2016-05-12 16:06:08"
         },
         {
             "name": "danielstjules/stringy",
@@ -3159,6 +3159,7 @@
                 "console",
                 "silex"
             ],
+            "abandoned": "ivoba/console-service-provider",
             "time": "2016-02-01 15:38:27"
         },
         {
@@ -5937,11 +5938,19 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-923",
+            "package": "cultuurnet/uitid-credentials"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "doctrine/migrations": 20
+        "doctrine/migrations": 20,
+        "cultuurnet/uitid-credentials": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

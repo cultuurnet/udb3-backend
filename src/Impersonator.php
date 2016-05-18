@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use Broadway\Domain\Metadata;
 use CultuurNet\Auth\TokenCredentials;
+use Lcobucci\JWT\Token as Jwt;
 
 class Impersonator
 {
@@ -16,6 +17,11 @@ class Impersonator
      * @var TokenCredentials|null
      */
     private $tokenCredentials;
+
+    /**
+     * @var Jwt|null
+     */
+    private $jwt;
 
     public function __construct()
     {
@@ -40,6 +46,14 @@ class Impersonator
     }
 
     /**
+     * @return Jwt|null
+     */
+    public function getJwt()
+    {
+        return $this->jwt;
+    }
+
+    /**
      * @param Metadata $metadata
      */
     public function impersonate(Metadata $metadata)
@@ -53,6 +67,7 @@ class Impersonator
         // There might still be queued commands without this metadata because
         // it was added later.
         $this->user->mbox = isset($metadata['user_email']) ? $metadata['user_email'] : null;
+        $this->jwt = isset($metadata['auth_jwt']) ? $metadata['auth_jwt'] : null;
 
         $this->tokenCredentials = $metadata['uitid_token_credentials'];
     }
