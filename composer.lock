@@ -2426,6 +2426,7 @@
                 "event",
                 "exception"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2483,6 +2484,7 @@
                 "http",
                 "http client"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2535,6 +2537,7 @@
                 "adapter",
                 "log"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2579,6 +2582,7 @@
                 "message",
                 "url"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2628,6 +2632,7 @@
                 "Guzzle",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2679,6 +2684,7 @@
                 "log",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2729,6 +2735,7 @@
                 "oauth",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2782,6 +2789,7 @@
                 "component",
                 "stream"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -3153,6 +3161,7 @@
                 "console",
                 "silex"
             ],
+            "abandoned": "ivoba/console-service-provider",
             "time": "2016-02-01 15:38:27"
         },
         {
