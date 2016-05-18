@@ -443,12 +443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "cc1beccf57669c808f8f6f0af7f2f121e50f19f2"
+                "reference": "b2900a041848783defd3419a3e4772c68d289699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/cc1beccf57669c808f8f6f0af7f2f121e50f19f2",
-                "reference": "cc1beccf57669c808f8f6f0af7f2f121e50f19f2",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/b2900a041848783defd3419a3e4772c68d289699",
+                "reference": "b2900a041848783defd3419a3e4772c68d289699",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-04-21 13:04:43"
+            "time": "2016-05-12 13:12:36"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "675a7a1dc44b40a716a082dc02d4363207e27643"
+                "reference": "737a74212e0bf6e5076d0887ecd26032c7be7156"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/675a7a1dc44b40a716a082dc02d4363207e27643",
-                "reference": "675a7a1dc44b40a716a082dc02d4363207e27643",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/737a74212e0bf6e5076d0887ecd26032c7be7156",
+                "reference": "737a74212e0bf6e5076d0887ecd26032c7be7156",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-05-11 10:52:13"
+            "time": "2016-05-18 09:51:03"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2426,7 +2426,6 @@
                 "event",
                 "exception"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2484,7 +2483,6 @@
                 "http",
                 "http client"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2537,7 +2535,6 @@
                 "adapter",
                 "log"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2582,7 +2579,6 @@
                 "message",
                 "url"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2632,7 +2628,6 @@
                 "Guzzle",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2684,7 +2679,6 @@
                 "log",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2735,7 +2729,6 @@
                 "oauth",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2789,7 +2782,6 @@
                 "component",
                 "stream"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -3161,7 +3153,6 @@
                 "console",
                 "silex"
             ],
-            "abandoned": "ivoba/console-service-provider",
             "time": "2016-02-01 15:38:27"
         },
         {
@@ -5653,16 +5644,16 @@
         },
         {
             "name": "zendframework/zend-validator",
-            "version": "2.7.2",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-validator.git",
-                "reference": "063694d3c781f284ab8f846b8af64c45d94aaf51"
+                "reference": "f956581bc5fa4cf3f2933fe24e77deded8d1937b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/063694d3c781f284ab8f846b8af64c45d94aaf51",
-                "reference": "063694d3c781f284ab8f846b8af64c45d94aaf51",
+                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/f956581bc5fa4cf3f2933fe24e77deded8d1937b",
+                "reference": "f956581bc5fa4cf3f2933fe24e77deded8d1937b",
                 "shasum": ""
             },
             "require": {
@@ -5697,8 +5688,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev",
-                    "dev-develop": "2.8-dev"
+                    "dev-master": "2.8-dev",
+                    "dev-develop": "2.9-dev"
                 },
                 "zf": {
                     "component": "Zend\\Validator",
@@ -5720,7 +5711,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2016-04-18 17:28:37"
+            "time": "2016-05-16 13:39:40"
         }
     ],
     "packages-dev": [

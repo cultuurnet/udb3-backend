@@ -44,7 +44,6 @@ $app['security.firewalls'] = array(
                 '^/api/1.0/event.jsonld',
                 '^/(event|place)/' . $app['id_pattern'] . '$',
                 '^/event/' . $app['id_pattern'] . '/history',
-                '^/place/' . $app['id_pattern'] . '/events',
                 '^/organizer/' . $app['id_pattern'],
                 '^/media/' . $app['id_pattern'] . '$',
                 '^/places$',
@@ -220,6 +219,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
 
 $app->get(
