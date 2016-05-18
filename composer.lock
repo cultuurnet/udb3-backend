@@ -1638,12 +1638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/uitid-credentials.git",
-                "reference": "ac5d6f8694d74b73a89ed2986fd074804adce70a"
+                "reference": "db2b7cfd969008fefd83279394dde18294006ff7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/ac5d6f8694d74b73a89ed2986fd074804adce70a",
-                "reference": "ac5d6f8694d74b73a89ed2986fd074804adce70a",
+                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/db2b7cfd969008fefd83279394dde18294006ff7",
+                "reference": "db2b7cfd969008fefd83279394dde18294006ff7",
                 "shasum": ""
             },
             "require": {
@@ -1686,7 +1686,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-18 12:47:30"
+            "time": "2016-05-12 16:06:08"
         },
         {
             "name": "danielstjules/stringy",
@@ -3159,6 +3159,7 @@
                 "console",
                 "silex"
             ],
+            "abandoned": "ivoba/console-service-provider",
             "time": "2016-02-01 15:38:27"
         },
         {
