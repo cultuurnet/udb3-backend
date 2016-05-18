@@ -16,9 +16,10 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
     {
         $app['bulk_label_offer_command_handler'] = $app->share(
             function (Application $app) {
-                return (new BulkLabelCommandHandler($app['search_results_generator']))
-                    ->withRepository(OfferType::EVENT(), $app['event_repository'])
-                    ->withRepository(OfferType::PLACE(), $app['place_repository']);
+                return new BulkLabelCommandHandler(
+                    $app['search_results_generator'],
+                    $app['external_offer_editing_service']
+                );
             }
         );
     }

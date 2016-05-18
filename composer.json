@@ -38,7 +38,7 @@
     "cultuurnet/broadway-amqp": "~0.1",
     "cultuurnet/silex-amqp": "~0.1",
     "cultuurnet/silex-service-provider-jwt": "~0.1",
-    "cultuurnet/uitid-credentials": "dev-feature/III-923 as 0.1"
+    "cultuurnet/uitid-credentials": "~0.1"
   },
   "require-dev": {
     "escapestudios/symfony2-coding-standard": "~2.9",

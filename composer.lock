@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ee8ed66ee16de04177d2f9361b3f9fae",
-    "content-hash": "b071c10fb3508f85ab6b3fe189883bc6",
+    "hash": "312138d6af1bda88ecca3c633d313d40",
+    "content-hash": "1e558ea62cf331c83ee125ea4bf93bc4",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2876d5b7f4e714b2a300d4f5f04695258c00650d"
+                "reference": "a48fca4bb8ad328692c3f85a9ecbedec05b20da9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2876d5b7f4e714b2a300d4f5f04695258c00650d",
-                "reference": "2876d5b7f4e714b2a300d4f5f04695258c00650d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a48fca4bb8ad328692c3f85a9ecbedec05b20da9",
+                "reference": "a48fca4bb8ad328692c3f85a9ecbedec05b20da9",
                 "shasum": ""
             },
             "require": {
@@ -1320,12 +1320,14 @@
                 "doctrine/dbal": "~2.4",
                 "ext-tidy": "*",
                 "gridonic/princexml-php": "~1.1.1",
+                "guzzlehttp/psr7": "~1.2.3",
                 "justinrainbow/json-schema": "1.4.3",
                 "league/flysystem": "~1.0",
                 "league/flysystem-ziparchive": "~1.0",
                 "monolog/monolog": "~1.11",
                 "nicolopignatelli/valueobjects": "~2.0",
                 "php": ">=5.5.0",
+                "php-http/httplug": "^1.0",
                 "phpoffice/phpexcel": "~1.8",
                 "predis/predis": "~1.0",
                 "psr/log": "~1.0",
@@ -1370,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-05-18 09:51:21"
+            "time": "2016-05-18 14:49:27"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1634,16 +1636,16 @@
         },
         {
             "name": "cultuurnet/uitid-credentials",
-            "version": "dev-feature/III-923",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/uitid-credentials.git",
-                "reference": "db2b7cfd969008fefd83279394dde18294006ff7"
+                "reference": "ac5d6f8694d74b73a89ed2986fd074804adce70a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/db2b7cfd969008fefd83279394dde18294006ff7",
-                "reference": "db2b7cfd969008fefd83279394dde18294006ff7",
+                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/ac5d6f8694d74b73a89ed2986fd074804adce70a",
+                "reference": "ac5d6f8694d74b73a89ed2986fd074804adce70a",
                 "shasum": ""
             },
             "require": {
@@ -1686,7 +1688,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-12 16:06:08"
+            "time": "2016-05-18 12:47:30"
         },
         {
             "name": "danielstjules/stringy",
@@ -2424,7 +2426,6 @@
                 "event",
                 "exception"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2482,7 +2483,6 @@
                 "http",
                 "http client"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2535,7 +2535,6 @@
                 "adapter",
                 "log"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2580,7 +2579,6 @@
                 "message",
                 "url"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2630,7 +2628,6 @@
                 "Guzzle",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2682,7 +2679,6 @@
                 "log",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2733,7 +2729,6 @@
                 "oauth",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2787,7 +2782,6 @@
                 "component",
                 "stream"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -3159,7 +3153,6 @@
                 "console",
                 "silex"
             ],
-            "abandoned": "ivoba/console-service-provider",
             "time": "2016-02-01 15:38:27"
         },
         {
@@ -4888,16 +4881,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "1289d16209491b584839022f29257ad859b8532d"
+                "reference": "dff51f72b0706335131b00a7f49606168c582594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
-                "reference": "1289d16209491b584839022f29257ad859b8532d",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/dff51f72b0706335131b00a7f49606168c582594",
+                "reference": "dff51f72b0706335131b00a7f49606168c582594",
                 "shasum": ""
             },
             "require": {
@@ -4909,7 +4902,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -4943,20 +4936,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20 09:13:37"
+            "time": "2016-05-18 14:26:46"
         },
         {
             "name": "symfony/polyfill-php55",
-            "version": "v1.1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php55.git",
-                "reference": "b4f3f07d91702f8f926339fc4fcf81671d8c27e6"
+                "reference": "bf2ff9ad6be1a4772cb873e4eea94d70daa95c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/b4f3f07d91702f8f926339fc4fcf81671d8c27e6",
-                "reference": "b4f3f07d91702f8f926339fc4fcf81671d8c27e6",
+                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/bf2ff9ad6be1a4772cb873e4eea94d70daa95c6d",
+                "reference": "bf2ff9ad6be1a4772cb873e4eea94d70daa95c6d",
                 "shasum": ""
             },
             "require": {
@@ -4966,7 +4959,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -4999,7 +4992,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20 09:13:37"
+            "time": "2016-05-18 14:26:46"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -5938,19 +5931,11 @@
             "time": "2016-04-03 22:58:34"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-923",
-            "package": "cultuurnet/uitid-credentials"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "doctrine/migrations": 20,
-        "cultuurnet/uitid-credentials": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
