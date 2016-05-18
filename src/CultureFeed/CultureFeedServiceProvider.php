@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Silex\CultureFeed;
 use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\Silex\Impersonator;
+use CultuurNet\UitidCredentials\UitidCredentialsFetcher;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -33,11 +34,20 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
                     return $impersonator->getTokenCredentials();
                 }
 
-                // @todo Fetch from UiTID using JWT
-                // @see https://jira.uitdatabank.be/browse/III-923
-                // return new CultuurNet\Auth\TokenCredentials\TokenCredentials();
+                $jwt = $app['jwt'];
+                if (is_null($jwt)) {
+                    // Not authenticated.
+                    return null;
+                }
 
-                return null;
+                /* @var UiTIDCredentialsFetcher $uitidCredentialsFetcher */
+                $uitidCredentialsFetcher = $app['oauth.fetcher'];
+                $accessToken = $uitidCredentialsFetcher->getAccessTokenFromJwt((string) $jwt);
+
+                return new TokenCredentials(
+                    $accessToken->getToken(),
+                    $accessToken->getTokenSecret()
+                );
             }
         );
 

@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\Console;
 
@@ -150,13 +147,23 @@ class ReplayCommand extends Command
     {
         $app = $this->getSilexApplication();
 
-        return new EventStream(
+        $eventStream = new EventStream(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new SimpleInterfaceSerializer(),
             $store,
             $startId !== null ? $startId : 0
         );
+
+        // Older domain messages in the events, places, and organizers
+        // stores are missing some metadata. Add it using the offer locator
+        // class.
+        if (in_array($store, ['events', 'places', 'organizers'])) {
+            $offerLocator = $app[$store . '_locator_event_stream_decorator'];
+            $eventStream = $eventStream->withDomainEventStreamDecorator($offerLocator);
+        }
+
+        return $eventStream;
     }
 
     /**

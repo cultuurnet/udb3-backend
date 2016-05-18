@@ -7,6 +7,7 @@ use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -240,7 +241,7 @@ $app['jwt'] = $app->share(
         if ($token instanceof JwtUserToken) {
             return $token->getCredentials();
         }
-
+        
         return null;
     }
 );
@@ -624,6 +625,12 @@ $app->extend(
     }
 );
 
+$app['events_locator_event_stream_decorator'] = $app->share(
+    function (Application $app) {
+        return new OfferLocator($app['event_iri_generator']);
+    }
+);
+
 $app['real_event_repository'] = $app->share(
   function ($app) {
       $repository = new \CultuurNet\UDB3\Event\EventRepository(
@@ -631,7 +638,7 @@ $app['real_event_repository'] = $app->share(
           $app['event_bus'],
           [
               $app['event_stream_metadata_enricher'],
-              new \CultuurNet\UDB3\Offer\OfferLocator($app['event_iri_generator'])
+              $app['events_locator_event_stream_decorator']
           ]
       );
 
@@ -1022,6 +1029,12 @@ $app['udb2_place_importer'] = $app->share(
     }
 );
 
+$app['places_locator_event_stream_decorator'] = $app->share(
+    function (Application $app) {
+        return new OfferLocator($app['place_iri_generator']);
+    }
+);
+
 $app['real_place_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Place\PlaceRepository(
@@ -1029,7 +1042,7 @@ $app['real_place_repository'] = $app->share(
             $app['event_bus'],
             array(
                 $app['event_stream_metadata_enricher'],
-                new \CultuurNet\UDB3\Offer\OfferLocator($app['place_iri_generator'])
+                $app['places_locator_event_stream_decorator']
             )
         );
 
@@ -1145,6 +1158,12 @@ $app['udb2_organizer_importer'] = $app->share(
     }
 );
 
+$app['organizers_locator_event_stream_decorator'] = $app->share(
+    function (Application $app) {
+        return new OfferLocator($app['organizer_iri_generator']);
+    }
+);
+
 $app['real_organizer_repository'] = $app->share(
     function (Application $app) {
         $repository = new \CultuurNet\UDB3\Organizer\OrganizerRepository(
@@ -1152,7 +1171,7 @@ $app['real_organizer_repository'] = $app->share(
             $app['event_bus'],
             array(
                 $app['event_stream_metadata_enricher'],
-                new \CultuurNet\UDB3\Offer\OfferLocator($app['organizer_iri_generator'])
+                $app['organizers_locator_event_stream_decorator']
             )
         );
 
