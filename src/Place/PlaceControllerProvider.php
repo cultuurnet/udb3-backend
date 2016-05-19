@@ -35,7 +35,8 @@ class PlaceControllerProvider implements ControllerProviderInterface
                     $app['event_relations_repository'],
                     $app['current_user'],
                     $app['place.security'],
-                    $app['media_manager']
+                    $app['media_manager'],
+                    $app['place_iri_generator']
                 );
             }
         );
