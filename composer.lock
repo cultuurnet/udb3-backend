@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "a48fca4bb8ad328692c3f85a9ecbedec05b20da9"
+                "reference": "102766a3333b13699cf53b647e3e94a5e64e08c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a48fca4bb8ad328692c3f85a9ecbedec05b20da9",
-                "reference": "a48fca4bb8ad328692c3f85a9ecbedec05b20da9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/102766a3333b13699cf53b647e3e94a5e64e08c1",
+                "reference": "102766a3333b13699cf53b647e3e94a5e64e08c1",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-05-18 14:49:27"
+            "time": "2016-05-18 16:30:17"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1519,12 +1519,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "be16731c6ea56ff99512634c5defc0914e65ef22"
+                "reference": "2ccac73c17ad486e3aad434e914c07fe03562949"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/be16731c6ea56ff99512634c5defc0914e65ef22",
-                "reference": "be16731c6ea56ff99512634c5defc0914e65ef22",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/2ccac73c17ad486e3aad434e914c07fe03562949",
+                "reference": "2ccac73c17ad486e3aad434e914c07fe03562949",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1572,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-05-02 14:41:20"
+            "time": "2016-05-19 10:27:58"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1640,12 +1640,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/uitid-credentials.git",
-                "reference": "ac5d6f8694d74b73a89ed2986fd074804adce70a"
+                "reference": "6daab13bfb67d1eb0ceddf9b32474c05a6698a48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/ac5d6f8694d74b73a89ed2986fd074804adce70a",
-                "reference": "ac5d6f8694d74b73a89ed2986fd074804adce70a",
+                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/6daab13bfb67d1eb0ceddf9b32474c05a6698a48",
+                "reference": "6daab13bfb67d1eb0ceddf9b32474c05a6698a48",
                 "shasum": ""
             },
             "require": {
@@ -1688,7 +1688,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-18 12:47:30"
+            "time": "2016-05-18 16:28:40"
         },
         {
             "name": "danielstjules/stringy",
@@ -2856,16 +2856,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8"
+                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/bb9024c526b22f3fe6ae55a561fd70653d470aa8",
-                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/c10d860e2a9595f8883527fa0021c7da9e65f579",
+                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579",
                 "shasum": ""
             },
             "require": {
@@ -2903,7 +2903,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-03-08 01:15:46"
+            "time": "2016-05-18 16:56:05"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -3161,7 +3161,6 @@
                 "console",
                 "silex"
             ],
-            "abandoned": "ivoba/console-service-provider",
             "time": "2016-02-01 15:38:27"
         },
         {
