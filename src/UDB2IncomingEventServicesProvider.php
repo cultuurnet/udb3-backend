@@ -27,11 +27,22 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
                 $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
+
+                $responseTimeout = 3;
+                $connectTimeout = 1;
+
+                if (isset($app['udb2_cdbxml_enricher.http_response_timeout'])) {
+                    $responseTimeout = $app['udb2_cdbxml_enricher.http_response_timeout'];
+                }
+                if (isset($app['udb2_cdbxml_enricher.http_connect_timeout'])) {
+                    $connectTimeout = $app['udb2_cdbxml_enricher.http_connect_timeout'];
+                }
+
                 $client = new Client(
                     [
                         'handler' => $handlerStack,
-                        'timeout' => 3,
-                        'connect_timeout' => 1,
+                        'timeout' => $responseTimeout,
+                        'connect_timeout' => $connectTimeout,
                     ]
                 );
 

@@ -1444,6 +1444,12 @@ $app->register(
     )
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider());
+$app->register(
+    new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
+    [
+        'udb2_cdbxml_enricher.http_response_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_response_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_response_timeout'] : 3,
+        'udb2_cdbxml_enricher.http_connect_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_connect_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_connect_timeout'] : 1,
+    ]
+);
 
 return $app;
