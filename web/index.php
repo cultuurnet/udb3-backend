@@ -48,6 +48,15 @@ $app['security.firewalls'] = array(
                 '^/media/' . $app['id_pattern'] . '$',
                 '^/places$',
                 '^/api/1.0/organizer/suggest/.*'
+            ],
+            [
+                'GET',
+                'GET',
+                'GET',
+                'GET',
+                'GET',
+                'GET',
+                'GET'
             ]
         )
     ),
