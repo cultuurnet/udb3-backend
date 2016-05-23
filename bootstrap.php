@@ -7,6 +7,7 @@ use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
@@ -136,7 +137,7 @@ $app['uitid_consumer_credentials'] = $app->share(
 
 $app['event_service'] = $app->share(
     function ($app) {
-        $service = new \CultuurNet\UDB3\LocalEventService(
+        $service = new \CultuurNet\UDB3\Event\LocalEventService(
             $app['event_jsonld_repository'],
             $app['event_repository'],
             $app['event_relations_repository'],
@@ -147,9 +148,15 @@ $app['event_service'] = $app->share(
     }
 );
 
+$app['external_event_service'] = $app->share(
+    function ($app) {
+        return new ExternalEventService($app['http.guzzle']);
+    }
+);
+
 $app['personal_variation_decorated_event_service'] = $app->share(
     function (Application $app) {
-        $decoratedService = $app['event_service'];
+        $decoratedService = $app['external_event_service'];
 
         /* @var \CultureFeed_User $user */
         $user = $app['current_user'];
