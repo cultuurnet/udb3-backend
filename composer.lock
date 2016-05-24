@@ -536,12 +536,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "25532fa193d608b81e919f5874676211eb94ded3"
+                "reference": "8d9f1cf073c2dc9dc1af2f1fea5ae044a8b4f5d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/25532fa193d608b81e919f5874676211eb94ded3",
-                "reference": "25532fa193d608b81e919f5874676211eb94ded3",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/8d9f1cf073c2dc9dc1af2f1fea5ae044a8b4f5d7",
+                "reference": "8d9f1cf073c2dc9dc1af2f1fea5ae044a8b4f5d7",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-05-20 10:08:13"
+            "time": "2016-05-23 12:46:54"
         },
         {
             "name": "cultuurnet/clock",
@@ -998,12 +998,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-uitid-provider.git",
-                "reference": "12ae57e12863670d3b8800f8a689809ba2efed32"
+                "reference": "9bac667435a321f2655be2e58a107efed971c3b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/12ae57e12863670d3b8800f8a689809ba2efed32",
-                "reference": "12ae57e12863670d3b8800f8a689809ba2efed32",
+                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/9bac667435a321f2655be2e58a107efed971c3b8",
+                "reference": "9bac667435a321f2655be2e58a107efed971c3b8",
                 "shasum": ""
             },
             "require": {
@@ -1038,7 +1038,7 @@
                 "GPL-3.0"
             ],
             "description": "Silex UiTID authentication provider.",
-            "time": "2016-02-08 12:27:43"
+            "time": "2016-05-23 13:57:06"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "ab7fe3ca134b886ac36dae0a5d12bdd7befa8a13"
+                "reference": "caeb73a84f227277cedacc9252938669cc8c0697"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ab7fe3ca134b886ac36dae0a5d12bdd7befa8a13",
-                "reference": "ab7fe3ca134b886ac36dae0a5d12bdd7befa8a13",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/caeb73a84f227277cedacc9252938669cc8c0697",
+                "reference": "caeb73a84f227277cedacc9252938669cc8c0697",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-05-20 16:39:12"
+            "time": "2016-05-23 15:30:53"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1519,12 +1519,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "2ccac73c17ad486e3aad434e914c07fe03562949"
+                "reference": "0536f8519aef57b5e0c87f115e49174999c8da63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/2ccac73c17ad486e3aad434e914c07fe03562949",
-                "reference": "2ccac73c17ad486e3aad434e914c07fe03562949",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/0536f8519aef57b5e0c87f115e49174999c8da63",
+                "reference": "0536f8519aef57b5e0c87f115e49174999c8da63",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1572,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-05-19 10:27:58"
+            "time": "2016-05-23 15:56:21"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -2426,6 +2426,7 @@
                 "event",
                 "exception"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2483,6 +2484,7 @@
                 "http",
                 "http client"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2535,6 +2537,7 @@
                 "adapter",
                 "log"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2579,6 +2582,7 @@
                 "message",
                 "url"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2628,6 +2632,7 @@
                 "Guzzle",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2679,6 +2684,7 @@
                 "log",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2729,6 +2735,7 @@
                 "oauth",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2782,6 +2789,7 @@
                 "component",
                 "stream"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
