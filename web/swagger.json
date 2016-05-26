@@ -98,6 +98,45 @@
                 ]
             }
         },
+        "/event/{cdbid}/organizer": {
+            "post": {
+                "summary": "Add an organizer to an event.",
+                "operationId": "addEventOrganizer",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The UUID of the organizer to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/addOrganizerToOffer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Event"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
         "/event/{cdbid}/history": {
             "get": {
                 "summary": "View the change log / history of a specific cultural event.",
@@ -637,6 +676,45 @@
                         "required": true,
                         "type": "string",
                         "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An event detail.",
+                        "schema": {
+                            "$ref": "#/definitions/Place"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
+        "/place/{cdbid}/organizer": {
+            "post": {
+                "summary": "Add an organizer to a place.",
+                "operationId": "addPlaceOrganizer",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The UUID of the organizer to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/addOrganizerToOffer"
+                        }
                     }
                 ],
                 "responses": {
@@ -3406,6 +3484,18 @@
             },
             "required": [
                 "mediaObjectId"
+            ]
+        },
+        "addOrganizerToOffer": {
+            "properties": {
+                "organizer": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
+                }
+            },
+            "required": [
+                "organizer"
             ]
         },
         "selectMainImage": {
