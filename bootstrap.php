@@ -874,7 +874,7 @@ $app['event_command_bus_out'] = $app->share(
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Event\EventCommandHandler(
                 $app['event_repository'],
-                $app['search_service']
+                $app['organizer_repository']
             )
         );
 
@@ -905,7 +905,8 @@ $app['event_command_bus_out'] = $app->share(
 
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Place\CommandHandler(
-                $app['place_repository']
+                $app['place_repository'],
+                $app['organizer_repository']
             )
         );
 
