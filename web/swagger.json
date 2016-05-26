@@ -1263,7 +1263,7 @@
                         "description": "An object containing information about Organizer.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Organizer"
+                            "$ref": "#/definitions/OrganizerCreate"
                         }
                     }
                 ],
@@ -2653,6 +2653,67 @@
                     "items": {
                         "type": "string",
                         "example": "016 320 300"
+                    }
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        "OrganizerCreate": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "STUK"
+                },
+                "address": {
+                    "properties": {
+                        "country": {
+                            "type": "string",
+                            "description": "The country code of the location.",
+                            "example": "BE"
+                        },
+                        "locality": {
+                            "type": "string",
+                            "description": "The locality name of the location.",
+                            "example": "Leuven"
+                        },
+                        "postalCode": {
+                            "type": "string",
+                            "description": "The postalcode of the location.",
+                            "example": 3000
+                        },
+                        "streetAddress": {
+                            "type": "string",
+                            "description": "The street name and number information of the location.",
+                            "example": "Sluisstraat 79"
+                        }
+                    },
+                    "required": [
+                        "country",
+                        "locality",
+                        "postalCode",
+                        "streetAddress"
+                    ]
+                },
+                "contact": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "url",
+                                    "phone",
+                                    "email"
+                                ]
+                            },
+                            "value": {
+                                "type": "string",
+                                "example": "http://www.stuk.be"
+                            }
+                        }
                     }
                 }
             },
