@@ -2067,75 +2067,204 @@
         },
         "/label": {
             "post": {
-                "summary": "Create a new label"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Create a new label",
+                "description": "Authentication required",
+                "operationId": "createLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a label.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForLabelCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub."
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
         "/label/{name}": {
             "get": {
-                "summary": "View the details a label"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "View the details a label",
+                "operationId": "getLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
         "/label/{name}/visible": {
             "post": {
-                "summary": "Set a label to visible"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Set a label to visible",
+                "operationId": "setLabelVisible",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
-        "label/{name}/invisible": {
+        "/label/{name}/invisible": {
             "post": {
-                "summary": "Set a label to invisible"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Set a label to invisible",
+                "operationId": "setLabelInvisible",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
-        "label/{name}/private": {
+        "/label/{name}/private": {
             "post": {
-                "summary": "Set a label to private"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Set a label to private",
+                "operationId": "setLabelPrivate",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
-        "label/{name}/public": {
+        "/label/{name}/public": {
             "post": {
-                "summary": "Set a label to public"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Set a label to public",
+                "operationId": "setLabelPublic",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
-        "label/{name}/copy": {
+        "/label/{name}/copy": {
             "post": {
-                "summary": "Make a copy of the current label and change the name"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Make a copy of the current label and change the name",
+                "operationId": "copyLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
-        "label/{name}": {
+        "/label/{name}/delete": {
             "delete": {
-                "summary": "Delete a label"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Delete a label",
+                "operationId": "deleteLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         },
-        "labels/search": {
+        "/labels/search": {
             "get": {
-                "summary": "Search for labels"
-            },
-            "tags": [
-                "Label"
-            ]
+                "summary": "Search for labels",
+                "operationId": "labelSearch",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [],
+                "responses": {
+                    "400": {
+                        "description": "blub"
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
         }
     },
     "tags": [
@@ -3822,6 +3951,41 @@
             "required": [
                 "contactPoint"
             ]
+        },
+        "postObjectForLabelCreation": {
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Bloso"
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "visible",
+                        "invisible"
+                    ]
+                },
+                "privacy": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                }
+            }
+        }
+    },
+    "parameters": {
+        "labelName": {
+            "name": "name",
+            "in": "path",
+            "description": "The unique name of the label.",
+            "required": true,
+            "type": "string"
         }
     }
 }
