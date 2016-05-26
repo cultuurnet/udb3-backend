@@ -2064,6 +2064,78 @@
                     "Media"
                 ]
             }
+        },
+        "/label": {
+            "post": {
+                "summary": "Create a new label"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "/label/{name}": {
+            "get": {
+                "summary": "View the details a label"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "/label/{name}/visible": {
+            "post": {
+                "summary": "Set a label to visible"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "label/{name}/invisible": {
+            "post": {
+                "summary": "Set a label to invisible"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "label/{name}/private": {
+            "post": {
+                "summary": "Set a label to private"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "label/{name}/public": {
+            "post": {
+                "summary": "Set a label to public"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "label/{name}/copy": {
+            "post": {
+                "summary": "Make a copy of the current label and change the name"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "label/{name}": {
+            "delete": {
+                "summary": "Delete a label"
+            },
+            "tags": [
+                "Label"
+            ]
+        },
+        "labels/search": {
+            "get": {
+                "summary": "Search for labels"
+            },
+            "tags": [
+                "Label"
+            ]
         }
     },
     "tags": [
