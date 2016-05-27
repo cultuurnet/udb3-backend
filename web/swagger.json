@@ -2411,19 +2411,54 @@
         },
         "/labels/search": {
             "get": {
-                "summary": "Search for labels",
+                "summary": "Retrieve labels for a given search query with a given start and limit.",
+                "description": "Authentication is required.",
                 "operationId": "labelSearch",
                 "produces": [
-                    "application/ld+json"
+                    "application/json"
                 ],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The search query to execute.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The limit of events included in the result set. When omitted it defaults to 30 items.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "The number of events to skip from the start of the result set.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space. A list of sortable fields is available at: https://docs.google.com/spreadsheets/d/1Y0DPDrPXNx45ePCo7N2fGknFO9AQDuf_m7dK_PpYBzM. The default order is 'lastupdated desc'.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
-                    "400": {
-                        "description": "blub"
+                    "200": {
+                        "description": "A list of labels",
+                        "schema": {
+                            "$ref": "#/definitions/LabelSearchResult"
+                        }
                     }
                 },
                 "tags": [
-                    "Label"
+                    "Search", "Label"
                 ]
             }
         }
@@ -4254,6 +4289,49 @@
                     "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
                 }
             }
+        },
+        "LabelSearchResult": {
+            "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3562
+                },
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LabelSearchMember"
+                    }
+                }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
+        },
+        "LabelSearchMember": {
+            "properties": {
+                "@id": {
+                    "type": "string",
+                    "example": "http://culudb-silex.dev:8080/label/Bloso"
+                },
+                "@type": {
+                    "type": "string",
+                    "enum": [
+                        "Label"
+                    ]
+                }
+            },
+            "required": [
+                "@id",
+                "@type"
+            ]
         }
     },
     "parameters": {
