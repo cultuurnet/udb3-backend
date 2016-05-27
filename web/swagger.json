@@ -2310,7 +2310,7 @@
                     {
                         "name": "sort",
                         "in": "query",
-                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space. A list of sortable fields is available at: https://docs.google.com/spreadsheets/d/1Y0DPDrPXNx45ePCo7N2fGknFO9AQDuf_m7dK_PpYBzM. The default order is 'lastupdated desc'.",
+                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space.",
                         "required": false,
                         "type": "string"
                     }
