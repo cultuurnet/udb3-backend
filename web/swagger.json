@@ -2321,7 +2321,7 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "An object containing the required information for the creation of a label.",
+                        "description": "An object containing the required information for setting the visibility of a label.",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/postObjectForLabelVisibility"
@@ -2355,7 +2355,7 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "An object containing the required information for the creation of a label.",
+                        "description": "An object containing the required information for setting the privacy of a label.",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/postObjectForLabelPrivacy"
@@ -2389,7 +2389,7 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "An object containing the required information for the creation of a label.",
+                        "description": "An object containing the required information for copying a label.",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/postObjectForLabelCopy"
