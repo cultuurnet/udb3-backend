@@ -2113,8 +2113,11 @@
                     }
                 ],
                 "responses": {
-                    "400": {
-                        "description": "blub."
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
                     }
                 },
                 "tags": [
@@ -2135,8 +2138,34 @@
                     }
                 ],
                 "responses": {
-                    "400": {
-                        "description": "blub"
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/LabelObject"
+                        }
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a label",
+                "operationId": "deleteLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
                     }
                 },
                 "tags": [
@@ -2144,9 +2173,9 @@
                 ]
             }
         },
-        "/label/{name}/visible": {
+        "/label/{name}/visibility": {
             "post": {
-                "summary": "Set a label to visible",
+                "summary": "Set a label to visible/invisible",
                 "operationId": "setLabelVisible",
                 "produces": [
                     "application/ld+json"
@@ -2154,33 +2183,23 @@
                 "parameters": [
                     {
                         "$ref": "#/parameters/labelName"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "blub"
-                    }
-                },
-                "tags": [
-                    "Label"
-                ]
-            }
-        },
-        "/label/{name}/invisible": {
-            "post": {
-                "summary": "Set a label to invisible",
-                "operationId": "setLabelInvisible",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
+                    },
                     {
-                        "$ref": "#/parameters/labelName"
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a label.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForLabelVisibility"
+                        }
                     }
                 ],
                 "responses": {
-                    "400": {
-                        "description": "blub"
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
                     }
                 },
                 "tags": [
@@ -2188,7 +2207,7 @@
                 ]
             }
         },
-        "/label/{name}/private": {
+        "/label/{name}/privacy": {
             "post": {
                 "summary": "Set a label to private",
                 "operationId": "setLabelPrivate",
@@ -2198,33 +2217,23 @@
                 "parameters": [
                     {
                         "$ref": "#/parameters/labelName"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "blub"
-                    }
-                },
-                "tags": [
-                    "Label"
-                ]
-            }
-        },
-        "/label/{name}/public": {
-            "post": {
-                "summary": "Set a label to public",
-                "operationId": "setLabelPublic",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
+                    },
                     {
-                        "$ref": "#/parameters/labelName"
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a label.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForLabelPrivacy"
+                        }
                     }
                 ],
                 "responses": {
-                    "400": {
-                        "description": "blub"
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
                     }
                 },
                 "tags": [
@@ -2242,33 +2251,23 @@
                 "parameters": [
                     {
                         "$ref": "#/parameters/labelName"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "blub"
-                    }
-                },
-                "tags": [
-                    "Label"
-                ]
-            }
-        },
-        "/label/{name}/delete": {
-            "delete": {
-                "summary": "Delete a label",
-                "operationId": "deleteLabel",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
+                    },
                     {
-                        "$ref": "#/parameters/labelName"
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a label.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForLabelCopy"
+                        }
                     }
                 ],
                 "responses": {
-                    "400": {
-                        "description": "blub"
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
                     }
                 },
                 "tags": [
@@ -3981,10 +3980,73 @@
             ]
         },
         "postObjectForLabelCreation": {
+            "required": [
+                "name",
+                "visibility",
+                "privacy"
+            ],
             "properties": {
-                "uuid": {
+                "name": {
                     "type": "string",
-                    "format": "uuid"
+                    "example": "Bloso"
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "visible",
+                        "invisible"
+                    ],
+                    "example": "visible"
+                },
+                "privacy": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public"
+                }
+            }
+        },
+        "postObjectForLabelVisibility": {
+            "required": [
+                "visibility"
+            ],
+            "properties": {
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "visible",
+                        "invisible"
+                    ]
+                }
+            }
+        },
+        "postObjectForLabelPrivacy": {
+            "required": [
+                "privacy"
+            ],
+            "properties": {
+                "privacy": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ]
+                }
+            }
+        },
+        "postObjectForLabelCopy": {
+            "required": [
+                "parentName",
+                "name",
+                "visibility",
+                "privacy"
+            ],
+            "properties": {
+                "parentName": {
+                    "type": "string",
+                    "example": "Blozo"
                 },
                 "name": {
                     "type": "string",
@@ -3995,14 +4057,56 @@
                     "enum": [
                         "visible",
                         "invisible"
-                    ]
+                    ],
+                    "example": "visible"
                 },
                 "privacy": {
                     "type": "string",
                     "enum": [
                         "private",
                         "public"
-                    ]
+                    ],
+                    "example": "public"
+                }
+            }
+        },
+        "LabelObject": {
+            "required": [
+                "uuid",
+                "name",
+                "privacy",
+                "visibility"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Bloso"
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "visible",
+                        "invisible"
+                    ],
+                    "example": "visible"
+                },
+                "privacy": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public"
+                },
+                "parentUuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
                 }
             }
         }
