@@ -2310,7 +2310,7 @@
                     {
                         "name": "sort",
                         "in": "query",
-                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space.",
+                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space. Currently only sorting by name is supported.",
                         "required": false,
                         "type": "string"
                     }
@@ -4031,7 +4031,8 @@
                         "visible",
                         "invisible"
                     ],
-                    "example": "visible"
+                    "example": "visible",
+                    "default": "invisible"
                 },
                 "privacy": {
                     "type": "string",
@@ -4039,7 +4040,8 @@
                         "private",
                         "public"
                     ],
-                    "example": "public"
+                    "example": "public",
+                    "default": "public"
                 }
             }
         },
@@ -4160,7 +4162,7 @@
                 "member": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/LabelSearchMember"
+                        "$ref": "#/definitions/LabelObject"
                     }
                 }
             },
@@ -4168,24 +4170,6 @@
                 "itemsPerPage",
                 "totalItems",
                 "member"
-            ]
-        },
-        "LabelSearchMember": {
-            "properties": {
-                "@id": {
-                    "type": "string",
-                    "example": "http://culudb-silex.dev:8080/label/Bloso"
-                },
-                "@type": {
-                    "type": "string",
-                    "enum": [
-                        "Label"
-                    ]
-                }
-            },
-            "required": [
-                "@id",
-                "@type"
             ]
         }
     },
