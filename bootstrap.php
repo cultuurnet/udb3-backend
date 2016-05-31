@@ -1244,7 +1244,8 @@ $app['event_export'] = $app->share(
             new \CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer(
                 $app['mailer'],
                 $app['event_export_notification_mail_factory']
-            )
+            ),
+            $app['search_results_generator']
         );
 
         return $service;
