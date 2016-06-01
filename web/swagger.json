@@ -2873,9 +2873,9 @@
                     "type": "array",
                     "items": {
                         "type": "string",
-                        "format": "uuid",
-                        "description": "A universally unique identifier for a cultural event.",
-                        "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
+                        "format": "url",
+                        "description": "A url that points to an offer.",
+                        "example": "http://culudb-silex.dev/event/f8597ef0-9364-4ab5-a3cc-1e344e599fc7"
                     }
                 },
                 "include": {

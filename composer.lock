@@ -1580,12 +1580,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "6292b7e3116d24be4df1c6b6fc78b41802dcc37b"
+                "reference": "eec5efcb39b8d9cc5d24e1bf5065d03bab20545e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/6292b7e3116d24be4df1c6b6fc78b41802dcc37b",
-                "reference": "6292b7e3116d24be4df1c6b6fc78b41802dcc37b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/eec5efcb39b8d9cc5d24e1bf5065d03bab20545e",
+                "reference": "eec5efcb39b8d9cc5d24e1bf5065d03bab20545e",
                 "shasum": ""
             },
             "require": {
@@ -1632,7 +1632,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-04-19 07:12:07"
+            "time": "2016-06-01 14:01:36"
         },
         {
             "name": "cultuurnet/uitid-credentials",
