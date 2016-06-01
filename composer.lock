@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "421a5f5a81d5bbb297118f0498046237b8be687f"
+                "reference": "5d4b3167de2b369aa48c7c684f4dd5cd83dead2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/421a5f5a81d5bbb297118f0498046237b8be687f",
-                "reference": "421a5f5a81d5bbb297118f0498046237b8be687f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/5d4b3167de2b369aa48c7c684f4dd5cd83dead2e",
+                "reference": "5d4b3167de2b369aa48c7c684f4dd5cd83dead2e",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-05-27 09:36:14"
+            "time": "2016-06-01 13:53:06"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3151,7 +3151,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
