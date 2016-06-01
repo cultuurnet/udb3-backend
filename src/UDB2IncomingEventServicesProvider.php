@@ -11,7 +11,9 @@ use CultuurNet\UDB3\UDB2\Event\EventFactory;
 use CultuurNet\UDB3\UDB2\LabeledAsUDB3Place;
 use CultuurNet\UDB3\UDB2\Organizer\OrganizerFactory;
 use CultuurNet\UDB3\UDB2\Organizer\QualifiesAsOrganizerSpecification;
-use CultuurNet\UDB3\UDB2\Place\PlaceFactory;
+use CultuurNet\UDB3\UDB2\Place\PlaceFromActorFactory;
+use CultuurNet\UDB3\UDB2\Place\PlaceFromEventFactory;
+use CultuurNet\UDB3\UDB2\Place\QualifiesAsPlaceSpecification;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -89,7 +91,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $applier = new EventApplier(
                     new LabeledAsUDB3Place(),
                     $app['real_place_repository'],
-                    new PlaceFactory()
+                    new PlaceFromEventFactory()
                 );
 
                 $logger = new \Monolog\Logger('udb2-events-to-udb3-place-applier');
@@ -110,6 +112,23 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 $logger = new \Monolog\Logger('udb2-events-to-udb3-event-applier');
+                $logger->pushHandler($app['udb2_log_handler']);
+
+                $applier->setLogger($logger);
+
+                return $applier;
+            }
+        );
+
+        $app['udb2_actor_events_to_udb3_place_applier'] = $app->share(
+            function (Application $app) {
+                $applier = new ActorEventApplier(
+                    $app['real_place_repository'],
+                    new PlaceFromActorFactory(),
+                    new QualifiesAsPlaceSpecification()
+                );
+
+                $logger = new \Monolog\Logger('udb2-actor-events-to-udb3-organizer-applier');
                 $logger->pushHandler($app['udb2_log_handler']);
 
                 $applier->setLogger($logger);
