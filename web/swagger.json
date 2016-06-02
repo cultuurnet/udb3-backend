@@ -2205,40 +2205,6 @@
                 ]
             }
         },
-        "/label/{name}/copy": {
-            "post": {
-                "summary": "Make a copy of the current label and change the name",
-                "operationId": "copyLabel",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
-                    {
-                        "$ref": "#/parameters/labelName"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "An object containing the required information for copying a label.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/postObjectForLabelCopy"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Info on the command that was queued.",
-                        "schema": {
-                            "$ref": "#/definitions/command"
-                        }
-                    }
-                },
-                "tags": [
-                    "Label"
-                ]
-            }
-        },
         "/labels/search": {
             "get": {
                 "summary": "Retrieve labels for a given search query with a given start and limit.",
@@ -4006,6 +3972,12 @@
                     ],
                     "example": "public",
                     "default": "public"
+                },
+                "parentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c",
+                    "description": "An optional property that references the parent label."
                 }
             }
         },
@@ -4022,40 +3994,6 @@
                         "MakePrivate",
                         "MakePublic"
                     ]
-                }
-            }
-        },
-        "postObjectForLabelCopy": {
-            "required": [
-                "parentName",
-                "name",
-                "visibility",
-                "privacy"
-            ],
-            "properties": {
-                "parentName": {
-                    "type": "string",
-                    "example": "Blozo"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "Bloso"
-                },
-                "visibility": {
-                    "type": "string",
-                    "enum": [
-                        "visible",
-                        "invisible"
-                    ],
-                    "example": "visible"
-                },
-                "privacy": {
-                    "type": "string",
-                    "enum": [
-                        "private",
-                        "public"
-                    ],
-                    "example": "public"
                 }
             }
         },
