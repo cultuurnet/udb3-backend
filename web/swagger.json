@@ -2097,7 +2097,7 @@
                 ]
             }
         },
-        "/label/{name}": {
+        "/label/{id}": {
             "get": {
                 "summary": "View the details a label",
                 "operationId": "getLabel",
@@ -2106,7 +2106,7 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/labelName"
+                        "$ref": "#/parameters/labelId"
                     }
                 ],
                 "responses": {
@@ -2129,7 +2129,7 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/labelName"
+                        "$ref": "#/parameters/labelId"
                     }
                 ],
                 "responses": {
@@ -2143,60 +2143,24 @@
                 "tags": [
                     "Label"
                 ]
-            }
-        },
-        "/label/{name}/visibility": {
-            "post": {
-                "summary": "Set a label to visible/invisible",
-                "operationId": "setLabelVisible",
+            },
+            "patch": {
+                "summary": "Update label info with one of the available commands",
+                "operationId": "updateLabel",
                 "produces": [
                     "application/ld+json"
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/labelName"
+                        "$ref": "#/parameters/labelId"
                     },
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "An object containing the required information for setting the visibility of a label.",
+                        "description": "An object containing the command that you want applied to the label.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/postObjectForLabelVisibility"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Info on the command that was queued.",
-                        "schema": {
-                            "$ref": "#/definitions/command"
-                        }
-                    }
-                },
-                "tags": [
-                    "Label"
-                ]
-            }
-        },
-        "/label/{name}/privacy": {
-            "post": {
-                "summary": "Set a label to private",
-                "operationId": "setLabelPrivate",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
-                    {
-                        "$ref": "#/parameters/labelName"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "An object containing the required information for setting the privacy of a label.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/postObjectForLabelPrivacy"
+                            "$ref": "#/definitions/patchLabelCommand"
                         }
                     }
                 ],
@@ -4017,30 +3981,18 @@
                 }
             }
         },
-        "postObjectForLabelVisibility": {
+        "patchLabelCommand": {
             "required": [
-                "visibility"
+                "command"
             ],
             "properties": {
-                "visibility": {
+                "command": {
                     "type": "string",
                     "enum": [
-                        "visible",
-                        "invisible"
-                    ]
-                }
-            }
-        },
-        "postObjectForLabelPrivacy": {
-            "required": [
-                "privacy"
-            ],
-            "properties": {
-                "privacy": {
-                    "type": "string",
-                    "enum": [
-                        "private",
-                        "public"
+                        "MakeInvisible",
+                        "MakeVisible",
+                        "MakePrivate",
+                        "MakePublic"
                     ]
                 }
             }
@@ -4152,6 +4104,14 @@
             "description": "The unique name of the label.",
             "required": true,
             "type": "string"
+        },
+        "labelId": {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a label."
         }
     }
 }
