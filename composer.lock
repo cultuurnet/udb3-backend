@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "312138d6af1bda88ecca3c633d313d40",
-    "content-hash": "1e558ea62cf331c83ee125ea4bf93bc4",
+    "hash": "334e72149dbcfae83e532c832586b61f",
+    "content-hash": "bc466908e76d4651479f7f370ae26be8",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "5d4b3167de2b369aa48c7c684f4dd5cd83dead2e"
+                "reference": "c5be49bb60d5450cfd918354f4a551185a18e5ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/5d4b3167de2b369aa48c7c684f4dd5cd83dead2e",
-                "reference": "5d4b3167de2b369aa48c7c684f4dd5cd83dead2e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c5be49bb60d5450cfd918354f4a551185a18e5ec",
+                "reference": "c5be49bb60d5450cfd918354f4a551185a18e5ec",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-06-01 13:53:06"
+            "time": "2016-06-02 13:50:35"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1474,16 +1474,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-silex-entryapi.git",
-                "reference": "06db94576a643ddd49eb5a021c9bfafb24deba06"
+                "reference": "dc9329649f6f71e5291816d7969dddd7d822ba27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/06db94576a643ddd49eb5a021c9bfafb24deba06",
-                "reference": "06db94576a643ddd49eb5a021c9bfafb24deba06",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/dc9329649f6f71e5291816d7969dddd7d822ba27",
+                "reference": "dc9329649f6f71e5291816d7969dddd7d822ba27",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/cdb": "~2.1",
+                "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/udb3": "~0.1",
                 "silex/silex": "~1.3"
@@ -1511,7 +1511,7 @@
                 "Apache-2.0"
             ],
             "description": "EntryAPI for UDB3 Silex",
-            "time": "2016-02-08 15:36:44"
+            "time": "2016-06-03 10:20:38"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -1576,16 +1576,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-1079",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "eec5efcb39b8d9cc5d24e1bf5065d03bab20545e"
+                "reference": "a96afa292ea49e0a7c89489113f7ddb8add08b60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/eec5efcb39b8d9cc5d24e1bf5065d03bab20545e",
-                "reference": "eec5efcb39b8d9cc5d24e1bf5065d03bab20545e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/a96afa292ea49e0a7c89489113f7ddb8add08b60",
+                "reference": "a96afa292ea49e0a7c89489113f7ddb8add08b60",
                 "shasum": ""
             },
             "require": {
@@ -1632,7 +1632,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-06-01 14:01:36"
+            "time": "2016-06-06 15:27:15"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -3223,16 +3223,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.22",
+            "version": "1.0.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "bd73a91703969a2d20ab4bfbf971d6c2cbe36612"
+                "reference": "9aca859a303fdca30370f42b8c611d9cf0dedf4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/bd73a91703969a2d20ab4bfbf971d6c2cbe36612",
-                "reference": "bd73a91703969a2d20ab4bfbf971d6c2cbe36612",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/9aca859a303fdca30370f42b8c611d9cf0dedf4b",
+                "reference": "9aca859a303fdca30370f42b8c611d9cf0dedf4b",
                 "shasum": ""
             },
             "require": {
@@ -3302,7 +3302,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-04-28 06:53:12"
+            "time": "2016-06-03 19:11:39"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -4103,20 +4103,20 @@
         },
         {
             "name": "predis/predis",
-            "version": "v1.0.4",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "9ead747663bb1b1ae017dfa0d152aca87792b42f"
+                "reference": "0e17edbefb50c6cbd1acc4a6f6ef06399deb1af2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/9ead747663bb1b1ae017dfa0d152aca87792b42f",
-                "reference": "9ead747663bb1b1ae017dfa0d152aca87792b42f",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/0e17edbefb50c6cbd1acc4a6f6ef06399deb1af2",
+                "reference": "0e17edbefb50c6cbd1acc4a6f6ef06399deb1af2",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": ">=5.3.9"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.8"
@@ -4149,7 +4149,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-05-30 15:25:52"
+            "time": "2016-06-01 22:06:21"
         },
         {
             "name": "psr/http-message",
@@ -4751,16 +4751,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.13",
+            "version": "v2.7.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "dea1508c965603051e359f2a5f8b7d923ba358fb"
+                "reference": "5d4e7461f0856a96bdceefc311d8cb8d50740627"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/dea1508c965603051e359f2a5f8b7d923ba358fb",
-                "reference": "dea1508c965603051e359f2a5f8b7d923ba358fb",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/5d4e7461f0856a96bdceefc311d8cb8d50740627",
+                "reference": "5d4e7461f0856a96bdceefc311d8cb8d50740627",
                 "shasum": ""
             },
             "require": {
@@ -4803,7 +4803,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-04-05 16:36:43"
+            "time": "2016-06-06 11:03:51"
         },
         {
             "name": "symfony/http-kernel",
@@ -5133,16 +5133,16 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.13",
+            "version": "v2.7.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "1eebd2bd10b38c068aa05aa123201c53def1bc6d"
+                "reference": "3d7eddb2727c61df81ba74e641a3f21e63887068"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/1eebd2bd10b38c068aa05aa123201c53def1bc6d",
-                "reference": "1eebd2bd10b38c068aa05aa123201c53def1bc6d",
+                "url": "https://api.github.com/repos/symfony/security/zipball/3d7eddb2727c61df81ba74e641a3f21e63887068",
+                "reference": "3d7eddb2727c61df81ba74e641a3f21e63887068",
                 "shasum": ""
             },
             "require": {
@@ -5209,7 +5209,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2016-05-09 19:23:35"
+            "time": "2016-06-06 11:03:51"
         },
         {
             "name": "symfony/serializer",
@@ -5939,10 +5939,18 @@
             "time": "2016-05-30 22:24:32"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1079",
+            "package": "cultuurnet/udb3-udb2-bridge"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,

@@ -248,7 +248,7 @@ $app['jwt'] = $app->share(
         if ($token instanceof JwtUserToken) {
             return $token->getCredentials();
         }
-        
+
         return null;
     }
 );
@@ -1012,12 +1012,19 @@ $app['udb2_log_handler'] = $app->share(
 
 $app['udb2_actor_cdbxml_provider'] = $app->share(
     function (Application $app) {
-        $cdbXmlService = new \CultuurNet\UDB3\UDB2\ActorCdbXmlFromSearchService(
-            $app['search_api_2'],
-            CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3')
-        );
+        $uitidConfig = $app['config']['uitid'];
+        $baseUrl = $uitidConfig['base_url'] . $uitidConfig['apis']['entry'];
 
-        return $cdbXmlService;
+        $userId = new StringLiteral($uitidConfig['impersonation_user_id']);
+
+        return new \CultuurNet\UDB3\UDB2\ActorCdbXmlFromEntryAPI(
+            $baseUrl,
+            $app['uitid_consumer_credentials'],
+            $userId,
+            // @todo Move the cdbxml version to configuration file. Use the same
+            // setting when instantiating the ImprovedEntryApiFactory.
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
+        );
     }
 );
 
