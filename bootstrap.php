@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -497,7 +498,9 @@ $app['event_bus'] = $app->share(
                 'udb2_events_to_udb3_event_applier',
                 'udb2_actor_events_to_udb3_place_applier',
                 'udb2_actor_events_to_udb3_organizer_applier',
-                'place_permission.projector'
+                'place_permission.projector',
+                LabelServiceProvider::JSON_PROJECTOR,
+                LabelServiceProvider::RELATIONS_PROJECTOR
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -920,6 +923,8 @@ $app['event_command_bus_out'] = $app->share(
         $commandBus->subscribe($app['media_manager']);
 
         $commandBus->subscribe($app['bulk_label_offer_command_handler']);
+
+        $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
 
         return $commandBus;
     }
@@ -1382,6 +1387,7 @@ $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
+$app->register(new LabelServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
