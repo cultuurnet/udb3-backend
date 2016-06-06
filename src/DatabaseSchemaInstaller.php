@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 
 class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
@@ -33,7 +34,7 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
 
     public function installSchema()
     {
-        /** @var \Broadway\EventStore\DBALEventStore[] $stores */
+        // Combination of 'real' event stores and MySQL read models.
         $stores = array(
             $this->app['event_store'],
             $this->app['place_store'],
@@ -43,6 +44,7 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
             $this->app['variations.event_store'],
             $this->app['variations.search'],
             $this->app['media_object_store'],
+            $this->app[LabelServiceProvider::UNIQUE_EVENT_STORE]
         );
 
         /** @var \Doctrine\DBAL\Connection $connection */
