@@ -249,7 +249,7 @@ $app['jwt'] = $app->share(
         if ($token instanceof JwtUserToken) {
             return $token->getCredentials();
         }
-        
+
         return null;
     }
 );
@@ -496,6 +496,7 @@ $app['event_bus'] = $app->share(
                 'udb2_actor_events_cdbxml_enricher',
                 'udb2_events_to_udb3_place_applier',
                 'udb2_events_to_udb3_event_applier',
+                'udb2_actor_events_to_udb3_place_applier',
                 'udb2_actor_events_to_udb3_organizer_applier',
                 'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
@@ -1249,7 +1250,8 @@ $app['event_export'] = $app->share(
             new \CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer(
                 $app['mailer'],
                 $app['event_export_notification_mail_factory']
-            )
+            ),
+            $app['search_results_generator']
         );
 
         return $service;
