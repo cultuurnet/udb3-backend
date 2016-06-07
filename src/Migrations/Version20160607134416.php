@@ -100,10 +100,12 @@ class Version20160607134416 extends AbstractMigration
             ->setNotnull(true);
 
         $table->addIndex([self::UUID_COLUMN]);
-        $table->addUniqueIndex([
-            self::UUID_COLUMN,
-            self::RELATION_TYPE_COLUMN,
-            self::RELATION_ID_COLUMN
-        ]);
+        $table->addUniqueIndex(
+            [
+                self::UUID_COLUMN,
+                self::RELATION_TYPE_COLUMN,
+                self::RELATION_ID_COLUMN,
+            ]
+        );
     }
 }
