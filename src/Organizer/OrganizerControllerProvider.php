@@ -49,6 +49,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             'organizer_edit_controller:create'
         );
 
+        $controllers->delete('/organizer/{cdbid}', 'organizer_edit_controller:delete');
+
         return $controllers;
     }
 }
