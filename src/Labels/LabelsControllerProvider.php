@@ -69,6 +69,11 @@ class LabelsControllerProvider implements ControllerProviderInterface
             self::EDIT_REST_CONTROLLER . ':create'
         );
 
+        $controllers->patch(
+            '/{uuid}',
+            self::EDIT_REST_CONTROLLER . ':patch'
+        );
+
         return $controllers;
     }
 }
