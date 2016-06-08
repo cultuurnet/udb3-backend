@@ -1287,9 +1287,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "An event detail.",
+                        "description": "An organizer detail.",
                         "schema": {
                             "$ref": "#/definitions/Organizer"
+                        }
+                    }
+                },
+                "tags": [
+                    "Organizer"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a specific organizer.",
+                "operationId": "deleteOperation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the organizer.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
                         }
                     }
                 },
