@@ -55,8 +55,12 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
             /** @var RequestStack $requestStack */
             $requestStack = $this->application['request_stack'];
             $request = $requestStack->getMasterRequest();
+            if ($request) {
+                // @todo Add to Impersonator? Sometimes an additional command
+                // is dispatched by the worker itself.
+                $contextValues['client_ip'] = $request->getClientIp();
+            }
 
-            $contextValues['client_ip'] = $request->getClientIp();
             $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
 
             $context = new \Broadway\Domain\Metadata($contextValues);

@@ -911,6 +911,12 @@ $app['event_command_bus_out'] = $app->share(
             )
         );
 
+        $commandBus->subscribe(
+            (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler($app['organizer_repository']))
+                ->withOrganizerRelationService($app['place_organizer_relation_service'])
+                ->withOrganizerRelationService($app['event_organizer_relation_service'])
+        );
+
         $commandBus->subscribe($app['media_manager']);
 
         $commandBus->subscribe($app['bulk_label_offer_command_handler']);
