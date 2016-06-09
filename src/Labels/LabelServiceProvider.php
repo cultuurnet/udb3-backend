@@ -189,7 +189,8 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new LabelRepository(
                     $app[self::UNIQUE_EVENT_STORE],
-                    $app['event_bus']
+                    $app['event_bus'],
+                    [$app['event_stream_metadata_enricher']]
                 );
             }
         );
