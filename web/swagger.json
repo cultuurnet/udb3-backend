@@ -2208,7 +2208,7 @@
                         "required": false,
                         "type": "integer",
                         "format": "int32"
-                    },
+                    }
                 ],
                 "responses": {
                     "200": {
