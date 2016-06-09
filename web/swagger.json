@@ -2177,7 +2177,7 @@
                 ]
             }
         },
-        "/labels/search": {
+        "/labels": {
             "get": {
                 "summary": "Retrieve labels for a given search query with a given start and limit.",
                 "description": "Authentication is required.",
@@ -2209,13 +2209,6 @@
                         "type": "integer",
                         "format": "int32"
                     },
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "description": "How to order the search results.\n\nSpecify a field and an optional direction (asc or desc) separated by a space. Currently only sorting by name is supported.",
-                        "required": false,
-                        "type": "string"
-                    }
                 ],
                 "responses": {
                     "200": {

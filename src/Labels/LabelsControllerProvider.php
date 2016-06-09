@@ -33,7 +33,8 @@ class LabelsControllerProvider implements ControllerProviderInterface
         $app[self::READ_REST_CONTROLLER] = $app->share(
             function (Application $app) {
                 return new ReadRestController(
-                    $app[LabelServiceProvider::READ_SERVICE]
+                    $app[LabelServiceProvider::READ_SERVICE],
+                    new RequestHelper()
                 );
             }
         );
@@ -61,16 +62,19 @@ class LabelsControllerProvider implements ControllerProviderInterface
     private function setControllerPaths(ControllerCollection $controllers)
     {
         $controllers
-            ->get('/{uuid}', self::READ_REST_CONTROLLER . ':getByUuid')
+            ->get('label/{uuid}', self::READ_REST_CONTROLLER . ':getByUuid')
             ->bind('label');
 
+        $controllers
+            ->get('labels', self::READ_REST_CONTROLLER . ':search');
+
         $controllers->post(
-            '/',
+            'label/',
             self::EDIT_REST_CONTROLLER . ':create'
         );
 
         $controllers->patch(
-            '/{uuid}',
+            'label/{uuid}',
             self::EDIT_REST_CONTROLLER . ':patch'
         );
 
