@@ -2351,14 +2351,14 @@
                     {
                         "name": "query",
                         "in": "query",
-                        "description": "The search query to execute.",
+                        "description": "The name or part of the name of the label(s) to search (case-insensitive).",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "name": "limit",
                         "in": "query",
-                        "description": "The limit of events included in the result set. When omitted it defaults to 30 items.",
+                        "description": "The limit of labels included in the result set. When omitted it returns all matching labels.",
                         "required": false,
                         "type": "integer",
                         "format": "int32"
@@ -2366,7 +2366,7 @@
                     {
                         "name": "start",
                         "in": "query",
-                        "description": "The number of events to skip from the start of the result set.",
+                        "description": "The number of labels to skip from the start of the result set. When omitted it starts from the first position.",
                         "required": false,
                         "type": "integer",
                         "format": "int32"
@@ -3278,12 +3278,17 @@
         },
         "command": {
             "required": [
-                "commandId"
+                "commandId",
+                "uuid"
             ],
             "properties": {
                 "commandId": {
                     "type": "string",
                     "example": "8cdc13e62efaecb9d8c21d59a29b9de4"
+                },
+                "uuid": {
+                    "type": "string",
+                    "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
                 }
             }
         },
@@ -4177,28 +4182,13 @@
         },
         "LabelSearchResult": {
             "properties": {
-                "itemsPerPage": {
-                    "type": "integer",
-                    "format": "int32",
-                    "example": 30
-                },
-                "totalItems": {
-                    "type": "integer",
-                    "format": "int32",
-                    "example": 3562
-                },
                 "member": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/LabelObject"
                     }
                 }
-            },
-            "required": [
-                "itemsPerPage",
-                "totalItems",
-                "member"
-            ]
+            }
         }
     },
     "parameters": {
