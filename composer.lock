@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0c5fdd560117ae51afe1d28d69f8e466",
-    "content-hash": "2b067f00dcd9425b874910a695c85b44",
+    "hash": "80981a686c006a8a078140a4cd9945f7",
+    "content-hash": "10c59f77450d4559b33722a53975799d",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1290,16 +1290,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-1092",
+            "version": "dev-feature/III-945",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "99e3b0255f0340a15b1fa1a07a86d9e1f39fdc81"
+                "reference": "744e09695cf9046aeb04f1d48ad6f3a0dc54e1d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/99e3b0255f0340a15b1fa1a07a86d9e1f39fdc81",
-                "reference": "99e3b0255f0340a15b1fa1a07a86d9e1f39fdc81",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/744e09695cf9046aeb04f1d48ad6f3a0dc54e1d1",
+                "reference": "744e09695cf9046aeb04f1d48ad6f3a0dc54e1d1",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-06-17 10:56:21"
+            "time": "2016-06-10 11:56:29"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1515,22 +1515,22 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-feature/III-1092",
+            "version": "dev-feature/III-945",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "b2d3f7b8da196a8ce5d2c758cfa39b324fff3e2a"
+                "reference": "7c34f3d7e94dbba78b3e99a37af33548c558fe85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/b2d3f7b8da196a8ce5d2c758cfa39b324fff3e2a",
-                "reference": "b2d3f7b8da196a8ce5d2c758cfa39b324fff3e2a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/7c34f3d7e94dbba78b3e99a37af33548c558fe85",
+                "reference": "7c34f3d7e94dbba78b3e99a37af33548c558fe85",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-945 as 0.1",
                 "guzzlehttp/guzzle": "~6.2",
                 "guzzlehttp/psr7": "~1.2.3",
                 "symfony/http-foundation": "~2.7.2",
@@ -1572,7 +1572,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-06-17 12:41:22"
+            "time": "2016-06-10 07:56:29"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -2426,7 +2426,6 @@
                 "event",
                 "exception"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2484,7 +2483,6 @@
                 "http",
                 "http client"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2537,7 +2535,6 @@
                 "adapter",
                 "log"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2582,7 +2579,6 @@
                 "message",
                 "url"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2632,7 +2628,6 @@
                 "Guzzle",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2684,7 +2679,6 @@
                 "log",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2735,7 +2729,6 @@
                 "oauth",
                 "plugin"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2789,7 +2782,6 @@
                 "component",
                 "stream"
             ],
-            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {
@@ -4103,16 +4095,16 @@
         },
         {
             "name": "predis/predis",
-            "version": "v1.1.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+                "reference": "0e17edbefb50c6cbd1acc4a6f6ef06399deb1af2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
-                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/0e17edbefb50c6cbd1acc4a6f6ef06399deb1af2",
+                "reference": "0e17edbefb50c6cbd1acc4a6f6ef06399deb1af2",
                 "shasum": ""
             },
             "require": {
@@ -4149,7 +4141,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-06-16 16:22:20"
+            "time": "2016-06-01 22:06:21"
         },
         {
             "name": "psr/http-message",
@@ -5943,13 +5935,13 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1092",
+            "version": "dev-feature/III-945",
             "package": "cultuurnet/udb3"
         },
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1092",
+            "version": "dev-feature/III-945",
             "package": "cultuurnet/udb3-symfony"
         }
     ],
