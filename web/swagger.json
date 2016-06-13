@@ -2389,10 +2389,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "An object containing the command that you want applied to the role.",
+                        "description": "An object containing the required information for the creation of a role.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/patchRoleCommand"
+                            "$ref": "#/definitions/RoleObject"
                         }
                     }
                 ],
@@ -4206,6 +4206,80 @@
                     }
                 }
             }
+        },
+        "postObjectForRoleCreation": {
+            "required": [
+                "name",
+                "permissions",
+                "members",
+                "labels"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Administrator"
+                },
+                "permissions": {
+                    "type": "array",
+                    "example": []
+                },
+                "members": {
+                    "type": "array",
+                    "example": []
+                },
+                "labels": {
+                    "type": "array",
+                    "example": []
+                }
+            }
+        },
+        "RoleObject": {
+            "required": [
+                "uuid",
+                "name",
+                "permissions",
+                "members",
+                "labels"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Administrator"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": ""
+                    }
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": ""
+                    }
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LabelObject"
+                    }
+                }
+            }
+        },
+        "RoleSearchResult": {
+            "properties": {
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RoleObject"
+                    }
+                }
+            }
         }
     },
     "parameters": {
@@ -4223,6 +4297,21 @@
             "required": true,
             "format": "uuid",
             "description": "The unique identifier of a label."
+        },
+        "roleName": {
+            "name": "name",
+            "in": "path",
+            "description": "The unique name of the role.",
+            "required": true,
+            "type": "string"
+        },
+        "roleId": {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a role."
         }
     }
 }
