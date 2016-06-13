@@ -2250,6 +2250,164 @@
                     "Search", "Label"
                 ]
             }
+        },
+        "/roles": {
+            "get": {
+                "summary": "Retrieve roles for a given search query with a given start and limit.",
+                "description": "Authentication is required.",
+                "operationId": "roleSearch",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The name or part of the name of the role(s) to search (case-insensitive).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The limit of roles included in the result set. When omitted it returns all matching roles.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "The number of roles to skip from the start of the result set. When omitted it starts from the first position.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of roles",
+                        "schema": {
+                            "$ref": "#/definitions/RoleSearchResult"
+                        }
+                    }
+                },
+                "tags": [
+                    "Search", "Role"
+                ]
+            }
+        },
+        "/role": {
+            "post": {
+                "summary": "Create a new role",
+                "description": "Authentication required",
+                "operationId": "createRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a role.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForRoleCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
+        },
+        "/role/{id}": {
+            "get": {
+                "summary": "View the details of a role",
+                "operationId": "getRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/RoleObject"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a role",
+                "operationId": "deleteRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            },
+            "patch": {
+                "summary": "Update role info with one of the available commands",
+                "operationId": "updateRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the command that you want applied to the role.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/patchRoleCommand"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
         }
     },
     "tags": [
@@ -2268,6 +2426,10 @@
         {
             "name": "Label",
             "description": "Operations related to labels."
+        },
+        {
+            "name": "Role",
+            "description": "Operations related to roles."
         },
         {
             "name": "Query",
