@@ -2377,8 +2377,8 @@
                 ]
             },
             "patch": {
-                "summary": "Update role info with one of the available commands",
-                "operationId": "updateRole",
+                "summary": "Update the name of a certain role.",
+                "operationId": "updateRoleName",
                 "produces": [
                     "application/ld+json"
                 ],
@@ -2389,11 +2389,164 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "An object containing the required information for the creation of a role.",
+                        "description": "An object containing the required information for the update of the name of a role.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/RoleObject"
+                            "$ref": "#/definitions/RoleNameObject"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
+        },
+        "/role/{id}/permission/{permissionId}": {
+            "post": {
+                "summary": "Add a permission to a certain role.",
+                "description": "Authentication required",
+                "operationId": "addPermissionToRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/permissionId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a permission from a role",
+                "operationId": "deletePermissionFromRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/permissionId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
+        },
+        "/role/{id}/user/{userId}": {
+            "post": {
+                "summary": "Add a user to a certain role.",
+                "description": "Authentication required",
+                "operationId": "addUserToRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/userId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role", "User"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a user from a role",
+                "operationId": "deleteUserFromRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/userId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role", "User"
+                ]
+            }
+        },
+        "/role/{id}/label/{labelId}": {
+            "post": {
+                "summary": "Add a label to a certain role.",
+                "description": "Authentication required",
+                "operationId": "addUserToRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/labelId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a label from a role",
+                "operationId": "deleteUserFromRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/labelId"
                     }
                 ],
                 "responses": {
@@ -4238,7 +4391,7 @@
                 "uuid",
                 "name",
                 "permissions",
-                "members",
+                "users",
                 "labels"
             ],
             "properties": {
@@ -4257,7 +4410,7 @@
                         "$ref": ""
                     }
                 },
-                "members": {
+                "users": {
                     "type": "array",
                     "items": {
                         "$ref": ""
@@ -4268,6 +4421,23 @@
                     "items": {
                         "$ref": "#/definitions/LabelObject"
                     }
+                }
+            }
+        },
+        "RoleNameObject": {
+            "required": [
+                "uuid",
+                "name"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Administrator"
                 }
             }
         },
@@ -4312,6 +4482,22 @@
             "required": true,
             "format": "uuid",
             "description": "The unique identifier of a role."
+        },
+        "permissionId": {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a permission."
+        },
+        "userId": {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a user."
         }
     }
 }
