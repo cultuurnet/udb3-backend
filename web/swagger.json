@@ -309,7 +309,7 @@
                 ]
             }
         },
-        "/event/{cdbid}/typicalAgeRange": {
+        "/event/{cdbid}/typical-age-range": {
             "post": {
                 "summary": "Set the typical age range of an event.",
                 "operationId": "setEventTypicalAgeRange",
@@ -797,7 +797,7 @@
                 ]
             }
         },
-        "/place/{cdbid}/typicalAgeRange": {
+        "/place/{cdbid}/typical-age-range": {
             "post": {
                 "summary": "Set the typical age range of a place.",
                 "operationId": "setPlaceTypicalAgeRange",
