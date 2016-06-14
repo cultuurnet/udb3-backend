@@ -311,8 +311,8 @@
         },
         "/event/{cdbid}/typicalAgeRange": {
             "post": {
-                "summary": "Add a typical age range to an event.",
-                "operationId": "addEventTypicalAgeRange",
+                "summary": "Set the typical age range of an event.",
+                "operationId": "setEventTypicalAgeRange",
                 "produces": [
                     "application/json"
                 ],
@@ -328,10 +328,10 @@
                     {
                         "name": "body",
                         "in": "body",
-                        "description": "The age range to add",
+                        "description": "The age range to set for the event.",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/postTypicalAgeRange"
+                            "$ref": "#/definitions/typicalAgeRangeData"
                         }
                     }
                 ],
@@ -348,8 +348,8 @@
                 ]
             },
             "delete": {
-                "summary": "Add a typical age range to an event.",
-                "operationId": "addEventTypicalAgeRange",
+                "summary": "Remove the typical age range from an event.",
+                "operationId": "removeEventTypicalAgeRange",
                 "produces": [
                     "application/json"
                 ],
@@ -799,8 +799,8 @@
         },
         "/place/{cdbid}/typicalAgeRange": {
             "post": {
-                "summary": "Add a typical age range to an place.",
-                "operationId": "addEventTypicalAgeRange",
+                "summary": "Set the typical age range of a place.",
+                "operationId": "setPlaceTypicalAgeRange",
                 "produces": [
                     "application/json"
                 ],
@@ -819,7 +819,7 @@
                         "description": "The age range to add",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/postTypicalAgeRange"
+                            "$ref": "#/definitions/typicalAgeRangeData"
                         }
                     }
                 ],
@@ -836,8 +836,8 @@
                 ]
             },
             "delete": {
-                "summary": "Add a typical age range to an place.",
-                "operationId": "addEventTypicalAgeRange",
+                "summary": "Remove the a typical age range from a place.",
+                "operationId": "removePlaceTypicalAgeRange",
                 "produces": [
                     "application/json"
                 ],
@@ -3913,7 +3913,7 @@
                 "contactPoint"
             ]
         },
-        "postTypicalAgeRange": {
+        "typicalAgeRangeData": {
             "properties": {
                 "typicalAgeRange": {
                     "type": "string",
