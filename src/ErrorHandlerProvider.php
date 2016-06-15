@@ -21,20 +21,29 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (ValidationException $e) use ($provider) {
-                $problem = new ApiProblem($e->getMessage());
+                $problem = $this->createNewApiProblem($e);
                 $problem['validation_messages'] = $e->getErrors();
-                $problem->setStatus($e->getCode() ? $e->getCode() : ApiProblemJsonResponse::HTTP_BAD_REQUEST);
                 return new ApiProblemJsonResponse($problem);
             }
         );
 
         $app->error(
             function (\Exception $e) use ($provider) {
-                $problem = new ApiProblem($e->getMessage());
-                $problem->setStatus($e->getCode() ? $e->getCode() : ApiProblemJsonResponse::HTTP_BAD_REQUEST);
+                $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
             }
         );
+    }
+
+    /**
+     * @param \Exception $e
+     * @return ApiProblem
+     */
+    protected function createNewApiProblem(\Exception $e)
+    {
+        $problem = new ApiProblem($e->getMessage());
+        $problem->setStatus($e->getCode() ? $e->getCode() : ApiProblemJsonResponse::HTTP_BAD_REQUEST);
+        return $problem;
     }
 
     /**
