@@ -2551,7 +2551,9 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
                         "$ref": "#/parameters/permissionId"
                     }
                 ],
@@ -2575,7 +2577,9 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
                         "$ref": "#/parameters/permissionId"
                     }
                 ],
@@ -2602,7 +2606,9 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
                         "$ref": "#/parameters/userId"
                     }
                 ],
@@ -2626,7 +2632,9 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
                         "$ref": "#/parameters/userId"
                     }
                 ],
@@ -2653,7 +2661,9 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
                         "$ref": "#/parameters/labelId"
                     }
                 ],
@@ -2677,7 +2687,9 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/roleId",
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
                         "$ref": "#/parameters/labelId"
                     }
                 ],
