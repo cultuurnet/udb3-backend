@@ -2655,7 +2655,7 @@
             "post": {
                 "summary": "Add a label to a certain role.",
                 "description": "Authentication required",
-                "operationId": "addUserToRole",
+                "operationId": "addLabelToRole",
                 "produces": [
                     "application/ld+json"
                 ],
@@ -2681,7 +2681,7 @@
             },
             "delete": {
                 "summary": "Delete a label from a role",
-                "operationId": "deleteUserFromRole",
+                "operationId": "deleteLabelFromRole",
                 "produces": [
                     "application/ld+json"
                 ],
