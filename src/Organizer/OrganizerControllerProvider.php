@@ -46,8 +46,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface
 
         $controllers->post(
             '/api/1.0/organizer',
-            'organizer_edit_controller:createOrganizer'
+            'organizer_edit_controller:create'
         );
+
+        $controllers->delete('/organizer/{cdbid}', 'organizer_edit_controller:delete');
 
         return $controllers;
     }

@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3f01f4eabdcd93f08a7f3e93edc4204a611e53d7"
+                "reference": "c69309c599bbcf849fe53c6cc8542f2da0f6c0bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3f01f4eabdcd93f08a7f3e93edc4204a611e53d7",
-                "reference": "3f01f4eabdcd93f08a7f3e93edc4204a611e53d7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c69309c599bbcf849fe53c6cc8542f2da0f6c0bb",
+                "reference": "c69309c599bbcf849fe53c6cc8542f2da0f6c0bb",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-06-10 12:24:20"
+            "time": "2016-06-13 11:26:51"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2426,6 +2426,7 @@
                 "event",
                 "exception"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2483,6 +2484,7 @@
                 "http",
                 "http client"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-08-11 04:32:36"
         },
         {
@@ -2535,6 +2537,7 @@
                 "adapter",
                 "log"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-03-26 17:15:28"
         },
         {
@@ -2579,6 +2582,7 @@
                 "message",
                 "url"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-05 18:29:46"
         },
         {
@@ -2628,6 +2632,7 @@
                 "Guzzle",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-02-07 18:36:58"
         },
         {
@@ -2679,6 +2684,7 @@
                 "log",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-01-08 21:45:39"
         },
         {
@@ -2729,6 +2735,7 @@
                 "oauth",
                 "plugin"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-04-16 13:26:19"
         },
         {
@@ -2782,6 +2789,7 @@
                 "component",
                 "stream"
             ],
+            "abandoned": "guzzle/guzzle",
             "time": "2014-05-01 21:36:02"
         },
         {

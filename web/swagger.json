@@ -309,6 +309,73 @@
                 ]
             }
         },
+        "/event/{cdbid}/typical-age-range": {
+            "post": {
+                "summary": "Set the typical age range of an event.",
+                "operationId": "setEventTypicalAgeRange",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The age range to set for the event.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/typicalAgeRangeData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            },
+            "delete": {
+                "summary": "Remove the typical age range from an event.",
+                "operationId": "removeEventTypicalAgeRange",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the event.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Event"
+                ]
+            }
+        },
         "/event/{cdbid}/labels": {
             "post": {
                 "summary": "Add a label to a single cultural event.",
@@ -722,6 +789,73 @@
                         "description": "An event detail.",
                         "schema": {
                             "$ref": "#/definitions/Place"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            }
+        },
+        "/place/{cdbid}/typical-age-range": {
+            "post": {
+                "summary": "Set the typical age range of a place.",
+                "operationId": "setPlaceTypicalAgeRange",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "The age range to add",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/typicalAgeRangeData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Place"
+                ]
+            },
+            "delete": {
+                "summary": "Remove the a typical age range from a place.",
+                "operationId": "removePlaceTypicalAgeRange",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the place.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
                         }
                     }
                 },
@@ -1287,9 +1421,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "An event detail.",
+                        "description": "An organizer detail.",
                         "schema": {
                             "$ref": "#/definitions/Organizer"
+                        }
+                    }
+                },
+                "tags": [
+                    "Organizer"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a specific organizer.",
+                "operationId": "deleteOperation",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "cdbid",
+                        "in": "path",
+                        "description": "The unique identifier of the organizer.",
+                        "required": true,
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
                         }
                     }
                 },
@@ -4016,6 +4178,17 @@
                     }
                 }
             }
+        },
+        "typicalAgeRangeData": {
+            "properties": {
+                "typicalAgeRange": {
+                    "type": "string",
+                    "example": "1-12"
+                }
+            },
+            "required": [
+                "typicalAgeRange"
+            ]
         }
     },
     "parameters": {
