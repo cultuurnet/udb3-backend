@@ -2257,7 +2257,7 @@
                 ]
             }
         },
-        "/label/{id}": {
+        "/label/{labelId}": {
             "get": {
                 "summary": "View the details a label",
                 "operationId": "getLabel",
@@ -2461,7 +2461,7 @@
                 ]
             }
         },
-        "/role/{id}": {
+        "/role/{roleId}": {
             "get": {
                 "summary": "View the details of a role",
                 "operationId": "getRole",
@@ -4518,14 +4518,19 @@
                 },
                 "permissions": {
                     "type": "array",
+                    "items": {},
                     "example": []
                 },
                 "members": {
                     "type": "array",
+                    "items": {},
                     "example": []
                 },
                 "labels": {
                     "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LabelObject"
+                    },
                     "example": []
                 }
             }
@@ -4550,15 +4555,11 @@
                 },
                 "permissions": {
                     "type": "array",
-                    "items": {
-                        "$ref": ""
-                    }
+                    "items": {}
                 },
                 "users": {
                     "type": "array",
-                    "items": {
-                        "$ref": ""
-                    }
+                    "items": {}
                 },
                 "labels": {
                     "type": "array",
@@ -4608,27 +4609,13 @@
         }
     },
     "parameters": {
-        "labelName": {
-            "name": "name",
-            "in": "path",
-            "description": "The unique name of the label.",
-            "required": true,
-            "type": "string"
-        },
         "labelId": {
-            "name": "id",
+            "name": "labelId",
             "in": "path",
             "type": "string",
             "required": true,
             "format": "uuid",
             "description": "The unique identifier of a label."
-        },
-        "roleName": {
-            "name": "name",
-            "in": "path",
-            "description": "The unique name of the role.",
-            "required": true,
-            "type": "string"
         },
         "roleId": {
             "name": "roleId",
@@ -4647,7 +4634,7 @@
             "description": "The unique identifier of a permission."
         },
         "userId": {
-            "name": "id",
+            "name": "userId",
             "in": "path",
             "type": "string",
             "required": true,
