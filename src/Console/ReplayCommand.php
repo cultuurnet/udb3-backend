@@ -113,8 +113,8 @@ class ReplayCommand extends Command
                 // Delay has to be multiplied by the number of messages in this
                 // particular chunk because in theory we handle more than 1
                 // message per time. In reality the stream contains 1 message.
-                // Divide by 1000 to convert to seconds.
-                sleep($delay * $eventStream->getIterator()->count() / 1000);
+                // Multiply by 1000 to convert to microseconds.
+                usleep($delay * $eventStream->getIterator()->count() * 1000);
             }
 
             /** @var DomainMessage $message */
