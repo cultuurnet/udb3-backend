@@ -23,6 +23,7 @@ class ReplayCommand extends Command
 {
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
     const OPTION_START_ID = 'start-id';
+    const OPTION_DELAY = 'delay';
 
     /**
      * @inheritdoc
@@ -61,6 +62,13 @@ class ReplayCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'The id of the row to start the replay from.'
+            )
+            ->addOption(
+                self::OPTION_DELAY,
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Delay per message, in milliseconds.',
+                0
             );
     }
 
@@ -69,6 +77,8 @@ class ReplayCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $delay = (int) $input->getOption(self::OPTION_DELAY);
+
         $cache = $input->getOption('cache');
         if ($cache) {
             $cacheServiceName = 'cache-' . $cache;
@@ -99,6 +109,14 @@ class ReplayCommand extends Command
 
         /** @var DomainEventStream $eventStream */
         foreach ($stream() as $eventStream) {
+            if ($delay > 0) {
+                // Delay has to be multiplied by the number of messages in this
+                // particular chunk because in theory we handle more than 1
+                // message per time. In reality the stream contains 1 message.
+                // Divide by 1000 to convert to seconds.
+                sleep($delay * $eventStream->getIterator()->count() / 1000);
+            }
+
             /** @var DomainMessage $message */
             foreach ($eventStream->getIterator() as $message) {
                 $output->writeln(
