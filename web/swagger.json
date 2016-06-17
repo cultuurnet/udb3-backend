@@ -2226,6 +2226,164 @@
                     "Media"
                 ]
             }
+        },
+        "/label": {
+            "post": {
+                "summary": "Create a new label",
+                "description": "Authentication required",
+                "operationId": "createLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a label.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForLabelCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
+        },
+        "/label/{id}": {
+            "get": {
+                "summary": "View the details a label",
+                "operationId": "getLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/LabelObject"
+                        }
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a label",
+                "operationId": "deleteLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            },
+            "patch": {
+                "summary": "Update label info with one of the available commands",
+                "operationId": "updateLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/labelId"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the command that you want applied to the label.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/patchLabelCommand"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Label"
+                ]
+            }
+        },
+        "/labels": {
+            "get": {
+                "summary": "Retrieve labels for a given search query with a given start and limit.",
+                "description": "Authentication is required.",
+                "operationId": "labelSearch",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The name or part of the name of the label(s) to search (case-insensitive).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The limit of labels included in the result set. When omitted it returns all matching labels.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "The number of labels to skip from the start of the result set. When omitted it starts from the first position.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of labels",
+                        "schema": {
+                            "$ref": "#/definitions/LabelSearchResult"
+                        }
+                    }
+                },
+                "tags": [
+                    "Search", "Label"
+                ]
+            }
         }
     },
     "tags": [
@@ -3120,12 +3278,17 @@
         },
         "command": {
             "required": [
-                "commandId"
+                "commandId",
+                "uuid"
             ],
             "properties": {
                 "commandId": {
                     "type": "string",
                     "example": "8cdc13e62efaecb9d8c21d59a29b9de4"
+                },
+                "uuid": {
+                    "type": "string",
+                    "example": "0823f57e-a6bd-450a-b4f5-8459b4b11043"
                 }
             }
         },
@@ -3913,6 +4076,124 @@
                 "contactPoint"
             ]
         },
+        "postObjectForLabelCreation": {
+            "required": [
+                "name",
+                "visibility",
+                "privacy"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Bloso"
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "visible",
+                        "invisible"
+                    ],
+                    "example": "visible",
+                    "default": "invisible"
+                },
+                "privacy": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public",
+                    "default": "public"
+                },
+                "parentId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c",
+                    "description": "An optional property that references the parent label."
+                }
+            }
+        },
+        "patchLabelCommand": {
+            "required": [
+                "command"
+            ],
+            "properties": {
+                "command": {
+                    "type": "string",
+                    "enum": [
+                        "makeInvisible",
+                        "makeVisible",
+                        "makePrivate",
+                        "makePublic"
+                    ]
+                }
+            }
+        },
+        "LabelObject": {
+            "required": [
+                "uuid",
+                "name",
+                "privacy",
+                "visibility"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Bloso"
+                },
+                "visibility": {
+                    "type": "string",
+                    "enum": [
+                        "visible",
+                        "invisible"
+                    ],
+                    "example": "visible"
+                },
+                "privacy": {
+                    "type": "string",
+                    "enum": [
+                        "private",
+                        "public"
+                    ],
+                    "example": "public"
+                },
+                "parentUuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
+                }
+            }
+        },
+        "LabelSearchResult": {
+            "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3562
+                },
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LabelObject"
+                    }
+                }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
+        },
         "typicalAgeRangeData": {
             "properties": {
                 "typicalAgeRange": {
@@ -3923,6 +4204,23 @@
             "required": [
                 "typicalAgeRange"
             ]
+        }
+    },
+    "parameters": {
+        "labelName": {
+            "name": "name",
+            "in": "path",
+            "description": "The unique name of the label.",
+            "required": true,
+            "type": "string"
+        },
+        "labelId": {
+            "name": "id",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a label."
         }
     }
 }
