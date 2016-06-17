@@ -4132,10 +4132,10 @@
                 "command": {
                     "type": "string",
                     "enum": [
-                        "MakeInvisible",
-                        "MakeVisible",
-                        "MakePrivate",
-                        "MakePublic"
+                        "makeInvisible",
+                        "makeVisible",
+                        "makePrivate",
+                        "makePublic"
                     ]
                 }
             }
