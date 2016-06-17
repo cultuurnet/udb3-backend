@@ -4076,17 +4076,6 @@
                 "contactPoint"
             ]
         },
-        "typicalAgeRangeData": {
-            "properties": {
-                "typicalAgeRange": {
-                    "type": "string",
-                    "example": "1-12"
-                }
-            },
-            "required": [
-                "typicalAgeRange"
-            ]
-        },
         "postObjectForLabelCreation": {
             "required": [
                 "name",
