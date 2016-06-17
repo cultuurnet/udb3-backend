@@ -4171,13 +4171,28 @@
         },
         "LabelSearchResult": {
             "properties": {
+                "itemsPerPage": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                },
+                "totalItems": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3562
+                },
                 "member": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/LabelObject"
                     }
                 }
-            }
+            },
+            "required": [
+                "itemsPerPage",
+                "totalItems",
+                "member"
+            ]
         },
         "typicalAgeRangeData": {
             "properties": {
