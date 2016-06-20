@@ -42,11 +42,11 @@ $app['security.firewalls'] = array(
         'pattern' => new MultiPathRequestMatcher(
             [
                 '^/api/1.0/event.jsonld',
-                '^/(event|place)/' . $app['id_pattern'] . '$',
+                '^/(event|place|label)/' . $app['id_pattern'] . '$',
                 '^/event/' . $app['id_pattern'] . '/history',
                 '^/organizer/' . $app['id_pattern'],
                 '^/media/' . $app['id_pattern'] . '$',
-                '^/places$',
+                '^/(places|labels)$',
                 '^/api/1.0/organizer/suggest/.*'
             ],
             [
@@ -230,6 +230,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
 
 $app->get(
     '/user',
