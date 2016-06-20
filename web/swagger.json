@@ -2427,9 +2427,7 @@
                 "tags": [
                     "Search", "Role"
                 ]
-            }
-        },
-        "/role": {
+            },
             "post": {
                 "summary": "Create a new role",
                 "description": "Authentication required",
@@ -2461,7 +2459,7 @@
                 ]
             }
         },
-        "/role/{roleId}": {
+        "/roles/{roleId}": {
             "get": {
                 "summary": "View the details of a role",
                 "operationId": "getRole",
@@ -2541,7 +2539,7 @@
                 ]
             }
         },
-        "/role/{roleId}/permission/{permissionId}": {
+        "/roles/{roleId}/permissions/{permissionId}": {
             "post": {
                 "summary": "Add a permission to a certain role.",
                 "description": "Authentication required",
@@ -2596,7 +2594,7 @@
                 ]
             }
         },
-        "/role/{roleId}/user/{userId}": {
+        "/roles/{roleId}/users/{userId}": {
             "post": {
                 "summary": "Add a user to a certain role.",
                 "description": "Authentication required",
@@ -2651,7 +2649,7 @@
                 ]
             }
         },
-        "/role/{roleId}/label/{labelId}": {
+        "/roles/{roleId}/labels/{labelId}": {
             "post": {
                 "summary": "Add a label to a certain role.",
                 "description": "Authentication required",
@@ -2702,7 +2700,74 @@
                     }
                 },
                 "tags": [
+                    "Role", "Label"
+                ]
+            }
+        },
+        "/roles/{roleId}/labels": {
+            "post": {
+                "summary": "Add multiple labels to a certain role.",
+                "description": "Authentication required",
+                "operationId": "addLabelsToRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the update of the role labels.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LabelSearchResult"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
                     "Role"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a label from a role",
+                "operationId": "deleteLabelFromRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the update of the role labels.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LabelSearchResult"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role", "Label"
                 ]
             }
         }
