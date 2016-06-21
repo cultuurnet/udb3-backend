@@ -179,7 +179,7 @@ class ReplayCommand extends Command
             'organizers',
             'variations',
             'media_objects',
-            'labels'
+            'labels',
         ];
 
         $store = $input->getArgument('store');
