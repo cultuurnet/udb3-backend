@@ -19,10 +19,14 @@ class LabelsControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $this->setUpReadRestController($app);
-        $this->setUpEditRestController($app);
+        if ($this->isLabelManagementEnabled($app)) {
+            $this->setUpReadRestController($app);
+            $this->setUpEditRestController($app);
 
-        return $this->setControllerPaths($app['controllers_factory']);
+            return $this->setControllerPaths($app['controllers_factory']);
+        } else {
+            return $app['controllers_factory'];
+        }
     }
 
     /**
@@ -79,5 +83,20 @@ class LabelsControllerProvider implements ControllerProviderInterface
         );
 
         return $controllers;
+    }
+
+    /**
+     * @param Application $app
+     * @return bool
+     */
+    private function isLabelManagementEnabled(Application $app)
+    {
+        /** @var \Qandidate\Toggle\ToggleManager $toggles */
+        $toggles = $app['toggles'];
+
+        return $toggles->active(
+            'label-management',
+            $app['toggles.context']
+        );
     }
 }
