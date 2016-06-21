@@ -66,19 +66,19 @@ class LabelsControllerProvider implements ControllerProviderInterface
     private function setControllerPaths(ControllerCollection $controllers)
     {
         $controllers
-            ->get('label/{uuid}', self::READ_REST_CONTROLLER . ':getByUuid')
+            ->get('labels/{uuid}', self::READ_REST_CONTROLLER . ':getByUuid')
             ->bind('label');
 
         $controllers
             ->get('labels', self::READ_REST_CONTROLLER . ':search');
 
         $controllers->post(
-            'label/',
+            'labels',
             self::EDIT_REST_CONTROLLER . ':create'
         );
 
         $controllers->patch(
-            'label/{uuid}',
+            'labels/{uuid}',
             self::EDIT_REST_CONTROLLER . ':patch'
         );
 
