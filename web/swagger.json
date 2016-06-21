@@ -2540,7 +2540,7 @@
             }
         },
         "/roles/{roleId}/permissions/{permissionId}": {
-            "post": {
+            "put": {
                 "summary": "Add a permission to a certain role.",
                 "description": "Authentication required",
                 "operationId": "addPermissionToRole",
@@ -2595,7 +2595,7 @@
             }
         },
         "/roles/{roleId}/users/{userId}": {
-            "post": {
+            "put": {
                 "summary": "Add a user to a certain role.",
                 "description": "Authentication required",
                 "operationId": "addUserToRole",
@@ -2650,33 +2650,6 @@
             }
         },
         "/roles/{roleId}/labels/{labelId}": {
-            "post": {
-                "summary": "Add a label to a certain role.",
-                "description": "Authentication required",
-                "operationId": "addLabelToRole",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
-                    {
-                        "$ref": "#/parameters/roleId"
-                    },
-                    {
-                        "$ref": "#/parameters/labelId"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Info on the command that was queued.",
-                        "schema": {
-                            "$ref": "#/definitions/command"
-                        }
-                    }
-                },
-                "tags": [
-                    "Role"
-                ]
-            },
             "delete": {
                 "summary": "Delete a label from a role",
                 "operationId": "deleteLabelFromRole",
@@ -2736,38 +2709,6 @@
                 },
                 "tags": [
                     "Role"
-                ]
-            },
-            "delete": {
-                "summary": "Delete a label from a role",
-                "operationId": "deleteLabelFromRole",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
-                    {
-                        "$ref": "#/parameters/roleId"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "An object containing the required information for the update of the role labels.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/LabelSearchResult"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Info on the command that was queued.",
-                        "schema": {
-                            "$ref": "#/definitions/command"
-                        }
-                    }
-                },
-                "tags": [
-                    "Role", "Label"
                 ]
             }
         }
@@ -4636,15 +4577,9 @@
         },
         "RoleNameObject": {
             "required": [
-                "uuid",
                 "name"
             ],
             "properties": {
-                "uuid": {
-                    "type": "string",
-                    "format": "uuid",
-                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
-                },
                 "name": {
                     "type": "string",
                     "example": "Administrator"
