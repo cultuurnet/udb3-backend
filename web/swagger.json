@@ -1514,8 +1514,6 @@
                             "$ref": "#/definitions/OrganizerId"
                         }
                     }
-
-
                 },
                 "tags": [
                     "Organizer"
@@ -2259,7 +2257,7 @@
                 ]
             }
         },
-        "/label/{id}": {
+        "/label/{labelId}": {
             "get": {
                 "summary": "View the details a label",
                 "operationId": "getLabel",
@@ -2384,6 +2382,335 @@
                     "Search", "Label"
                 ]
             }
+        },
+        "/roles": {
+            "get": {
+                "summary": "Retrieve roles for a given search query with a given start and limit.",
+                "description": "Authentication is required.",
+                "operationId": "roleSearch",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The name or part of the name of the role(s) to search (case-insensitive).",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The limit of roles included in the result set. When omitted it returns all matching roles.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "description": "The number of roles to skip from the start of the result set. When omitted it starts from the first position.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of roles",
+                        "schema": {
+                            "$ref": "#/definitions/RoleSearchResult"
+                        }
+                    }
+                },
+                "tags": [
+                    "Search", "Role"
+                ]
+            },
+            "post": {
+                "summary": "Create a new role",
+                "description": "Authentication required",
+                "operationId": "createRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a role.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForRoleCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
+        },
+        "/roles/{roleId}": {
+            "get": {
+                "summary": "View the details of a role",
+                "operationId": "getRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/RoleObject"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a role",
+                "operationId": "deleteRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            },
+            "patch": {
+                "summary": "Update the name of a certain role.",
+                "operationId": "updateRoleName",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the update of the name of a role.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RoleNameObject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
+        },
+        "/roles/{roleId}/permissions/{permissionId}": {
+            "put": {
+                "summary": "Add a permission to a certain role.",
+                "description": "Authentication required",
+                "operationId": "addPermissionToRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "$ref": "#/parameters/permissionId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a permission from a role",
+                "operationId": "deletePermissionFromRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "$ref": "#/parameters/permissionId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
+        },
+        "/roles/{roleId}/users/{userId}": {
+            "put": {
+                "summary": "Add a user to a certain role.",
+                "description": "Authentication required",
+                "operationId": "addUserToRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "$ref": "#/parameters/userId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role", "User"
+                ]
+            },
+            "delete": {
+                "summary": "Delete a user from a role",
+                "operationId": "deleteUserFromRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "$ref": "#/parameters/userId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role", "User"
+                ]
+            }
+        },
+        "/roles/{roleId}/labels/{labelId}": {
+            "delete": {
+                "summary": "Delete a label from a role",
+                "operationId": "deleteLabelFromRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "$ref": "#/parameters/labelId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role", "Label"
+                ]
+            }
+        },
+        "/roles/{roleId}/labels": {
+            "post": {
+                "summary": "Add multiple labels to a certain role.",
+                "description": "Authentication required",
+                "operationId": "addLabelsToRole",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/roleId"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the update of the role labels.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LabelSearchResult"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Role"
+                ]
+            }
         }
     },
     "tags": [
@@ -2402,6 +2729,10 @@
         {
             "name": "Label",
             "description": "Operations related to labels."
+        },
+        {
+            "name": "Role",
+            "description": "Operations related to roles."
         },
         {
             "name": "Query",
@@ -4121,10 +4452,10 @@
                 "command": {
                     "type": "string",
                     "enum": [
-                        "makeInvisible",
-                        "makeVisible",
-                        "makePrivate",
-                        "makePublic"
+                        "MakeInvisible",
+                        "MakeVisible",
+                        "MakePrivate",
+                        "MakePublic"
                     ]
                 }
             }
@@ -4171,28 +4502,99 @@
         },
         "LabelSearchResult": {
             "properties": {
-                "itemsPerPage": {
-                    "type": "integer",
-                    "format": "int32",
-                    "example": 30
-                },
-                "totalItems": {
-                    "type": "integer",
-                    "format": "int32",
-                    "example": 3562
-                },
                 "member": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/LabelObject"
                     }
                 }
-            },
+            }
+        },
+        "postObjectForRoleCreation": {
             "required": [
-                "itemsPerPage",
-                "totalItems",
-                "member"
-            ]
+                "name",
+                "permissions",
+                "members",
+                "labels"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Administrator"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {},
+                    "example": []
+                },
+                "members": {
+                    "type": "array",
+                    "items": {},
+                    "example": []
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LabelObject"
+                    },
+                    "example": []
+                }
+            }
+        },
+        "RoleObject": {
+            "required": [
+                "uuid",
+                "name",
+                "permissions",
+                "users",
+                "labels"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "3aad5023-84e2-4ba9-b1ce-201cee64504c"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Administrator"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {}
+                },
+                "users": {
+                    "type": "array",
+                    "items": {}
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LabelObject"
+                    }
+                }
+            }
+        },
+        "RoleNameObject": {
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Administrator"
+                }
+            }
+        },
+        "RoleSearchResult": {
+            "properties": {
+                "member": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RoleObject"
+                    }
+                }
+            }
         },
         "typicalAgeRangeData": {
             "properties": {
@@ -4207,20 +4609,37 @@
         }
     },
     "parameters": {
-        "labelName": {
-            "name": "name",
-            "in": "path",
-            "description": "The unique name of the label.",
-            "required": true,
-            "type": "string"
-        },
         "labelId": {
-            "name": "id",
+            "name": "labelId",
             "in": "path",
             "type": "string",
             "required": true,
             "format": "uuid",
             "description": "The unique identifier of a label."
+        },
+        "roleId": {
+            "name": "roleId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a role."
+        },
+        "permissionId": {
+            "name": "permissionId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a permission."
+        },
+        "userId": {
+            "name": "userId",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "format": "uuid",
+            "description": "The unique identifier of a user."
         }
     }
 }
