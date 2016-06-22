@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.5",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "91e2690c4ecc8a4e3e2d333430069f6a0c694a7a"
+                "reference": "8a9ad22f1220e47a6d174843e8abef08f5eac441"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/91e2690c4ecc8a4e3e2d333430069f6a0c694a7a",
-                "reference": "91e2690c4ecc8a4e3e2d333430069f6a0c694a7a",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/8a9ad22f1220e47a6d174843e8abef08f5eac441",
+                "reference": "8a9ad22f1220e47a6d174843e8abef08f5eac441",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-03-22 14:34:51"
+            "time": "2016-06-20 12:01:28"
         },
         {
             "name": "broadway/broadway",
@@ -536,12 +536,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "1ae139a205540decc94db53ed3b1312a67c3d22a"
+                "reference": "17b2bb9e9cb3aa3281c4fb89891aefb87d2d2991"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/1ae139a205540decc94db53ed3b1312a67c3d22a",
-                "reference": "1ae139a205540decc94db53ed3b1312a67c3d22a",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/17b2bb9e9cb3aa3281c4fb89891aefb87d2d2991",
+                "reference": "17b2bb9e9cb3aa3281c4fb89891aefb87d2d2991",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-05-25 22:11:38"
+            "time": "2016-06-21 15:00:48"
         },
         {
             "name": "cultuurnet/clock",
@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c9805af9b3dfca6d968b0ecffa0d7cee037b4d60"
+                "reference": "267b0d2ed6206b8d73da621d2c26892e0ab6e289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c9805af9b3dfca6d968b0ecffa0d7cee037b4d60",
-                "reference": "c9805af9b3dfca6d968b0ecffa0d7cee037b4d60",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/267b0d2ed6206b8d73da621d2c26892e0ab6e289",
+                "reference": "267b0d2ed6206b8d73da621d2c26892e0ab6e289",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-06-17 13:34:09"
+            "time": "2016-06-22 12:51:13"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1519,12 +1519,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "40d4d577a47c1b8614f7a4d67ee797ef83f81ba2"
+                "reference": "164dd0bdcb857396c685c5b5ed3d6768e34175c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/40d4d577a47c1b8614f7a4d67ee797ef83f81ba2",
-                "reference": "40d4d577a47c1b8614f7a4d67ee797ef83f81ba2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/164dd0bdcb857396c685c5b5ed3d6768e34175c5",
+                "reference": "164dd0bdcb857396c685c5b5ed3d6768e34175c5",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1572,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-06-17 13:33:53"
+            "time": "2016-06-22 12:58:37"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
