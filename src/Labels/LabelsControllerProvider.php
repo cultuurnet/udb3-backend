@@ -65,10 +65,10 @@ class LabelsControllerProvider implements ControllerProviderInterface
      */
     private function setControllerPaths(ControllerCollection $controllers)
     {
-        $controllers->get('/{identifier}', self::READ_REST_CONTROLLER . ':get');
+        $controllers->get('/{id}', self::READ_REST_CONTROLLER . ':get');
+        $controllers->patch('/{id}', self::EDIT_REST_CONTROLLER . ':patch');
         $controllers->get('/', self::READ_REST_CONTROLLER . ':search');
         $controllers->post('/', self::EDIT_REST_CONTROLLER . ':create');
-        $controllers->patch('/{uuid}', self::EDIT_REST_CONTROLLER . ':patch');
 
         return $controllers;
     }
