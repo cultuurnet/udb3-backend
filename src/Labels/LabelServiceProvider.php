@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator as RelationsSchemaConfigurator;
-use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
@@ -198,7 +197,8 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app[self::COMMAND_HANDLER] = $app->share(
             function (Application $app) {
                 return new CommandHandler(
-                    $app[self::REPOSITORY]
+                    $app[self::REPOSITORY],
+                    new Version4Generator()
                 );
             }
         );
