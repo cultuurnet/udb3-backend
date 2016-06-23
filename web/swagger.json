@@ -2227,39 +2227,7 @@
                 ]
             }
         },
-        "/label": {
-            "post": {
-                "summary": "Create a new label",
-                "description": "Authentication required",
-                "operationId": "createLabel",
-                "produces": [
-                    "application/ld+json"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "An object containing the required information for the creation of a label.",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/postObjectForLabelCreation"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Info on the command that was queued.",
-                        "schema": {
-                            "$ref": "#/definitions/command"
-                        }
-                    }
-                },
-                "tags": [
-                    "Label"
-                ]
-            }
-        },
-        "/label/{id}": {
+        "/labels/{identifier}": {
             "get": {
                 "summary": "View the details a label",
                 "operationId": "getLabel",
@@ -2268,7 +2236,7 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/labelId"
+                        "$ref": "#/parameters/labelIdentifier"
                     }
                 ],
                 "responses": {
@@ -2291,7 +2259,7 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/labelId"
+                        "$ref": "#/parameters/labelIdentifier"
                     }
                 ],
                 "responses": {
@@ -2314,7 +2282,7 @@
                 ],
                 "parameters": [
                     {
-                        "$ref": "#/parameters/labelId"
+                        "$ref": "#/parameters/labelIdentifier"
                     },
                     {
                         "name": "body",
@@ -2339,7 +2307,7 @@
                 ]
             }
         },
-        "/labels": {
+        "/labels/": {
             "get": {
                 "summary": "Retrieve labels for a given search query with a given start and limit.",
                 "description": "Authentication is required.",
@@ -2382,6 +2350,36 @@
                 },
                 "tags": [
                     "Search", "Label"
+                ]
+            },
+            "post": {
+                "summary": "Create a new label",
+                "description": "Authentication required",
+                "operationId": "createLabel",
+                "produces": [
+                    "application/ld+json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "An object containing the required information for the creation of a label.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/postObjectForLabelCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Info on the command that was queued.",
+                        "schema": {
+                            "$ref": "#/definitions/command"
+                        }
+                    }
+                },
+                "tags": [
+                    "Label"
                 ]
             }
         }
@@ -4121,10 +4119,10 @@
                 "command": {
                     "type": "string",
                     "enum": [
-                        "makeInvisible",
-                        "makeVisible",
-                        "makePrivate",
-                        "makePublic"
+                        "MakeInvisible",
+                        "MakeVisible",
+                        "MakePrivate",
+                        "MakePublic"
                     ]
                 }
             }
@@ -4207,10 +4205,10 @@
         }
     },
     "parameters": {
-        "labelName": {
-            "name": "name",
+        "labelIdentifier": {
+            "name": "identifier",
             "in": "path",
-            "description": "The unique name of the label.",
+            "description": "The unique name or uuid that identifies a label.",
             "required": true,
             "type": "string"
         },
