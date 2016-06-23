@@ -57,10 +57,16 @@ class SearchServiceProvider implements ServiceProviderInterface
 
                 $searchAPI = $includePlaces ? 'search_api_2' : 'filtered_search_api_2';
 
+                $logger = new Logger('search');
+                $logger->pushHandler(
+                    new StreamHandler(__DIR__ . '/../../log/search.log')
+                );
+
                 return new PullParsingSearchService(
                     $app[$searchAPI],
                     $app['event_iri_generator'],
-                    $app['place_iri_generator']
+                    $app['place_iri_generator'],
+                    $logger
                 );
             }
         );
