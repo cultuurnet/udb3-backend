@@ -546,6 +546,7 @@ $app['amqp.publisher'] = $app->share(
         $map =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
             \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Label\Events\CONTENTTYPES +
             \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
 
         $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
