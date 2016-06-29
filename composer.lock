@@ -536,12 +536,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "17b2bb9e9cb3aa3281c4fb89891aefb87d2d2991"
+                "reference": "28287770c45603f50acacbf68d187350d072f2d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/17b2bb9e9cb3aa3281c4fb89891aefb87d2d2991",
-                "reference": "17b2bb9e9cb3aa3281c4fb89891aefb87d2d2991",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/28287770c45603f50acacbf68d187350d072f2d1",
+                "reference": "28287770c45603f50acacbf68d187350d072f2d1",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-06-21 15:00:48"
+            "time": "2016-06-29 13:21:51"
         },
         {
             "name": "cultuurnet/clock",
@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f25d80513239677547de11fcad81fd1e260930cc"
+                "reference": "e59942f164270e78e07535525dd1e55d7d12ef58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f25d80513239677547de11fcad81fd1e260930cc",
-                "reference": "f25d80513239677547de11fcad81fd1e260930cc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/e59942f164270e78e07535525dd1e55d7d12ef58",
+                "reference": "e59942f164270e78e07535525dd1e55d7d12ef58",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-06-23 14:19:23"
+            "time": "2016-06-29 12:59:19"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1580,12 +1580,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "de120f4b7888641174d83da87fff07eddd6b976d"
+                "reference": "a9a3c08de369364bb6243e8dcf67900ffd7ebf7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/de120f4b7888641174d83da87fff07eddd6b976d",
-                "reference": "de120f4b7888641174d83da87fff07eddd6b976d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/a9a3c08de369364bb6243e8dcf67900ffd7ebf7f",
+                "reference": "a9a3c08de369364bb6243e8dcf67900ffd7ebf7f",
                 "shasum": ""
             },
             "require": {
@@ -1632,7 +1632,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-06-06 20:11:39"
+            "time": "2016-06-29 14:14:33"
         },
         {
             "name": "cultuurnet/uitid-credentials",

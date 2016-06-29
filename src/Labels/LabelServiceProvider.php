@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\Events\UniqueHelper;
 use CultuurNet\UDB3\Label\LabelRepository;
 use CultuurNet\UDB3\Label\ReadModels\Helper\LabelEventHelper;
+use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
@@ -46,6 +47,8 @@ class LabelServiceProvider implements ServiceProviderInterface
 
     const JSON_PROJECTOR = 'labels.json_projector';
     const RELATIONS_PROJECTOR = 'labels.relations_projector';
+    const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
+    const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
 
     /**
      * @inheritdoc
@@ -224,6 +227,24 @@ class LabelServiceProvider implements ServiceProviderInterface
                 return new RelationsProjector(
                     $app[self::RELATIONS_WRITE_REPOSITORY],
                     new LabelEventHelper($app[self::JSON_READ_REPOSITORY])
+                );
+            }
+        );
+
+        $app[self::PLACE_LABEL_PROJECTOR] = $app->share(
+            function (Application $app) {
+                return new OfferLabelProjector(
+                    $app['place_repository'],
+                    $app[self::RELATIONS_READ_REPOSITORY]
+                );
+            }
+        );
+
+        $app[self::EVENT_LABEL_PROJECTOR] = $app->share(
+            function (Application $app) {
+                return new OfferLabelProjector(
+                    $app['event_repository'],
+                    $app[self::RELATIONS_READ_REPOSITORY]
                 );
             }
         );
