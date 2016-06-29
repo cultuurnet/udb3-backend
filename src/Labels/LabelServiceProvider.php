@@ -22,6 +22,8 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigu
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -50,6 +52,8 @@ class LabelServiceProvider implements ServiceProviderInterface
     const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
     const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
 
+    const LOGGER = 'labels.logger';
+
     /**
      * @inheritdoc
      */
@@ -64,6 +68,8 @@ class LabelServiceProvider implements ServiceProviderInterface
         $this->setUpCommandHandler($app);
 
         $this->setUpProjectors($app);
+
+        $this->setUpLogger($app);
     }
 
     /**
@@ -233,19 +239,43 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $app[self::PLACE_LABEL_PROJECTOR] = $app->share(
             function (Application $app) {
-                return new OfferLabelProjector(
+                $projector = new OfferLabelProjector(
                     $app['place_repository'],
                     $app[self::RELATIONS_READ_REPOSITORY]
                 );
+
+                $projector->setLogger($app[self::LOGGER]);
+
+                return $projector;
             }
         );
 
         $app[self::EVENT_LABEL_PROJECTOR] = $app->share(
             function (Application $app) {
-                return new OfferLabelProjector(
+                $projector =  new OfferLabelProjector(
                     $app['event_repository'],
                     $app[self::RELATIONS_READ_REPOSITORY]
                 );
+
+                $projector->setLogger($app[self::LOGGER]);
+
+                return $projector;
+            }
+        );
+    }
+
+    /**
+     * @param Application $app
+     */
+    private function setUpLogger(Application $app)
+    {
+        $app[self::LOGGER] = $app->share(
+            function () {
+                $logger = new Logger('labels');
+                $logger->pushHandler(new StreamHandler('php://stdout'));
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/labels.log'));
+
+                return $logger;
             }
         );
     }
