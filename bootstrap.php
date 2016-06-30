@@ -501,7 +501,9 @@ $app['event_bus'] = $app->share(
                 'udb2_actor_events_to_udb3_organizer_applier',
                 'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
-                LabelServiceProvider::RELATIONS_PROJECTOR
+                LabelServiceProvider::RELATIONS_PROJECTOR,
+                LabelServiceProvider::EVENT_LABEL_PROJECTOR,
+                LabelServiceProvider::PLACE_LABEL_PROJECTOR
             ];
 
             // Allow to override event bus subscribers through configuration.

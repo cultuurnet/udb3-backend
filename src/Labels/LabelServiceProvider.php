@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\SchemaConfigurator
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
+use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\ReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator as RelationsSchemaConfigurator;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
@@ -121,6 +122,15 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app[self::RELATIONS_WRITE_REPOSITORY] = $app->share(
             function (Application $app) {
                 return new RelationsWriteRepository(
+                    $app['dbal_connection'],
+                    new StringLiteral(self::RELATIONS_TABLE)
+                );
+            }
+        );
+        
+        $app[self::RELATIONS_READ_REPOSITORY] = $app->share(
+            function (Application $app) {
+                return new ReadRepository(
                     $app['dbal_connection'],
                     new StringLiteral(self::RELATIONS_TABLE)
                 );
@@ -240,7 +250,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app[self::PLACE_LABEL_PROJECTOR] = $app->share(
             function (Application $app) {
                 $projector = new OfferLabelProjector(
-                    $app['place_repository'],
+                    $app['place_jsonld_repository'],
                     $app[self::RELATIONS_READ_REPOSITORY]
                 );
 
@@ -253,7 +263,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app[self::EVENT_LABEL_PROJECTOR] = $app->share(
             function (Application $app) {
                 $projector =  new OfferLabelProjector(
-                    $app['event_repository'],
+                    $app['event_jsonld_repository'],
                     $app[self::RELATIONS_READ_REPOSITORY]
                 );
 
