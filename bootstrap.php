@@ -1,4 +1,5 @@
 <?php
+use Broadway\EventHandling\EventListenerInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
@@ -8,7 +9,10 @@ use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\DomainMessage\CompositeDomainMessageEnricher;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\EventListener\EnrichingEventListenerDecorator;
+use CultuurNet\UDB3\Label\OfferLabelDomainMessageEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
@@ -523,6 +527,32 @@ $app['event_bus'] = $app->share(
     }
 );
 
+$app['event_listener.enricher.offer_label_events'] = $app->share(
+    function (Application $app) {
+        return new OfferLabelDomainMessageEnricher(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
+    }
+);
+
+$app['event_listener.enricher.all'] = $app->share(
+    function (Application $app) {
+        return (new CompositeDomainMessageEnricher())
+            ->withEnricher($app['event_listener.enricher.offer_label_events']);
+    }
+);
+
+$app['decorate_event_listener_with_enricher'] = $app->share(
+    function (Application $app) {
+        return function (EventListenerInterface $eventListener) use ($app) {
+            return new EnrichingEventListenerDecorator(
+                $eventListener,
+                $app['event_listener.enricher.all']
+            );
+        };
+    }
+);
+
 $app['amqp.connection'] = $app->share(
     function (Application $app) {
         $amqpConfig = $host = $app['config']['amqp'];
@@ -573,6 +603,8 @@ $app['amqp.publisher'] = $app->share(
         return $publisher;
     }
 );
+
+$app->extend('amqp.publisher', $app['decorate_event_listener_with_enricher']);
 
 $app['udb2_entry_api_improved_factory'] = $app->share(
     function ($app) {

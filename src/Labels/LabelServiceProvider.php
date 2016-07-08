@@ -127,7 +127,7 @@ class LabelServiceProvider implements ServiceProviderInterface
                 );
             }
         );
-        
+
         $app[self::RELATIONS_READ_REPOSITORY] = $app->share(
             function (Application $app) {
                 return new ReadRepository(
@@ -245,6 +245,11 @@ class LabelServiceProvider implements ServiceProviderInterface
                     new LabelEventHelper($app[self::JSON_READ_REPOSITORY])
                 );
             }
+        );
+
+        $app->extend(
+            LabelServiceProvider::RELATIONS_PROJECTOR,
+            $app['decorate_event_listener_with_enricher']
         );
 
         $app[self::PLACE_LABEL_PROJECTOR] = $app->share(
