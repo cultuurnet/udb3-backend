@@ -8,6 +8,7 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\Events\UniqueHelper;
+use CultuurNet\UDB3\Label\LabelEventOfferTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
 use CultuurNet\UDB3\Label\ReadModels\Helper\LabelEventHelper;
 use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
@@ -232,8 +233,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new JsonProjector(
                     $app[self::JSON_WRITE_REPOSITORY],
-                    $app[self::JSON_READ_REPOSITORY],
-                    new LabelEventHelper($app[self::JSON_READ_REPOSITORY])
+                    $app[self::JSON_READ_REPOSITORY]
                 );
             }
         );
@@ -242,7 +242,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new RelationsProjector(
                     $app[self::RELATIONS_WRITE_REPOSITORY],
-                    new LabelEventHelper($app[self::JSON_READ_REPOSITORY])
+                    new LabelEventOfferTypeResolver()
                 );
             }
         );
