@@ -1262,7 +1262,7 @@ $app['role_store'] = $app->share(
     }
 );
 
-$app['real_organizer_repository'] = $app->share(
+$app['real_role_repository'] = $app->share(
     function ($app) {
         $repository = new \CultuurNet\UDB3\Role\RoleRepository(
             $app['role_store'],
@@ -1270,14 +1270,6 @@ $app['real_organizer_repository'] = $app->share(
         );
 
         return $repository;
-    }
-);
-
-$app['organizer_jsonld_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['organizer_jsonld_cache']
-        );
     }
 );
 
@@ -1480,6 +1472,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $app->register(new LabelServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
