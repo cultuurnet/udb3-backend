@@ -96,6 +96,5 @@ class MediaServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-
     }
 }

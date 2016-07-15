@@ -157,6 +157,5 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-
     }
 }

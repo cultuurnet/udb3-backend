@@ -89,6 +89,5 @@ class UserServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-
     }
 }

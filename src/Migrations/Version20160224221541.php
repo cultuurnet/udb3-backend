@@ -27,7 +27,6 @@ class Version20160224221541 extends AbstractMigration
         $table->dropColumn(
             'event'
         );
-
     }
 
     /**
