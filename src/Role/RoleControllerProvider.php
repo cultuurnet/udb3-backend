@@ -17,7 +17,7 @@ class RoleControllerProvider implements ControllerProviderInterface
      * @param Application $app An Application instance
      *
      * @return ControllerCollection A ControllerCollection instance
-     */Claudia Reynders
+     */
     public function connect(Application $app)
     {
         $app['role_controller'] = $app->share(
@@ -51,7 +51,7 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $controllers
-            ->get('/permissions/', 'role_controller:getPermissions')
+            ->get('/permissions/', 'role_controller:getPermissions');
 
         //$controllers->delete('/roles/{cdbid}', 'role_edit_controller:delete');
 
