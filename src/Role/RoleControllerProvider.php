@@ -42,7 +42,7 @@ class RoleControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers
-            ->get('/roles/{roleId}', 'role_controller:get')
+            ->get('/roles/{id}', 'role_controller:get')
             ->bind('role');
 
         $controllers->post(

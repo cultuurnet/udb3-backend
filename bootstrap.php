@@ -501,7 +501,8 @@ $app['event_bus'] = $app->share(
                 'udb2_actor_events_to_udb3_organizer_applier',
                 'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
-                LabelServiceProvider::RELATIONS_PROJECTOR
+                LabelServiceProvider::RELATIONS_PROJECTOR,
+                'role_detail_projector'
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -925,6 +926,10 @@ $app['event_command_bus_out'] = $app->share(
                 ->withOrganizerRelationService($app['event_organizer_relation_service'])
         );
 
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Role\CommandHandler($app['real_role_repository'])
+        );
+
         $commandBus->subscribe($app['media_manager']);
 
         $commandBus->subscribe($app['bulk_label_offer_command_handler']);
@@ -1295,6 +1300,18 @@ $app['role_detail_projector'] = $app->share(
     }
 );
 
+$app['role_service'] = $app->share(
+    function ($app) {
+        $service = new \CultuurNet\UDB3\LocalEntityService(
+            $app['role_read_repository'],
+            $app['real_role_repository'],
+            $app['role_iri_generator']
+        );
+
+        return $service;
+    }
+);
+
 $app['role_permissions_cache'] = $app->share(
     function ($app) {
         return $app['cache']('role_permissions');
@@ -1309,14 +1326,13 @@ $app['role_permissions_read_repository'] = $app->share(
     }
 );
 
-$app['role_detail_projector'] = $app->share(
+$app['role_permission_detail_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Permissions\Projector(
             $app['role_permissions_read_repository']
         );
     }
 );
-
 
 $app['event_export_notification_mail_factory'] = $app->share(
     function ($app) {
@@ -1473,6 +1489,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $app->register(new LabelServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Role\RoleReadingServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
