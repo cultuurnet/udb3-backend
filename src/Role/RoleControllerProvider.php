@@ -49,6 +49,11 @@ class RoleControllerProvider implements ControllerProviderInterface
             '/roles/',
             'role_edit_controller:create'
         );
+        $controllers->post(
+            '/roles/{roleId}',
+            'role_edit_controller:update'
+        );
+
 
         $controllers
             ->get('/permissions/', 'role_controller:getPermissions');
