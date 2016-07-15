@@ -1266,8 +1266,7 @@ $app['real_organizer_repository'] = $app->share(
     function ($app) {
         $repository = new \CultuurNet\UDB3\Role\RoleRepository(
             $app['role_store'],
-            $app['event_bus'],
-
+            $app['event_bus']
         );
 
         return $repository;
