@@ -62,6 +62,21 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         $controllers->delete('/roles/{roleId}', 'role_edit_controller:delete');
 
+        $controllers->get(
+            '/roles/{id}/permissions/',
+            'role_controller:getRolePermissions'
+        );
+
+        $controllers->put(
+            '/roles/{roleId}/permissions/{permissionKey}',
+            'role_edit_controller:addPermission'
+        );
+
+        $controllers->delete(
+            '/roles/{roleId}/permissions/{permissionKey}',
+            'role_edit_controller:removePermission'
+        );
+
         return $controllers;
     }
 }

@@ -502,7 +502,8 @@ $app['event_bus'] = $app->share(
                 'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
-                'role_detail_projector'
+                'role_detail_projector',
+                'role_permission_detail_projector',
             ];
 
             // Allow to override event bus subscribers through configuration.
