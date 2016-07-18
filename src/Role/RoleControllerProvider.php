@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Role;
 
+use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Symfony\Role\EditRoleRestController;
 use CultuurNet\UDB3\Symfony\Role\ReadRoleRestController;
 use Silex\Application;
@@ -35,7 +36,8 @@ class RoleControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new EditRoleRestController(
                     $app['role_editing_service'],
-                    $app['event_command_bus']
+                    $app['event_command_bus'],
+                    new UpdateRoleRequestDeserializer()
                 );
             }
         );
@@ -51,6 +53,10 @@ class RoleControllerProvider implements ControllerProviderInterface
             '/roles/',
             'role_edit_controller:create'
         );
+        $controllers->post(
+            '/roles/{roleId}',
+            'role_edit_controller:update'
+        );
 
         $controllers
             ->get('/permissions/', 'role_controller:getPermissions');
@@ -58,7 +64,22 @@ class RoleControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('/user/permissions/', 'role_controller:getUserPermissions');
 
-        //$controllers->delete('/roles/{cdbid}', 'role_edit_controller:delete');
+        $controllers->delete('/roles/{roleId}', 'role_edit_controller:delete');
+
+        $controllers->get(
+            '/roles/{id}/permissions/',
+            'role_controller:getRolePermissions'
+        );
+
+        $controllers->put(
+            '/roles/{roleId}/permissions/{permissionKey}',
+            'role_edit_controller:addPermission'
+        );
+
+        $controllers->delete(
+            '/roles/{roleId}/permissions/{permissionKey}',
+            'role_edit_controller:removePermission'
+        );
 
         return $controllers;
     }
