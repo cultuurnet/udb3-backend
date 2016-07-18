@@ -27,7 +27,8 @@ class RoleControllerProvider implements ControllerProviderInterface
                     $app['role_service'],
                     $app['role_reading_service'],
                     $app['current_user'],
-                    $app['config']['user_permissions']
+                    $app['config']['user_permissions'],
+                    $app['role_search_repository']
                 );
             }
         );
@@ -44,6 +45,9 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
+
+        $controllers
+            ->get('/roles/', 'role_controller:search');
 
         $controllers
             ->get('/roles/{id}', 'role_controller:get')

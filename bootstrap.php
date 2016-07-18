@@ -504,6 +504,7 @@ $app['event_bus'] = $app->share(
                 LabelServiceProvider::RELATIONS_PROJECTOR,
                 'role_detail_projector',
                 'role_permission_detail_projector',
+                'role_search_projector',
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -1289,6 +1290,25 @@ $app['role_read_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
             $app['role_detail_cache']
+        );
+    }
+);
+
+$app['role_search_repository.table_name'] = new StringLiteral('roles_search');
+
+$app['role_search_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Search\DBALRepository(
+            $app['dbal_connection'],
+            $app['role_search_repository.table_name']
+        );
+    }
+);
+
+$app['role_search_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Search\Projector(
+            $app['role_search_repository']
         );
     }
 );
