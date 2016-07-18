@@ -29,7 +29,6 @@ class Version20151029184516 extends AbstractMigration
         );
 
         $table->setPrimaryKey(['event_id', 'user_id']);
-
     }
 
     /**
@@ -38,6 +37,5 @@ class Version20151029184516 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

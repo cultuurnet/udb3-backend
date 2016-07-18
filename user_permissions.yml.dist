@@ -1,0 +1,3 @@
+user_permissions:
+    allow_all:
+        - '948cf2a5-65c5-470e-ab55-97ee4b05f576'

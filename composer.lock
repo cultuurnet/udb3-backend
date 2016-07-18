@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "e59942f164270e78e07535525dd1e55d7d12ef58"
+                "reference": "3699090a7fffd786836b7e8ee7e4e220c0075491"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/e59942f164270e78e07535525dd1e55d7d12ef58",
-                "reference": "e59942f164270e78e07535525dd1e55d7d12ef58",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3699090a7fffd786836b7e8ee7e4e220c0075491",
+                "reference": "3699090a7fffd786836b7e8ee7e4e220c0075491",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-06-29 12:59:19"
+            "time": "2016-07-18 11:29:36"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1519,12 +1519,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "069e54daae58cd81d0f0cee4fe96a84859e1fa0f"
+                "reference": "6defb1284bfc202b414c8c2ca9f0b42e32d681f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/069e54daae58cd81d0f0cee4fe96a84859e1fa0f",
-                "reference": "069e54daae58cd81d0f0cee4fe96a84859e1fa0f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/6defb1284bfc202b414c8c2ca9f0b42e32d681f8",
+                "reference": "6defb1284bfc202b414c8c2ca9f0b42e32d681f8",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1572,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-06-23 12:43:15"
+            "time": "2016-07-18 11:36:28"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -4521,23 +4521,23 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.2",
+            "version": "v5.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
+                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d8db871a54619458a805229a057ea2af33c753e8",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/4cc92842069c2bbc1f28daaaf1d2576ec4dfe153",
+                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9.1,<0.9.4"
+                "mockery/mockery": "~0.9.1"
             },
             "type": "library",
             "extra": {
@@ -4570,7 +4570,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-05-01 08:45:47"
+            "time": "2016-07-08 11:51:25"
         },
         {
             "name": "symfony/console",
@@ -5862,16 +5862,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.6.1",
+            "version": "2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d"
+                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
-                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83",
                 "shasum": ""
             },
             "require": {
@@ -5936,7 +5936,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-05-30 22:24:32"
+            "time": "2016-07-13 23:29:13"
         }
     ],
     "aliases": [],
