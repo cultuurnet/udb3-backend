@@ -22,20 +22,8 @@
         </phplint>
     </target>
 
-    <target name="swagger-validate">
-        <exec executable="npm" passthru="true" checkreturn="true">
-            <arg value="run"/>
-            <arg value="validate-swagger-lint"/>
-        </exec>
-        <exec executable="npm" passthru="true" checkreturn="true">
-            <arg value="run"/>
-            <arg value="validate-swagger-schema"/>
-        </exec>
-    </target>
-
     <target name="test">
         <phingcall target="lint"/>
-        <phingcall target="swagger-validate"/>
         <phingcall target="coding-standards"/>
     </target>
 

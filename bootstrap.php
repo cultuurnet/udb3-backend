@@ -878,12 +878,14 @@ $app['event_command_bus_out'] = $app->share(
     function (Application $app) {
         $commandBus = $app['event_command_bus_base'];
 
+        // The order is important because the label first needs to be created
+        // before it can be added.
+        $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
+
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Event\EventCommandHandler(
                 $app['event_repository'],
-                $app['organizer_repository'],
-                $app[LabelServiceProvider::REPOSITORY],
-                new Version4Generator()
+                $app['organizer_repository']
             )
         );
 
@@ -915,9 +917,7 @@ $app['event_command_bus_out'] = $app->share(
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Place\CommandHandler(
                 $app['place_repository'],
-                $app['organizer_repository'],
-                $app[LabelServiceProvider::REPOSITORY],
-                new Version4Generator()
+                $app['organizer_repository']
             )
         );
 
@@ -934,8 +934,6 @@ $app['event_command_bus_out'] = $app->share(
         $commandBus->subscribe($app['media_manager']);
 
         $commandBus->subscribe($app['bulk_label_offer_command_handler']);
-
-        $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
 
         return $commandBus;
     }

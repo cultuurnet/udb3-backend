@@ -3,3 +3,7 @@ toggles:
     name: search-include-places
     conditions: {}
     status: inactive
+  label-management:
+    name: label-management
+    conditions: {}
+    status: inactive
