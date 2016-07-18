@@ -54,9 +54,9 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:create'
         );
         $controllers->patch(
-            '/roles/{roleId}',
+            '/roles/{id}',
             'role_edit_controller:update'
-        );
+        )->bind('role');
 
         $controllers
             ->get('/permissions/', 'role_controller:getPermissions');
