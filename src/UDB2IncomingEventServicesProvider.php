@@ -128,7 +128,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     new QualifiesAsPlaceSpecification()
                 );
 
-                $logger = new \Monolog\Logger('udb2-actor-events-to-udb3-organizer-applier');
+                $logger = new \Monolog\Logger('udb2-actor-events-to-udb3-place-applier');
                 $logger->pushHandler($app['udb2_log_handler']);
 
                 $applier->setLogger($logger);
