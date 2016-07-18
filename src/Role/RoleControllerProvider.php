@@ -53,7 +53,7 @@ class RoleControllerProvider implements ControllerProviderInterface
             '/roles/',
             'role_edit_controller:create'
         );
-        $controllers->post(
+        $controllers->patch(
             '/roles/{roleId}',
             'role_edit_controller:update'
         );
