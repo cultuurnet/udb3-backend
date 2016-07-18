@@ -1296,7 +1296,7 @@ $app['role_search_repository.table_name'] = new StringLiteral('roles_search');
 
 $app['role_search_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Search\DBALRepository(
+        return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
             $app['dbal_connection'],
             $app['role_search_repository.table_name']
         );
