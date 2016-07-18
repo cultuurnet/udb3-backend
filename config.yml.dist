@@ -1,5 +1,6 @@
 imports:
   - resource: features.yml
+  - resource: user_permissions.yml
 # Base URL of the silex application. Necessary to generate the IRIs of JSON-LD
 # events.
 url: http://example.com

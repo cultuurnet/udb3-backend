@@ -24,7 +24,9 @@ class RoleControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadRoleRestController(
                     $app['role_service'],
-                    $app['role_reading_service']
+                    $app['role_reading_service'],
+                    $app['current_user'],
+                    $app['config']['user_permissions']
                 );
             }
         );
@@ -52,6 +54,9 @@ class RoleControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->get('/permissions/', 'role_controller:getPermissions');
+
+        $controllers
+            ->get('/user/permissions/', 'role_controller:getUserPermissions');
 
         //$controllers->delete('/roles/{cdbid}', 'role_edit_controller:delete');
 
