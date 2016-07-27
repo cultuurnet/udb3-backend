@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\User;
 
+use CultuurNet\UDB3\Symfony\User\SearchUserController;
 use CultuurNet\UDB3\Symfony\User\UserLabelMemoryRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -20,10 +21,20 @@ class UserControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app['user_search_controller'] = $app->share(
+            function (Application $app) {
+                return new SearchUserController(
+                    $app['culturefeed']
+                );
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers->get('api/1.0/user/labels', 'user_label_memory_controller:all');
+
+        $controllers->get('users/', 'user_search_controller:search');
 
         return $controllers;
     }
