@@ -265,6 +265,11 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app->extend(
+            self::PLACE_LABEL_PROJECTOR,
+            $app['decorate_event_listener_with_enricher']
+        );
+
         $app[self::EVENT_LABEL_PROJECTOR] = $app->share(
             function (Application $app) {
                 $projector =  new OfferLabelProjector(
@@ -276,6 +281,11 @@ class LabelServiceProvider implements ServiceProviderInterface
 
                 return $projector;
             }
+        );
+
+        $app->extend(
+            self::EVENT_LABEL_PROJECTOR,
+            $app['decorate_event_listener_with_enricher']
         );
     }
 

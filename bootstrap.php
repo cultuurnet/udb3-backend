@@ -12,6 +12,7 @@ use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\DomainMessage\CompositeDomainMessageEnricher;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\EventListener\EnrichingEventListenerDecorator;
+use CultuurNet\UDB3\Label\LabelDomainMessageEnricher;
 use CultuurNet\UDB3\Label\OfferLabelDomainMessageEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
@@ -535,10 +536,19 @@ $app['event_listener.enricher.offer_label_events'] = $app->share(
     }
 );
 
+$app['event_listener.enricher.label_events'] = $app->share(
+    function (Application $app) {
+        return new LabelDomainMessageEnricher(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
+    }
+);
+
 $app['event_listener.enricher.all'] = $app->share(
     function (Application $app) {
         return (new CompositeDomainMessageEnricher())
-            ->withEnricher($app['event_listener.enricher.offer_label_events']);
+            ->withEnricher($app['event_listener.enricher.offer_label_events'])
+            ->withEnricher($app['event_listener.enricher.label_events']);
     }
 );
 
