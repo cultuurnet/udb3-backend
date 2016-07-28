@@ -49,26 +49,27 @@ class RoleControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('/roles/', 'role_controller:search');
 
-        $controllers
-            ->get('/roles/{id}', 'role_controller:get')
-            ->bind('role');
-
         $controllers->post(
             '/roles/',
             'role_edit_controller:create'
         );
+
+        $controllers
+            ->get('/roles/{id}', 'role_controller:get')
+            ->bind('role');
+
         $controllers->patch(
             '/roles/{id}',
             'role_edit_controller:update'
         );
+
+        $controllers->delete('/roles/{id}', 'role_edit_controller:delete');
 
         $controllers
             ->get('/permissions/', 'role_controller:getPermissions');
 
         $controllers
             ->get('/user/permissions/', 'role_controller:getUserPermissions');
-
-        $controllers->delete('/roles/{roleId}', 'role_edit_controller:delete');
 
         $controllers->get(
             '/roles/{id}/permissions/',

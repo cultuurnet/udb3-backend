@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.5.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "8a9ad22f1220e47a6d174843e8abef08f5eac441"
+                "reference": "9c86caae1354c663cc6e24032ae7c3d0154ec331"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/8a9ad22f1220e47a6d174843e8abef08f5eac441",
-                "reference": "8a9ad22f1220e47a6d174843e8abef08f5eac441",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/9c86caae1354c663cc6e24032ae7c3d0154ec331",
+                "reference": "9c86caae1354c663cc6e24032ae7c3d0154ec331",
                 "shasum": ""
             },
             "require": {
@@ -123,7 +123,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -141,7 +141,13 @@
             "authors": [
                 {
                     "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Richard Quadling",
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
                 }
             ],
             "description": "Thin assertion library for input validation in business models.",
@@ -150,7 +156,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-06-20 12:01:28"
+            "time": "2016-07-26 00:20:59"
         },
         {
             "name": "broadway/broadway",
@@ -1294,12 +1300,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d3e41b3d7b046afbf159769e73c229e2e4e519fb"
+                "reference": "cea266febc7d7360c276304304dac82cfef3075c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d3e41b3d7b046afbf159769e73c229e2e4e519fb",
-                "reference": "d3e41b3d7b046afbf159769e73c229e2e4e519fb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cea266febc7d7360c276304304dac82cfef3075c",
+                "reference": "cea266febc7d7360c276304304dac82cfef3075c",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1378,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-07-25 14:06:30"
+            "time": "2016-07-27 13:36:57"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1519,12 +1525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "4f9a0fc8cbc0e308660c131509722b6c93cb2c39"
+                "reference": "ec8a7360a51606fde01a0d444e0cd3442d5e0bec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/4f9a0fc8cbc0e308660c131509722b6c93cb2c39",
-                "reference": "4f9a0fc8cbc0e308660c131509722b6c93cb2c39",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/ec8a7360a51606fde01a0d444e0cd3442d5e0bec",
+                "reference": "ec8a7360a51606fde01a0d444e0cd3442d5e0bec",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1578,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-07-19 12:49:24"
+            "time": "2016-07-28 13:30:34"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3165,16 +3171,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "afea8e682e911a21574fd8519321b32522fa25b5"
+                "reference": "9a8db2cd42346f96993928ff6a6c22563f555ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/afea8e682e911a21574fd8519321b32522fa25b5",
-                "reference": "afea8e682e911a21574fd8519321b32522fa25b5",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/9a8db2cd42346f96993928ff6a6c22563f555ab1",
+                "reference": "9a8db2cd42346f96993928ff6a6c22563f555ab1",
                 "shasum": ""
             },
             "require": {
@@ -3182,7 +3188,7 @@
                 "php": ">=5.5"
             },
             "require-dev": {
-                "mdanter/ecc": "~0.3",
+                "mdanter/ecc": "~0.3.1",
                 "mikey179/vfsstream": "~1.5",
                 "phpmd/phpmd": "~2.2",
                 "phpunit/php-invoker": "~1.1",
@@ -3219,7 +3225,7 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2016-03-24 22:46:13"
+            "time": "2016-07-27 11:09:37"
         },
         {
             "name": "league/flysystem",
