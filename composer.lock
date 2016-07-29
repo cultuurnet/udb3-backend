@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "312138d6af1bda88ecca3c633d313d40",
-    "content-hash": "1e558ea62cf331c83ee125ea4bf93bc4",
+    "hash": "b1d7b47f2ba18ffb39452df75240701e",
+    "content-hash": "16250633e1b634ea02990dbeebb8f292",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.6.2",
+            "version": "v2.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "9c86caae1354c663cc6e24032ae7c3d0154ec331"
+                "reference": "51e9d654481fc00c8a376641c390ec4e35d8c1fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/9c86caae1354c663cc6e24032ae7c3d0154ec331",
-                "reference": "9c86caae1354c663cc6e24032ae7c3d0154ec331",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/51e9d654481fc00c8a376641c390ec4e35d8c1fc",
+                "reference": "51e9d654481fc00c8a376641c390ec4e35d8c1fc",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-07-26 00:20:59"
+            "time": "2016-07-28 19:35:30"
         },
         {
             "name": "broadway/broadway",
@@ -614,16 +614,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.6.1",
+            "version": "dev-feature/III-1189",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "aa0656aa939fdff13ec3770d0cc8229c32d0278a"
+                "reference": "8ecbded9ea380a5bf100babb5543cff108e77630"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/aa0656aa939fdff13ec3770d0cc8229c32d0278a",
-                "reference": "aa0656aa939fdff13ec3770d0cc8229c32d0278a",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/8ecbded9ea380a5bf100babb5543cff108e77630",
+                "reference": "8ecbded9ea380a5bf100babb5543cff108e77630",
                 "shasum": ""
             },
             "require": {
@@ -636,7 +636,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "1.2.x-dev"
+                    "dev-develop": "1.2.x-dev",
+                    "dev-feature/III-1189": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -677,7 +678,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2016-01-08 12:08:20"
+            "time": "2016-07-29 13:19:31"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1296,16 +1297,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-1189",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "cea266febc7d7360c276304304dac82cfef3075c"
+                "reference": "b52bfdfe83770a426befa5c23ad78e8cd965f570"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cea266febc7d7360c276304304dac82cfef3075c",
-                "reference": "cea266febc7d7360c276304304dac82cfef3075c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b52bfdfe83770a426befa5c23ad78e8cd965f570",
+                "reference": "b52bfdfe83770a426befa5c23ad78e8cd965f570",
                 "shasum": ""
             },
             "require": {
@@ -1316,7 +1317,7 @@
                 "cultuurnet/calendar-summary": "~1.0.2",
                 "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/clock": "~0.1",
-                "cultuurnet/culturefeed-php": "~1.5",
+                "cultuurnet/culturefeed-php": "dev-feature/III-1189 as 1.5",
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/search": "~1.1",
@@ -1378,7 +1379,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-07-27 13:36:57"
+            "time": "2016-07-29 15:41:47"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1521,22 +1522,22 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-1189",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "ec8a7360a51606fde01a0d444e0cd3442d5e0bec"
+                "reference": "6a1e845effdbd4f3c8550ada465906635e8aeae8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/ec8a7360a51606fde01a0d444e0cd3442d5e0bec",
-                "reference": "ec8a7360a51606fde01a0d444e0cd3442d5e0bec",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/6a1e845effdbd4f3c8550ada465906635e8aeae8",
+                "reference": "6a1e845effdbd4f3c8550ada465906635e8aeae8",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-1189 as 0.1",
                 "guzzlehttp/guzzle": "~6.2",
                 "guzzlehttp/psr7": "~1.2.3",
                 "symfony/http-foundation": "~2.7.2",
@@ -1578,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-07-28 13:30:34"
+            "time": "2016-07-29 15:45:21"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3157,7 +3158,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -5945,10 +5946,25 @@
             "time": "2016-07-13 23:29:13"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1189",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1189",
+            "package": "cultuurnet/udb3-symfony"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
