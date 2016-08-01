@@ -72,6 +72,11 @@ class RoleControllerProvider implements ControllerProviderInterface
             ->get('/user/permissions/', 'role_controller:getUserPermissions');
 
         $controllers->get(
+            '/roles/{roleId}/users/',
+            'role_controller:getRoleUsers'
+        );
+
+        $controllers->get(
             '/roles/{id}/permissions/',
             'role_controller:getRolePermissions'
         );
