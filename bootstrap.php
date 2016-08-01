@@ -505,6 +505,7 @@ $app['event_bus'] = $app->share(
                 'role_detail_projector',
                 'role_permission_detail_projector',
                 'role_search_projector',
+                'user_roles_projector',
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -1284,10 +1285,24 @@ $app['role_detail_cache'] = $app->share(
     }
 );
 
+$app['user_roles_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('user_roles');
+    }
+);
+
 $app['role_read_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
             $app['role_detail_cache']
+        );
+    }
+);
+
+$app['user_roles_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['user_roles_cache']
         );
     }
 );
@@ -1314,6 +1329,15 @@ $app['role_search_projector'] = $app->share(
 $app['role_detail_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Detail\Projector(
+            $app['role_read_repository']
+        );
+    }
+);
+
+$app['user_roles_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector(
+            $app['user_roles_repository'],
             $app['role_read_repository']
         );
     }
