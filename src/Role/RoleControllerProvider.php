@@ -96,6 +96,11 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:removeUser'
         );
 
+        $controllers->get(
+            '/users/{userId}/roles/',
+            'role_controller:getUserRoles'
+        );
+
         return $controllers;
     }
 }
