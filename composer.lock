@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b1d7b47f2ba18ffb39452df75240701e",
+    "hash": "b3c545f7a0068517b9c2457b2e5296e4",
     "content-hash": "16250633e1b634ea02990dbeebb8f292",
     "packages": [
         {
@@ -1301,12 +1301,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "0ae164584e9e52062c7d37953448f7c7011a4f48"
+                "reference": "984e070c018950059696f512093e4fc3f434be33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/0ae164584e9e52062c7d37953448f7c7011a4f48",
-                "reference": "0ae164584e9e52062c7d37953448f7c7011a4f48",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/984e070c018950059696f512093e4fc3f434be33",
+                "reference": "984e070c018950059696f512093e4fc3f434be33",
                 "shasum": ""
             },
             "require": {
@@ -1379,7 +1379,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-08-02 09:01:01"
+            "time": "2016-08-02 14:09:59"
         },
         {
             "name": "cultuurnet/udb3-doctrine",

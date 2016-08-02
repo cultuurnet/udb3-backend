@@ -1,4 +1,5 @@
 <?php
+use Broadway\EventHandling\EventListenerInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
@@ -8,7 +9,11 @@ use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\DomainMessage\CompositeDomainMessageEnricher;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\EventListener\EnrichingEventListenerDecorator;
+use CultuurNet\UDB3\Label\LabelDomainMessageEnricher;
+use CultuurNet\UDB3\Label\OfferLabelDomainMessageEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
@@ -502,6 +507,9 @@ $app['event_bus'] = $app->share(
                 'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
+                LabelServiceProvider::EVENT_LABEL_PROJECTOR,
+                LabelServiceProvider::PLACE_LABEL_PROJECTOR,
+                LabelServiceProvider::RELATIONS_PROJECTOR,
                 'role_detail_projector',
                 'role_permission_detail_projector',
                 'role_search_projector',
@@ -523,6 +531,41 @@ $app['event_bus'] = $app->share(
         });
 
         return $eventBus;
+    }
+);
+
+$app['event_listener.enricher.offer_label_events'] = $app->share(
+    function (Application $app) {
+        return new OfferLabelDomainMessageEnricher(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
+    }
+);
+
+$app['event_listener.enricher.label_events'] = $app->share(
+    function (Application $app) {
+        return new LabelDomainMessageEnricher(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
+    }
+);
+
+$app['event_listener.enricher.all'] = $app->share(
+    function (Application $app) {
+        return (new CompositeDomainMessageEnricher())
+            ->withEnricher($app['event_listener.enricher.offer_label_events'])
+            ->withEnricher($app['event_listener.enricher.label_events']);
+    }
+);
+
+$app['decorate_event_listener_with_enricher'] = $app->share(
+    function (Application $app) {
+        return function (EventListenerInterface $eventListener) use ($app) {
+            return new EnrichingEventListenerDecorator(
+                $eventListener,
+                $app['event_listener.enricher.all']
+            );
+        };
     }
 );
 
@@ -551,6 +594,7 @@ $app['amqp.publisher'] = $app->share(
         $map =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
             \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Label\Events\ContentTypes::map() +
             \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
 
         $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
@@ -575,6 +619,8 @@ $app['amqp.publisher'] = $app->share(
         return $publisher;
     }
 );
+
+$app->extend('amqp.publisher', $app['decorate_event_listener_with_enricher']);
 
 $app['udb2_entry_api_improved_factory'] = $app->share(
     function ($app) {
