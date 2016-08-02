@@ -1294,8 +1294,12 @@ $app['user_roles_cache'] = $app->share(
 
 $app['role_read_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['role_detail_cache']
+        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
+            new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+                $app['role_detail_cache']
+            ),
+            $app['event_bus'],
+            new \CultuurNet\UDB3\Role\ReadModel\Detail\EventFactory()
         );
     }
 );
@@ -1339,7 +1343,8 @@ $app['user_roles_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector(
             $app['user_roles_repository'],
-            $app['role_read_repository']
+            $app['role_read_repository'],
+            $app['role_users_read_repository']
         );
     }
 );
