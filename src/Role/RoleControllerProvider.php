@@ -86,6 +86,16 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_edit_controller:removePermission'
         );
 
+        $controllers->put(
+            '/roles/{roleId}/labels/{labelId}',
+            'role_edit_controller:addLabel'
+        );
+
+        $controllers->delete(
+            '/roles/{roleId}/labels/{labelId}',
+            'role_edit_controller:removeLabel'
+        );
+
         return $controllers;
     }
 }

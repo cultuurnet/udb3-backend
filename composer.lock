@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "312138d6af1bda88ecca3c633d313d40",
-    "content-hash": "1e558ea62cf331c83ee125ea4bf93bc4",
+    "hash": "eccf91fa579811ff1da9b1d15acee165",
+    "content-hash": "adebd857674391e2f6fa11df34a8ceb4",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1296,16 +1296,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-1174",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f14f5211fc7eb08e0cb3594d5bb3ae7531945212"
+                "reference": "66ce5c1056fa1d0354c5b06fb5573b5bf870ed4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f14f5211fc7eb08e0cb3594d5bb3ae7531945212",
-                "reference": "f14f5211fc7eb08e0cb3594d5bb3ae7531945212",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/66ce5c1056fa1d0354c5b06fb5573b5bf870ed4d",
+                "reference": "66ce5c1056fa1d0354c5b06fb5573b5bf870ed4d",
                 "shasum": ""
             },
             "require": {
@@ -1378,7 +1378,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-08-02 09:04:20"
+            "time": "2016-08-02 18:57:12"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1521,22 +1521,22 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-1174",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "ec8a7360a51606fde01a0d444e0cd3442d5e0bec"
+                "reference": "47f35a6edf828b4aedd599c2e4fdf78a1032db45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/ec8a7360a51606fde01a0d444e0cd3442d5e0bec",
-                "reference": "ec8a7360a51606fde01a0d444e0cd3442d5e0bec",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/47f35a6edf828b4aedd599c2e4fdf78a1032db45",
+                "reference": "47f35a6edf828b4aedd599c2e4fdf78a1032db45",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-1174 as 0.1",
                 "guzzlehttp/guzzle": "~6.2",
                 "guzzlehttp/psr7": "~1.2.3",
                 "symfony/http-foundation": "~2.7.2",
@@ -1578,7 +1578,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-07-28 13:30:34"
+            "time": "2016-08-02 20:58:28"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -5945,10 +5945,25 @@
             "time": "2016-07-13 23:29:13"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1174",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1174",
+            "package": "cultuurnet/udb3-symfony"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
