@@ -111,6 +111,5 @@ class VariationsServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-
     }
 }

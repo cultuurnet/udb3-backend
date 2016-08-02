@@ -51,6 +51,5 @@ class ErrorHandlerProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
-
     }
 }

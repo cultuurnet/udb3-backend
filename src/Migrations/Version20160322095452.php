@@ -33,7 +33,6 @@ class Version20160322095452 extends AbstractMigration
             'entity_iri',
             'text'
         );
-
     }
 
     /**
