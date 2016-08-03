@@ -1418,7 +1418,7 @@ $app['role_labels_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Labels\Projector(
             $app['role_labels_read_repository'],
-            $app['labels.read_service']
+            $app['labels.json_read_repository']
         );
     }
 );
