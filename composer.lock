@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "312138d6af1bda88ecca3c633d313d40",
-    "content-hash": "1e558ea62cf331c83ee125ea4bf93bc4",
+    "hash": "698ffe3feb842f18fe3462b32cf94e79",
+    "content-hash": "3f62ba1af0652fa3c9e2ba1eb74dd70e",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1427,16 +1427,16 @@
         },
         {
             "name": "cultuurnet/udb3-jwt",
-            "version": "dev-master",
+            "version": "dev-feature/III-1267",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce"
+                "reference": "1edd1299108283ec925431a9961367cb9c3a5bcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
-                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/1edd1299108283ec925431a9961367cb9c3a5bcb",
+                "reference": "1edd1299108283ec925431a9961367cb9c3a5bcb",
                 "shasum": ""
             },
             "require": {
@@ -1472,7 +1472,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-05-04 12:22:32"
+            "time": "2016-08-04 13:05:14"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
@@ -3229,16 +3229,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.25",
+            "version": "1.0.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "a76afa4035931be0c78ca8efc6abf3902362f437"
+                "reference": "fb3b30dca320b36931ea878fea17ebe136fba1b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a76afa4035931be0c78ca8efc6abf3902362f437",
-                "reference": "a76afa4035931be0c78ca8efc6abf3902362f437",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/fb3b30dca320b36931ea878fea17ebe136fba1b0",
+                "reference": "fb3b30dca320b36931ea878fea17ebe136fba1b0",
                 "shasum": ""
             },
             "require": {
@@ -3308,7 +3308,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-07-18 12:22:57"
+            "time": "2016-08-03 09:49:11"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -5945,11 +5945,19 @@
             "time": "2016-07-13 23:29:13"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1267",
+            "package": "cultuurnet/udb3-jwt"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "doctrine/migrations": 20
+        "doctrine/migrations": 20,
+        "cultuurnet/udb3-jwt": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
