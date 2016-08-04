@@ -513,6 +513,7 @@ $app['event_bus'] = $app->share(
                 'role_detail_projector',
                 'role_permission_detail_projector',
                 'role_labels_projector',
+                'label_roles_projector',
                 'role_search_projector',
             ];
 
@@ -1416,9 +1417,31 @@ $app['role_labels_read_repository'] = $app->share(
 
 $app['role_labels_projector'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Labels\Projector(
+        return new \CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector(
             $app['role_labels_read_repository'],
             $app['labels.json_read_repository']
+        );
+    }
+);
+
+$app['label_roles_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('label_roles');
+    }
+);
+
+$app['label_roles_read_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['label_roles_cache']
+        );
+    }
+);
+
+$app['label_roles_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Labels\LabelRolesProjector(
+            $app['label_roles_read_repository']
         );
     }
 );
