@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Label\LabelRepository;
 use CultuurNet\UDB3\Label\ReadModels\Helper\LabelEventHelper;
 use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\SchemaConfigurator as JsonSchemaConfigurator;
@@ -113,9 +114,12 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $app[self::JSON_WRITE_REPOSITORY] = $app->share(
             function (Application $app) {
-                return new JsonWriteRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(self::JSON_TABLE)
+                return new BroadcastingWriteRepositoryDecorator(
+                    new JsonWriteRepository(
+                        $app['dbal_connection'],
+                        new StringLiteral(self::JSON_TABLE)
+                    ),
+                    $app['event_bus']
                 );
             }
         );
