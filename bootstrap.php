@@ -512,7 +512,11 @@ $app['event_bus'] = $app->share(
                 LabelServiceProvider::RELATIONS_PROJECTOR,
                 'role_detail_projector',
                 'role_permission_detail_projector',
+                'role_labels_projector',
+                'label_roles_projector',
                 'role_search_projector',
+                'role_users_projector',
+                'user_roles_projector',
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -1330,10 +1334,28 @@ $app['role_detail_cache'] = $app->share(
     }
 );
 
+$app['user_roles_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('user_roles');
+    }
+);
+
 $app['role_read_repository'] = $app->share(
     function ($app) {
+        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
+            new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+                $app['role_detail_cache']
+            ),
+            $app['event_bus'],
+            new \CultuurNet\UDB3\Role\ReadModel\Detail\EventFactory()
+        );
+    }
+);
+
+$app['user_roles_repository'] = $app->share(
+    function ($app) {
         return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['role_detail_cache']
+            $app['user_roles_cache']
         );
     }
 );
@@ -1361,6 +1383,16 @@ $app['role_detail_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Detail\Projector(
             $app['role_read_repository']
+        );
+    }
+);
+
+$app['user_roles_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector(
+            $app['user_roles_repository'],
+            $app['role_read_repository'],
+            $app['role_users_read_repository']
         );
     }
 );
@@ -1395,6 +1427,75 @@ $app['role_permission_detail_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Permissions\Projector(
             $app['role_permissions_read_repository']
+        );
+    }
+);
+
+$app['role_labels_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('role_labels');
+    }
+);
+
+$app['role_labels_read_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['role_labels_cache']
+        );
+    }
+);
+
+$app['role_labels_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector(
+            $app['role_labels_read_repository'],
+            $app['labels.json_read_repository'],
+            $app['label_roles_read_repository']
+        );
+    }
+);
+
+$app['label_roles_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('label_roles');
+    }
+);
+
+$app['label_roles_read_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['label_roles_cache']
+        );
+    }
+);
+
+$app['label_roles_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Labels\LabelRolesProjector(
+            $app['label_roles_read_repository']
+        );
+    }
+);
+
+$app['role_users_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('role_users');
+    }
+);
+
+$app['role_users_read_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['role_users_cache']
+        );
+    }
+);
+
+$app['role_users_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector(
+            $app['role_users_read_repository'],
+            $app['user_identity_resolver']
         );
     }
 );

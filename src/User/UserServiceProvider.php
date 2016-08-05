@@ -9,6 +9,8 @@ use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use CultuurNet\UDB3\UiTID\InMemoryCacheDecoratedUsers;
 use CultuurNet\UDB3\UiTID\CultureFeedUsers;
 use CultuurNet\UDB3\UiTID\UsersInterface;
+use CultuurNet\UDB3\User\CultureFeedUserIdentityDetailsFactory;
+use CultuurNet\UDB3\User\CultureFeedUserIdentityResolver;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -18,10 +20,23 @@ class UserServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['user_identity_resolver'] = $app->share(
+            function (Application $app) {
+                return new CultureFeedUserIdentityResolver(
+                    $app['culturefeed'],
+                    new CultureFeedUserIdentityDetailsFactory()
+                );
+            }
+        );
+
+        /**
+         * @deprecated
+         *   Use $app['user_identity_resolver'] instead.
+         */
         $app['uitid_users'] = $app->share(
             function (Application $app) {
                 return new CultureFeedUsers(
-                    $app['culturefeed']
+                    $app['user_identity_resolver']
                 );
             }
         );
