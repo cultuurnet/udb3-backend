@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Role;
 
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Symfony\Role\EditRoleRestController;
 use CultuurNet\UDB3\Symfony\Role\ReadRoleRestController;
 use Silex\Application;
@@ -38,7 +39,8 @@ class RoleControllerProvider implements ControllerProviderInterface
                 return new EditRoleRestController(
                     $app['role_editing_service'],
                     $app['event_command_bus'],
-                    new UpdateRoleRequestDeserializer()
+                    new UpdateRoleRequestDeserializer(),
+                    $app[LabelServiceProvider::READ_SERVICE]
                 );
             }
         );
@@ -49,18 +51,21 @@ class RoleControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('/roles/', 'role_controller:search');
 
-        $controllers
-            ->get('/roles/{id}', 'role_controller:get')
-            ->bind('role');
-
         $controllers->post(
             '/roles/',
             'role_edit_controller:create'
         );
+
+        $controllers
+            ->get('/roles/{id}', 'role_controller:get')
+            ->bind('role');
+
         $controllers->patch(
             '/roles/{id}',
             'role_edit_controller:update'
         );
+
+        $controllers->delete('/roles/{id}', 'role_edit_controller:delete');
 
         $controllers
             ->get('/permissions/', 'role_controller:getPermissions');
@@ -68,7 +73,10 @@ class RoleControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('/user/permissions/', 'role_controller:getUserPermissions');
 
-        $controllers->delete('/roles/{roleId}', 'role_edit_controller:delete');
+        $controllers->get(
+            '/roles/{roleId}/users/',
+            'role_controller:getRoleUsers'
+        );
 
         $controllers->get(
             '/roles/{id}/permissions/',
@@ -83,6 +91,36 @@ class RoleControllerProvider implements ControllerProviderInterface
         $controllers->delete(
             '/roles/{roleId}/permissions/{permissionKey}',
             'role_edit_controller:removePermission'
+        );
+
+        $controllers->get(
+            '/roles/{roleId}/labels/',
+            'role_controller:getRoleLabels'
+        );
+
+        $controllers->put(
+            '/roles/{roleId}/labels/{labelIdentifier}',
+            'role_edit_controller:addLabel'
+        );
+
+        $controllers->delete(
+            '/roles/{roleId}/labels/{labelIdentifier}',
+            'role_edit_controller:removeLabel'
+        );
+
+        $controllers->put(
+            '/roles/{roleId}/users/{userId}',
+            'role_edit_controller:addUser'
+        );
+
+        $controllers->delete(
+            '/roles/{roleId}/users/{userId}',
+            'role_edit_controller:removeUser'
+        );
+
+        $controllers->get(
+            '/users/{userId}/roles/',
+            'role_controller:getUserRoles'
         );
 
         return $controllers;

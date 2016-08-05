@@ -8,19 +8,25 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\Events\UniqueHelper;
+use CultuurNet\UDB3\Label\LabelEventOfferTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
 use CultuurNet\UDB3\Label\ReadModels\Helper\LabelEventHelper;
+use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\SchemaConfigurator as JsonSchemaConfigurator;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
+use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\ReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator as RelationsSchemaConfigurator;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -46,6 +52,10 @@ class LabelServiceProvider implements ServiceProviderInterface
 
     const JSON_PROJECTOR = 'labels.json_projector';
     const RELATIONS_PROJECTOR = 'labels.relations_projector';
+    const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
+    const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
+
+    const LOGGER = 'labels.logger';
 
     /**
      * @inheritdoc
@@ -61,6 +71,8 @@ class LabelServiceProvider implements ServiceProviderInterface
         $this->setUpCommandHandler($app);
 
         $this->setUpProjectors($app);
+
+        $this->setUpLogger($app);
     }
 
     /**
@@ -102,9 +114,12 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $app[self::JSON_WRITE_REPOSITORY] = $app->share(
             function (Application $app) {
-                return new JsonWriteRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(self::JSON_TABLE)
+                return new BroadcastingWriteRepositoryDecorator(
+                    new JsonWriteRepository(
+                        $app['dbal_connection'],
+                        new StringLiteral(self::JSON_TABLE)
+                    ),
+                    $app['event_bus']
                 );
             }
         );
@@ -112,6 +127,15 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app[self::RELATIONS_WRITE_REPOSITORY] = $app->share(
             function (Application $app) {
                 return new RelationsWriteRepository(
+                    $app['dbal_connection'],
+                    new StringLiteral(self::RELATIONS_TABLE)
+                );
+            }
+        );
+
+        $app[self::RELATIONS_READ_REPOSITORY] = $app->share(
+            function (Application $app) {
+                return new ReadRepository(
                     $app['dbal_connection'],
                     new StringLiteral(self::RELATIONS_TABLE)
                 );
@@ -213,8 +237,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new JsonProjector(
                     $app[self::JSON_WRITE_REPOSITORY],
-                    $app[self::JSON_READ_REPOSITORY],
-                    new LabelEventHelper($app[self::JSON_READ_REPOSITORY])
+                    $app[self::JSON_READ_REPOSITORY]
                 );
             }
         );
@@ -223,8 +246,65 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new RelationsProjector(
                     $app[self::RELATIONS_WRITE_REPOSITORY],
-                    new LabelEventHelper($app[self::JSON_READ_REPOSITORY])
+                    new LabelEventOfferTypeResolver()
                 );
+            }
+        );
+
+        $app->extend(
+            LabelServiceProvider::RELATIONS_PROJECTOR,
+            $app['decorate_event_listener_with_enricher']
+        );
+
+        $app[self::PLACE_LABEL_PROJECTOR] = $app->share(
+            function (Application $app) {
+                $projector = new OfferLabelProjector(
+                    $app['place_jsonld_repository'],
+                    $app[self::RELATIONS_READ_REPOSITORY]
+                );
+
+                $projector->setLogger($app[self::LOGGER]);
+
+                return $projector;
+            }
+        );
+
+        $app->extend(
+            self::PLACE_LABEL_PROJECTOR,
+            $app['decorate_event_listener_with_enricher']
+        );
+
+        $app[self::EVENT_LABEL_PROJECTOR] = $app->share(
+            function (Application $app) {
+                $projector =  new OfferLabelProjector(
+                    $app['event_jsonld_repository'],
+                    $app[self::RELATIONS_READ_REPOSITORY]
+                );
+
+                $projector->setLogger($app[self::LOGGER]);
+
+                return $projector;
+            }
+        );
+
+        $app->extend(
+            self::EVENT_LABEL_PROJECTOR,
+            $app['decorate_event_listener_with_enricher']
+        );
+    }
+
+    /**
+     * @param Application $app
+     */
+    private function setUpLogger(Application $app)
+    {
+        $app[self::LOGGER] = $app->share(
+            function () {
+                $logger = new Logger('labels');
+                $logger->pushHandler(new StreamHandler('php://stdout'));
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/labels.log'));
+
+                return $logger;
             }
         );
     }

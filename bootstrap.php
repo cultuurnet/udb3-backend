@@ -1,4 +1,5 @@
 <?php
+use Broadway\EventHandling\EventListenerInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
@@ -8,7 +9,11 @@ use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\DomainMessage\CompositeDomainMessageEnricher;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\EventListener\EnrichingEventListenerDecorator;
+use CultuurNet\UDB3\Label\LabelDomainMessageEnricher;
+use CultuurNet\UDB3\Label\OfferLabelDomainMessageEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
@@ -502,9 +507,16 @@ $app['event_bus'] = $app->share(
                 'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
+                LabelServiceProvider::EVENT_LABEL_PROJECTOR,
+                LabelServiceProvider::PLACE_LABEL_PROJECTOR,
+                LabelServiceProvider::RELATIONS_PROJECTOR,
                 'role_detail_projector',
                 'role_permission_detail_projector',
+                'role_labels_projector',
+                'label_roles_projector',
                 'role_search_projector',
+                'role_users_projector',
+                'user_roles_projector',
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -521,6 +533,41 @@ $app['event_bus'] = $app->share(
         });
 
         return $eventBus;
+    }
+);
+
+$app['event_listener.enricher.offer_label_events'] = $app->share(
+    function (Application $app) {
+        return new OfferLabelDomainMessageEnricher(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
+    }
+);
+
+$app['event_listener.enricher.label_events'] = $app->share(
+    function (Application $app) {
+        return new LabelDomainMessageEnricher(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
+    }
+);
+
+$app['event_listener.enricher.all'] = $app->share(
+    function (Application $app) {
+        return (new CompositeDomainMessageEnricher())
+            ->withEnricher($app['event_listener.enricher.offer_label_events'])
+            ->withEnricher($app['event_listener.enricher.label_events']);
+    }
+);
+
+$app['decorate_event_listener_with_enricher'] = $app->share(
+    function (Application $app) {
+        return function (EventListenerInterface $eventListener) use ($app) {
+            return new EnrichingEventListenerDecorator(
+                $eventListener,
+                $app['event_listener.enricher.all']
+            );
+        };
     }
 );
 
@@ -549,6 +596,7 @@ $app['amqp.publisher'] = $app->share(
         $map =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
             \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Label\Events\ContentTypes::map() +
             \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
 
         $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
@@ -573,6 +621,8 @@ $app['amqp.publisher'] = $app->share(
         return $publisher;
     }
 );
+
+$app->extend('amqp.publisher', $app['decorate_event_listener_with_enricher']);
 
 $app['udb2_entry_api_improved_factory'] = $app->share(
     function ($app) {
@@ -1284,10 +1334,28 @@ $app['role_detail_cache'] = $app->share(
     }
 );
 
+$app['user_roles_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('user_roles');
+    }
+);
+
 $app['role_read_repository'] = $app->share(
     function ($app) {
+        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
+            new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+                $app['role_detail_cache']
+            ),
+            $app['event_bus'],
+            new \CultuurNet\UDB3\Role\ReadModel\Detail\EventFactory()
+        );
+    }
+);
+
+$app['user_roles_repository'] = $app->share(
+    function ($app) {
         return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['role_detail_cache']
+            $app['user_roles_cache']
         );
     }
 );
@@ -1315,6 +1383,16 @@ $app['role_detail_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Detail\Projector(
             $app['role_read_repository']
+        );
+    }
+);
+
+$app['user_roles_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector(
+            $app['user_roles_repository'],
+            $app['role_read_repository'],
+            $app['role_users_read_repository']
         );
     }
 );
@@ -1349,6 +1427,75 @@ $app['role_permission_detail_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Permissions\Projector(
             $app['role_permissions_read_repository']
+        );
+    }
+);
+
+$app['role_labels_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('role_labels');
+    }
+);
+
+$app['role_labels_read_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['role_labels_cache']
+        );
+    }
+);
+
+$app['role_labels_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector(
+            $app['role_labels_read_repository'],
+            $app['labels.json_read_repository'],
+            $app['label_roles_read_repository']
+        );
+    }
+);
+
+$app['label_roles_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('label_roles');
+    }
+);
+
+$app['label_roles_read_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['label_roles_cache']
+        );
+    }
+);
+
+$app['label_roles_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Labels\LabelRolesProjector(
+            $app['label_roles_read_repository']
+        );
+    }
+);
+
+$app['role_users_cache'] = $app->share(
+    function ($app) {
+        return $app['cache']('role_users');
+    }
+);
+
+$app['role_users_read_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            $app['role_users_cache']
+        );
+    }
+);
+
+$app['role_users_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector(
+            $app['role_users_read_repository'],
+            $app['user_identity_resolver']
         );
     }
 );

@@ -46,7 +46,6 @@
     "phing/phing": "~2.10"
   },
   "prefer-stable": true,
-  "preferred-install": "source",
   "autoload": {
     "psr-4": {
       "CultuurNet\\UDB3\\Silex\\": "src/"
@@ -58,6 +57,11 @@
     }
   },
   "config": {
+    "preferred-install": {
+      "cultuurnet/*": "source",
+      "2dotstwice/*": "source",
+      "*": "dist"
+    },
     "platform": {
       "php": "5.5.9",
       "ext-redis": "2.2.7.0",
