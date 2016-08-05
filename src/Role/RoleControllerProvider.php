@@ -72,6 +72,11 @@ class RoleControllerProvider implements ControllerProviderInterface
             ->get('/user/permissions/', 'role_controller:getUserPermissions');
 
         $controllers->get(
+            '/roles/{roleId}/users/',
+            'role_controller:getRoleUsers'
+        );
+
+        $controllers->get(
             '/roles/{id}/permissions/',
             'role_controller:getRolePermissions'
         );
@@ -99,6 +104,21 @@ class RoleControllerProvider implements ControllerProviderInterface
         $controllers->delete(
             '/roles/{roleId}/labels/{labelId}',
             'role_edit_controller:removeLabel'
+        );
+
+        $controllers->put(
+            '/roles/{roleId}/users/{userId}',
+            'role_edit_controller:addUser'
+        );
+
+        $controllers->delete(
+            '/roles/{roleId}/users/{userId}',
+            'role_edit_controller:removeUser'
+        );
+
+        $controllers->get(
+            '/users/{userId}/roles/',
+            'role_controller:getUserRoles'
         );
 
         return $controllers;

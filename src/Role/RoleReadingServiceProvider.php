@@ -24,7 +24,9 @@ class RoleReadingServiceProvider implements ServiceProviderInterface
                     $app['real_role_repository'],
                     $app['role_iri_generator'],
                     $app['role_permissions_read_repository'],
-                    $app['role_labels_read_repository']
+                    $app['role_labels_read_repository'],
+                    $app['role_users_read_repository'],
+                    $app['user_roles_repository']
                 );
             }
         );
