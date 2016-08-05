@@ -99,12 +99,12 @@ class RoleControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->put(
-            '/roles/{roleId}/labels/{labelId}',
+            '/roles/{roleId}/labels/{labelIdentifier}',
             'role_edit_controller:addLabel'
         );
 
         $controllers->delete(
-            '/roles/{roleId}/labels/{labelId}',
+            '/roles/{roleId}/labels/{labelIdentifier}',
             'role_edit_controller:removeLabel'
         );
 
