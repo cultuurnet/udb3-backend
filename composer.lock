@@ -1432,12 +1432,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce"
+                "reference": "7e435b1b2df671a3abffa87fcc29cae62046ad4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
-                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/7e435b1b2df671a3abffa87fcc29cae62046ad4a",
+                "reference": "7e435b1b2df671a3abffa87fcc29cae62046ad4a",
                 "shasum": ""
             },
             "require": {
@@ -1473,7 +1473,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-05-04 12:22:32"
+            "time": "2016-08-05 14:13:29"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
@@ -1526,12 +1526,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "274125da985baf1a3d8efe5fb1e5bce6d7e9b51e"
+                "reference": "161dbbb2122657a02b4092f13fabb2f061735263"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/274125da985baf1a3d8efe5fb1e5bce6d7e9b51e",
-                "reference": "274125da985baf1a3d8efe5fb1e5bce6d7e9b51e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/161dbbb2122657a02b4092f13fabb2f061735263",
+                "reference": "161dbbb2122657a02b4092f13fabb2f061735263",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-07-27 08:41:12"
+            "time": "2016-08-05 15:47:33"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",

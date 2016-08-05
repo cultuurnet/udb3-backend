@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\User;
 
+use CultuurNet\UDB3\Symfony\User\SearchQueryFactory;
 use CultuurNet\UDB3\Symfony\User\SearchUserController;
 use CultuurNet\UDB3\Symfony\User\UserIdentityController;
 use CultuurNet\UDB3\Symfony\User\UserLabelMemoryRestController;
@@ -33,7 +34,9 @@ class UserControllerProvider implements ControllerProviderInterface
         $app['user_search_controller'] = $app->share(
             function (Application $app) {
                 return new SearchUserController(
-                    $app['culturefeed']
+                    $app['culturefeed'],
+                    new SearchQueryFactory(),
+                    $app['culturefeed_user_identity_factory']
                 );
             }
         );
