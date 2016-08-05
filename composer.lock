@@ -1432,12 +1432,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce"
+                "reference": "7e435b1b2df671a3abffa87fcc29cae62046ad4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
-                "reference": "02ab0570aa2382a691b8763dd19bb3d5cc65ccce",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/7e435b1b2df671a3abffa87fcc29cae62046ad4a",
+                "reference": "7e435b1b2df671a3abffa87fcc29cae62046ad4a",
                 "shasum": ""
             },
             "require": {
@@ -1473,7 +1473,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-05-04 12:22:32"
+            "time": "2016-08-05 14:13:29"
         },
         {
             "name": "cultuurnet/udb3-silex-entryapi",
