@@ -19,6 +19,7 @@ use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -517,6 +518,7 @@ $app['event_bus'] = $app->share(
                 'role_search_projector',
                 'role_users_projector',
                 'user_roles_projector',
+                UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
             ];
 
             // Allow to override event bus subscribers through configuration.
