@@ -29,7 +29,8 @@ class RoleControllerProvider implements ControllerProviderInterface
                     $app['role_reading_service'],
                     $app['current_user'],
                     $app['config']['user_permissions'],
-                    $app['role_search_repository']
+                    $app['role_search_repository'],
+                    $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]
                 );
             }
         );

@@ -99,7 +99,7 @@ $app['permissions_voter'] = $app->share(function($app) {
 });
 
 $app['user_permissions_voter'] = $app->share(function($app) {
-    return new UserPermissionsVoter($app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPO]);
+    return new UserPermissionsVoter($app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]);
 });
 
 $app['security.voters'] = $app->extend('security.voters', function($voters) use ($app){
@@ -113,7 +113,7 @@ $app['security.voters'] = $app->extend('security.voters', function($voters) use 
 });
 
 $app['security.access_manager'] = $app->share(function($app) {
-    return new AccessDecisionManager($app['security.voters'], AccessDecisionManager::STRATEGY_UNANIMOUS);
+    return new AccessDecisionManager($app['security.voters'], AccessDecisionManager::STRATEGY_AFFIRMATIVE);
 });
 
 $app['security.access_rules'] = array(

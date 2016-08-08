@@ -18,11 +18,10 @@ class UserPermissionsServiceProvider implements ServiceProviderInterface
 
     const USER_PERMISSIONS_SCHEMA = 'roles.user_permissions_schema';
 
-    const USER_PERMISSIONS_READ_REPO = 'user_permissions_read_repository';
-    const USER_PERMISSIONS_WRITE_REPO = 'user_permissions_write_repository';
+    const USER_PERMISSIONS_READ_REPOSITORY = 'user_permissions_read_repository';
+    const USER_PERMISSIONS_WRITE_REPOSITORY = 'user_permissions_write_repository';
 
     const USER_PERMISSIONS_PROJECTOR = 'roles.user_permissions_projector';
-
     /**
      * Registers services on the given app.
      *
@@ -33,7 +32,7 @@ class UserPermissionsServiceProvider implements ServiceProviderInterface
     {
         $this->setUpSchemas($app);
 
-        $app[self::USER_PERMISSIONS_READ_REPO] = $app->share(
+        $app[self::USER_PERMISSIONS_READ_REPOSITORY] = $app->share(
             function ($app) {
                 return new UserPermissionsReadRepository(
                     $app['dbal_connection'],
@@ -43,7 +42,7 @@ class UserPermissionsServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[self::USER_PERMISSIONS_WRITE_REPO] = $app->share(
+        $app[self::USER_PERMISSIONS_WRITE_REPOSITORY] = $app->share(
             function ($app) {
                 return new UserPermissionsWriteRepository(
                     $app['dbal_connection'],
@@ -55,7 +54,7 @@ class UserPermissionsServiceProvider implements ServiceProviderInterface
 
         $app[self::USER_PERMISSIONS_PROJECTOR] = $app->share(
             function ($app) {
-                return new UserPermissionsProjector($app[self::USER_PERMISSIONS_WRITE_REPO]);
+                return new UserPermissionsProjector($app[self::USER_PERMISSIONS_WRITE_REPOSITORY]);
             }
         );
     }
