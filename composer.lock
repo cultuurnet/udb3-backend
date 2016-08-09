@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9aff2a7f4185cd2b64f7593bb6b31180",
-    "content-hash": "3f02494f5a3655c6999b437690c04c32",
+    "hash": "e517d593ea41a6c10848b30180730e80",
+    "content-hash": "1e558ea62cf331c83ee125ea4bf93bc4",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1301,12 +1301,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "bc4e208357e1ace21efa32a77441f36de4ada38b"
+                "reference": "d5617e1bf3bf48f1e7602738cc8f148d1fb27eeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/bc4e208357e1ace21efa32a77441f36de4ada38b",
-                "reference": "bc4e208357e1ace21efa32a77441f36de4ada38b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d5617e1bf3bf48f1e7602738cc8f148d1fb27eeb",
+                "reference": "d5617e1bf3bf48f1e7602738cc8f148d1fb27eeb",
                 "shasum": ""
             },
             "require": {
@@ -1379,7 +1379,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-08-05 11:36:33"
+            "time": "2016-08-09 08:55:04"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1522,16 +1522,16 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-feature/III-1192",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "161dbbb2122657a02b4092f13fabb2f061735263"
+                "reference": "4ab93b5135fe0747443eb3a350fa7ef9170e743c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/161dbbb2122657a02b4092f13fabb2f061735263",
-                "reference": "161dbbb2122657a02b4092f13fabb2f061735263",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/4ab93b5135fe0747443eb3a350fa7ef9170e743c",
+                "reference": "4ab93b5135fe0747443eb3a350fa7ef9170e743c",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-08-05 15:47:33"
+            "time": "2016-08-09 12:29:18"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -4160,16 +4160,16 @@
         },
         {
             "name": "psr/http-message",
-            "version": "1.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-message.git",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
                 "shasum": ""
             },
             "require": {
@@ -4197,6 +4197,7 @@
                 }
             ],
             "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
             "keywords": [
                 "http",
                 "http-message",
@@ -4205,7 +4206,7 @@
                 "request",
                 "response"
             ],
-            "time": "2015-05-04 20:22:00"
+            "time": "2016-08-06 14:39:51"
         },
         {
             "name": "psr/log",
@@ -5946,18 +5947,10 @@
             "time": "2016-07-13 23:29:13"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1192",
-            "package": "cultuurnet/udb3-symfony"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
