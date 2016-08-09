@@ -24,8 +24,14 @@ class UserServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CultureFeedUserIdentityResolver(
                     $app['culturefeed'],
-                    new CultureFeedUserIdentityDetailsFactory()
+                    $app['culturefeed_user_identity_factory']
                 );
+            }
+        );
+
+        $app['culturefeed_user_identity_factory'] = $app->share(
+            function (Application $app) {
+                return new CultureFeedUserIdentityDetailsFactory();
             }
         );
 
