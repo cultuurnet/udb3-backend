@@ -5,11 +5,16 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
+use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
 use CultuurNet\UiTIDProvider\Security\MultiPathRequestMatcher;
 use CultuurNet\UiTIDProvider\Security\PreflightRequestMatcher;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
@@ -88,6 +93,33 @@ $app['security.firewalls'] = array(
  */
 $app->register(new \Silex\Provider\SecurityServiceProvider());
 $app->register(new \CultuurNet\SilexServiceProviderJwt\JwtServiceProvider());
+
+$app['permissions_voter'] = $app->share(function($app) {
+    return new PermissionsVoter($app['config']['user_permissions']);
+});
+
+$app['user_permissions_voter'] = $app->share(function($app) {
+    return new UserPermissionsVoter($app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]);
+});
+
+$app['security.voters'] = $app->extend('security.voters', function($voters) use ($app){
+    return array_merge(
+        $voters,
+        [
+            $app['permissions_voter'],
+            $app['user_permissions_voter'],
+        ]
+    );
+});
+
+$app['security.access_manager'] = $app->share(function($app) {
+    return new AccessDecisionManager($app['security.voters'], AccessDecisionManager::STRATEGY_AFFIRMATIVE);
+});
+
+$app['security.access_rules'] = array(
+    array('^/labels/.*', Permission::LABELS_BEHEREN),
+    array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
+);
 
 require __DIR__ . '/../debug.php';
 
