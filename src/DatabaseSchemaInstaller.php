@@ -45,7 +45,7 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
             $this->app['variations.search'],
             $this->app['media_object_store'],
             $this->app[LabelServiceProvider::UNIQUE_EVENT_STORE],
-            $this->app['role_store']
+            $this->app['role_store'],
         );
 
         /** @var \Doctrine\DBAL\Connection $connection */
