@@ -2,9 +2,12 @@
 
 namespace CultuurNet\UDB3\Silex\Role;
 
+use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\Role\Services\LocalRoleReadingService;
+use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ValueObjects\String\String as StringLiteral;
 
 class RoleReadingServiceProvider implements ServiceProviderInterface
 {
@@ -28,6 +31,24 @@ class RoleReadingServiceProvider implements ServiceProviderInterface
                     $app['role_users_read_repository'],
                     $app['user_roles_repository']
                 );
+            }
+        );
+
+        $app['roles_search_schema'] = $app->share(
+            function (Application $app) {
+                return new SchemaConfigurator(
+                    new StringLiteral('roles_search')
+                );
+            }
+        );
+
+        $app['database.installer'] = $app->extend(
+            'database.installer',
+            function (DatabaseSchemaInstaller $installer, Application $app) {
+                $installer->addSchemaConfigurator(
+                    $app['roles_search_schema']
+                );
+                return $installer;
             }
         );
     }
