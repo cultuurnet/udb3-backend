@@ -1301,12 +1301,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3057dd7eb584c8b352ccbecf6ca361803e0ec783"
+                "reference": "b0cdf9b6ace98daeea317ceefa7764fe2c031609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3057dd7eb584c8b352ccbecf6ca361803e0ec783",
-                "reference": "3057dd7eb584c8b352ccbecf6ca361803e0ec783",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b0cdf9b6ace98daeea317ceefa7764fe2c031609",
+                "reference": "b0cdf9b6ace98daeea317ceefa7764fe2c031609",
                 "shasum": ""
             },
             "require": {
@@ -1379,7 +1379,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-08-10 06:40:06"
+            "time": "2016-08-12 08:53:15"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3172,16 +3172,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.1.2",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "9a8db2cd42346f96993928ff6a6c22563f555ab1"
+                "reference": "7668cb045296f290588d04c391569c7b7fc1f899"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/9a8db2cd42346f96993928ff6a6c22563f555ab1",
-                "reference": "9a8db2cd42346f96993928ff6a6c22563f555ab1",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/7668cb045296f290588d04c391569c7b7fc1f899",
+                "reference": "7668cb045296f290588d04c391569c7b7fc1f899",
                 "shasum": ""
             },
             "require": {
@@ -3226,20 +3226,20 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2016-07-27 11:09:37"
+            "time": "2016-08-13 23:12:58"
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.26",
+            "version": "1.0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "fb3b30dca320b36931ea878fea17ebe136fba1b0"
+                "reference": "50e2045ed70a7e75a5e30bc3662904f3b67af8a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/fb3b30dca320b36931ea878fea17ebe136fba1b0",
-                "reference": "fb3b30dca320b36931ea878fea17ebe136fba1b0",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/50e2045ed70a7e75a5e30bc3662904f3b67af8a9",
+                "reference": "50e2045ed70a7e75a5e30bc3662904f3b67af8a9",
                 "shasum": ""
             },
             "require": {
@@ -3309,7 +3309,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-08-03 09:49:11"
+            "time": "2016-08-10 08:55:11"
         },
         {
             "name": "league/flysystem-ziparchive",
