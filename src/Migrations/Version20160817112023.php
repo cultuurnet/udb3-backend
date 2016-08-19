@@ -32,10 +32,12 @@ class Version20160817112023 extends AbstractMigration
             ->setLength(36)
             ->setNotnull(true);
 
-        $userRoleTable->setPrimaryKey([
-            self::LABEL_ID_COLUMN,
-            self::ROLE_ID_COLUMN
-        ]);
+        $userRoleTable->setPrimaryKey(
+            [
+                self::LABEL_ID_COLUMN,
+                self::ROLE_ID_COLUMN,
+            ]
+        );
     }
 
     /**
