@@ -511,6 +511,7 @@ $app['event_bus'] = $app->share(
                 LabelServiceProvider::EVENT_LABEL_PROJECTOR,
                 LabelServiceProvider::PLACE_LABEL_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
+                LabelServiceProvider::LABEL_ROLES_PROJECTOR,
                 'role_detail_projector',
                 'role_permission_detail_projector',
                 'role_labels_projector',

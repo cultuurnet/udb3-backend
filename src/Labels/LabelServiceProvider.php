@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\Events\UniqueHelper;
 use CultuurNet\UDB3\Label\LabelEventOfferTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
-use CultuurNet\UDB3\Label\ReadModels\Helper\LabelEventHelper;
 use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
@@ -22,6 +21,9 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepos
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\ReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator as RelationsSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
@@ -35,13 +37,16 @@ class LabelServiceProvider implements ServiceProviderInterface
 {
     const JSON_TABLE = 'labels_json';
     const RELATIONS_TABLE = 'labels_relations';
+    const LABEL_ROLES_TABLE = 'label_roles';
 
     const JSON_REPOSITORY_SCHEMA = 'labels.json_repository_schema';
     const RELATIONS_REPOSITORY_SCHEMA = 'labels.relations_repository_schema';
+    const LABEL_ROLES_REPOSITORY_SCHEMA = 'labels.labels_roles_repository_schema';
     const JSON_READ_REPOSITORY = 'labels.json_read_repository';
     const JSON_WRITE_REPOSITORY = 'labels.json_write_repository';
     const RELATIONS_READ_REPOSITORY = 'labels.relations_read_repository';
     const RELATIONS_WRITE_REPOSITORY = 'labels.relations_write_repository';
+    const LABEL_ROLES_WRITE_REPOSITORY = 'labels.label_roles_write_repository';
 
     const READ_SERVICE = 'labels.read_service';
     const WRITE_SERVICE = 'labels.write_service';
@@ -54,6 +59,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     const RELATIONS_PROJECTOR = 'labels.relations_projector';
     const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
     const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
+    const LABEL_ROLES_PROJECTOR = 'labels.label_roles_projector';
 
     const LOGGER = 'labels.logger';
 
@@ -103,6 +109,14 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[self::LABEL_ROLES_REPOSITORY_SCHEMA] = $app->share(
+            function (Application $app) {
+                return new LabelRolesSchemaConfigurator(
+                    new StringLiteral(self::LABEL_ROLES_TABLE)
+                );
+            }
+        );
+
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
                 return new JsonReadRepository(
@@ -142,6 +156,15 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[self::LABEL_ROLES_WRITE_REPOSITORY] = $app->share(
+            function (Application $app) {
+                return new LabelRolesWriteRepository(
+                    $app['dbal_connection'],
+                    new StringLiteral(self::LABEL_ROLES_TABLE)
+                );
+            }
+        );
+
         $app['database.installer'] = $app->extend(
             'database.installer',
             function (DatabaseSchemaInstaller $installer, Application $app) {
@@ -150,6 +173,9 @@ class LabelServiceProvider implements ServiceProviderInterface
                 );
                 $installer->addSchemaConfigurator(
                     $app[LabelServiceProvider::RELATIONS_REPOSITORY_SCHEMA]
+                );
+                $installer->addSchemaConfigurator(
+                    $app[LabelServiceProvider::LABEL_ROLES_REPOSITORY_SCHEMA]
                 );
                 return $installer;
             }
@@ -247,6 +273,14 @@ class LabelServiceProvider implements ServiceProviderInterface
                 return new RelationsProjector(
                     $app[self::RELATIONS_WRITE_REPOSITORY],
                     new LabelEventOfferTypeResolver()
+                );
+            }
+        );
+
+        $app[self::LABEL_ROLES_PROJECTOR] = $app->share(
+            function (Application $app) {
+                return new LabelRolesProjector(
+                    $app[self::LABEL_ROLES_WRITE_REPOSITORY]
                 );
             }
         );
