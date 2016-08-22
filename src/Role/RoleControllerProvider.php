@@ -79,11 +79,6 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_controller:getRoleUsers'
         );
 
-        $controllers->get(
-            '/roles/{id}/permissions/',
-            'role_controller:getRolePermissions'
-        );
-
         $controllers->put(
             '/roles/{roleId}/permissions/{permissionKey}',
             'role_edit_controller:addPermission'
