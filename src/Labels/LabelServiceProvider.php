@@ -27,6 +27,9 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
+use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
+use CultuurNet\UDB3\Symfony\Management\User\CultureFeedUserIdentification;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -61,6 +64,8 @@ class LabelServiceProvider implements ServiceProviderInterface
     const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
     const LABEL_ROLES_PROJECTOR = 'labels.label_roles_projector';
 
+    const QUERY_FACTORY = 'label.query_factory';
+
     const LOGGER = 'labels.logger';
 
     /**
@@ -77,6 +82,8 @@ class LabelServiceProvider implements ServiceProviderInterface
         $this->setUpCommandHandler($app);
 
         $this->setUpProjectors($app);
+
+        $this->setUpQueryFactory($app);
 
         $this->setUpLogger($app);
     }
@@ -121,7 +128,9 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new JsonReadRepository(
                     $app['dbal_connection'],
-                    new StringLiteral(self::JSON_TABLE)
+                    new StringLiteral(self::JSON_TABLE),
+                    new StringLiteral(self::LABEL_ROLES_TABLE),
+                    new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE)
                 );
             }
         );
@@ -324,6 +333,20 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app->extend(
             self::EVENT_LABEL_PROJECTOR,
             $app['decorate_event_listener_with_enricher']
+        );
+    }
+
+    private function setUpQueryFactory(Application $app)
+    {
+        $app[self::QUERY_FACTORY] = $app->share(
+            function (Application $app) {
+                $userIdentification = new CultureFeedUserIdentification(
+                    $app['current_user'],
+                    $app['config']['user_permissions']
+                );
+
+                return new QueryFactory($userIdentification);
+            }
         );
     }
 

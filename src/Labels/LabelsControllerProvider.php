@@ -38,6 +38,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadRestController(
                     $app[LabelServiceProvider::READ_SERVICE],
+                    $app[LabelServiceProvider::QUERY_FACTORY],
                     new RequestHelper()
                 );
             }
