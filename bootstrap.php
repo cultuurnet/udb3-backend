@@ -989,8 +989,6 @@ $app['event_command_bus_out'] = $app->share(
 
         $commandBus->subscribe($app['media_manager']);
 
-        $commandBus->subscribe($app['bulk_label_offer_command_handler']);
-
         return $commandBus;
     }
 );
