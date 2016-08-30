@@ -19,7 +19,7 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
     {
         $app['bulk_label_offer_command_bus_factory'] = $app->share(
             function (Application $app) {
-                return function() use ($app) {
+                return function () use ($app) {
                     $commandBus = new ResqueCommandBus(
                         new SimpleContextAwareCommandBus(),
                         'bulk_label_offer_commands',
