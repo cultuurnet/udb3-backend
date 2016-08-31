@@ -1,4 +1,5 @@
 <?php
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
@@ -52,6 +53,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Resque\ResqueCommandBusServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -912,26 +914,16 @@ $app['event_command_bus_base'] = function (Application $app) {
 };
 
 /**
- * Command bus serving command publishers.
+ * "Event" command bus.
  */
-$app['event_command_bus'] = $app->share(
-    function ($app) {
-        $commandBus = $app['event_command_bus_base'];
-
-        return new \CultuurNet\UDB3\Silex\ContextDecoratedCommandBus(
-            $commandBus,
-            $app
-        );
-    }
-);
+$app['resque_command_bus_factory']('event');
 
 /**
- * Command bus serving command handlers.
+ * Tie command handlers to event command bus.
  */
-$app['event_command_bus_out'] = $app->share(
-    function (Application $app) {
-        $commandBus = $app['event_command_bus_base'];
-
+$app->extend(
+    'event_command_bus_out',
+    function (CommandBusInterface $commandBus, Application $app) {
         // The order is important because the label first needs to be created
         // before it can be added.
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);

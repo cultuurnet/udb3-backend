@@ -39,12 +39,16 @@ Resque_Event::listen(
             }
         };
 
+        register_shutdown_function($errorLoggingShutdownHandler);
+
+        // Command bus service name is based on queue name + _command_bus_out.
+        // Eg. Queue "event" => command bus "event_command_bus_out".
+        $commandBusServiceName = getenv('QUEUE') . '_command_bus_out';
+
         // Allows to access the command bus in perform() of jobs that
         // come out of the queue.
         \CultuurNet\UDB3\CommandHandling\QueueJob::setCommandBus(
-            $app['event_command_bus_out']
+            $app[$commandBusServiceName]
         );
-
-        register_shutdown_function($errorLoggingShutdownHandler);
     }
 );

@@ -3,10 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
-use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Offer\BulkLabelCommandHandler;
-use CultuurNet\UDB3\Silex\ContextDecoratedCommandBus;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -17,37 +14,10 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['bulk_label_offer_command_bus_factory'] = $app->share(
-            function (Application $app) {
-                return function () use ($app) {
-                    $commandBus = new ResqueCommandBus(
-                        new SimpleContextAwareCommandBus(),
-                        'bulk_label_offer_commands',
-                        $app['command_bus_event_dispatcher']
-                    );
+        // Set up the bulk label offer command bus.
+        $app['resque_command_bus_factory']('bulk_label_offer');
 
-                    $commandBus->setLogger($app['logger.command_bus']);
-
-                    return $commandBus;
-                };
-            }
-        );
-
-        $app['bulk_label_offer_command_bus_in'] = $app->share(
-            function (Application $app) {
-                return new ContextDecoratedCommandBus(
-                    $app['bulk_label_offer_command_bus_factory'](),
-                    $app
-                );
-            }
-        );
-
-        $app['bulk_label_offer_command_bus_out'] = $app->share(
-            function (Application $app) {
-                return $app['bulk_label_offer_command_bus_factory']();
-            }
-        );
-
+        // Set up the bulk label offer command handler.
         $app['bulk_label_offer_command_handler'] = $app->share(
             function (Application $app) {
                 return new BulkLabelCommandHandler(
@@ -57,6 +27,7 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
             }
         );
 
+        // Tie the bulk label offer command handler to the command bus.
         $app->extend(
             'bulk_label_offer_command_bus_out',
             function (CommandBusInterface $commandBus, Application $app) {
