@@ -936,21 +936,6 @@ $app->extend(
             )
         );
 
-        $eventInfoService = new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
-            $app['uitpas'],
-            new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
-                $app['clock']
-            )
-        );
-        $eventInfoService->setLogger($app['logger.uitpas']);
-        $commandBus->subscribe(
-            new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
-                $app['event_export'],
-                $app['config']['prince']['binary'],
-                $eventInfoService,
-                $app['event_calendar_repository']
-            )
-        );
         $commandBus->subscribe(
             new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
                 $app['saved_searches_service_factory']
@@ -1639,6 +1624,7 @@ $app['database.installer'] = $app->share(
     }
 );
 
+$app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
