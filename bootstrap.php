@@ -513,7 +513,6 @@ $app['event_bus'] = $app->share(
                 LabelServiceProvider::RELATIONS_PROJECTOR,
                 LabelServiceProvider::LABEL_ROLES_PROJECTOR,
                 'role_detail_projector',
-                'role_permission_detail_projector',
                 'role_labels_projector',
                 'label_roles_projector',
                 'role_search_projector',
@@ -1333,6 +1332,8 @@ $app['real_role_repository'] = $app->share(
     }
 );
 
+// There is a role_read_repository that broadcasts any changes to role details.
+// Use the repository to make changes, else other read models that contain role details will not be updated.
 $app['role_detail_cache'] = $app->share(
     function ($app) {
         return $app['cache']('role_detail');
@@ -1417,22 +1418,6 @@ $app['role_service'] = $app->share(
 $app['role_permissions_cache'] = $app->share(
     function ($app) {
         return $app['cache']('role_permissions');
-    }
-);
-
-$app['role_permissions_read_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['role_permissions_cache']
-        );
-    }
-);
-
-$app['role_permission_detail_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Permissions\Projector(
-            $app['role_permissions_read_repository']
-        );
     }
 );
 
