@@ -29,7 +29,7 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
                 $app[$queueName . '_command_bus'] = $app->share(
                     function (Application $app) use ($queueName) {
                         return new ContextDecoratedCommandBus(
-                            $app[$queueName . '_command_bus_base'],
+                            $app[$queueName . '_command_bus_factory'],
                             $app
                         );
                     }
@@ -37,7 +37,7 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
 
                 $app[$queueName . '_command_bus_out'] = $app->share(
                     function (Application $app) use ($queueName) {
-                        return $app[$queueName . '_command_bus_base'];
+                        return $app[$queueName . '_command_bus_factory'];
                     }
                 );
             }
