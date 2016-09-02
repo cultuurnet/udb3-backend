@@ -18,7 +18,7 @@ class BulkLabelOfferControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new AddLabelToQueryJSONDeserializer(),
-                    $app['event_command_bus']
+                    $app['bulk_label_offer_command_bus']
                 );
             }
         );
@@ -31,7 +31,7 @@ class BulkLabelOfferControllerProvider implements ControllerProviderInterface
                             $app['iri_offer_identifier_factory']
                         )
                     ),
-                    $app['event_command_bus']
+                    $app['bulk_label_offer_command_bus']
                 );
             }
         );

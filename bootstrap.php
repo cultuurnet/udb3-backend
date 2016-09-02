@@ -1,4 +1,5 @@
 <?php
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
@@ -52,6 +53,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Resque\ResqueCommandBusServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -911,26 +913,16 @@ $app['event_command_bus_base'] = function (Application $app) {
 };
 
 /**
- * Command bus serving command publishers.
+ * "Event" command bus.
  */
-$app['event_command_bus'] = $app->share(
-    function ($app) {
-        $commandBus = $app['event_command_bus_base'];
-
-        return new \CultuurNet\UDB3\Silex\ContextDecoratedCommandBus(
-            $commandBus,
-            $app
-        );
-    }
-);
+$app['resque_command_bus_factory']('event');
 
 /**
- * Command bus serving command handlers.
+ * Tie command handlers to event command bus.
  */
-$app['event_command_bus_out'] = $app->share(
-    function (Application $app) {
-        $commandBus = $app['event_command_bus_base'];
-
+$app->extend(
+    'event_command_bus_out',
+    function (CommandBusInterface $commandBus, Application $app) {
         // The order is important because the label first needs to be created
         // before it can be added.
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
@@ -943,21 +935,6 @@ $app['event_command_bus_out'] = $app->share(
             )
         );
 
-        $eventInfoService = new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
-            $app['uitpas'],
-            new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
-                $app['clock']
-            )
-        );
-        $eventInfoService->setLogger($app['logger.uitpas']);
-        $commandBus->subscribe(
-            new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
-                $app['event_export'],
-                $app['config']['prince']['binary'],
-                $eventInfoService,
-                $app['event_calendar_repository']
-            )
-        );
         $commandBus->subscribe(
             new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
                 $app['saved_searches_service_factory']
@@ -987,8 +964,6 @@ $app['event_command_bus_out'] = $app->share(
         );
 
         $commandBus->subscribe($app['media_manager']);
-
-        $commandBus->subscribe($app['bulk_label_offer_command_handler']);
 
         return $commandBus;
     }
@@ -1634,6 +1609,7 @@ $app['database.installer'] = $app->share(
     }
 );
 
+$app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());

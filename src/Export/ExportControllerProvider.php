@@ -25,7 +25,7 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsJsonLDJSONDeserializer(),
-                    $app['event_command_bus']
+                    $app['event_export_command_bus']
                 );
             }
         );
@@ -34,7 +34,7 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsCSVJSONDeserializer(),
-                    $app['event_command_bus']
+                    $app['event_export_command_bus']
                 );
             }
         );
@@ -43,7 +43,7 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsOOXMLJSONDeserializer(),
-                    $app['event_command_bus']
+                    $app['event_export_command_bus']
                 );
             }
         );
@@ -52,7 +52,7 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsPDFJSONDeserializer(),
-                    $app['event_command_bus']
+                    $app['event_export_command_bus']
                 );
             }
         );
