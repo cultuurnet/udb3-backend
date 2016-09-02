@@ -14,7 +14,7 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
     {
         $app['resque_command_bus_factory'] = $app->protect(
             function ($queueName) use ($app) {
-                $app[$queueName . '_command_bus_base'] = function () use ($app, $queueName) {
+                $app[$queueName . '_command_bus_factory'] = function () use ($app, $queueName) {
                     $commandBus = new ResqueCommandBus(
                         new SimpleContextAwareCommandBus(),
                         $queueName,
