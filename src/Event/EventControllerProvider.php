@@ -7,9 +7,6 @@ use CultuurNet\UDB3\Symfony\Event\ReadEventRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use ValueObjects\String\String;
 
 class EventControllerProvider implements ControllerProviderInterface
 {
@@ -36,7 +33,7 @@ class EventControllerProvider implements ControllerProviderInterface
                     $app['current_user'],
                     $app['media_manager'],
                     $app['event_iri_generator'],
-                    $app['event.security']
+                    $app['offer.security']
                 );
             }
         );
