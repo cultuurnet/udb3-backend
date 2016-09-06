@@ -1,4 +1,5 @@
 <?php
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
@@ -52,6 +53,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Resque\ResqueCommandBusServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -511,8 +513,8 @@ $app['event_bus'] = $app->share(
                 LabelServiceProvider::EVENT_LABEL_PROJECTOR,
                 LabelServiceProvider::PLACE_LABEL_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
+                LabelServiceProvider::LABEL_ROLES_PROJECTOR,
                 'role_detail_projector',
-                'role_permission_detail_projector',
                 'role_labels_projector',
                 'label_roles_projector',
                 'role_search_projector',
@@ -911,26 +913,16 @@ $app['event_command_bus_base'] = function (Application $app) {
 };
 
 /**
- * Command bus serving command publishers.
+ * "Event" command bus.
  */
-$app['event_command_bus'] = $app->share(
-    function ($app) {
-        $commandBus = $app['event_command_bus_base'];
-
-        return new \CultuurNet\UDB3\Silex\ContextDecoratedCommandBus(
-            $commandBus,
-            $app
-        );
-    }
-);
+$app['resque_command_bus_factory']('event');
 
 /**
- * Command bus serving command handlers.
+ * Tie command handlers to event command bus.
  */
-$app['event_command_bus_out'] = $app->share(
-    function (Application $app) {
-        $commandBus = $app['event_command_bus_base'];
-
+$app->extend(
+    'event_command_bus_out',
+    function (CommandBusInterface $commandBus, Application $app) {
         // The order is important because the label first needs to be created
         // before it can be added.
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
@@ -943,21 +935,6 @@ $app['event_command_bus_out'] = $app->share(
             )
         );
 
-        $eventInfoService = new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService(
-            $app['uitpas'],
-            new \CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory(
-                $app['clock']
-            )
-        );
-        $eventInfoService->setLogger($app['logger.uitpas']);
-        $commandBus->subscribe(
-            new \CultuurNet\UDB3\EventExport\EventExportCommandHandler(
-                $app['event_export'],
-                $app['config']['prince']['binary'],
-                $eventInfoService,
-                $app['event_calendar_repository']
-            )
-        );
         $commandBus->subscribe(
             new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
                 $app['saved_searches_service_factory']
@@ -987,8 +964,6 @@ $app['event_command_bus_out'] = $app->share(
         );
 
         $commandBus->subscribe($app['media_manager']);
-
-        $commandBus->subscribe($app['bulk_label_offer_command_handler']);
 
         return $commandBus;
     }
@@ -1332,6 +1307,8 @@ $app['real_role_repository'] = $app->share(
     }
 );
 
+// There is a role_read_repository that broadcasts any changes to role details.
+// Use the repository to make changes, else other read models that contain role details will not be updated.
 $app['role_detail_cache'] = $app->share(
     function ($app) {
         return $app['cache']('role_detail');
@@ -1416,22 +1393,6 @@ $app['role_service'] = $app->share(
 $app['role_permissions_cache'] = $app->share(
     function ($app) {
         return $app['cache']('role_permissions');
-    }
-);
-
-$app['role_permissions_read_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['role_permissions_cache']
-        );
-    }
-);
-
-$app['role_permission_detail_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Permissions\Projector(
-            $app['role_permissions_read_repository']
-        );
     }
 );
 
@@ -1648,6 +1609,7 @@ $app['database.installer'] = $app->share(
     }
 );
 
+$app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());

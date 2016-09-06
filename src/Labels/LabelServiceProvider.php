@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\Events\UniqueHelper;
 use CultuurNet\UDB3\Label\LabelEventOfferTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
-use CultuurNet\UDB3\Label\ReadModels\Helper\LabelEventHelper;
 use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
@@ -22,9 +21,15 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepos
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\ReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator as RelationsSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
+use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
+use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
+use CultuurNet\UDB3\Symfony\Management\User\CultureFeedUserIdentification;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -35,13 +40,16 @@ class LabelServiceProvider implements ServiceProviderInterface
 {
     const JSON_TABLE = 'labels_json';
     const RELATIONS_TABLE = 'labels_relations';
+    const LABEL_ROLES_TABLE = 'label_roles';
 
     const JSON_REPOSITORY_SCHEMA = 'labels.json_repository_schema';
     const RELATIONS_REPOSITORY_SCHEMA = 'labels.relations_repository_schema';
+    const LABEL_ROLES_REPOSITORY_SCHEMA = 'labels.labels_roles_repository_schema';
     const JSON_READ_REPOSITORY = 'labels.json_read_repository';
     const JSON_WRITE_REPOSITORY = 'labels.json_write_repository';
     const RELATIONS_READ_REPOSITORY = 'labels.relations_read_repository';
     const RELATIONS_WRITE_REPOSITORY = 'labels.relations_write_repository';
+    const LABEL_ROLES_WRITE_REPOSITORY = 'labels.label_roles_write_repository';
 
     const READ_SERVICE = 'labels.read_service';
     const WRITE_SERVICE = 'labels.write_service';
@@ -54,6 +62,9 @@ class LabelServiceProvider implements ServiceProviderInterface
     const RELATIONS_PROJECTOR = 'labels.relations_projector';
     const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
     const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
+    const LABEL_ROLES_PROJECTOR = 'labels.label_roles_projector';
+
+    const QUERY_FACTORY = 'label.query_factory';
 
     const LOGGER = 'labels.logger';
 
@@ -71,6 +82,8 @@ class LabelServiceProvider implements ServiceProviderInterface
         $this->setUpCommandHandler($app);
 
         $this->setUpProjectors($app);
+
+        $this->setUpQueryFactory($app);
 
         $this->setUpLogger($app);
     }
@@ -103,11 +116,21 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[self::LABEL_ROLES_REPOSITORY_SCHEMA] = $app->share(
+            function (Application $app) {
+                return new LabelRolesSchemaConfigurator(
+                    new StringLiteral(self::LABEL_ROLES_TABLE)
+                );
+            }
+        );
+
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
                 return new JsonReadRepository(
                     $app['dbal_connection'],
-                    new StringLiteral(self::JSON_TABLE)
+                    new StringLiteral(self::JSON_TABLE),
+                    new StringLiteral(self::LABEL_ROLES_TABLE),
+                    new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE)
                 );
             }
         );
@@ -142,6 +165,15 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[self::LABEL_ROLES_WRITE_REPOSITORY] = $app->share(
+            function (Application $app) {
+                return new LabelRolesWriteRepository(
+                    $app['dbal_connection'],
+                    new StringLiteral(self::LABEL_ROLES_TABLE)
+                );
+            }
+        );
+
         $app['database.installer'] = $app->extend(
             'database.installer',
             function (DatabaseSchemaInstaller $installer, Application $app) {
@@ -150,6 +182,9 @@ class LabelServiceProvider implements ServiceProviderInterface
                 );
                 $installer->addSchemaConfigurator(
                     $app[LabelServiceProvider::RELATIONS_REPOSITORY_SCHEMA]
+                );
+                $installer->addSchemaConfigurator(
+                    $app[LabelServiceProvider::LABEL_ROLES_REPOSITORY_SCHEMA]
                 );
                 return $installer;
             }
@@ -251,6 +286,14 @@ class LabelServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[self::LABEL_ROLES_PROJECTOR] = $app->share(
+            function (Application $app) {
+                return new LabelRolesProjector(
+                    $app[self::LABEL_ROLES_WRITE_REPOSITORY]
+                );
+            }
+        );
+
         $app->extend(
             LabelServiceProvider::RELATIONS_PROJECTOR,
             $app['decorate_event_listener_with_enricher']
@@ -290,6 +333,20 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app->extend(
             self::EVENT_LABEL_PROJECTOR,
             $app['decorate_event_listener_with_enricher']
+        );
+    }
+
+    private function setUpQueryFactory(Application $app)
+    {
+        $app[self::QUERY_FACTORY] = $app->share(
+            function (Application $app) {
+                $userIdentification = new CultureFeedUserIdentification(
+                    $app['current_user'],
+                    $app['config']['user_permissions']
+                );
+
+                return new QueryFactory($userIdentification);
+            }
         );
     }
 
