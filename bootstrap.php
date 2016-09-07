@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -574,59 +573,6 @@ $app['decorate_event_listener_with_enricher'] = $app->share(
         };
     }
 );
-
-$app['amqp.connection'] = $app->share(
-    function (Application $app) {
-        $amqpConfig = $host = $app['config']['amqp'];
-
-        $connection = new AMQPStreamConnection(
-            $amqpConfig['host'],
-            $amqpConfig['port'],
-            $amqpConfig['user'],
-            $amqpConfig['password'],
-            $amqpConfig['vhost']
-        );
-
-        return $connection;
-    }
-);
-
-$app['amqp.publisher'] = $app->share(
-    function (Application $app) {
-        $connection = $app['amqp.connection'];
-        $exchange = $app['config']['amqp']['publish']['udb3']['exchange'];
-        $channel = $connection->channel();
-
-        $map =
-            \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Label\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
-
-        $classes = (new \CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection());
-        foreach (array_keys($map) as $className) {
-            $classes = $classes->with(
-                new \CultuurNet\BroadwayAMQP\DomainMessage\PayloadIsInstanceOf($className)
-            );
-        }
-
-        $specification = new \CultuurNet\BroadwayAMQP\DomainMessage\AnyOf($classes);
-
-        $contentTypeLookup = new \CultuurNet\BroadwayAMQP\ContentTypeLookup($map);
-
-        $publisher = new \CultuurNet\BroadwayAMQP\AMQPPublisher(
-            $channel,
-            $exchange,
-            $specification,
-            $contentTypeLookup,
-            new \CultuurNet\BroadwayAMQP\Message\EntireDomainMessageBodyFactory()
-        );
-
-        return $publisher;
-    }
-);
-
-$app->extend('amqp.publisher', $app['decorate_event_listener_with_enricher']);
 
 $app['udb2_entry_api_improved_factory'] = $app->share(
     function ($app) {
@@ -1608,6 +1554,36 @@ $app['database.installer'] = $app->share(
         return new \CultuurNet\UDB3\Silex\DatabaseSchemaInstaller($app);
     }
 );
+
+$app['amqp.content_type_map'] = $app->share(
+    function () {
+        return \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Label\Events\ContentTypes::map() +
+            \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
+    }
+);
+
+$app->register(
+    new \CultuurNet\SilexAMQP\AMQPConnectionServiceProvider(),
+    [
+        'amqp.connection.host' => $app['config']['amqp']['host'],
+        'amqp.connection.port' => $app['config']['amqp']['port'],
+        'amqp.connection.user' => $app['config']['amqp']['user'],
+        'amqp.connection.password' => $app['config']['amqp']['password'],
+        'amqp.connection.vhost' => $app['config']['amqp']['vhost'],
+    ]
+);
+
+$app->register(
+    new \CultuurNet\SilexAMQP\AMQPPublisherServiceProvider(),
+    [
+        'amqp.publisher.content_type_map' => $app['amqp.content_type_map'],
+        'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
+    ]
+);
+
+$app->extend('amqp.publisher', $app['decorate_event_listener_with_enricher']);
 
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
