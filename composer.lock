@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e517d593ea41a6c10848b30180730e80",
-    "content-hash": "1e558ea62cf331c83ee125ea4bf93bc4",
+    "hash": "ddac5af9ceb7d22e85ca8dcd31188d55",
+    "content-hash": "bb32a2f522f4a4e70e397d2c1db14525",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1522,16 +1522,16 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-1274",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "8dc469ac941d00df1920e0ea3b0692cc52a8bf6b"
+                "reference": "ade3b575731a284bc4f07fc04bd14be73dc2856c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/8dc469ac941d00df1920e0ea3b0692cc52a8bf6b",
-                "reference": "8dc469ac941d00df1920e0ea3b0692cc52a8bf6b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/ade3b575731a284bc4f07fc04bd14be73dc2856c",
+                "reference": "ade3b575731a284bc4f07fc04bd14be73dc2856c",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-09-02 11:04:36"
+            "time": "2016-09-07 09:44:05"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -5947,10 +5947,18 @@
             "time": "2016-09-01 23:53:02"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1274",
+            "package": "cultuurnet/udb3-symfony"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
