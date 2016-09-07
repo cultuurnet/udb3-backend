@@ -57,10 +57,12 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
      */
     private function createPermissionQuery(Application $app)
     {
-        return new CombinedPermissionQuery([
-            $app['event_permission.repository'],
-            $app['place_permission.repository'],
-        ]);
+        return new CombinedPermissionQuery(
+            [
+                $app['event_permission.repository'],
+                $app['place_permission.repository'],
+            ]
+        );
     }
 
     /**
