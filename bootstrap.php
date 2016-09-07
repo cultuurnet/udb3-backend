@@ -1,7 +1,7 @@
 <?php
+
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
-use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
@@ -274,33 +274,7 @@ $app['auth_service'] = $app->share(
     }
 );
 
-$app['offer.security'] = $app->share(
-    function ($app) {
-        return new CultuurNet\UDB3\Offer\Security\Security(
-            new \CultuurNet\UDB3\Security\CultureFeedUserIdentification(
-                $app['current_user'],
-                $app['config']['user_permissions']
-            ),
-            // TODO: Should check for places and events.
-            $app['event_permission.repository'],
-            new \CultuurNet\UDB3\Offer\Security\UserPermissionMatcher(
-                new \CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral('user_roles'),
-                    new StringLiteral('role_permissions'),
-                    new StringLiteral('roles_search')
-                ),
-                new \CultuurNet\UDB3\Offer\Security\SearchQueryFactory(),
-                $app['search_api_2'],
-                new \CultuurNet\UDB3\SearchAPI2\ResultSetPullParser(
-                    new \XMLReader(),
-                    $app['event_iri_generator'],
-                    $app['place_iri_generator']
-                )
-            )
-        );
-    }
-);
+$app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
 
 $app['cache-redis'] = $app->share(
     function (Application $app) {
