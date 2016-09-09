@@ -52,7 +52,7 @@ class JobsControllerProvider implements ControllerProviderInterface
      */
     private function setUpEndpoints(ControllerCollection $controllers)
     {
-        $controllers->get('/{jobId}', 'jobs.read_rest_controller' . ':get');
+        $controllers->get('/{jobId}', 'jobs.read_rest_controller:get');
         return $controllers;
     }
 }
