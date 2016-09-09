@@ -52,7 +52,8 @@ $app['security.firewalls'] = array(
             new Path('^/organizer/' . $app['id_pattern'], 'GET'),
             new Path('^/media/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/(places|labels)$', 'GET'),
-            new Path('^/api/1.0/organizer/suggest/.*', 'GET')
+            new Path('^/api/1.0/organizer/suggest/.*', 'GET'),
+            new Path('^/jobs/', 'GET'),
         ])
     ),
     'entryapi' => array(
@@ -259,6 +260,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
+$app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
 
 $app->get(
     '/user',

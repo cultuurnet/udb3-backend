@@ -7,3 +7,7 @@ toggles:
     name: label-management
     conditions: {}
     status: inactive
+  jobs-endpoint:
+    name: jobs-endpoint
+    conditions: {}
+    status: inactive
