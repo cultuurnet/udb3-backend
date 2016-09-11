@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Silex\Labels;
 
 use CultuurNet\UDB3\Symfony\Label\EditRestController;
-use CultuurNet\UDB3\Symfony\Label\Helper\RequestHelper;
 use CultuurNet\UDB3\Symfony\Label\ReadRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -38,8 +37,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadRestController(
                     $app[LabelServiceProvider::READ_SERVICE],
-                    $app[LabelServiceProvider::QUERY_FACTORY],
-                    new RequestHelper()
+                    $app[LabelServiceProvider::QUERY_FACTORY]
                 );
             }
         );
@@ -53,8 +51,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
         $app[self::EDIT_REST_CONTROLLER] = $app->share(
             function (Application $app) {
                 return new EditRestController(
-                    $app[LabelServiceProvider::WRITE_SERVICE],
-                    new RequestHelper()
+                    $app[LabelServiceProvider::WRITE_SERVICE]
                 );
             }
         );

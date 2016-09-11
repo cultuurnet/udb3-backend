@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
 use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
 use CultuurNet\UiTIDProvider\Security\MultiPathRequestMatcher;
+use CultuurNet\UiTIDProvider\Security\Path;
 use CultuurNet\UiTIDProvider\Security\PreflightRequestMatcher;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,26 +45,16 @@ $app['security.firewalls'] = array(
         'pattern' => '^/culturefeed/oauth',
     ),
     'public' => array(
-        'pattern' => new MultiPathRequestMatcher(
-            [
-                '^/api/1.0/event.jsonld',
-                '^/(event|place|label)/' . $app['id_pattern'] . '$',
-                '^/event/' . $app['id_pattern'] . '/history',
-                '^/organizer/' . $app['id_pattern'],
-                '^/media/' . $app['id_pattern'] . '$',
-                '^/(places|labels)$',
-                '^/api/1.0/organizer/suggest/.*'
-            ],
-            [
-                'GET',
-                'GET',
-                'GET',
-                'GET',
-                'GET',
-                'GET',
-                'GET'
-            ]
-        )
+        'pattern' => MultiPathRequestMatcher::fromPaths([
+            new Path('^/api/1.0/event.jsonld', 'GET'),
+            new Path('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'),
+            new Path('^/event/' . $app['id_pattern'] . '/history', 'GET'),
+            new Path('^/organizer/' . $app['id_pattern'], 'GET'),
+            new Path('^/media/' . $app['id_pattern'] . '$', 'GET'),
+            new Path('^/(places|labels)$', 'GET'),
+            new Path('^/api/1.0/organizer/suggest/.*', 'GET'),
+            new Path('^/jobs/', 'GET'),
+        ])
     ),
     'entryapi' => array(
         'pattern' => '^/rest/entry/.*',
@@ -117,7 +108,12 @@ $app['security.access_manager'] = $app->share(function($app) {
 });
 
 $app['security.access_rules'] = array(
-    array('^/labels/.*', Permission::LABELS_BEHEREN),
+    array(
+        MultiPathRequestMatcher::fromPaths([
+            new Path('^/labels/.*', ['POST', 'DELETE', 'PATCH'])
+        ]),
+        Permission::LABELS_BEHEREN
+    ),
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
 );
 
@@ -264,6 +260,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
 $app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
+$app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
 
 $app->get(
     '/user',
