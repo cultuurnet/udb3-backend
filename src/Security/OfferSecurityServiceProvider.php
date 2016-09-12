@@ -6,10 +6,12 @@ use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Security;
+use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -23,10 +25,16 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
     {
         $app['offer.security'] = $app->share(
             function ($app) {
-                return new Security(
+                $security = new Security(
                     $this->createCultureFeedUserIdentification($app),
                     $this->createPermissionQuery($app),
                     $this->createUserPermissionMatcher($app)
+                );
+
+                return new SecurityWithLabelPrivacy(
+                    $security,
+                    $this->createCultureFeedUserIdentification($app),
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
             }
         );
