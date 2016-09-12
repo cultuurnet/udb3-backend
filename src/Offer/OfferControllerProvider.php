@@ -40,7 +40,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             );
 
             $app[$patchControllerName] = $app->share(
-                function(Application $app) use ($offerType) {
+                function (Application $app) use ($offerType) {
                     return new PatchOfferRestController(
                         OfferType::fromCaseInsensitiveValue($offerType),
                         $app['event_command_bus']
