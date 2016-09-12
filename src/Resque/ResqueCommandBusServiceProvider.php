@@ -2,8 +2,10 @@
 
 namespace CultuurNet\UDB3\Silex\Resque;
 
+use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
+use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\ContextDecoratedCommandBus;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -15,8 +17,18 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
         $app['resque_command_bus_factory'] = $app->protect(
             function ($queueName) use ($app) {
                 $app[$queueName . '_command_bus_factory'] = function () use ($app, $queueName) {
-                    $commandBus = new ResqueCommandBus(
+
+                    $authorizedCommandBus = new AuthorizedCommandBus(
                         new SimpleContextAwareCommandBus(),
+                        new CultureFeedUserIdentification(
+                            $app['current_user'],
+                            $app['config']['user_permissions']
+                        ),
+                        $app['offer.security']
+                    );
+
+                    $commandBus = new ResqueCommandBus(
+                        $authorizedCommandBus,
                         $queueName,
                         $app['command_bus_event_dispatcher']
                     );

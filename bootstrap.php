@@ -1,7 +1,7 @@
 <?php
+
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
-use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
@@ -272,6 +272,8 @@ $app['auth_service'] = $app->share(
         );
     }
 );
+
+$app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
 
 $app['cache-redis'] = $app->share(
     function (Application $app) {

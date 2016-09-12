@@ -7,10 +7,8 @@ namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\SchemaConfigurator;
-use CultuurNet\UDB3\Offer\Security;
 use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
-use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -64,17 +62,6 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
                 );
 
                 return $installer;
-            }
-        );
-
-        $app['place.security'] = $app->share(
-            function (Application $app) {
-                $security = new Security(
-                    $app['security.token_storage'],
-                    $app['place_permission.repository']
-                );
-
-                return $security;
             }
         );
     }

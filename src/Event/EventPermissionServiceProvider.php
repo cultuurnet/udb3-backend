@@ -8,9 +8,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CultuurNet\UDB3\Event\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\SchemaConfigurator;
-use CultuurNet\UDB3\Offer\Security;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
-use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -64,17 +62,6 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
                 );
 
                 return $installer;
-            }
-        );
-
-        $app['event.security'] = $app->share(
-            function (Application $app) {
-                $security = new Security(
-                    $app['security.token_storage'],
-                    $app['event_permission.repository']
-                );
-
-                return $security;
             }
         );
     }
