@@ -74,7 +74,7 @@ class OfferControllerProvider implements ControllerProviderInterface
 
             $controllers
                 ->patch(
-                    "{$offerType}/{offerId}",
+                    "{$offerType}/{cdbid}",
                     "{$patchControllerName}:handle"
                 );
         }
