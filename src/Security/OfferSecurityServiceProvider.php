@@ -47,14 +47,10 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
      */
     private function createUserIdentification(Application $app)
     {
-        if ($app['current_user']) {
-            return new CultureFeedUserIdentification(
-                $app['current_user'],
-                $app['config']['user_permissions']
-            );
-        } else {
-            return new AnonymousUserIdentification();
-        }
+        return new CultureFeedUserIdentification(
+            $app['current_user'],
+            $app['config']['user_permissions']
+        );
     }
 
     /**

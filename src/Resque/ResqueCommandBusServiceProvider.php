@@ -22,7 +22,10 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
 
                     $authorizedCommandBus = new AuthorizedCommandBus(
                         new SimpleContextAwareCommandBus(),
-                        $this->createUserIdentification($app),
+                        new CultureFeedUserIdentification(
+                            $app['current_user'],
+                            $app['config']['user_permissions']
+                        ),
                         $app['offer.security']
                     );
 
@@ -57,21 +60,5 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-    }
-
-    /**
-     * @param Application $app
-     * @return UserIdentificationInterface
-     */
-    private function createUserIdentification(Application $app)
-    {
-        if ($app['current_user']) {
-            return new CultureFeedUserIdentification(
-                $app['current_user'],
-                $app['config']['user_permissions']
-            );
-        } else {
-            return new AnonymousUserIdentification();
-        }
     }
 }
