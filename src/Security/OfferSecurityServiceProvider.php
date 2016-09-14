@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Offer\Security\Security;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
-use CultuurNet\UDB3\Security\AnonymousUserIdentification;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Silex\Application;
