@@ -5,7 +5,9 @@ namespace CultuurNet\UDB3\Silex\Resque;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
+use CultuurNet\UDB3\Security\AnonymousUserIdentification;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use CultuurNet\UDB3\Silex\ContextDecoratedCommandBus;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -20,10 +22,7 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
 
                     $authorizedCommandBus = new AuthorizedCommandBus(
                         new SimpleContextAwareCommandBus(),
-                        new CultureFeedUserIdentification(
-                            $app['current_user'],
-                            $app['config']['user_permissions']
-                        ),
+                        $this->createUserIdentification($app),
                         $app['offer.security']
                     );
 
@@ -58,5 +57,21 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
+    }
+
+    /**
+     * @param Application $app
+     * @return UserIdentificationInterface
+     */
+    private function createUserIdentification(Application $app)
+    {
+        if ($app['current_user']) {
+            return new CultureFeedUserIdentification(
+                $app['current_user'],
+                $app['config']['user_permissions']
+            );
+        } else {
+            return new AnonymousUserIdentification();
+        }
     }
 }
