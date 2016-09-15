@@ -16,9 +16,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadOrganizerRestController(
                     $app['organizer_service'],
-                    $app['organizer_lookup'],
-                    $app['organizer_editing_service'],
-                    $app['organizer_iri_generator']
+                    $app['organizer_lookup']
                 );
             }
         );
