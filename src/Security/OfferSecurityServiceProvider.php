@@ -6,10 +6,13 @@ use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Security;
+use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\String\String as StringLiteral;
@@ -23,10 +26,16 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
     {
         $app['offer.security'] = $app->share(
             function ($app) {
-                return new Security(
-                    $this->createCultureFeedUserIdentification($app),
+                $security = new Security(
+                    $this->createUserIdentification($app),
                     $this->createPermissionQuery($app),
                     $this->createUserPermissionMatcher($app)
+                );
+
+                return new SecurityWithLabelPrivacy(
+                    $security,
+                    $this->createUserIdentification($app),
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
             }
         );
@@ -41,9 +50,9 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
 
     /**
      * @param Application $app
-     * @return CultureFeedUserIdentification
+     * @return UserIdentificationInterface
      */
-    private function createCultureFeedUserIdentification(Application $app)
+    private function createUserIdentification(Application $app)
     {
         return new CultureFeedUserIdentification(
             $app['current_user'],
