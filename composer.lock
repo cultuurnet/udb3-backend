@@ -1302,12 +1302,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "7d6c17d4d95082eae07857c57ff9a2a3c3a171f0"
+                "reference": "358006aa405ebe744f7efd26bef92f1949886a04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7d6c17d4d95082eae07857c57ff9a2a3c3a171f0",
-                "reference": "7d6c17d4d95082eae07857c57ff9a2a3c3a171f0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/358006aa405ebe744f7efd26bef92f1949886a04",
+                "reference": "358006aa405ebe744f7efd26bef92f1949886a04",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1380,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-09-14 11:42:54"
+            "time": "2016-09-16 11:47:02"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1527,12 +1527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "0ac07eecca9e6dfe9f18f1e24a464353846b1536"
+                "reference": "706d0e3e30c9f001ccec36f2986882945187fd79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/0ac07eecca9e6dfe9f18f1e24a464353846b1536",
-                "reference": "0ac07eecca9e6dfe9f18f1e24a464353846b1536",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/706d0e3e30c9f001ccec36f2986882945187fd79",
+                "reference": "706d0e3e30c9f001ccec36f2986882945187fd79",
                 "shasum": ""
             },
             "require": {
@@ -1581,7 +1581,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-09-12 07:02:06"
+            "time": "2016-09-16 12:06:13"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -5797,16 +5797,16 @@
         },
         {
             "name": "phing/phing",
-            "version": "2.14.0",
+            "version": "2.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61"
+                "reference": "bbfcaee391123220fc54e9c6feffeeea3c8775b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/7dd73c83c377623def54b58121f46b4dcb35dd61",
-                "reference": "7dd73c83c377623def54b58121f46b4dcb35dd61",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/bbfcaee391123220fc54e9c6feffeeea3c8775b7",
+                "reference": "bbfcaee391123220fc54e9c6feffeeea3c8775b7",
                 "shasum": ""
             },
             "require": {
@@ -5829,6 +5829,7 @@
                 "phpunit/phpunit": ">=3.7",
                 "sebastian/git": "~1.0",
                 "sebastian/phpcpd": "2.x",
+                "siad007/versioncontrol_hg": "^1.0",
                 "squizlabs/php_codesniffer": "~2.2",
                 "symfony/yaml": "~2.7"
             },
@@ -5843,6 +5844,7 @@
                 "phpunit/php-code-coverage": "Library that provides collection, processing, and rendering functionality for PHP code coverage information",
                 "phpunit/phpunit": "The PHP Unit Testing Framework",
                 "sebastian/phpcpd": "Copy/Paste Detector (CPD) for PHP code",
+                "siad007/versioncontrol_hg": "A library for interfacing with Mercurial repositories.",
                 "tedivm/jshrink": "Javascript Minifier built in PHP"
             },
             "bin": [
@@ -5851,7 +5853,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.14.x-dev"
+                    "dev-master": "2.15.x-dev"
                 }
             },
             "autoload": {
@@ -5884,7 +5886,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-03-10 21:39:23"
+            "time": "2016-09-14 19:38:14"
         },
         {
             "name": "squizlabs/php_codesniffer",
