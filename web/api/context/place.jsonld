@@ -4,8 +4,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "cf": "http://culturefeed.io/event-ld/0.1/DRAFT#",
-    "@base": "http://culturefeed.io/event-ld/0.1/DRAFT#",
+    "udb": "http://io.uitdatabank.be/contexts/",
+    "@base": "http://io.uitdatabank.be/contexts/place",
 
     "name": {
       "@id": "schema:name",
@@ -13,7 +13,7 @@
       "@container": "@language"
     },
     "calendarSummary": {
-      "@id": "cf:calendarSummary",
+      "@id": "udb:calendarSummary",
       "@type": "xsd:string"
     },
     "description": {
@@ -60,12 +60,12 @@
       "@type": "@id"
     },
     "location": {
-      "@id": "cf:location",
-      "@type": "cf:PostalAddress"
+      "@id": "udb:location",
+      "@type": "udb:PostalAddress"
     },
     "organizer": {
-      "@id": "cf:organizer",
-      "@type": "cf:Organizer"
+      "@id": "udb:Organizer",
+      "@type": "@id"
     },
     "license": {
       "@id": "dcterms:license",

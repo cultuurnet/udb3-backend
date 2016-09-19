@@ -46,7 +46,7 @@ $app['security.firewalls'] = array(
     ),
     'public' => array(
         'pattern' => MultiPathRequestMatcher::fromPaths([
-            new Path('^/api/1.0/event.jsonld', 'GET'),
+            new Path('^/contexts/.*', 'GET'),
             new Path('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/event/' . $app['id_pattern'] . '/history', 'GET'),
             new Path('^/organizer/' . $app['id_pattern'], 'GET'),
@@ -221,17 +221,6 @@ $app->before(
     }
 );
 
-$app->get(
-    'api/1.0/event.jsonld',
-    function (Request $request, Application $app) {
-        $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse(
-            'api/1.0/event.jsonld'
-        );
-        $response->headers->set('Content-Type', 'application/ld+json');
-        return $response;
-    }
-);
-
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->get(
@@ -267,6 +256,7 @@ $app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControll
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
+$app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProvider());
 
 $app->get(
     '/user',
