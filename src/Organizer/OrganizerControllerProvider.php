@@ -34,20 +34,20 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers
-            ->get('/organizer/{cdbid}', 'organizer_controller:get')
+            ->get('/{cdbid}', 'organizer_controller:get')
             ->bind('organizer');
 
         $controllers->get(
-            '/api/1.0/organizer/suggest/{term}',
+            '/suggest/{term}',
             'organizer_controller:findByPartOfTitle'
         );
 
         $controllers->post(
-            '/api/1.0/organizer',
+            '/',
             'organizer_edit_controller:create'
         );
 
-        $controllers->delete('/organizer/{cdbid}', 'organizer_edit_controller:delete');
+        $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         return $controllers;
     }
