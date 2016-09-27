@@ -49,10 +49,10 @@ $app['security.firewalls'] = array(
             new Path('^/api/1.0/event.jsonld', 'GET'),
             new Path('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/event/' . $app['id_pattern'] . '/history', 'GET'),
-            new Path('^/organizer/' . $app['id_pattern'], 'GET'),
+            new Path('^/organizers/' . $app['id_pattern'], 'GET'),
             new Path('^/media/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/(places|labels)$', 'GET'),
-            new Path('^/api/1.0/organizer/suggest/.*', 'GET'),
+            new Path('^/organizers/suggest/.*', 'GET'),
             new Path('^/jobs/', 'GET'),
         ])
     ),
