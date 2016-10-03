@@ -24,9 +24,7 @@ class SearchServiceProvider implements ServiceProviderInterface
     {
         $app['search_api_2'] = $app->share(
             function ($app) {
-                $searchApiUrl =
-                    $app['config']['uitid']['base_url'] .
-                    $app['config']['uitid']['apis']['search'];
+                $searchApiUrl = $app['config']['searchapi'];
 
                 return new SearchAPI2(
                     $searchApiUrl,
