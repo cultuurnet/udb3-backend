@@ -15,10 +15,11 @@ uitid:
   base_url: http://www.uitid.be/uitid/rest/
   apis:
     entry: entry/rest.uitdatabank.be/api/v3
-searchapi: http://www.uitid.be/uitid/rest/searchv2
   # ID of the user to impersonate for certain requests to the Entry API that use
   # Light UiTID authentication.
   impersonation_user_id: ***
+search:
+  base_url: http://www.uitid.be/uitid/rest/searchv2
 sync_with_udb2: true
 cors:
   origins: []
