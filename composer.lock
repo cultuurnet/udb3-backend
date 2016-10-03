@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "51e9d654481fc00c8a376641c390ec4e35d8c1fc"
+                "reference": "ebab3d93e5f8f1ef95e016970ef149b4ad5ac024"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/51e9d654481fc00c8a376641c390ec4e35d8c1fc",
-                "reference": "51e9d654481fc00c8a376641c390ec4e35d8c1fc",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/ebab3d93e5f8f1ef95e016970ef149b4ad5ac024",
+                "reference": "ebab3d93e5f8f1ef95e016970ef149b4ad5ac024",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-07-28 19:35:30"
+            "time": "2016-10-03 10:58:03"
         },
         {
             "name": "broadway/broadway",
@@ -1302,12 +1302,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "8dba6f50a5365a702c7924597fa92abafd82242f"
+                "reference": "32064dcb70b321b38bf64eedf530216ca45bd553"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/8dba6f50a5365a702c7924597fa92abafd82242f",
-                "reference": "8dba6f50a5365a702c7924597fa92abafd82242f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/32064dcb70b321b38bf64eedf530216ca45bd553",
+                "reference": "32064dcb70b321b38bf64eedf530216ca45bd553",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1380,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-09-28 09:06:43"
+            "time": "2016-10-03 12:55:07"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1527,12 +1527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "57442b9d5bb28755dcbd8f8635bf030ae95fbad6"
+                "reference": "d52c23f91d5f5009ce68a8ca3084a29668f715c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/57442b9d5bb28755dcbd8f8635bf030ae95fbad6",
-                "reference": "57442b9d5bb28755dcbd8f8635bf030ae95fbad6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/d52c23f91d5f5009ce68a8ca3084a29668f715c6",
+                "reference": "d52c23f91d5f5009ce68a8ca3084a29668f715c6",
                 "shasum": ""
             },
             "require": {
@@ -1581,7 +1581,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-09-23 12:33:49"
+            "time": "2016-10-03 12:57:51"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -5361,16 +5361,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.25.0",
+            "version": "v1.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "f16a634ab08d87e520da5671ec52153d627f10f6"
+                "reference": "81c2b5fd36581370c7731387f05dcdb577050513"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f16a634ab08d87e520da5671ec52153d627f10f6",
-                "reference": "f16a634ab08d87e520da5671ec52153d627f10f6",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/81c2b5fd36581370c7731387f05dcdb577050513",
+                "reference": "81c2b5fd36581370c7731387f05dcdb577050513",
                 "shasum": ""
             },
             "require": {
@@ -5383,7 +5383,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.25-dev"
+                    "dev-master": "1.26-dev"
                 }
             },
             "autoload": {
@@ -5418,7 +5418,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-09-21 23:05:12"
+            "time": "2016-10-02 16:19:13"
         },
         {
             "name": "willdurand/geocoder",

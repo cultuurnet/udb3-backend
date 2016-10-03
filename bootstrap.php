@@ -1120,7 +1120,8 @@ $app['organizer_jsonld_projector'] = $app->share(
         return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
             $app['organizer_jsonld_repository'],
             $app['organizer_iri_generator'],
-            $app['event_bus']
+            $app['event_bus'],
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
         );
     }
 );
