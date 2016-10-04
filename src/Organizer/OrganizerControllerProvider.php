@@ -47,6 +47,16 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             'organizer_edit_controller:create'
         );
 
+        $controllers->put(
+            '/organizers/{organizerId}/labels/{labelId}',
+            'organizer_edit_controller:addLabel'
+        );
+
+        $controllers->delete(
+            '/organizers/{organizerId}/labels/{labelId}',
+            'organizer_edit_controller:removeLabel'
+        );
+
         $controllers->delete('/organizer/{cdbid}', 'organizer_edit_controller:delete');
 
         return $controllers;
