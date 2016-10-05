@@ -16,6 +16,7 @@ use CultuurNet\UDB3\EventListener\EnrichingEventListenerDecorator;
 use CultuurNet\UDB3\Label\LabelDomainMessageEnricher;
 use CultuurNet\UDB3\Label\OfferLabelDomainMessageEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Organizer\OrganizerLabelDomainMessageEnricher;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -557,11 +558,20 @@ $app['event_listener.enricher.label_events'] = $app->share(
     }
 );
 
+$app['event_listener.enricher.organizer_label_events'] = $app->share(
+    function (Application $app) {
+        return new OrganizerLabelDomainMessageEnricher(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
+    }
+);
+
 $app['event_listener.enricher.all'] = $app->share(
     function (Application $app) {
         return (new CompositeDomainMessageEnricher())
             ->withEnricher($app['event_listener.enricher.offer_label_events'])
-            ->withEnricher($app['event_listener.enricher.label_events']);
+            ->withEnricher($app['event_listener.enricher.label_events'])
+            ->withEnricher($app['event_listener.enricher.organizer_label_events']);
     }
 );
 
