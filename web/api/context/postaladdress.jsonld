@@ -2,8 +2,8 @@
   "@context": {
     "schema": "http://schema.org/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "udb": "http://io.uitdatabank.be/contexts/",
-    "@base": "http://io.uitdatabank.be/contexts/address",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "@base": "https://io.uitdatabank.be/contexts/address",
 
     "addressCountry": {
       "@id": "schema:addressCountry",

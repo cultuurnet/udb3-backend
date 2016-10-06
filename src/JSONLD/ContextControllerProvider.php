@@ -20,10 +20,16 @@ class ContextControllerProvider implements ControllerProviderInterface
 
         $app[self::JSONLD_CONTEXT_CONTROLLER] = $app->share(
             function (Application $app) {
-                return new ContextController(
-                    new StringLiteral('/var/www/udb-silex/web/api/context/'),
-                    Url::fromNative('http://udb-silex.dev/')
-                );
+                $contextDirectory = new StringLiteral($app['config']['jsonld']['context_directory']);
+
+                $controller = new ContextController($contextDirectory);
+
+                if (isset($app['config']['url']) && $app['config']['url'] !== ContextController::DEFAULT_BASE_PATH) {
+                    $basePath = Url::fromNative($app['config']['url']);
+                    return $controller->withCustomBasePath($basePath);
+                } else {
+                    return $controller;
+                }
             }
         );
 

@@ -4,8 +4,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "udb": "http://io.uitdatabank.be/contexts/",
-    "@base": "http://io.uitdatabank.be/contexts/event",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "@base": "https://io.uitdatabank.be/contexts/event",
 
     "name": {
       "@id": "schema:name",
