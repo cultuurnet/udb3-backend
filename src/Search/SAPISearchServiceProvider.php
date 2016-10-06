@@ -15,7 +15,7 @@ use Predis\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class SearchServiceProvider implements ServiceProviderInterface
+class SAPISearchServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}

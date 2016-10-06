@@ -255,7 +255,7 @@ $app->mount('variations', new \CultuurNet\UDB3\Silex\Variations\VariationsContro
 $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Search\SearchControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
