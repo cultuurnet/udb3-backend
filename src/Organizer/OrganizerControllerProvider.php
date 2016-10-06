@@ -16,7 +16,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadOrganizerRestController(
                     $app['organizer_service'],
-                    $app['organizer_lookup']
+                    $app['organizer_lookup'],
+                    $app['organizer_website.repository']
                 );
             }
         );
@@ -48,6 +49,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
+
+        $controllers->get('/', 'organizer_controller:search');
 
         return $controllers;
     }

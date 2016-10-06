@@ -124,16 +124,6 @@ $app['entity_iri_generator_factory'] = $app->share(
     }
 );
 
-$app['organizer_iri_generator'] = $app->share(
-    function ($app) {
-        return new CallableIriGenerator(
-            function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/organizer/' . $cdbid;
-            }
-        );
-    }
-);
-
 $app['uitid_consumer_credentials'] = $app->share(
     function ($app) {
         $consumerConfig = $app['config']['uitid']['consumer'];
@@ -1099,7 +1089,7 @@ $app['organizer_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/organizer/' . $cdbid;
+                return $app['config']['url'] . '/organizers/' . $cdbid;
             }
         );
     }
