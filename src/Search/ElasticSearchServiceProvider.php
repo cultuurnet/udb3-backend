@@ -18,7 +18,7 @@ class ElasticSearchServiceProvider implements ServiceProviderInterface
                 return ClientBuilder::create()
                     ->setHosts(
                         [
-                            $app['elasticsearch.host']
+                            $app['elasticsearch.host'],
                         ]
                     )
                     ->build();
