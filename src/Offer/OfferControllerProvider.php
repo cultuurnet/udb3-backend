@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Symfony\Offer\PatchOfferRestController;
 use CultuurNet\UDB3\TitleJSONDeserializer;
@@ -34,7 +35,8 @@ class OfferControllerProvider implements ControllerProviderInterface
                         $app[$serviceName],
                         new LabelJSONDeserializer(),
                         new TitleJSONDeserializer(),
-                        new DescriptionJSONDeserializer()
+                        new DescriptionJSONDeserializer(),
+                        new PriceInfoJSONDeserializer()
                     );
                 }
             );
@@ -70,6 +72,12 @@ class OfferControllerProvider implements ControllerProviderInterface
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/description",
                     "{$controllerName}:translateDescription"
+                );
+
+            $controllers
+                ->put(
+                    "{$offerType}/{cdbid}/priceInfo",
+                    "{$controllerName}:updatePriceInfo"
                 );
 
             $controllers
