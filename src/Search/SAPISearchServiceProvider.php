@@ -15,7 +15,7 @@ use Predis\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class SearchServiceProvider implements ServiceProviderInterface
+class SAPISearchServiceProvider implements ServiceProviderInterface
 {
     /**
      * {@inheritdoc}
@@ -24,9 +24,7 @@ class SearchServiceProvider implements ServiceProviderInterface
     {
         $app['search_api_2'] = $app->share(
             function ($app) {
-                $searchApiUrl =
-                    $app['config']['uitid']['base_url'] .
-                    $app['config']['uitid']['apis']['search'];
+                $searchApiUrl = $app['config']['search']['base_url'];
 
                 return new SearchAPI2(
                     $searchApiUrl,

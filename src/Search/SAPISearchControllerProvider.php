@@ -11,7 +11,7 @@ use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class SearchControllerProvider implements ControllerProviderInterface
+class SAPISearchControllerProvider implements ControllerProviderInterface
 {
     /**
      * @inheritdoc
