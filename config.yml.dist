@@ -45,6 +45,11 @@ database:
   user: ***
   password: ***
   host: 127.0.0.1
+elasticsearch:
+  host: http://elasticsearch.dev:9200
+  organizer:
+    index_name: udb3_core
+    document_type: organizer
 swiftmailer.options:
   # This connects to a mailserver at port 1025
   # This is not the standard SMTP port, but the default port of Mailcatcher,
