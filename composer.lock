@@ -686,12 +686,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "4880771a6f2b7a01e8f3624b35959132e0fc957a"
+                "reference": "a9bbea5698dd31074941483ba36d3d7a6f0fa0f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/4880771a6f2b7a01e8f3624b35959132e0fc957a",
-                "reference": "4880771a6f2b7a01e8f3624b35959132e0fc957a",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/a9bbea5698dd31074941483ba36d3d7a6f0fa0f9",
+                "reference": "a9bbea5698dd31074941483ba36d3d7a6f0fa0f9",
                 "shasum": ""
             },
             "require": {
@@ -725,7 +725,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2016-03-31 09:45:40"
+            "time": "2016-10-10 14:03:58"
         },
         {
             "name": "cultuurnet/entry",
@@ -1302,12 +1302,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "2d855a01dcffe2829725d530db5a5cdac72cce46"
+                "reference": "dde6adecbb927e6790a5104b967e9dc9230af9d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2d855a01dcffe2829725d530db5a5cdac72cce46",
-                "reference": "2d855a01dcffe2829725d530db5a5cdac72cce46",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/dde6adecbb927e6790a5104b967e9dc9230af9d4",
+                "reference": "dde6adecbb927e6790a5104b967e9dc9230af9d4",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1380,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-10 09:11:41"
+            "time": "2016-10-10 14:03:40"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1528,12 +1528,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "ede5117b5f6499210c1d3f962f9c879a72ee68b5"
+                "reference": "18f9adbf8efab43a701a795fdd3554164a1e7a86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/ede5117b5f6499210c1d3f962f9c879a72ee68b5",
-                "reference": "ede5117b5f6499210c1d3f962f9c879a72ee68b5",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/18f9adbf8efab43a701a795fdd3554164a1e7a86",
+                "reference": "18f9adbf8efab43a701a795fdd3554164a1e7a86",
                 "shasum": ""
             },
             "require": {
@@ -1567,7 +1567,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-10-07 14:48:53"
+            "time": "2016-10-11 11:38:57"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -4524,16 +4524,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
                 "shasum": ""
             },
             "require": {
@@ -4567,7 +4567,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-09-19 16:02:08"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "qandidate/toggle",
