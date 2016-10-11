@@ -1302,12 +1302,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "dde6adecbb927e6790a5104b967e9dc9230af9d4"
+                "reference": "d78e31de618813e8beec4edcdde47d64f1542898"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/dde6adecbb927e6790a5104b967e9dc9230af9d4",
-                "reference": "dde6adecbb927e6790a5104b967e9dc9230af9d4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d78e31de618813e8beec4edcdde47d64f1542898",
+                "reference": "d78e31de618813e8beec4edcdde47d64f1542898",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1380,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-10 14:03:40"
+            "time": "2016-10-11 13:12:45"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1528,12 +1528,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "18f9adbf8efab43a701a795fdd3554164a1e7a86"
+                "reference": "74ebfaecd14e2dcd01c1b5b909c126aa14b96676"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/18f9adbf8efab43a701a795fdd3554164a1e7a86",
-                "reference": "18f9adbf8efab43a701a795fdd3554164a1e7a86",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/74ebfaecd14e2dcd01c1b5b909c126aa14b96676",
+                "reference": "74ebfaecd14e2dcd01c1b5b909c126aa14b96676",
                 "shasum": ""
             },
             "require": {
@@ -1567,7 +1567,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-10-11 11:38:57"
+            "time": "2016-10-11 14:04:46"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -5879,16 +5879,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.3.6",
+            "version": "1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "a60da179c37f2c4e44ef734d0b92824a58943f7f"
+                "reference": "969ff423d3f201da3ff718a5831bb999bb0669b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/a60da179c37f2c4e44ef734d0b92824a58943f7f",
-                "reference": "a60da179c37f2c4e44ef734d0b92824a58943f7f",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/969ff423d3f201da3ff718a5831bb999bb0669b0",
+                "reference": "969ff423d3f201da3ff718a5831bb999bb0669b0",
                 "shasum": ""
             },
             "require": {
@@ -5925,7 +5925,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2016-09-07 17:57:29"
+            "time": "2016-10-11 13:25:21"
         },
         {
             "name": "zendframework/zend-eventmanager",
