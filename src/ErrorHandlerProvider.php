@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex;
 
 use Crell\ApiProblem\ApiProblem;
+use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Variations\Command\ValidationException;
 use Silex\Application;
@@ -17,10 +18,8 @@ class ErrorHandlerProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $provider = $this;
-
         $app->error(
-            function (ValidationException $e) use ($provider) {
+            function (ValidationException $e) {
                 $problem = $this->createNewApiProblem($e);
                 $problem['validation_messages'] = $e->getErrors();
                 return new ApiProblemJsonResponse($problem);
@@ -28,7 +27,15 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         );
 
         $app->error(
-            function (\Exception $e) use ($provider) {
+            function (DataValidationException $e) {
+                $problem = new ApiProblem('Invalid payload.');
+                $problem['validation_messages'] = $e->getValidationMessages();
+                return new ApiProblemJsonResponse($problem);
+            }
+        );
+
+        $app->error(
+            function (\Exception $e) {
                 $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
             }

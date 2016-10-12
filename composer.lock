@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.6.4",
+            "version": "2.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "ebab3d93e5f8f1ef95e016970ef149b4ad5ac024"
+                "reference": "fbadde44717ea3eb98fba35425d49731185bf418"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/ebab3d93e5f8f1ef95e016970ef149b4ad5ac024",
-                "reference": "ebab3d93e5f8f1ef95e016970ef149b4ad5ac024",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/fbadde44717ea3eb98fba35425d49731185bf418",
+                "reference": "fbadde44717ea3eb98fba35425d49731185bf418",
                 "shasum": ""
             },
             "require": {
@@ -118,14 +118,10 @@
                 "php": ">=5.3"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "2.0.0-alpha",
                 "phpunit/phpunit": "@stable"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Assert": "lib/"
@@ -156,7 +152,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-10-03 10:58:03"
+            "time": "2016-10-11 17:13:28"
         },
         {
             "name": "broadway/broadway",
@@ -682,16 +678,16 @@
         },
         {
             "name": "cultuurnet/deserializer",
-            "version": "dev-master",
+            "version": "dev-feature/III-1325",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "a9bbea5698dd31074941483ba36d3d7a6f0fa0f9"
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/a9bbea5698dd31074941483ba36d3d7a6f0fa0f9",
-                "reference": "a9bbea5698dd31074941483ba36d3d7a6f0fa0f9",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
                 "shasum": ""
             },
             "require": {
@@ -706,7 +702,8 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "0.x-dev",
-                    "dev-1.x": "1.x-dev"
+                    "dev-1.x": "1.x-dev",
+                    "dev-feature/III-1325": "0.x-dev"
                 }
             },
             "autoload": {
@@ -725,7 +722,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2016-10-10 14:03:58"
+            "time": "2016-09-16 08:12:43"
         },
         {
             "name": "cultuurnet/entry",
@@ -1302,12 +1299,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d78e31de618813e8beec4edcdde47d64f1542898"
+                "reference": "b25f983244d2fffb048f611fa910ad50e1f2b6b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d78e31de618813e8beec4edcdde47d64f1542898",
-                "reference": "d78e31de618813e8beec4edcdde47d64f1542898",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b25f983244d2fffb048f611fa910ad50e1f2b6b7",
+                "reference": "b25f983244d2fffb048f611fa910ad50e1f2b6b7",
                 "shasum": ""
             },
             "require": {
@@ -1380,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-11 13:12:45"
+            "time": "2016-10-12 14:56:44"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1668,12 +1665,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "401727c937faf5fb80d6470f2bef8c22eceea4ba"
+                "reference": "c2c757635c21df170fbf61a127a6a06c43bfb983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/401727c937faf5fb80d6470f2bef8c22eceea4ba",
-                "reference": "401727c937faf5fb80d6470f2bef8c22eceea4ba",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/c2c757635c21df170fbf61a127a6a06c43bfb983",
+                "reference": "c2c757635c21df170fbf61a127a6a06c43bfb983",
                 "shasum": ""
             },
             "require": {
@@ -1722,7 +1719,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-10-07 09:49:57"
+            "time": "2016-10-12 15:35:15"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1730,12 +1727,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "fc1568eed57be0e1944debd641b3f7d21eb084a3"
+                "reference": "033736c96b243331bba545b3a4e30b7e2d5dedf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/fc1568eed57be0e1944debd641b3f7d21eb084a3",
-                "reference": "fc1568eed57be0e1944debd641b3f7d21eb084a3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/033736c96b243331bba545b3a4e30b7e2d5dedf7",
+                "reference": "033736c96b243331bba545b3a4e30b7e2d5dedf7",
                 "shasum": ""
             },
             "require": {
@@ -1754,7 +1751,7 @@
                 "phing/phing": "~2.10",
                 "phpunit/phpunit": "~4.3",
                 "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.2"
+                "squizlabs/php_codesniffer": "2.6.1"
             },
             "type": "library",
             "extra": {
@@ -1782,7 +1779,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-08-05 10:38:47"
+            "time": "2016-10-12 15:30:29"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -6147,16 +6144,16 @@
         },
         {
             "name": "phing/phing",
-            "version": "2.15.0",
+            "version": "2.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "bbfcaee391123220fc54e9c6feffeeea3c8775b7"
+                "reference": "16f6372d9bf71783abea98fdd8cd9cb4ecb3bf41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/bbfcaee391123220fc54e9c6feffeeea3c8775b7",
-                "reference": "bbfcaee391123220fc54e9c6feffeeea3c8775b7",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/16f6372d9bf71783abea98fdd8cd9cb4ecb3bf41",
+                "reference": "16f6372d9bf71783abea98fdd8cd9cb4ecb3bf41",
                 "shasum": ""
             },
             "require": {
@@ -6236,7 +6233,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-09-14 19:38:14"
+            "time": "2016-10-11 09:24:10"
         },
         {
             "name": "squizlabs/php_codesniffer",

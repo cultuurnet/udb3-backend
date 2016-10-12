@@ -52,8 +52,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
 
         $controllers->get('places', 'place_controller:getByPostalCode');
 
-        // @todo Reduce path to /place.
-        $controllers->post('api/1.0/place', 'place_editing_controller:createPlace');
+        $controllers->post('place', 'place_editing_controller:createPlace');
 
         $controllers->post('place/{itemId}/images', 'place_editing_controller:addImage');
         $controllers->post('place/{itemId}/images/main', 'place_editing_controller:selectMainImage');
