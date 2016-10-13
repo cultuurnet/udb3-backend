@@ -50,11 +50,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             ->get('/{cdbid}', 'organizer_controller:get')
             ->bind('organizer');
 
-        $controllers->get(
-            '/suggest/{term}',
-            'organizer_controller:findByPartOfTitle'
-        );
-
         $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         $controllers->put(
