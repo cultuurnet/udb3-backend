@@ -682,12 +682,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "a9bbea5698dd31074941483ba36d3d7a6f0fa0f9"
+                "reference": "6cbd59cfdc22e5067413df64887affacd5f22798"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/a9bbea5698dd31074941483ba36d3d7a6f0fa0f9",
-                "reference": "a9bbea5698dd31074941483ba36d3d7a6f0fa0f9",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/6cbd59cfdc22e5067413df64887affacd5f22798",
+                "reference": "6cbd59cfdc22e5067413df64887affacd5f22798",
                 "shasum": ""
             },
             "require": {
@@ -721,7 +721,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2016-10-10 14:03:58"
+            "time": "2016-10-12 14:56:22"
         },
         {
             "name": "cultuurnet/entry",
@@ -1298,12 +1298,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "86871c944cbf90969e50c14bbeea62cf5b1584f1"
+                "reference": "6c39873e4198b623363c4fa3e4200ba51bd1dca5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/86871c944cbf90969e50c14bbeea62cf5b1584f1",
-                "reference": "86871c944cbf90969e50c14bbeea62cf5b1584f1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/6c39873e4198b623363c4fa3e4200ba51bd1dca5",
+                "reference": "6c39873e4198b623363c4fa3e4200ba51bd1dca5",
                 "shasum": ""
             },
             "require": {
@@ -1376,7 +1376,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-12 09:51:30"
+            "time": "2016-10-14 09:02:16"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1726,12 +1726,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "fc1568eed57be0e1944debd641b3f7d21eb084a3"
+                "reference": "033736c96b243331bba545b3a4e30b7e2d5dedf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/fc1568eed57be0e1944debd641b3f7d21eb084a3",
-                "reference": "fc1568eed57be0e1944debd641b3f7d21eb084a3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/033736c96b243331bba545b3a4e30b7e2d5dedf7",
+                "reference": "033736c96b243331bba545b3a4e30b7e2d5dedf7",
                 "shasum": ""
             },
             "require": {
@@ -1750,7 +1750,7 @@
                 "phing/phing": "~2.10",
                 "phpunit/phpunit": "~4.3",
                 "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.2"
+                "squizlabs/php_codesniffer": "2.6.1"
             },
             "type": "library",
             "extra": {
@@ -1778,7 +1778,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-08-05 10:38:47"
+            "time": "2016-10-12 15:30:29"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -6143,16 +6143,16 @@
         },
         {
             "name": "phing/phing",
-            "version": "2.15.1",
+            "version": "2.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "16f6372d9bf71783abea98fdd8cd9cb4ecb3bf41"
+                "reference": "0999ab4e94e609dc00998e3d1b88df843054db7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/16f6372d9bf71783abea98fdd8cd9cb4ecb3bf41",
-                "reference": "16f6372d9bf71783abea98fdd8cd9cb4ecb3bf41",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/0999ab4e94e609dc00998e3d1b88df843054db7c",
+                "reference": "0999ab4e94e609dc00998e3d1b88df843054db7c",
                 "shasum": ""
             },
             "require": {
@@ -6232,7 +6232,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-10-11 09:24:10"
+            "time": "2016-10-13 09:01:45"
         },
         {
             "name": "squizlabs/php_codesniffer",
