@@ -24,9 +24,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $app['organizer_controller'] = $app->share(
             function (Application $app) {
                 return new ReadOrganizerRestController(
-                    $app['organizer_service'],
-                    $app['organizer_lookup'],
-                    $app['organizer_website.repository']
+                    $app['organizer_service']
                 );
             }
         );

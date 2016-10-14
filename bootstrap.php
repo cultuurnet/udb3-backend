@@ -1628,7 +1628,6 @@ $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
