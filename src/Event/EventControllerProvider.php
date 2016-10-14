@@ -50,7 +50,7 @@ class EventControllerProvider implements ControllerProviderInterface
             ->get('event/{cdbid}/history', 'event_controller:history')
             ->bind('event-history');
 
-        $controllers->post('api/1.0/event', "event_editing_controller:createEvent");
+        $controllers->post('event', "event_editing_controller:createEvent");
 
         $controllers->get('event/{cdbid}/permission', 'event_editing_controller:hasPermission');
 
