@@ -7,6 +7,7 @@ use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\CommandHandler;
+use CultuurNet\UDB3\Label\Events\LabelNameUniqueConstraintService;
 use CultuurNet\UDB3\Label\Events\UniqueHelper;
 use CultuurNet\UDB3\Label\LabelEventOfferTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
@@ -232,7 +233,7 @@ class LabelServiceProvider implements ServiceProviderInterface
                     $eventStore,
                     $app['dbal_connection'],
                     new StringLiteral('labels_unique'),
-                    new UniqueHelper()
+                    new LabelNameUniqueConstraintService()
                 );
             }
         );
