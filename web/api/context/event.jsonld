@@ -1,0 +1,75 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "@base": "https://io.uitdatabank.be/contexts/event",
+
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string",
+      "@container": "@language"
+    },
+    "calendarSummary": {
+      "@id": "udb:calendarSummary",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string",
+      "@container": "@language"
+    },
+    "available": {
+      "@id": "dcterms:available",
+      "@type": "xsd:dateTime"
+    },
+    "created": {
+      "@id": "dcterms:created",
+      "@type": "xsd:dateTime"
+    },
+    "creator": {
+      "@id": "dcterms:creator",
+      "@type": "xsd:string"
+    },
+    "modified": {
+      "@id": "dcterms:modified",
+      "@type": "xsd:dateTime"
+    },
+    "publisher": {
+      "@id": "dc:publisher",
+      "@type": "xsd:string"
+    },
+    "typicalAgeRange": {
+      "@id": "schema:typicalAgeRange",
+      "@type": "xsd:string"
+    },
+    "performer": {
+      "@id": "schema:performer",
+      "@type": "xsd:string",
+      "_comment": "TO DO: example"
+    },
+    "offers": {
+      "@id": "schema:offers",
+      "@type": "schema:Offer",
+      "_comment": "TO DO example meerdere prijzen, url"
+    },
+    "image": {
+      "@id": "schema:image",
+      "@type": "@id"
+    },
+    "location": {
+      "@id": "udb:location",
+      "@type": "udb:PostalAddress"
+    },
+    "organizer": {
+      "@id": "udb:Organizer",
+      "@type": "@id"
+    },
+    "license": {
+      "@id": "dcterms:license",
+      "@type": "@id"
+    }
+  }
+}
