@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8fd1934cc86f0ccd7e0f57dae5b91b42",
-    "content-hash": "942e9db177b6d63021dca0f510b1fc47",
+    "hash": "9e153aa7466dab613ce296a1c859aee1",
+    "content-hash": "eb69ab58282f9a29145bf12951aae0bd",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1294,16 +1294,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-1534",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3b3622b1870b247b8c3b801cc91e08005dcf21f0"
+                "reference": "ec31c3530ebbfa8c499c860c356aa16e479c6447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3b3622b1870b247b8c3b801cc91e08005dcf21f0",
-                "reference": "3b3622b1870b247b8c3b801cc91e08005dcf21f0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ec31c3530ebbfa8c499c860c356aa16e479c6447",
+                "reference": "ec31c3530ebbfa8c499c860c356aa16e479c6447",
                 "shasum": ""
             },
             "require": {
@@ -1376,7 +1376,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-17 13:50:01"
+            "time": "2016-10-18 11:43:21"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2488,16 +2488,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v2.2.1",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "7b34186a58730d0a8963741bd62fa5ab45658ada"
+                "reference": "2f54f5c5301075b993da5505e406d2a4d6113222"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/7b34186a58730d0a8963741bd62fa5ab45658ada",
-                "reference": "7b34186a58730d0a8963741bd62fa5ab45658ada",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/2f54f5c5301075b993da5505e406d2a4d6113222",
+                "reference": "2f54f5c5301075b993da5505e406d2a4d6113222",
                 "shasum": ""
             },
             "require": {
@@ -2538,7 +2538,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2016-07-14 14:13:40"
+            "time": "2016-10-17 19:43:19"
         },
         {
             "name": "gridonic/princexml-php",
@@ -6313,10 +6313,18 @@
             "time": "2016-09-01 23:53:02"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1534",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
