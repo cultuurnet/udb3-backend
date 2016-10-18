@@ -119,6 +119,11 @@ class RoleControllerProvider implements ControllerProviderInterface
             'role_controller:getUserRoles'
         );
 
+        $controllers->get(
+            '/user/roles/',
+            'role_controller:getCurrentUserRoles'
+        );
+
         return $controllers;
     }
 }
