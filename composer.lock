@@ -538,12 +538,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "28287770c45603f50acacbf68d187350d072f2d1"
+                "reference": "e9942f3acb33e0893d69985b44a11d6f615cbc9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/28287770c45603f50acacbf68d187350d072f2d1",
-                "reference": "28287770c45603f50acacbf68d187350d072f2d1",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/e9942f3acb33e0893d69985b44a11d6f615cbc9c",
+                "reference": "e9942f3acb33e0893d69985b44a11d6f615cbc9c",
                 "shasum": ""
             },
             "require-dev": {
@@ -565,7 +565,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2016-06-29 13:21:51"
+            "time": "2016-10-17 14:17:27"
         },
         {
             "name": "cultuurnet/clock",
@@ -1298,12 +1298,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "364317484a4751e316e708379c656e2ea7830dfc"
+                "reference": "36739c990d6f3400a6f53035dc00bf6ab15c8aca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/364317484a4751e316e708379c656e2ea7830dfc",
-                "reference": "364317484a4751e316e708379c656e2ea7830dfc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/36739c990d6f3400a6f53035dc00bf6ab15c8aca",
+                "reference": "36739c990d6f3400a6f53035dc00bf6ab15c8aca",
                 "shasum": ""
             },
             "require": {
@@ -1376,7 +1376,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-14 09:16:27"
+            "time": "2016-10-18 12:00:52"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1664,12 +1664,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "9db90a979616d40bcf1021c9bcf6745f1a2b1081"
+                "reference": "2b8d1bea6b820b2d1fb8527df3dbee0796c15ec0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/9db90a979616d40bcf1021c9bcf6745f1a2b1081",
-                "reference": "9db90a979616d40bcf1021c9bcf6745f1a2b1081",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/2b8d1bea6b820b2d1fb8527df3dbee0796c15ec0",
+                "reference": "2b8d1bea6b820b2d1fb8527df3dbee0796c15ec0",
                 "shasum": ""
             },
             "require": {
@@ -1718,7 +1718,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-10-12 11:07:17"
+            "time": "2016-10-18 08:22:09"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -2488,16 +2488,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v2.2.1",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "7b34186a58730d0a8963741bd62fa5ab45658ada"
+                "reference": "2f54f5c5301075b993da5505e406d2a4d6113222"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/7b34186a58730d0a8963741bd62fa5ab45658ada",
-                "reference": "7b34186a58730d0a8963741bd62fa5ab45658ada",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/2f54f5c5301075b993da5505e406d2a4d6113222",
+                "reference": "2f54f5c5301075b993da5505e406d2a4d6113222",
                 "shasum": ""
             },
             "require": {
@@ -2538,7 +2538,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2016-07-14 14:13:40"
+            "time": "2016-10-17 19:43:19"
         },
         {
             "name": "gridonic/princexml-php",
