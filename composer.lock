@@ -678,16 +678,16 @@
         },
         {
             "name": "cultuurnet/deserializer",
-            "version": "dev-master",
+            "version": "dev-feature/III-1325",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "6cbd59cfdc22e5067413df64887affacd5f22798"
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/6cbd59cfdc22e5067413df64887affacd5f22798",
-                "reference": "6cbd59cfdc22e5067413df64887affacd5f22798",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
                 "shasum": ""
             },
             "require": {
@@ -702,7 +702,8 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "0.x-dev",
-                    "dev-1.x": "1.x-dev"
+                    "dev-1.x": "1.x-dev",
+                    "dev-feature/III-1325": "0.x-dev"
                 }
             },
             "autoload": {
@@ -721,7 +722,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2016-10-12 14:56:22"
+            "time": "2016-09-16 08:12:43"
         },
         {
             "name": "cultuurnet/entry",
@@ -1298,12 +1299,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "271371a0338234751296b8af9e81b9e577f57861"
+                "reference": "c7c8417fdd6b066fe187837b85d007ed7342c16a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/271371a0338234751296b8af9e81b9e577f57861",
-                "reference": "271371a0338234751296b8af9e81b9e577f57861",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c7c8417fdd6b066fe187837b85d007ed7342c16a",
+                "reference": "c7c8417fdd6b066fe187837b85d007ed7342c16a",
                 "shasum": ""
             },
             "require": {
@@ -1376,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-18 15:29:45"
+            "time": "2016-10-18 17:25:30"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -3524,20 +3525,20 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.28",
+            "version": "1.0.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044"
+                "reference": "75138bb14160f3ba963750aa95e08d1d394fb198"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/75138bb14160f3ba963750aa95e08d1d394fb198",
+                "reference": "75138bb14160f3ba963750aa95e08d1d394fb198",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": ">=5.5.9"
             },
             "conflict": {
                 "league/flysystem-sftp": "<1.0.6"
@@ -3603,7 +3604,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-10-07 12:20:37"
+            "time": "2016-10-18 16:20:02"
         },
         {
             "name": "league/flysystem-ziparchive",
