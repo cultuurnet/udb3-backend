@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9e153aa7466dab613ce296a1c859aee1",
-    "content-hash": "eb69ab58282f9a29145bf12951aae0bd",
+    "hash": "8fd1934cc86f0ccd7e0f57dae5b91b42",
+    "content-hash": "942e9db177b6d63021dca0f510b1fc47",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -678,16 +678,16 @@
         },
         {
             "name": "cultuurnet/deserializer",
-            "version": "dev-master",
+            "version": "dev-feature/III-1325",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "6cbd59cfdc22e5067413df64887affacd5f22798"
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/6cbd59cfdc22e5067413df64887affacd5f22798",
-                "reference": "6cbd59cfdc22e5067413df64887affacd5f22798",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
                 "shasum": ""
             },
             "require": {
@@ -702,7 +702,8 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "0.x-dev",
-                    "dev-1.x": "1.x-dev"
+                    "dev-1.x": "1.x-dev",
+                    "dev-feature/III-1325": "0.x-dev"
                 }
             },
             "autoload": {
@@ -721,7 +722,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2016-10-12 14:56:22"
+            "time": "2016-09-16 08:12:43"
         },
         {
             "name": "cultuurnet/entry",
@@ -1294,16 +1295,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-1534",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "ec31c3530ebbfa8c499c860c356aa16e479c6447"
+                "reference": "c7c8417fdd6b066fe187837b85d007ed7342c16a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ec31c3530ebbfa8c499c860c356aa16e479c6447",
-                "reference": "ec31c3530ebbfa8c499c860c356aa16e479c6447",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c7c8417fdd6b066fe187837b85d007ed7342c16a",
+                "reference": "c7c8417fdd6b066fe187837b85d007ed7342c16a",
                 "shasum": ""
             },
             "require": {
@@ -1376,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-18 11:43:21"
+            "time": "2016-10-18 17:25:30"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1664,12 +1665,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "c2c757635c21df170fbf61a127a6a06c43bfb983"
+                "reference": "aa52fe9a4f30ce8a66470046d07334f9ea6eb6b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/c2c757635c21df170fbf61a127a6a06c43bfb983",
-                "reference": "c2c757635c21df170fbf61a127a6a06c43bfb983",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/aa52fe9a4f30ce8a66470046d07334f9ea6eb6b7",
+                "reference": "aa52fe9a4f30ce8a66470046d07334f9ea6eb6b7",
                 "shasum": ""
             },
             "require": {
@@ -1718,7 +1719,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-10-12 15:35:15"
+            "time": "2016-10-18 15:16:28"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3524,20 +3525,20 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.28",
+            "version": "1.0.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044"
+                "reference": "75138bb14160f3ba963750aa95e08d1d394fb198"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/75138bb14160f3ba963750aa95e08d1d394fb198",
+                "reference": "75138bb14160f3ba963750aa95e08d1d394fb198",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": ">=5.5.9"
             },
             "conflict": {
                 "league/flysystem-sftp": "<1.0.6"
@@ -3603,7 +3604,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-10-07 12:20:37"
+            "time": "2016-10-18 16:20:02"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -6313,18 +6314,10 @@
             "time": "2016-09-01 23:53:02"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1534",
-            "package": "cultuurnet/udb3"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
-        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
