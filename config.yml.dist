@@ -121,3 +121,7 @@ jwt:
 udb2_cdbxml_enricher:
   http_response_timeout: 3
   http_connect_timeout: 1
+
+udb2_import:
+  event_url_format: 'http://search-prod.lodgon.com/search/rest/detail/event/%s?noauth=true&version=3.3'
+  actor_url_format: 'http://search-prod.lodgon.com/search/rest/detail/actor/%s?noauth=true&version=3.3'
