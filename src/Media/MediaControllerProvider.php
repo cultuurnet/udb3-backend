@@ -2,7 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Media;
 
-use CultuurNet\UDB3\Symfony\MediaController;
+use CultuurNet\UDB3\Symfony\Media\ReadMediaRestController;
+use CultuurNet\UDB3\Symfony\Media\EditMediaRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -16,10 +17,17 @@ class MediaControllerProvider implements ControllerProviderInterface
     {
         $app['media_controller'] = $app->share(
             function (Application $app) {
-                return new MediaController(
-                    $app['image_uploader'],
+                return new ReadMediaRestController(
                     $app['media_manager'],
                     $app['media_object_serializer']
+                );
+            }
+        );
+
+        $app['media_editing_controller'] = $app->share(
+            function (Application $app) {
+                return new EditMediaRestController(
+                    $app['image_uploader']
                 );
             }
         );
@@ -27,7 +35,7 @@ class MediaControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('images', 'media_controller:upload');
+        $controllers->post('images', 'media_editing_controller:upload');
         $controllers->get('media/{id}', 'media_controller:get');
 
         return $controllers;
