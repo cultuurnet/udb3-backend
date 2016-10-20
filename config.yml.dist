@@ -121,3 +121,6 @@ jwt:
 udb2_cdbxml_enricher:
   http_response_timeout: 3
   http_connect_timeout: 1
+
+jsonld:
+  context_directory: ""
