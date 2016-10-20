@@ -49,10 +49,10 @@ $app['security.firewalls'] = array(
             new Path('^/contexts/.*', 'GET'),
             new Path('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/event/' . $app['id_pattern'] . '/history', 'GET'),
-            new Path('^/organizer/' . $app['id_pattern'], 'GET'),
+            new Path('^/organizers/' . $app['id_pattern'], 'GET'),
             new Path('^/media/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/(places|labels)$', 'GET'),
-            new Path('^/api/1.0/organizer/suggest/.*', 'GET'),
+            new Path('^/organizers/suggest/.*', 'GET'),
             new Path('^/jobs/', 'GET'),
         ])
     ),
@@ -246,7 +246,7 @@ $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvi
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
+$app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());

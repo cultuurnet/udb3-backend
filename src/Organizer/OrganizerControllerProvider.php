@@ -24,8 +24,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $app['organizer_controller'] = $app->share(
             function (Application $app) {
                 return new ReadOrganizerRestController(
-                    $app['organizer_service'],
-                    $app['organizer_lookup']
+                    $app['organizer_service']
                 );
             }
         );
@@ -42,33 +41,26 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/organizers/', 'organizer_search_controller:search');
+        $controllers->get('/', 'organizer_search_controller:search');
+        $controllers->post('/', 'organizer_edit_controller:create');
 
         $controllers
-            ->get('/organizer/{cdbid}', 'organizer_controller:get')
+            ->get('/{cdbid}', 'organizer_controller:get')
             ->bind('organizer');
 
-        $controllers->get(
-            '/api/1.0/organizer/suggest/{term}',
-            'organizer_controller:findByPartOfTitle'
-        );
-
-        $controllers->post(
-            '/api/1.0/organizer',
-            'organizer_edit_controller:create'
-        );
+        $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         $controllers->put(
-            '/organizers/{organizerId}/labels/{labelId}',
+            '/{organizerId}/labels/{labelId}',
             'organizer_edit_controller:addLabel'
         );
 
         $controllers->delete(
-            '/organizers/{organizerId}/labels/{labelId}',
+            '{organizerId}/labels/{labelId}',
             'organizer_edit_controller:removeLabel'
         );
 
-        $controllers->delete('/organizer/{cdbid}', 'organizer_edit_controller:delete');
+        $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         return $controllers;
     }
