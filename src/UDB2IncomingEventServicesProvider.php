@@ -9,6 +9,7 @@ use CultuurNet\UDB3\UDB2\Event\EventApplier;
 use CultuurNet\UDB3\UDB2\Event\EventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Event\EventFactory;
 use CultuurNet\UDB3\UDB2\LabeledAsUDB3Place;
+use CultuurNet\UDB3\UDB2\OfferToSapiUrlTransformer;
 use CultuurNet\UDB3\UDB2\Organizer\OrganizerFactory;
 use CultuurNet\UDB3\UDB2\Organizer\QualifiesAsOrganizerSpecification;
 use CultuurNet\UDB3\UDB2\Place\PlaceFromActorFactory;
@@ -25,6 +26,14 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        /** @var \Qandidate\Toggle\ToggleManager $toggles */
+        $toggles = $app['toggles'];
+
+        $importFromSapi = $toggles->active(
+            'import-from-sapi',
+            $app['toggles.context']
+        );
+
         $app['cdbxml_enricher_http_client_adapter'] = $app->share(
             function (Application $app) {
                 $handlerStack = new HandlerStack(\GuzzleHttp\choose_handler());
@@ -61,7 +70,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_events_cdbxml_enricher'] = $app->share(
-            function (Application $app) {
+            function (Application $app) use ($importFromSapi) {
                 $enricher = new EventCdbXmlEnricher(
                     $app['event_bus'],
                     $app['cdbxml_enricher_http_client_adapter']
@@ -69,18 +78,36 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
                 $enricher->setLogger($app['cdbxml_enricher_logger']);
 
+                if ($importFromSapi) {
+                    $eventUrlFormat = $app['config']['udb2_import']['event_url_format'];
+                    if (!isset($eventUrlFormat)) {
+                        throw new \Exception('can not import events from sapi without configuring an url format');
+                    }
+                    $transformer = new OfferToSapiUrlTransformer($eventUrlFormat);
+                    $enricher->withUrlTransformer($transformer);
+                }
+
                 return $enricher;
             }
         );
 
         $app['udb2_actor_events_cdbxml_enricher'] = $app->share(
-            function (Application $app) {
+            function (Application $app) use ($importFromSapi) {
                 $enricher = new ActorEventCdbXmlEnricher(
                     $app['event_bus'],
                     $app['cdbxml_enricher_http_client_adapter']
                 );
 
                 $enricher->setLogger($app['cdbxml_enricher_logger']);
+
+                if ($importFromSapi) {
+                    $actorUrlFormat = $app['config']['udb2_import']['actor_url_format'];
+                    if (!isset($actorUrlFormat)) {
+                        throw new \Exception('can not import actors from sapi without configuring an url format');
+                    }
+                    $transformer = new OfferToSapiUrlTransformer($actorUrlFormat);
+                    $enricher->withUrlTransformer($transformer);
+                }
 
                 return $enricher;
             }

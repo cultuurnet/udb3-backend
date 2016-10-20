@@ -124,3 +124,7 @@ udb2_cdbxml_enricher:
 
 jsonld:
   context_directory: ""
+
+udb2_import:
+  event_url_format: 'http://search-prod.lodgon.com/search/rest/detail/event/%s?noauth=true&version=3.3'
+  actor_url_format: 'http://search-prod.lodgon.com/search/rest/detail/actor/%s?noauth=true&version=3.3'
