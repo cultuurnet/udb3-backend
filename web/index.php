@@ -46,13 +46,13 @@ $app['security.firewalls'] = array(
     ),
     'public' => array(
         'pattern' => MultiPathRequestMatcher::fromPaths([
-            new Path('^/api/1.0/event.jsonld', 'GET'),
+            new Path('^/contexts/.*', 'GET'),
             new Path('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/event/' . $app['id_pattern'] . '/history', 'GET'),
-            new Path('^/organizer/' . $app['id_pattern'], 'GET'),
+            new Path('^/organizers/' . $app['id_pattern'], 'GET'),
             new Path('^/media/' . $app['id_pattern'] . '$', 'GET'),
             new Path('^/(places|labels)$', 'GET'),
-            new Path('^/api/1.0/organizer/suggest/.*', 'GET'),
+            new Path('^/organizers/suggest/.*', 'GET'),
             new Path('^/jobs/', 'GET'),
         ])
     ),
@@ -221,17 +221,6 @@ $app->before(
     }
 );
 
-$app->get(
-    'api/1.0/event.jsonld',
-    function (Request $request, Application $app) {
-        $response = new \Symfony\Component\HttpFoundation\BinaryFileResponse(
-            'api/1.0/event.jsonld'
-        );
-        $response->headers->set('Content-Type', 'application/ld+json');
-        return $response;
-    }
-);
-
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
 $app->get(
@@ -257,7 +246,7 @@ $app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvi
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
+$app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
@@ -267,6 +256,7 @@ $app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControll
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
+$app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProvider());
 
 $app->get(
     '/user',

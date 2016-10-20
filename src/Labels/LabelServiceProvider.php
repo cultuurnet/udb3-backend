@@ -7,7 +7,7 @@ use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\CommandHandler;
-use CultuurNet\UDB3\Label\Events\UniqueHelper;
+use CultuurNet\UDB3\Label\Events\LabelNameUniqueConstraintService;
 use CultuurNet\UDB3\Label\LabelEventOfferTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\SchemaConfigurator as JsonSchemaConfigurator;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
-use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\ReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator as RelationsSchemaConfigurator;
@@ -232,7 +231,7 @@ class LabelServiceProvider implements ServiceProviderInterface
                     $eventStore,
                     $app['dbal_connection'],
                     new StringLiteral('labels_unique'),
-                    new UniqueHelper()
+                    new LabelNameUniqueConstraintService()
                 );
             }
         );

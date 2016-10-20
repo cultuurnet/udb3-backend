@@ -13,9 +13,11 @@ use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\DomainMessage\CompositeDomainMessageEnricher;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\EventListener\EnrichingEventListenerDecorator;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\LabelDomainMessageEnricher;
 use CultuurNet\UDB3\Label\OfferLabelDomainMessageEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Organizer\OrganizerLabelDomainMessageEnricher;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
@@ -122,16 +124,6 @@ $app['event_iri_generator'] = $app->share(
 $app['entity_iri_generator_factory'] = $app->share(
     function ($app) {
         return new EntityIriGeneratorFactory($app['config']['url']);
-    }
-);
-
-$app['organizer_iri_generator'] = $app->share(
-    function ($app) {
-        return new CallableIriGenerator(
-            function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/organizer/' . $cdbid;
-            }
-        );
     }
 );
 
@@ -1110,7 +1102,7 @@ $app['organizer_iri_generator'] = $app->share(
     function ($app) {
         return new CallableIriGenerator(
             function ($cdbid) use ($app) {
-                return $app['config']['url'] . '/organizer/' . $cdbid;
+                return $app['config']['url'] . '/organizers/' . $cdbid;
             }
         );
     }
@@ -1169,11 +1161,18 @@ $app['eventstore_payload_serializer'] = $app->share(
 
 $app['organizer_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
+        $eventStore = new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'organizers'
+        );
+
+        return new UniqueDBALEventStoreDecorator(
+            $eventStore,
+            $app['dbal_connection'],
+            new StringLiteral('organizer_unique_websites'),
+            new WebsiteUniqueConstraintService()
         );
     }
 );
@@ -1629,7 +1628,6 @@ $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
