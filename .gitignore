@@ -7,3 +7,4 @@
 /web/uploads/
 /web/media/
 *.pem
+external_id_mapping.yml
