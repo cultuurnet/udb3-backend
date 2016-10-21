@@ -114,12 +114,6 @@ $app['security.access_rules'] = array(
         ]),
         Permission::LABELS_BEHEREN
     ),
-    array(
-        MultiPathRequestMatcher::fromPaths([
-            new Path('^/(event|place)/' . $app['id_pattern'] . '$', ['PATCH']),
-        ]),
-        Permission::AANBOD_MODEREREN
-    ),
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
 );
 
