@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\Event\Not;
+use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventApplier;
 use CultuurNet\UDB3\UDB2\Actor\EventCdbXmlEnricher as ActorEventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Event\EventApplier;
@@ -21,6 +23,7 @@ use GuzzleHttp\Middleware;
 use Http\Adapter\Guzzle6\Client as ClientAdapter;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {
@@ -178,6 +181,30 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $applier->setLogger($logger);
 
                 return $applier;
+            }
+        );
+
+        $app['udb2_event_cdbid_extractor'] = $app->share(
+            function (Application $app) {
+                return new EventCdbIdExtractor($app['udb2_external_id_mapping_service']);
+            }
+        );
+
+        $app['udb2_external_id_mapping_service'] = $app->share(
+            function (Application $app) {
+                $map = [];
+
+                $yamlFile = $app['udb2_external_id_mapping.yml_file_location'];
+                if (file_exists($yamlFile)) {
+                    $yaml = file_get_contents($yamlFile);
+                    $yaml = Yaml::parse($yaml);
+
+                    if (is_array($yaml)) {
+                        $map = $yaml;
+                    }
+                }
+
+                return new ArrayMappingService($map);
             }
         );
     }
