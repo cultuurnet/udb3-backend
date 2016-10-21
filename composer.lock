@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8fd1934cc86f0ccd7e0f57dae5b91b42",
-    "content-hash": "942e9db177b6d63021dca0f510b1fc47",
+    "hash": "e288ded591d4138ad714d0a0c54734cd",
+    "content-hash": "986a63f8e1f0e3209109c55357530b36",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1723,16 +1723,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-1546",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "853a65b0addb9c037e8dfe3d2719f67e700be96f"
+                "reference": "070565133e7eb7189cd085663b0befe5fa9252fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/853a65b0addb9c037e8dfe3d2719f67e700be96f",
-                "reference": "853a65b0addb9c037e8dfe3d2719f67e700be96f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/070565133e7eb7189cd085663b0befe5fa9252fc",
+                "reference": "070565133e7eb7189cd085663b0befe5fa9252fc",
                 "shasum": ""
             },
             "require": {
@@ -1779,7 +1779,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-10-20 14:40:41"
+            "time": "2016-10-21 09:44:54"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -6314,10 +6314,18 @@
             "time": "2016-09-01 23:53:02"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1546",
+            "package": "cultuurnet/udb3-udb2-bridge"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
