@@ -678,16 +678,16 @@
         },
         {
             "name": "cultuurnet/deserializer",
-            "version": "dev-master",
+            "version": "dev-feature/III-1325",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "8428e1bc9e0447dee18ed9bee0f66d112c8285ed"
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/8428e1bc9e0447dee18ed9bee0f66d112c8285ed",
-                "reference": "8428e1bc9e0447dee18ed9bee0f66d112c8285ed",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
+                "reference": "ff9b8eeedd0ae3a0e22b3821141ab13a88645af1",
                 "shasum": ""
             },
             "require": {
@@ -702,7 +702,8 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "0.x-dev",
-                    "dev-1.x": "1.x-dev"
+                    "dev-1.x": "1.x-dev",
+                    "dev-feature/III-1325": "0.x-dev"
                 }
             },
             "autoload": {
@@ -712,7 +713,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache-2.0"
+                "GPL-3.0"
             ],
             "authors": [
                 {
@@ -721,7 +722,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2016-10-19 08:49:50"
+            "time": "2016-09-16 08:12:43"
         },
         {
             "name": "cultuurnet/entry",
@@ -1298,12 +1299,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "61d3fe63f570e2d8807f0297b959f5e256c909a0"
+                "reference": "295393c7bed6b5ba2a37cb03e73a415ccae991b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/61d3fe63f570e2d8807f0297b959f5e256c909a0",
-                "reference": "61d3fe63f570e2d8807f0297b959f5e256c909a0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/295393c7bed6b5ba2a37cb03e73a415ccae991b3",
+                "reference": "295393c7bed6b5ba2a37cb03e73a415ccae991b3",
                 "shasum": ""
             },
             "require": {
@@ -1376,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-21 14:06:14"
+            "time": "2016-10-25 09:59:42"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1664,12 +1665,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "e5298f039b0cb8ca9f4e1e1730501433ffeb210c"
+                "reference": "42408b2b7cf3ed501c10f70cc4b97c6e9cac68af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/e5298f039b0cb8ca9f4e1e1730501433ffeb210c",
-                "reference": "e5298f039b0cb8ca9f4e1e1730501433ffeb210c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/42408b2b7cf3ed501c10f70cc4b97c6e9cac68af",
+                "reference": "42408b2b7cf3ed501c10f70cc4b97c6e9cac68af",
                 "shasum": ""
             },
             "require": {
@@ -1718,7 +1719,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-10-20 13:51:04"
+            "time": "2016-10-24 17:27:54"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1726,12 +1727,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "853a65b0addb9c037e8dfe3d2719f67e700be96f"
+                "reference": "070565133e7eb7189cd085663b0befe5fa9252fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/853a65b0addb9c037e8dfe3d2719f67e700be96f",
-                "reference": "853a65b0addb9c037e8dfe3d2719f67e700be96f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/070565133e7eb7189cd085663b0befe5fa9252fc",
+                "reference": "070565133e7eb7189cd085663b0befe5fa9252fc",
                 "shasum": ""
             },
             "require": {
@@ -1778,7 +1779,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-10-20 14:40:41"
+            "time": "2016-10-21 09:44:54"
         },
         {
             "name": "cultuurnet/uitid-credentials",
