@@ -384,7 +384,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['place_service'],
             $app['organizer_service'],
             $app['media_object_serializer'],
-            $app['iri_offer_identifier_factory']
+            $app['iri_offer_identifier_factory'],
+            $app['udb2_event_cdbid_extractor']
         );
 
         $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
@@ -419,7 +420,8 @@ $app['event_calendar_projector'] = $app->share(
 $app['event_relations_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Event\ReadModel\Relations\Projector(
-            $app['event_relations_repository']
+            $app['event_relations_repository'],
+            $app['udb2_event_cdbid_extractor']
         );
     }
 );
@@ -716,7 +718,8 @@ $app['udb2_event_importer'] = $app->share(
             $app['udb2_event_cdbxml'],
             $app['real_event_repository'],
             $app['place_service'],
-            $app['organizer_service']
+            $app['organizer_service'],
+            $app['udb2_event_cdbid_extractor']
         );
 
         $importer->setLogger($logger);
@@ -1725,6 +1728,8 @@ $app->register(
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
     [
+        'udb2_place_external_id_mapping.yml_file_location' => $udb3ConfigLocation . '/external_id_mapping_place.yml',
+        'udb2_organizer_external_id_mapping.yml_file_location' => $udb3ConfigLocation . '/external_id_mapping_organizer.yml',
         'udb2_cdbxml_enricher.http_response_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_response_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_response_timeout'] : 3,
         'udb2_cdbxml_enricher.http_connect_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_connect_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_connect_timeout'] : 1,
     ]
