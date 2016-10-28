@@ -614,12 +614,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "929b2580b21ad67882c061dbf694cc547205fd9d"
+                "reference": "6d50f3dc0d343268c1560816f4abb7b5940628bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/929b2580b21ad67882c061dbf694cc547205fd9d",
-                "reference": "929b2580b21ad67882c061dbf694cc547205fd9d",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/6d50f3dc0d343268c1560816f4abb7b5940628bb",
+                "reference": "6d50f3dc0d343268c1560816f4abb7b5940628bb",
                 "shasum": ""
             },
             "require": {
@@ -674,7 +674,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2016-08-05 11:22:45"
+            "time": "2016-10-28 08:22:04"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1299,12 +1299,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3d61ee217bf114fb7a3ae517ef6cf98a92d551ff"
+                "reference": "cf9d82633c40884cc8d934ef10f6b30ef8a22a39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3d61ee217bf114fb7a3ae517ef6cf98a92d551ff",
-                "reference": "3d61ee217bf114fb7a3ae517ef6cf98a92d551ff",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cf9d82633c40884cc8d934ef10f6b30ef8a22a39",
+                "reference": "cf9d82633c40884cc8d934ef10f6b30ef8a22a39",
                 "shasum": ""
             },
             "require": {
@@ -1377,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-27 09:29:28"
+            "time": "2016-10-28 07:46:38"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1665,12 +1665,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "42408b2b7cf3ed501c10f70cc4b97c6e9cac68af"
+                "reference": "9e4be411e78c7ad900924c27f1bcd6afa4fd51d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/42408b2b7cf3ed501c10f70cc4b97c6e9cac68af",
-                "reference": "42408b2b7cf3ed501c10f70cc4b97c6e9cac68af",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/9e4be411e78c7ad900924c27f1bcd6afa4fd51d2",
+                "reference": "9e4be411e78c7ad900924c27f1bcd6afa4fd51d2",
                 "shasum": ""
             },
             "require": {
@@ -1719,7 +1719,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-10-24 17:27:54"
+            "time": "2016-10-27 14:11:55"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
