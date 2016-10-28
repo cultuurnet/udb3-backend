@@ -614,12 +614,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "6d50f3dc0d343268c1560816f4abb7b5940628bb"
+                "reference": "e40d14dd16555ef5b9320c5d6c9e9449f5d0cd72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/6d50f3dc0d343268c1560816f4abb7b5940628bb",
-                "reference": "6d50f3dc0d343268c1560816f4abb7b5940628bb",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/e40d14dd16555ef5b9320c5d6c9e9449f5d0cd72",
+                "reference": "e40d14dd16555ef5b9320c5d6c9e9449f5d0cd72",
                 "shasum": ""
             },
             "require": {
@@ -674,7 +674,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2016-10-28 08:22:04"
+            "time": "2016-10-28 09:33:19"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1299,12 +1299,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "cf9d82633c40884cc8d934ef10f6b30ef8a22a39"
+                "reference": "2818d56248e4217810e4ab3ffad354563da5a8a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cf9d82633c40884cc8d934ef10f6b30ef8a22a39",
-                "reference": "cf9d82633c40884cc8d934ef10f6b30ef8a22a39",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2818d56248e4217810e4ab3ffad354563da5a8a3",
+                "reference": "2818d56248e4217810e4ab3ffad354563da5a8a3",
                 "shasum": ""
             },
             "require": {
@@ -1377,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-10-28 07:46:38"
+            "time": "2016-10-28 10:53:32"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
