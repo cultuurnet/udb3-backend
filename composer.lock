@@ -1051,12 +1051,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/symfony-security-jwt.git",
-                "reference": "8e79565b80bfb091da02677c605973f468e9392f"
+                "reference": "a6aed851723228d05897ce99bf7f33272523faaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/8e79565b80bfb091da02677c605973f468e9392f",
-                "reference": "8e79565b80bfb091da02677c605973f468e9392f",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/a6aed851723228d05897ce99bf7f33272523faaf",
+                "reference": "a6aed851723228d05897ce99bf7f33272523faaf",
                 "shasum": ""
             },
             "require": {
@@ -1085,7 +1085,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2016-05-02 14:33:28"
+            "time": "2016-11-08 13:53:56"
         },
         {
             "name": "cultuurnet/symfony-security-oauth",
@@ -1299,12 +1299,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "1d0a0784dfd5cb0a46bba2433e2eb79cefc2ed3c"
+                "reference": "401ab64853af0ea57ef8108ddcdf0ee806318a06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1d0a0784dfd5cb0a46bba2433e2eb79cefc2ed3c",
-                "reference": "1d0a0784dfd5cb0a46bba2433e2eb79cefc2ed3c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/401ab64853af0ea57ef8108ddcdf0ee806318a06",
+                "reference": "401ab64853af0ea57ef8108ddcdf0ee806318a06",
                 "shasum": ""
             },
             "require": {
@@ -1377,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-11-03 09:57:07"
+            "time": "2016-11-09 12:21:37"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -2489,16 +2489,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v2.2.2",
+            "version": "v2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "2f54f5c5301075b993da5505e406d2a4d6113222"
+                "reference": "588ede911141543f5b43e9f605931d5e6490a3d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/2f54f5c5301075b993da5505e406d2a4d6113222",
-                "reference": "2f54f5c5301075b993da5505e406d2a4d6113222",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/588ede911141543f5b43e9f605931d5e6490a3d6",
+                "reference": "588ede911141543f5b43e9f605931d5e6490a3d6",
                 "shasum": ""
             },
             "require": {
@@ -2539,7 +2539,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2016-10-17 19:43:19"
+            "time": "2016-11-04 17:59:06"
         },
         {
             "name": "gridonic/princexml-php",
