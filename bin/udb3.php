@@ -3,6 +3,9 @@
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use Knp\Provider\ConsoleServiceProvider;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -24,6 +27,27 @@ $consoleApp = $app['console'];
 $consoleApp->add(
     (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))->withHeartBeat('dbal_connection:keepalive')
 );
+
+$dispatcher = new EventDispatcher();
+$dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) use ($app) {
+    if ($event->getCommand() instanceof ConsumeCommand) {
+        /** @var \CultuurNet\UDB3\Silex\Impersonator $impersonator */
+        $impersonator = $app['impersonator'];
+        $impersonator->impersonate(
+            new \Broadway\Domain\Metadata(
+                [
+                    'user_id' => '66666666-6666-6666-6666-666666666666',
+                    'user_nick' => 'dare_devil',
+                    'user_email' => 'dare_devil@2dotstwice.be',
+                    'auth_jwt' => '', // TODO config JWT => user details jwt_decoder_service
+                    'uitid_token_credentials' => null,
+                ]
+            )
+        );
+    }
+});
+$consoleApp->setDispatcher($dispatcher);
+
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\InstallCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ReplayCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand());
