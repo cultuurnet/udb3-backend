@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\UDB2\Label\LabelImporter;
 use Guzzle\Log\ClosureLogAdapter;
 use Guzzle\Plugin\Log\LogPlugin;
 use Silex\Application;
@@ -518,6 +519,7 @@ $app['event_bus'] = $app->share(
                 'role_users_projector',
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
+                'udb2_label_importer'
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -1046,6 +1048,20 @@ $app['udb2_place_importer'] = $app->share(
         $importer->setLogger($logger);
 
         return $importer;
+    }
+);
+
+$app['udb2_label_importer'] = $app->share(
+    function (Application $app) {
+        $labelImporter = new LabelImporter(
+            $app['event_command_bus']
+        );
+
+        $logger = new \Monolog\Logger('udb2-label-importer');
+        $logger->pushHandler($app['udb2_log_handler']);
+        $labelImporter->setLogger($logger);
+
+        return $labelImporter;
     }
 );
 
