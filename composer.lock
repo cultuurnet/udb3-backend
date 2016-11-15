@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8fd1934cc86f0ccd7e0f57dae5b91b42",
-    "content-hash": "942e9db177b6d63021dca0f510b1fc47",
+    "hash": "cc0e8db79e2e253ad62027baaeb0778d",
+    "content-hash": "17d3bea4b04800111601ff28b54a171b",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.6.6",
+            "version": "v2.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "f567e3e4bce5419bccb9e9b1faf8d4ca9b2f5055"
+                "reference": "2b4c9249a7ceef51402d39bd797aae16cfd8f36f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/f567e3e4bce5419bccb9e9b1faf8d4ca9b2f5055",
-                "reference": "f567e3e4bce5419bccb9e9b1faf8d4ca9b2f5055",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/2b4c9249a7ceef51402d39bd797aae16cfd8f36f",
+                "reference": "2b4c9249a7ceef51402d39bd797aae16cfd8f36f",
                 "shasum": ""
             },
             "require": {
@@ -152,7 +152,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-10-31 12:09:54"
+            "time": "2016-11-14 16:46:13"
         },
         {
             "name": "broadway/broadway",
@@ -1295,16 +1295,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-1607",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "401ab64853af0ea57ef8108ddcdf0ee806318a06"
+                "reference": "a75e39aae23c8a3826ab47e19354b0274d196568"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/401ab64853af0ea57ef8108ddcdf0ee806318a06",
-                "reference": "401ab64853af0ea57ef8108ddcdf0ee806318a06",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a75e39aae23c8a3826ab47e19354b0274d196568",
+                "reference": "a75e39aae23c8a3826ab47e19354b0274d196568",
                 "shasum": ""
             },
             "require": {
@@ -1377,7 +1377,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-11-09 12:21:37"
+            "time": "2016-11-15 13:40:02"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1723,16 +1723,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-1607",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "b2cceb4e107b342f24cbbcd97cd49f6ba5594fc7"
+                "reference": "4616915602ec92638b5c6a5744265bb9953311e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/b2cceb4e107b342f24cbbcd97cd49f6ba5594fc7",
-                "reference": "b2cceb4e107b342f24cbbcd97cd49f6ba5594fc7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/4616915602ec92638b5c6a5744265bb9953311e3",
+                "reference": "4616915602ec92638b5c6a5744265bb9953311e3",
                 "shasum": ""
             },
             "require": {
@@ -1740,7 +1740,7 @@
                 "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/udb2-domain-events": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-1607 as 0.1",
                 "guzzlehttp/psr7": "~1.2.3",
                 "php-http/httplug": "~1.0.0"
             },
@@ -1779,7 +1779,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-10-27 09:32:32"
+            "time": "2016-11-15 13:53:51"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -5263,16 +5263,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "dff51f72b0706335131b00a7f49606168c582594"
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/dff51f72b0706335131b00a7f49606168c582594",
-                "reference": "dff51f72b0706335131b00a7f49606168c582594",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4",
                 "shasum": ""
             },
             "require": {
@@ -5284,7 +5284,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.3-dev"
                 }
             },
             "autoload": {
@@ -5318,20 +5318,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-php55",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php55.git",
-                "reference": "bf2ff9ad6be1a4772cb873e4eea94d70daa95c6d"
+                "reference": "03e3f0350bca2220e3623a0e340eef194405fc67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/bf2ff9ad6be1a4772cb873e4eea94d70daa95c6d",
-                "reference": "bf2ff9ad6be1a4772cb873e4eea94d70daa95c6d",
+                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/03e3f0350bca2220e3623a0e340eef194405fc67",
+                "reference": "03e3f0350bca2220e3623a0e340eef194405fc67",
                 "shasum": ""
             },
             "require": {
@@ -5341,7 +5341,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.3-dev"
                 }
             },
             "autoload": {
@@ -5374,7 +5374,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -6315,10 +6315,25 @@
             "time": "2016-09-01 23:53:02"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1607",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1607",
+            "package": "cultuurnet/udb3-udb2-bridge"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
