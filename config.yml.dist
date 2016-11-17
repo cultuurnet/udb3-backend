@@ -47,6 +47,7 @@ database:
   host: 127.0.0.1
 elasticsearch:
   host: http://elasticsearch.dev:9200
+  log: true
   organizer:
     index_name: udb3_core
     document_type: organizer

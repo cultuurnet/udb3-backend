@@ -1631,6 +1631,7 @@ $app->register(
     new \CultuurNet\UDB3\Silex\Search\ElasticSearchServiceProvider(),
     [
         'elasticsearch.host' => $app['config']['elasticsearch']['host'],
+        'elasticsearch.log' => isset($app['config']['elasticsearch']['log']) ? $app['config']['elasticsearch']['log'] : false,
     ]
 );
 

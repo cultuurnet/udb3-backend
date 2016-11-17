@@ -1,0 +1,3 @@
+[2016-11-17 14:00:23] elasticsearch.DEBUG: Request Body ["{\"query\":{\"bool\":{\"filter\":[{\"wildcard\":{\"name\":\"*cc de*\"}}]}}}"] []
+[2016-11-17 14:00:23] elasticsearch.INFO: Request Success: {"method":"GET","uri":"http://elasticsearch.dev:9200/udb3_core/organizer/_search?from=0&size=30","headers":{"host":["elasticsearch.dev:9200"]},"HTTP code":200,"duration":0.167736} []
+[2016-11-17 14:00:23] elasticsearch.DEBUG: Response [{"took":160,"timed_out":false,"_shards":{"total":5,"successful":5,"failed":0},"hits":{"total":0,"max_score":null,"hits":[]}}] []
