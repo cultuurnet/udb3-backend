@@ -46,7 +46,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 $logger = new \Monolog\Logger('saved_searches');
                 $logger->pushHandler(
-                    new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/saved_searches.log')
+                    new \Monolog\Handler\StreamHandler(__DIR__ . '/../../log/saved_searches.log')
                 );
                 return $logger;
             }
