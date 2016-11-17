@@ -17,7 +17,6 @@ class Version20161117141025 extends AbstractMigration
     {
         $this->changeColumnName('offerType', 'relationType');
         $this->changeColumnName('offerId', 'relationId');
-
     }
 
     /**
