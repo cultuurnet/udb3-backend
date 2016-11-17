@@ -20,7 +20,7 @@ class ElasticSearchServiceProvider implements ServiceProviderInterface
                 $logger = new Logger('elasticsearch');
 
                 $logger->pushHandler(
-                    new StreamHandler(__DIR__ . '/../log/elasticsearch.log')
+                    new StreamHandler(__DIR__ . '/../../log/elasticsearch.log')
                 );
 
                 return $logger;
