@@ -33,7 +33,7 @@ class IndexServiceProvider implements ServiceProviderInterface
                     $app['index.repository'],
                     new CdbXmlCreatedByToUserIdResolver($app['uitid_users']),
                     $app['local_domain'],
-                    $app['udb2_domain'],
+                    \ValueObjects\Web\Domain::specifyType('uitdatabank.be'),
                     $app['iri_offer_identifier_factory']
                 );
 
