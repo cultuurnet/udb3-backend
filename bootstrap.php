@@ -1,7 +1,6 @@
 <?php
 
 use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
@@ -10,15 +9,10 @@ use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
-use CultuurNet\UDB3\DomainMessage\CompositeDomainMessageEnricher;
 use CultuurNet\UDB3\Event\ExternalEventService;
-use CultuurNet\UDB3\EventListener\EnrichingEventListenerDecorator;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
-use CultuurNet\UDB3\Label\LabelDomainMessageEnricher;
-use CultuurNet\UDB3\Label\OfferLabelDomainMessageEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
-use CultuurNet\UDB3\Organizer\OrganizerLabelDomainMessageEnricher;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -536,50 +530,6 @@ $app['event_bus'] = $app->share(
         });
 
         return $eventBus;
-    }
-);
-
-$app['event_listener.enricher.offer_label_events'] = $app->share(
-    function (Application $app) {
-        return new OfferLabelDomainMessageEnricher(
-            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-        );
-    }
-);
-
-$app['event_listener.enricher.label_events'] = $app->share(
-    function (Application $app) {
-        return new LabelDomainMessageEnricher(
-            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-        );
-    }
-);
-
-$app['event_listener.enricher.organizer_label_events'] = $app->share(
-    function (Application $app) {
-        return new OrganizerLabelDomainMessageEnricher(
-            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-        );
-    }
-);
-
-$app['event_listener.enricher.all'] = $app->share(
-    function (Application $app) {
-        return (new CompositeDomainMessageEnricher())
-            ->withEnricher($app['event_listener.enricher.offer_label_events'])
-            ->withEnricher($app['event_listener.enricher.label_events'])
-            ->withEnricher($app['event_listener.enricher.organizer_label_events']);
-    }
-);
-
-$app['decorate_event_listener_with_enricher'] = $app->share(
-    function (Application $app) {
-        return function (EventListenerInterface $eventListener) use ($app) {
-            return new EnrichingEventListenerDecorator(
-                $eventListener,
-                $app['event_listener.enricher.all']
-            );
-        };
     }
 );
 
@@ -1132,7 +1082,8 @@ $app['organizer_editing_service'] = $app->share(
         return new \CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService(
             $app['event_command_bus'],
             $app['uuid_generator'],
-            $app['organizer_repository']
+            $app['organizer_repository'],
+            $app['labels.constraint_aware_service']
         );
     }
 );
@@ -1624,8 +1575,6 @@ $app->register(
         'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
     ]
 );
-
-$app->extend('amqp.publisher', $app['decorate_event_listener_with_enricher']);
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Search\ElasticSearchServiceProvider(),
