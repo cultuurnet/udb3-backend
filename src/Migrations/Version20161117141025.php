@@ -15,6 +15,7 @@ class Version20161117141025 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+        $this->changeColumnName('uuid_col', 'labelName');
         $this->changeColumnName('offerType', 'relationType');
         $this->changeColumnName('offerId', 'relationId');
     }
@@ -24,6 +25,8 @@ class Version20161117141025 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
+        // Converting back down would loose data if the size was changed.
+        $this->changeColumnName('labelName', 'uuid_col');
         $this->changeColumnName('relationType', 'offerType');
         $this->changeColumnName('relationId', 'offerId');
     }
