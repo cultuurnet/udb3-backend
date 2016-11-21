@@ -2,12 +2,7 @@
 <?php
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
-use CultuurNet\UDB3\Silex\JwtImpersonator;
 use Knp\Provider\ConsoleServiceProvider;
-use Symfony\Component\Console\ConsoleEvents;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use ValueObjects\String\String as StringLiteral;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -29,22 +24,6 @@ $consoleApp = $app['console'];
 $consoleApp->add(
     (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))->withHeartBeat('dbal_connection:keepalive')
 );
-
-$dispatcher = new EventDispatcher();
-$dispatcher->addListener(
-    ConsoleEvents::COMMAND,
-    function (ConsoleCommandEvent $event) use ($app) {
-        if ($event->getCommand() instanceof ConsumeCommand) {
-            $jwtImpersonator = new JwtImpersonator($app);
-
-            $jwtImpersonator->updateImpersonator(
-                $app['impersonator'],
-                new StringLiteral($app['config']['amqp']['jwt'])
-            );
-        }
-    }
-);
-$consoleApp->setDispatcher($dispatcher);
 
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\InstallCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ReplayCommand());
