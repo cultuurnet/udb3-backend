@@ -45,6 +45,12 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             $app['toggles.context']
         );
 
+        $app['udb2_log_handler'] = $app->share(
+            function (Application $app) {
+                return new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/udb2.log');
+            }
+        );
+
         $app['udb2_deserializer_locator'] = $app->share(
             function (Application $app) {
                 $deserializerLocator = new SimpleDeserializerLocator();
