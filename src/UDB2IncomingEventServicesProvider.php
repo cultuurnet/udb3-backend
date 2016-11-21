@@ -185,7 +185,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 $applier = new EventApplier(
                     new LabeledAsUDB3Place(),
-                    $app['real_place_repository'],
+                    $app['place_repository'],
                     new EventToUDB3PlaceFactory()
                 );
 
@@ -202,7 +202,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 $applier = new EventApplier(
                     new Not(new LabeledAsUDB3Place()),
-                    $app['real_event_repository'],
+                    $app['event_repository'],
                     new EventToUDB3EventFactory()
                 );
 
@@ -218,7 +218,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_actor_events_to_udb3_place_applier'] = $app->share(
             function (Application $app) {
                 $applier = new ActorEventApplier(
-                    $app['real_place_repository'],
+                    $app['place_repository'],
                     new ActorToUDB3PlaceFactory(),
                     new QualifiesAsPlaceSpecification()
                 );
@@ -235,7 +235,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_actor_events_to_udb3_organizer_applier'] = $app->share(
             function (Application $app) {
                 $applier = new ActorEventApplier(
-                    $app['real_organizer_repository'],
+                    $app['organizer_repository'],
                     new ActorToUDB3OrganizerFactory(),
                     new QualifiesAsOrganizerSpecification()
                 );
