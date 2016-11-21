@@ -51,12 +51,12 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         $controllers->put(
-            '/{organizerId}/labels/{labelId}',
+            '/{organizerId}/labels/{labelName}',
             'organizer_edit_controller:addLabel'
         );
 
         $controllers->delete(
-            '{organizerId}/labels/{labelId}',
+            '{organizerId}/labels/{labelName}',
             'organizer_edit_controller:removeLabel'
         );
 
