@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Label\ConstraintAwareLabelService;
 use CultuurNet\UDB3\Label\Events\LabelNameUniqueConstraintService;
 use CultuurNet\UDB3\Label\LabelEventRelationTypeResolver;
 use CultuurNet\UDB3\Label\LabelRepository;
-use CultuurNet\UDB3\Label\ReadModels\JSON\OfferLabelProjector;
+use CultuurNet\UDB3\Label\ReadModels\JSON\ItemVisibilityProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
@@ -62,6 +62,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     const RELATIONS_PROJECTOR = 'labels.relations_projector';
     const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
     const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
+    const ORGANIZER_LABEL_PROJECTOR = 'labels.organizer_label_projector';
     const LABEL_ROLES_PROJECTOR = 'labels.label_roles_projector';
 
     const QUERY_FACTORY = 'label.query_factory';
@@ -305,7 +306,7 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $app[self::PLACE_LABEL_PROJECTOR] = $app->share(
             function (Application $app) {
-                $projector = new OfferLabelProjector(
+                $projector = new ItemVisibilityProjector(
                     $app['place_jsonld_repository'],
                     $app[self::RELATIONS_READ_REPOSITORY]
                 );
@@ -318,8 +319,21 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $app[self::EVENT_LABEL_PROJECTOR] = $app->share(
             function (Application $app) {
-                $projector =  new OfferLabelProjector(
+                $projector =  new ItemVisibilityProjector(
                     $app['event_jsonld_repository'],
+                    $app[self::RELATIONS_READ_REPOSITORY]
+                );
+
+                $projector->setLogger($app[self::LOGGER]);
+
+                return $projector;
+            }
+        );
+
+        $app[self::ORGANIZER_LABEL_PROJECTOR] = $app->share(
+            function (Application $app) {
+                $projector =  new ItemVisibilityProjector(
+                    $app['organizer_jsonld_repository'],
                     $app[self::RELATIONS_READ_REPOSITORY]
                 );
 
