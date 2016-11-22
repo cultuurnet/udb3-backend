@@ -1343,12 +1343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "966a0a0eb5abff8e18d42244df6872e5fa2d0cd0"
+                "reference": "a726a0b94f82c071b2cd0aabfdb25b3254f5eea2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/966a0a0eb5abff8e18d42244df6872e5fa2d0cd0",
-                "reference": "966a0a0eb5abff8e18d42244df6872e5fa2d0cd0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a726a0b94f82c071b2cd0aabfdb25b3254f5eea2",
+                "reference": "a726a0b94f82c071b2cd0aabfdb25b3254f5eea2",
                 "shasum": ""
             },
             "require": {
@@ -1422,7 +1422,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-11-17 09:17:39"
+            "time": "2016-11-22 10:13:57"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1772,12 +1772,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "f1195b4f15a4b8a2bacc4b2058ef337a90a5d846"
+                "reference": "21d9c8b3c5644ec5ea13838f8ad5d987333f4782"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/f1195b4f15a4b8a2bacc4b2058ef337a90a5d846",
-                "reference": "f1195b4f15a4b8a2bacc4b2058ef337a90a5d846",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/21d9c8b3c5644ec5ea13838f8ad5d987333f4782",
+                "reference": "21d9c8b3c5644ec5ea13838f8ad5d987333f4782",
                 "shasum": ""
             },
             "require": {
@@ -1824,7 +1824,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-11-21 13:16:59"
+            "time": "2016-11-21 14:32:42"
         },
         {
             "name": "cultuurnet/uitid-credentials",
