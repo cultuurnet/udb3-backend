@@ -2,21 +2,28 @@
 
 namespace CultuurNet\UDB3\Silex;
 
+use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
+use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB2DomainEvents\ActorCreatedJSONDeserializer;
+use CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer;
+use CultuurNet\UDB2DomainEvents\EventCreatedJSONDeserializer;
+use CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\Event\Not;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventApplier;
+use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3OrganizerFactory;
+use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3PlaceFactory;
 use CultuurNet\UDB3\UDB2\Actor\EventCdbXmlEnricher as ActorEventCdbXmlEnricher;
+use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsOrganizerSpecification;
+use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsPlaceSpecification;
 use CultuurNet\UDB3\UDB2\Event\EventApplier;
 use CultuurNet\UDB3\UDB2\Event\EventCdbXmlEnricher;
-use CultuurNet\UDB3\UDB2\Event\EventFactory;
+use CultuurNet\UDB3\UDB2\Event\EventToUDB3EventFactory;
+use CultuurNet\UDB3\UDB2\Event\EventToUDB3PlaceFactory;
+use CultuurNet\UDB3\UDB2\Label\LabelImporter;
 use CultuurNet\UDB3\UDB2\LabeledAsUDB3Place;
 use CultuurNet\UDB3\UDB2\OfferToSapiUrlTransformer;
-use CultuurNet\UDB3\UDB2\Organizer\OrganizerFactory;
-use CultuurNet\UDB3\UDB2\Organizer\QualifiesAsOrganizerSpecification;
-use CultuurNet\UDB3\UDB2\Place\PlaceFromActorFactory;
-use CultuurNet\UDB3\UDB2\Place\PlaceFromEventFactory;
-use CultuurNet\UDB3\UDB2\Place\QualifiesAsPlaceSpecification;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -24,6 +31,7 @@ use Http\Adapter\Guzzle6\Client as ClientAdapter;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
+use ValueObjects\String\String as StringLiteral;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {
@@ -35,6 +43,69 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $importFromSapi = $toggles->active(
             'import-from-sapi',
             $app['toggles.context']
+        );
+
+        $app['udb2_log_handler'] = $app->share(
+            function (Application $app) {
+                return new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/udb2.log');
+            }
+        );
+
+        $app['udb2_deserializer_locator'] = $app->share(
+            function (Application $app) {
+                $deserializerLocator = new SimpleDeserializerLocator();
+                $deserializerLocator->registerDeserializer(
+                    new StringLiteral(
+                        'application/vnd.cultuurnet.udb2-events.actor-created+json'
+                    ),
+                    new ActorCreatedJSONDeserializer()
+                );
+                $deserializerLocator->registerDeserializer(
+                    new StringLiteral(
+                        'application/vnd.cultuurnet.udb2-events.actor-updated+json'
+                    ),
+                    new ActorUpdatedJSONDeserializer()
+                );
+                $deserializerLocator->registerDeserializer(
+                    new StringLiteral(
+                        'application/vnd.cultuurnet.udb2-events.event-created+json'
+                    ),
+                    new EventCreatedJSONDeserializer()
+                );
+                $deserializerLocator->registerDeserializer(
+                    new StringLiteral(
+                        'application/vnd.cultuurnet.udb2-events.event-updated+json'
+                    ),
+                    new EventUpdatedJSONDeserializer()
+                );
+                return $deserializerLocator;
+            }
+        );
+
+        $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
+            function (Application $app) {
+                return new EventBusForwardingConsumerFactory(
+                    $app['amqp-execution-delay'],
+                    $app['amqp.connection'],
+                    $app['logger.amqp.event_bus_forwarder'],
+                    $app['udb2_deserializer_locator'],
+                    $app['event_bus'],
+                    new StringLiteral($app['config']['amqp']['consumer_tag'])
+                );
+            }
+        );
+
+        $app['amqp.udb2_event_bus_forwarding_consumer'] = $app->share(
+            function (Application $app) {
+                $consumerConfig = $app['config']['amqp']['consumers']['udb2'];
+                $exchange = new StringLiteral($consumerConfig['exchange']);
+                $queue = new StringLiteral($consumerConfig['queue']);
+
+                /** @var EventBusForwardingConsumerFactory $consumerFactory */
+                $consumerFactory = $app['udb2_event_bus_forwarding_consumer_factory'];
+
+                return $consumerFactory->create($exchange, $queue);
+            }
         );
 
         $app['cdbxml_enricher_http_client_adapter'] = $app->share(
@@ -120,8 +191,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 $applier = new EventApplier(
                     new LabeledAsUDB3Place(),
-                    $app['real_place_repository'],
-                    new PlaceFromEventFactory()
+                    $app['place_repository'],
+                    new EventToUDB3PlaceFactory()
                 );
 
                 $logger = new \Monolog\Logger('udb2-events-to-udb3-place-applier');
@@ -137,8 +208,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 $applier = new EventApplier(
                     new Not(new LabeledAsUDB3Place()),
-                    $app['real_event_repository'],
-                    new EventFactory()
+                    $app['event_repository'],
+                    new EventToUDB3EventFactory()
                 );
 
                 $logger = new \Monolog\Logger('udb2-events-to-udb3-event-applier');
@@ -153,8 +224,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_actor_events_to_udb3_place_applier'] = $app->share(
             function (Application $app) {
                 $applier = new ActorEventApplier(
-                    $app['real_place_repository'],
-                    new PlaceFromActorFactory(),
+                    $app['place_repository'],
+                    new ActorToUDB3PlaceFactory(),
                     new QualifiesAsPlaceSpecification()
                 );
 
@@ -170,8 +241,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_actor_events_to_udb3_organizer_applier'] = $app->share(
             function (Application $app) {
                 $applier = new ActorEventApplier(
-                    $app['real_organizer_repository'],
-                    new OrganizerFactory(),
+                    $app['organizer_repository'],
+                    new ActorToUDB3OrganizerFactory(),
                     new QualifiesAsOrganizerSpecification()
                 );
 
@@ -181,6 +252,20 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $applier->setLogger($logger);
 
                 return $applier;
+            }
+        );
+
+        $app['udb2_label_importer'] = $app->share(
+            function (Application $app) {
+                $labelImporter = new LabelImporter(
+                    $app['event_command_bus']
+                );
+
+                $logger = new \Monolog\Logger('udb2-label-importer');
+                $logger->pushHandler($app['udb2_log_handler']);
+                $labelImporter->setLogger($logger);
+
+                return $labelImporter;
             }
         );
 
