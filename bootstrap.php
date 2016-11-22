@@ -504,6 +504,7 @@ $app['event_bus'] = $app->share(
                 LabelServiceProvider::RELATIONS_PROJECTOR,
                 LabelServiceProvider::EVENT_LABEL_PROJECTOR,
                 LabelServiceProvider::PLACE_LABEL_PROJECTOR,
+                LabelServiceProvider::ORGANIZER_LABEL_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
                 LabelServiceProvider::LABEL_ROLES_PROJECTOR,
                 'role_detail_projector',
@@ -513,7 +514,7 @@ $app['event_bus'] = $app->share(
                 'role_users_projector',
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
-                'udb2_label_importer'
+                'udb2_label_importer',
             ];
 
             // Allow to override event bus subscribers through configuration.
