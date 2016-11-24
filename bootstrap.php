@@ -691,7 +691,10 @@ $app->extend(
         );
 
         $commandBus->subscribe(
-            (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler($app['organizer_repository']))
+            (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler(
+                $app['organizer_repository'],
+                $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+            ))
                 ->withOrganizerRelationService($app['place_organizer_relation_service'])
                 ->withOrganizerRelationService($app['event_organizer_relation_service'])
         );
