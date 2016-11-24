@@ -1343,12 +1343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "b26221ef96e3452e293bce6c97c7ec15e643253a"
+                "reference": "17155b4525d05aa3d87ccde82f7d04ae4302a43f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b26221ef96e3452e293bce6c97c7ec15e643253a",
-                "reference": "b26221ef96e3452e293bce6c97c7ec15e643253a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/17155b4525d05aa3d87ccde82f7d04ae4302a43f",
+                "reference": "17155b4525d05aa3d87ccde82f7d04ae4302a43f",
                 "shasum": ""
             },
             "require": {
@@ -1422,7 +1422,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-11-22 11:11:04"
+            "time": "2016-11-24 13:50:57"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1710,12 +1710,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "9e4be411e78c7ad900924c27f1bcd6afa4fd51d2"
+                "reference": "e1ccdaa49fd2e0579f0502e0356415306133cbac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/9e4be411e78c7ad900924c27f1bcd6afa4fd51d2",
-                "reference": "9e4be411e78c7ad900924c27f1bcd6afa4fd51d2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/e1ccdaa49fd2e0579f0502e0356415306133cbac",
+                "reference": "e1ccdaa49fd2e0579f0502e0356415306133cbac",
                 "shasum": ""
             },
             "require": {
@@ -1764,7 +1764,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-10-27 14:11:55"
+            "time": "2016-11-24 13:47:15"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1772,12 +1772,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "21d9c8b3c5644ec5ea13838f8ad5d987333f4782"
+                "reference": "4924c26f8da00b2335b841a8c55ad3ae0270a7d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/21d9c8b3c5644ec5ea13838f8ad5d987333f4782",
-                "reference": "21d9c8b3c5644ec5ea13838f8ad5d987333f4782",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/4924c26f8da00b2335b841a8c55ad3ae0270a7d0",
+                "reference": "4924c26f8da00b2335b841a8c55ad3ae0270a7d0",
                 "shasum": ""
             },
             "require": {
@@ -1824,7 +1824,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-11-21 14:32:42"
+            "time": "2016-11-24 13:32:00"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -4939,16 +4939,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.3",
+            "version": "v5.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153"
+                "reference": "545ce9136690cea74f98f86fbb9c92dd9ab1a756"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/4cc92842069c2bbc1f28daaaf1d2576ec4dfe153",
-                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/545ce9136690cea74f98f86fbb9c92dd9ab1a756",
+                "reference": "545ce9136690cea74f98f86fbb9c92dd9ab1a756",
                 "shasum": ""
             },
             "require": {
@@ -4988,7 +4988,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-07-08 11:51:25"
+            "time": "2016-11-24 01:01:23"
         },
         {
             "name": "symfony/console",
@@ -5745,16 +5745,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.28.1",
+            "version": "v1.28.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "fff80c4a7ae1d47a81dfec10c76cbcb939170b45"
+                "reference": "b22ce0eb070e41f7cba65d78fe216de29726459c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/fff80c4a7ae1d47a81dfec10c76cbcb939170b45",
-                "reference": "fff80c4a7ae1d47a81dfec10c76cbcb939170b45",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b22ce0eb070e41f7cba65d78fe216de29726459c",
+                "reference": "b22ce0eb070e41f7cba65d78fe216de29726459c",
                 "shasum": ""
             },
             "require": {
@@ -5762,7 +5762,7 @@
             },
             "require-dev": {
                 "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~2.7"
+                "symfony/phpunit-bridge": "~3.2@dev"
             },
             "type": "library",
             "extra": {
@@ -5802,7 +5802,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-11-19 05:52:49"
+            "time": "2016-11-23 18:41:40"
         },
         {
             "name": "willdurand/geocoder",

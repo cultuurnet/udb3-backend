@@ -258,7 +258,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_label_importer'] = $app->share(
             function (Application $app) {
                 $labelImporter = new LabelImporter(
-                    $app['event_command_bus']
+                    $app['labels.constraint_aware_service']
                 );
 
                 $logger = new \Monolog\Logger('udb2-label-importer');
