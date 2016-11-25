@@ -883,8 +883,10 @@ $app['organizer_jsonld_cache'] = $app->share(
 );
 
 $app['eventstore_payload_serializer'] = $app->share(
-    function () {
-        return \CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory::createSerializer();
+    function ($app) {
+        return \CultuurNet\UDB3\BackwardsCompatiblePayloadSerializerFactory::createSerializer(
+            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+        );
     }
 );
 
