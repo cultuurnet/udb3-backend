@@ -24,7 +24,8 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
                     new Version4Generator(),
                     $app['place_jsonld_repository'],
                     new PlaceCommandFactory(),
-                    $app['place_repository']
+                    $app['place_repository'],
+                    $app['labels.constraint_aware_service']
                 );
             }
         );

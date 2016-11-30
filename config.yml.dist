@@ -65,7 +65,6 @@ export:
     subject: Uw export van evenementen
 amqp_execution_delay: 10 # Optional config param with default value of 10 seconds
 amqp:
-  jwt: ***
   host: example.com
   port: 5672
   user: foo
