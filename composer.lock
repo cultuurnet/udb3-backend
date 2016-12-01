@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8fd1934cc86f0ccd7e0f57dae5b91b42",
-    "content-hash": "942e9db177b6d63021dca0f510b1fc47",
+    "hash": "3f255b0f6ccc8321dd2ce70262338d58",
+    "content-hash": "25911d1c0876d3e65f1de17fb53fc826",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1339,16 +1339,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-1642",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "63469c3c96996caff9d8870e473ca66ff572e279"
+                "reference": "6ab1cee37cb8d3fcde9e9e89509208d73536c8de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/63469c3c96996caff9d8870e473ca66ff572e279",
-                "reference": "63469c3c96996caff9d8870e473ca66ff572e279",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/6ab1cee37cb8d3fcde9e9e89509208d73536c8de",
+                "reference": "6ab1cee37cb8d3fcde9e9e89509208d73536c8de",
                 "shasum": ""
             },
             "require": {
@@ -1422,7 +1422,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-11-25 15:54:23"
+            "time": "2016-12-01 07:21:18"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1768,16 +1768,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-1642",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "4924c26f8da00b2335b841a8c55ad3ae0270a7d0"
+                "reference": "5e261271c1ae5374275b75aa169673a71fc327e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/4924c26f8da00b2335b841a8c55ad3ae0270a7d0",
-                "reference": "4924c26f8da00b2335b841a8c55ad3ae0270a7d0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/5e261271c1ae5374275b75aa169673a71fc327e5",
+                "reference": "5e261271c1ae5374275b75aa169673a71fc327e5",
                 "shasum": ""
             },
             "require": {
@@ -1785,8 +1785,9 @@
                 "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/udb2-domain-events": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-1642 as 0.1",
                 "guzzlehttp/psr7": "~1.2.3",
+                "league/uri": "^4.2",
                 "php-http/httplug": "~1.0.0"
             },
             "provide": {
@@ -1824,7 +1825,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-11-24 13:32:00"
+            "time": "2016-12-01 07:50:10"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2196,16 +2197,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.6.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "a579557bc689580c19fee4e27487a67fe60defc0"
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/a579557bc689580c19fee4e27487a67fe60defc0",
-                "reference": "a579557bc689580c19fee4e27487a67fe60defc0",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
                 "shasum": ""
             },
             "require": {
@@ -2265,7 +2266,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-12-25 13:18:31"
+            "time": "2016-11-30 16:50:46"
         },
         {
             "name": "doctrine/dbal",
@@ -2534,16 +2535,16 @@
         },
         {
             "name": "elasticsearch/elasticsearch",
-            "version": "v2.2.3",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elastic/elasticsearch-php.git",
-                "reference": "588ede911141543f5b43e9f605931d5e6490a3d6"
+                "reference": "12a400656e4cf4c231d83cb56af3f50a27dcde93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/588ede911141543f5b43e9f605931d5e6490a3d6",
-                "reference": "588ede911141543f5b43e9f605931d5e6490a3d6",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/12a400656e4cf4c231d83cb56af3f50a27dcde93",
+                "reference": "12a400656e4cf4c231d83cb56af3f50a27dcde93",
                 "shasum": ""
             },
             "require": {
@@ -2584,7 +2585,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2016-11-04 17:59:06"
+            "time": "2016-11-30 17:15:05"
         },
         {
             "name": "gridonic/princexml-php",
@@ -3403,6 +3404,68 @@
             "time": "2015-09-12 22:16:14"
         },
         {
+            "name": "jeremykendall/php-domain-parser",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jeremykendall/php-domain-parser.git",
+                "reference": "896e7e70f02bd4fd77190052799bc61e4d779672"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jeremykendall/php-domain-parser/zipball/896e7e70f02bd4fd77190052799bc61e4d779672",
+                "reference": "896e7e70f02bd4fd77190052799bc61e4d779672",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-intl": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "jeremykendall/debug-die": "0.0.1.*",
+                "mikey179/vfsstream": "~1.4",
+                "phpunit/phpunit": "~4.4"
+            },
+            "bin": [
+                "bin/parse",
+                "bin/update-psl"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Pdp\\": "src/"
+                },
+                "files": [
+                    "src/pdp-parse-url.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Kendall",
+                    "homepage": "http://about.me/jeremykendall",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/jeremykendall/php-domain-parser/graphs/contributors"
+                }
+            ],
+            "description": "Public Suffix List based URL parsing implemented in PHP.",
+            "homepage": "https://github.com/jeremykendall/php-domain-parser",
+            "keywords": [
+                "Public Suffix List",
+                "domain parsing",
+                "url parsing"
+            ],
+            "time": "2015-03-30 12:49:45"
+        },
+        {
             "name": "justinrainbow/json-schema",
             "version": "1.4.3",
             "source": {
@@ -3770,6 +3833,73 @@
             "time": "2014-05-15 23:59:22"
         },
         {
+            "name": "league/uri",
+            "version": "4.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/uri.git",
+                "reference": "d7f082d3532d8c648427ce2c486d4db4ae604278"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/d7f082d3532d8c648427ce2c486d4db4ae604278",
+                "reference": "d7f082d3532d8c648427ce2c486d4db4ae604278",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-intl": "*",
+                "ext-mbstring": "*",
+                "jeremykendall/php-domain-parser": "^3.0",
+                "php": ">=5.5.9",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.9",
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": "src"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://nyamsprod.com"
+                }
+            ],
+            "description": "URI manipulation library",
+            "homepage": "http://uri.thephpleague.com",
+            "keywords": [
+                "data-uri",
+                "ftp",
+                "http",
+                "https",
+                "parse_url",
+                "psr-7",
+                "rfc3986",
+                "uri",
+                "url",
+                "ws"
+            ],
+            "time": "2016-11-24 11:59:59"
+        },
+        {
             "name": "marc-mabe/php-enum",
             "version": "v1.3.0",
             "source": {
@@ -3886,16 +4016,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.21.0",
+            "version": "1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "f42fbdfd53e306bda545845e4dbfd3e72edb4952"
+                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f42fbdfd53e306bda545845e4dbfd3e72edb4952",
-                "reference": "f42fbdfd53e306bda545845e4dbfd3e72edb4952",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bad29cb8d18ab0315e6c477751418a82c850d558",
+                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558",
                 "shasum": ""
             },
             "require": {
@@ -3906,7 +4036,7 @@
                 "psr/log-implementation": "1.0.0"
             },
             "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9",
+                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
                 "jakub-onderka/php-parallel-lint": "0.9",
@@ -3960,7 +4090,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-07-29 03:23:52"
+            "time": "2016-11-26 00:15:39"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -6283,16 +6413,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "571e27b6348e5b3a637b2abc82ac0d01e6d7bbed"
+                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/571e27b6348e5b3a637b2abc82ac0d01e6d7bbed",
-                "reference": "571e27b6348e5b3a637b2abc82ac0d01e6d7bbed",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/9b324f3a1132459a7274a0ace2e1b766ba80930f",
+                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f",
                 "shasum": ""
             },
             "require": {
@@ -6357,13 +6487,28 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-09-01 23:53:02"
+            "time": "2016-11-30 04:02:31"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1642",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1642",
+            "package": "cultuurnet/udb3-udb2-bridge"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/silex-uitid-provider": 20,
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,

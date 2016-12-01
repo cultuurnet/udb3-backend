@@ -23,6 +23,7 @@ use CultuurNet\UDB3\UDB2\Event\EventToUDB3EventFactory;
 use CultuurNet\UDB3\UDB2\Event\EventToUDB3PlaceFactory;
 use CultuurNet\UDB3\UDB2\Label\LabelImporter;
 use CultuurNet\UDB3\UDB2\LabeledAsUDB3Place;
+use CultuurNet\UDB3\UDB2\Media\MediaImporter;
 use CultuurNet\UDB3\UDB2\OfferToSapiUrlTransformer;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -266,6 +267,18 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $labelImporter->setLogger($logger);
 
                 return $labelImporter;
+            }
+        );
+
+        $app['udb2_media_importer'] = $app->share(
+            function (Application $app) {
+                $mediaImporter =  new MediaImporter($app['media_manager']);
+
+                $logger = new \Monolog\Logger('udb2-media-importer');
+                $logger->pushHandler($app['udb2_log_handler']);
+                $mediaImporter->setLogger($logger);
+
+                return $mediaImporter;
             }
         );
 
