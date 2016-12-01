@@ -5,13 +5,13 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
+use CultuurNet\UDB3\HttpFoundation\RequestMatcher\MultiRouteRequestMatcher;
+use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
+use CultuurNet\UDB3\HttpFoundation\RequestMatcher\Route;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
 use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
-use CultuurNet\UiTIDProvider\Security\MultiPathRequestMatcher;
-use CultuurNet\UiTIDProvider\Security\Path;
-use CultuurNet\UiTIDProvider\Security\PreflightRequestMatcher;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,16 +45,15 @@ $app['security.firewalls'] = array(
         'pattern' => '^/culturefeed/oauth',
     ),
     'public' => array(
-        'pattern' => MultiPathRequestMatcher::fromPaths([
-            new Path('^/contexts/.*', 'GET'),
-            new Path('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'),
-            new Path('^/event/' . $app['id_pattern'] . '/history', 'GET'),
-            new Path('^/organizers/' . $app['id_pattern'], 'GET'),
-            new Path('^/media/' . $app['id_pattern'] . '$', 'GET'),
-            new Path('^/(places|labels)$', 'GET'),
-            new Path('^/organizers/suggest/.*', 'GET'),
-            new Path('^/jobs/', 'GET'),
-        ])
+        'pattern' => (new MultiRouteRequestMatcher())
+            ->matching(new Route('^/contexts/.*', 'GET'))
+            ->matching(new Route('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'))
+            ->matching(new Route('^/event/' . $app['id_pattern'] . '/history', 'GET'))
+            ->matching(new Route('^/organizers/' . $app['id_pattern'], 'GET'))
+            ->matching(new Route('^/media/' . $app['id_pattern'] . '$', 'GET'))
+            ->matching(new Route('^/(places|labels)$', 'GET'))
+            ->matching(new Route('^/organizers/suggest/.*', 'GET'))
+            ->matching(new Route('^/jobs/', 'GET'))
     ),
     'entryapi' => array(
         'pattern' => '^/rest/entry/.*',
@@ -109,9 +108,8 @@ $app['security.access_manager'] = $app->share(function($app) {
 
 $app['security.access_rules'] = array(
     array(
-        MultiPathRequestMatcher::fromPaths([
-            new Path('^/labels/.*', ['POST', 'DELETE', 'PATCH'])
-        ]),
+        (new MultiRouteRequestMatcher())
+            ->matching(new Route('^/labels/.*', ['POST', 'DELETE', 'PATCH'])),
         Permission::LABELS_BEHEREN
     ),
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
