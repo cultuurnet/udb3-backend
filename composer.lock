@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c69080504739e31d442f0ee323c737ca",
-    "content-hash": "207015b2a6b7f020286415489560d71f",
+    "hash": "9991db06c1ef20ca2b913accbf21179c",
+    "content-hash": "bbb30772115bfaf1c55b2f6f1495a1c0",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1423,16 +1423,16 @@
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
-            "version": "dev-feature/III-925",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-http-foundation.git",
-                "reference": "f0278cbbe3c22bafbdd14e0acc322678f3752632"
+                "reference": "58d7cb25c21f765d7f52c960f33597ea281a1db8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/f0278cbbe3c22bafbdd14e0acc322678f3752632",
-                "reference": "f0278cbbe3c22bafbdd14e0acc322678f3752632",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/58d7cb25c21f765d7f52c960f33597ea281a1db8",
+                "reference": "58d7cb25c21f765d7f52c960f33597ea281a1db8",
                 "shasum": ""
             },
             "require": {
@@ -1460,7 +1460,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2016-12-02 14:26:14"
+            "time": "2016-12-02 18:11:46"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -6353,17 +6353,9 @@
             "time": "2016-11-30 04:02:31"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-925",
-            "package": "cultuurnet/udb3-http-foundation"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/udb3-http-foundation": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
