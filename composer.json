@@ -13,7 +13,7 @@
     "cultuurnet/silex-uitid-provider": "0.x-dev",
     "cultuurnet/entry": "~0.1",
     "cultuurnet/udb2-domain-events": "~0.1",
-    "cultuurnet/udb3": "~0.1",
+    "cultuurnet/udb3": "dev-feature/III-1635 as 0.1",
     "cultuurnet/udb3-doctrine": "~0.1",
     "cultuurnet/udb3-symfony": "~0.1",
     "cultuurnet/udb3-search-elasticsearch": "~0.1",
