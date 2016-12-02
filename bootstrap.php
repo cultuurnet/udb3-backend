@@ -7,6 +7,7 @@ use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
@@ -364,6 +365,12 @@ $app['event_jsonld_cache'] = $app->share(
     }
 );
 
+$app['calendar_factory'] = $app->share(
+    function () {
+        return new CalendarFactory();
+    }
+);
+
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
@@ -374,11 +381,9 @@ $app['event_jsonld_projector'] = $app->share(
             $app['organizer_service'],
             $app['media_object_serializer'],
             $app['iri_offer_identifier_factory'],
-            $app['udb2_event_cdbid_extractor']
+            $app['udb2_event_cdbid_extractor'],
+            $app['calendar_factory']
         );
-
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\StripSourceStringFilter());
 
         return $projector;
     }
@@ -738,7 +743,8 @@ $app['place_jsonld_projector'] = $app->share(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
             $app['organizer_service'],
-            $app['media_object_serializer']
+            $app['media_object_serializer'],
+            $app['calendar_factory']
         );
 
         return $projector;
