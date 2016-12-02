@@ -41,9 +41,6 @@ $app['cors_preflight_request_matcher'] = $app->share(
 
 $app['id_pattern'] = '[\w\-]+';
 $app['security.firewalls'] = array(
-    'authentication' => array(
-        'pattern' => '^/culturefeed/oauth',
-    ),
     'public' => [
         'pattern' => (new AnyOfRequestMatcher())
             ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
