@@ -108,8 +108,7 @@ $app['security.access_manager'] = $app->share(function($app) {
 
 $app['security.access_rules'] = array(
     array(
-        (new AnyOfRequestMatcher())
-            ->with(new RequestMatcher('^/labels/.*', null, ['POST', 'DELETE', 'PATCH'])),
+        new RequestMatcher('^/labels/.*', null, ['POST', 'DELETE', 'PATCH']),
         Permission::LABELS_BEHEREN
     ),
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
