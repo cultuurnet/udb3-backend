@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8fd1934cc86f0ccd7e0f57dae5b91b42",
-    "content-hash": "942e9db177b6d63021dca0f510b1fc47",
+    "hash": "9991db06c1ef20ca2b913accbf21179c",
+    "content-hash": "bbb30772115bfaf1c55b2f6f1495a1c0",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1042,54 +1042,6 @@
             "time": "2015-10-12 13:19:57"
         },
         {
-            "name": "cultuurnet/silex-uitid-provider",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/silex-uitid-provider.git",
-                "reference": "4cca329717ee7723e44e28d2ff37773505e08fec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/4cca329717ee7723e44e28d2ff37773505e08fec",
-                "reference": "4cca329717ee7723e44e28d2ff37773505e08fec",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/auth": "~1.2",
-                "cultuurnet/culturefeed-php": "dev-master as 1.6",
-                "php": ">=5.5.0",
-                "silex/silex": "~1.3",
-                "symfony/security": "~2.6"
-            },
-            "require-dev": {
-                "phing/phing": "~2.10",
-                "phpunit/phpunit": "~4.3",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UiTIDProvider\\": [
-                        "src",
-                        "app"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0"
-            ],
-            "description": "Silex UiTID authentication provider.",
-            "time": "2016-09-06 17:52:32"
-        },
-        {
             "name": "cultuurnet/symfony-security-jwt",
             "version": "dev-master",
             "source": {
@@ -1468,6 +1420,47 @@
             ],
             "description": "UDB3 integration with Doctrine Cache",
             "time": "2016-04-13 11:52:34"
+        },
+        {
+            "name": "cultuurnet/udb3-http-foundation",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-http-foundation.git",
+                "reference": "58d7cb25c21f765d7f52c960f33597ea281a1db8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/58d7cb25c21f765d7f52c960f33597ea281a1db8",
+                "reference": "58d7cb25c21f765d7f52c960f33597ea281a1db8",
+                "shasum": ""
+            },
+            "require": {
+                "crell/api-problem": "~1.7",
+                "symfony/http-foundation": "~2.7.2"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\HttpFoundation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "time": "2016-12-02 18:11:46"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -6363,7 +6356,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/silex-uitid-provider": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
