@@ -1,22 +1,29 @@
 <?php
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CommerceGuys\Intl\Currency\CurrencyRepository;
+use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter as PlaceCdbXMLImporter;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\UDB2\Media\Media as Udb2Media;
 use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -364,6 +371,29 @@ $app['event_jsonld_cache'] = $app->share(
     }
 );
 
+$app['udb2_media_iri_generator'] = $app->share(
+    function (Application $app) {
+        new CallableIriGenerator(function (CultureFeed_Cdb_Data_File $file) use ($app) {
+            $udb2Media = new Udb2Media($file);
+            return $app['config']['url'] . '/media/' . $udb2Media->identify();
+        });
+    }
+);
+
+$app['event_cdbxml_importer'] = $app->share(
+    function (Application $app) {
+        return new EventCdbXMLImporter(
+            new CdbXMLItemBaseImporter(),
+            $app['udb2_event_cdbid_extractor'],
+            new PriceDescriptionParser(
+                new NumberFormatRepository(),
+                new CurrencyRepository()
+            ),
+            $app['udb2_media_iri_generator']
+        );
+    }
+);
+
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
@@ -374,7 +404,7 @@ $app['event_jsonld_projector'] = $app->share(
             $app['organizer_service'],
             $app['media_object_serializer'],
             $app['iri_offer_identifier_factory'],
-            $app['udb2_event_cdbid_extractor']
+            $app['event_cdbxml_importer']
         );
 
         $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
@@ -733,13 +763,20 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
+$app['place_cdbxml_importer'] = $app->share(
+    function (Application $app) {
+        return new PlaceCdbXMLImporter(new CdbXMLItemBaseImporter());
+    }
+);
+
 $app['place_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
             $app['organizer_service'],
-            $app['media_object_serializer']
+            $app['media_object_serializer'],
+            $app['place_cdbxml_importer']
         );
 
         return $projector;
