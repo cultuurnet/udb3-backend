@@ -385,9 +385,6 @@ $app['event_jsonld_projector'] = $app->share(
             $app['calendar_factory']
         );
 
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\StripSourceStringFilter());
-
         return $projector;
     }
 );
