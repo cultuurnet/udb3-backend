@@ -373,7 +373,7 @@ $app['event_jsonld_cache'] = $app->share(
 
 $app['udb2_media_iri_generator'] = $app->share(
     function (Application $app) {
-        new CallableIriGenerator(function (CultureFeed_Cdb_Data_File $file) use ($app) {
+        return new CallableIriGenerator(function (CultureFeed_Cdb_Data_File $file) use ($app) {
             $udb2Media = new Udb2Media($file);
             return $app['config']['url'] . '/media/' . $udb2Media->identify();
         });
@@ -383,13 +383,12 @@ $app['udb2_media_iri_generator'] = $app->share(
 $app['event_cdbxml_importer'] = $app->share(
     function (Application $app) {
         return new EventCdbXMLImporter(
-            new CdbXMLItemBaseImporter(),
+            new CdbXMLItemBaseImporter($app['udb2_media_iri_generator']),
             $app['udb2_event_cdbid_extractor'],
             new PriceDescriptionParser(
                 new NumberFormatRepository(),
                 new CurrencyRepository()
-            ),
-            $app['udb2_media_iri_generator']
+            )
         );
     }
 );
@@ -765,7 +764,7 @@ $app['place_iri_generator'] = $app->share(
 
 $app['place_cdbxml_importer'] = $app->share(
     function (Application $app) {
-        return new PlaceCdbXMLImporter(new CdbXMLItemBaseImporter());
+        return new PlaceCdbXMLImporter(new CdbXMLItemBaseImporter($app['udb2_media_iri_generator']));
     }
 );
 
