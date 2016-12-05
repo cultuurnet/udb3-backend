@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.6.7",
+            "version": "v2.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "2b4c9249a7ceef51402d39bd797aae16cfd8f36f"
+                "reference": "848c8f0bde97b48d1e159075e20a6667583f3978"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/2b4c9249a7ceef51402d39bd797aae16cfd8f36f",
-                "reference": "2b4c9249a7ceef51402d39bd797aae16cfd8f36f",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/848c8f0bde97b48d1e159075e20a6667583f3978",
+                "reference": "848c8f0bde97b48d1e159075e20a6667583f3978",
                 "shasum": ""
             },
             "require": {
@@ -118,13 +118,13 @@
                 "php": ">=5.3"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.0.0-alpha",
+                "friendsofphp/php-cs-fixer": "^2.0",
                 "phpunit/phpunit": "@stable"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Assert": "lib/"
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
                 },
                 "files": [
                     "lib/Assert/functions.php"
@@ -152,7 +152,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-11-14 16:46:13"
+            "time": "2016-12-05 11:33:17"
         },
         {
             "name": "broadway/broadway",
@@ -1295,12 +1295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "97eb75c4b6691e7395003e1d4c3828b2297c903f"
+                "reference": "0e1155cb63d4e09f1d203ebf13f1a52ad50720bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/97eb75c4b6691e7395003e1d4c3828b2297c903f",
-                "reference": "97eb75c4b6691e7395003e1d4c3828b2297c903f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/0e1155cb63d4e09f1d203ebf13f1a52ad50720bb",
+                "reference": "0e1155cb63d4e09f1d203ebf13f1a52ad50720bb",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-12-02 16:17:37"
+            "time": "2016-12-05 13:01:33"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1563,12 +1563,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "74ebfaecd14e2dcd01c1b5b909c126aa14b96676"
+                "reference": "c248fba856551e540721d80a972fe187abc499db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/74ebfaecd14e2dcd01c1b5b909c126aa14b96676",
-                "reference": "74ebfaecd14e2dcd01c1b5b909c126aa14b96676",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/c248fba856551e540721d80a972fe187abc499db",
+                "reference": "c248fba856551e540721d80a972fe187abc499db",
                 "shasum": ""
             },
             "require": {
@@ -1602,7 +1602,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-10-11 14:04:46"
+            "time": "2016-12-02 19:00:41"
         },
         {
             "name": "cultuurnet/udb3-search-http",
