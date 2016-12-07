@@ -128,3 +128,5 @@ jsonld:
 udb2_import:
   event_url_format: 'http://search-prod.lodgon.com/search/rest/detail/event/%s?noauth=true&version=3.3'
   actor_url_format: 'http://search-prod.lodgon.com/search/rest/detail/actor/%s?noauth=true&version=3.3'
+
+xsd: http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd # Can be a url, or path to a local file.
