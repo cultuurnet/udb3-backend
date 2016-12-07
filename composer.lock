@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9991db06c1ef20ca2b913accbf21179c",
-    "content-hash": "bbb30772115bfaf1c55b2f6f1495a1c0",
+    "hash": "394408d228075c916f10abf3c9cc17d8",
+    "content-hash": "fefaaff78bfb0e0005431c80ca71280c",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -159,12 +159,12 @@
             "version": "0.5.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/qandidate-labs/broadway.git",
+                "url": "https://github.com/broadway/broadway.git",
                 "reference": "0fce8c532086ad249a46fec179759c1fa089e35d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qandidate-labs/broadway/zipball/0fce8c532086ad249a46fec179759c1fa089e35d",
+                "url": "https://api.github.com/repos/broadway/broadway/zipball/0fce8c532086ad249a46fec179759c1fa089e35d",
                 "reference": "0fce8c532086ad249a46fec179759c1fa089e35d",
                 "shasum": ""
             },
@@ -1295,12 +1295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c9e2d775d0d0eb3b8ba062fceaca7f88a2075e57"
+                "reference": "3bba11c05f8b90070b2a159dfd786aba147963f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c9e2d775d0d0eb3b8ba062fceaca7f88a2075e57",
-                "reference": "c9e2d775d0d0eb3b8ba062fceaca7f88a2075e57",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3bba11c05f8b90070b2a159dfd786aba147963f6",
+                "reference": "3bba11c05f8b90070b2a159dfd786aba147963f6",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-12-06 07:36:34"
+            "time": "2016-12-07 10:12:59"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1761,16 +1761,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-1663",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "f48d1aba0d38ebf614555e4d844a0b6e0b0de32c"
+                "reference": "99e10841cc315b4475e6b629a8d69779b74fbfc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/f48d1aba0d38ebf614555e4d844a0b6e0b0de32c",
-                "reference": "f48d1aba0d38ebf614555e4d844a0b6e0b0de32c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/99e10841cc315b4475e6b629a8d69779b74fbfc8",
+                "reference": "99e10841cc315b4475e6b629a8d69779b74fbfc8",
                 "shasum": ""
             },
             "require": {
@@ -1817,7 +1817,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-12-06 07:43:33"
+            "time": "2016-12-07 16:11:27"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -6353,9 +6353,17 @@
             "time": "2016-11-30 04:02:31"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1663",
+            "package": "cultuurnet/udb3-udb2-bridge"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
