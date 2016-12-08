@@ -101,16 +101,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.6.7",
+            "version": "v2.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "2b4c9249a7ceef51402d39bd797aae16cfd8f36f"
+                "reference": "848c8f0bde97b48d1e159075e20a6667583f3978"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/2b4c9249a7ceef51402d39bd797aae16cfd8f36f",
-                "reference": "2b4c9249a7ceef51402d39bd797aae16cfd8f36f",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/848c8f0bde97b48d1e159075e20a6667583f3978",
+                "reference": "848c8f0bde97b48d1e159075e20a6667583f3978",
                 "shasum": ""
             },
             "require": {
@@ -118,13 +118,13 @@
                 "php": ">=5.3"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.0.0-alpha",
+                "friendsofphp/php-cs-fixer": "^2.0",
                 "phpunit/phpunit": "@stable"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Assert": "lib/"
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
                 },
                 "files": [
                     "lib/Assert/functions.php"
@@ -152,19 +152,19 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2016-11-14 16:46:13"
+            "time": "2016-12-05 11:33:17"
         },
         {
             "name": "broadway/broadway",
             "version": "0.5.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/qandidate-labs/broadway.git",
+                "url": "https://github.com/broadway/broadway.git",
                 "reference": "0fce8c532086ad249a46fec179759c1fa089e35d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qandidate-labs/broadway/zipball/0fce8c532086ad249a46fec179759c1fa089e35d",
+                "url": "https://api.github.com/repos/broadway/broadway/zipball/0fce8c532086ad249a46fec179759c1fa089e35d",
                 "reference": "0fce8c532086ad249a46fec179759c1fa089e35d",
                 "shasum": ""
             },
@@ -1047,12 +1047,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-uitid-provider.git",
-                "reference": "4cca329717ee7723e44e28d2ff37773505e08fec"
+                "reference": "4e1bdc60124ea622eb7f7837bd50c49ce7d7af92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/4cca329717ee7723e44e28d2ff37773505e08fec",
-                "reference": "4cca329717ee7723e44e28d2ff37773505e08fec",
+                "url": "https://api.github.com/repos/cultuurnet/silex-uitid-provider/zipball/4e1bdc60124ea622eb7f7837bd50c49ce7d7af92",
+                "reference": "4e1bdc60124ea622eb7f7837bd50c49ce7d7af92",
                 "shasum": ""
             },
             "require": {
@@ -1087,7 +1087,7 @@
                 "GPL-3.0"
             ],
             "description": "Silex UiTID authentication provider.",
-            "time": "2016-09-06 17:52:32"
+            "time": "2016-12-02 18:56:24"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1343,12 +1343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "95c8b8da331e050b32044a6cf4955eb33d9672f1"
+                "reference": "549f904e941377656e8d7656b64d2384cdcfd41c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/95c8b8da331e050b32044a6cf4955eb33d9672f1",
-                "reference": "95c8b8da331e050b32044a6cf4955eb33d9672f1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/549f904e941377656e8d7656b64d2384cdcfd41c",
+                "reference": "549f904e941377656e8d7656b64d2384cdcfd41c",
                 "shasum": ""
             },
             "require": {
@@ -1422,7 +1422,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-12-02 15:56:30"
+            "time": "2016-12-07 15:02:57"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1570,12 +1570,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "74ebfaecd14e2dcd01c1b5b909c126aa14b96676"
+                "reference": "c248fba856551e540721d80a972fe187abc499db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/74ebfaecd14e2dcd01c1b5b909c126aa14b96676",
-                "reference": "74ebfaecd14e2dcd01c1b5b909c126aa14b96676",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/c248fba856551e540721d80a972fe187abc499db",
+                "reference": "c248fba856551e540721d80a972fe187abc499db",
                 "shasum": ""
             },
             "require": {
@@ -1609,7 +1609,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-10-11 14:04:46"
+            "time": "2016-12-02 19:00:41"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1772,12 +1772,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "53b5ccaa7cdb5bc019557bdaec5a167a92e182d3"
+                "reference": "251dc3d1e60d69a791b2593c345fad757ae7229d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/53b5ccaa7cdb5bc019557bdaec5a167a92e182d3",
-                "reference": "53b5ccaa7cdb5bc019557bdaec5a167a92e182d3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/251dc3d1e60d69a791b2593c345fad757ae7229d",
+                "reference": "251dc3d1e60d69a791b2593c345fad757ae7229d",
                 "shasum": ""
             },
             "require": {
@@ -1825,7 +1825,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-12-01 15:10:49"
+            "time": "2016-12-08 13:53:23"
         },
         {
             "name": "cultuurnet/uitid-credentials",

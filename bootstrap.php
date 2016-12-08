@@ -504,7 +504,6 @@ $app['event_bus'] = $app->share(
                 'udb2_actor_events_to_udb3_place_applier',
                 'udb2_actor_events_to_udb3_organizer_applier',
                 'udb2_label_importer',
-                'udb2_media_importer',
                 'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
