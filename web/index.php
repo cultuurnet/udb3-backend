@@ -52,11 +52,6 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
     ],
-    'entryapi' => array(
-        'pattern' => '^/rest/entry/.*',
-        'oauth' => true,
-        'stateless' => true,
-    ),
     'cors-preflight' => array(
         'pattern' => $app['cors_preflight_request_matcher'],
     ),
@@ -228,8 +223,6 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $app->mount('variations', new \CultuurNet\UDB3\Silex\Variations\VariationsControllerProvider());
-
-$app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
