@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9991db06c1ef20ca2b913accbf21179c",
-    "content-hash": "bbb30772115bfaf1c55b2f6f1495a1c0",
+    "hash": "e9de1864b2e46cebcfb2a7fd2f60c138",
+    "content-hash": "b9ff388469dcd7039876116f626684cf",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -159,12 +159,12 @@
             "version": "0.5.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/qandidate-labs/broadway.git",
+                "url": "https://github.com/broadway/broadway.git",
                 "reference": "0fce8c532086ad249a46fec179759c1fa089e35d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qandidate-labs/broadway/zipball/0fce8c532086ad249a46fec179759c1fa089e35d",
+                "url": "https://api.github.com/repos/broadway/broadway/zipball/0fce8c532086ad249a46fec179759c1fa089e35d",
                 "reference": "0fce8c532086ad249a46fec179759c1fa089e35d",
                 "shasum": ""
             },
@@ -1295,12 +1295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c9e2d775d0d0eb3b8ba062fceaca7f88a2075e57"
+                "reference": "3bba11c05f8b90070b2a159dfd786aba147963f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c9e2d775d0d0eb3b8ba062fceaca7f88a2075e57",
-                "reference": "c9e2d775d0d0eb3b8ba062fceaca7f88a2075e57",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3bba11c05f8b90070b2a159dfd786aba147963f6",
+                "reference": "3bba11c05f8b90070b2a159dfd786aba147963f6",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-12-06 07:36:34"
+            "time": "2016-12-07 10:12:59"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1651,51 +1651,6 @@
                 }
             ],
             "time": "2016-10-06 11:40:57"
-        },
-        {
-            "name": "cultuurnet/udb3-silex-entryapi",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-silex-entryapi.git",
-                "reference": "dc9329649f6f71e5291816d7969dddd7d822ba27"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-silex-entryapi/zipball/dc9329649f6f71e5291816d7969dddd7d822ba27",
-                "reference": "dc9329649f6f71e5291816d7969dddd7d822ba27",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/cdb": "~2.2.0",
-                "cultuurnet/entry": "~0.1",
-                "cultuurnet/udb3": "~0.1",
-                "silex/silex": "~1.3"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/php-token-stream": "1.4.6",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3SilexEntryAPI\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "EntryAPI for UDB3 Silex",
-            "time": "2016-06-03 10:20:38"
         },
         {
             "name": "cultuurnet/udb3-symfony",
