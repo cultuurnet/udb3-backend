@@ -1294,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb2-domain-events.git",
-                "reference": "5254e81f506a535c362e49a9ce4eb242c1e38967"
+                "reference": "d0cb53b93adbcee66d6dcd0eebfb77db2e9aa6ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/5254e81f506a535c362e49a9ce4eb242c1e38967",
-                "reference": "5254e81f506a535c362e49a9ce4eb242c1e38967",
+                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/d0cb53b93adbcee66d6dcd0eebfb77db2e9aa6ce",
+                "reference": "d0cb53b93adbcee66d6dcd0eebfb77db2e9aa6ce",
                 "shasum": ""
             },
             "require": {
@@ -1335,7 +1335,7 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2016-04-21 13:04:31"
+            "time": "2016-12-09 10:41:03"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1343,12 +1343,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "549f904e941377656e8d7656b64d2384cdcfd41c"
+                "reference": "2afa6954992e3cf6d3f1546ab70a28eff3d6deb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/549f904e941377656e8d7656b64d2384cdcfd41c",
-                "reference": "549f904e941377656e8d7656b64d2384cdcfd41c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2afa6954992e3cf6d3f1546ab70a28eff3d6deb6",
+                "reference": "2afa6954992e3cf6d3f1546ab70a28eff3d6deb6",
                 "shasum": ""
             },
             "require": {
@@ -1422,7 +1422,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-12-07 15:02:57"
+            "time": "2016-12-09 15:50:22"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1772,12 +1772,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "251dc3d1e60d69a791b2593c345fad757ae7229d"
+                "reference": "9d4352adacd0c01900197e36e746620a90c9fcf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/251dc3d1e60d69a791b2593c345fad757ae7229d",
-                "reference": "251dc3d1e60d69a791b2593c345fad757ae7229d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/9d4352adacd0c01900197e36e746620a90c9fcf9",
+                "reference": "9d4352adacd0c01900197e36e746620a90c9fcf9",
                 "shasum": ""
             },
             "require": {
@@ -1825,7 +1825,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-12-08 13:53:23"
+            "time": "2016-12-09 15:59:26"
         },
         {
             "name": "cultuurnet/uitid-credentials",

@@ -230,7 +230,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $applier = new ActorEventApplier(
                     $app['place_repository'],
                     new ActorToUDB3PlaceFactory(),
-                    new QualifiesAsPlaceSpecification()
+                    new QualifiesAsPlaceSpecification(),
+                    $app['udb2_media_importer']
                 );
 
                 $logger = new \Monolog\Logger('udb2-actor-events-to-udb3-place-applier');
