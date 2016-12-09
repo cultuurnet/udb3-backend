@@ -99,7 +99,8 @@ class MediaServiceProvider implements ServiceProviderInterface
 
                 $mediaManager->setLogger($app['logger.media_manager']);
 
-                return $mediaManager;}
+                return $mediaManager;
+            }
         );
     }
 
