@@ -10,6 +10,7 @@ use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
+use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
@@ -371,6 +372,12 @@ $app['event_jsonld_cache'] = $app->share(
     }
 );
 
+$app['calendar_factory'] = $app->share(
+    function () {
+        return new CalendarFactory();
+    }
+);
+
 $app['udb2_media_iri_generator'] = $app->share(
     function (Application $app) {
         return new CallableIriGenerator(function (CultureFeed_Cdb_Data_File $file) use ($app) {
@@ -383,12 +390,13 @@ $app['udb2_media_iri_generator'] = $app->share(
 $app['event_cdbxml_importer'] = $app->share(
     function (Application $app) {
         return new EventCdbXMLImporter(
-            new CdbXMLItemBaseImporter($app['udb2_media_iri_generator']),
+            new CdbXMLItemBaseImporter(),
             $app['udb2_event_cdbid_extractor'],
             new PriceDescriptionParser(
                 new NumberFormatRepository(),
                 new CurrencyRepository()
-            )
+            ),
+            $app['calendar_factory']
         );
     }
 );
@@ -405,9 +413,6 @@ $app['event_jsonld_projector'] = $app->share(
             $app['iri_offer_identifier_factory'],
             $app['event_cdbxml_importer']
         );
-
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\TidyStringFilter());
-        $projector->addDescriptionFilter(new \CultuurNet\UDB3\StringFilter\StripSourceStringFilter());
 
         return $projector;
     }
@@ -763,7 +768,10 @@ $app['place_iri_generator'] = $app->share(
 
 $app['place_cdbxml_importer'] = $app->share(
     function (Application $app) {
-        return new PlaceCdbXMLImporter(new CdbXMLItemBaseImporter($app['udb2_media_iri_generator']));
+        return new PlaceCdbXMLImporter(
+            new CdbXMLItemBaseImporter(),
+            $app['calendar_factory']
+        );
     }
 );
 
@@ -1360,10 +1368,6 @@ $app->extend(
         return new TokenProviderCache($tokenProvider, $app['predis.client']);
     }
 );
-
-$app['entryapi.link_base_url'] = $app->share(function (Application $app) {
-    return $app['config']['entryapi']['link_base_url'];
-});
 
 $app['cdbxml_proxy'] = $app->share(
     function ($app) {

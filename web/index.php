@@ -5,16 +5,16 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
+use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
+use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
 use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
-use CultuurNet\UiTIDProvider\Security\MultiPathRequestMatcher;
-use CultuurNet\UiTIDProvider\Security\Path;
-use CultuurNet\UiTIDProvider\Security\PreflightRequestMatcher;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
@@ -41,26 +41,17 @@ $app['cors_preflight_request_matcher'] = $app->share(
 
 $app['id_pattern'] = '[\w\-]+';
 $app['security.firewalls'] = array(
-    'authentication' => array(
-        'pattern' => '^/culturefeed/oauth',
-    ),
-    'public' => array(
-        'pattern' => MultiPathRequestMatcher::fromPaths([
-            new Path('^/contexts/.*', 'GET'),
-            new Path('^/(event|place|label)/' . $app['id_pattern'] . '$', 'GET'),
-            new Path('^/event/' . $app['id_pattern'] . '/history', 'GET'),
-            new Path('^/organizers/' . $app['id_pattern'], 'GET'),
-            new Path('^/media/' . $app['id_pattern'] . '$', 'GET'),
-            new Path('^/(places|labels)$', 'GET'),
-            new Path('^/organizers/suggest/.*', 'GET'),
-            new Path('^/jobs/', 'GET'),
-        ])
-    ),
-    'entryapi' => array(
-        'pattern' => '^/rest/entry/.*',
-        'oauth' => true,
-        'stateless' => true,
-    ),
+    'public' => [
+        'pattern' => (new AnyOfRequestMatcher())
+            ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
+            ->with(new RequestMatcher('^/(event|place|label)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/event/' . $app['id_pattern'] . '/history', null, 'GET'))
+            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'], null, 'GET'))
+            ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(places|labels)$', null, 'GET'))
+            ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
+            ->with(new RequestMatcher('^/jobs/', null, 'GET'))
+    ],
     'cors-preflight' => array(
         'pattern' => $app['cors_preflight_request_matcher'],
     ),
@@ -109,9 +100,7 @@ $app['security.access_manager'] = $app->share(function($app) {
 
 $app['security.access_rules'] = array(
     array(
-        MultiPathRequestMatcher::fromPaths([
-            new Path('^/labels/.*', ['POST', 'DELETE', 'PATCH'])
-        ]),
+        new RequestMatcher('^/labels/.*', null, ['POST', 'DELETE', 'PATCH']),
         Permission::LABELS_BEHEREN
     ),
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
@@ -234,8 +223,6 @@ $app->get(
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
 $app->mount('variations', new \CultuurNet\UDB3\Silex\Variations\VariationsControllerProvider());
-
-$app->mount('rest/entry', new \CultuurNet\UDB3SilexEntryAPI\EventControllerProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
