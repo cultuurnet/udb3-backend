@@ -34,10 +34,10 @@ class ReplayCommand extends Command
             ->setName('replay')
             ->setDescription('Replay the event stream to the event bus with only read models attached.')
             ->addArgument(
-                'store',
+                'aggregate',
                 InputArgument::OPTIONAL,
-                'Event store to replay events from',
-                'events'
+                'Aggregate type to replay events from',
+                'place'
             )
             ->addOption(
                 'cache',
@@ -100,10 +100,10 @@ class ReplayCommand extends Command
             $this->setSubscribers($subscribers);
         }
 
-        $store = $this->getStore($input, $output);
+        $aggregateType = $this->getAggregateType($input, $output);
 
         $startId = $input->getOption(self::OPTION_START_ID);
-        $stream = $this->getEventStream($store, $startId);
+        $stream = $this->getEventStream($aggregateType, $startId);
 
         $eventBus = $this->getEventBus();
 
@@ -157,11 +157,11 @@ class ReplayCommand extends Command
     }
 
     /**
-     * @param string $store
+     * @param string $aggregateType
      * @param int $startId
      * @return EventStream
      */
-    private function getEventStream($store = 'events', $startId = null)
+    private function getEventStream($aggregateType = 'event', $startId = null)
     {
         $app = $this->getSilexApplication();
 
@@ -169,15 +169,15 @@ class ReplayCommand extends Command
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new SimpleInterfaceSerializer(),
-            $store,
+            'event_store',
             $startId !== null ? $startId : 0
         );
 
         // Older domain messages in the events, places, and organizers
         // stores are missing some metadata. Add it using the offer locator
         // class.
-        if (in_array($store, ['events', 'places', 'organizers'])) {
-            $offerLocator = $app[$store . '_locator_event_stream_decorator'];
+        if (in_array($aggregateType, ['event', 'place', 'organizer'])) {
+            $offerLocator = $app[$aggregateType . 's_locator_event_stream_decorator'];
             $eventStream = $eventStream->withDomainEventStreamDecorator($offerLocator);
         }
 
@@ -189,28 +189,28 @@ class ReplayCommand extends Command
      * @param OutputInterface $output
      * @return mixed
      */
-    private function getStore(InputInterface $input, OutputInterface $output)
+    private function getAggregateType(InputInterface $input, OutputInterface $output)
     {
-        $validStores = [
-            'events',
-            'places',
-            'organizers',
-            'variations',
-            'media_objects',
-            'roles',
-            'labels',
+        $validAggregateTypes = [
+            'event',
+            'place',
+            'organizer',
+            'variation',
+            'media_object',
+            'role',
+            'label',
         ];
 
-        $store = $input->getArgument('store');
+        $aggregateType = $input->getArgument('aggregate');
 
-        if (!in_array($store, $validStores)) {
+        if (!in_array($aggregateType, $validAggregateTypes)) {
             throw new \RuntimeException(
-                'Invalid store "' . $store . '"", use one of: ' .
-                implode(', ', $validStores)
+                'Invalid aggregate type "' . $aggregateType . '"", use one of: ' .
+                implode(', ', $validAggregateTypes)
             );
         }
 
-        return $store;
+        return $aggregateType;
     }
 
     /**
