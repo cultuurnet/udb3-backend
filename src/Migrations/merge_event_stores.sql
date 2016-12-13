@@ -12,35 +12,38 @@ ALTER TABLE event_store MODIFY type VARCHAR(128) NOT NULL;
 ALTER TABLE event_store ADD INDEX (type);
 
 --
--- Add an aggregate column
+-- Add an aggregate_type column
 --
+ALTER TABLE event_store ADD aggregate_type VARCHAR(128) NOT NULL;
+ALTER TABLE event_store ADD INDEX (aggregate_type);
 
 --
 -- Insert the existing events from the previous stores order by recorded_on in the new event_store.
 --
 INSERT INTO
-	event_store (uuid, playhead, payload, metadata, recorded_on, type)
+	event_store (uuid, playhead, payload, metadata, recorded_on, type, aggregate_type)
 SELECT
   uuid,
   playhead,
   payload,
   metadata,
   recorded_on,
-  type
+  type,
+  aggregate_type
 FROM (
-    SELECT * FROM events
+    SELECT *, 'event' AS aggregate_type FROM events
     UNION ALL
-    SELECT * FROM labels
+    SELECT *, 'label' AS aggregate_type FROM labels
     UNION ALL
-    SELECT * FROM media_objects
+    SELECT *, 'media_object' AS aggregate_type FROM media_objects
     UNION ALL
-    SELECT * FROM organizers
+    SELECT *, 'organizer' AS aggregate_type FROM organizers
     UNION ALL
-    SELECT * FROM places
+    SELECT *, 'place' AS aggregate_type FROM places
     UNION ALL
-    SELECT * FROM roles
+    SELECT *, 'role' AS aggregate_type FROM roles
     UNION ALL
-    SELECT * FROM variations
+    SELECT *, 'variation' AS aggregate_type FROM variations
 )
 AS
 	event_stores
