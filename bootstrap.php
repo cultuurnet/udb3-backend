@@ -9,6 +9,7 @@ use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
@@ -332,11 +333,12 @@ $app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
 
 $app['event_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
+        return new AggregateAwareDBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'events'
+            'event_store',
+            'event'
         );
     }
 );
@@ -791,11 +793,12 @@ $app['place_relations_repository'] = $app->share(
 
 $app['place_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
+        return new AggregateAwareDBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'places'
+            'event_store',
+            'place'
         );
     }
 );
@@ -901,11 +904,12 @@ $app['eventstore_payload_serializer'] = $app->share(
 
 $app['organizer_store'] = $app->share(
     function ($app) {
-        $eventStore = new \Broadway\EventStore\DBALEventStore(
+        $eventStore = new AggregateAwareDBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'organizers'
+            'event_store',
+            'organizer'
         );
 
         return new UniqueDBALEventStoreDecorator(
@@ -964,11 +968,12 @@ $app['role_iri_generator'] = $app->share(
 
 $app['role_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
+        return new AggregateAwareDBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'roles'
+            'event_store',
+            'role'
         );
     }
 );

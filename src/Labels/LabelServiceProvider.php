@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex\Labels;
 
-use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\ConstraintAwareLabelService;
@@ -231,11 +231,12 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::UNIQUE_EVENT_STORE] = $app->share(
             function (Application $app) {
-                $eventStore = new DBALEventStore(
+                $eventStore = new AggregateAwareDBALEventStore(
                     $app['dbal_connection'],
                     $app['eventstore_payload_serializer'],
                     new SimpleInterfaceSerializer(),
-                    'labels'
+                    'event_store',
+                    'label'
                 );
 
                 return new UniqueDBALEventStoreDecorator(
