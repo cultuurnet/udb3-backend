@@ -1375,7 +1375,7 @@ $app->register(
         'udb2_cdbxml_enricher.http_response_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_response_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_response_timeout'] : 3,
         'udb2_cdbxml_enricher.http_connect_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_connect_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_connect_timeout'] : 1,
         'udb2_cdbxml_enricher.event_url_format' => isset($app['config']['udb2_cdbxml_enricher']['event_url_format']) ? $app['config']['udb2_cdbxml_enricher']['event_url_format'] : null,
-        'udb2_cdbxml_enricher.actor_url_format' => isset($app['config']['udb2_cdbxml_enricher']['event_url_format']) ? $app['config']['udb2_cdbxml_enricher']['event_url_format'] : null,
+        'udb2_cdbxml_enricher.actor_url_format' => isset($app['config']['udb2_cdbxml_enricher']['actor_url_format']) ? $app['config']['udb2_cdbxml_enricher']['actor_url_format'] : null,
         'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],
     ]
 );
