@@ -378,15 +378,6 @@ $app['calendar_factory'] = $app->share(
     }
 );
 
-$app['udb2_media_iri_generator'] = $app->share(
-    function (Application $app) {
-        return new CallableIriGenerator(function (CultureFeed_Cdb_Data_File $file) use ($app) {
-            $udb2Media = new Udb2Media($file);
-            return $app['config']['url'] . '/media/' . $udb2Media->identify();
-        });
-    }
-);
-
 $app['event_cdbxml_importer'] = $app->share(
     function (Application $app) {
         return new EventCdbXMLImporter(
