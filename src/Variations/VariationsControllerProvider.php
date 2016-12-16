@@ -2,20 +2,15 @@
 
 namespace CultuurNet\UDB3\Silex\Variations;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Symfony\CommandDeserializerController;
 use CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController;
 use CultuurNet\UDB3\Symfony\Variations\ReadVariationsRestController;
 use CultuurNet\UDB3\Variations\Command\CreateOfferVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\DefaultUrlValidator;
-use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Silex\Route;
-use Symfony\Component\HttpFoundation\Response;
 
 class VariationsControllerProvider implements ControllerProviderInterface
 {
@@ -61,7 +56,7 @@ class VariationsControllerProvider implements ControllerProviderInterface
             }
         );
 
-        /* @var ControllerCollection|Route $controllers */
+        /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers
@@ -73,20 +68,6 @@ class VariationsControllerProvider implements ControllerProviderInterface
         $controllers->get('/{id}', 'variations_read_controller:get');
         $controllers->patch('/{id}', 'variations_edit_controller:edit');
         $controllers->delete('/{id}', 'variations_edit_controller:delete');
-
-        $toggles = $app['toggles'];
-
-        // When the variations feature is turned off, return a 503
-        // Service unavailable for all valid variation routes.
-        if (!$toggles->active('variations', $app['toggles.context'])) {
-            $serviceUnavailableController = function () {
-                $problem = new ApiProblem('Feature is disabled on this installation.');
-                $problem->setStatus(Response::HTTP_SERVICE_UNAVAILABLE);
-                return new ApiProblemJsonResponse($problem);
-            };
-
-            $controllers->run($serviceUnavailableController);
-        }
 
         return $controllers;
     }
