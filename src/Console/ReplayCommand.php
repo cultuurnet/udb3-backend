@@ -99,7 +99,7 @@ class ReplayCommand extends Command
             $this->setSubscribers($subscribers);
         }
 
-        $aggregateType = $this->getAggregateType($input, $output);
+        //$aggregateType = $this->getAggregateType($input, $output);
 
         $startId = $input->getOption(self::OPTION_START_ID);
         $stream = $this->getEventStream($startId);
@@ -193,7 +193,7 @@ class ReplayCommand extends Command
 
         $aggregateType = $input->getArgument('aggregate');
 
-        if (!in_array($aggregateType, $validAggregateTypes)) {
+        if ($aggregateType && !in_array($aggregateType, $validAggregateTypes)) {
             throw new \RuntimeException(
                 'Invalid aggregate type "' . $aggregateType . '"", use one of: ' .
                 implode(', ', $validAggregateTypes)
