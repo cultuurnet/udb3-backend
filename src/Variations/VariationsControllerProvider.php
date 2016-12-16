@@ -79,11 +79,13 @@ class VariationsControllerProvider implements ControllerProviderInterface
         // When the variations feature is turned off, return a 503
         // Service unavailable for all valid variation routes.
         if (!$toggles->active('variations', $app['toggles.context'])) {
-            $controllers->run(function () {
+            $serviceUnavailableController = function () {
                 $problem = new ApiProblem('Feature is disabled on this installation.');
                 $problem->setStatus(Response::HTTP_SERVICE_UNAVAILABLE);
                 return new ApiProblemJsonResponse($problem);
-            });
+            };
+
+            $controllers->run($serviceUnavailableController);
         }
 
         return $controllers;
