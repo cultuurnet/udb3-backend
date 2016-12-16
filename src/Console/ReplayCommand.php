@@ -36,8 +36,7 @@ class ReplayCommand extends Command
             ->addArgument(
                 'aggregate',
                 InputArgument::OPTIONAL,
-                'Aggregate type to replay events from',
-                'place'
+                'Aggregate type to replay events from'
             )
             ->addOption(
                 'cache',
@@ -103,7 +102,7 @@ class ReplayCommand extends Command
         $aggregateType = $this->getAggregateType($input, $output);
 
         $startId = $input->getOption(self::OPTION_START_ID);
-        $stream = $this->getEventStream($aggregateType, $startId);
+        $stream = $this->getEventStream($startId);
 
         $eventBus = $this->getEventBus();
 
@@ -157,11 +156,10 @@ class ReplayCommand extends Command
     }
 
     /**
-     * @param string $aggregateType
      * @param int $startId
      * @return EventStream
      */
-    private function getEventStream($aggregateType = 'event', $startId = null)
+    private function getEventStream($startId = null)
     {
         $app = $this->getSilexApplication();
 
@@ -172,14 +170,6 @@ class ReplayCommand extends Command
             'event_store',
             $startId !== null ? $startId : 0
         );
-
-        // Older domain messages in the events, places, and organizers
-        // stores are missing some metadata. Add it using the offer locator
-        // class.
-        if (in_array($aggregateType, ['event', 'place', 'organizer'])) {
-            $offerLocator = $app[$aggregateType . 's_locator_event_stream_decorator'];
-            $eventStream = $eventStream->withDomainEventStreamDecorator($offerLocator);
-        }
 
         return $eventStream;
     }
