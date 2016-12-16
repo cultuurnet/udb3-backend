@@ -36,7 +36,8 @@ class ReplayCommand extends Command
             ->addArgument(
                 'aggregate',
                 InputArgument::OPTIONAL,
-                'Aggregate type to replay events from'
+                'Aggregate type to replay events from',
+                ''
             )
             ->addOption(
                 'cache',
@@ -99,10 +100,11 @@ class ReplayCommand extends Command
             $this->setSubscribers($subscribers);
         }
 
-        //$aggregateType = $this->getAggregateType($input, $output);
+        $aggregateType = $this->getAggregateType($input, $output);
 
         $startId = $input->getOption(self::OPTION_START_ID);
-        $stream = $this->getEventStream($startId);
+
+        $stream = $this->getEventStream($startId, $aggregateType);
 
         $eventBus = $this->getEventBus();
 
@@ -157,19 +159,23 @@ class ReplayCommand extends Command
 
     /**
      * @param int $startId
+     * @param string $aggregateType
      * @return EventStream
      */
-    private function getEventStream($startId = null)
+    private function getEventStream($startId = null, $aggregateType = '')
     {
         $app = $this->getSilexApplication();
+        $startId = $startId !== null ? $startId : 0;
 
         $eventStream = new EventStream(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new SimpleInterfaceSerializer(),
-            'event_store',
-            $startId !== null ? $startId : 0
+            'event_store'
         );
+
+        $eventStream = $eventStream->withStartId($startId);
+        $eventStream = $eventStream->withAggregateType($aggregateType);
 
         return $eventStream;
     }
@@ -193,7 +199,7 @@ class ReplayCommand extends Command
 
         $aggregateType = $input->getArgument('aggregate');
 
-        if ($aggregateType && !in_array($aggregateType, $validAggregateTypes)) {
+        if (!empty($aggregateType) && !in_array($aggregateType, $validAggregateTypes)) {
             throw new \RuntimeException(
                 'Invalid aggregate type "' . $aggregateType . '"", use one of: ' .
                 implode(', ', $validAggregateTypes)
