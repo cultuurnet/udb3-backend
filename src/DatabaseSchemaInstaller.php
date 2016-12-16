@@ -34,18 +34,17 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
 
     public function installSchema()
     {
-        // Combination of 'real' event stores and MySQL read models.
+        // Combination of:
+        // - one real merged event store.
+        // - two helpers for unique event store for organizers and labels.
+        // - and some MySQL read models.
         $stores = array(
             $this->app['event_store'],
-            $this->app['place_store'],
+            $this->app[LabelServiceProvider::UNIQUE_EVENT_STORE],
             $this->app['organizer_store'],
             $this->app['event_relations_repository'],
             $this->app['place_relations_repository'],
-            $this->app['variations.event_store'],
             $this->app['variations.search'],
-            $this->app['media_object_store'],
-            $this->app[LabelServiceProvider::UNIQUE_EVENT_STORE],
-            $this->app['role_store'],
         );
 
         /** @var \Doctrine\DBAL\Connection $connection */
