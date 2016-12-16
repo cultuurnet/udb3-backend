@@ -8,6 +8,7 @@ use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Silex\FeatureControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
 use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
@@ -222,7 +223,13 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-$app->mount('variations', new \CultuurNet\UDB3\Silex\Variations\VariationsControllerProvider());
+$app->mount(
+    'variations',
+    new FeatureControllerProvider(
+        'variations',
+        new \CultuurNet\UDB3\Silex\Variations\VariationsControllerProvider()
+    )
+);
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
