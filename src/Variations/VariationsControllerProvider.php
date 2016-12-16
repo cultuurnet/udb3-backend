@@ -2,30 +2,20 @@
 
 namespace CultuurNet\UDB3\Silex\Variations;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\Hydra\PagedCollection;
-use CultuurNet\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Symfony\CommandDeserializerController;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController;
 use CultuurNet\UDB3\Symfony\Variations\ReadVariationsRestController;
-use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\CreateOfferVariationJSONDeserializer;
-use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
-use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\DefaultUrlValidator;
-use CultuurNet\UDB3\Variations\Model\Properties\Id;
-use CultuurNet\UDB3\Variations\ReadModel\Search\CriteriaFromParameterBagFactory;
-use CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Silex\Route;
 use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\String\String;
 
 class VariationsControllerProvider implements ControllerProviderInterface
 {
@@ -71,7 +61,7 @@ class VariationsControllerProvider implements ControllerProviderInterface
             }
         );
 
-        /* @var ControllerCollection $controllers */
+        /* @var ControllerCollection|Route $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers
@@ -83,6 +73,20 @@ class VariationsControllerProvider implements ControllerProviderInterface
         $controllers->get('/{id}', 'variations_read_controller:get');
         $controllers->patch('/{id}', 'variations_edit_controller:edit');
         $controllers->delete('/{id}', 'variations_edit_controller:delete');
+
+        $toggles = $app['toggles'];
+
+        // When the variations feature is turned off, return a 503
+        // Service unavailable for all valid variation routes.
+        if (!$toggles->active('variations', $app['toggles.context'])) {
+            $serviceUnavailableController = function () {
+                $problem = new ApiProblem('Feature is disabled on this installation.');
+                $problem->setStatus(Response::HTTP_SERVICE_UNAVAILABLE);
+                return new ApiProblemJsonResponse($problem);
+            };
+
+            $controllers->run($serviceUnavailableController);
+        }
 
         return $controllers;
     }

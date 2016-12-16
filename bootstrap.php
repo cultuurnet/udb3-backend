@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\UDB2\Media\Media as Udb2Media;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -703,9 +704,13 @@ $app->extend(
             )
         );
 
-        $commandBus->subscribe(
-            $app['variations.command_handler']
-        );
+        /** @var ToggleManager $toggles */
+        $toggles = $app['toggles'];
+        if ($toggles->active('variations', $app['toggles.context'])) {
+            $commandBus->subscribe(
+                $app['variations.command_handler']
+            );
+        }
 
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Place\CommandHandler(
@@ -1187,8 +1192,16 @@ $app['event_export_notification_mail_factory'] = $app->share(
 
 $app['event_export'] = $app->share(
     function ($app) {
+        /** @var ToggleManager $toggles */
+        $toggles = $app['toggles'];
+        if ($toggles->active('variations', $app['toggles.context'])) {
+            $eventService =  $app['personal_variation_decorated_event_service'];
+        } else {
+            $eventService = $app['external_event_service'];
+        }
+
         $service = new \CultuurNet\UDB3\EventExport\EventExportService(
-            $app['personal_variation_decorated_event_service'],
+            $eventService,
             $app['search_service'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
             realpath(__DIR__ .  '/web/downloads'),
