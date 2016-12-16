@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Variations;
 
+use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Symfony\CommandDeserializerController;
 use CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController;
@@ -12,7 +14,8 @@ use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
+use Silex\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class VariationsControllerProvider implements ControllerProviderInterface
 {
@@ -58,37 +61,29 @@ class VariationsControllerProvider implements ControllerProviderInterface
             }
         );
 
-        /* @var ControllerCollection $controllers */
+        /* @var ControllerCollection|Route $controllers */
         $controllers = $app['controllers_factory'];
 
-        /** @var ToggleManager $toggles */
+        $controllers
+            ->get('/', 'variations_read_controller:search')
+            ->bind('variations');
+
+        $controllers->post('/', 'variations_write_controller:handle');
+
+        $controllers->get('/{id}', 'variations_read_controller:get');
+        $controllers->patch('/{id}', 'variations_edit_controller:edit');
+        $controllers->delete('/{id}', 'variations_edit_controller:delete');
+
         $toggles = $app['toggles'];
-        if ($toggles->active('variations', $app['toggles.context'])) {
-            $controllers
-                ->get('/', 'variations_read_controller:search')
-                ->bind('variations');
 
-            $controllers->post('/', 'variations_write_controller:handle');
-
-            $controllers->get('/{id}', 'variations_read_controller:get');
-            $controllers->patch('/{id}', 'variations_edit_controller:edit');
-            $controllers->delete('/{id}', 'variations_edit_controller:delete');
-        } else {
-            // When the variations feature is inactive, trigger a 503
-            // Service Unavailable response.
-            $unavailableController = function () {
-                throw new ServiceUnavailableHttpException();
-            };
-
-            $controllers
-                ->get('/', $unavailableController)
-                ->bind('variations');
-
-            $controllers->post('/', $unavailableController);
-
-            $controllers->get('/{id}', $unavailableController);
-            $controllers->patch('/{id}', $unavailableController);
-            $controllers->delete('/{id}', $unavailableController);
+        // When the variations feature is turned off, return a 503
+        // Service unavailable for all valid variation routes.
+        if (!$toggles->active('variations', $app['toggles.context'])) {
+            $controllers->run(function () {
+                $problem = new ApiProblem('Feature is disabled on this installation.');
+                $problem->setStatus(Response::HTTP_SERVICE_UNAVAILABLE);
+                return new ApiProblemJsonResponse($problem);
+            });
         }
 
         return $controllers;
