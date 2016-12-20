@@ -739,17 +739,6 @@ $app->extend(
     }
 );
 
-$app['used_labels_memory'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService(
-            new \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryRepository(
-                $app['event_store'],
-                $app['event_bus']
-            )
-        );
-    }
-);
-
 /** Place **/
 
 $app['place_iri_generator'] = $app->share(
