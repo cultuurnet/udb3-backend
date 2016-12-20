@@ -22,15 +22,6 @@ class UserControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app['user_label_memory_controller'] = $app->share(
-            function (Application $app) {
-                return new UserLabelMemoryRestController(
-                    $app['used_labels_memory'],
-                    $app['current_user']
-                );
-            }
-        );
-
         $app['user_search_controller'] = $app->share(
             function (Application $app) {
                 return new SearchUserController(
@@ -46,8 +37,6 @@ class UserControllerProvider implements ControllerProviderInterface
 
         $controllers->get('users/{userId}', 'user_identity_controller:getByUserId');
         $controllers->get('users/emails/{emailAddress}', 'user_identity_controller:getByEmailAddress');
-
-        $controllers->get('api/1.0/user/labels', 'user_label_memory_controller:all');
 
         $controllers->get('users/', 'user_search_controller:search');
 

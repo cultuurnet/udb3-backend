@@ -1295,12 +1295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d95251b5a805e7f107c1ee8749f4d9c5dc7d404f"
+                "reference": "2d652186c8c60ae83081b0d9a2c6744d7745303c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d95251b5a805e7f107c1ee8749f4d9c5dc7d404f",
-                "reference": "d95251b5a805e7f107c1ee8749f4d9c5dc7d404f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2d652186c8c60ae83081b0d9a2c6744d7745303c",
+                "reference": "2d652186c8c60ae83081b0d9a2c6744d7745303c",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-12-20 07:46:34"
+            "time": "2016-12-20 13:01:03"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1658,12 +1658,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "d6e9467b92f8b805091e0219845c9444e91a5fb5"
+                "reference": "b2b5702ca033768effb6c12324e09c4e6105e2ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/d6e9467b92f8b805091e0219845c9444e91a5fb5",
-                "reference": "d6e9467b92f8b805091e0219845c9444e91a5fb5",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/b2b5702ca033768effb6c12324e09c4e6105e2ee",
+                "reference": "b2b5702ca033768effb6c12324e09c4e6105e2ee",
                 "shasum": ""
             },
             "require": {
@@ -1712,7 +1712,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-12-02 09:59:55"
+            "time": "2016-12-20 13:06:39"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3051,28 +3051,28 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "2693c101803ca78b27972d84081d027fca790a1e"
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/2693c101803ca78b27972d84081d027fca790a1e",
-                "reference": "2693c101803ca78b27972d84081d027fca790a1e",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3098,7 +3098,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-11-18 17:47:58"
+            "time": "2016-12-20 10:07:11"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -3664,20 +3664,21 @@
         },
         {
             "name": "league/flysystem-ziparchive",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-ziparchive.git",
-                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8"
+                "reference": "c6d7c7ea23a57ee802d533ab9eb9f19dd5c5fc45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
-                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/c6d7c7ea23a57ee802d533ab9eb9f19dd5c5fc45",
+                "reference": "c6d7c7ea23a57ee802d533ab9eb9f19dd5c5fc45",
                 "shasum": ""
             },
             "require": {
-                "league/flysystem": "~1.0@alpha",
+                "ext-zip": "*",
+                "league/flysystem": "~1.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -3706,7 +3707,7 @@
                 }
             ],
             "description": "Flysystem adapter for ZipArchive's",
-            "time": "2015-04-21 12:14:28"
+            "time": "2016-12-20 08:36:16"
         },
         {
             "name": "league/geotools",

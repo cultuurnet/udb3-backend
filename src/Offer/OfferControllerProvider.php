@@ -21,8 +21,8 @@ class OfferControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $offerServices = [
-            'event' => 'event_editor_with_label_memory',
-            'place' => 'place_editing_service_with_label_memory',
+            'event' => 'event_editor',
+            'place' => 'place_editing_service',
         ];
 
         foreach ($offerServices as $offerType => $serviceName) {
