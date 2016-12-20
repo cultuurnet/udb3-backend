@@ -32,16 +32,6 @@ class EventEditingServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['event_editor_with_label_memory'] = $app->share(
-            function (Application $app) {
-                return new OfferEditingServiceWithLabelMemory(
-                    $app['event_editor'],
-                    $app['current_user'],
-                    $app['used_labels_memory']
-                );
-            }
-        );
-
         $app['event_organizer_relation_service'] = $app->share(
             function ($app) {
                 return new EventOrganizerRelationService(

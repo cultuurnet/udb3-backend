@@ -2,30 +2,15 @@
 
 namespace CultuurNet\UDB3\Silex\Variations;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\Hydra\PagedCollection;
-use CultuurNet\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Symfony\CommandDeserializerController;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
 use CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController;
 use CultuurNet\UDB3\Symfony\Variations\ReadVariationsRestController;
-use CultuurNet\UDB3\Variations\Command\CreateEventVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Command\CreateOfferVariationJSONDeserializer;
-use CultuurNet\UDB3\Variations\Command\DeleteEventVariation;
-use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\DefaultUrlValidator;
-use CultuurNet\UDB3\Variations\Model\Properties\Id;
-use CultuurNet\UDB3\Variations\ReadModel\Search\CriteriaFromParameterBagFactory;
-use CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use ValueObjects\String\String;
 
 class VariationsControllerProvider implements ControllerProviderInterface
 {

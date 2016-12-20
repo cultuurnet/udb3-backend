@@ -119,10 +119,10 @@ jwt:
 udb2_cdbxml_enricher:
   http_response_timeout: 3
   http_connect_timeout: 1
+  event_url_format: 'http://search-prod.lodgon.com/search/rest/detail/event/%s?noauth=true&version=3.3'
+  actor_url_format: 'http://search-prod.lodgon.com/search/rest/detail/actor/%s?noauth=true&version=3.3'
+  xsd: http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd # Can be a url, or path to a local file.
+  media_uuid_regex: https?:\/\/udb-silex\.dev\/media\/(?<uuid>[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})\.(?i:jpg|jpeg|gif|png)
 
 jsonld:
   context_directory: ""
-
-udb2_import:
-  event_url_format: 'http://search-prod.lodgon.com/search/rest/detail/event/%s?noauth=true&version=3.3'
-  actor_url_format: 'http://search-prod.lodgon.com/search/rest/detail/actor/%s?noauth=true&version=3.3'

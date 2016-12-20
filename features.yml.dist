@@ -15,3 +15,11 @@ toggles:
     name: import-from-sapi
     conditions: {}
     status: inactive
+  import-validate-xml:
+    name: import-validate-xml
+    conditions: {}
+    status: always-active
+  variations:
+    name: variations
+    conditions: {}
+    status: inactive

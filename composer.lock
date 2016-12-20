@@ -1295,12 +1295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "881180be29cacc21495ef7984541d85c73a475ee"
+                "reference": "9be783dd673f23a23105f2fb7f65cb30e76f17d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/881180be29cacc21495ef7984541d85c73a475ee",
-                "reference": "881180be29cacc21495ef7984541d85c73a475ee",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9be783dd673f23a23105f2fb7f65cb30e76f17d5",
+                "reference": "9be783dd673f23a23105f2fb7f65cb30e76f17d5",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2016-12-13 15:10:34"
+            "time": "2016-12-20 13:53:44"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1658,12 +1658,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "d6e9467b92f8b805091e0219845c9444e91a5fb5"
+                "reference": "b2b5702ca033768effb6c12324e09c4e6105e2ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/d6e9467b92f8b805091e0219845c9444e91a5fb5",
-                "reference": "d6e9467b92f8b805091e0219845c9444e91a5fb5",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/b2b5702ca033768effb6c12324e09c4e6105e2ee",
+                "reference": "b2b5702ca033768effb6c12324e09c4e6105e2ee",
                 "shasum": ""
             },
             "require": {
@@ -1712,7 +1712,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2016-12-02 09:59:55"
+            "time": "2016-12-20 13:06:39"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1720,12 +1720,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "f48d1aba0d38ebf614555e4d844a0b6e0b0de32c"
+                "reference": "0023ed50c0972bedb45d243252bf69e6893d9d63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/f48d1aba0d38ebf614555e4d844a0b6e0b0de32c",
-                "reference": "f48d1aba0d38ebf614555e4d844a0b6e0b0de32c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/0023ed50c0972bedb45d243252bf69e6893d9d63",
+                "reference": "0023ed50c0972bedb45d243252bf69e6893d9d63",
                 "shasum": ""
             },
             "require": {
@@ -1735,6 +1735,7 @@
                 "cultuurnet/udb2-domain-events": "~0.1",
                 "cultuurnet/udb3": "~0.1",
                 "guzzlehttp/psr7": "~1.2.3",
+                "league/uri": "^4.2",
                 "php-http/httplug": "~1.0.0"
             },
             "provide": {
@@ -1772,7 +1773,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-12-06 07:43:33"
+            "time": "2016-12-16 14:07:41"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -3050,28 +3051,28 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "2693c101803ca78b27972d84081d027fca790a1e"
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/2693c101803ca78b27972d84081d027fca790a1e",
-                "reference": "2693c101803ca78b27972d84081d027fca790a1e",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3097,7 +3098,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-11-18 17:47:58"
+            "time": "2016-12-20 10:07:11"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -3351,6 +3352,68 @@
             "time": "2015-09-12 22:16:14"
         },
         {
+            "name": "jeremykendall/php-domain-parser",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jeremykendall/php-domain-parser.git",
+                "reference": "896e7e70f02bd4fd77190052799bc61e4d779672"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jeremykendall/php-domain-parser/zipball/896e7e70f02bd4fd77190052799bc61e4d779672",
+                "reference": "896e7e70f02bd4fd77190052799bc61e4d779672",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-intl": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "jeremykendall/debug-die": "0.0.1.*",
+                "mikey179/vfsstream": "~1.4",
+                "phpunit/phpunit": "~4.4"
+            },
+            "bin": [
+                "bin/parse",
+                "bin/update-psl"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Pdp\\": "src/"
+                },
+                "files": [
+                    "src/pdp-parse-url.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Kendall",
+                    "homepage": "http://about.me/jeremykendall",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/jeremykendall/php-domain-parser/graphs/contributors"
+                }
+            ],
+            "description": "Public Suffix List based URL parsing implemented in PHP.",
+            "homepage": "https://github.com/jeremykendall/php-domain-parser",
+            "keywords": [
+                "Public Suffix List",
+                "domain parsing",
+                "url parsing"
+            ],
+            "time": "2015-03-30 12:49:45"
+        },
+        {
             "name": "justinrainbow/json-schema",
             "version": "1.4.3",
             "source": {
@@ -3601,20 +3664,21 @@
         },
         {
             "name": "league/flysystem-ziparchive",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-ziparchive.git",
-                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8"
+                "reference": "c6d7c7ea23a57ee802d533ab9eb9f19dd5c5fc45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
-                "reference": "ab2e804c6c121e30f8ccb0c996bf418c3c8ccab8",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/c6d7c7ea23a57ee802d533ab9eb9f19dd5c5fc45",
+                "reference": "c6d7c7ea23a57ee802d533ab9eb9f19dd5c5fc45",
                 "shasum": ""
             },
             "require": {
-                "league/flysystem": "~1.0@alpha",
+                "ext-zip": "*",
+                "league/flysystem": "~1.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -3643,7 +3707,7 @@
                 }
             ],
             "description": "Flysystem adapter for ZipArchive's",
-            "time": "2015-04-21 12:14:28"
+            "time": "2016-12-20 08:36:16"
         },
         {
             "name": "league/geotools",
@@ -3716,6 +3780,74 @@
                 "geotools"
             ],
             "time": "2014-05-15 23:59:22"
+        },
+        {
+            "name": "league/uri",
+            "version": "4.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/uri.git",
+                "reference": "a2e73bad7e60c3bc61b649680fb8b46876e342e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/a2e73bad7e60c3bc61b649680fb8b46876e342e3",
+                "reference": "a2e73bad7e60c3bc61b649680fb8b46876e342e3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-intl": "*",
+                "ext-mbstring": "*",
+                "jeremykendall/php-domain-parser": "^3.0",
+                "php": ">=5.5.9",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.9",
+                "phpunit/phpunit": "^4.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Uri\\": "src"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https://nyamsprod.com"
+                }
+            ],
+            "description": "URI manipulation library",
+            "homepage": "http://uri.thephpleague.com",
+            "keywords": [
+                "data-uri",
+                "ftp",
+                "http",
+                "https",
+                "parse_url",
+                "psr-7",
+                "rfc3986",
+                "uri",
+                "url",
+                "ws"
+            ],
+            "time": "2016-12-12 11:36:42"
         },
         {
             "name": "marc-mabe/php-enum",
@@ -5693,16 +5825,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.28.2",
+            "version": "v1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "b22ce0eb070e41f7cba65d78fe216de29726459c"
+                "reference": "74f723e542368ca2080b252740be5f1113ebb898"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b22ce0eb070e41f7cba65d78fe216de29726459c",
-                "reference": "b22ce0eb070e41f7cba65d78fe216de29726459c",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/74f723e542368ca2080b252740be5f1113ebb898",
+                "reference": "74f723e542368ca2080b252740be5f1113ebb898",
                 "shasum": ""
             },
             "require": {
@@ -5715,7 +5847,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.28-dev"
+                    "dev-master": "1.29-dev"
                 }
             },
             "autoload": {
@@ -5750,7 +5882,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-11-23 18:41:40"
+            "time": "2016-12-13 17:28:18"
         },
         {
             "name": "willdurand/geocoder",

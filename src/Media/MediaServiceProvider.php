@@ -77,15 +77,28 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['logger.media_manager'] = $app->share(
+            function (Application $app) {
+                $logger = new \Monolog\Logger('media-manager');
+                $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/../../log/media_manager.log'));
+
+                return $logger;
+            }
+        );
+
         $app['media_manager'] = $app->share(
             function (Application $app) {
-                return new MediaManager(
+                $mediaManager = new MediaManager(
                     $app['media_object_iri_generator'],
                     new SimplePathGenerator(),
                     $app['media_object_repository'],
                     $app['local_file_system'],
                     $app['media.media_directory']
                 );
+
+                $mediaManager->setLogger($app['logger.media_manager']);
+
+                return $mediaManager;
             }
         );
     }

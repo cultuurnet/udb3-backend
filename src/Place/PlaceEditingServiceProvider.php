@@ -30,16 +30,6 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['place_editing_service_with_label_memory'] = $app->share(
-            function ($app) {
-                return new OfferEditingServiceWithLabelMemory(
-                    $app['place_editing_service'],
-                    $app['current_user'],
-                    $app['used_labels_memory']
-                );
-            }
-        );
-
         $app['place_organizer_relation_service'] = $app->share(
             function ($app) {
                 return new PlaceOrganizerRelationService(

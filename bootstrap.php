@@ -1,24 +1,31 @@
 <?php
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CommerceGuys\Intl\Currency\CurrencyRepository;
+use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
 use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
 use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
+use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
+use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter as PlaceCdbXMLImporter;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -373,6 +380,20 @@ $app['calendar_factory'] = $app->share(
     }
 );
 
+$app['event_cdbxml_importer'] = $app->share(
+    function (Application $app) {
+        return new EventCdbXMLImporter(
+            new CdbXMLItemBaseImporter(),
+            $app['udb2_event_cdbid_extractor'],
+            new PriceDescriptionParser(
+                new NumberFormatRepository(),
+                new CurrencyRepository()
+            ),
+            $app['calendar_factory']
+        );
+    }
+);
+
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
@@ -383,8 +404,7 @@ $app['event_jsonld_projector'] = $app->share(
             $app['organizer_service'],
             $app['media_object_serializer'],
             $app['iri_offer_identifier_factory'],
-            $app['udb2_event_cdbid_extractor'],
-            $app['calendar_factory']
+            $app['event_cdbxml_importer']
         );
 
         return $projector;
@@ -685,9 +705,13 @@ $app->extend(
             )
         );
 
-        $commandBus->subscribe(
-            $app['variations.command_handler']
-        );
+        /** @var ToggleManager $toggles */
+        $toggles = $app['toggles'];
+        if ($toggles->active('variations', $app['toggles.context'])) {
+            $commandBus->subscribe(
+                $app['variations.command_handler']
+            );
+        }
 
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Place\CommandHandler(
@@ -716,17 +740,6 @@ $app->extend(
     }
 );
 
-$app['used_labels_memory'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\UsedLabelsMemory\DefaultUsedLabelsMemoryService(
-            new \CultuurNet\UDB3\UsedLabelsMemory\UsedLabelsMemoryRepository(
-                $app['event_store'],
-                $app['event_bus']
-            )
-        );
-    }
-);
-
 /** Place **/
 
 $app['place_iri_generator'] = $app->share(
@@ -739,6 +752,15 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
+$app['place_cdbxml_importer'] = $app->share(
+    function (Application $app) {
+        return new PlaceCdbXMLImporter(
+            new CdbXMLItemBaseImporter(),
+            $app['calendar_factory']
+        );
+    }
+);
+
 $app['place_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector(
@@ -746,7 +768,7 @@ $app['place_jsonld_projector'] = $app->share(
             $app['place_iri_generator'],
             $app['organizer_service'],
             $app['media_object_serializer'],
-            $app['calendar_factory']
+            $app['place_cdbxml_importer']
         );
 
         return $projector;
@@ -1163,8 +1185,16 @@ $app['event_export_notification_mail_factory'] = $app->share(
 
 $app['event_export'] = $app->share(
     function ($app) {
+        /** @var ToggleManager $toggles */
+        $toggles = $app['toggles'];
+        if ($toggles->active('variations', $app['toggles.context'])) {
+            $eventService =  $app['personal_variation_decorated_event_service'];
+        } else {
+            $eventService = $app['external_event_service'];
+        }
+
         $service = new \CultuurNet\UDB3\EventExport\EventExportService(
-            $app['personal_variation_decorated_event_service'],
+            $eventService,
             $app['search_service'],
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
             realpath(__DIR__ .  '/web/downloads'),
@@ -1379,6 +1409,10 @@ $app->register(
         'udb2_organizer_external_id_mapping.yml_file_location' => $udb3ConfigLocation . '/external_id_mapping_organizer.yml',
         'udb2_cdbxml_enricher.http_response_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_response_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_response_timeout'] : 3,
         'udb2_cdbxml_enricher.http_connect_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_connect_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_connect_timeout'] : 1,
+        'udb2_cdbxml_enricher.event_url_format' => isset($app['config']['udb2_cdbxml_enricher']['event_url_format']) ? $app['config']['udb2_cdbxml_enricher']['event_url_format'] : null,
+        'udb2_cdbxml_enricher.actor_url_format' => isset($app['config']['udb2_cdbxml_enricher']['actor_url_format']) ? $app['config']['udb2_cdbxml_enricher']['actor_url_format'] : null,
+        'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],
+        'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]
 );
 
