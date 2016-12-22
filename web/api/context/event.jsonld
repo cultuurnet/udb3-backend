@@ -70,6 +70,10 @@
     "license": {
       "@id": "dcterms:license",
       "@type": "@id"
+    },
+    "audience": {
+      "@id": "schema:audience",
+      "@type": "@id"
     }
   }
 }
