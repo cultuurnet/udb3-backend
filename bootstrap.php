@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter as PlaceCdbXMLImporter;
@@ -379,6 +380,12 @@ $app['calendar_factory'] = $app->share(
     }
 );
 
+$app['cdbxml_contact_info_importer'] = $app->share(
+    function () {
+        return new CdbXmlContactInfoImporter();
+    }
+);
+
 $app['event_cdbxml_importer'] = $app->share(
     function (Application $app) {
         return new EventCdbXMLImporter(
@@ -388,7 +395,8 @@ $app['event_cdbxml_importer'] = $app->share(
                 new NumberFormatRepository(),
                 new CurrencyRepository()
             ),
-            $app['calendar_factory']
+            $app['calendar_factory'],
+            $app['cdbxml_contact_info_importer']
         );
     }
 );
@@ -755,7 +763,8 @@ $app['place_cdbxml_importer'] = $app->share(
     function (Application $app) {
         return new PlaceCdbXMLImporter(
             new CdbXMLItemBaseImporter(),
-            $app['calendar_factory']
+            $app['calendar_factory'],
+            $app['cdbxml_contact_info_importer']
         );
     }
 );
