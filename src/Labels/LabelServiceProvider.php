@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelR
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
+use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
@@ -236,7 +237,7 @@ class LabelServiceProvider implements ServiceProviderInterface
                     $app['eventstore_payload_serializer'],
                     new SimpleInterfaceSerializer(),
                     'event_store',
-                    'label'
+                    AggregateType::LABEL()
                 );
 
                 return new UniqueDBALEventStoreDecorator(

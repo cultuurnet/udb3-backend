@@ -7,6 +7,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\Silex\AggregateType;
 use Knp\Command\Command;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
@@ -159,10 +160,10 @@ class ReplayCommand extends Command
 
     /**
      * @param int $startId
-     * @param string $aggregateType
+     * @param AggregateType $aggregateType
      * @return EventStream
      */
-    private function getEventStream($startId = null, $aggregateType = '')
+    private function getEventStream($startId = null, AggregateType $aggregateType = null)
     {
         $app = $this->getSilexApplication();
         $startId = $startId !== null ? $startId : 0;
@@ -175,7 +176,9 @@ class ReplayCommand extends Command
         );
 
         $eventStream = $eventStream->withStartId($startId);
-        $eventStream = $eventStream->withAggregateType($aggregateType);
+        if ($aggregateType) {
+            $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
+        }
 
         return $eventStream;
     }
@@ -183,30 +186,17 @@ class ReplayCommand extends Command
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @return mixed
+     * @return AggregateType|null
      */
     private function getAggregateType(InputInterface $input, OutputInterface $output)
     {
-        $validAggregateTypes = [
-            'event',
-            'place',
-            'organizer',
-            'variation',
-            'media_object',
-            'role',
-            'label',
-        ];
+        $aggregateTypeInput = $input->getArgument('aggregate');
 
-        $aggregateType = $input->getArgument('aggregate');
-
-        if (!empty($aggregateType) && !in_array($aggregateType, $validAggregateTypes)) {
-            throw new \RuntimeException(
-                'Invalid aggregate type "' . $aggregateType . '"", use one of: ' .
-                implode(', ', $validAggregateTypes)
-            );
+        if (empty($aggregateTypeInput)) {
+            return NULL;
         }
 
-        return $aggregateType;
+        return AggregateType::get($aggregateTypeInput);
     }
 
     /**

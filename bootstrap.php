@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter as PlaceCdbXMLImporter;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
+use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -346,7 +347,7 @@ $app['event_store'] = $app->share(
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'event_store',
-            'event'
+            AggregateType::EVENT()
         );
     }
 );
@@ -829,7 +830,7 @@ $app['place_store'] = $app->share(
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'event_store',
-            'place'
+            AggregateType::PLACE()
         );
     }
 );
@@ -940,7 +941,7 @@ $app['organizer_store'] = $app->share(
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'event_store',
-            'organizer'
+            AggregateType::ORGANIZER()
         );
 
         return new UniqueDBALEventStoreDecorator(
@@ -1004,7 +1005,7 @@ $app['role_store'] = $app->share(
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'event_store',
-            'role'
+            AggregateType::ROLE()
         );
     }
 );

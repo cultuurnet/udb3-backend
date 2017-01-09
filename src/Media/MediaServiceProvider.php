@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
+use CultuurNet\UDB3\Silex\AggregateType;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -40,7 +41,7 @@ class MediaServiceProvider implements ServiceProviderInterface
                     $app['eventstore_payload_serializer'],
                     new SimpleInterfaceSerializer(),
                     'event_store',
-                    'media_object'
+                    AggregateType::MEDIA_OBJECT()
                 );
             }
         );
