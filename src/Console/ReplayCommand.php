@@ -194,11 +194,13 @@ class ReplayCommand extends Command
     {
         $aggregateTypeInput = $input->getArgument('aggregate');
 
-        if (empty($aggregateTypeInput)) {
-            return NULL;
+        $aggregateType = null;
+
+        if (!empty($aggregateTypeInput)) {
+            $aggregateType = AggregateType::get($aggregateTypeInput);
         }
 
-        return AggregateType::get($aggregateTypeInput);
+        return $aggregateType;
     }
 
     /**
