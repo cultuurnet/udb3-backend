@@ -6,9 +6,9 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Creates a new event store table for all aggregates.
  */
-class Version20161216095719 extends AbstractMigration
+class Version20170109103905 extends AbstractMigration
 {
     /**
      * @param Schema $schema
