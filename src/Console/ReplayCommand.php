@@ -31,20 +31,22 @@ class ReplayCommand extends Command
      */
     protected function configure()
     {
+        $aggregateTypeEnumeration = implode(', ', AggregateType::getConstants());
+
         $this
             ->setName('replay')
             ->setDescription('Replay the event stream to the event bus with only read models attached.')
             ->addArgument(
                 'aggregate',
                 InputArgument::OPTIONAL,
-                'Aggregate type to replay events from',
-                ''
+                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.',
+                null
             )
             ->addOption(
                 'cache',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Alternative cache factory method to use, specify the service suffix, for example "redis"'
+                'Alternative cache factory method to use, specify the service suffix, for example "redis".'
             )
             ->addOption(
                 'subscriber',
