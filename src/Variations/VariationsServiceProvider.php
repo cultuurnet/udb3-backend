@@ -59,7 +59,7 @@ class VariationsServiceProvider implements ServiceProviderInterface
                     $app['eventstore_payload_serializer'],
                     new SimpleInterfaceSerializer(),
                     'event_store',
-                    'variations'
+                    'variation'
                 );
             }
         );
