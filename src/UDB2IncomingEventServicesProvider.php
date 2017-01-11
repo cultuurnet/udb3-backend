@@ -9,7 +9,7 @@ use CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer;
 use CultuurNet\UDB2DomainEvents\EventCreatedJSONDeserializer;
 use CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
-use CultuurNet\UDB3\Cdb\Event\Not;
+use CultuurNet\UDB3\Cdb\Event\Any;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventApplier;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventCdbXmlEnricher;
@@ -20,9 +20,7 @@ use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsPlaceSpecification;
 use CultuurNet\UDB3\UDB2\Event\EventApplier;
 use CultuurNet\UDB3\UDB2\Event\EventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Event\EventToUDB3EventFactory;
-use CultuurNet\UDB3\UDB2\Event\EventToUDB3PlaceFactory;
 use CultuurNet\UDB3\UDB2\Label\LabelImporter;
-use CultuurNet\UDB3\UDB2\LabeledAsUDB3Place;
 use CultuurNet\UDB3\UDB2\Media\ImageCollectionFactory;
 use CultuurNet\UDB3\UDB2\Media\MediaImporter;
 use CultuurNet\UDB3\UDB2\OfferToSapiUrlTransformer;
@@ -219,28 +217,10 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             }
         );
 
-        $app['udb2_events_to_udb3_place_applier'] = $app->share(
-            function (Application $app) {
-                $applier = new EventApplier(
-                    new LabeledAsUDB3Place(),
-                    $app['place_repository'],
-                    new EventToUDB3PlaceFactory(),
-                    $app['udb2_media_importer']
-                );
-
-                $logger = new \Monolog\Logger('udb2-events-to-udb3-place-applier');
-                $logger->pushHandler($app['udb2_log_handler']);
-
-                $applier->setLogger($logger);
-
-                return $applier;
-            }
-        );
-
         $app['udb2_events_to_udb3_event_applier'] = $app->share(
             function (Application $app) {
                 $applier = new EventApplier(
-                    new Not(new LabeledAsUDB3Place()),
+                    new Any(),
                     $app['event_repository'],
                     new EventToUDB3EventFactory(),
                     $app['udb2_media_importer']
