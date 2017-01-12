@@ -31,6 +31,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use Http\Adapter\Guzzle6\Client as ClientAdapter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -54,13 +56,13 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_log_handler'] = $app->share(
-            function (Application $app) {
-                return new \Monolog\Handler\StreamHandler(__DIR__ . '/../log/udb2.log');
+            function () {
+                return new StreamHandler(__DIR__ . '/../log/udb2.log');
             }
         );
 
         $app['udb2_deserializer_locator'] = $app->share(
-            function (Application $app) {
+            function () {
                 $deserializerLocator = new SimpleDeserializerLocator();
                 $deserializerLocator->registerDeserializer(
                     new StringLiteral(
@@ -155,7 +157,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['cdbxml_enricher_logger'] = $app->share(
             function (Application $app) {
-                $logger = new \Monolog\Logger('udb2-events-cdbxml-enricher');
+                $logger = new Logger('udb2-events-cdbxml-enricher');
                 $logger->pushHandler($app['udb2_log_handler']);
                 return $logger;
             }
@@ -226,7 +228,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['udb2_media_importer']
                 );
 
-                $logger = new \Monolog\Logger('udb2-events-to-udb3-event-applier');
+                $logger = new Logger('udb2-events-to-udb3-event-applier');
                 $logger->pushHandler($app['udb2_log_handler']);
 
                 $applier->setLogger($logger);
@@ -244,7 +246,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['udb2_media_importer']
                 );
 
-                $logger = new \Monolog\Logger('udb2-actor-events-to-udb3-place-applier');
+                $logger = new Logger('udb2-actor-events-to-udb3-place-applier');
                 $logger->pushHandler($app['udb2_log_handler']);
 
                 $applier->setLogger($logger);
@@ -261,7 +263,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     new QualifiesAsOrganizerSpecification()
                 );
 
-                $logger = new \Monolog\Logger('udb2-actor-events-to-udb3-organizer-applier');
+                $logger = new Logger('udb2-actor-events-to-udb3-organizer-applier');
                 $logger->pushHandler($app['udb2_log_handler']);
 
                 $applier->setLogger($logger);
@@ -276,7 +278,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['labels.constraint_aware_service']
                 );
 
-                $logger = new \Monolog\Logger('udb2-label-importer');
+                $logger = new Logger('udb2-label-importer');
                 $logger->pushHandler($app['udb2_log_handler']);
                 $labelImporter->setLogger($logger);
 
@@ -291,7 +293,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     (new ImageCollectionFactory())->withUuidRegex($app['udb2_cdbxml_enricher.media_uuid_regex'])
                 );
 
-                $logger = new \Monolog\Logger('udb2-media-importer');
+                $logger = new Logger('udb2-media-importer');
                 $logger->pushHandler($app['udb2_log_handler']);
                 $mediaImporter->setLogger($logger);
 
