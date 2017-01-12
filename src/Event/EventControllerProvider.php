@@ -27,9 +27,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $app['event_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditEventRestController(
-                    $app['event_service'],
                     $app['event_editor'],
-                    $app['current_user'],
                     $app['media_manager'],
                     $app['event_iri_generator'],
                     $app['offer.security']
