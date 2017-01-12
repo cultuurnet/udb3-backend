@@ -504,7 +504,6 @@ $app['event_bus'] = $app->share(
                 'amqp.publisher',
                 'udb2_events_cdbxml_enricher',
                 'udb2_actor_events_cdbxml_enricher',
-                'udb2_events_to_udb3_place_applier',
                 'udb2_events_to_udb3_event_applier',
                 'udb2_actor_events_to_udb3_place_applier',
                 'udb2_actor_events_to_udb3_organizer_applier',

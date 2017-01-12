@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e9de1864b2e46cebcfb2a7fd2f60c138",
     "content-hash": "b9ff388469dcd7039876116f626684cf",
     "packages": [
         {
@@ -152,7 +151,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2017-01-09 09:19:50"
+            "time": "2017-01-09T09:19:50+00:00"
         },
         {
             "name": "broadway/broadway",
@@ -239,7 +238,7 @@
                 "domain-driven design",
                 "event sourcing"
             ],
-            "time": "2015-03-31 18:15:05"
+            "time": "2015-03-31T18:15:05+00:00"
         },
         {
             "name": "broadway/uuid-generator",
@@ -272,7 +271,7 @@
                 "MIT"
             ],
             "description": "UUID generator for broadway/broadway.",
-            "time": "2014-09-12 14:14:07"
+            "time": "2014-09-12T14:14:07+00:00"
         },
         {
             "name": "chrisboulton/php-resque",
@@ -315,7 +314,7 @@
                 "redis",
                 "resque"
             ],
-            "time": "2012-10-13 07:28:16"
+            "time": "2012-10-13T07:28:16+00:00"
         },
         {
             "name": "commerceguys/intl",
@@ -359,7 +358,7 @@
                 }
             ],
             "description": "Internationalization library powered by CLDR data.",
-            "time": "2016-12-13 12:33:19"
+            "time": "2016-12-13T12:33:19+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -386,7 +385,7 @@
                 "MIT"
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-            "time": "2014-12-30 15:22:37"
+            "time": "2014-12-30T15:22:37+00:00"
         },
         {
             "name": "crell/api-problem",
@@ -434,7 +433,7 @@
                 "rest",
                 "xml"
             ],
-            "time": "2014-10-07 17:43:34"
+            "time": "2014-10-07T17:43:34+00:00"
         },
         {
             "name": "cultuurnet/auth",
@@ -574,7 +573,7 @@
                 "Apache-2.0"
             ],
             "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2016-02-16 08:18:15"
+            "time": "2016-02-16T08:18:15+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -910,7 +909,7 @@
                 "Apache-2.0"
             ],
             "description": "CultuurNet search service",
-            "time": "2015-11-20 11:50:37"
+            "time": "2015-11-20T11:50:37+00:00"
         },
         {
             "name": "cultuurnet/silex-amqp",
@@ -1295,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "a92c777ccedf85809e7ca07f31622d52ef35c87d"
+                "reference": "eba8c1ee650b5e08603a2450898249cae5b8371d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a92c777ccedf85809e7ca07f31622d52ef35c87d",
-                "reference": "a92c777ccedf85809e7ca07f31622d52ef35c87d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/eba8c1ee650b5e08603a2450898249cae5b8371d",
+                "reference": "eba8c1ee650b5e08603a2450898249cae5b8371d",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1373,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-01-12 08:44:30"
+            "time": "2017-01-12 12:12:35"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1720,12 +1719,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "0023ed50c0972bedb45d243252bf69e6893d9d63"
+                "reference": "d2c56eb539e79b19b952596f46477e4c7613dafa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/0023ed50c0972bedb45d243252bf69e6893d9d63",
-                "reference": "0023ed50c0972bedb45d243252bf69e6893d9d63",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/d2c56eb539e79b19b952596f46477e4c7613dafa",
+                "reference": "d2c56eb539e79b19b952596f46477e4c7613dafa",
                 "shasum": ""
             },
             "require": {
@@ -1773,7 +1772,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2016-12-16 14:07:41"
+            "time": "2017-01-12 12:12:49"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -1885,7 +1884,7 @@
                 "utility",
                 "utils"
             ],
-            "time": "2015-07-23 00:54:12"
+            "time": "2015-07-23T00:54:12+00:00"
         },
         {
             "name": "deralex/yaml-config-service-provider",
@@ -1937,7 +1936,7 @@
             "keywords": [
                 "silex"
             ],
-            "time": "2014-01-29 15:54:57"
+            "time": "2014-01-29T15:54:57+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2005,7 +2004,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2015-08-31 12:32:49"
+            "time": "2015-08-31T12:32:49+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -2075,7 +2074,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2016-10-29 11:16:17"
+            "time": "2016-10-29T11:16:17+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -2141,7 +2140,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2015-04-14 22:21:58"
+            "time": "2015-04-14T22:21:58+00:00"
         },
         {
             "name": "doctrine/common",
@@ -2214,7 +2213,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2016-11-30 16:50:46"
+            "time": "2016-11-30T16:50:46+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -2285,7 +2284,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2016-09-09 19:13:33"
+            "time": "2016-09-09T19:13:33+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -2352,7 +2351,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06 14:35:42"
+            "time": "2015-11-06T14:35:42+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -2406,7 +2405,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09 13:34:57"
+            "time": "2014-09-09T13:34:57+00:00"
         },
         {
             "name": "doctrine/migrations",
@@ -2480,7 +2479,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2016-12-25 22:54:00"
+            "time": "2016-12-25T22:54:00+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -2534,7 +2533,7 @@
                 "elasticsearch",
                 "search"
             ],
-            "time": "2016-11-30 17:15:05"
+            "time": "2016-11-30T17:15:05+00:00"
         },
         {
             "name": "gridonic/princexml-php",
@@ -2578,7 +2577,7 @@
                 "princexml",
                 "xml"
             ],
-            "time": "2014-07-22 12:32:03"
+            "time": "2014-07-22T12:32:03+00:00"
         },
         {
             "name": "guzzle/common",
@@ -2623,7 +2622,7 @@
                 "exception"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-08-11 04:32:36"
+            "time": "2014-08-11T04:32:36+00:00"
         },
         {
             "name": "guzzle/http",
@@ -2681,7 +2680,7 @@
                 "http client"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-08-11 04:32:36"
+            "time": "2014-08-11T04:32:36+00:00"
         },
         {
             "name": "guzzle/log",
@@ -2734,7 +2733,7 @@
                 "log"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-03-26 17:15:28"
+            "time": "2014-03-26T17:15:28+00:00"
         },
         {
             "name": "guzzle/parser",
@@ -2779,7 +2778,7 @@
                 "url"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-02-05 18:29:46"
+            "time": "2014-02-05T18:29:46+00:00"
         },
         {
             "name": "guzzle/plugin-cookie",
@@ -2829,7 +2828,7 @@
                 "plugin"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-02-07 18:36:58"
+            "time": "2014-02-07T18:36:58+00:00"
         },
         {
             "name": "guzzle/plugin-log",
@@ -2881,7 +2880,7 @@
                 "plugin"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-01-08 21:45:39"
+            "time": "2014-01-08T21:45:39+00:00"
         },
         {
             "name": "guzzle/plugin-oauth",
@@ -2932,7 +2931,7 @@
                 "plugin"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-04-16 13:26:19"
+            "time": "2014-04-16T13:26:19+00:00"
         },
         {
             "name": "guzzle/stream",
@@ -2986,7 +2985,7 @@
                 "stream"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-05-01 21:36:02"
+            "time": "2014-05-01T21:36:02+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3048,7 +3047,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-03-21 20:02:09"
+            "time": "2016-03-21T20:02:09+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -3099,7 +3098,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20 10:07:11"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -3157,7 +3156,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-02-18 21:54:00"
+            "time": "2016-02-18T21:54:00+00:00"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -3208,7 +3207,7 @@
                 }
             ],
             "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
-            "time": "2015-05-20 03:37:09"
+            "time": "2015-05-20T03:37:09+00:00"
         },
         {
             "name": "guzzlehttp/streams",
@@ -3258,7 +3257,7 @@
                 "Guzzle",
                 "stream"
             ],
-            "time": "2014-10-12 19:18:40"
+            "time": "2014-10-12T19:18:40+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -3300,7 +3299,7 @@
                 "hashing",
                 "password"
             ],
-            "time": "2014-11-20 16:49:30"
+            "time": "2014-11-20T16:49:30+00:00"
         },
         {
             "name": "jdesrosiers/silex-cors-provider",
@@ -3350,7 +3349,7 @@
                 "sharing",
                 "silex"
             ],
-            "time": "2015-09-12 22:16:14"
+            "time": "2015-09-12T22:16:14+00:00"
         },
         {
             "name": "jeremykendall/php-domain-parser",
@@ -3412,7 +3411,7 @@
                 "domain parsing",
                 "url parsing"
             ],
-            "time": "2015-03-30 12:49:45"
+            "time": "2015-03-30T12:49:45+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -3478,7 +3477,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2015-07-13 05:06:53"
+            "time": "2015-07-13T05:06:53+00:00"
         },
         {
             "name": "knplabs/console-service-provider",
@@ -3520,7 +3519,7 @@
                 "console",
                 "silex"
             ],
-            "time": "2016-02-01 15:38:27"
+            "time": "2016-02-01T15:38:27+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -3578,7 +3577,7 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2016-10-31 20:09:32"
+            "time": "2016-10-31T20:09:32+00:00"
         },
         {
             "name": "league/flysystem",
@@ -3661,7 +3660,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-10-19 20:38:46"
+            "time": "2016-10-19T20:38:46+00:00"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -3708,7 +3707,7 @@
                 }
             ],
             "description": "Flysystem adapter for ZipArchive's",
-            "time": "2016-12-20 08:36:16"
+            "time": "2016-12-20T08:36:16+00:00"
         },
         {
             "name": "league/geotools",
@@ -3780,7 +3779,7 @@
                 "geometry",
                 "geotools"
             ],
-            "time": "2014-05-15 23:59:22"
+            "time": "2014-05-15T23:59:22+00:00"
         },
         {
             "name": "league/uri",
@@ -3848,7 +3847,7 @@
                 "url",
                 "ws"
             ],
-            "time": "2016-12-12 11:36:42"
+            "time": "2016-12-12T11:36:42+00:00"
         },
         {
             "name": "marc-mabe/php-enum",
@@ -3907,7 +3906,7 @@
                 "type-hint",
                 "typehint"
             ],
-            "time": "2015-10-04 17:35:32"
+            "time": "2015-10-04T17:35:32+00:00"
         },
         {
             "name": "mathiasverraes/money",
@@ -3963,7 +3962,7 @@
                 "money"
             ],
             "abandoned": "moneyphp/money",
-            "time": "2016-01-16 22:03:46"
+            "time": "2016-01-16T22:03:46+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4041,7 +4040,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-11-26 00:15:39"
+            "time": "2016-11-26T00:15:39+00:00"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -4094,7 +4093,7 @@
                 }
             ],
             "description": "A PHP library/collection of classes aimed to help developers using and undestanding immutable objects.",
-            "time": "2015-03-14 13:53:13"
+            "time": "2015-03-14T13:53:13+00:00"
         },
         {
             "name": "ocramius/proxy-manager",
@@ -4157,7 +4156,7 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2015-08-09 04:28:19"
+            "time": "2015-08-09T04:28:19+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -4205,7 +4204,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-03-18 20:34:03"
+            "time": "2016-03-18T20:34:03+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -4275,7 +4274,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2016-04-11 14:30:01"
+            "time": "2016-04-11T14:30:01+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -4335,7 +4334,7 @@
                 "Guzzle",
                 "http"
             ],
-            "time": "2016-05-10 06:13:32"
+            "time": "2016-05-10T06:13:32+00:00"
         },
         {
             "name": "php-http/httplug",
@@ -4391,7 +4390,7 @@
                 "client",
                 "http"
             ],
-            "time": "2016-01-26 14:34:50"
+            "time": "2016-01-26T14:34:50+00:00"
         },
         {
             "name": "php-http/promise",
@@ -4441,7 +4440,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-01-26 13:27:02"
+            "time": "2016-01-26T13:27:02+00:00"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -4498,7 +4497,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2015-05-01 07:00:55"
+            "time": "2015-05-01T07:00:55+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -4544,7 +4543,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2013-11-22 08:30:29"
+            "time": "2013-11-22T08:30:29+00:00"
         },
         {
             "name": "predis/predis",
@@ -4594,7 +4593,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-06-16 16:22:20"
+            "time": "2016-06-16T16:22:20+00:00"
         },
         {
             "name": "psr/http-message",
@@ -4644,7 +4643,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/log",
@@ -4691,7 +4690,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "qandidate/toggle",
@@ -4748,7 +4747,7 @@
                 "toggle",
                 "trigger"
             ],
-            "time": "2015-12-28 15:54:08"
+            "time": "2015-12-28T15:54:08+00:00"
         },
         {
             "name": "rase/socket.io-emitter",
@@ -4787,7 +4786,7 @@
                 "Socket.io",
                 "emit"
             ],
-            "time": "2014-10-10 10:37:20"
+            "time": "2014-10-10T10:37:20+00:00"
         },
         {
             "name": "react/async",
@@ -4828,7 +4827,7 @@
             "keywords": [
                 "async"
             ],
-            "time": "2013-02-06 23:27:19"
+            "time": "2013-02-06T23:27:19+00:00"
         },
         {
             "name": "react/promise",
@@ -4871,7 +4870,7 @@
                 "promise",
                 "promises"
             ],
-            "time": "2016-12-22 14:09:01"
+            "time": "2016-12-22T14:09:01+00:00"
         },
         {
             "name": "rhumsaa/uuid",
@@ -4938,7 +4937,7 @@
                 "uuid"
             ],
             "abandoned": "ramsey/uuid",
-            "time": "2015-07-23 19:00:41"
+            "time": "2015-07-23T19:00:41+00:00"
         },
         {
             "name": "silex/silex",
@@ -5015,7 +5014,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2016-01-06 14:59:35"
+            "time": "2016-01-06T14:59:35+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -5069,7 +5068,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-12-29 10:02:40"
+            "time": "2016-12-29T10:02:40+00:00"
         },
         {
             "name": "symfony/console",
@@ -5130,7 +5129,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-12-06 11:59:35"
+            "time": "2016-12-06T11:59:35+00:00"
         },
         {
             "name": "symfony/debug",
@@ -5187,7 +5186,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-15 12:53:17"
+            "time": "2016-11-15T12:53:17+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -5247,7 +5246,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-13 01:43:15"
+            "time": "2016-10-13T01:43:15+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -5303,7 +5302,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-25 22:28:18"
+            "time": "2016-11-25T22:28:18+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -5385,7 +5384,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2016-12-13 12:16:15"
+            "time": "2016-12-13T12:16:15+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -5444,7 +5443,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-php55",
@@ -5500,7 +5499,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -5554,7 +5553,7 @@
                 "http-message",
                 "psr-7"
             ],
-            "time": "2015-05-29 17:57:12"
+            "time": "2015-05-29T17:57:12+00:00"
         },
         {
             "name": "symfony/routing",
@@ -5629,7 +5628,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-11-25 12:26:42"
+            "time": "2016-11-25T12:26:42+00:00"
         },
         {
             "name": "symfony/security",
@@ -5709,7 +5708,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2016-12-06 20:51:50"
+            "time": "2016-12-06T20:51:50+00:00"
         },
         {
             "name": "symfony/serializer",
@@ -5773,7 +5772,7 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-03 07:52:58"
+            "time": "2016-11-03T07:52:58+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -5822,7 +5821,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-14 16:15:57"
+            "time": "2016-11-14T16:15:57+00:00"
         },
         {
             "name": "twig/twig",
@@ -5883,7 +5882,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-01-11 19:36:15"
+            "time": "2017-01-11T19:36:15+00:00"
         },
         {
             "name": "willdurand/geocoder",
@@ -5947,7 +5946,7 @@
                 "geocoding",
                 "geoip"
             ],
-            "time": "2015-01-07 13:23:35"
+            "time": "2015-01-07T13:23:35+00:00"
         },
         {
             "name": "zendframework/zend-code",
@@ -5999,7 +5998,7 @@
                 "code",
                 "zf2"
             ],
-            "time": "2016-04-20 17:26:42"
+            "time": "2016-04-20T17:26:42+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -6049,7 +6048,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2017-01-05 21:44:28"
+            "time": "2017-01-05T21:44:28+00:00"
         },
         {
             "name": "zendframework/zend-eventmanager",
@@ -6103,7 +6102,7 @@
                 "events",
                 "zf2"
             ],
-            "time": "2016-02-18 20:53:00"
+            "time": "2016-02-18T20:53:00+00:00"
         },
         {
             "name": "zendframework/zend-stdlib",
@@ -6148,7 +6147,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2016-04-12 21:19:36"
+            "time": "2016-04-12T21:19:36+00:00"
         },
         {
             "name": "zendframework/zend-validator",
@@ -6219,7 +6218,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2016-06-23 13:44:31"
+            "time": "2016-06-23T13:44:31+00:00"
         }
     ],
     "packages-dev": [
@@ -6267,7 +6266,7 @@
                 "Symfony2",
                 "phpcs"
             ],
-            "time": "2016-03-14 16:38:04"
+            "time": "2016-03-14T16:38:04+00:00"
         },
         {
             "name": "phing/phing",
@@ -6360,7 +6359,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-10-13 09:01:45"
+            "time": "2016-10-13T09:01:45+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -6438,7 +6437,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-11-30 04:02:31"
+            "time": "2016-11-30T04:02:31+00:00"
         }
     ],
     "aliases": [],
