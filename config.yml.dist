@@ -5,19 +5,10 @@ imports:
 # events.
 url: http://example.com
 uitid:
-  # The oauth consumer needs to be configured correctly in order for UDB3 to be
-  # able to synchronize data to UDB2:
-  # - it has to be added to a privileged list of consumers in UDB2 that is
-  #   allowed to set the cdbid of new events submitted via EntryAPI (in web.config)
   consumer:
     key: ***
     secret: ***
   base_url: http://www.uitid.be/uitid/rest/
-  apis:
-    entry: entry/rest.uitdatabank.be/api/v3
-  # ID of the user to impersonate for certain requests to the Entry API that use
-  # Light UiTID authentication.
-  impersonation_user_id: ***
 search:
   base_url: http://www.uitid.be/uitid/rest/searchv2
 sync_with_udb2: true
@@ -91,11 +82,6 @@ cache:
 # Use a capturing group named 'eventid' to extract the event's ID.
 offer_url_regex: https?://example\.com/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)
 
-oauth:
-  base_url:
-  consumer:
-    key:
-    secret:
 redis:
   # uri: tcp://127.0.0.1:6379
 media:
