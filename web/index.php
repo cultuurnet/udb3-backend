@@ -187,7 +187,7 @@ $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerP
 
 $app->get(
     'swagger.json',
-    function (Request $request) {
+    function () {
         $file = new SplFileInfo(__DIR__ . '/swagger.json');
         return new \Symfony\Component\HttpFoundation\BinaryFileResponse(
             $file,
