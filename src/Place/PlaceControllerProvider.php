@@ -30,10 +30,8 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $app['place_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditPlaceRestController(
-                    $app['place_service'],
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
-                    $app['current_user'],
                     $app['offer.security'],
                     $app['media_manager'],
                     $app['place_iri_generator']
