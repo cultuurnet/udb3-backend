@@ -6,7 +6,6 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\DefaultEventEditingService;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
-use CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
