@@ -648,7 +648,7 @@ $app['logger.command_bus'] = $app->share(
                         $emitter->in($handler_config['room']);
                     }
 
-                    $handler = new \CultuurNet\UDB3\Monolog\SocketIOEmitterHandler(
+                    $handler = new \CultuurNet\MonologSocketIO\SocketIOEmitterHandler(
                         $emitter
                     );
                     break;
