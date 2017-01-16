@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Symfony\JSONLD\ContextController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class ContextControllerProvider implements ControllerProviderInterface

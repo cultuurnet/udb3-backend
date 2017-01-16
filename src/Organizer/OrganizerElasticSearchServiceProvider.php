@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchOrganizerSearchService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
 {

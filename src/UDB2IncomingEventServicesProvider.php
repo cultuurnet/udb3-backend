@@ -36,7 +36,7 @@ use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {

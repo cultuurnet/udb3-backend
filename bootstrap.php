@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\Number\Natural;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
 

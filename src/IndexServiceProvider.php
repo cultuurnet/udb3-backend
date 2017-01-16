@@ -6,7 +6,7 @@ use CultuurNet\UDB3\ReadModel\Index\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class IndexServiceProvider implements ServiceProviderInterface
 {
