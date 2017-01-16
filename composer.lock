@@ -488,12 +488,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "6b5f9c8c8f6efb301d9a95bfe681a14a1298655e"
+                "reference": "3f1ba4a4eaa21739b18c2c734baed7706f4fcec2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/6b5f9c8c8f6efb301d9a95bfe681a14a1298655e",
-                "reference": "6b5f9c8c8f6efb301d9a95bfe681a14a1298655e",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/3f1ba4a4eaa21739b18c2c734baed7706f4fcec2",
+                "reference": "3f1ba4a4eaa21739b18c2c734baed7706f4fcec2",
                 "shasum": ""
             },
             "require": {
@@ -507,7 +507,7 @@
             "require-dev": {
                 "phing/phing": "~2.11",
                 "phpunit/php-token-stream": "1.4.6",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -527,7 +527,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2016-09-09 11:39:09"
+            "time": "2017-01-13 11:14:04"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -823,17 +823,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Hydra.git",
-                "reference": "e915ca1a69707de8d41b8132363d1c105ccaeb3b"
+                "reference": "a43b5bcc03652faf483d83629d1d47e5b344522f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/e915ca1a69707de8d41b8132363d1c105ccaeb3b",
-                "reference": "e915ca1a69707de8d41b8132363d1c105ccaeb3b",
+                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/a43b5bcc03652faf483d83629d1d47e5b344522f",
+                "reference": "a43b5bcc03652faf483d83629d1d47e5b344522f",
                 "shasum": ""
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.7",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -863,7 +863,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2015-08-19 08:05:13"
+            "time": "2017-01-13 11:26:28"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -871,12 +871,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/monolog-socketio.git",
-                "reference": "7fde9b80267b2523402d590d6b7f6d7c6b2b791f"
+                "reference": "499026e6d10395c0addf21e31980488b5cbc24d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/monolog-socketio/zipball/7fde9b80267b2523402d590d6b7f6d7c6b2b791f",
-                "reference": "7fde9b80267b2523402d590d6b7f6d7c6b2b791f",
+                "url": "https://api.github.com/repos/cultuurnet/monolog-socketio/zipball/499026e6d10395c0addf21e31980488b5cbc24d9",
+                "reference": "499026e6d10395c0addf21e31980488b5cbc24d9",
                 "shasum": ""
             },
             "require": {
@@ -907,7 +907,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-01-11 13:41:55"
+            "time": "2017-01-11 14:07:10"
         },
         {
             "name": "cultuurnet/search",
@@ -961,12 +961,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-amqp.git",
-                "reference": "82d752b675443ec582c7e0dd9567cbb08f017f3d"
+                "reference": "9cb1832eca6723b62bb7073b041faccbc147c723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/82d752b675443ec582c7e0dd9567cbb08f017f3d",
-                "reference": "82d752b675443ec582c7e0dd9567cbb08f017f3d",
+                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/9cb1832eca6723b62bb7073b041faccbc147c723",
+                "reference": "9cb1832eca6723b62bb7073b041faccbc147c723",
                 "shasum": ""
             },
             "require": {
@@ -976,7 +976,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -996,7 +996,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2016-09-09 11:45:36"
+            "time": "2017-01-13 11:35:13"
         },
         {
             "name": "cultuurnet/silex-service-provider-jwt",
@@ -1004,12 +1004,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-service-provider-jwt.git",
-                "reference": "04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514"
+                "reference": "f7174ca3ff217e70531379a4a70b3021b0304073"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514",
-                "reference": "04abda68c1a8aa3caaf1eb0ac49fdc84fac8e514",
+                "url": "https://api.github.com/repos/cultuurnet/silex-service-provider-jwt/zipball/f7174ca3ff217e70531379a4a70b3021b0304073",
+                "reference": "f7174ca3ff217e70531379a4a70b3021b0304073",
                 "shasum": ""
             },
             "require": {
@@ -1018,7 +1018,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1038,7 +1038,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2016-05-02 10:06:43"
+            "time": "2017-01-13 12:38:26"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1046,12 +1046,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/symfony-security-jwt.git",
-                "reference": "a6aed851723228d05897ce99bf7f33272523faaf"
+                "reference": "8f3da17c1440ef623ae73123fa31fd83bdcc2854"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/a6aed851723228d05897ce99bf7f33272523faaf",
-                "reference": "a6aed851723228d05897ce99bf7f33272523faaf",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/8f3da17c1440ef623ae73123fa31fd83bdcc2854",
+                "reference": "8f3da17c1440ef623ae73123fa31fd83bdcc2854",
                 "shasum": ""
             },
             "require": {
@@ -1060,7 +1060,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1080,7 +1080,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2016-11-08 13:53:56"
+            "time": "2017-01-13 12:50:42"
         },
         {
             "name": "cultuurnet/udb2-domain-events",
@@ -1088,12 +1088,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb2-domain-events.git",
-                "reference": "d0cb53b93adbcee66d6dcd0eebfb77db2e9aa6ce"
+                "reference": "de4f49303a186a3aea73b445630f776d4410d9ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/d0cb53b93adbcee66d6dcd0eebfb77db2e9aa6ce",
-                "reference": "d0cb53b93adbcee66d6dcd0eebfb77db2e9aa6ce",
+                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/de4f49303a186a3aea73b445630f776d4410d9ef",
+                "reference": "de4f49303a186a3aea73b445630f776d4410d9ef",
                 "shasum": ""
             },
             "require": {
@@ -1103,7 +1103,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.10",
-                "phpunit/phpunit": "~4.3",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.2"
             },
@@ -1129,7 +1129,7 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2016-12-09 10:41:03"
+            "time": "2017-01-13 12:57:54"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1264,12 +1264,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-http-foundation.git",
-                "reference": "58d7cb25c21f765d7f52c960f33597ea281a1db8"
+                "reference": "b1aa4e717228ecefcaa4f7880665e7acbcdd3f65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/58d7cb25c21f765d7f52c960f33597ea281a1db8",
-                "reference": "58d7cb25c21f765d7f52c960f33597ea281a1db8",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/b1aa4e717228ecefcaa4f7880665e7acbcdd3f65",
+                "reference": "b1aa4e717228ecefcaa4f7880665e7acbcdd3f65",
                 "shasum": ""
             },
             "require": {
@@ -1278,7 +1278,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1297,7 +1297,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2016-12-02 18:11:46"
+            "time": "2017-01-13 14:32:45"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1305,12 +1305,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "7e435b1b2df671a3abffa87fcc29cae62046ad4a"
+                "reference": "951a1078e40f6a0463f1f20cee656cc4bcbd4f96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/7e435b1b2df671a3abffa87fcc29cae62046ad4a",
-                "reference": "7e435b1b2df671a3abffa87fcc29cae62046ad4a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/951a1078e40f6a0463f1f20cee656cc4bcbd4f96",
+                "reference": "951a1078e40f6a0463f1f20cee656cc4bcbd4f96",
                 "shasum": ""
             },
             "require": {
@@ -1320,7 +1320,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1346,7 +1346,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2016-08-05 14:13:29"
+            "time": "2017-01-13 14:19:32"
         },
         {
             "name": "cultuurnet/udb3-search",
@@ -1354,12 +1354,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "81bb6a871888ecdb583fb20d79c53df67cce79b0"
+                "reference": "f1d869c9f1b407e849b3afe09bd6aa9df16bd160"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/81bb6a871888ecdb583fb20d79c53df67cce79b0",
-                "reference": "81bb6a871888ecdb583fb20d79c53df67cce79b0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/f1d869c9f1b407e849b3afe09bd6aa9df16bd160",
+                "reference": "f1d869c9f1b407e849b3afe09bd6aa9df16bd160",
                 "shasum": ""
             },
             "require": {
@@ -1367,7 +1367,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1392,7 +1392,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-10-06 09:37:59"
+            "time": "2017-01-13 14:39:41"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1400,12 +1400,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "c248fba856551e540721d80a972fe187abc499db"
+                "reference": "53908408c6f85154737d74814ae98b4904f98862"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/c248fba856551e540721d80a972fe187abc499db",
-                "reference": "c248fba856551e540721d80a972fe187abc499db",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/53908408c6f85154737d74814ae98b4904f98862",
+                "reference": "53908408c6f85154737d74814ae98b4904f98862",
                 "shasum": ""
             },
             "require": {
@@ -1414,7 +1414,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1439,7 +1439,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-12-02 19:00:41"
+            "time": "2017-01-13 14:51:07"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1447,12 +1447,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "017bb302b4218f775cb621795842afd0ac71c6f0"
+                "reference": "46127fb1217802b5f3a5be334038057d4416e817"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/017bb302b4218f775cb621795842afd0ac71c6f0",
-                "reference": "017bb302b4218f775cb621795842afd0ac71c6f0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/46127fb1217802b5f3a5be334038057d4416e817",
+                "reference": "46127fb1217802b5f3a5be334038057d4416e817",
                 "shasum": ""
             },
             "require": {
@@ -1462,7 +1462,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1487,7 +1487,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-10-06 11:40:57"
+            "time": "2017-01-13 15:05:31"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -1495,12 +1495,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "8c73f5ef38ca753f62f641b83d80d890eb4775e7"
+                "reference": "a1325d4a5100cd8a75ade541a412b0a2fa2199bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/8c73f5ef38ca753f62f641b83d80d890eb4775e7",
-                "reference": "8c73f5ef38ca753f62f641b83d80d890eb4775e7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/a1325d4a5100cd8a75ade541a412b0a2fa2199bc",
+                "reference": "a1325d4a5100cd8a75ade541a412b0a2fa2199bc",
                 "shasum": ""
             },
             "require": {
@@ -1518,8 +1518,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/php-token-stream": "1.4.6",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3"
             },
@@ -1549,7 +1548,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2017-01-12 09:17:21"
+            "time": "2017-01-13 15:37:48"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1557,12 +1556,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "d2c56eb539e79b19b952596f46477e4c7613dafa"
+                "reference": "ebc6c09bbd09973e7d47cb7525ff6c6d6a741400"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/d2c56eb539e79b19b952596f46477e4c7613dafa",
-                "reference": "d2c56eb539e79b19b952596f46477e4c7613dafa",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/ebc6c09bbd09973e7d47cb7525ff6c6d6a741400",
+                "reference": "ebc6c09bbd09973e7d47cb7525ff6c6d6a741400",
                 "shasum": ""
             },
             "require": {
@@ -1580,7 +1579,7 @@
             },
             "require-dev": {
                 "phing/phing": "~2.10",
-                "phpunit/phpunit": "~4.3",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "2.6.1"
             },
@@ -1610,7 +1609,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2017-01-12 12:12:49"
+            "time": "2017-01-13 15:53:41"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2055,20 +2054,20 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.5",
+            "version": "v2.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "9f8c05cd5225a320d56d4bfdb4772f10d045a0c9"
+                "reference": "3a351369582dade60c750e2cef540eb7b568e6b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/9f8c05cd5225a320d56d4bfdb4772f10d045a0c9",
-                "reference": "9f8c05cd5225a320d56d4bfdb4772f10d045a0c9",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/3a351369582dade60c750e2cef540eb7b568e6b3",
+                "reference": "3a351369582dade60c750e2cef540eb7b568e6b3",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": ">=2.4,<2.7-dev",
+                "doctrine/common": ">=2.4,<2.8-dev",
                 "php": ">=5.3.2"
             },
             "require-dev": {
@@ -2122,7 +2121,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2016-09-09T19:13:33+00:00"
+            "time": "2017-01-14T21:05:28+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -4910,16 +4909,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "d5643cd095e5e37d31e004bb2606b5dd7e96602f"
+                "reference": "2e18b8903d9c498ba02e1dfa73f64d4894bb6912"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/d5643cd095e5e37d31e004bb2606b5dd7e96602f",
-                "reference": "d5643cd095e5e37d31e004bb2606b5dd7e96602f",
+                "url": "https://api.github.com/repos/symfony/console/zipball/2e18b8903d9c498ba02e1dfa73f64d4894bb6912",
+                "reference": "2e18b8903d9c498ba02e1dfa73f64d4894bb6912",
                 "shasum": ""
             },
             "require": {
@@ -4967,20 +4966,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-12-06T11:59:35+00:00"
+            "time": "2017-01-08T20:43:03+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "62a68f640456f6761d752c62d81631428ef0d8a1"
+                "reference": "567681e2c4e5431704e884e4be25a95fd900770f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/62a68f640456f6761d752c62d81631428ef0d8a1",
-                "reference": "62a68f640456f6761d752c62d81631428ef0d8a1",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/567681e2c4e5431704e884e4be25a95fd900770f",
+                "reference": "567681e2c4e5431704e884e4be25a95fd900770f",
                 "shasum": ""
             },
             "require": {
@@ -5024,20 +5023,20 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-15T12:53:17+00:00"
+            "time": "2017-01-02T20:30:24+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "25c576abd4e0f212e678fe8b2bd9a9a98c7ea934"
+                "reference": "74877977f90fb9c3e46378d5764217c55f32df34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/25c576abd4e0f212e678fe8b2bd9a9a98c7ea934",
-                "reference": "25c576abd4e0f212e678fe8b2bd9a9a98c7ea934",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/74877977f90fb9c3e46378d5764217c55f32df34",
+                "reference": "74877977f90fb9c3e46378d5764217c55f32df34",
                 "shasum": ""
             },
             "require": {
@@ -5084,20 +5083,20 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-10-13T01:43:15+00:00"
+            "time": "2017-01-02T20:30:24+00:00"
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.22",
+            "version": "v2.7.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "fd196b0dcd0f4359ecf92da34261f15b767c33e6"
+                "reference": "f84ffa8da993170c10fd3a109400c01ad2c0fe8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/fd196b0dcd0f4359ecf92da34261f15b767c33e6",
-                "reference": "fd196b0dcd0f4359ecf92da34261f15b767c33e6",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/f84ffa8da993170c10fd3a109400c01ad2c0fe8a",
+                "reference": "f84ffa8da993170c10fd3a109400c01ad2c0fe8a",
                 "shasum": ""
             },
             "require": {
@@ -5140,20 +5139,20 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-25T22:28:18+00:00"
+            "time": "2017-01-06T17:20:46+00:00"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "7c678be978b0b788cad4667b11f13df365d65e4d"
+                "reference": "1097eb4ce0a7bdcd030f110c123682fed89a137c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/7c678be978b0b788cad4667b11f13df365d65e4d",
-                "reference": "7c678be978b0b788cad4667b11f13df365d65e4d",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/1097eb4ce0a7bdcd030f110c123682fed89a137c",
+                "reference": "1097eb4ce0a7bdcd030f110c123682fed89a137c",
                 "shasum": ""
             },
             "require": {
@@ -5222,7 +5221,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2016-12-13T12:16:15+00:00"
+            "time": "2017-01-12T20:27:24+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -5395,16 +5394,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "ef15c9f105f43a0714fa96b9e718fa4f23bc27a6"
+                "reference": "2a7e3e02bbfb0a4f722e6a3154489e4ac8b3a97f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/ef15c9f105f43a0714fa96b9e718fa4f23bc27a6",
-                "reference": "ef15c9f105f43a0714fa96b9e718fa4f23bc27a6",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/2a7e3e02bbfb0a4f722e6a3154489e4ac8b3a97f",
+                "reference": "2a7e3e02bbfb0a4f722e6a3154489e4ac8b3a97f",
                 "shasum": ""
             },
             "require": {
@@ -5466,7 +5465,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-11-25T12:26:42+00:00"
+            "time": "2017-01-02T20:30:24+00:00"
         },
         {
             "name": "symfony/security",
@@ -5550,16 +5549,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "df9a4f82143668c2f775cc85e1972044c9e93d4d"
+                "reference": "3a5337e3daaabb9ada73d60f3271adb6bfa56a1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/df9a4f82143668c2f775cc85e1972044c9e93d4d",
-                "reference": "df9a4f82143668c2f775cc85e1972044c9e93d4d",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/3a5337e3daaabb9ada73d60f3271adb6bfa56a1a",
+                "reference": "3a5337e3daaabb9ada73d60f3271adb6bfa56a1a",
                 "shasum": ""
             },
             "require": {
@@ -5610,20 +5609,20 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-03T07:52:58+00:00"
+            "time": "2017-01-02T20:30:24+00:00"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.15",
+            "version": "v2.8.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "befb26a3713c97af90d25dd12e75621ef14d91ff"
+                "reference": "dbe61fed9cd4a44c5b1d14e5e7b1a8640cfb2bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/befb26a3713c97af90d25dd12e75621ef14d91ff",
-                "reference": "befb26a3713c97af90d25dd12e75621ef14d91ff",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/dbe61fed9cd4a44c5b1d14e5e7b1a8640cfb2bf2",
+                "reference": "dbe61fed9cd4a44c5b1d14e5e7b1a8640cfb2bf2",
                 "shasum": ""
             },
             "require": {
@@ -5659,7 +5658,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-14T16:15:57+00:00"
+            "time": "2017-01-03T13:49:52+00:00"
         },
         {
             "name": "twig/twig",
