@@ -3,12 +3,7 @@
 use Broadway\CommandHandling\CommandBusInterface;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
-use CultuurNet\SilexServiceProviderOAuth\OAuthServiceProvider;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
-use CultuurNet\SymfonySecurityOAuth\Model\Provider\TokenProviderInterface;
-use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
-use CultuurNet\SymfonySecurityOAuthRedis\NonceProvider;
-use CultuurNet\SymfonySecurityOAuthRedis\TokenProviderCache;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
@@ -210,16 +205,6 @@ $app['current_user'] = $app->share(
             $cfUser->id = $jwt->getClaim('uid');
             $cfUser->nick = $jwt->getClaim('nick');
             $cfUser->mbox = $jwt->getClaim('email');
-
-            return $cfUser;
-        } else if ($token instanceof OAuthToken) {
-            $tokenUser = $token->getUser();
-
-            if ($tokenUser instanceof \CultuurNet\SymfonySecurityOAuthUitid\User) {
-                $cfUser->id = $tokenUser->getUid();
-                $cfUser->nick = $tokenUser->getUsername();
-                $cfUser->mbox = $tokenUser->getEmail();
-            }
 
             return $cfUser;
         } else {
@@ -506,7 +491,6 @@ $app['event_bus'] = $app->share(
                 'amqp.publisher',
                 'udb2_events_cdbxml_enricher',
                 'udb2_actor_events_cdbxml_enricher',
-                'udb2_events_to_udb3_place_applier',
                 'udb2_events_to_udb3_event_applier',
                 'udb2_actor_events_to_udb3_place_applier',
                 'udb2_actor_events_to_udb3_organizer_applier',
@@ -651,7 +635,7 @@ $app['logger.command_bus'] = $app->share(
                         $emitter->in($handler_config['room']);
                     }
 
-                    $handler = new \CultuurNet\UDB3\Monolog\SocketIOEmitterHandler(
+                    $handler = new \CultuurNet\MonologSocketIO\SocketIOEmitterHandler(
                         $emitter
                     );
                     break;
@@ -1337,12 +1321,6 @@ $app->register(
     ['migrations.config_file' => __DIR__ . '/migrations.yml']
 );
 
-// Add the oauth service provider.
-$app->register(new OAuthServiceProvider(), array(
-    'oauth.fetcher.base_url' => $app['config']['oauth']['base_url'],
-    'oauth.fetcher.consumer' => $app['config']['oauth']['consumer'],
-));
-
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
     array(
@@ -1362,19 +1340,6 @@ $app['predis.client'] = $app->share(function ($app) {
 
     return new Predis\Client($redisURI);
 });
-
-$app['oauth.model.provider.nonce_provider'] = $app->share(function (Application $app) {
-    return new NonceProvider(
-        $app['predis.client']
-    );
-});
-
-$app->extend(
-    'oauth.model.provider.token_provider',
-    function (TokenProviderInterface $tokenProvider, Application $app) {
-        return new TokenProviderCache($tokenProvider, $app['predis.client']);
-    }
-);
 
 $app['cdbxml_proxy'] = $app->share(
     function ($app) {

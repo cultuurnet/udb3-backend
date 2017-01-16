@@ -2,9 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
-use CultuurNet\SymfonySecurityOAuth\Security\OAuthToken;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -169,27 +167,7 @@ $app->before(
         $tokenStorage = $app['security.token_storage'];
         $authToken = $tokenStorage->getToken();
 
-        // Web service consumer authenticated with OAuth.
-        if ($authToken instanceof OAuthToken &&
-            $authToken->isAuthenticated()
-        ) {
-            $contextValues['uitid_token_credentials'] = new TokenCredentials(
-                $authToken->getAccessToken()->getToken(),
-                $authToken->getAccessToken()->getSecret()
-            );
-            $contextValues['consumer'] = [
-                'key' => $authToken->getAccessToken()->getConsumer()->getConsumerKey(),
-                'secret' => $authToken->getAccessToken()->getConsumer()->getConsumerSecret(),
-                'name' => $authToken->getAccessToken()->getConsumer()->getName()
-            ];
-            $user = $authToken->getUser();
-
-            if ($user instanceof \CultuurNet\SymfonySecurityOAuthUitid\User) {
-                $contextValues['user_id'] = $user->getUid();
-                $contextValues['user_nick'] = $user->getUsername();
-                $contextValues['user_email'] = $user->getEmail();
-            }
-        } else if ($authToken instanceof JwtUserToken && $authToken->isAuthenticated()) {
+        if ($authToken instanceof JwtUserToken && $authToken->isAuthenticated()) {
             $jwt = $authToken->getCredentials();
             $contextValues['user_id'] = $jwt->getClaim('uid');
             $contextValues['user_nick'] = $jwt->getClaim('nick');
@@ -209,7 +187,7 @@ $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerP
 
 $app->get(
     'swagger.json',
-    function (Request $request) {
+    function () {
         $file = new SplFileInfo(__DIR__ . '/swagger.json');
         return new \Symfony\Component\HttpFoundation\BinaryFileResponse(
             $file,

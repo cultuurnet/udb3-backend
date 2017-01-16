@@ -25,6 +25,19 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['culturefeed_uitid_credentials_fetcher'] = $app->share(
+            function () use ($app) {
+                $baseUrl = $app['culturefeed.endpoint'];
+
+                // Strip off /uitid/rest/ from the endpoint, the
+                // UitidCredentialsFetcher appends this itself.
+                $baseUrl = preg_replace('@/uitid/rest$@', '', $baseUrl);
+
+                $consumerCredentials = $app['culturefeed_consumer_credentials'];
+                return new UitidCredentialsFetcher($baseUrl, $consumerCredentials);
+            }
+        );
+
         $app['culturefeed_token_credentials'] = $app->share(
             function (Application $app) {
                 // Check first if we're impersonating someone.
@@ -41,7 +54,7 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
                 }
 
                 /* @var UiTIDCredentialsFetcher $uitidCredentialsFetcher */
-                $uitidCredentialsFetcher = $app['oauth.fetcher'];
+                $uitidCredentialsFetcher = $app['culturefeed_uitid_credentials_fetcher'];
                 $accessToken = $uitidCredentialsFetcher->getAccessTokenFromJwt((string) $jwt);
 
                 return new TokenCredentials(
