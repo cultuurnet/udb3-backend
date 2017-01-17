@@ -10,14 +10,6 @@ class OrganizerServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['organizer_search_projector'] = $app->share(
-            function (Application $app) {
-                return new OrganizerSearchProjector(
-                    $app['organizer_jsonld_repository'],
-                    $app['organizer_elasticsearch_repository']
-                );
-            }
-        );
     }
 
     public function boot(Application $app)

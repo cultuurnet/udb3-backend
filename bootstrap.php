@@ -1280,21 +1280,6 @@ $app->register(
     ]
 );
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Search\ElasticSearchServiceProvider(),
-    [
-        'elasticsearch.host' => $app['config']['elasticsearch']['host'],
-    ]
-);
-
-$app->register(
-    new \CultuurNet\UDB3\Silex\Organizer\OrganizerElasticSearchServiceProvider(),
-    [
-        'elasticsearch.organizer.index_name' => $app['config']['elasticsearch']['organizer']['index_name'],
-        'elasticsearch.organizer.document_type' => $app['config']['elasticsearch']['organizer']['document_type'],
-    ]
-);
-
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
