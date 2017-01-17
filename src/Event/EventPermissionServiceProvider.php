@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class EventPermissionServiceProvider implements ServiceProviderInterface
 {

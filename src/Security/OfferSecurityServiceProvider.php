@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferSecurityServiceProvider implements ServiceProviderInterface
 {

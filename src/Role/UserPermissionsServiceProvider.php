@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsProjector;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsServiceProvider implements ServiceProviderInterface
 {

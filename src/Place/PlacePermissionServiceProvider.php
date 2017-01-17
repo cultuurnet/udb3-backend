@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class PlacePermissionServiceProvider implements ServiceProviderInterface
 {

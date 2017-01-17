@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Role\Services\LocalRoleReadingService;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class RoleReadingServiceProvider implements ServiceProviderInterface
 {

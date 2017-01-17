@@ -35,7 +35,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\String\String as StringLiteral;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelServiceProvider implements ServiceProviderInterface
 {
