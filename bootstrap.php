@@ -478,7 +478,6 @@ $app['event_bus'] = $app->share(
                 'event_history_projector',
                 'place_jsonld_projector',
                 'organizer_jsonld_projector',
-                'organizer_search_projector',
                 'event_calendar_projector',
                 'variations.search.projector',
                 'variations.jsonld.projector',
