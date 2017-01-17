@@ -895,7 +895,9 @@ $app['organizer_jsonld_repository'] = $app->share(
         return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $app['real_organizer_jsonld_repository'],
             $app['event_bus'],
-            new \CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory()
+            new \CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory(
+                $app['organizer_iri_generator']
+            )
         );
     }
 );
