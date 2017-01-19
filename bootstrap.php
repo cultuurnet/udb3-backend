@@ -1,6 +1,7 @@
 <?php
 
 use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
@@ -686,6 +687,12 @@ $app->extend(
                 $app['event_repository'],
                 $app['organizer_repository'],
                 $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+            )
+        );
+
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Event\ConcludeCommandHandler(
+                $app['event_repository']
             )
         );
 
@@ -1383,6 +1390,18 @@ $app->register(
         'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],
         'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]
+);
+
+$app['udb3_system_user_metadata'] = $app->share(
+    function () {
+        return new Metadata(
+            [
+                'user_id' => '00000000-0000-0000-0000-000000000000',
+                'user_nick' => 'udb3',
+                'uitid_token_credentials' => [],
+            ]
+        );
+    }
 );
 
 return $app;
