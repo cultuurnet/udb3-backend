@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\CommandHandling\CommandBusInterface;
 use Carbon\Carbon;
 use CultuurNet\UDB3\Event\Commands\Conclude;
+use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Command\Command;
@@ -69,18 +70,19 @@ class ConcludeCommand extends Command
 
         $sapiDateRange = $this->buildDateRangeString($lowerDateBoundary, $upperDateBoundary);
 
-        $query = "availableto:{$sapiDateRange}";
+        $query = "type:event AND availableto:{$sapiDateRange}";
         $output->writeln('Executing search query: ' . $query);
 
+        /** @var IriOfferIdentifier[] $results */
         $results = $finder->search($query);
 
         $commandBus = $this->getCommandBus();
 
         foreach ($results as $result) {
-            print_r($result);
+            $output->writeln((string) $result->getIri());
 
             $commandBus->dispatch(
-                new Conclude($input->getArgument('cdbid'))
+                new Conclude($result->getId())
             );
         }
     }
