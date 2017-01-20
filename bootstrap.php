@@ -325,12 +325,14 @@ $app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
 
 $app['event_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
+        $eventStore = new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'events'
         );
+
+        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($eventStore);
     }
 );
 
