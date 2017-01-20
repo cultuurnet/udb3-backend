@@ -326,12 +326,14 @@ $app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
 
 $app['event_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
+        $eventStore = new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'events'
         );
+
+        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($eventStore);
     }
 );
 
@@ -1391,6 +1393,8 @@ $app->register(
         'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]
 );
+
+$app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
 
 $app['udb3_system_user_metadata'] = $app->share(
     function () {
