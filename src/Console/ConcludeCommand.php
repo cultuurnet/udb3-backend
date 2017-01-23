@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConcludeCommand extends Command
 {
     const TIMEZONE = 'Europe/Brussels';
+    const SOLR_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     public function configure()
     {
@@ -38,6 +39,94 @@ class ConcludeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        list($lowerDateBoundary, $upperDateBoundary) = $this->processArguments($input);
+        $query = $this->createSolrQuery($lowerDateBoundary, $upperDateBoundary);
+
+        $output->writeln('Executing search query: ' . $query);
+
+        /** @var IriOfferIdentifier[] $results */
+        $results = $this->getFinder()->search($query);
+
+        // Before initializing the command bus, impersonate the system user.
+        $this->impersonateUDB3SystemUser();
+
+        $commandBus = $this->getCommandBus();
+
+        foreach ($results as $result) {
+            $output->writeln((string) $result->getIri());
+
+            $commandBus->dispatch(
+                new Conclude($result->getId())
+            );
+        }
+    }
+
+    private function createSolrQuery(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
+    {
+        $sapiDateRange = $this->createSolrDateRangeString($lowerDateBoundary, $upperDateBoundary);
+
+        return "type:event AND availableto:{$sapiDateRange}";
+    }
+
+    /**
+     * @param Carbon|null $lowerDateBoundary
+     * @param Carbon|null $upperDateBoundary
+     *
+     * @return string
+     */
+    private function createSolrDateRangeString(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
+    {
+        $from = $lowerDateBoundary ? $this->getSolrFormattedDateTime($lowerDateBoundary) : '*';
+        $to = $this->getSolrFormattedDateTime($upperDateBoundary);
+
+        return "[{$from} TO {$to}]";
+    }
+
+    /**
+     * @param Carbon $date
+     * @return string
+     */
+    private function getSolrFormattedDateTime(Carbon $date)
+    {
+        return $date->tz('UTC')->format(self::SOLR_DATE_TIME_FORMAT);
+    }
+
+    /**
+     * @return ResultsGenerator
+     */
+    private function getFinder()
+    {
+        $app = $this->getSilexApplication();
+
+        return new ResultsGenerator($app['search_service']);
+    }
+
+    /**
+     * @return CommandBusInterface
+     */
+    private function getCommandBus()
+    {
+        $app = $this->getSilexApplication();
+
+        return $app['event_command_bus'];
+    }
+
+    private function impersonateUDB3SystemUser()
+    {
+        $app = $this->getSilexApplication();
+
+        /** @var Impersonator $impersonator */
+        $impersonator = $app['impersonator'];
+
+        $impersonator->impersonate($app['udb3_system_user_metadata']);
+    }
+
+    /**
+     * @param InputInterface $input
+     * @return array
+     */
+    private function processArguments(InputInterface $input)
+    {
         $lowerBoundaryInput = $input->getArgument('lower-boundary');
 
         $lowerDateBoundary = null;
@@ -59,71 +148,14 @@ class ConcludeCommand extends Command
             );
         }
 
-        $latestAllowedUpperBoundary = Carbon::yesterday(self::TIMEZONE)->setTime(23, 59, 59);
+        $latestAllowedUpperBoundary = Carbon::yesterday(self::TIMEZONE)
+            ->setTime(23, 59, 59);
         if ($upperDateBoundary->greaterThan($latestAllowedUpperBoundary)) {
             throw new \InvalidArgumentException(
                 'your upper boundary is too high, latest allowed upper boundary is ' . $latestAllowedUpperBoundary->toDateTimeString()
             );
         }
 
-        $finder = $this->getFinder();
-
-        $sapiDateRange = $this->buildDateRangeString($lowerDateBoundary, $upperDateBoundary);
-
-        $query = "type:event AND availableto:{$sapiDateRange}";
-        $output->writeln('Executing search query: ' . $query);
-
-        /** @var IriOfferIdentifier[] $results */
-        $results = $finder->search($query);
-
-        $commandBus = $this->getCommandBus();
-
-        foreach ($results as $result) {
-            $output->writeln((string) $result->getIri());
-
-            $commandBus->dispatch(
-                new Conclude($result->getId())
-            );
-        }
-    }
-
-    private function buildDateRangeString(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
-    {
-        $format = 'Y-m-d\TH:i:s\Z';
-
-        $from = $lowerDateBoundary ? $lowerDateBoundary->tz('UTC')->format($format) : '*';
-        $to = $upperDateBoundary->tz('UTC')->format($format);
-
-        return "[{$from} TO {$to}]";
-    }
-
-    /**
-     * @return ResultsGenerator
-     */
-    private function getFinder()
-    {
-        $app = $this->getSilexApplication();
-
-        $finder = new ResultsGenerator($app['search_service']);
-
-        return $finder;
-    }
-
-    /**
-     * @return CommandBusInterface
-     */
-    private function getCommandBus()
-    {
-        $app = $this->getSilexApplication();
-
-        /** @var Impersonator $impersonator */
-        $impersonator = $app['impersonator'];
-
-        // Before initializing the command bus, impersonate the system user.
-        $impersonator->impersonate($app['udb3_system_user_metadata']);
-
-        $commandBus = $app['event_command_bus'];
-
-        return $commandBus;
+        return array($lowerDateBoundary, $upperDateBoundary);
     }
 }
