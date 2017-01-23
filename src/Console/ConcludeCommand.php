@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ConcludeCommand extends Command
@@ -34,6 +35,13 @@ class ConcludeCommand extends Command
                 InputArgument::OPTIONAL,
                 'The upper boundary of the end date range',
                 Carbon::yesterday(self::TIMEZONE)->setTime(23, 59, 59)->toDateTimeString()
+            )
+            ->addOption(
+                'page-size',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'How many items should be retrieved per page',
+                10
             );
     }
 
@@ -44,8 +52,10 @@ class ConcludeCommand extends Command
 
         $output->writeln('Executing search query: ' . $query);
 
+        $finder = $this->getFinder(intval($input->getOption('page-size')));
+
         /** @var IriOfferIdentifier[] $results */
-        $results = $this->getFinder()->search($query);
+        $results = $finder->search($query);
 
         // Before initializing the command bus, impersonate the system user.
         $this->impersonateUDB3SystemUser();
@@ -92,13 +102,18 @@ class ConcludeCommand extends Command
     }
 
     /**
+     * @int $pageSize
      * @return ResultsGenerator
      */
-    private function getFinder()
+    private function getFinder($pageSize)
     {
         $app = $this->getSilexApplication();
 
-        return new ResultsGenerator($app['search_service']);
+        return new ResultsGenerator(
+            $app['search_service'],
+            ResultsGenerator::SORT_CREATION_DATE_ASC,
+            $pageSize
+        );
     }
 
     /**
