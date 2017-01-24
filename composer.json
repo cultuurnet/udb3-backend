@@ -11,7 +11,7 @@
   "minimum-stability": "dev",
   "require": {
     "cultuurnet/udb2-domain-events": "~1.0",
-    "cultuurnet/udb3": "dev-feature/III-1741 as 0.1",
+    "cultuurnet/udb3": "~0.1",
     "cultuurnet/udb3-doctrine": "~0.1",
     "cultuurnet/udb3-http-foundation": "~0.1",
     "cultuurnet/udb3-symfony": "~0.1",
@@ -37,7 +37,8 @@
     "cultuurnet/silex-service-provider-jwt": "~1.0",
     "cultuurnet/uitid-credentials": "~0.1",
     "cultuurnet/monolog-socketio": "~0.1",
-    "cultuurnet/udb3-export": "~0.1"
+    "cultuurnet/udb3-export": "~0.1",
+    "nesbot/carbon": "^1.22"
   },
   "require-dev": {
     "escapestudios/symfony2-coding-standard": "~2.9",

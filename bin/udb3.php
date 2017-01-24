@@ -32,5 +32,6 @@ $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PurgeModelCommand());
+$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ConcludeCommand());
 
 $consoleApp->run();

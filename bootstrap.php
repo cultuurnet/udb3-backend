@@ -1,6 +1,7 @@
 <?php
 
 use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
@@ -325,12 +326,14 @@ $app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
 
 $app['event_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
+        $eventStore = new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'events'
         );
+
+        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($eventStore);
     }
 );
 
@@ -685,6 +688,12 @@ $app->extend(
                 $app['event_repository'],
                 $app['organizer_repository'],
                 $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+            )
+        );
+
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Event\ConcludeCommandHandler(
+                $app['event_repository']
             )
         );
 
@@ -1368,6 +1377,20 @@ $app->register(
         'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],
         'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]
+);
+
+$app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
+
+$app['udb3_system_user_metadata'] = $app->share(
+    function () {
+        return new Metadata(
+            [
+                'user_id' => '00000000-0000-0000-0000-000000000000',
+                'user_nick' => 'udb3',
+                'uitid_token_credentials' => [],
+            ]
+        );
+    }
 );
 
 return $app;
