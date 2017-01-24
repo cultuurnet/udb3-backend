@@ -100,16 +100,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.7.2",
+            "version": "v2.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "412ca7cbd1c726d3d770f6af20aeed1089de296f"
+                "reference": "5972776d6a9eedfd3c55216341434e19cb50418f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/412ca7cbd1c726d3d770f6af20aeed1089de296f",
-                "reference": "412ca7cbd1c726d3d770f6af20aeed1089de296f",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/5972776d6a9eedfd3c55216341434e19cb50418f",
+                "reference": "5972776d6a9eedfd3c55216341434e19cb50418f",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2017-01-09T09:19:50+00:00"
+            "time": "2017-01-24T15:14:39+00:00"
         },
         {
             "name": "broadway/broadway",
@@ -1260,12 +1260,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-export.git",
-                "reference": "cf1f9b033c9293a0bb18812719ece7ddaad61f94"
+                "reference": "5d39f62de0c918be7dbdf3b0e9d0d1e5d69bc812"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/cf1f9b033c9293a0bb18812719ece7ddaad61f94",
-                "reference": "cf1f9b033c9293a0bb18812719ece7ddaad61f94",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/5d39f62de0c918be7dbdf3b0e9d0d1e5d69bc812",
+                "reference": "5d39f62de0c918be7dbdf3b0e9d0d1e5d69bc812",
                 "shasum": ""
             },
             "require": {
@@ -1305,7 +1305,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-01-18 10:35:23"
+            "time": "2017-01-24 17:11:48"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
