@@ -13,14 +13,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $app['organizer_search_controller'] = $app->share(
-            function (Application $app) {
-                return new OrganizerSearchController(
-                    $app['organizer_elasticsearch_service']
-                );
-            }
-        );
-
         $app['organizer_controller'] = $app->share(
             function (Application $app) {
                 return new ReadOrganizerRestController(
@@ -41,7 +33,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', 'organizer_search_controller:search');
         $controllers->post('/', 'organizer_edit_controller:create');
 
         $controllers

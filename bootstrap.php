@@ -481,7 +481,6 @@ $app['event_bus'] = $app->share(
                 'event_history_projector',
                 'place_jsonld_projector',
                 'organizer_jsonld_projector',
-                'organizer_search_projector',
                 'event_calendar_projector',
                 'variations.search.projector',
                 'variations.jsonld.projector',
@@ -904,7 +903,9 @@ $app['organizer_jsonld_repository'] = $app->share(
         return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $app['real_organizer_jsonld_repository'],
             $app['event_bus'],
-            new \CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory()
+            new \CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory(
+                $app['organizer_iri_generator']
+            )
         );
     }
 );
@@ -1289,27 +1290,11 @@ $app->register(
     ]
 );
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Search\ElasticSearchServiceProvider(),
-    [
-        'elasticsearch.host' => $app['config']['elasticsearch']['host'],
-    ]
-);
-
-$app->register(
-    new \CultuurNet\UDB3\Silex\Organizer\OrganizerElasticSearchServiceProvider(),
-    [
-        'elasticsearch.organizer.index_name' => $app['config']['elasticsearch']['organizer']['index_name'],
-        'elasticsearch.organizer.document_type' => $app['config']['elasticsearch']['organizer']['document_type'],
-    ]
-);
-
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
