@@ -1260,12 +1260,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-export.git",
-                "reference": "109f7a047d22c0ccce8d7c928e549c99d8ad263f"
+                "reference": "b3255b7c826caaf21116a1fbf68526a78a375d99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/109f7a047d22c0ccce8d7c928e549c99d8ad263f",
-                "reference": "109f7a047d22c0ccce8d7c928e549c99d8ad263f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/b3255b7c826caaf21116a1fbf68526a78a375d99",
+                "reference": "b3255b7c826caaf21116a1fbf68526a78a375d99",
                 "shasum": ""
             },
             "require": {
@@ -1305,7 +1305,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-01-25 14:52:57"
+            "time": "2017-01-27 08:27:22"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
