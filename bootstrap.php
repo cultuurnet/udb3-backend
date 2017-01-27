@@ -494,13 +494,11 @@ $app['event_bus'] = $app->share(
                 'udb2_actor_events_to_udb3_place_applier',
                 'udb2_actor_events_to_udb3_organizer_applier',
                 'udb2_label_importer',
-                'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
                 LabelServiceProvider::EVENT_LABEL_PROJECTOR,
                 LabelServiceProvider::PLACE_LABEL_PROJECTOR,
                 LabelServiceProvider::ORGANIZER_LABEL_PROJECTOR,
-                LabelServiceProvider::RELATIONS_PROJECTOR,
                 LabelServiceProvider::LABEL_ROLES_PROJECTOR,
                 'role_detail_projector',
                 'role_labels_projector',
@@ -510,6 +508,12 @@ $app['event_bus'] = $app->share(
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
             ];
+
+            $initialSubscribersCount = count($subscribers);
+            $subscribers = array_unique($subscribers);
+            if ($initialSubscribersCount != count($subscribers)) {
+                throw new \Exception('Some projectors are subscribed more then once!');
+            }
 
             // Allow to override event bus subscribers through configuration.
             // The event replay command line utility uses this.
