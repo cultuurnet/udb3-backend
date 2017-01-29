@@ -1140,12 +1140,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "164f55e7f5eeb7370cee71cf239dc358739f5ef0"
+                "reference": "3856a315fd0431e4a6f709a44f6472b926bc0843"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/164f55e7f5eeb7370cee71cf239dc358739f5ef0",
-                "reference": "164f55e7f5eeb7370cee71cf239dc358739f5ef0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3856a315fd0431e4a6f709a44f6472b926bc0843",
+                "reference": "3856a315fd0431e4a6f709a44f6472b926bc0843",
                 "shasum": ""
             },
             "require": {
@@ -1207,7 +1207,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-01-25 16:03:49"
+            "time": "2017-01-27 15:49:41"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1260,12 +1260,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-export.git",
-                "reference": "a6576e59500ad58a8fb3653c6e7d5e0be484da6e"
+                "reference": "d0b534904e335fd5cd779b4b2099d6cf7af0d751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/a6576e59500ad58a8fb3653c6e7d5e0be484da6e",
-                "reference": "a6576e59500ad58a8fb3653c6e7d5e0be484da6e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/d0b534904e335fd5cd779b4b2099d6cf7af0d751",
+                "reference": "d0b534904e335fd5cd779b4b2099d6cf7af0d751",
                 "shasum": ""
             },
             "require": {
@@ -1279,7 +1279,8 @@
                 "php": "~5.6 || >=7.0",
                 "phpoffice/phpexcel": "~1.8",
                 "psr/log": "~1.0",
-                "twig/twig": "~1.0"
+                "twig/twig": "~1.0",
+                "webmozart/assert": "^1.2"
             },
             "require-dev": {
                 "alchemy/zippy": "~0.2",
@@ -1305,7 +1306,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-01-27 09:56:18"
+            "time": "2017-01-29 11:57:29"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -5546,6 +5547,56 @@
                 "templating"
             ],
             "time": "2017-01-11T19:36:15+00:00"
+        },
+        {
+            "name": "webmozart/assert",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozart/assert.git",
+                "reference": "2db61e59ff05fe5126d152bd0655c9ea113e550f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/2db61e59ff05fe5126d152bd0655c9ea113e550f",
+                "reference": "2db61e59ff05fe5126d152bd0655c9ea113e550f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.6",
+                "sebastian/version": "^1.0.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webmozart\\Assert\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "Assertions to validate method input/output with nice error messages.",
+            "keywords": [
+                "assert",
+                "check",
+                "validate"
+            ],
+            "time": "2016-11-23T20:04:58+00:00"
         },
         {
             "name": "willdurand/geocoder",
