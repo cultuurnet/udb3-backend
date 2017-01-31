@@ -1,6 +1,7 @@
 <?php
 
 use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\Domain\Metadata;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
@@ -327,13 +328,15 @@ $app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
 
 $app['event_store'] = $app->share(
     function ($app) {
-        return new AggregateAwareDBALEventStore(
+        $eventStore = new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'event_store',
             AggregateType::EVENT()
         );
+
+        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($eventStore);
     }
 );
 
@@ -481,7 +484,6 @@ $app['event_bus'] = $app->share(
                 'event_history_projector',
                 'place_jsonld_projector',
                 'organizer_jsonld_projector',
-                'organizer_search_projector',
                 'event_calendar_projector',
                 'variations.search.projector',
                 'variations.jsonld.projector',
@@ -495,13 +497,11 @@ $app['event_bus'] = $app->share(
                 'udb2_actor_events_to_udb3_place_applier',
                 'udb2_actor_events_to_udb3_organizer_applier',
                 'udb2_label_importer',
-                'place_permission.projector',
                 LabelServiceProvider::JSON_PROJECTOR,
                 LabelServiceProvider::RELATIONS_PROJECTOR,
                 LabelServiceProvider::EVENT_LABEL_PROJECTOR,
                 LabelServiceProvider::PLACE_LABEL_PROJECTOR,
                 LabelServiceProvider::ORGANIZER_LABEL_PROJECTOR,
-                LabelServiceProvider::RELATIONS_PROJECTOR,
                 LabelServiceProvider::LABEL_ROLES_PROJECTOR,
                 'role_detail_projector',
                 'role_labels_projector',
@@ -511,6 +511,12 @@ $app['event_bus'] = $app->share(
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
             ];
+
+            $initialSubscribersCount = count($subscribers);
+            $subscribers = array_unique($subscribers);
+            if ($initialSubscribersCount != count($subscribers)) {
+                throw new \Exception('Some projectors are subscribed more then once!');
+            }
 
             // Allow to override event bus subscribers through configuration.
             // The event replay command line utility uses this.
@@ -689,6 +695,12 @@ $app->extend(
                 $app['event_repository'],
                 $app['organizer_repository'],
                 $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+            )
+        );
+
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Event\ConcludeCommandHandler(
+                $app['event_repository']
             )
         );
 
@@ -899,7 +911,9 @@ $app['organizer_jsonld_repository'] = $app->share(
         return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
             $app['real_organizer_jsonld_repository'],
             $app['event_bus'],
-            new \CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory()
+            new \CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory(
+                $app['organizer_iri_generator']
+            )
         );
     }
 );
@@ -1286,27 +1300,11 @@ $app->register(
     ]
 );
 
-$app->register(
-    new \CultuurNet\UDB3\Silex\Search\ElasticSearchServiceProvider(),
-    [
-        'elasticsearch.host' => $app['config']['elasticsearch']['host'],
-    ]
-);
-
-$app->register(
-    new \CultuurNet\UDB3\Silex\Organizer\OrganizerElasticSearchServiceProvider(),
-    [
-        'elasticsearch.organizer.index_name' => $app['config']['elasticsearch']['organizer']['index_name'],
-        'elasticsearch.organizer.document_type' => $app['config']['elasticsearch']['organizer']['document_type'],
-    ]
-);
-
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
@@ -1389,6 +1387,20 @@ $app->register(
         'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],
         'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]
+);
+
+$app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
+
+$app['udb3_system_user_metadata'] = $app->share(
+    function () {
+        return new Metadata(
+            [
+                'user_id' => '00000000-0000-0000-0000-000000000000',
+                'user_nick' => 'udb3',
+                'uitid_token_credentials' => [],
+            ]
+        );
+    }
 );
 
 return $app;
