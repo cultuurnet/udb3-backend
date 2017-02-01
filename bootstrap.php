@@ -507,6 +507,7 @@ $app['event_bus'] = $app->share(
                 'role_users_projector',
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
+                'place_geocoordinates_process_manager',
             ];
 
             $initialSubscribersCount = count($subscribers);
@@ -737,6 +738,7 @@ $app->extend(
         );
 
         $commandBus->subscribe($app['media_manager']);
+        $commandBus->subscribe($app['place_geocoordinates_command_handler']);
 
         return $commandBus;
     }
@@ -1384,6 +1386,15 @@ $app->register(
 );
 
 $app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
+
+$app->register(
+    new \CultuurNet\UDB3\Silex\GeocodingServiceProvider(),
+    [
+        'geocoding_service.google_maps_api_key' => isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null,
+    ]
+);
+
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 
 $app['udb3_system_user_metadata'] = $app->share(
     function () {
