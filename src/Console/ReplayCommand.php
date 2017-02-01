@@ -7,6 +7,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Command\Command;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
@@ -100,6 +101,13 @@ class ReplayCommand extends Command
             $this->setSubscribers($subscribers);
         }
 
+        // This shouldn't be needed in theory, but some process managers have a
+        // dependency on the command bus, which in turn has a dependency on the
+        // current user to authorize commands.
+        // These process managers SHOULD NOT react on replay events, but in the
+        // current setup they ARE bootstrapped (they just ignore replay events).
+        $this->impersonateUDB3SystemUser();
+
         $store = $this->getStore($input, $output);
 
         $startId = $input->getOption(self::OPTION_START_ID);
@@ -131,6 +139,15 @@ class ReplayCommand extends Command
                 $eventBus->publish($eventStream);
             }
         }
+    }
+
+    private function impersonateUDB3SystemUser()
+    {
+        $app = $this->getSilexApplication();
+
+        /** @var Impersonator $impersonator */
+        $impersonator = $app['impersonator'];
+        $impersonator->impersonate($app['udb3_system_user_metadata']);
     }
 
     /**
