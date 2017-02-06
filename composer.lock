@@ -537,12 +537,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-tools.git",
-                "reference": "ab110365cf34c066cd4856d4ca05a6eb6b935986"
+                "reference": "eed0a7cf94277a3c00c286169cd0ebd0b6099cc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/ab110365cf34c066cd4856d4ca05a6eb6b935986",
-                "reference": "ab110365cf34c066cd4856d4ca05a6eb6b935986",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/eed0a7cf94277a3c00c286169cd0ebd0b6099cc7",
+                "reference": "eed0a7cf94277a3c00c286169cd0ebd0b6099cc7",
                 "shasum": ""
             },
             "require": {
@@ -570,7 +570,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-06 14:04:39"
+            "time": "2017-02-06 16:07:50"
         },
         {
             "name": "cultuurnet/calendar-summary",
