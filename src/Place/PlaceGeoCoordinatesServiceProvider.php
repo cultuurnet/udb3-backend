@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Place\GeoCoordinatesCommandHandler;
@@ -44,10 +45,12 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
 
         $app['place_geocoordinates_process_manager'] = $app->share(
             function (Application $app) {
-                return new GeoCoordinatesProcessManager(
-                    $app['event_command_bus'],
-                    new CultureFeedAddressFactory(),
-                    $app['place_geocoordinates_logger']
+                return new ReplayFilteringEventListener(
+                    new GeoCoordinatesProcessManager(
+                        $app['event_command_bus'],
+                        new CultureFeedAddressFactory(),
+                        $app['place_geocoordinates_logger']
+                    )
                 );
             }
         );
