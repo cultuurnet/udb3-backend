@@ -864,16 +864,16 @@
         },
         {
             "name": "cultuurnet/geocoding",
-            "version": "dev-master",
+            "version": "dev-feature/III-1777",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/geocoding.git",
-                "reference": "2a8d20a5884c3e4e39f113dd6cae9a7bb50bfcc8"
+                "reference": "e760414a926d35af1872f4b6736fcd7ef3ffda82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/2a8d20a5884c3e4e39f113dd6cae9a7bb50bfcc8",
-                "reference": "2a8d20a5884c3e4e39f113dd6cae9a7bb50bfcc8",
+                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/e760414a926d35af1872f4b6736fcd7ef3ffda82",
+                "reference": "e760414a926d35af1872f4b6736fcd7ef3ffda82",
                 "shasum": ""
             },
             "require-dev": {
@@ -909,7 +909,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2016-07-20 12:04:20"
+            "time": "2017-01-31 09:18:40"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1231,12 +1231,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "18bb1639d6089755e1cb5cd7734d5506baf631cf"
+                "reference": "2a5f36f4cd44d5721e3c791d5bfebbc0a9dbe5d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/18bb1639d6089755e1cb5cd7734d5506baf631cf",
-                "reference": "18bb1639d6089755e1cb5cd7734d5506baf631cf",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2a5f36f4cd44d5721e3c791d5bfebbc0a9dbe5d3",
+                "reference": "2a5f36f4cd44d5721e3c791d5bfebbc0a9dbe5d3",
                 "shasum": ""
             },
             "require": {
@@ -1249,7 +1249,7 @@
                 "cultuurnet/clock": "~0.1",
                 "cultuurnet/culturefeed-php": "dev-master as 1.6",
                 "cultuurnet/deserializer": "~1.0",
-                "cultuurnet/geocoding": "~0.1",
+                "cultuurnet/geocoding": "dev-feature/III-1777 as 0.1",
                 "cultuurnet/search": "~1.1",
                 "cultuurnet/symfony-security-jwt": "~1.0",
                 "danielstjules/stringy": "~1.9",
@@ -1299,7 +1299,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-02-01 13:46:49"
+            "time": "2017-02-06 15:10:44"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
