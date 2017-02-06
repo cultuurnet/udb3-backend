@@ -6,6 +6,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
+use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Command\Command;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Class ReplayCommand
@@ -115,6 +117,21 @@ class ReplayCommand extends Command
 
         $eventBus = $this->getEventBus();
 
+        if ($eventBus instanceof ReplayFlaggingEventBus) {
+            $eventBus->startReplayMode();
+        } else {
+            $helper = $this->getHelper('question');
+            $question = new ConfirmationQuestion(
+                'Warning! The current event bus does not flag replay messages. '
+                . 'This might trigger unintended changes. Continue anyway? [y/N] ',
+                false
+            );
+
+            if (!$helper->ask($input, $output, $question)) {
+                return;
+            }
+        }
+
         /** @var DomainEventStream $eventStream */
         foreach ($stream() as $eventStream) {
             if ($delay > 0) {
@@ -138,6 +155,10 @@ class ReplayCommand extends Command
             if (!$this->isPublishDisabled($input)) {
                 $eventBus->publish($eventStream);
             }
+        }
+
+        if ($eventBus instanceof ReplayFlaggingEventBus) {
+            $eventBus->stopReplayMode();
         }
     }
 

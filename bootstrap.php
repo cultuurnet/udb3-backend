@@ -2,8 +2,10 @@
 
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\Metadata;
+use Broadway\EventHandling\EventBusInterface;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\CalendarFactory;
@@ -472,7 +474,7 @@ $app['event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
 
-        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
+        $eventBus->beforeFirstPublication(function (EventBusInterface $eventBus) use ($app) {
             $subscribers = [
                 'search_cache_manager',
                 'event_relations_projector',
@@ -530,6 +532,13 @@ $app['event_bus'] = $app->share(
         });
 
         return $eventBus;
+    }
+);
+
+$app->extend(
+    'event_bus',
+    function (EventBusInterface $eventBus) {
+        return new ReplayFlaggingEventBus($eventBus);
     }
 );
 
