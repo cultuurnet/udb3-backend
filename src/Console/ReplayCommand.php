@@ -6,7 +6,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
-use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
+use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Command\Command;
@@ -117,7 +117,7 @@ class ReplayCommand extends Command
 
         $eventBus = $this->getEventBus();
 
-        if ($eventBus instanceof ReplayFlaggingEventBus) {
+        if ($eventBus instanceof ReplayModeEventBusInterface) {
             $eventBus->startReplayMode();
         } else {
             $helper = $this->getHelper('question');
@@ -157,7 +157,7 @@ class ReplayCommand extends Command
             }
         }
 
-        if ($eventBus instanceof ReplayFlaggingEventBus) {
+        if ($eventBus instanceof ReplayModeEventBusInterface) {
             $eventBus->stopReplayMode();
         }
     }
