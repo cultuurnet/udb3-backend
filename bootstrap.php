@@ -324,16 +324,20 @@ $app['dbal_connection:keepalive'] = $app->protect(
 
 $app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
 
-$app['event_store'] = $app->share(
+$app['dbal_event_store'] = $app->share(
     function ($app) {
-        $eventStore = new \Broadway\EventStore\DBALEventStore(
+        return new \Broadway\EventStore\DBALEventStore(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new \Broadway\Serializer\SimpleInterfaceSerializer(),
             'events'
         );
+    }
+);
 
-        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($eventStore);
+$app['event_store'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator($app['dbal_event_store']);
     }
 );
 
