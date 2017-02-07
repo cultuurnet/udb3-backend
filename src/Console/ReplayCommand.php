@@ -22,7 +22,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  *
  * @package CultuurNet\UDB3\Silex\Console
  */
-class ReplayCommand extends Command
+class ReplayCommand extends AbstractSystemUserCommand
 {
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
     const OPTION_START_ID = 'start-id';
@@ -160,15 +160,6 @@ class ReplayCommand extends Command
         if ($eventBus instanceof ReplayModeEventBusInterface) {
             $eventBus->stopReplayMode();
         }
-    }
-
-    private function impersonateUDB3SystemUser()
-    {
-        $app = $this->getSilexApplication();
-
-        /** @var Impersonator $impersonator */
-        $impersonator = $app['impersonator'];
-        $impersonator->impersonate($app['udb3_system_user_metadata']);
     }
 
     /**
