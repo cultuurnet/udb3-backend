@@ -33,6 +33,7 @@ $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PurgeModelCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ConcludeCommand());
+$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\GeocodeCommand());
 
 $consoleApp->run();

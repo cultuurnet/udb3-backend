@@ -2,19 +2,15 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
 use Carbon\Carbon;
-use CultuurNet\UDB3\Event\Commands\Conclude;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Silex\Impersonator;
-use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConcludeCommand extends AbstractSystemUserCommand
+class ConcludeCommand extends AbstractConcludeCommand
 {
     const TIMEZONE = 'Europe/Brussels';
     const SOLR_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
@@ -60,14 +56,10 @@ class ConcludeCommand extends AbstractSystemUserCommand
         // Before initializing the command bus, impersonate the system user.
         $this->impersonateUDB3SystemUser();
 
-        $commandBus = $this->getCommandBus();
-
         foreach ($results as $result) {
             $output->writeln((string) $result->getIri());
 
-            $commandBus->dispatch(
-                new Conclude($result->getId())
-            );
+            $this->dispatchConclude($result->getId());
         }
     }
 
@@ -114,16 +106,6 @@ class ConcludeCommand extends AbstractSystemUserCommand
             ResultsGenerator::SORT_CREATION_DATE_ASC,
             $pageSize
         );
-    }
-
-    /**
-     * @return CommandBusInterface
-     */
-    private function getCommandBus()
-    {
-        $app = $this->getSilexApplication();
-
-        return $app['event_command_bus'];
     }
 
     /**

@@ -36,7 +36,7 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
     {
         // Combination of 'real' event stores and MySQL read models.
         $stores = array(
-            $this->app['event_store'],
+            $this->app['dbal_event_store'],
             $this->app['place_store'],
             $this->app['organizer_store'],
             $this->app['event_relations_repository'],
