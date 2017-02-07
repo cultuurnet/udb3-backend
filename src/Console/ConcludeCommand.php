@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConcludeCommand extends Command
+class ConcludeCommand extends AbstractSystemUserCommand
 {
     const TIMEZONE = 'Europe/Brussels';
     const SOLR_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
@@ -124,16 +124,6 @@ class ConcludeCommand extends Command
         $app = $this->getSilexApplication();
 
         return $app['event_command_bus'];
-    }
-
-    private function impersonateUDB3SystemUser()
-    {
-        $app = $this->getSilexApplication();
-
-        /** @var Impersonator $impersonator */
-        $impersonator = $app['impersonator'];
-
-        $impersonator->impersonate($app['udb3_system_user_metadata']);
     }
 
     /**
