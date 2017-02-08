@@ -8,8 +8,6 @@ use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
-use CultuurNet\UDB3\Silex\Impersonator;
-use Knp\Command\Command;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
