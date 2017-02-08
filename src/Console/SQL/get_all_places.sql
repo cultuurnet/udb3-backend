@@ -1,1 +1,6 @@
-SELECT uuid FROM udb3.places GROUP BY uuid;
+SELECT
+  uuid
+FROM
+  udb3.places
+GROUP BY
+  uuid;
