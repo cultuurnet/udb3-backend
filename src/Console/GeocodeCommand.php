@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
@@ -150,14 +149,5 @@ class GeocodeCommand extends AbstractSystemUserCommand
     {
         $app = $this->getSilexApplication();
         return $app['place_jsonld_repository'];
-    }
-
-    /**
-     * @return CommandBusInterface
-     */
-    private function getCommandBus()
-    {
-        $app = $this->getSilexApplication();
-        return $app['event_command_bus'];
     }
 }
