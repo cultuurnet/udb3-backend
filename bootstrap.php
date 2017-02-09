@@ -2,8 +2,10 @@
 
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\Metadata;
+use Broadway\EventHandling\EventBusInterface;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\CalendarFactory;
@@ -43,6 +45,18 @@ if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation =  __DIR__;
 }
 $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
+
+// Add the system user to the list of god users.
+$app['config'] = array_merge(
+    $app['config'],
+    [
+        'user_permissions' => [
+            'allow_all' => [
+                '00000000-0000-0000-0000-000000000000'
+            ],
+        ],
+    ]
+);
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
@@ -476,7 +490,7 @@ $app['event_bus'] = $app->share(
     function ($app) {
         $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
 
-        $eventBus->beforeFirstPublication(function (\Broadway\EventHandling\EventBusInterface $eventBus) use ($app) {
+        $eventBus->beforeFirstPublication(function (EventBusInterface $eventBus) use ($app) {
             $subscribers = [
                 'search_cache_manager',
                 'event_relations_projector',
@@ -511,6 +525,7 @@ $app['event_bus'] = $app->share(
                 'role_users_projector',
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
+                'place_geocoordinates_process_manager',
             ];
 
             $initialSubscribersCount = count($subscribers);
@@ -533,6 +548,13 @@ $app['event_bus'] = $app->share(
         });
 
         return $eventBus;
+    }
+);
+
+$app->extend(
+    'event_bus',
+    function (EventBusInterface $eventBus) {
+        return new ReplayFlaggingEventBus($eventBus);
     }
 );
 
@@ -741,6 +763,7 @@ $app->extend(
         );
 
         $commandBus->subscribe($app['media_manager']);
+        $commandBus->subscribe($app['place_geocoordinates_command_handler']);
 
         return $commandBus;
     }
@@ -1388,6 +1411,15 @@ $app->register(
 );
 
 $app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
+
+$app->register(
+    new \CultuurNet\UDB3\Silex\GeocodingServiceProvider(),
+    [
+        'geocoding_service.google_maps_api_key' => isset($app['config']['google_maps_api_key']) ? $app['config']['google_maps_api_key'] : null,
+    ]
+);
+
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 
 $app['udb3_system_user_metadata'] = $app->share(
     function () {

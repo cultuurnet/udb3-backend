@@ -6,20 +6,21 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
+use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
-use Knp\Command\Command;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Class ReplayCommand
  *
  * @package CultuurNet\UDB3\Silex\Console
  */
-class ReplayCommand extends Command
+class ReplayCommand extends AbstractSystemUserCommand
 {
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
     const OPTION_START_ID = 'start-id';
@@ -100,12 +101,34 @@ class ReplayCommand extends Command
             $this->setSubscribers($subscribers);
         }
 
+        // This shouldn't be needed in theory, but some process managers have a
+        // dependency on the command bus, which in turn has a dependency on the
+        // current user to authorize commands.
+        // These process managers SHOULD NOT react on replay events, but in the
+        // current setup they ARE bootstrapped (they just ignore replay events).
+        $this->impersonateUDB3SystemUser();
+
         $store = $this->getStore($input, $output);
 
         $startId = $input->getOption(self::OPTION_START_ID);
         $stream = $this->getEventStream($store, $startId);
 
         $eventBus = $this->getEventBus();
+
+        if ($eventBus instanceof ReplayModeEventBusInterface) {
+            $eventBus->startReplayMode();
+        } else {
+            $helper = $this->getHelper('question');
+            $question = new ConfirmationQuestion(
+                'Warning! The current event bus does not flag replay messages. '
+                . 'This might trigger unintended changes. Continue anyway? [y/N] ',
+                false
+            );
+
+            if (!$helper->ask($input, $output, $question)) {
+                return;
+            }
+        }
 
         /** @var DomainEventStream $eventStream */
         foreach ($stream() as $eventStream) {
@@ -130,6 +153,10 @@ class ReplayCommand extends Command
             if (!$this->isPublishDisabled($input)) {
                 $eventBus->publish($eventStream);
             }
+        }
+
+        if ($eventBus instanceof ReplayModeEventBusInterface) {
+            $eventBus->stopReplayMode();
         }
     }
 
