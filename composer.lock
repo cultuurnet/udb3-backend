@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a39ae0f746a2827e4cd2363be0513fde",
-    "content-hash": "b0836506311488a0004610379ee92ab5",
+    "content-hash": "e74f2a6d362a47516099385a221a1677",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -152,7 +151,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2017-01-24 15:14:39"
+            "time": "2017-01-24T15:14:39+00:00"
         },
         {
             "name": "broadway/broadway",
@@ -240,7 +239,7 @@
                 "domain-driven design",
                 "event sourcing"
             ],
-            "time": "2016-12-07 08:03:00"
+            "time": "2016-12-07T08:03:00+00:00"
         },
         {
             "name": "broadway/uuid-generator",
@@ -273,7 +272,7 @@
                 "MIT"
             ],
             "description": "UUID generator for broadway/broadway.",
-            "time": "2014-09-12 14:14:07"
+            "time": "2014-09-12T14:14:07+00:00"
         },
         {
             "name": "chrisboulton/php-resque",
@@ -316,7 +315,7 @@
                 "redis",
                 "resque"
             ],
-            "time": "2012-10-13 07:28:16"
+            "time": "2012-10-13T07:28:16+00:00"
         },
         {
             "name": "commerceguys/intl",
@@ -360,7 +359,7 @@
                 }
             ],
             "description": "Internationalization library powered by CLDR data.",
-            "time": "2016-12-13 12:33:19"
+            "time": "2016-12-13T12:33:19+00:00"
         },
         {
             "name": "container-interop/container-interop",
@@ -387,7 +386,7 @@
                 "MIT"
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-            "time": "2014-12-30 15:22:37"
+            "time": "2014-12-30T15:22:37+00:00"
         },
         {
             "name": "crell/api-problem",
@@ -435,7 +434,7 @@
                 "rest",
                 "xml"
             ],
-            "time": "2014-10-07 17:43:34"
+            "time": "2014-10-07T17:43:34+00:00"
         },
         {
             "name": "cultuurnet/auth",
@@ -533,16 +532,16 @@
         },
         {
             "name": "cultuurnet/broadway-tools",
-            "version": "dev-feature/III-1777",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-tools.git",
-                "reference": "eed0a7cf94277a3c00c286169cd0ebd0b6099cc7"
+                "reference": "8cff4fc7a502b971663f579cf48845cbbbbb7549"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/eed0a7cf94277a3c00c286169cd0ebd0b6099cc7",
-                "reference": "eed0a7cf94277a3c00c286169cd0ebd0b6099cc7",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/8cff4fc7a502b971663f579cf48845cbbbbb7549",
+                "reference": "8cff4fc7a502b971663f579cf48845cbbbbb7549",
                 "shasum": ""
             },
             "require": {
@@ -570,7 +569,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-06 16:07:50"
+            "time": "2017-02-09 15:14:43"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -616,7 +615,7 @@
                 "Apache-2.0"
             ],
             "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2016-02-16 08:18:15"
+            "time": "2016-02-16T08:18:15+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -864,16 +863,16 @@
         },
         {
             "name": "cultuurnet/geocoding",
-            "version": "dev-feature/III-1777",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/geocoding.git",
-                "reference": "e760414a926d35af1872f4b6736fcd7ef3ffda82"
+                "reference": "3d20405039c06e7e6ef2145cce5a06c45844cfb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/e760414a926d35af1872f4b6736fcd7ef3ffda82",
-                "reference": "e760414a926d35af1872f4b6736fcd7ef3ffda82",
+                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/3d20405039c06e7e6ef2145cce5a06c45844cfb2",
+                "reference": "3d20405039c06e7e6ef2145cce5a06c45844cfb2",
                 "shasum": ""
             },
             "require-dev": {
@@ -909,7 +908,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-01-31 09:18:40"
+            "time": "2017-02-09 15:15:32"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1047,7 +1046,7 @@
                 "Apache-2.0"
             ],
             "description": "CultuurNet search service",
-            "time": "2015-11-20 11:50:37"
+            "time": "2015-11-20T11:50:37+00:00"
         },
         {
             "name": "cultuurnet/silex-amqp",
@@ -1227,16 +1226,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-1777",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f5eb903ab5b41359ebbc25dbd133146a4d8a29e2"
+                "reference": "e5161e5d19ca662449f23e93b0d863f75307fbbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f5eb903ab5b41359ebbc25dbd133146a4d8a29e2",
-                "reference": "f5eb903ab5b41359ebbc25dbd133146a4d8a29e2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/e5161e5d19ca662449f23e93b0d863f75307fbbc",
+                "reference": "e5161e5d19ca662449f23e93b0d863f75307fbbc",
                 "shasum": ""
             },
             "require": {
@@ -1249,7 +1248,7 @@
                 "cultuurnet/clock": "~0.1",
                 "cultuurnet/culturefeed-php": "dev-master as 1.6",
                 "cultuurnet/deserializer": "~1.0",
-                "cultuurnet/geocoding": "dev-feature/III-1777 as 0.1",
+                "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/search": "~1.1",
                 "cultuurnet/symfony-security-jwt": "~1.0",
                 "danielstjules/stringy": "~1.9",
@@ -1299,7 +1298,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-02-07 09:39:14"
+            "time": "2017-02-09 15:23:35"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1352,12 +1351,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-export.git",
-                "reference": "5e1e7a9530979bf449b9c78ce333b8c9f1951103"
+                "reference": "81d50e453624dc3ac2e9ce8fc281287fc039697d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/5e1e7a9530979bf449b9c78ce333b8c9f1951103",
-                "reference": "5e1e7a9530979bf449b9c78ce333b8c9f1951103",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/81d50e453624dc3ac2e9ce8fc281287fc039697d",
+                "reference": "81d50e453624dc3ac2e9ce8fc281287fc039697d",
                 "shasum": ""
             },
             "require": {
@@ -1398,7 +1397,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-01-31 07:55:58"
+            "time": "2017-02-08 10:06:16"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1720,7 +1719,7 @@
                 "utility",
                 "utils"
             ],
-            "time": "2015-07-23 00:54:12"
+            "time": "2015-07-23T00:54:12+00:00"
         },
         {
             "name": "deralex/yaml-config-service-provider",
@@ -1772,7 +1771,7 @@
             "keywords": [
                 "silex"
             ],
-            "time": "2014-01-29 15:54:57"
+            "time": "2014-01-29T15:54:57+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1840,7 +1839,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2016-12-30 15:59:45"
+            "time": "2016-12-30T15:59:45+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -1910,7 +1909,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2016-10-29 11:16:17"
+            "time": "2016-10-29T11:16:17+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -1977,7 +1976,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2017-01-03 10:49:41"
+            "time": "2017-01-03T10:49:41+00:00"
         },
         {
             "name": "doctrine/common",
@@ -2050,20 +2049,20 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2017-01-13 14:02:13"
+            "time": "2017-01-13T14:02:13+00:00"
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.11",
+            "version": "v2.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "1b1effbddbdc0f40d1c8f849f44bcddac4f52a48"
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/1b1effbddbdc0f40d1c8f849f44bcddac4f52a48",
-                "reference": "1b1effbddbdc0f40d1c8f849f44bcddac4f52a48",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7b9e911f9d8b30d43b96853dab26898c710d8f44",
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44",
                 "shasum": ""
             },
             "require": {
@@ -2121,7 +2120,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-02-04 21:20:13"
+            "time": "2017-02-08T12:53:47+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -2188,7 +2187,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06 14:35:42"
+            "time": "2015-11-06T14:35:42+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -2242,7 +2241,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09 13:34:57"
+            "time": "2014-09-09T13:34:57+00:00"
         },
         {
             "name": "doctrine/migrations",
@@ -2316,7 +2315,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2016-12-25 22:54:00"
+            "time": "2016-12-25T22:54:00+00:00"
         },
         {
             "name": "gridonic/princexml-php",
@@ -2360,7 +2359,7 @@
                 "princexml",
                 "xml"
             ],
-            "time": "2014-07-22 12:32:03"
+            "time": "2014-07-22T12:32:03+00:00"
         },
         {
             "name": "guzzle/common",
@@ -2405,7 +2404,7 @@
                 "exception"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-08-11 04:32:36"
+            "time": "2014-08-11T04:32:36+00:00"
         },
         {
             "name": "guzzle/http",
@@ -2463,7 +2462,7 @@
                 "http client"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-08-11 04:32:36"
+            "time": "2014-08-11T04:32:36+00:00"
         },
         {
             "name": "guzzle/log",
@@ -2516,7 +2515,7 @@
                 "log"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-03-26 17:15:28"
+            "time": "2014-03-26T17:15:28+00:00"
         },
         {
             "name": "guzzle/parser",
@@ -2561,7 +2560,7 @@
                 "url"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-02-05 18:29:46"
+            "time": "2014-02-05T18:29:46+00:00"
         },
         {
             "name": "guzzle/plugin-cookie",
@@ -2611,7 +2610,7 @@
                 "plugin"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-02-07 18:36:58"
+            "time": "2014-02-07T18:36:58+00:00"
         },
         {
             "name": "guzzle/plugin-log",
@@ -2663,7 +2662,7 @@
                 "plugin"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-01-08 21:45:39"
+            "time": "2014-01-08T21:45:39+00:00"
         },
         {
             "name": "guzzle/plugin-oauth",
@@ -2714,7 +2713,7 @@
                 "plugin"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-04-16 13:26:19"
+            "time": "2014-04-16T13:26:19+00:00"
         },
         {
             "name": "guzzle/stream",
@@ -2768,7 +2767,7 @@
                 "stream"
             ],
             "abandoned": "guzzle/guzzle",
-            "time": "2014-05-01 21:36:02"
+            "time": "2014-05-01T21:36:02+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2830,7 +2829,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-03-21 20:02:09"
+            "time": "2016-03-21T20:02:09+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -2881,7 +2880,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20 10:07:11"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -2939,7 +2938,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-02-18 21:54:00"
+            "time": "2016-02-18T21:54:00+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -2981,7 +2980,7 @@
                 "hashing",
                 "password"
             ],
-            "time": "2014-11-20 16:49:30"
+            "time": "2014-11-20T16:49:30+00:00"
         },
         {
             "name": "jdesrosiers/silex-cors-provider",
@@ -3031,7 +3030,7 @@
                 "sharing",
                 "silex"
             ],
-            "time": "2015-09-12 22:16:14"
+            "time": "2015-09-12T22:16:14+00:00"
         },
         {
             "name": "jeremykendall/php-domain-parser",
@@ -3093,7 +3092,7 @@
                 "domain parsing",
                 "url parsing"
             ],
-            "time": "2015-03-30 12:49:45"
+            "time": "2015-03-30T12:49:45+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -3159,7 +3158,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2015-07-13 05:06:53"
+            "time": "2015-07-13T05:06:53+00:00"
         },
         {
             "name": "knplabs/console-service-provider",
@@ -3201,7 +3200,7 @@
                 "console",
                 "silex"
             ],
-            "time": "2016-02-01 15:38:27"
+            "time": "2016-02-01T15:38:27+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -3259,20 +3258,20 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2016-10-31 20:09:32"
+            "time": "2016-10-31T20:09:32+00:00"
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.34",
+            "version": "1.0.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "469ad53c13ea19a0e54e3e5d70f61227ddcc0299"
+                "reference": "dda7f3ab94158a002d9846a97dc18ebfb7acc062"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/469ad53c13ea19a0e54e3e5d70f61227ddcc0299",
-                "reference": "469ad53c13ea19a0e54e3e5d70f61227ddcc0299",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/dda7f3ab94158a002d9846a97dc18ebfb7acc062",
+                "reference": "dda7f3ab94158a002d9846a97dc18ebfb7acc062",
                 "shasum": ""
             },
             "require": {
@@ -3342,7 +3341,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-01-30 17:41:17"
+            "time": "2017-02-09T11:33:58+00:00"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -3389,7 +3388,7 @@
                 }
             ],
             "description": "Flysystem adapter for ZipArchive's",
-            "time": "2016-12-20 08:36:16"
+            "time": "2016-12-20T08:36:16+00:00"
         },
         {
             "name": "league/geotools",
@@ -3461,7 +3460,7 @@
                 "geometry",
                 "geotools"
             ],
-            "time": "2014-05-15 23:59:22"
+            "time": "2014-05-15T23:59:22+00:00"
         },
         {
             "name": "league/uri",
@@ -3529,7 +3528,7 @@
                 "url",
                 "ws"
             ],
-            "time": "2016-12-12 11:36:42"
+            "time": "2016-12-12T11:36:42+00:00"
         },
         {
             "name": "marc-mabe/php-enum",
@@ -3588,7 +3587,7 @@
                 "type-hint",
                 "typehint"
             ],
-            "time": "2015-10-04 17:35:32"
+            "time": "2015-10-04T17:35:32+00:00"
         },
         {
             "name": "mathiasverraes/money",
@@ -3644,7 +3643,7 @@
                 "money"
             ],
             "abandoned": "moneyphp/money",
-            "time": "2016-01-16 22:03:46"
+            "time": "2016-01-16T22:03:46+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3722,7 +3721,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-11-26 00:15:39"
+            "time": "2016-11-26T00:15:39+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -3775,7 +3774,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2017-01-16 07:55:07"
+            "time": "2017-01-16T07:55:07+00:00"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -3828,7 +3827,7 @@
                 }
             ],
             "description": "A PHP library/collection of classes aimed to help developers using and undestanding immutable objects.",
-            "time": "2015-05-15 13:19:42"
+            "time": "2015-05-15T13:19:42+00:00"
         },
         {
             "name": "ocramius/proxy-manager",
@@ -3891,20 +3890,20 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2015-08-09 04:28:19"
+            "time": "2015-08-09T04:28:19+00:00"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.4",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
+                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
-                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c7e26a21ba357863de030f0b9e701c7d04593774",
+                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774",
                 "shasum": ""
             },
             "require": {
@@ -3939,7 +3938,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-11-07 23:38:38"
+            "time": "2016-03-18T20:34:03+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -4009,7 +4008,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2016-04-11 14:30:01"
+            "time": "2016-04-11T14:30:01+00:00"
         },
         {
             "name": "php-http/guzzle6-adapter",
@@ -4069,7 +4068,7 @@
                 "Guzzle",
                 "http"
             ],
-            "time": "2016-05-10 06:13:32"
+            "time": "2016-05-10T06:13:32+00:00"
         },
         {
             "name": "php-http/httplug",
@@ -4125,7 +4124,7 @@
                 "client",
                 "http"
             ],
-            "time": "2016-01-26 14:34:50"
+            "time": "2016-01-26T14:34:50+00:00"
         },
         {
             "name": "php-http/promise",
@@ -4175,7 +4174,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-01-26 13:27:02"
+            "time": "2016-01-26T13:27:02+00:00"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -4232,7 +4231,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2015-05-01 07:00:55"
+            "time": "2015-05-01T07:00:55+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -4278,7 +4277,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2013-11-22 08:30:29"
+            "time": "2013-11-22T08:30:29+00:00"
         },
         {
             "name": "predis/predis",
@@ -4328,7 +4327,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2016-06-16 16:22:20"
+            "time": "2016-06-16T16:22:20+00:00"
         },
         {
             "name": "psr/http-message",
@@ -4378,7 +4377,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/log",
@@ -4425,7 +4424,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "qandidate/toggle",
@@ -4482,7 +4481,7 @@
                 "toggle",
                 "trigger"
             ],
-            "time": "2015-12-28 15:54:08"
+            "time": "2015-12-28T15:54:08+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -4549,7 +4548,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2016-03-22 18:20:19"
+            "time": "2016-03-22T18:20:19+00:00"
         },
         {
             "name": "rase/socket.io-emitter",
@@ -4588,7 +4587,7 @@
                 "Socket.io",
                 "emit"
             ],
-            "time": "2014-10-10 10:37:20"
+            "time": "2014-10-10T10:37:20+00:00"
         },
         {
             "name": "react/async",
@@ -4629,7 +4628,7 @@
             "keywords": [
                 "async"
             ],
-            "time": "2013-02-06 23:27:19"
+            "time": "2013-02-06T23:27:19+00:00"
         },
         {
             "name": "silex/silex",
@@ -4706,7 +4705,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2016-01-06 14:59:35"
+            "time": "2016-01-06T14:59:35+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4760,7 +4759,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-12-29 10:02:40"
+            "time": "2016-12-29T10:02:40+00:00"
         },
         {
             "name": "symfony/console",
@@ -4821,7 +4820,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-06 12:04:06"
+            "time": "2017-02-06T12:04:06+00:00"
         },
         {
             "name": "symfony/debug",
@@ -4878,7 +4877,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-27 23:54:58"
+            "time": "2017-01-27T23:54:58+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -4938,7 +4937,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:30:24"
+            "time": "2017-01-02T20:30:24+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -4994,7 +4993,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-02 13:27:35"
+            "time": "2017-02-02T13:27:35+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -5076,7 +5075,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-06 12:47:36"
+            "time": "2017-02-06T12:47:36+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -5135,7 +5134,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/polyfill-php55",
@@ -5191,7 +5190,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14 01:06:16"
+            "time": "2016-11-14T01:06:16+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -5245,7 +5244,7 @@
                 "http-message",
                 "psr-7"
             ],
-            "time": "2015-05-29 17:57:12"
+            "time": "2015-05-29T17:57:12+00:00"
         },
         {
             "name": "symfony/routing",
@@ -5320,23 +5319,24 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-01-27 23:54:58"
+            "time": "2017-01-27T23:54:58+00:00"
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.8",
+            "version": "v2.7.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
+                "reference": "17fae546bf4be09cf1c012c47830c79d195ffc95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "url": "https://api.github.com/repos/symfony/security/zipball/17fae546bf4be09cf1c012c47830c79d195ffc95",
+                "reference": "17fae546bf4be09cf1c012c47830c79d195ffc95",
                 "shasum": ""
             },
             "require": {
+                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
                 "symfony/http-foundation": "~2.1",
@@ -5362,7 +5362,6 @@
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -5400,7 +5399,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-23 18:13:52"
+            "time": "2017-01-02T20:30:00+00:00"
         },
         {
             "name": "symfony/serializer",
@@ -5464,7 +5463,7 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21 16:59:38"
+            "time": "2017-01-21T16:59:38+00:00"
         },
         {
             "name": "symfony/translation",
@@ -5528,7 +5527,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21 17:06:35"
+            "time": "2017-01-21T17:06:35+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -5577,7 +5576,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21 16:40:50"
+            "time": "2017-01-21T16:40:50+00:00"
         },
         {
             "name": "twig/twig",
@@ -5638,7 +5637,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-01-11 19:36:15"
+            "time": "2017-01-11T19:36:15+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -5688,7 +5687,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23 20:04:58"
+            "time": "2016-11-23T20:04:58+00:00"
         },
         {
             "name": "willdurand/geocoder",
@@ -5752,7 +5751,7 @@
                 "geocoding",
                 "geoip"
             ],
-            "time": "2015-01-07 13:23:35"
+            "time": "2015-01-07T13:23:35+00:00"
         },
         {
             "name": "zendframework/zend-code",
@@ -5804,7 +5803,7 @@
                 "code",
                 "zf2"
             ],
-            "time": "2016-04-20 17:26:42"
+            "time": "2016-04-20T17:26:42+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -5854,7 +5853,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2017-01-23 04:53:24"
+            "time": "2017-01-23T04:53:24+00:00"
         },
         {
             "name": "zendframework/zend-eventmanager",
@@ -5908,7 +5907,7 @@
                 "events",
                 "zf2"
             ],
-            "time": "2016-12-19 21:47:12"
+            "time": "2016-12-19T21:47:12+00:00"
         },
         {
             "name": "zendframework/zend-stdlib",
@@ -5953,7 +5952,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2016-09-13 14:38:50"
+            "time": "2016-09-13T14:38:50+00:00"
         },
         {
             "name": "zendframework/zend-validator",
@@ -6024,7 +6023,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2017-01-29 17:24:24"
+            "time": "2017-01-29T17:24:24+00:00"
         }
     ],
     "packages-dev": [
@@ -6072,7 +6071,7 @@
                 "Symfony2",
                 "phpcs"
             ],
-            "time": "2016-03-14 16:38:04"
+            "time": "2016-03-14T16:38:04+00:00"
         },
         {
             "name": "phing/phing",
@@ -6165,7 +6164,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-10-13 09:01:45"
+            "time": "2016-10-13T09:01:45+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -6243,27 +6242,12 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-02-02 03:30:00"
+            "time": "2017-02-02T03:30:00+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1777",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1777",
-            "package": "cultuurnet/broadway-tools"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/udb3": 20,
-        "cultuurnet/broadway-tools": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
