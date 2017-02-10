@@ -21,8 +21,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $app['place_controller'] = $app->share(
             function (Application $app) {
                 return new ReadPlaceRestController(
-                    $app['place_service'],
-                    $app['place_lookup']
+                    $app['place_service']
                 );
             }
         );
@@ -47,8 +46,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
             ->bind('place');
         $controllers->delete('place/{cdbid}', 'place_editing_controller:deletePlace');
         $controllers->get('place/{cdbid}/events', 'place_editing_controller:getEvents');
-
-        $controllers->get('places', 'place_controller:getByPostalCode');
 
         $controllers->post('place', 'place_editing_controller:createPlace');
 
