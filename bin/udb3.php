@@ -2,6 +2,7 @@
 <?php
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -20,6 +21,10 @@ $app->register(
 
 /** @var \Knp\Console\Application $consoleApp */
 $consoleApp = $app['console'];
+
+/** @var Impersonator $impersonator */
+$impersonator = $app['impersonator'];
+$impersonator->impersonate($app['udb3_system_user_metadata']);
 
 $consoleApp->add(
     (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))->withHeartBeat('dbal_connection:keepalive')
