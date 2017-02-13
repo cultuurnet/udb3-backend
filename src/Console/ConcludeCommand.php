@@ -53,9 +53,6 @@ class ConcludeCommand extends AbstractConcludeCommand
         /** @var IriOfferIdentifier[] $results */
         $results = $finder->search($query);
 
-        // Before initializing the command bus, impersonate the system user.
-        $this->impersonateUDB3SystemUser();
-
         foreach ($results as $result) {
             $output->writeln((string) $result->getIri());
 

@@ -22,6 +22,11 @@ $app->register(
 /** @var \Knp\Console\Application $consoleApp */
 $consoleApp = $app['console'];
 
+// This shouldn't be needed in theory, but some process managers have a
+// dependency on the command bus, which in turn has a dependency on the
+// current user to authorize commands.
+// These process managers SHOULD NOT react on replay events, but in the
+// current setup they ARE bootstrapped (they just ignore replay events).
 /** @var Impersonator $impersonator */
 $impersonator = $app['impersonator'];
 $impersonator->impersonate($app['udb3_system_user_metadata']);

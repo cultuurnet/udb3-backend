@@ -25,8 +25,6 @@ class ConcludeByCdbidCommand extends AbstractConcludeCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->impersonateUDB3SystemUser();
-
         $cdbid = $input->getArgument('cdbid');
 
         $this->dispatchConclude($cdbid);
