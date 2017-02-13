@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class GeocodeCommand extends AbstractSystemUserCommand
+class GeocodeCommand extends AbstractCommand
 {
     /**
      * @inheritdoc
@@ -65,8 +65,6 @@ class GeocodeCommand extends AbstractSystemUserCommand
         if (!$helper->ask($input, $output, $question)) {
             return;
         }
-
-        $this->impersonateUDB3SystemUser();
 
         foreach ($cdbids as $cdbid) {
             $this->dispatchGeocodingCommand($cdbid, $output);

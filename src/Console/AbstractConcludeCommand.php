@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Event\Commands\Conclude;
 
-abstract class AbstractConcludeCommand extends AbstractSystemUserCommand
+abstract class AbstractConcludeCommand extends AbstractCommand
 {
     /**
      * @param string $cdbid

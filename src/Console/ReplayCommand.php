@@ -20,7 +20,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  *
  * @package CultuurNet\UDB3\Silex\Console
  */
-class ReplayCommand extends AbstractSystemUserCommand
+class ReplayCommand extends AbstractCommand
 {
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
     const OPTION_START_ID = 'start-id';
@@ -100,13 +100,6 @@ class ReplayCommand extends AbstractSystemUserCommand
             );
             $this->setSubscribers($subscribers);
         }
-
-        // This shouldn't be needed in theory, but some process managers have a
-        // dependency on the command bus, which in turn has a dependency on the
-        // current user to authorize commands.
-        // These process managers SHOULD NOT react on replay events, but in the
-        // current setup they ARE bootstrapped (they just ignore replay events).
-        $this->impersonateUDB3SystemUser();
 
         $store = $this->getStore($input, $output);
 
