@@ -47,7 +47,7 @@ if (!isset($udb3ConfigLocation)) {
 $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
 
 // Add the system user to the list of god users.
-$app['config'] = array_merge(
+$app['config'] = array_merge_recursive(
     $app['config'],
     [
         'user_permissions' => [
