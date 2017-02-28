@@ -1,15 +1,12 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Feature;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Silex\Route;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Makes routes of a controller provider unavailable based on a feature toggle.
@@ -46,9 +43,7 @@ class FeatureControllerProvider implements ControllerProviderInterface
 
         if (!$toggles->active($this->toggle, $app['toggles.context'])) {
             $serviceUnavailableController = function () {
-                $problem = new ApiProblem('Feature is disabled on this installation.');
-                $problem->setStatus(Response::HTTP_SERVICE_UNAVAILABLE);
-                return new ApiProblemJsonResponse($problem);
+                return new FeatureDisabledJsonResponse();
             };
 
             $controllers->run($serviceUnavailableController);

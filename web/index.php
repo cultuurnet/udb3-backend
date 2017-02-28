@@ -6,7 +6,7 @@ use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Silex\FeatureControllerProvider;
+use CultuurNet\UDB3\Silex\Feature\FeatureControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
 use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
