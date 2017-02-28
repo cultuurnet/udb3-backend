@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Silex\Feature\FeatureDisabledJsonResponse;
 use CultuurNet\UDB3\Symfony\Event\EditEventRestController;
 use CultuurNet\UDB3\Symfony\Event\ReadEventRestController;
 use Silex\Application;
@@ -44,7 +45,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->delete('event/{cdbid}', 'event_editing_controller:deleteEvent');
 
         $controllers
-            ->get('event/{cdbid}/history', 'event_controller:history')
+            ->get('event/{cdbid}/history', $this->getHistoryCallback($app))
             ->bind('event-history');
 
         $controllers->post('event', "event_editing_controller:createEvent");
@@ -68,5 +69,37 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->post('event/{cdbid}/copies/', 'event_editing_controller:copyEvent');
 
         return $controllers;
+    }
+
+    /**
+     * @param Application $app
+     * @return \Closure|string
+     */
+    private function getHistoryCallback(Application $app)
+    {
+        if ($this->isHistoryEnabled($app)) {
+            $callback = 'event_controller:history';
+        } else {
+            $callback = function () {
+                return new FeatureDisabledJsonResponse();
+            };
+        }
+
+        return $callback;
+    }
+
+    /**
+     * @param Application $app
+     * @return bool
+     */
+    private function isHistoryEnabled(Application $app)
+    {
+        /** @var \Qandidate\Toggle\ToggleManager $toggles */
+        $toggles = $app['toggles'];
+
+        return $toggles->active(
+            'history',
+            $app['toggles.context']
+        );
     }
 }
