@@ -23,3 +23,7 @@ toggles:
     name: variations
     conditions: {}
     status: inactive
+  history:
+    name: history
+    conditions: {}
+    status: inactive
