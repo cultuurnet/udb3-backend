@@ -41,13 +41,13 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         $controllers->put(
-            '/{organizerId}/website',
-            'organizer_edit_controller:updateWebsite'
+            '/{organizerId}/url',
+            'organizer_edit_controller:updateUrl'
         );
 
         $controllers->put(
-            '/{organizerId}/title',
-            'organizer_edit_controller:updateTitle'
+            '/{organizerId}/name',
+            'organizer_edit_controller:updateName'
         );
 
         $controllers->put(
