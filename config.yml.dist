@@ -90,6 +90,12 @@ cdbxml_proxy:
   redirect_domain: "www.domain-cdbxml-service.be"
   redirect_port: 80
 
+calendar_summary_proxy:
+  enabled: "true"
+  pathRegex: ^\/event\/(?<offerId>[a-zA-Z0-9\-]+)\/calendar-summary$
+  redirect_domain: "www.domain-cdbxml-service.be"
+  redirect_port: 80
+
 jwt:
   keys:
     public:
