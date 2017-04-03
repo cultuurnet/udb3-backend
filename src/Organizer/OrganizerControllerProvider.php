@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
-use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\Symfony\Organizer\EditOrganizerRestController;
 use CultuurNet\UDB3\Symfony\Organizer\ReadOrganizerRestController;
 use Silex\Application;
@@ -40,6 +39,26 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             ->bind('organizer');
 
         $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
+
+        $controllers->put(
+            '/{organizerId}/url',
+            'organizer_edit_controller:updateUrl'
+        );
+
+        $controllers->put(
+            '/{organizerId}/name',
+            'organizer_edit_controller:updateName'
+        );
+
+        $controllers->put(
+            '/{organizerId}/address',
+            'organizer_edit_controller:updateAddress'
+        );
+
+        $controllers->put(
+            '/{organizerId}/contactPoint',
+            'organizer_edit_controller:updateContactPoint'
+        );
 
         $controllers->put(
             '/{organizerId}/labels/{labelName}',
