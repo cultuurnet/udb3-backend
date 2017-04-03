@@ -153,6 +153,19 @@ if (isset($app['config']['cdbxml_proxy']) &&
     );
 }
 
+if (isset($app['config']['calendar_summary_proxy']) &&
+    $app['config']['calendar_summary_proxy']['enabled']) {
+    $app->before(
+        function (Request $request, Application $app) {
+            /** @var \CultuurNet\UDB3\Symfony\Proxy\CalendarSummaryProxy $calendarSummaryProxy */
+            $calendarSummaryProxy = $app['calendar_summary_proxy'];
+
+            return $calendarSummaryProxy->handle($request);
+        },
+        Application::EARLY_EVENT
+    );
+}
+
 /**
  * Bootstrap metadata based on user context.
  */
