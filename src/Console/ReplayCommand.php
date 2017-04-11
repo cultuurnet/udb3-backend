@@ -144,7 +144,7 @@ class ReplayCommand extends AbstractCommand
             /** @var DomainMessage $message */
             foreach ($eventStream->getIterator() as $message) {
                 $output->writeln(
-                    $stream->getPreviousId() . '. ' .
+                    $stream->getLastProcessedId() . '. ' .
                     $message->getRecordedOn()->toString() . ' ' .
                     $message->getType() .
                     ' (' . $message->getId() . ')'
