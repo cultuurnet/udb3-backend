@@ -25,6 +25,7 @@ class ReplayCommand extends AbstractCommand
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
     const OPTION_START_ID = 'start-id';
     const OPTION_DELAY = 'delay';
+    const OPTION_CDBID = 'cdbid';
 
     /**
      * @inheritdoc
@@ -70,6 +71,12 @@ class ReplayCommand extends AbstractCommand
                 InputOption::VALUE_REQUIRED,
                 'Delay per message, in milliseconds.',
                 0
+            )
+            ->addOption(
+                self::OPTION_CDBID,
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The cdbid of the aggregate to be replayed.'
             );
     }
 
@@ -101,10 +108,11 @@ class ReplayCommand extends AbstractCommand
             $this->setSubscribers($subscribers);
         }
 
-        $store = $this->getStore($input, $output);
+        $store = $this->getStore($input);
 
-        $startId = $input->getOption(self::OPTION_START_ID);
-        $stream = $this->getEventStream($store, $startId);
+        $startId = (int) $input->getOption(self::OPTION_START_ID);
+        $cdbid = $input->getOption(self::OPTION_CDBID);
+        $stream = $this->getEventStream($store, $startId, $cdbid);
 
         $eventBus = $this->getEventBus();
 
@@ -136,7 +144,7 @@ class ReplayCommand extends AbstractCommand
             /** @var DomainMessage $message */
             foreach ($eventStream->getIterator() as $message) {
                 $output->writeln(
-                    $stream->getPreviousId() . '. ' .
+                    $stream->getLastProcessedId() . '. ' .
                     $message->getRecordedOn()->toString() . ' ' .
                     $message->getType() .
                     ' (' . $message->getId() . ')'
@@ -178,20 +186,31 @@ class ReplayCommand extends AbstractCommand
 
     /**
      * @param string $store
-     * @param int $startId
+     * @param int|null $startId
+     * @param string|null $cdbid
      * @return EventStream
      */
-    private function getEventStream($store = 'events', $startId = null)
-    {
+    private function getEventStream(
+        $store = 'events',
+        $startId = null,
+        $cdbid = null
+    ) {
         $app = $this->getSilexApplication();
 
         $eventStream = new EventStream(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new SimpleInterfaceSerializer(),
-            $store,
-            $startId !== null ? $startId : 0
+            $store
         );
+
+        if ($startId) {
+            $eventStream = $eventStream->withStartId($startId);
+        }
+
+        if ($cdbid) {
+            $eventStream = $eventStream->withCdbid($cdbid);
+        }
 
         // Older domain messages in the events, places, and organizers
         // stores are missing some metadata. Add it using the offer locator
@@ -206,10 +225,9 @@ class ReplayCommand extends AbstractCommand
 
     /**
      * @param InputInterface  $input
-     * @param OutputInterface $output
      * @return mixed
      */
-    private function getStore(InputInterface $input, OutputInterface $output)
+    private function getStore(InputInterface $input)
     {
         $validStores = [
             'events',
