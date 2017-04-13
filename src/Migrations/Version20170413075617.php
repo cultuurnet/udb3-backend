@@ -36,5 +36,4 @@ class Version20170413075617 extends AbstractMigration
     {
         return $schema->getTable('labels_relations');
     }
-
 }
