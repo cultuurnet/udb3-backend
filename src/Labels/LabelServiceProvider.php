@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Symfony\Management\User\CultureFeedUserIdentification;
+use CultuurNet\UDB3\UDB2\Label\NativeLabelApplier;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -74,6 +75,8 @@ class LabelServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $this->setUpLogger($app);
+
         $this->setUpReadModels($app);
 
         $this->setUpServices($app);
@@ -86,7 +89,15 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $this->setUpQueryFactory($app);
 
-        $this->setUpLogger($app);
+        $app['native_labels_applier'] = $app->share(
+            function (Application $app) {
+                return new NativeLabelApplier(
+                    $app[self::RELATIONS_READ_REPOSITORY],
+                    $app[self::JSON_READ_REPOSITORY],
+                    $app[self::LOGGER]
+                );
+            }
+        );
     }
 
     /**
@@ -102,7 +113,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     private function setUpReadModels(Application $app)
     {
         $app[self::JSON_REPOSITORY_SCHEMA] = $app->share(
-            function (Application $app) {
+            function () {
                 return new JsonSchemaConfigurator(
                     new StringLiteral(self::JSON_TABLE)
                 );
@@ -110,7 +121,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
 
         $app[self::RELATIONS_REPOSITORY_SCHEMA] = $app->share(
-            function (Application $app) {
+            function () {
                 return new RelationsSchemaConfigurator(
                     new StringLiteral(self::RELATIONS_TABLE)
                 );
@@ -118,7 +129,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
 
         $app[self::LABEL_ROLES_REPOSITORY_SCHEMA] = $app->share(
-            function (Application $app) {
+            function () {
                 return new LabelRolesSchemaConfigurator(
                     new StringLiteral(self::LABEL_ROLES_TABLE)
                 );
@@ -367,7 +378,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function () {
                 $logger = new Logger('labels');
                 $logger->pushHandler(new StreamHandler('php://stdout'));
-                $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/labels.log'));
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/labels.log'));
 
                 return $logger;
             }
