@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb841c66aec49765ede86f83bf43c3eb",
+    "content-hash": "a8d2d3be3facf20c945cb57a7077b732",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1557,16 +1557,16 @@
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-2027",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "f9998b7717da53f60d855bf48214dafdd7e9352e"
+                "reference": "362a8615fd19a310a5ef737478dbacd96d7a085a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/f9998b7717da53f60d855bf48214dafdd7e9352e",
-                "reference": "f9998b7717da53f60d855bf48214dafdd7e9352e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/362a8615fd19a310a5ef737478dbacd96d7a085a",
+                "reference": "362a8615fd19a310a5ef737478dbacd96d7a085a",
                 "shasum": ""
             },
             "require": {
@@ -1574,7 +1574,7 @@
                 "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/udb2-domain-events": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-2027 as 0.1",
                 "guzzlehttp/psr7": "~1.2.3",
                 "league/uri": "^4.2",
                 "php-http/httplug": "~1.0.0"
@@ -1611,7 +1611,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2017-02-23 14:24:20"
+            "time": "2017-04-13 16:33:38"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -6308,11 +6308,18 @@
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-2027",
             "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2027",
+            "package": "cultuurnet/udb3-udb2-bridge"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
