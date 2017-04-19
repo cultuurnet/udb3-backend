@@ -30,7 +30,7 @@ use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Symfony\Management\User\CultureFeedUserIdentification;
-use CultuurNet\UDB3\UDB2\Label\NativeLabelApplier;
+use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -89,9 +89,9 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $this->setUpQueryFactory($app);
 
-        $app['native_labels_applier'] = $app->share(
+        $app['related_udb3_labels_applier'] = $app->share(
             function (Application $app) {
-                return new NativeLabelApplier(
+                return new RelatedUDB3LabelApplier(
                     $app[self::RELATIONS_READ_REPOSITORY],
                     $app[self::JSON_READ_REPOSITORY],
                     $app[self::LOGGER]
