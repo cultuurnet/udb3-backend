@@ -225,7 +225,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     new Any(),
                     $app['event_repository'],
                     new EventToUDB3EventFactory(),
-                    $app['udb2_media_importer']
+                    $app['udb2_media_importer'],
+                    $app['related_udb3_labels_applier']
                 );
 
                 $logger = new Logger('udb2-events-to-udb3-event-applier');
@@ -243,6 +244,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['place_repository'],
                     new ActorToUDB3PlaceFactory(),
                     new QualifiesAsPlaceSpecification(),
+                    $app['related_udb3_labels_applier'],
                     $app['udb2_media_importer']
                 );
 
@@ -260,7 +262,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $applier = new ActorEventApplier(
                     $app['organizer_repository'],
                     new ActorToUDB3OrganizerFactory(),
-                    new QualifiesAsOrganizerSpecification()
+                    new QualifiesAsOrganizerSpecification(),
+                    $app['related_udb3_labels_applier']
                 );
 
                 $logger = new Logger('udb2-actor-events-to-udb3-organizer-applier');
