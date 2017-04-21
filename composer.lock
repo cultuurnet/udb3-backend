@@ -3248,7 +3248,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -6130,59 +6130,6 @@
                 "symfony"
             ],
             "time": "2017-03-02 11:23:49"
-        },
-        {
-            "name": "nicolopignatelli/valueobjects",
-            "version": "v3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nicolopignatelli/valueobjects.git",
-                "reference": "de7ab566be73e9e2c73bbbf05177646b11fc2b05"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nicolopignatelli/valueobjects/zipball/de7ab566be73e9e2c73bbbf05177646b11fc2b05",
-                "reference": "de7ab566be73e9e2c73bbbf05177646b11fc2b05",
-                "shasum": ""
-            },
-            "require": {
-                "league/geotools": "~0.3.1",
-                "marc-mabe/php-enum": "~1.0",
-                "mathiasverraes/money": "~1.2",
-                "php": ">=5.3.3",
-                "ramsey/uuid": "~2.5",
-                "zendframework/zend-validator": "~2.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ValueObjects\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/nicolopignatelli/valueobjects/graphs/contributors"
-                },
-                {
-                    "name": "Nicolò Pignatelli",
-                    "email": "pignatelli.nicolo@gmail.com"
-                }
-            ],
-            "description": "A PHP library/collection of classes aimed to help developers using and undestanding immutable objects.",
-            "time": "2015-05-15 13:19:42"
         },
         {
             "name": "phing/phing",
