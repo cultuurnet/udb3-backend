@@ -434,10 +434,11 @@ $app['event_calendar_repository'] = $app->share(
 
 $app['calendar_summary_repository'] = $app->share(
     function ($app) {
-        if (isset($app['config']['export']['calendar_summaries_url'])) {
+        // At the moment the calendar-summary is accessible through this app via proxy.
+        if (isset($app['config']['url'])) {
             return new \CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository(
                 new Client(new \GuzzleHttp\Client()),
-                \League\Uri\Schemes\Http::createFromString($app['config']['export']['calendar_summaries_url'])
+                \League\Uri\Schemes\Http::createFromString($app['config']['url'])
             );
         } else {
             return null;
