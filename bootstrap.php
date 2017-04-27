@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use Http\Adapter\Guzzle6\Client;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use DerAlex\Silex\YamlConfigServiceProvider;
@@ -428,6 +429,19 @@ $app['event_calendar_repository'] = $app->share(
         return new \CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository(
             $app['event_calendar_cache']
         );
+    }
+);
+
+$app['calendar_summary_repository'] = $app->share(
+    function ($app) {
+        if (isset($app['config']['export']['calendar_summaries_url'])) {
+            return new \CultuurNet\UDB3\EventExport\CalendarSummary\HttpCalendarSummaryRepository(
+                new Client(new \GuzzleHttp\Client()),
+                \League\Uri\Schemes\Http::createFromString($app['config']['export']['calendar_summaries_url'])
+            );
+        } else {
+            return null;
+        }
     }
 );
 
