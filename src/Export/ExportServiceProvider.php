@@ -30,7 +30,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                     $app['event_export'],
                     $app['config']['prince']['binary'],
                     $eventInfoService,
-                    $app['event_calendar_repository']
+                    $app['calendar_summary_repository']
                 );
             }
         );
