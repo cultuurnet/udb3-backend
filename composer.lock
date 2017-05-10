@@ -100,16 +100,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.7.5",
+            "version": "v2.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "2f688ee39ea9ce9e2c2164c9db62df3246b8fbff"
+                "reference": "8726e183ebbb0169cb6cb4832e22ebd355524563"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/2f688ee39ea9ce9e2c2164c9db62df3246b8fbff",
-                "reference": "2f688ee39ea9ce9e2c2164c9db62df3246b8fbff",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/8726e183ebbb0169cb6cb4832e22ebd355524563",
+                "reference": "8726e183ebbb0169cb6cb4832e22ebd355524563",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2017-04-26T09:32:13+00:00"
+            "time": "2017-05-04T02:00:24+00:00"
         },
         {
             "name": "broadway/broadway",
@@ -634,20 +634,20 @@
         },
         {
             "name": "cultuurnet/calendar-summary",
-            "version": "v1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary.git",
-                "reference": "973d54e2ae3846fa41206ccea22d307ebb03e3ac"
+                "reference": "32538bbccd01534da7345a84f20118331bb0c941"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/973d54e2ae3846fa41206ccea22d307ebb03e3ac",
-                "reference": "973d54e2ae3846fa41206ccea22d307ebb03e3ac",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/32538bbccd01534da7345a84f20118331bb0c941",
+                "reference": "32538bbccd01534da7345a84f20118331bb0c941",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/cdb": "~2.0",
+                "cultuurnet/cdb": "~2.2.0",
                 "ext-intl": "*",
                 "php": ">=5.6.0"
             },
@@ -675,7 +675,7 @@
                 "Apache-2.0"
             ],
             "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2017-05-03T06:42:26+00:00"
+            "time": "2017-05-10T10:18:56+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -683,12 +683,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "c850bf21cd431221cc8df496bd22186e80ac77fc"
+                "reference": "de5a97a82dec34ec7bd1ade0298b912764940e78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/c850bf21cd431221cc8df496bd22186e80ac77fc",
-                "reference": "c850bf21cd431221cc8df496bd22186e80ac77fc",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/de5a97a82dec34ec7bd1ade0298b912764940e78",
+                "reference": "de5a97a82dec34ec7bd1ade0298b912764940e78",
                 "shasum": ""
             },
             "require": {
@@ -713,7 +713,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2017-03-28 11:28:03"
+            "time": "2017-05-10 07:57:11"
         },
         {
             "name": "cultuurnet/clock",
@@ -4879,16 +4879,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.7",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4"
+                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4",
-                "reference": "56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/9a06dc570a0367850280eefd3f1dc2da45aef517",
+                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517",
                 "shasum": ""
             },
             "require": {
@@ -4929,7 +4929,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2017-04-20T17:32:18+00:00"
+            "time": "2017-05-01T15:54:03+00:00"
         },
         {
             "name": "symfony/console",
@@ -6202,16 +6202,16 @@
     "packages-dev": [
         {
             "name": "escapestudios/symfony2-coding-standard",
-            "version": "2.10.0",
+            "version": "2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/djoos/Symfony2-coding-standard.git",
-                "reference": "938ef2bd7f45877458db7764686332829d86f449"
+                "reference": "fdf8de2c4de016abb5ea6b6015f80c47f1f6301b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/djoos/Symfony2-coding-standard/zipball/938ef2bd7f45877458db7764686332829d86f449",
-                "reference": "938ef2bd7f45877458db7764686332829d86f449",
+                "url": "https://api.github.com/repos/djoos/Symfony2-coding-standard/zipball/fdf8de2c4de016abb5ea6b6015f80c47f1f6301b",
+                "reference": "fdf8de2c4de016abb5ea6b6015f80c47f1f6301b",
                 "shasum": ""
             },
             "require": {
@@ -6245,7 +6245,7 @@
                 "phpcs",
                 "symfony"
             ],
-            "time": "2017-03-02T11:23:49+00:00"
+            "time": "2017-05-05T08:51:47+00:00"
         },
         {
             "name": "phing/phing",
@@ -6342,16 +6342,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.8.1",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "d7cf0d894e8aa4c73712ee4a331cc1eaa37cdc7d"
+                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/d7cf0d894e8aa4c73712ee4a331cc1eaa37cdc7d",
-                "reference": "d7cf0d894e8aa4c73712ee4a331cc1eaa37cdc7d",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
+                "reference": "f7dfecbee89d68ab475a6c9e17d22bc9b69aed97",
                 "shasum": ""
             },
             "require": {
@@ -6416,7 +6416,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-03-01T22:17:45+00:00"
+            "time": "2017-05-03T23:30:39+00:00"
         }
     ],
     "aliases": [],
