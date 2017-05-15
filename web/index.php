@@ -44,6 +44,7 @@ $app['security.firewalls'] = array(
         'pattern' => (new AnyOfRequestMatcher())
             ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
             ->with(new RequestMatcher('^/(event|place|label)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(event|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/event/' . $app['id_pattern'] . '/history', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'], null, 'GET'))
             ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))

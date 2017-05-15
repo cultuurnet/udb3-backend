@@ -29,8 +29,7 @@ class EventControllerProvider implements ControllerProviderInterface
                 return new EditEventRestController(
                     $app['event_editor'],
                     $app['media_manager'],
-                    $app['event_iri_generator'],
-                    $app['offer.security']
+                    $app['event_iri_generator']
                 );
             }
         );
@@ -48,8 +47,6 @@ class EventControllerProvider implements ControllerProviderInterface
             ->bind('event-history');
 
         $controllers->post('event', "event_editing_controller:createEvent");
-
-        $controllers->get('event/{cdbid}/permission', 'event_editing_controller:hasPermission');
 
         $controllers->post('event/{itemId}/images', 'event_editing_controller:addImage');
         $controllers->post('event/{itemId}/images/main', 'event_editing_controller:selectMainImage');

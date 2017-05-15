@@ -32,7 +32,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
                 return new EditPlaceRestController(
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
-                    $app['offer.security'],
                     $app['media_manager'],
                     $app['place_iri_generator']
                 );
@@ -66,7 +65,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->post('place/{cdbid}/facilities', 'place_editing_controller:updateFacilities');
         $controllers->post('place/{cdbid}/organizer', 'place_editing_controller:updateOrganizer');
         $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
-        $controllers->get('place/{cdbid}/permission', 'place_editing_controller:hasPermission');
 
         return $controllers;
     }

@@ -976,12 +976,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Hydra.git",
-                "reference": "8ece13a1a2ceb33906cb48f41da875e97041f63b"
+                "reference": "3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/8ece13a1a2ceb33906cb48f41da875e97041f63b",
-                "reference": "8ece13a1a2ceb33906cb48f41da875e97041f63b",
+                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9",
+                "reference": "3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9",
                 "shasum": ""
             },
             "require-dev": {
@@ -1016,7 +1016,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-02-23 10:50:22"
+            "time": "2017-05-15 08:55:52"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -3307,7 +3307,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],

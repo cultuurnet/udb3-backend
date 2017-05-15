@@ -5,13 +5,16 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
+use CultuurNet\UDB3\Symfony\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Symfony\Offer\PatchOfferRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferControllerProvider implements ControllerProviderInterface
 {
@@ -28,6 +31,7 @@ class OfferControllerProvider implements ControllerProviderInterface
         foreach ($offerServices as $offerType => $serviceName) {
             $controllerName = "{$offerType}_offer_controller";
             $patchControllerName = "patch_{$offerType}_controller";
+            $permissionControllerName = "permission_{$offerType}_controller";
 
             $app[$controllerName] = $app->share(
                 function (Application $app) use ($serviceName) {
@@ -46,6 +50,21 @@ class OfferControllerProvider implements ControllerProviderInterface
                     return new PatchOfferRestController(
                         OfferType::fromCaseInsensitiveValue($offerType),
                         $app['event_command_bus']
+                    );
+                }
+            );
+
+            $app[$permissionControllerName] = $app->share(
+                function (Application $app) use ($offerType) {
+                    $currentUserId = null;
+                    if (!is_null($app['current_user'])) {
+                        $currentUserId = new StringLiteral($app['current_user']->id);
+                    }
+
+                    return new OfferPermissionController(
+                        Permission::AANBOD_BEWERKEN(),
+                        $app['offer_permission_voter'],
+                        $currentUserId
                     );
                 }
             );
@@ -84,6 +103,18 @@ class OfferControllerProvider implements ControllerProviderInterface
                 ->patch(
                     "{$offerType}/{cdbid}",
                     "{$patchControllerName}:handle"
+                );
+
+            $controllers
+                ->get(
+                    "{$offerType}/{offerId}/permission",
+                    "{$permissionControllerName}:currentUserHasPermission"
+                );
+
+            $controllers
+                ->get(
+                    "{$offerType}/{offerId}/permission/{userId}",
+                    "{$permissionControllerName}:givenUserHasPermission"
                 );
         }
 
