@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Silex\Security;
 
 use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
@@ -16,7 +15,6 @@ use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepos
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
