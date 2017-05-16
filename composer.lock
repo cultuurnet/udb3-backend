@@ -1559,12 +1559,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "aecad1c6a91bff22623085597b5371c6ac98e310"
+                "reference": "a2f06ffb3b6f246c58ed4fedee2eebd1e30261c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/aecad1c6a91bff22623085597b5371c6ac98e310",
-                "reference": "aecad1c6a91bff22623085597b5371c6ac98e310",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/a2f06ffb3b6f246c58ed4fedee2eebd1e30261c6",
+                "reference": "a2f06ffb3b6f246c58ed4fedee2eebd1e30261c6",
                 "shasum": ""
             },
             "require": {
@@ -1613,7 +1613,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2017-05-02 12:45:47"
+            "time": "2017-05-16 13:53:20"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
