@@ -47,6 +47,11 @@ class OrganizerControllerProvider implements ControllerProviderInterface
 
         $controllers->put(
             '/{organizerId}/name',
+            'organizer_edit_controller:updateNameDeprecated'
+        );
+
+        $controllers->put(
+            '/{organizerId}/name/{language}',
             'organizer_edit_controller:updateName'
         );
 
