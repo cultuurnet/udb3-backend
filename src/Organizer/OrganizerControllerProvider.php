@@ -51,7 +51,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         );
 
         $controllers->put(
-            '/{organizerId}/name/{language}',
+            '/{organizerId}/name/{lang}',
             'organizer_edit_controller:updateName'
         );
 
