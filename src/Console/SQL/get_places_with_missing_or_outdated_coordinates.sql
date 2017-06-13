@@ -45,6 +45,7 @@ INNER JOIN
 		WHERE
 			type IN ('CultuurNet.UDB3.Place.Events.PlaceCreated',
 							 'CultuurNet.UDB3.Place.Events.MajorInfoUpdated',
+							 'CultuurNet.UDB3.Place.Events.AddressUpdated',
 							 'CultuurNet.UDB3.Place.Events.PlaceImportedFromUDB2',
 							 'CultuurNet.UDB3.Place.Events.PlaceUpdatedFromUDB2')
 		GROUP BY
