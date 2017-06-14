@@ -112,15 +112,22 @@ class GeocodeCommand extends AbstractCommand
 
         $jsonLd = json_decode($document->getRawBody(), true);
 
+        $mainLanguage = isset($jsonLd->mainLanguage) ? $jsonLd->mainLanguage : 'nl';
+
         if (!isset($jsonLd['address'])) {
             $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address.)");
             return;
         }
 
+        if (!isset($jsonLd['address'][$mainLanguage])) {
+            $output->writeln("Skipping {$placeId}. (JSON-LD does not contain an address for {$mainLanguage}.)");
+            return;
+        }
+
         try {
-            $address = Address::deserialize($jsonLd['address']);
+            $address = Address::deserialize($jsonLd['address'][$mainLanguage]);
         } catch (\Exception $e) {
-            $output->writeln("Skipping {$placeId}. (JSON-LD address could not be parsed.)");
+            $output->writeln("Skipping {$placeId}. (JSON-LD address for {$mainLanguage} could not be parsed.)");
             return;
         }
 
