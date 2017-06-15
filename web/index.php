@@ -242,7 +242,10 @@ $app->get(
     '/user',
     function (Application $app) {
         return (new JsonResponse())
-            ->setData($app['current_user'])
+            ->setData((object)[
+                'id' => $app['current_user']->id,
+                'nick' => $app['current_user']->nick,
+            ])
             ->setPrivate();
     }
 );
