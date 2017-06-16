@@ -264,13 +264,11 @@ $app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProv
  *     summary="Retrieve all information about the authenticated user.",
  *     description="Authentication is required.",
  *     operationId="getUserInformation",
+ *     produces={"application/json"},
  *     @SWG\Response(
  *         response="200",
  *         description="The information available about the authenticated user.",
- *         @SWG\Schema(
- *             type="object",
- *             @SWG\Items(ref="#/definitions/UserInformation")
- *         )
+ *         @SWG\Schema(ref="#/definitions/UserInformation")
  *     ),
  *     @SWG\Response(
  *         response="401",
@@ -286,7 +284,6 @@ $app->get(
             /**
              * @SWG\Definition(
              *     definition="UserInformation",
-             *     type="object",
              *     @SWG\Property(
              *         property="id",
              *         format="uuid",

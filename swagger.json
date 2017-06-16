@@ -30,14 +30,14 @@
                 "summary": "Retrieve all information about the authenticated user.",
                 "description": "Authentication is required.",
                 "operationId": "getUserInformation",
+                "produces": [
+                    "application/json"
+                ],
                 "responses": {
                     "200": {
                         "description": "The information available about the authenticated user.",
                         "schema": {
-                            "type": "object",
-                            "items": {
-                                "$ref": "#/definitions/UserInformation"
-                            }
+                            "$ref": "#/definitions/UserInformation"
                         }
                     },
                     "401": {
@@ -64,8 +64,7 @@
                     "type": "string",
                     "example": "El Pistolero"
                 }
-            },
-            "type": "object"
+            }
         }
     },
     "responses": {
