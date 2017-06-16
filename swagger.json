@@ -1,0 +1,82 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "UiTdatabank v3",
+        "description": "Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\\n Most operations require that you authenticate first with your UiTID.",
+        "contact": {
+            "name": "CultuurNet Vlaanderen vzw",
+            "url": "http://www.cultuurnet.be",
+            "email": "info@uitdatabank.be"
+        },
+        "version": "3.0.0"
+    },
+    "host": "io.uitdatabank.be",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Retrieve all information about the authenticated user.",
+                "description": "Authentication is required.",
+                "operationId": "getUserInformation",
+                "responses": {
+                    "200": {
+                        "description": "The information available about the authenticated user.",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/UserInformation"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorized"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "UserInformation": {
+            "required": [
+                "id",
+                "nick"
+            ],
+            "properties": {
+                "id": {
+                    "description": "A universally unique identifier.",
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "6f072ba8-c510-40ac-b387-51f582650e27"
+                },
+                "nick": {
+                    "type": "string",
+                    "example": "El Pistolero"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "Unauthorized": {
+            "description": "Authentication with UiTID and a valid JWT is required."
+        }
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": "Operations related to users"
+        }
+    ]
+}

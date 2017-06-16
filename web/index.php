@@ -16,6 +16,26 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
+/**
+ * @SWG\Swagger(
+ *     basePath="/",
+ *     host="io.uitdatabank.be",
+ *     schemes={"http"},
+ *     produces={"application/json"},
+ *     consumes={"application/json"},
+ *     @SWG\Info(
+ *         version="3.0.0",
+ *         title="UiTdatabank v3",
+ *         description="Version 3 of the UiTdatabank, a central database of cultural offers in the Flanders region.\n Most operations require that you authenticate first with your UiTID.",
+ *         @SWG\Contact(
+ *               name="CultuurNet Vlaanderen vzw",
+ *               url="http://www.cultuurnet.be",
+ *               email="info@uitdatabank.be"
+ *         )
+ *     )
+ * )
+ */
+
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
@@ -238,10 +258,50 @@ $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvide
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
 $app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProvider());
 
+/**
+ * @SWG\Get(
+ *     path="/user",
+ *     summary="Retrieve all information about the authenticated user.",
+ *     description="Authentication is required.",
+ *     operationId="getUserInformation",
+ *     @SWG\Response(
+ *         response="200",
+ *         description="The information available about the authenticated user.",
+ *         @SWG\Schema(
+ *             type="object",
+ *             @SWG\Items(ref="#/definitions/UserInformation")
+ *         )
+ *     ),
+ *     @SWG\Response(
+ *         response="401",
+ *         ref="#/responses/Unauthorized"
+ *     ),
+ *     tags={"User"}
+ * )
+ */
 $app->get(
     '/user',
     function (Application $app) {
         return (new JsonResponse())
+            /**
+             * @SWG\Definition(
+             *     definition="UserInformation",
+             *     type="object",
+             *     @SWG\Property(
+             *         property="id",
+             *         format="uuid",
+             *         type="string",
+             *         description="A universally unique identifier.",
+             *         example="6f072ba8-c510-40ac-b387-51f582650e27"
+             *     ),
+             *     @SWG\Property(
+             *         property="nick",
+             *         type="string",
+             *         example="El Pistolero"
+             *     ),
+             *     required={"id", "nick"},
+             * )
+             */
             ->setData((object)[
                 'id' => $app['current_user']->id,
                 'nick' => $app['current_user']->nick,
