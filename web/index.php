@@ -106,8 +106,6 @@ $app['security.access_rules'] = array(
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
 );
 
-require __DIR__ . '/../debug.php';
-
 $app['logger.search'] = $app->share(
     function ($app) {
         $logger = new \Monolog\Logger('search');
