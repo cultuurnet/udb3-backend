@@ -1418,7 +1418,35 @@ $app['calendar_summary_proxy'] = $app->share(
             $app['config']['calendar_summary_proxy']['redirect_port']
         );
 
-        return new \CultuurNet\UDB3\Symfony\Proxy\CalendarSummaryProxy(
+        return new \CultuurNet\UDB3\Symfony\Proxy\FilterPathProxy(
+            $path,
+            $redirectDomain,
+            $redirectPort,
+            new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
+            new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
+            new \GuzzleHttp\Client()
+        );
+    }
+);
+
+
+$app['search_proxy'] = $app->share(
+    function ($app) {
+        $path = new \CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex(
+            $app['config']['search_proxy']['pathRegex']
+        );
+
+        /** @var \ValueObjects\Web\Hostname $redirectDomain */
+        $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
+            $app['config']['search_proxy']['redirect_domain']
+        );
+
+        /** @var \ValueObjects\Web\Hostname $redirectDomain */
+        $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
+            $app['config']['search_proxy']['redirect_port']
+        );
+
+        return new \CultuurNet\UDB3\Symfony\Proxy\FilterPathProxy(
             $path,
             $redirectDomain,
             $redirectPort,
