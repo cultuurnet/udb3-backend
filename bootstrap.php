@@ -1452,7 +1452,6 @@ $app->register(
     ]
 );
 
-
 $app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
 
 $app->register(
