@@ -1404,58 +1404,43 @@ $app['cdbxml_proxy'] = $app->share(
 
 $app['calendar_summary_proxy'] = $app->share(
     function ($app) {
-        $path = new \CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex(
-            $app['config']['calendar_summary_proxy']['pathRegex']
-        );
-
-        /** @var \ValueObjects\Web\Hostname $redirectDomain */
-        $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
-            $app['config']['calendar_summary_proxy']['redirect_domain']
-        );
-
-        /** @var \ValueObjects\Web\Hostname $redirectDomain */
-        $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
-            $app['config']['calendar_summary_proxy']['redirect_port']
-        );
-
-        return new \CultuurNet\UDB3\Symfony\Proxy\FilterPathProxy(
-            $path,
-            $redirectDomain,
-            $redirectPort,
-            new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
-            new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
-            new \GuzzleHttp\Client()
-        );
+        return bootstrapFilterPathGetProxy($app, 'calendar_summary_proxy');
     }
 );
 
 
 $app['search_proxy'] = $app->share(
     function ($app) {
-        $path = new \CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex(
-            $app['config']['search_proxy']['pathRegex']
-        );
-
-        /** @var \ValueObjects\Web\Hostname $redirectDomain */
-        $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
-            $app['config']['search_proxy']['redirect_domain']
-        );
-
-        /** @var \ValueObjects\Web\Hostname $redirectDomain */
-        $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
-            $app['config']['search_proxy']['redirect_port']
-        );
-
-        return new \CultuurNet\UDB3\Symfony\Proxy\FilterPathProxy(
-            $path,
-            $redirectDomain,
-            $redirectPort,
-            new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
-            new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
-            new \GuzzleHttp\Client()
-        );
+        return bootstrapFilterPathGetProxy($app, 'search_proxy');
     }
 );
+
+function bootstrapFilterPathGetProxy($app, $name)
+{
+    $path = new \CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex(
+        $app['config'][$name]['pathRegex']
+    );
+
+    /** @var \ValueObjects\Web\Hostname $redirectDomain */
+    $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
+        $app['config'][$name]['redirect_domain']
+    );
+
+    /** @var \ValueObjects\Web\Hostname $redirectDomain */
+    $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
+        $app['config'][$name]['redirect_port']
+    );
+
+    return new \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy(
+        $path,
+        new StringLiteral('GET'),
+        $redirectDomain,
+        $redirectPort,
+        new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
+        new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
+        new \GuzzleHttp\Client()
+    );
+}
 
 $app->register(new \CultuurNet\UDB3\Silex\Search\SAPISearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());

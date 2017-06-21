@@ -158,7 +158,7 @@ if (isset($app['config']['calendar_summary_proxy']) &&
     $app['config']['calendar_summary_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathProxy $calendarSummaryProxy */
+            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy $calendarSummaryProxy */
             $calendarSummaryProxy = $app['calendar_summary_proxy'];
 
             return $calendarSummaryProxy->handle($request);
@@ -171,7 +171,7 @@ if (isset($app['config']['search_proxy']) &&
     $app['config']['search_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathProxy $searchProxy */
+            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy $searchProxy */
             $searchProxy = $app['search_proxy'];
 
             return $searchProxy->handle($request);
