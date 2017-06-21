@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "29e02835a96eb2085969e1673ed6c342",
+    "content-hash": "853e822c61781ddd89430a52ed7be7fa",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1286,16 +1286,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-2162",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "5b9b221d956d666b064aa76e41df04b5011d0c39"
+                "reference": "34b479a169345642bdfd745d8d389ca912c978ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/5b9b221d956d666b064aa76e41df04b5011d0c39",
-                "reference": "5b9b221d956d666b064aa76e41df04b5011d0c39",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/34b479a169345642bdfd745d8d389ca912c978ea",
+                "reference": "34b479a169345642bdfd745d8d389ca912c978ea",
                 "shasum": ""
             },
             "require": {
@@ -1360,7 +1360,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-06-14 12:05:16"
+            "time": "2017-06-21 08:20:28"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1555,23 +1555,23 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-feature/III-2162",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "ec7fe8e6d4c6dab2409d925aff773e6233ccf0e3"
+                "reference": "1e1460530906d8da7826b2d8421a311afe13ac4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/ec7fe8e6d4c6dab2409d925aff773e6233ccf0e3",
-                "reference": "ec7fe8e6d4c6dab2409d925aff773e6233ccf0e3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/1e1460530906d8da7826b2d8421a311afe13ac4f",
+                "reference": "1e1460530906d8da7826b2d8421a311afe13ac4f",
                 "shasum": ""
             },
             "require": {
                 "chrisboulton/php-resque": "1.2",
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "dev-feature/III-2162 as 0.1",
+                "cultuurnet/udb3": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "guzzlehttp/guzzle": "~6.2",
                 "guzzlehttp/psr7": "~1.2.3",
@@ -1613,7 +1613,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2017-06-14 07:32:10"
+            "time": "2017-06-21 08:54:45"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3821,16 +3821,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.22.1",
+            "version": "1.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
-                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
                 "shasum": ""
             },
             "require": {
@@ -3851,7 +3851,7 @@
                 "phpunit/phpunit-mock-objects": "2.3.0",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "~5.3"
+                "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
@@ -3895,7 +3895,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13T07:08:03+00:00"
+            "time": "2017-06-19T01:22:40+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -5869,12 +5869,12 @@
             "version": "2.8.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/geocoder-php/Geocoder.git",
+                "url": "https://github.com/geocoder-php/php-common.git",
                 "reference": "8a66b8a227328f28ba12f98937a33c6fa0bb90f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/8a66b8a227328f28ba12f98937a33c6fa0bb90f8",
+                "url": "https://api.github.com/repos/geocoder-php/php-common/zipball/8a66b8a227328f28ba12f98937a33c6fa0bb90f8",
                 "reference": "8a66b8a227328f28ba12f98937a33c6fa0bb90f8",
                 "shasum": ""
             },
@@ -6423,24 +6423,9 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2162",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2162",
-            "package": "cultuurnet/udb3-symfony"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/udb3": 20,
-        "cultuurnet/udb3-symfony": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
