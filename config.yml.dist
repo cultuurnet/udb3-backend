@@ -96,6 +96,12 @@ calendar_summary_proxy:
   redirect_domain: "www.domain-cdbxml-service.be"
   redirect_port: 80
 
+search_proxy:
+  enabled: "true"
+  pathRegex: ^\/(events|places|organizers|offers)\/$
+  redirect_domain: "www.domain-search-service.dev"
+  redirect_port: 80
+
 jwt:
   keys:
     public:
