@@ -1336,6 +1336,7 @@ $app->register(
     ]
 );
 
+$app->register(new \CultuurNet\UDB3\Silex\Proxy\ProxyServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
@@ -1374,73 +1375,6 @@ $app['predis.client'] = $app->share(function ($app) {
 
     return new Predis\Client($redisURI);
 });
-
-$app['cdbxml_proxy'] = $app->share(
-    function ($app) {
-        $accept = new StringLiteral(
-            $app['config']['cdbxml_proxy']['accept']
-        );
-
-        /** @var \ValueObjects\Web\Hostname $redirectDomain */
-        $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
-            $app['config']['cdbxml_proxy']['redirect_domain']
-        );
-
-        /** @var \ValueObjects\Web\Hostname $redirectDomain */
-        $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
-            $app['config']['cdbxml_proxy']['redirect_port']
-        );
-
-        return new \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy(
-            $accept,
-            $redirectDomain,
-            $redirectPort,
-            new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
-            new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
-            new \GuzzleHttp\Client()
-        );
-    }
-);
-
-$app['calendar_summary_proxy'] = $app->share(
-    function ($app) {
-        return bootstrapFilterPathGetProxy($app, 'calendar_summary_proxy');
-    }
-);
-
-
-$app['search_proxy'] = $app->share(
-    function ($app) {
-        return bootstrapFilterPathGetProxy($app, 'search_proxy');
-    }
-);
-
-function bootstrapFilterPathGetProxy($app, $name)
-{
-    $path = new \CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex(
-        $app['config'][$name]['pathRegex']
-    );
-
-    /** @var \ValueObjects\Web\Hostname $redirectDomain */
-    $redirectDomain = \ValueObjects\Web\Hostname::fromNative(
-        $app['config'][$name]['redirect_domain']
-    );
-
-    /** @var \ValueObjects\Web\Hostname $redirectDomain */
-    $redirectPort = \ValueObjects\Web\PortNumber::fromNative(
-        $app['config'][$name]['redirect_port']
-    );
-
-    return new \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy(
-        $path,
-        new StringLiteral('GET'),
-        $redirectDomain,
-        $redirectPort,
-        new \Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory(),
-        new \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory(),
-        new \GuzzleHttp\Client()
-    );
-}
 
 $app->register(new \CultuurNet\UDB3\Silex\Search\SAPISearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
