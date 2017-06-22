@@ -38,6 +38,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', "event_editing_controller:createEvent");
+        $controllers->get('/{cdbid}', 'event_controller:get');
 
         return $controllers;
     }
