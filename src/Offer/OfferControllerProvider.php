@@ -25,7 +25,8 @@ class OfferControllerProvider implements ControllerProviderInterface
 
         $offerServices = [
             'event' => 'event_editor',
-            'place' => 'place_editing_service',
+            'events' => 'event_editor',
+            'place' => 'place_editing_service'
         ];
 
         foreach ($offerServices as $offerType => $serviceName) {
@@ -69,11 +70,14 @@ class OfferControllerProvider implements ControllerProviderInterface
                 }
             );
 
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/labels",
                     "{$controllerName}:addLabel"
                 );
+
+            $controllers->put("{$offerType}/{cdbid}/labels/", "{$controllerName}:addLabel");
 
             $controllers
                 ->delete(
