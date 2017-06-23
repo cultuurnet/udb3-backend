@@ -85,11 +85,14 @@ class OfferControllerProvider implements ControllerProviderInterface
                     "{$controllerName}:removeLabel"
                 );
 
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/title",
                     "{$controllerName}:translateTitle"
                 );
+
+            $controllers->put("{$offerType}/{cdbid}/{lang}/name", "{$controllerName}:translateTitle");
 
             /* @deprecated */
             $controllers
