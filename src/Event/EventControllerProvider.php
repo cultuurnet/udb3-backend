@@ -44,6 +44,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->put('/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
         $controllers->put('/{cdbid}/majorInfo', 'event_editing_controller:updateMajorInfo');
         $controllers->put('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:updateOrganizer');
+        $controllers->delete('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
 
         return $controllers;
     }
