@@ -91,11 +91,14 @@ class OfferControllerProvider implements ControllerProviderInterface
                     "{$controllerName}:translateTitle"
                 );
 
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/description",
                     "{$controllerName}:translateDescription"
                 );
+
+            $controllers->put("{$offerType}/{cdbid}/{lang}/description", "{$controllerName}:translateDescription");
 
             $controllers
                 ->put(
