@@ -141,24 +141,56 @@ class ReplayCommand extends AbstractCommand
                 usleep($delay * $eventStream->getIterator()->count() * 1000);
             }
 
-            /** @var DomainMessage $message */
-            foreach ($eventStream->getIterator() as $message) {
-                $output->writeln(
-                    $stream->getLastProcessedId() . '. ' .
-                    $message->getRecordedOn()->toString() . ' ' .
-                    $message->getType() .
-                    ' (' . $message->getId() . ')'
-                );
-            }
+            $this->logStream($eventStream, $output, $stream, 'before_publish');
 
             if (!$this->isPublishDisabled($input)) {
                 $eventBus->publish($eventStream);
             }
+
+            $this->logStream($eventStream, $output, $stream, 'after_publish');
         }
 
         if ($eventBus instanceof ReplayModeEventBusInterface) {
             $eventBus->stopReplayMode();
         }
+    }
+
+    /**
+     * @param DomainEventStream $eventStream
+     * @param OutputInterface $output
+     * @param EventStream $stream
+     * @param string $marker
+     */
+    private function logStream(
+        DomainEventStream $eventStream,
+        OutputInterface $output,
+        EventStream $stream,
+        $marker
+    ) {
+        /** @var DomainMessage $message */
+        foreach ($eventStream->getIterator() as $message) {
+            $this->logMessage($output, $stream, $message, $marker);
+        }
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param EventStream $stream
+     * @param DomainMessage $message
+     * @param string $marker
+     */
+    private function logMessage(
+        OutputInterface $output,
+        EventStream $stream,
+        DomainMessage $message,
+        $marker
+    ) {
+        $output->writeln(
+            $stream->getLastProcessedId() . '. ' .
+            $message->getRecordedOn()->toString() . ' ' .
+            $message->getType() .
+            ' (' . $message->getId() . ') ' . $marker
+        );
     }
 
     /**
