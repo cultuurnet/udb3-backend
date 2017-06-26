@@ -124,11 +124,14 @@ class OfferControllerProvider implements ControllerProviderInterface
 
             $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionControllerName}:currentUserHasPermission");
 
+            /* @deprecated */
             $controllers
                 ->get(
                     "{$offerType}/{offerId}/permission/{userId}",
                     "{$permissionControllerName}:givenUserHasPermission"
                 );
+
+            $controllers->get("{$offerType}/{offerId}/permissions/{userId}", "{$permissionControllerName}:givenUserHasPermission");
         }
 
         return $controllers;
