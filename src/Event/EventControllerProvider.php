@@ -51,6 +51,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->post('/{itemId}/images/', 'event_editing_controller:addImage');
         $controllers->put('/{itemId}/images/main', 'event_editing_controller:selectMainImage');
         $controllers->delete('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
+        $controllers->put('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
 
         return $controllers;
     }
