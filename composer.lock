@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9fc66bc1997a04b1036c847c847985ed",
+    "content-hash": "853e822c61781ddd89430a52ed7be7fa",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1286,16 +1286,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-2214",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "183ff59dec68155b165d11efa3b408d9917242ae"
+                "reference": "d7130a7bffb88f5ce26851a81f214f1997007a92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/183ff59dec68155b165d11efa3b408d9917242ae",
-                "reference": "183ff59dec68155b165d11efa3b408d9917242ae",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d7130a7bffb88f5ce26851a81f214f1997007a92",
+                "reference": "d7130a7bffb88f5ce26851a81f214f1997007a92",
                 "shasum": ""
             },
             "require": {
@@ -1360,7 +1360,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-06-21 14:50:32"
+            "time": "2017-06-26 08:23:48"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -6423,17 +6423,9 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2214",
-            "package": "cultuurnet/udb3"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
