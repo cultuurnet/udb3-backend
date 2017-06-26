@@ -48,6 +48,8 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->put('/{cdbid}/typicalAgeRange', 'event_editing_controller:updateTypicalAgeRange');
         $controllers->delete('/{cdbid}/typical-age-range', 'event_editing_controller:deleteTypicalAgeRange');
 
+        $controllers->post('/{itemId}/images/', 'event_editing_controller:addImage');
+
         return $controllers;
     }
 }
