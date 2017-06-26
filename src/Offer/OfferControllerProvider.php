@@ -115,11 +115,14 @@ class OfferControllerProvider implements ControllerProviderInterface
                     "{$patchControllerName}:handle"
                 );
 
+            /* @deprecated */
             $controllers
                 ->get(
                     "{$offerType}/{offerId}/permission",
                     "{$permissionControllerName}:currentUserHasPermission"
                 );
+
+            $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionControllerName}:currentUserHasPermission");
 
             $controllers
                 ->get(
