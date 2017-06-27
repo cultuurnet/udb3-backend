@@ -11,14 +11,18 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter;
+use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter as PlaceCdbXMLImporter;
+use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
+use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -417,7 +421,10 @@ $app['event_jsonld_projector'] = $app->share(
             $app['organizer_service'],
             $app['media_object_serializer'],
             $app['iri_offer_identifier_factory'],
-            $app['event_cdbxml_importer']
+            $app['event_cdbxml_importer'],
+            new JsonDocumentLanguageEnricher(
+                new EventJsonDocumentLanguageAnalyzer()
+            )
         );
 
         return $projector;
@@ -813,7 +820,10 @@ $app['place_jsonld_projector'] = $app->share(
             $app['place_iri_generator'],
             $app['organizer_service'],
             $app['media_object_serializer'],
-            $app['place_cdbxml_importer']
+            $app['place_cdbxml_importer'],
+            new JsonDocumentLanguageEnricher(
+                new PlaceJsonDocumentLanguageAnalyzer()
+            )
         );
 
         return $projector;
@@ -931,7 +941,9 @@ $app['organizer_jsonld_projector'] = $app->share(
             $app['organizer_jsonld_repository'],
             $app['organizer_iri_generator'],
             $app['event_bus'],
-            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+            new JsonDocumentLanguageEnricher(
+                new OrganizerJsonDocumentLanguageAnalyzer()
+            )
         );
     }
 );
