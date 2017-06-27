@@ -302,6 +302,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new RelationsProjector(
                     $app[self::RELATIONS_WRITE_REPOSITORY],
+                    $app[self::RELATIONS_READ_REPOSITORY],
                     new LabelEventRelationTypeResolver()
                 );
             }
