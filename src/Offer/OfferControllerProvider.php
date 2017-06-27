@@ -26,6 +26,7 @@ class OfferControllerProvider implements ControllerProviderInterface
         $offerServices = [
             'event' => 'event_editor',
             'place' => 'place_editing_service',
+            'places' => 'place_editing_service',
         ];
 
         foreach ($offerServices as $offerType => $serviceName) {
@@ -69,11 +70,13 @@ class OfferControllerProvider implements ControllerProviderInterface
                 }
             );
 
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/labels",
                     "{$controllerName}:addLabel"
                 );
+            $controllers->put("{$offerType}/{cdbid}/labels", "{$controllerName}:addLabel");
 
             $controllers
                 ->delete(
@@ -81,17 +84,21 @@ class OfferControllerProvider implements ControllerProviderInterface
                     "{$controllerName}:removeLabel"
                 );
 
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/title",
                     "{$controllerName}:translateTitle"
                 );
+            $controllers->put("{$offerType}/{cdbid}/{lang}/title", "{$controllerName}:translateTitle");
 
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/description",
                     "{$controllerName}:translateDescription"
                 );
+            $controllers->put("{$offerType}/{cdbid}/{lang}/description", "{$controllerName}:translateDescription");
 
             $controllers
                 ->put(
@@ -105,17 +112,21 @@ class OfferControllerProvider implements ControllerProviderInterface
                     "{$patchControllerName}:handle"
                 );
 
+            /* @deprecated */
             $controllers
                 ->get(
                     "{$offerType}/{offerId}/permission",
                     "{$permissionControllerName}:currentUserHasPermission"
                 );
+            $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionControllerName}:currentUserHasPermission");
 
+            /* @deprecated */
             $controllers
                 ->get(
                     "{$offerType}/{offerId}/permission/{userId}",
                     "{$permissionControllerName}:givenUserHasPermission"
                 );
+            $controllers->get("{$offerType}/{offerId}/permissions/{userId}", "{$permissionControllerName}:givenUserHasPermission");
         }
 
         return $controllers;

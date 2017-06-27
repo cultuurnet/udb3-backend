@@ -236,7 +236,9 @@ $app->mount(
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
+/* @deprecated */
+$app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
+$app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
