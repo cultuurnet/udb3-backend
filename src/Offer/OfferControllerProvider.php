@@ -25,6 +25,7 @@ class OfferControllerProvider implements ControllerProviderInterface
 
         $offerServices = [
             'event' => 'event_editor',
+            'events' => 'event_editor',
             'place' => 'place_editing_service',
         ];
 
@@ -69,16 +70,21 @@ class OfferControllerProvider implements ControllerProviderInterface
                 }
             );
 
+            $controllers->put("{$offerType}/{cdbid}/labels/", "{$controllerName}:addLabel");
+            $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel");
+            $controllers->put("{$offerType}/{cdbid}/{lang}/name", "{$controllerName}:translateTitle");
+            $controllers->put("{$offerType}/{cdbid}/{lang}/description", "{$controllerName}:translateDescription");
+            $controllers->put("{$offerType}/{cdbid}/priceInfo", "{$controllerName}:updatePriceInfo");
+            $controllers->patch("{$offerType}/{cdbid}", "{$patchControllerName}:handle");
+            $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionControllerName}:currentUserHasPermission");
+            $controllers->get("{$offerType}/{offerId}/permissions/{userId}", "{$permissionControllerName}:givenUserHasPermission");
+
+
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/labels",
                     "{$controllerName}:addLabel"
-                );
-
-            $controllers
-                ->delete(
-                    "{$offerType}/{cdbid}/labels/{label}",
-                    "{$controllerName}:removeLabel"
                 );
 
             $controllers
@@ -91,18 +97,6 @@ class OfferControllerProvider implements ControllerProviderInterface
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/description",
                     "{$controllerName}:translateDescription"
-                );
-
-            $controllers
-                ->put(
-                    "{$offerType}/{cdbid}/priceInfo",
-                    "{$controllerName}:updatePriceInfo"
-                );
-
-            $controllers
-                ->patch(
-                    "{$offerType}/{cdbid}",
-                    "{$patchControllerName}:handle"
                 );
 
             $controllers
