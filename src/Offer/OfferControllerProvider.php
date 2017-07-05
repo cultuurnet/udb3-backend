@@ -25,6 +25,7 @@ class OfferControllerProvider implements ControllerProviderInterface
 
         $offerServices = [
             'event' => 'event_editor',
+            'events' => 'event_editor',
             'place' => 'place_editing_service',
             'places' => 'place_editing_service',
         ];
@@ -70,63 +71,46 @@ class OfferControllerProvider implements ControllerProviderInterface
                 }
             );
 
+            $controllers->put("{$offerType}/{cdbid}/labels/", "{$controllerName}:addLabel");
+            $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel");
+            $controllers->put("{$offerType}/{cdbid}/{lang}/name", "{$controllerName}:translateTitle");
+            $controllers->put("{$offerType}/{cdbid}/{lang}/description", "{$controllerName}:translateDescription");
+            $controllers->put("{$offerType}/{cdbid}/priceInfo", "{$controllerName}:updatePriceInfo");
+            $controllers->patch("{$offerType}/{cdbid}", "{$patchControllerName}:handle");
+            $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionControllerName}:currentUserHasPermission");
+            $controllers->get("{$offerType}/{offerId}/permissions/{userId}", "{$permissionControllerName}:givenUserHasPermission");
+
+
             /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/labels",
                     "{$controllerName}:addLabel"
                 );
-            $controllers->put("{$offerType}/{cdbid}/labels", "{$controllerName}:addLabel");
 
-            $controllers
-                ->delete(
-                    "{$offerType}/{cdbid}/labels/{label}",
-                    "{$controllerName}:removeLabel"
-                );
-
-            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/title",
                     "{$controllerName}:translateTitle"
                 );
-            $controllers->put("{$offerType}/{cdbid}/{lang}/title", "{$controllerName}:translateTitle");
 
-            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/description",
                     "{$controllerName}:translateDescription"
                 );
-            $controllers->put("{$offerType}/{cdbid}/{lang}/description", "{$controllerName}:translateDescription");
 
-            $controllers
-                ->put(
-                    "{$offerType}/{cdbid}/priceInfo",
-                    "{$controllerName}:updatePriceInfo"
-                );
-
-            $controllers
-                ->patch(
-                    "{$offerType}/{cdbid}",
-                    "{$patchControllerName}:handle"
-                );
-
-            /* @deprecated */
             $controllers
                 ->get(
                     "{$offerType}/{offerId}/permission",
                     "{$permissionControllerName}:currentUserHasPermission"
                 );
-            $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionControllerName}:currentUserHasPermission");
 
-            /* @deprecated */
             $controllers
                 ->get(
                     "{$offerType}/{offerId}/permission/{userId}",
                     "{$permissionControllerName}:givenUserHasPermission"
                 );
-            $controllers->get("{$offerType}/{offerId}/permissions/{userId}", "{$permissionControllerName}:givenUserHasPermission");
         }
 
         return $controllers;
