@@ -56,7 +56,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->delete('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
-        $controllers->get('/places/', 'place_controller:getByPostalCode');
+        $controllers->get('/', 'place_controller:getByPostalCode');
 
         return $controllers;
     }
