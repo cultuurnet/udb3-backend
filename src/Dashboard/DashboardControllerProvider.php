@@ -28,7 +28,9 @@ class DashboardControllerProvider implements ControllerProviderInterface
             ->get('dashboard/items', 'dashboard_controller:itemsOwnedByCurrentUser')
             ->bind('dashboard-items');
 
-        $controllers->get('user/offers/', 'dashboard_controller:itemsOwnedByCurrentUser');
+        $controllers
+            ->get('user/offers/', 'dashboard_controller:itemsOwnedByCurrentUser')
+            ->bind('user-offers');
 
         return $controllers;
     }
