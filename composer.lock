@@ -758,16 +758,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.6.3",
+            "version": "v1.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "9e90cd8b646dd598155da36c4c8835b03b3a13c8"
+                "reference": "9f0c5c6b2274e666a2021b48529c889fe5248221"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/9e90cd8b646dd598155da36c4c8835b03b3a13c8",
-                "reference": "9e90cd8b646dd598155da36c4c8835b03b3a13c8",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/9f0c5c6b2274e666a2021b48529c889fe5248221",
+                "reference": "9f0c5c6b2274e666a2021b48529c889fe5248221",
                 "shasum": ""
             },
             "require": {
@@ -822,7 +822,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2017-02-23T10:02:29+00:00"
+            "time": "2017-07-20T10:44:03+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "9f3dddce141e15807f62ed022beb428257488472"
+                "reference": "ee76d99071c83a8ed19ae26b6bb1356426f27e6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9f3dddce141e15807f62ed022beb428257488472",
-                "reference": "9f3dddce141e15807f62ed022beb428257488472",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ee76d99071c83a8ed19ae26b6bb1356426f27e6f",
+                "reference": "ee76d99071c83a8ed19ae26b6bb1356426f27e6f",
                 "shasum": ""
             },
             "require": {
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-07-05 12:14:33"
+            "time": "2017-07-26 09:04:46"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
