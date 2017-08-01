@@ -24,6 +24,7 @@ class DashboardControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
+        /* @deprecated! */
         $controllers
             ->get('dashboard/items', 'dashboard_controller:itemsOwnedByCurrentUser')
             ->bind('dashboard-items');
