@@ -27,7 +27,7 @@ class Version20170731151814 extends AbstractMigration
                     'type' => Type::getType('string'),
                     'length' => 32,
                 ]
-        );
+            );
 
         $this->getIndexTable($schema)
             ->changeColumn(
