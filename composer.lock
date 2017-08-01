@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "e4d2fe79812101d16d1f7befd8d6f828b37741cb"
+                "reference": "b5dced69f6fc2b43ed6e925dbe44641191be7af1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/e4d2fe79812101d16d1f7befd8d6f828b37741cb",
-                "reference": "e4d2fe79812101d16d1f7befd8d6f828b37741cb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b5dced69f6fc2b43ed6e925dbe44641191be7af1",
+                "reference": "b5dced69f6fc2b43ed6e925dbe44641191be7af1",
                 "shasum": ""
             },
             "require": {
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-07-31 15:28:13"
+            "time": "2017-08-01 09:03:43"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -5112,7 +5112,7 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.32",
+            "version": "v2.7.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
