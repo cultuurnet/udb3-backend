@@ -96,7 +96,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/description",
-                    "{$controllerName}:translateDescription"
+                    "{$controllerName}:updateDescription"
                 );
 
             $controllers
