@@ -38,7 +38,9 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             ->get('/{cdbid}', 'organizer_controller:get')
             ->bind('organizer');
 
-        $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
+        // @see: https://jira.uitdatabank.be/browse/III-2260
+        // Deleting an organizer or place has some negative side effects.
+        // $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         $controllers->put(
             '/{organizerId}/url',
@@ -74,8 +76,6 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             '{organizerId}/labels/{labelName}',
             'organizer_edit_controller:removeLabel'
         );
-
-        $controllers->delete('/{cdbid}', 'organizer_edit_controller:delete');
 
         return $controllers;
     }

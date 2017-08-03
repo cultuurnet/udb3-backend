@@ -44,6 +44,9 @@ $app['security.firewalls'] = array(
         'pattern' => (new AnyOfRequestMatcher())
             ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
             ->with(new RequestMatcher('^/(event|place|label)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
+            /* @deprecated */
             ->with(new RequestMatcher('^/(event|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/event/' . $app['id_pattern'] . '/history', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'], null, 'GET'))
@@ -236,7 +239,9 @@ $app->mount(
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
+/* @deprecated */
+$app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
+$app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
 /* @deprecated */
 $app->mount('/', new \CultuurNet\UDB3\Silex\Event\DeprecatedEventControllerProvider());
@@ -245,7 +250,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
-$app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
