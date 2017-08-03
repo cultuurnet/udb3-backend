@@ -59,7 +59,7 @@ class DeprecatedEventControllerProvider implements ControllerProviderInterface
         $controllers->post('event/{cdbid}/major-info', 'event_editing_controller:updateMajorInfo');
         $controllers->post('event/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
         $controllers->post('event/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
-        $controllers->post('event/{cdbid}/organizer', 'event_editing_controller:updateOrganizer');
+        $controllers->post('event/{cdbid}/organizer', 'event_editing_controller:updateOrganizerFromJsonBody');
         $controllers->delete('event/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
         $controllers->put('event/{cdbid}/audience', 'event_editing_controller:updateAudience');
         $controllers->post('event/{cdbid}/copies/', 'event_editing_controller:copyEvent');
