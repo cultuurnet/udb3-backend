@@ -44,7 +44,9 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers
             ->get('place/{cdbid}', 'place_controller:get')
             ->bind('place');
-        $controllers->delete('place/{cdbid}', 'place_editing_controller:deletePlace');
+        // @see: https://jira.uitdatabank.be/browse/III-2260
+        // Deleting an organizer or place has some negative side effects.
+        // $controllers->delete('place/{cdbid}', 'place_editing_controller:deletePlace');
         $controllers->get('place/{cdbid}/events', 'place_editing_controller:getEvents');
 
         $controllers->get('places', 'place_controller:getByPostalCode');
