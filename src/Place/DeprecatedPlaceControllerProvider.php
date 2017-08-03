@@ -59,7 +59,6 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
         $controllers->delete('place/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
 
         $controllers->post('place/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
-        $controllers->post('place/{cdbid}/nl/description', 'place_editing_controller:updateDescription');
         $controllers->post('place/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
         $controllers->delete('place/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
         $controllers->post('place/{cdbid}/major-info', 'place_editing_controller:updateMajorInfo');
