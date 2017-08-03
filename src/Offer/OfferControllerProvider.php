@@ -28,6 +28,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             'event' => 'event_editor',
             'events' => 'event_editor',
             'place' => 'place_editing_service',
+            'places' => 'place_editing_service',
         ];
 
         foreach ($offerServices as $offerType => $serviceName) {
