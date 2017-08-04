@@ -94,7 +94,8 @@ class OfferControllerProvider implements ControllerProviderInterface
                 }
             );
 
-            $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel");
+            $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel")
+                ->assert('label', '.*');
 
             $controllers->put("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:addLabel");
 
