@@ -94,7 +94,6 @@ class OfferControllerProvider implements ControllerProviderInterface
                 }
             );
 
-            $controllers->put("{$offerType}/{cdbid}/labels/", "{$controllerName}:addLabelFromJsonBody");
             $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel");
 
             $controllers->put("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:addLabel");
@@ -111,7 +110,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/labels",
-                    "{$controllerName}:addLabel"
+                    "{$controllerName}:addLabelFromJsonBody"
                 );
 
             $controllers
