@@ -98,7 +98,7 @@ class OfferControllerProvider implements ControllerProviderInterface
 
             $controllers->put("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:addLabel");
 
-            $controllers->put("{$offerType}/{cdbid}/{lang}/name", "{$controllerName}:translateTitle");
+            $controllers->put("{$offerType}/{cdbid}/{lang}/name", "{$controllerName}:updateTitle");
             $controllers->put("{$offerType}/{cdbid}/{lang}/description", "{$controllerName}:updateDescription");
             $controllers->put("{$offerType}/{cdbid}/priceInfo", "{$controllerName}:updatePriceInfo");
             $controllers->patch("{$offerType}/{cdbid}", "{$patchControllerName}:handle");
@@ -116,7 +116,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/title",
-                    "{$controllerName}:translateTitle"
+                    "{$controllerName}:updateTitle"
                 );
 
             $controllers
