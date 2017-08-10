@@ -1,0 +1,51 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "mainLanguage": {
+      "@id": "schema:inLanguage",
+      "@type": "schema:Text"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "schema:Text",
+      "@container": "@language"
+    },
+    "created": {
+      "@id": "schema:dateCreated",
+      "@type": "schema:DateTime"
+    },
+    "creator": {
+      "@id": "dcterms:creator",
+      "@type": "xsd:string"
+    },
+    "modified": {
+      "@id": "schema:dateModified",
+      "@type": "schema:DateTime"
+    },
+    "languages": {
+      "@id": "udb:organizerLanguage",
+      "@type": "dcterms:language",
+      "@container": "@list"
+    },
+    "completedLanguages": {
+      "@id": "udb:organizerCompletedLanguage",
+      "@type": "dcterms:language",
+      "@container": "@list"
+    },
+    "address": {
+      "@id": "schema:address",
+      "@type": "schema:postalAddress"
+    },
+    "contactPoint": {
+      "@id": "udb:organizerContactPoint",
+      "@type": "udb:ContactPoint"
+    },
+    "url": {
+      "@id": "schema:url",
+      "@type": "schema:URL"
+    }
+  }
+}

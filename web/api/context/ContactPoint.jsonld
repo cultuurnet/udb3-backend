@@ -1,0 +1,21 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "phone": {
+      "@id": "schema:telephone",
+      "@type": "schema:Text",
+      "@container": "@list"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "schema:Text",
+      "@container": "@list"
+    },
+    "url": {
+      "@id": "schema:url",
+      "@type": "schema:URL",
+      "@container": "@list"
+    }
+  }
+}

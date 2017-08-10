@@ -1,0 +1,23 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "category": {
+      "@id": "udb:priceInfoCategory",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "udb:priceInfoName",
+      "@type": "xsd:string"
+    },
+    "price": {
+      "@id": "schema:price",
+      "@type": "schema:Number"
+    },
+    "priceCurrency": {
+      "@id": "schema:priceCurrency",
+      "@type": "schema:Text"
+    }
+  }
+}

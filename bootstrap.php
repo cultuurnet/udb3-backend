@@ -360,6 +360,12 @@ $app['event_store'] = $app->share(
     }
 );
 
+$app['jsonld_context'] = $app->share(
+    function ($app) {
+        return \ValueObjects\Web\Url::fromNative($app['config']['url'] . '/contexts/');
+    }
+);
+
 $app['event_jsonld_repository'] = $app->share(
     function ($app) {
         $cachedRepository =  new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
@@ -424,7 +430,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['event_cdbxml_importer'],
             new JsonDocumentLanguageEnricher(
                 new EventJsonDocumentLanguageAnalyzer()
-            )
+            ),
+            $app['jsonld_context']
         );
 
         return $projector;
@@ -823,7 +830,8 @@ $app['place_jsonld_projector'] = $app->share(
             $app['place_cdbxml_importer'],
             new JsonDocumentLanguageEnricher(
                 new PlaceJsonDocumentLanguageAnalyzer()
-            )
+            ),
+            $app['jsonld_context']
         );
 
         return $projector;
@@ -943,7 +951,8 @@ $app['organizer_jsonld_projector'] = $app->share(
             $app['event_bus'],
             new JsonDocumentLanguageEnricher(
                 new OrganizerJsonDocumentLanguageAnalyzer()
-            )
+            ),
+            $app['jsonld_context']
         );
     }
 );

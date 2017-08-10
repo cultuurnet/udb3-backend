@@ -1,0 +1,31 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "phone": {
+      "@id": "udb:bookingInfoPhone",
+      "@type": "schema:telephone"
+    },
+    "email": {
+      "@id": "udb:bookingInfoEmail",
+      "@type": "schema:email"
+    },
+    "url": {
+      "@id": "udb:bookingInfoUrl",
+      "@type": "schema:url"
+    },
+    "urlLabel": {
+      "@id": "udb:bookingInfoUrlLabel",
+      "@type": "xsd:string"
+    },
+    "availabilityStarts": {
+      "@id": "schema:availabilityStarts",
+      "@type": "schema:DateTime"
+    },
+    "availabilityEnds": {
+      "@id": "schema:availabilityEnds",
+      "@type": "schema:DateTime"
+    }
+  }
+}

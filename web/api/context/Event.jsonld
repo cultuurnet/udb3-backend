@@ -1,0 +1,130 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "mainLanguage": {
+      "@id": "schema:inLanguage",
+      "@type": "schema:Text"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "schema:Text",
+      "@container": "@language"
+    },
+    "location": {
+      "@id": "udb:eventLocation",
+      "@type": "udb:Place"
+    },
+    "calendarType": {
+      "@id": "udb:offerCalendarType",
+      "@type": "xsd:string"
+    },
+    "availableTo": {
+      "@id": "udb:availableTo",
+      "@type": "xsd:dateTime"
+    },
+    "availableFrom": {
+      "@id": "schema:availableFrom",
+      "@type": "schema:DateTime"
+    },
+    "terms": {
+      "@id": "udb:offerTerm",
+      "@type": "udb:TaxonomyTerm",
+      "@container": "@set"
+    },
+    "labels": {
+      "@id": "udb:offerLabel",
+      "@type": "xsd:string",
+      "@container": "@set"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "schema:Text",
+      "@container": "@language"
+    },
+    "created": {
+      "@id": "schema:dateCreated",
+      "@type": "schema:DateTime"
+    },
+    "creator": {
+      "@id": "dcterms:creator",
+      "@type": "xsd:string"
+    },
+    "modified": {
+      "@id": "schema:dateModified",
+      "@type": "schema:DateTime"
+    },
+    "workflowStatus": {
+      "@id": "udb:workflowStatus",
+      "@type": "xsd:string"
+    },
+    "languages": {
+      "@id": "udb:offerLanguage",
+      "@type": "dcterms:language",
+      "@container": "@list"
+    },
+    "completedLanguages": {
+      "@id": "udb:offerCompletedLanguage",
+      "@type": "dcterms:language",
+      "@container": "@list"
+    },
+    "priceInfo": {
+      "@id": "udb:offerPriceInfo",
+      "@type": "udb:PriceInfo",
+      "@container": "@list"
+    },
+    "typicalAgeRange": {
+      "@id": "schema:typicalAgeRange",
+      "@type": "schema:Text"
+    },
+    "image": {
+      "@id": "schema:image",
+      "@type": "schema:URL"
+    },
+    "organizer": {
+      "@id": "udb:offerOrganizer",
+      "@type": "udb:Organizer"
+    },
+    "contactPoint": {
+      "@id": "udb:offerContactPoint",
+      "@type": "udb:ContactPoint"
+    },
+    "bookingInfo": {
+      "@id": "udb:offerBookingInfo",
+      "@type": "udb:BookingInfo"
+    },
+    "mediaObject": {
+      "@id": "udb:offerMedia",
+      "@type": "schema:ImageObject",
+      "@container": "@list"
+    },
+    "startDate": {
+      "@id": "schema:startDate",
+      "@type": "schema:DateTime"
+    },
+    "endDate": {
+      "@id": "schema:endDate",
+      "@type": "schema:DateTime"
+    },
+    "openingHours": {
+      "@id": "schema:openingHoursSpecification",
+      "@type": "schema:OpeningHoursSpecification",
+      "@container": "@list"
+    },
+    "geo": {
+      "@id": "schema:geo",
+      "@type": "schema:GeoCoordinates"
+    },
+    "audience": {
+      "@id": "schema:audience",
+      "@type": "schema:Audience"
+    },
+    "subEvent": {
+      "@id": "schema:subEvent",
+      "@type": "udb:Event",
+      "@container": "@list"
+    }
+  }
+}

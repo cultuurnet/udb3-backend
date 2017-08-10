@@ -1,0 +1,70 @@
+{
+  "@context": {
+    "hydra": "http://www.w3.org/ns/hydra/core#",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "EntryPoint": "udb:EntryPoint",
+    "places": {
+      "@id": "https://io.uitdatabank.be/places/",
+      "@type": "hydra:Link",
+      "label": "places",
+      "description": "The collection of all places",
+      "domain": "udb:EntryPoint",
+      "range": "http://www.w3.org/ns/hydra/core#Collection",
+      "supportedOperation": [
+        {
+          "@id": "_:place_collection_retrieve",
+          "@type": "hydra:Operation",
+          "method": "GET",
+          "label": "Retrieves all Place entities",
+          "description": null,
+          "expects": null,
+          "returns": "http://www.w3.org/ns/hydra/core#Collection",
+          "statusCodes": [
+          ]
+        }
+      ]
+    },
+    "organizers": {
+      "@id": "https://io.uitdatabank.be/organizers/",
+      "@type": "hydra:Link",
+      "label": "organizers",
+      "description": "The collection of all organizers",
+      "domain": "udb:EntryPoint",
+      "range": "http://www.w3.org/ns/hydra/core#Collection",
+      "supportedOperation": [
+        {
+          "@id": "_:organizer_collection_retrieve",
+          "@type": "hydra:Operation",
+          "method": "GET",
+          "label": "Retrieves all Organizer entities",
+          "description": null,
+          "expects": null,
+          "returns": "http://www.w3.org/ns/hydra/core#Collection",
+          "statusCodes": [
+          ]
+        }
+      ]
+    },
+    "events": {
+      "@id": "https://io.uitdatabank.be/events/",
+      "@type": "hydra:Link",
+      "label": "evetns",
+      "description": "The collection of all events",
+      "domain": "udb:EntryPoint",
+      "range": "http://www.w3.org/ns/hydra/core#Collection",
+      "supportedOperation": [
+        {
+          "@id": "_:event_collection_retrieve",
+          "@type": "hydra:Operation",
+          "method": "GET",
+          "label": "Retrieves all Event entities",
+          "description": null,
+          "expects": null,
+          "returns": "http://www.w3.org/ns/hydra/core#Collection",
+          "statusCodes": [
+          ]
+        }
+      ]
+    }
+  }
+}
