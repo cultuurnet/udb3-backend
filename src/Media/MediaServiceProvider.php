@@ -64,7 +64,7 @@ class MediaServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CallableIriGenerator(
                     function ($filePath) use ($app) {
-                        return $app['config']['url'] . '/media/' . $filePath;
+                        return $app['config']['url'] . '/images/' . $filePath;
                     }
                 );
             }
