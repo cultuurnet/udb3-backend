@@ -98,8 +98,8 @@ class OfferControllerProvider implements ControllerProviderInterface
 
             $controllers->put("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:addLabel");
 
-            $controllers->put("{$offerType}/{cdbid}/{lang}/name", "{$controllerName}:updateTitle");
-            $controllers->put("{$offerType}/{cdbid}/{lang}/description", "{$controllerName}:updateDescription");
+            $controllers->put("{$offerType}/{cdbid}/name/{lang}", "{$controllerName}:updateTitle");
+            $controllers->put("{$offerType}/{cdbid}/description/{lang}", "{$controllerName}:updateDescription");
             $controllers->put("{$offerType}/{cdbid}/priceInfo", "{$controllerName}:updatePriceInfo");
             $controllers->patch("{$offerType}/{cdbid}", "{$patchControllerName}:handle");
             $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionsControllerName}:getPermissionsForCurrentUser");
