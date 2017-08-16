@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "df1df33e2d3ee3424d2af10fff5259bd14ef9648"
+                "reference": "8cb039a67f0721e26cb3ae68cea6a9605188d9ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/df1df33e2d3ee3424d2af10fff5259bd14ef9648",
-                "reference": "df1df33e2d3ee3424d2af10fff5259bd14ef9648",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/8cb039a67f0721e26cb3ae68cea6a9605188d9ef",
+                "reference": "8cb039a67f0721e26cb3ae68cea6a9605188d9ef",
                 "shasum": ""
             },
             "require": {
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-08-16 08:07:40"
+            "time": "2017-08-16 16:51:31"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
