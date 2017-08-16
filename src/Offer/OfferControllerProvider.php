@@ -6,6 +6,8 @@ use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
@@ -45,7 +47,10 @@ class OfferControllerProvider implements ControllerProviderInterface
                         new LabelJSONDeserializer(),
                         new TitleJSONDeserializer(),
                         new DescriptionJSONDeserializer(),
-                        new PriceInfoJSONDeserializer()
+                        new PriceInfoJSONDeserializer(),
+                        new CalendarJSONDeserializer(
+                            new CalendarJSONParser()
+                        )
                     );
                 }
             );
@@ -93,6 +98,8 @@ class OfferControllerProvider implements ControllerProviderInterface
                     );
                 }
             );
+
+            $controllers->put("{$offerType}/{cdbid}/calendar", "{$controllerName}:updateCalendar");
 
             $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel");
 
