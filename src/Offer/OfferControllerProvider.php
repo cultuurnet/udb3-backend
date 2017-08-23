@@ -43,7 +43,7 @@ class OfferControllerProvider implements ControllerProviderInterface
                     return new EditOfferRestController(
                         $app[$serviceName],
                         new LabelJSONDeserializer(),
-                        new TitleJSONDeserializer(),
+                        new TitleJSONDeserializer(false, new StringLiteral('name')),
                         new DescriptionJSONDeserializer(),
                         new PriceInfoJSONDeserializer()
                     );
