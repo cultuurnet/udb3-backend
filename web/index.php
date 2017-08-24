@@ -51,7 +51,6 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/event/' . $app['id_pattern'] . '/history', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'], null, 'GET'))
             ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))
-            ->with(new RequestMatcher('^/images/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/(places|labels)$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
