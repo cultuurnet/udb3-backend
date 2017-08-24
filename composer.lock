@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "853e822c61781ddd89430a52ed7be7fa",
+    "content-hash": "4c15415a88369757fd81d2b7ebb673ea",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16 09:28:40"
+            "time": "2015-12-16T09:28:40+00:00"
         },
         {
             "name": "2dotstwice/silex-feature-toggles-provider",
@@ -96,7 +96,7 @@
                 "MIT"
             ],
             "description": "Feature toggles for Silex",
-            "time": "2017-07-03 14:15:24"
+            "time": "2017-07-03T14:15:24+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -542,7 +542,7 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24 20:22:37"
+            "time": "2015-08-24T20:22:37+00:00"
         },
         {
             "name": "cultuurnet/broadway-amqp",
@@ -589,7 +589,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2017-04-20 12:39:24"
+            "time": "2017-04-20T12:39:24+00:00"
         },
         {
             "name": "cultuurnet/broadway-tools",
@@ -630,7 +630,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-09 15:14:43"
+            "time": "2017-02-09T15:14:43+00:00"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -713,7 +713,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2017-07-05 12:13:57"
+            "time": "2017-07-05T12:13:57+00:00"
         },
         {
             "name": "cultuurnet/clock",
@@ -754,7 +754,7 @@
                 }
             ],
             "description": "Clock abstraction library",
-            "time": "2015-06-08 16:12:34"
+            "time": "2015-06-08T16:12:34+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -869,7 +869,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2017-04-19 11:56:39"
+            "time": "2017-04-19T11:56:39+00:00"
         },
         {
             "name": "cultuurnet/entry",
@@ -919,7 +919,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2016-01-05 16:01:34"
+            "time": "2016-01-05T16:01:34+00:00"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -968,7 +968,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-31 14:39:58"
+            "time": "2017-03-31T14:39:58+00:00"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1016,7 +1016,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-05-15 08:55:52"
+            "time": "2017-05-15T08:55:52+00:00"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -1060,7 +1060,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23 15:01:13"
+            "time": "2017-02-23T15:01:13+00:00"
         },
         {
             "name": "cultuurnet/search",
@@ -1149,7 +1149,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2017-02-23 10:54:33"
+            "time": "2017-02-23T10:54:33+00:00"
         },
         {
             "name": "cultuurnet/silex-service-provider-jwt",
@@ -1191,7 +1191,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2017-02-23 11:22:30"
+            "time": "2017-02-23T11:22:30+00:00"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1233,7 +1233,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2017-02-23 11:20:01"
+            "time": "2017-02-23T11:20:01+00:00"
         },
         {
             "name": "cultuurnet/udb2-domain-events",
@@ -1282,20 +1282,20 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2017-04-20 15:15:25"
+            "time": "2017-04-20T15:15:25+00:00"
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-2277",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f06d5803bd9f3ca9c28f56e19c10c7597fe201ec"
+                "reference": "ffe09adbeeaf801e23b8de05781aeab75c8b023a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f06d5803bd9f3ca9c28f56e19c10c7597fe201ec",
-                "reference": "f06d5803bd9f3ca9c28f56e19c10c7597fe201ec",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ffe09adbeeaf801e23b8de05781aeab75c8b023a",
+                "reference": "ffe09adbeeaf801e23b8de05781aeab75c8b023a",
                 "shasum": ""
             },
             "require": {
@@ -1316,7 +1316,7 @@
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
                 "ext-tidy": "*",
-                "guzzlehttp/psr7": "~1.2.3",
+                "guzzlehttp/psr7": "~1.4",
                 "justinrainbow/json-schema": "1.4.3",
                 "league/flysystem": "~1.0",
                 "league/period": "^3.3",
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-08-22 12:24:39"
+            "time": "2017-08-24T13:24:40+00:00"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1406,7 +1406,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2016-04-13 11:52:34"
+            "time": "2016-04-13T11:52:34+00:00"
         },
         {
             "name": "cultuurnet/udb3-export",
@@ -1462,7 +1462,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-07-31 08:57:12"
+            "time": "2017-07-31T08:57:12+00:00"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1503,7 +1503,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23 11:57:27"
+            "time": "2017-02-23T11:57:27+00:00"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1552,20 +1552,20 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2017-04-19 11:59:07"
+            "time": "2017-04-19T11:59:07+00:00"
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "version": "dev-feature/III-2277",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "1fb6e852115d6a22b5ebd0f574732a4905d3c0e6"
+                "reference": "97da0bee4d8ebcb09fe5ee9cf370f719a7913a72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/1fb6e852115d6a22b5ebd0f574732a4905d3c0e6",
-                "reference": "1fb6e852115d6a22b5ebd0f574732a4905d3c0e6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/97da0bee4d8ebcb09fe5ee9cf370f719a7913a72",
+                "reference": "97da0bee4d8ebcb09fe5ee9cf370f719a7913a72",
                 "shasum": ""
             },
             "require": {
@@ -1575,7 +1575,7 @@
                 "cultuurnet/udb3": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "guzzlehttp/guzzle": "~6.2",
-                "guzzlehttp/psr7": "~1.2.3",
+                "guzzlehttp/psr7": "~1.4",
                 "symfony/http-foundation": "~2.7.2",
                 "symfony/http-kernel": "~2.3",
                 "symfony/psr-http-message-bridge": "~0.2.0",
@@ -1614,20 +1614,20 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2017-08-22 12:24:24"
+            "time": "2017-08-24T13:28:08+00:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
+            "version": "dev-feature/III-2277",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "e27ec58735a22c4dbf516646f032decff269886d"
+                "reference": "6dace0390970b89f07e4b04b7f1ac40d1e08159e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/e27ec58735a22c4dbf516646f032decff269886d",
-                "reference": "e27ec58735a22c4dbf516646f032decff269886d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/6dace0390970b89f07e4b04b7f1ac40d1e08159e",
+                "reference": "6dace0390970b89f07e4b04b7f1ac40d1e08159e",
                 "shasum": ""
             },
             "require": {
@@ -1636,7 +1636,7 @@
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/udb2-domain-events": "~0.1",
                 "cultuurnet/udb3": "~0.1",
-                "guzzlehttp/psr7": "~1.2.3",
+                "guzzlehttp/psr7": "~1.4",
                 "league/uri": "^4.2",
                 "php-http/httplug": "~1.0.0"
             },
@@ -1672,7 +1672,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2017-07-05 12:54:49"
+            "time": "2017-08-24T13:32:06+00:00"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -1728,7 +1728,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-18 16:28:40"
+            "time": "2016-05-18T16:28:40+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -2889,27 +2889,30 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.0",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "d094e337976dff9d8e2424e8485872194e768662"
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d094e337976dff9d8e2424e8485872194e768662",
-                "reference": "d094e337976dff9d8e2424e8485872194e768662",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/promises": "~1.0",
-                "guzzlehttp/psr7": "~1.1",
-                "php": ">=5.5.0"
+                "guzzlehttp/promises": "^1.0",
+                "guzzlehttp/psr7": "^1.4",
+                "php": ">=5.5"
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "~4.0",
-                "psr/log": "~1.0"
+                "phpunit/phpunit": "^4.0 || ^5.0",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
@@ -2947,7 +2950,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2016-03-21T20:02:09+00:00"
+            "time": "2017-06-22T18:50:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -3002,16 +3005,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.2.3",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b"
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/2e89629ff057ebb49492ba08e6995d3a6a80021b",
-                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
+                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
                 "shasum": ""
             },
             "require": {
@@ -3027,7 +3030,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -3047,16 +3050,23 @@
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Tobias Schultze",
+                    "homepage": "https://github.com/Tobion"
                 }
             ],
-            "description": "PSR-7 message implementation",
+            "description": "PSR-7 message implementation that also provides common utility methods",
             "keywords": [
                 "http",
                 "message",
+                "request",
+                "response",
                 "stream",
-                "uri"
+                "uri",
+                "url"
             ],
-            "time": "2016-02-18T21:54:00+00:00"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -3308,7 +3318,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -4016,16 +4026,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.4.2",
+            "version": "v2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66"
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/965cdeb01fdcab7653253aa81d40441d261f1e66",
-                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
                 "shasum": ""
             },
             "require": {
@@ -4060,7 +4070,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:22:52+00:00"
+            "time": "2017-03-13T16:27:32+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -5495,20 +5505,19 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.33",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "c9c7151014ff12e5b7eead13e252cf9c6926b3ea"
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/c9c7151014ff12e5b7eead13e252cf9c6926b3ea",
-                "reference": "c9c7151014ff12e5b7eead13e252cf9c6926b3ea",
+                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
                 "shasum": ""
             },
             "require": {
-                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
                 "symfony/http-foundation": "~2.1",
@@ -5529,11 +5538,12 @@
                 "symfony/finder": "~2.3",
                 "symfony/intl": "~2.3",
                 "symfony/routing": "~2.2",
-                "symfony/validator": "~2.7.25|^2.8.18"
+                "symfony/validator": "~2.5,>=2.5.9"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -5571,7 +5581,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2017-07-28T21:20:34+00:00"
+            "time": "2015-12-23T18:13:52+00:00"
         },
         {
             "name": "symfony/serializer",
@@ -6424,9 +6434,31 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2277",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2277",
+            "package": "cultuurnet/udb3-symfony"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2277",
+            "package": "cultuurnet/udb3-udb2-bridge"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-symfony": 20,
+        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
