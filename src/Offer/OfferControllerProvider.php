@@ -6,8 +6,11 @@ use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForEventDataValidator;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForPlaceDataValidator;
 use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
+use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
@@ -41,7 +44,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             $permissionControllerName = "permission_{$offerType}_controller";
 
             $app[$controllerName] = $app->share(
-                function (Application $app) use ($serviceName) {
+                function (Application $app) use ($serviceName, $offerType) {
                     return new EditOfferRestController(
                         $app[$serviceName],
                         new LabelJSONDeserializer(),
@@ -49,7 +52,8 @@ class OfferControllerProvider implements ControllerProviderInterface
                         new DescriptionJSONDeserializer(),
                         new PriceInfoJSONDeserializer(),
                         new CalendarJSONDeserializer(
-                            new CalendarJSONParser()
+                            new CalendarJSONParser(),
+                            $this->getDataCalendarValidator($offerType)
                         )
                     );
                 }
@@ -147,4 +151,19 @@ class OfferControllerProvider implements ControllerProviderInterface
 
         return $controllers;
     }
+
+    /**
+     * @param string $offerType
+     *
+     * @return DataValidatorInterface
+     */
+    private function getDataCalendarValidator($offerType)
+    {
+        if (strpos($offerType, 'place') !== false) {
+            return new CalendarForPlaceDataValidator();
+        }
+
+        return new CalendarForEventDataValidator();
+    }
+
 }
