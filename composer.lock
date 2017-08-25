@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c15415a88369757fd81d2b7ebb673ea",
+    "content-hash": "b578341d0c5d7aee5ff7b617e939b00a",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "4005978e56ba453158df3f86b5f2ae5aa05545f8"
+                "reference": "744eaa2f203308fc924330f61fcb8192d2e0fa6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/4005978e56ba453158df3f86b5f2ae5aa05545f8",
-                "reference": "4005978e56ba453158df3f86b5f2ae5aa05545f8",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/744eaa2f203308fc924330f61fcb8192d2e0fa6d",
+                "reference": "744eaa2f203308fc924330f61fcb8192d2e0fa6d",
                 "shasum": ""
             },
             "require": {
@@ -1316,10 +1316,11 @@
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
                 "ext-tidy": "*",
-                "guzzlehttp/psr7": "~1.4",
+                "guzzlehttp/psr7": "~1.2.3",
                 "justinrainbow/json-schema": "1.4.3",
                 "league/flysystem": "~1.0",
                 "league/period": "^3.3",
+                "league/uri": "^4.2",
                 "php": "~5.6 || >=7.0",
                 "php-http/httplug": "^1.0",
                 "predis/predis": "~1.0",
@@ -1361,7 +1362,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-08-25T09:43:18+00:00"
+            "time": "2017-08-25T12:17:57+00:00"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1556,16 +1557,16 @@
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-feature/III-2277",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "97da0bee4d8ebcb09fe5ee9cf370f719a7913a72"
+                "reference": "1fb6e852115d6a22b5ebd0f574732a4905d3c0e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/97da0bee4d8ebcb09fe5ee9cf370f719a7913a72",
-                "reference": "97da0bee4d8ebcb09fe5ee9cf370f719a7913a72",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/1fb6e852115d6a22b5ebd0f574732a4905d3c0e6",
+                "reference": "1fb6e852115d6a22b5ebd0f574732a4905d3c0e6",
                 "shasum": ""
             },
             "require": {
@@ -1575,7 +1576,7 @@
                 "cultuurnet/udb3": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "guzzlehttp/guzzle": "~6.2",
-                "guzzlehttp/psr7": "~1.4",
+                "guzzlehttp/psr7": "~1.2.3",
                 "symfony/http-foundation": "~2.7.2",
                 "symfony/http-kernel": "~2.3",
                 "symfony/psr-http-message-bridge": "~0.2.0",
@@ -1614,20 +1615,20 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2017-08-24T13:28:08+00:00"
+            "time": "2017-08-22T12:24:24+00:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-feature/III-2277",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "6dace0390970b89f07e4b04b7f1ac40d1e08159e"
+                "reference": "e27ec58735a22c4dbf516646f032decff269886d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/6dace0390970b89f07e4b04b7f1ac40d1e08159e",
-                "reference": "6dace0390970b89f07e4b04b7f1ac40d1e08159e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/e27ec58735a22c4dbf516646f032decff269886d",
+                "reference": "e27ec58735a22c4dbf516646f032decff269886d",
                 "shasum": ""
             },
             "require": {
@@ -1636,7 +1637,7 @@
                 "cultuurnet/entry": "~0.1",
                 "cultuurnet/udb2-domain-events": "~0.1",
                 "cultuurnet/udb3": "~0.1",
-                "guzzlehttp/psr7": "~1.4",
+                "guzzlehttp/psr7": "~1.2.3",
                 "league/uri": "^4.2",
                 "php-http/httplug": "~1.0.0"
             },
@@ -1672,7 +1673,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2017-08-24T13:32:06+00:00"
+            "time": "2017-07-05T12:54:49+00:00"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2889,30 +2890,27 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.3.0",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
+                "reference": "d094e337976dff9d8e2424e8485872194e768662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
-                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d094e337976dff9d8e2424e8485872194e768662",
+                "reference": "d094e337976dff9d8e2424e8485872194e768662",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/promises": "^1.0",
-                "guzzlehttp/psr7": "^1.4",
-                "php": ">=5.5"
+                "guzzlehttp/promises": "~1.0",
+                "guzzlehttp/psr7": "~1.1",
+                "php": ">=5.5.0"
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0 || ^5.0",
-                "psr/log": "^1.0"
-            },
-            "suggest": {
-                "psr/log": "Required for using the Log middleware"
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
             },
             "type": "library",
             "extra": {
@@ -2950,7 +2948,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-06-22T18:50:49+00:00"
+            "time": "2016-03-21T20:02:09+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -3005,16 +3003,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.4.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c"
+                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
-                "reference": "f5b8a8512e2b58b0071a7280e39f14f72e05d87c",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/2e89629ff057ebb49492ba08e6995d3a6a80021b",
+                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b",
                 "shasum": ""
             },
             "require": {
@@ -3030,7 +3028,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
@@ -3050,23 +3048,16 @@
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "Tobias Schultze",
-                    "homepage": "https://github.com/Tobion"
                 }
             ],
-            "description": "PSR-7 message implementation that also provides common utility methods",
+            "description": "PSR-7 message implementation",
             "keywords": [
                 "http",
                 "message",
-                "request",
-                "response",
                 "stream",
-                "uri",
-                "url"
+                "uri"
             ],
-            "time": "2017-03-20T17:10:46+00:00"
+            "time": "2016-02-18T21:54:00+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -6440,25 +6431,11 @@
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-2277",
             "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2277",
-            "package": "cultuurnet/udb3-symfony"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2277",
-            "package": "cultuurnet/udb3-udb2-bridge"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb3": 20,
-        "cultuurnet/udb3-symfony": 20,
-        "cultuurnet/udb3-udb2-bridge": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
