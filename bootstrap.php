@@ -1242,7 +1242,7 @@ $app['event_export_notification_mail_factory'] = $app->share(
 $app['sapi3_search_service'] = $app->share(
   function ($app) {
       return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-          \League\Uri\Schemes\Http::createFromString($app['config']['export']['search_url']),
+          new \GuzzleHttp\Psr7\Uri($app['config']['export']['search_url']),
           new Client(new \GuzzleHttp\Client()),
           $app['iri_offer_identifier_factory']
       );
