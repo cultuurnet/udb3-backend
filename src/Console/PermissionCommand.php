@@ -50,6 +50,7 @@ class PermissionCommand extends Command
             ->where('isInstantiable');
 
         $table = new Table($this->output);
+        $table->setHeaders(array('Command', 'Permission'));
 
         /** @var \ReflectionClass $class */
         foreach ($authorizableClasses as $class) {
