@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "08485f9e956f238ca22973389453a60d",
+    "content-hash": "4e7c7fbddfad048c6a3e551e454085e8",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1286,16 +1286,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-2285",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "75d67a6e885927816d6445faf0bf24cacef3483c"
+                "reference": "740ebcd77af9f9adee829878387a7919dfd5d295"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/75d67a6e885927816d6445faf0bf24cacef3483c",
-                "reference": "75d67a6e885927816d6445faf0bf24cacef3483c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/740ebcd77af9f9adee829878387a7919dfd5d295",
+                "reference": "740ebcd77af9f9adee829878387a7919dfd5d295",
                 "shasum": ""
             },
             "require": {
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-09-01T11:25:38+00:00"
+            "time": "2017-09-01T10:15:14+00:00"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -6572,17 +6572,9 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2285",
-            "package": "cultuurnet/udb3"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
