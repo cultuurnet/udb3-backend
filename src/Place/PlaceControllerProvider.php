@@ -43,7 +43,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
 
         $controllers->post('/', 'place_editing_controller:createPlace');
         $controllers->get('/{cdbid}', 'place_controller:get');
-        $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
         $controllers->put('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
         $controllers->put('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
         $controllers->put('/{cdbid}/facilities/', 'place_editing_controller:updateFacilities');
