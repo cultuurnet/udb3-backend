@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Silex\Console;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use hanneskod\classtools\Iterator\ClassIterator;
 use Knp\Command\Command;
-use ReflectionException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,10 +53,13 @@ class PermissionCommand extends Command
 
         /** @var \ReflectionClass $class */
         foreach ($authorizableClasses as $class) {
+            /** @var AuthorizableCommandInterface $authorizableClassInstance */
+            $authorizableClassInstance = $class->newInstanceWithoutConstructor();
+
             $table->addRow(
                 [
                     $class->getName(),
-                    $class->getMethod('getPermission')->invoke(null),
+                    $authorizableClassInstance->getPermission(),
                 ]
             );
         }
