@@ -47,6 +47,7 @@ mail:
     name: UiTdatabank BETA
     address: no-reply@uitdatabank.be
 export:
+  search_url: http://udb-search.dev/offers/
   mail:
     subject: Uw export van evenementen
 amqp_execution_delay: 10 # Optional config param with default value of 10 seconds
