@@ -104,7 +104,9 @@ class OfferControllerProvider implements ControllerProviderInterface
             );
 
             $controllers->put("{$offerType}/{cdbid}/calendar", "{$controllerName}:updateCalendar");
-            
+            $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
+            $controllers->put("{$offerType}/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
+
             $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel")
                 ->assert('label', '.*');
 
