@@ -4,12 +4,11 @@ namespace CultuurNet\UDB3\Silex;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Variations\Command\ValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
@@ -30,6 +29,13 @@ class ErrorHandlerProvider implements ServiceProviderInterface
             function (DataValidationException $e) {
                 $problem = new ApiProblem('Invalid payload.');
                 $problem['validation_messages'] = $e->getValidationMessages();
+                return new ApiProblemJsonResponse($problem);
+            }
+        );
+
+        $app->error(
+            function (EntityNotFoundException $e) {
+                $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
             }
         );
