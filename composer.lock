@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5caf51f41fedefc25f8ffe957bc0bba5",
+    "content-hash": "666e99fb87c5eb20f923cda7ad0234b7",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -758,16 +758,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.6.5",
+            "version": "1.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "9f0c5c6b2274e666a2021b48529c889fe5248221"
+                "reference": "3a22730ec079d7533f858130e5b0226dc9d9d4dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/9f0c5c6b2274e666a2021b48529c889fe5248221",
-                "reference": "9f0c5c6b2274e666a2021b48529c889fe5248221",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/3a22730ec079d7533f858130e5b0226dc9d9d4dc",
+                "reference": "3a22730ec079d7533f858130e5b0226dc9d9d4dc",
                 "shasum": ""
             },
             "require": {
@@ -822,7 +822,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2017-07-20T10:44:03+00:00"
+            "time": "2017-07-03T15:18:29+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1286,16 +1286,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-2068",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "ddafebe6675f7291967893b6afdec3eb8c575c6d"
+                "reference": "2efc16bb98281710d38793772557858126efab99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ddafebe6675f7291967893b6afdec3eb8c575c6d",
-                "reference": "ddafebe6675f7291967893b6afdec3eb8c575c6d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2efc16bb98281710d38793772557858126efab99",
+                "reference": "2efc16bb98281710d38793772557858126efab99",
                 "shasum": ""
             },
             "require": {
@@ -1307,7 +1307,7 @@
                 "cultuurnet/auth": "~1.2",
                 "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/clock": "~0.1",
-                "cultuurnet/culturefeed-php": "~1.6",
+                "cultuurnet/culturefeed-php": "~1.7",
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/search": "~1.1",
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-09-08T08:46:33+00:00"
+            "time": "2017-09-25T12:54:47+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -6623,9 +6623,17 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2068",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
