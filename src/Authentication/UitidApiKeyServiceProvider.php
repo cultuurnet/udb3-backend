@@ -7,15 +7,12 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\AllowAnyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider;
-use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -27,7 +24,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['auth.api_key_reader'] = $app->share(
-            function (Application $app) {
+            function () {
                 $queryReader = new QueryParameterApiKeyReader('apiKey');
                 $headerReader = new CustomHeaderApiKeyReader('X-Api-Key');
 
@@ -48,7 +45,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
         );
 
         $app['auth.any_api_key_authenticator'] = $app->share(
-            function (Application $app) {
+            function () {
                 return new AllowAnyAuthenticator();
             }
         );
