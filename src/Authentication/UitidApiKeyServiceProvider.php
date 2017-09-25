@@ -7,6 +7,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\AllowAnyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use Qandidate\Toggle\ToggleManager;
@@ -35,6 +36,12 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['auth.consumer_repository'] = $app->share(
+            function (Application $app) {
+                return new InMemoryConsumerRepository();
+            }
+        );
+
         $app['auth.api_key_authenticator'] = $app->share(
             function (Application $app) {
                 return new CultureFeedApiKeyAuthenticator(
@@ -54,7 +61,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ApiKeyRequestAuthenticator(
                     $app['auth.api_key_reader'],
-                    $app['auth.any_api_key_authenticator']
+                    $app['auth.api_key_authenticator']
                 );
             }
         );
