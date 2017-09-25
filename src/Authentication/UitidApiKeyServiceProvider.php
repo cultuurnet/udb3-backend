@@ -78,7 +78,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     } catch (AuthenticationCredentialsNotFoundException $exception) {
                         // The authentication credentials are missing because the URL is not secured.
                     }
-
                 },
                 Application::LATE_EVENT
             );
