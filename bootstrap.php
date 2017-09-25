@@ -1412,6 +1412,8 @@ $app->register(
     )
 );
 
+$app->register(new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider());
+
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
     [

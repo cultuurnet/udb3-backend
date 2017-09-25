@@ -27,3 +27,7 @@ toggles:
     name: sapi3-export
     conditions: {}
     status: inactive
+  uitid-api-key-required:
+    name: uitid-api-key-required
+    conditions: {}
+    status: inactive
