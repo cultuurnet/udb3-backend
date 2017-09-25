@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Security;
 
+use CultuurNet\UDB3\Media\MediaSecurity;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
@@ -87,11 +88,15 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                     $app['offer_permission_voter']
                 );
 
-                return new SecurityWithLabelPrivacy(
+                $security = new SecurityWithLabelPrivacy(
                     $security,
                     $app['current_user_identification'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
+
+                $security = new MediaSecurity($security);
+
+                return $security;
             }
         );
     }

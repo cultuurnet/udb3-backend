@@ -64,7 +64,7 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
         $controllers->post('place/{cdbid}/major-info', 'place_editing_controller:updateMajorInfo');
         $controllers->post('place/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
         $controllers->post('place/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
-        $controllers->post('place/{cdbid}/facilities', 'place_editing_controller:updateFacilities');
+        $controllers->post('place/{cdbid}/facilities', 'place_editing_controller:updateFacilitiesWithLabel');
         $controllers->post('place/{cdbid}/organizer', 'place_editing_controller:updateOrganizerFromJsonBody');
         $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
 
