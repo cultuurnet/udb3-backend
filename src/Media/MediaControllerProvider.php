@@ -35,7 +35,7 @@ class MediaControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('images', 'media_editing_controller:upload');
+        $controllers->post('images/', 'media_editing_controller:upload');
         $controllers->get('images/{id}', 'media_controller:get');
 
         /* @deprecated */
