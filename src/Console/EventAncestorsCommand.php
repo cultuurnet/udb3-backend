@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\Domain\DomainMessage;
 use Broadway\EventStore\EventStoreInterface;
 use CultuurNet\UDB3\EventSourcing\AggregateCopiedEventInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,6 +32,7 @@ class EventAncestorsCommand extends AbstractCommand
         $ancestors = [];
         $eventStream = $eventStore->load($cdbid);
         foreach ($eventStream->getIterator() as $event) {
+            /** @var DomainMessage $event */
             $domainEvent = $event->getPayload();
             if ($domainEvent instanceof AggregateCopiedEventInterface) {
                 $ancestors[] = $domainEvent->getParentAggregateId();
@@ -40,6 +42,7 @@ class EventAncestorsCommand extends AbstractCommand
         for ($index = count($ancestors) - 1; $index >= 0; $index--) {
             $output->writeln($ancestors[$index]);
         }
+        $output->writeln($cdbid);
     }
 
     /**
