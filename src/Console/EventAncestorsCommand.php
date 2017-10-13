@@ -39,8 +39,8 @@ class EventAncestorsCommand extends AbstractCommand
             }
         }
 
-        for ($index = count($ancestors) - 1; $index >= 0; $index--) {
-            $output->writeln($ancestors[$index]);
+        foreach ($ancestors as $ancestor) {
+            $output->writeln($ancestor);
         }
         $output->writeln($cdbid);
     }
