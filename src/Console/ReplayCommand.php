@@ -75,8 +75,8 @@ class ReplayCommand extends AbstractCommand
             ->addOption(
                 self::OPTION_CDBID,
                 null,
-                InputOption::VALUE_REQUIRED,
-                'The cdbid of the aggregate to be replayed.'
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'An array of cdbids of the aggregates to be replayed.'
             );
     }
 
@@ -111,8 +111,8 @@ class ReplayCommand extends AbstractCommand
         $store = $this->getStore($input);
 
         $startId = (int) $input->getOption(self::OPTION_START_ID);
-        $cdbid = $input->getOption(self::OPTION_CDBID);
-        $stream = $this->getEventStream($store, $startId, $cdbid);
+        $cdbids = $input->getOption(self::OPTION_CDBID);
+        $stream = $this->getEventStream($store, $startId, $cdbids);
 
         $eventBus = $this->getEventBus();
 
@@ -219,13 +219,13 @@ class ReplayCommand extends AbstractCommand
     /**
      * @param string $store
      * @param int|null $startId
-     * @param string|null $cdbid
+     * @param string[] $cdbids
      * @return EventStream
      */
     private function getEventStream(
         $store = 'events',
         $startId = null,
-        $cdbid = null
+        $cdbids = null
     ) {
         $app = $this->getSilexApplication();
 
@@ -240,8 +240,8 @@ class ReplayCommand extends AbstractCommand
             $eventStream = $eventStream->withStartId($startId);
         }
 
-        if ($cdbid) {
-            $eventStream = $eventStream->withCdbid($cdbid);
+        if ($cdbids) {
+            $eventStream = $eventStream->withCdbids($cdbids);
         }
 
         // Older domain messages in the events, places, and organizers
