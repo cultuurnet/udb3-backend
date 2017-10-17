@@ -32,7 +32,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                             new CurlHttpAdapter(),
                             null,
                             null,
-                            false,
+                            true,
                             $googleMapsApiKey
                         )
                     )
