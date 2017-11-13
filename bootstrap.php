@@ -548,6 +548,7 @@ $app['event_bus'] = $app->share(
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
                 'place_geocoordinates_process_manager',
+                'uitpas_event_process_manager',
             ];
 
             $initialSubscribersCount = count($subscribers);
@@ -1427,6 +1428,8 @@ $app->register(
         'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]
 );
+
+$app->register(new \CultuurNet\UDB3\Silex\UiTPASIncomingEventServicesProvider());
 
 $app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
 
