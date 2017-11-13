@@ -25,8 +25,7 @@ use CultuurNet\UDB3\UDB2\Label\LabelImporter;
 use CultuurNet\UDB3\UDB2\Media\ImageCollectionFactory;
 use CultuurNet\UDB3\UDB2\Media\MediaImporter;
 use CultuurNet\UDB3\UDB2\OfferToSapiUrlTransformer;
-use CultuurNet\UDB3\UDB2\XML\CombinedXmlValidationService;
-use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceCollection;
+use CultuurNet\UDB3\UDB2\XML\CompositeXmlValidationService;
 use CultuurNet\UDB3\UDB2\XSD\CachedInMemoryXSDReader;
 use CultuurNet\UDB3\UDB2\XSD\FileGetContentsXSDReader;
 use CultuurNet\UDB3\UDB2\XSD\XSDAwareXMLValidationService;
@@ -154,12 +153,10 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     new FileGetContentsXSDReader($app['udb2_cdbxml_enricher.xsd'])
                 );
 
-                return new CombinedXmlValidationService(
-                    new XMLValidationServiceCollection(
-                        new XSDAwareXMLValidationService($reader, LIBXML_ERR_ERROR),
-                        new EventXMLValidatorService(
-                            new StringLiteral('http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL')
-                        )
+                return new CompositeXmlValidationService(
+                    new XSDAwareXMLValidationService($reader, LIBXML_ERR_ERROR),
+                    new EventXMLValidatorService(
+                        new StringLiteral('http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL')
                     )
                 );
             }
