@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "27e46dd4676d29b8de7445ca1da4e920",
+    "content-hash": "4bd3fd498912c19ca21c51221df10ec7",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1727,16 +1727,16 @@
         },
         {
             "name": "cultuurnet/udb3-uitpas-event-consumer",
-            "version": "dev-master",
+            "version": "dev-feature/III-2386",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-uitpas-event-consumer.git",
-                "reference": "4eac5ac78a8e79e7f6fcc7d8caed83fc95039cd1"
+                "reference": "b2c60ccdaee59c7fea478f7c0272eb6247fe84c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-event-consumer/zipball/4eac5ac78a8e79e7f6fcc7d8caed83fc95039cd1",
-                "reference": "4eac5ac78a8e79e7f6fcc7d8caed83fc95039cd1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-event-consumer/zipball/b2c60ccdaee59c7fea478f7c0272eb6247fe84c6",
+                "reference": "b2c60ccdaee59c7fea478f7c0272eb6247fe84c6",
                 "shasum": ""
             },
             "require": {
@@ -1761,14 +1761,14 @@
             },
             "autoload": {
                 "psr-4": {
-                    "CultuurNet\\UDB3\\UiTPAS\\EventConsumer\\": "src/"
+                    "CultuurNet\\UDB3\\UiTPAS\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-10T10:33:11+00:00"
+            "time": "2017-11-13T13:11:31+00:00"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -6670,9 +6670,17 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2386",
+            "package": "cultuurnet/udb3-uitpas-event-consumer"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3-uitpas-event-consumer": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
