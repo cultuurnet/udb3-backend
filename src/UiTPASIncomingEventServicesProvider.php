@@ -4,9 +4,9 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\Event\Event\EventCardSystemsUpdatedDeserializer;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\Event\EventProcessManager;
-use CultuurNet\UDB3\UiTPAS\EventConsumer\Label\HttpUiTPASLabelsRepository;
+use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
+use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
+use CultuurNet\UDB3\UiTPAS\Label\HttpUiTPASLabelsRepository;
 use Guzzle\Http\Client;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
