@@ -16,7 +16,7 @@
     "cultuurnet/udb3-http-foundation": "~0.1",
     "cultuurnet/udb3-symfony": "~0.1",
     "cultuurnet/udb3-udb2-bridge": "~0.1",
-    "cultuurnet/udb3-uitpas-event-consumer": "~0.1",
+    "cultuurnet/udb3-uitpas-bridge": "~0.1",
     "cultuurnet/broadway-tools": "~0.1",
     "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/hydra": "~0.1",
