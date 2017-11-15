@@ -82,13 +82,9 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['uitpas_event_process_manager'] = $app->share(
             function (Application $app) {
-                // Use the 'out' command bus so the process manager commands
-                // do not get queued. We're already reading the uitpas messages
-                // in an async CLI worker, no need to handle the corresponding
-                // commands in yet another async process.
                 return new EventProcessManager(
                     $app['event_jsonld_repository'],
-                    $app['event_command_bus_out'],
+                    $app['event_command_bus'],
                     $app['uitpas_label_repository'],
                     $app['uitpas_logger']
                 );
