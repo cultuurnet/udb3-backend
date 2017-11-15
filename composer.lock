@@ -1731,12 +1731,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-uitpas-bridge.git",
-                "reference": "000de15b80826fb64cdc927e0a0ec47f317ac74d"
+                "reference": "b479fac36ffa8fccdf7a244752b39f8ec2766f1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-bridge/zipball/000de15b80826fb64cdc927e0a0ec47f317ac74d",
-                "reference": "000de15b80826fb64cdc927e0a0ec47f317ac74d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-bridge/zipball/b479fac36ffa8fccdf7a244752b39f8ec2766f1d",
+                "reference": "b479fac36ffa8fccdf7a244752b39f8ec2766f1d",
                 "shasum": ""
             },
             "require": {
@@ -1768,7 +1768,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-14T10:30:10+00:00"
+            "time": "2017-11-15T07:37:13+00:00"
         },
         {
             "name": "cultuurnet/uitid-credentials",
