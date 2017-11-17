@@ -147,17 +147,31 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             }
         );
 
-        $app['cdbxml_enricher_xml_validation_service'] = $app->share(
+        $app['xsd_validation_service'] = $app->share(
             function (Application $app) {
                 $reader = new CachedInMemoryXSDReader(
                     new FileGetContentsXSDReader($app['udb2_cdbxml_enricher.xsd'])
                 );
 
+                return new XSDAwareXMLValidationService($reader, LIBXML_ERR_ERROR);
+            }
+        );
+
+        $app['event_cdbxml_enricher_xml_validation_service'] = $app->share(
+            function (Application $app) {
                 return new CompositeXmlValidationService(
-                    new XSDAwareXMLValidationService($reader, LIBXML_ERR_ERROR),
+                    $app['xsd_validation_service'],
                     new EventXMLValidatorService(
                         new StringLiteral('http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL')
                     )
+                );
+            }
+        );
+
+        $app['actor_cdbxml_enricher_xml_validation_service'] = $app->share(
+            function (Application $app) {
+                return new CompositeXmlValidationService(
+                    $app['xsd_validation_service']
                 );
             }
         );
@@ -174,7 +188,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) use ($importFromSapi, $importValidateXml) {
                 $xmlValidationService = null;
                 if ($importValidateXml) {
-                    $xmlValidationService = $app['cdbxml_enricher_xml_validation_service'];
+                    $xmlValidationService = $app['event_cdbxml_enricher_xml_validation_service'];
                 }
 
                 $enricher = new EventCdbXmlEnricher(
@@ -202,7 +216,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) use ($importFromSapi, $importValidateXml) {
                 $xmlValidationService = null;
                 if ($importValidateXml) {
-                    $xmlValidationService = $app['cdbxml_enricher_xml_validation_service'];
+                    $xmlValidationService = $app['actor_cdbxml_enricher_xml_validation_service'];
                 }
 
                 $enricher = new ActorEventCdbXmlEnricher(
