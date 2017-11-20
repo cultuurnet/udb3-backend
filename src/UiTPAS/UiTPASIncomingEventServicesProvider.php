@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\UiTPAS;
 
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;

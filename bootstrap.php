@@ -1429,7 +1429,7 @@ $app->register(
     ]
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\UiTPASIncomingEventServicesProvider());
+$app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
 $app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
 
