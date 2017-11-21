@@ -26,6 +26,7 @@ class MediaServiceProvider implements ServiceProviderInterface
         $app['image_uploader'] = $app->share(
             function (Application $app) {
                 return new ImageUploaderService(
+                    $app['media_manager'],
                     new Version4Generator(),
                     $app['event_command_bus'],
                     $app['local_file_system'],
