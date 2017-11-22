@@ -14,7 +14,8 @@ class UiTPASCommandValidatorServiceProvider implements ServiceProviderInterface
         $app['uitpas_event_has_ticket_sales_command_validator'] = $app->share(
             function (Application $app) {
                 return new EventHasTicketSalesCommandValidator(
-                    $app['uitpas']
+                    $app['uitpas'],
+                    $app['logger.command_bus']
                 );
             }
         );
