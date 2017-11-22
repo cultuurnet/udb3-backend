@@ -290,7 +290,7 @@ $app['cache-redis'] = $app->share(
 );
 
 $app['cache-filesystem'] = $app->share(
-    function ($app) {
+    function () {
         $baseCacheDirectory = __DIR__ . '/cache';
 
         return function ($cacheType) use ($baseCacheDirectory) {
@@ -603,7 +603,7 @@ $app['event_repository'] = $app->share(
 );
 
 $app['execution_context_metadata_enricher'] = $app->share(
-    function ($app) {
+    function () {
         return new ExecutionContextMetadataEnricher();
     }
 );
@@ -1291,7 +1291,7 @@ $app['amqp-execution-delay'] = isset($app['config']['amqp_execution_delay']) ?
     Natural::fromNative(10);
 
 $app['logger.amqp.event_bus_forwarder'] = $app->share(
-    function (Application $app) {
+    function () {
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
         $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
 
@@ -1314,7 +1314,7 @@ $app['uitpas'] = $app->share(
 );
 
 $app['logger.uitpas'] = $app->share(
-    function (Application $app) {
+    function () {
         $logger = new Monolog\Logger('uitpas');
         $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
 
@@ -1429,7 +1429,8 @@ $app->register(
     ]
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\UiTPASIncomingEventServicesProvider());
+$app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASCommandValidatorServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\UiTPAS\UiTPASIncomingEventServicesProvider());
 
 $app->register(new CultuurNet\UDB3\Silex\Moderation\ModerationServiceProvider());
 
