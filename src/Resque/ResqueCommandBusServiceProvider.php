@@ -41,7 +41,7 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
                 };
 
                 $app[$queueName . '_command_validator'] = $app->share(
-                    function (Application $app) {
+                    function () {
                         return new CompositeCommandValidator();
                     }
                 );
