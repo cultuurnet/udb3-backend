@@ -8,8 +8,10 @@ use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
+use CultuurNet\UDB3\Offer\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Security;
+use CultuurNet\UDB3\Offer\Security\SecurityWithFacilityPermission;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
@@ -81,6 +83,18 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['facility_permission_voter'] = $app->share(
+            function (Application $app) {
+                return new CompositeVoter(
+                    new GodUserVoter($app['config']['user_permissions']['allow_all']),
+                    new UserPermissionVoter(
+                        $app['user_permissions_read_repository']
+                    )
+                );
+            }
+        );
+
+
         $app['offer.security'] = $app->share(
             function ($app) {
                 $security = new Security(
@@ -95,6 +109,13 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                 );
 
                 $security = new MediaSecurity($security);
+
+                $security = new SecurityWithFacilityPermission(
+                    $security,
+                    $app['current_user_identification'],
+                    $app['facility_permission_voter']
+                );
+
 
                 return $security;
             }
