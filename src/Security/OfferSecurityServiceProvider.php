@@ -8,15 +8,17 @@ use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
-use CultuurNet\UDB3\Offer\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Security;
-use CultuurNet\UDB3\Offer\Security\SecurityWithFacilityPermission;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
+use CultuurNet\UDB3\Place\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
+use CultuurNet\UDB3\Security\ClassNameCommandFilter;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
+use CultuurNet\UDB3\Security\SecurityWithUserPermission;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -110,10 +112,13 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
 
                 $security = new MediaSecurity($security);
 
-                $security = new SecurityWithFacilityPermission(
+                $security = new SecurityWithUserPermission(
                     $security,
                     $app['current_user_identification'],
-                    $app['facility_permission_voter']
+                    $app['facility_permission_voter'],
+                    new ClassNameCommandFilter(
+                        new StringLiteral(UpdateFacilities::class)
+                    )
                 );
 
 
