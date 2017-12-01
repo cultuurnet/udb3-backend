@@ -31,3 +31,7 @@ toggles:
     name: uitid-api-key-required
     conditions: {}
     status: inactive
+  facility-permission:
+    name: facility-permission
+    conditions: {}
+    status: inactive

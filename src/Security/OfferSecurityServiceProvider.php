@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Security\SecurityWithUserPermission;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -112,15 +113,16 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
 
                 $security = new MediaSecurity($security);
 
-                $security = new SecurityWithUserPermission(
-                    $security,
-                    $app['current_user_identification'],
-                    $app['facility_permission_voter'],
-                    new ClassNameCommandFilter(
-                        new StringLiteral(UpdateFacilities::class)
-                    )
-                );
-
+                /** @var ToggleManager $toggles */
+                $toggles = $app['toggles'];
+                if ($toggles->active('facility-permission', $app['toggles.context'])) {
+                    $security = new SecurityWithUserPermission(
+                        $security,
+                        $app['current_user_identification'],
+                        $app['facility_permission_voter'],
+                        new ClassNameCommandFilter(new StringLiteral(UpdateFacilities::class))
+                    );
+                }
 
                 return $security;
             }
