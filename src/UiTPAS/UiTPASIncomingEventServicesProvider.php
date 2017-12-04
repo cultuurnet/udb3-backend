@@ -20,7 +20,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
     {
         $app['uitpas_log_handler'] = $app->share(
             function () {
-                return new StreamHandler(__DIR__ . '/../log/uitpas-events.log');
+                return new StreamHandler(__DIR__ . '/../../log/uitpas-events.log');
             }
         );
 
