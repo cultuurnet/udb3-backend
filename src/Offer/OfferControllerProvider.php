@@ -14,7 +14,9 @@ use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Symfony\Deserializer\Place\FacilitiesJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
+use CultuurNet\UDB3\Symfony\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
+use CultuurNet\UDB3\Symfony\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Symfony\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Symfony\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Symfony\Offer\PatchOfferRestController;
@@ -57,8 +59,9 @@ class OfferControllerProvider implements ControllerProviderInterface
                             new CalendarJSONParser(),
                             $this->getDataCalendarValidator($offerType)
                         ),
-                        //todo: One for places and one for events.
-                        new FacilitiesJSONDeserializer(new PlaceFacilityResolver())
+                        new FacilitiesJSONDeserializer(
+                            $this->getFacilityResolver($offerType)
+                        )
                     );
                 }
             );
@@ -178,5 +181,18 @@ class OfferControllerProvider implements ControllerProviderInterface
         }
 
         return new CalendarForEventDataValidator();
+    }
+
+    /**
+     * @param string $offerType
+     * @return OfferFacilityResolverInterface
+     */
+    private function getFacilityResolver($offerType)
+    {
+        if (strpos($offerType, 'place') !== false) {
+            return new PlaceFacilityResolver();
+        }
+
+        return new EventFacilityResolver();
     }
 }
