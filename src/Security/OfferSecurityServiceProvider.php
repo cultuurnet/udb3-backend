@@ -113,16 +113,20 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
 
                 $security = new MediaSecurity($security);
 
+                $filterCommands = [];
+
                 /** @var ToggleManager $toggles */
                 $toggles = $app['toggles'];
                 if ($toggles->active('facility-permission', $app['toggles.context'])) {
-                    $security = new SecurityWithUserPermission(
-                        $security,
-                        $app['current_user_identification'],
-                        $app['facility_permission_voter'],
-                        new ClassNameCommandFilter(new StringLiteral(UpdateFacilities::class))
-                    );
+                    $filterCommands[] = new StringLiteral(UpdateFacilities::class);
                 }
+
+                $security = new SecurityWithUserPermission(
+                    $security,
+                    $app['current_user_identification'],
+                    $app['facility_permission_voter'],
+                    new ClassNameCommandFilter(...$filterCommands)
+                );
 
                 return $security;
             }
