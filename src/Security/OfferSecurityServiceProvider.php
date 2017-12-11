@@ -12,10 +12,15 @@ use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Security;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
+use CultuurNet\UDB3\Place\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
+use CultuurNet\UDB3\Security\ClassNameCommandFilter;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
+use CultuurNet\UDB3\Security\SecurityWithUserPermission;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -81,6 +86,18 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['facility_permission_voter'] = $app->share(
+            function (Application $app) {
+                return new CompositeVoter(
+                    new GodUserVoter($app['config']['user_permissions']['allow_all']),
+                    new UserPermissionVoter(
+                        $app['user_permissions_read_repository']
+                    )
+                );
+            }
+        );
+
+
         $app['offer.security'] = $app->share(
             function ($app) {
                 $security = new Security(
@@ -95,6 +112,21 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                 );
 
                 $security = new MediaSecurity($security);
+
+                $filterCommands = [];
+
+                /** @var ToggleManager $toggles */
+                $toggles = $app['toggles'];
+                if ($toggles->active('facility-permission', $app['toggles.context'])) {
+                    $filterCommands[] = new StringLiteral(UpdateFacilities::class);
+                }
+
+                $security = new SecurityWithUserPermission(
+                    $security,
+                    $app['current_user_identification'],
+                    $app['facility_permission_voter'],
+                    new ClassNameCommandFilter(...$filterCommands)
+                );
 
                 return $security;
             }
