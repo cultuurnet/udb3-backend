@@ -4,12 +4,15 @@ namespace CultuurNet\UDB3\Silex\Media;
 
 use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -23,6 +26,7 @@ class MediaServiceProvider implements ServiceProviderInterface
         $app['image_uploader'] = $app->share(
             function (Application $app) {
                 return new ImageUploaderService(
+                    new Version4Generator(),
                     $app['event_command_bus'],
                     $app['local_file_system'],
                     $app['media.upload_directory'],
@@ -76,8 +80,8 @@ class MediaServiceProvider implements ServiceProviderInterface
 
         $app['logger.media_manager'] = $app->share(
             function () {
-                $logger = new \Monolog\Logger('media-manager');
-                $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/../../log/media_manager.log'));
+                $logger = new Logger('media-manager');
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/media_manager.log'));
 
                 return $logger;
             }

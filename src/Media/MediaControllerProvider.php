@@ -27,8 +27,7 @@ class MediaControllerProvider implements ControllerProviderInterface
         $app['media_editing_controller'] = $app->share(
             function (Application $app) {
                 return new EditMediaRestController(
-                    $app['image_uploader'],
-                    $app['uuid_generator']
+                    $app['image_uploader']
                 );
             }
         );
