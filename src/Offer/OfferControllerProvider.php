@@ -11,12 +11,16 @@ use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForPlaceDataValidator;
 use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Symfony\Deserializer\Place\FacilitiesJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
+use CultuurNet\UDB3\Symfony\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
+use CultuurNet\UDB3\Symfony\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Symfony\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Symfony\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Symfony\Offer\PatchOfferRestController;
+use CultuurNet\UDB3\Symfony\Place\PlaceFacilityResolver;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -54,6 +58,9 @@ class OfferControllerProvider implements ControllerProviderInterface
                         new CalendarJSONDeserializer(
                             new CalendarJSONParser(),
                             $this->getDataCalendarValidator($offerType)
+                        ),
+                        new FacilitiesJSONDeserializer(
+                            $this->getFacilityResolver($offerType)
                         )
                     );
                 }
@@ -106,6 +113,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             $controllers->put("{$offerType}/{cdbid}/calendar", "{$controllerName}:updateCalendar");
             $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
             $controllers->put("{$offerType}/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
+            $controllers->put("{$offerType}/{cdbid}/facilities/", "{$controllerName}:updateFacilities");
 
             $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel")
                 ->assert('label', '.*');
@@ -140,6 +148,12 @@ class OfferControllerProvider implements ControllerProviderInterface
                 );
 
             $controllers
+                ->post(
+                    "{$offerType}/{cdbid}/facilities",
+                    "{$controllerName}:updateFacilitiesWithLabel"
+                );
+
+            $controllers
                 ->get(
                     "{$offerType}/{offerId}/permission",
                     "{$permissionControllerName}:currentUserHasPermission"
@@ -167,5 +181,18 @@ class OfferControllerProvider implements ControllerProviderInterface
         }
 
         return new CalendarForEventDataValidator();
+    }
+
+    /**
+     * @param string $offerType
+     * @return OfferFacilityResolverInterface
+     */
+    private function getFacilityResolver($offerType)
+    {
+        if (strpos($offerType, 'place') !== false) {
+            return new PlaceFacilityResolver();
+        }
+
+        return new EventFacilityResolver();
     }
 }
