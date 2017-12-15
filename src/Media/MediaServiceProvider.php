@@ -11,8 +11,8 @@ use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -79,9 +79,9 @@ class MediaServiceProvider implements ServiceProviderInterface
         );
 
         $app['logger.media_manager'] = $app->share(
-            function (Application $app) {
-                $logger = new \Monolog\Logger('media-manager');
-                $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/../../log/media_manager.log'));
+            function () {
+                $logger = new Logger('media-manager');
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/media_manager.log'));
 
                 return $logger;
             }

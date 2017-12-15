@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "ff53171944ae3bce4e662ec1f9937b141d9a8373"
+                "reference": "328cff5790a99f19297ae1bf313021f3f977a61e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ff53171944ae3bce4e662ec1f9937b141d9a8373",
-                "reference": "ff53171944ae3bce4e662ec1f9937b141d9a8373",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/328cff5790a99f19297ae1bf313021f3f977a61e",
+                "reference": "328cff5790a99f19297ae1bf313021f3f977a61e",
                 "shasum": ""
             },
             "require": {
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-12-12T13:37:14+00:00"
+            "time": "2017-12-15T16:10:54+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1611,12 +1611,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "d5a3bc86366a917e050a0d2535dc73a6c422eeca"
+                "reference": "9c532626cf1a342eb02c99a2e122c2e0d9b65343"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/d5a3bc86366a917e050a0d2535dc73a6c422eeca",
-                "reference": "d5a3bc86366a917e050a0d2535dc73a6c422eeca",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/9c532626cf1a342eb02c99a2e122c2e0d9b65343",
+                "reference": "9c532626cf1a342eb02c99a2e122c2e0d9b65343",
                 "shasum": ""
             },
             "require": {
@@ -1665,7 +1665,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2017-12-13T07:36:32+00:00"
+            "time": "2017-12-15T16:19:45+00:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3456,7 +3456,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -4215,16 +4215,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.4.2",
+            "version": "v2.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66"
+                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/965cdeb01fdcab7653253aa81d40441d261f1e66",
-                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/5da4d3c796c275c55f057af5a643ae297d96b4d8",
+                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8",
                 "shasum": ""
             },
             "require": {
@@ -4259,7 +4259,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:22:52+00:00"
+            "time": "2017-09-27T21:40:39+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -5743,27 +5743,23 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.39",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "019cf20ebefc34f76f5c4315d224aa169dc955bd"
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/019cf20ebefc34f76f5c4315d224aa169dc955bd",
-                "reference": "019cf20ebefc34f76f5c4315d224aa169dc955bd",
+                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
                 "shasum": ""
             },
             "require": {
-                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
-                "symfony/http-foundation": "~2.7",
+                "symfony/http-foundation": "~2.1",
                 "symfony/http-kernel": "~2.4"
-            },
-            "conflict": {
-                "symfony/http-foundation": "<2.7.38|~2.8,<2.8.31"
             },
             "replace": {
                 "symfony/security-acl": "self.version",
@@ -5780,11 +5776,12 @@
                 "symfony/finder": "~2.3",
                 "symfony/intl": "~2.3",
                 "symfony/routing": "~2.2",
-                "symfony/validator": "~2.7.25|^2.8.18"
+                "symfony/validator": "~2.5,>=2.5.9"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -5822,7 +5819,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-16T15:51:27+00:00"
+            "time": "2015-12-23T18:13:52+00:00"
         },
         {
             "name": "symfony/serializer",

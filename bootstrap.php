@@ -740,7 +740,8 @@ $app->extend(
             new \CultuurNet\UDB3\Event\EventCommandHandler(
                 $app['event_repository'],
                 $app['organizer_repository'],
-                $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                $app['media_manager']
             )
         );
 
@@ -768,7 +769,8 @@ $app->extend(
             new \CultuurNet\UDB3\Place\CommandHandler(
                 $app['place_repository'],
                 $app['organizer_repository'],
-                $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                $app['media_manager']
             )
         );
 
