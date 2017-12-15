@@ -1731,12 +1731,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-uitpas-bridge.git",
-                "reference": "40c74e608806f2cdc8d50cd6bf1c1445c6589bca"
+                "reference": "0700d769374c1b895ff4bc454a0577ecabbd81cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-bridge/zipball/40c74e608806f2cdc8d50cd6bf1c1445c6589bca",
-                "reference": "40c74e608806f2cdc8d50cd6bf1c1445c6589bca",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-bridge/zipball/0700d769374c1b895ff4bc454a0577ecabbd81cf",
+                "reference": "0700d769374c1b895ff4bc454a0577ecabbd81cf",
                 "shasum": ""
             },
             "require": {
@@ -1770,7 +1770,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-22T09:53:46+00:00"
+            "time": "2017-12-15T08:48:03+00:00"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -5311,7 +5311,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.1",
+            "version": "v3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
