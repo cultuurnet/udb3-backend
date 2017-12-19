@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Security;
 
+use CultuurNet\UDB3\Event\Commands\UpdateFacilities as EventUpdateFacilities;
 use CultuurNet\UDB3\Media\MediaSecurity;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
@@ -12,7 +13,7 @@ use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Security;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
-use CultuurNet\UDB3\Place\Commands\UpdateFacilities;
+use CultuurNet\UDB3\Place\Commands\UpdateFacilities as PlaceUpdateFacilities;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
 use CultuurNet\UDB3\Security\ClassNameCommandFilter;
@@ -118,7 +119,8 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                 /** @var ToggleManager $toggles */
                 $toggles = $app['toggles'];
                 if ($toggles->active('facility-permission', $app['toggles.context'])) {
-                    $filterCommands[] = new StringLiteral(UpdateFacilities::class);
+                    $filterCommands[] = new StringLiteral(PlaceUpdateFacilities::class);
+                    $filterCommands[] = new StringLiteral(EventUpdateFacilities::class);
                 }
 
                 $security = new SecurityWithUserPermission(
