@@ -18,11 +18,10 @@ class Version20180108080352 extends AbstractMigration
         $this->getLabelsRelationsTable($schema)
             ->addIndex(
                 [
-                    'relationId'
+                    'relationId',
                 ],
                 'IDX_RELATION_ID'
             );
-
     }
 
     /**
