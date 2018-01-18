@@ -12,13 +12,16 @@ use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
+use CultuurNet\UDB3\EventListener\ClassNameEventFilter;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
+use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter as PlaceCdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
@@ -411,6 +414,15 @@ $app['event_cdbxml_importer'] = $app->share(
     }
 );
 
+$app['excluded_events_filter'] = $app->share(
+    function () {
+        return new ClassNameEventFilter(
+            new StringLiteral(PlaceProjectedToJSONLD::class),
+            new StringLiteral(OrganizerProjectedToJSONLD::class)
+        );
+    }
+);
+
 $app['event_jsonld_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
@@ -424,7 +436,8 @@ $app['event_jsonld_projector'] = $app->share(
             $app['event_cdbxml_importer'],
             new JsonDocumentLanguageEnricher(
                 new EventJsonDocumentLanguageAnalyzer()
-            )
+            ),
+            $app['excluded_events_filter']
         );
 
         return $projector;
@@ -826,7 +839,8 @@ $app['place_jsonld_projector'] = $app->share(
             $app['place_cdbxml_importer'],
             new JsonDocumentLanguageEnricher(
                 new PlaceJsonDocumentLanguageAnalyzer()
-            )
+            ),
+            $app['excluded_events_filter']
         );
 
         return $projector;
