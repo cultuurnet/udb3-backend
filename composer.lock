@@ -1673,12 +1673,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "58528ea16608cedf562102e35586cc40bb9f0bc4"
+                "reference": "7923f56622d470afa656c525fbe2a676288abf3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/58528ea16608cedf562102e35586cc40bb9f0bc4",
-                "reference": "58528ea16608cedf562102e35586cc40bb9f0bc4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/7923f56622d470afa656c525fbe2a676288abf3a",
+                "reference": "7923f56622d470afa656c525fbe2a676288abf3a",
                 "shasum": ""
             },
             "require": {
@@ -1723,7 +1723,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2017-11-14T07:51:47+00:00"
+            "time": "2018-01-18T11:30:56+00:00"
         },
         {
             "name": "cultuurnet/udb3-uitpas-bridge",
@@ -3456,7 +3456,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
