@@ -1611,12 +1611,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "9c532626cf1a342eb02c99a2e122c2e0d9b65343"
+                "reference": "aec440bc7823fc53ce2a2a9b68bd4fdad4eadeb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/9c532626cf1a342eb02c99a2e122c2e0d9b65343",
-                "reference": "9c532626cf1a342eb02c99a2e122c2e0d9b65343",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/aec440bc7823fc53ce2a2a9b68bd4fdad4eadeb5",
+                "reference": "aec440bc7823fc53ce2a2a9b68bd4fdad4eadeb5",
                 "shasum": ""
             },
             "require": {
@@ -1652,7 +1652,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPLv3"
+                "GPL-3.0-only"
             ],
             "authors": [
                 {
@@ -1665,7 +1665,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2017-12-15T16:19:45+00:00"
+            "time": "2018-01-19T13:05:06+00:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -3456,7 +3456,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
