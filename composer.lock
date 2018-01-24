@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9638bb520bb6fb85466586bd6025ebd",
+    "content-hash": "33a48eb2d5e5a1015e116d437bd55a86",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -923,16 +923,16 @@
         },
         {
             "name": "cultuurnet/geocoding",
-            "version": "dev-master",
+            "version": "dev-feature/III-2464",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/geocoding.git",
-                "reference": "014de0628ab88ffd2e10c85164eaedbbffe9e0c9"
+                "reference": "8cfe96a996c1b28dc6d30178f4e21375fd91644a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/014de0628ab88ffd2e10c85164eaedbbffe9e0c9",
-                "reference": "014de0628ab88ffd2e10c85164eaedbbffe9e0c9",
+                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/8cfe96a996c1b28dc6d30178f4e21375fd91644a",
+                "reference": "8cfe96a996c1b28dc6d30178f4e21375fd91644a",
                 "shasum": ""
             },
             "require-dev": {
@@ -968,7 +968,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-31T14:39:58+00:00"
+            "time": "2018-01-24T10:32:44+00:00"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1286,16 +1286,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-2464",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "328cff5790a99f19297ae1bf313021f3f977a61e"
+                "reference": "dd4f54c83e8f97b5658adb99d07be297890b4953"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/328cff5790a99f19297ae1bf313021f3f977a61e",
-                "reference": "328cff5790a99f19297ae1bf313021f3f977a61e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/dd4f54c83e8f97b5658adb99d07be297890b4953",
+                "reference": "dd4f54c83e8f97b5658adb99d07be297890b4953",
                 "shasum": ""
             },
             "require": {
@@ -1309,7 +1309,7 @@
                 "cultuurnet/clock": "~0.1",
                 "cultuurnet/culturefeed-php": "~1.7",
                 "cultuurnet/deserializer": "~0.1",
-                "cultuurnet/geocoding": "~0.1",
+                "cultuurnet/geocoding": "dev-feature/III-2464 as 0.1",
                 "cultuurnet/search": "~1.1",
                 "cultuurnet/symfony-security-jwt": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-12-15T16:10:54+00:00"
+            "time": "2018-01-24T12:24:24+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -3456,7 +3456,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -6672,9 +6672,17 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2464",
+            "package": "cultuurnet/udb3"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,

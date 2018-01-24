@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Silex\Place;
 use CultuurNet\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
+use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Place\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Place\GeoCoordinatesProcessManager;
 use Monolog\Handler\StreamHandler;
@@ -24,6 +25,7 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
                 return new GeoCoordinatesCommandHandler(
                     $app['place_repository'],
                     new DefaultAddressFormatter(),
+                    new LocalityAddressFormatter(),
                     $app['geocoding_service']
                 );
             }

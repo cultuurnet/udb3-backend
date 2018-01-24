@@ -35,7 +35,8 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                             true,
                             $googleMapsApiKey
                         )
-                    )
+                    ),
+                    $app['logger.command_bus']
                 );
             }
         );
