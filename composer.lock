@@ -1290,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "328cff5790a99f19297ae1bf313021f3f977a61e"
+                "reference": "6ebda649ea6e9a3076b60e2ea37906261b7f2d3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/328cff5790a99f19297ae1bf313021f3f977a61e",
-                "reference": "328cff5790a99f19297ae1bf313021f3f977a61e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/6ebda649ea6e9a3076b60e2ea37906261b7f2d3e",
+                "reference": "6ebda649ea6e9a3076b60e2ea37906261b7f2d3e",
                 "shasum": ""
             },
             "require": {
@@ -1361,7 +1361,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-12-15T16:10:54+00:00"
+            "time": "2018-01-24T20:36:24+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -3456,7 +3456,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
