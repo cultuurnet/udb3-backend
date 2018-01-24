@@ -12,7 +12,7 @@ use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
-use CultuurNet\UDB3\EventListener\ClassNameEventFilter;
+use CultuurNet\UDB3\EventListener\ClassNameEventSpecification;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Offer\OfferLocator;
@@ -414,9 +414,9 @@ $app['event_cdbxml_importer'] = $app->share(
     }
 );
 
-$app['excluded_events_filter'] = $app->share(
+$app['events_not_triggering_update_modified'] = $app->share(
     function () {
-        return new ClassNameEventFilter(
+        return new ClassNameEventSpecification(
             new StringLiteral(PlaceProjectedToJSONLD::class),
             new StringLiteral(OrganizerProjectedToJSONLD::class)
         );
@@ -437,7 +437,7 @@ $app['event_jsonld_projector'] = $app->share(
             new JsonDocumentLanguageEnricher(
                 new EventJsonDocumentLanguageAnalyzer()
             ),
-            $app['excluded_events_filter']
+            $app['events_not_triggering_update_modified']
         );
 
         return $projector;
@@ -840,7 +840,7 @@ $app['place_jsonld_projector'] = $app->share(
             new JsonDocumentLanguageEnricher(
                 new PlaceJsonDocumentLanguageAnalyzer()
             ),
-            $app['excluded_events_filter']
+            $app['events_not_triggering_update_modified']
         );
 
         return $projector;
