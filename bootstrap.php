@@ -561,6 +561,7 @@ $app['event_bus'] = $app->share(
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
                 'place_geocoordinates_process_manager',
+                'event_geocoordinates_process_manager',
                 'uitpas_event_process_manager',
             ];
 
@@ -802,6 +803,7 @@ $app->extend(
 
         $commandBus->subscribe($app['media_manager']);
         $commandBus->subscribe($app['place_geocoordinates_command_handler']);
+        $commandBus->subscribe($app['event_geocoordinates_command_handler']);
 
         return $commandBus;
     }
@@ -1458,6 +1460,7 @@ $app->register(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
 
 $app['udb3_system_user_metadata'] = $app->share(
     function () {
