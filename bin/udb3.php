@@ -50,6 +50,7 @@ $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PurgeModelCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ConcludeCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\GeocodeCommand());
+$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\GeocodeEventCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PermissionCommand());
 
 $consoleApp->run();
