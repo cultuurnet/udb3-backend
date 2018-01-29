@@ -45,7 +45,7 @@ class GeocodeCommand extends AbstractCommand
 
         if ($input->getOption('all')) {
             $cdbids = $this->getAllCdbIds();
-        } elseif (empty($givenCdbIds)) {
+        } elseif (empty($cdbids)) {
             $cdbids = $this->getOutdatedCdbIds();
         }
 
