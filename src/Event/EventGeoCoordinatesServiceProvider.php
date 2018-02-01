@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Event\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Event\GeoCoordinatesProcessManager;
+use Psr\Log\NullLogger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -34,7 +35,8 @@ class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus'],
-                        new CultureFeedAddressFactory()
+                        new CultureFeedAddressFactory(),
+                        new NullLogger()
                     )
                 );
             }
