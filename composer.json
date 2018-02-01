@@ -1,7 +1,7 @@
 {
   "name": "cultuurnet/udb3-silex",
   "description": "UiTdatabank 3 core application",
-  "license": "GPLv3",
+  "license": "GPL-3.0-only",
   "authors": [
     {
       "name": "Kristof Coomans",
