@@ -1,7 +1,7 @@
 {
   "name": "cultuurnet/udb3-silex",
   "description": "Silex UDB3 search platform",
-  "license": "GPLv3",
+  "license": "GPL-3.0-only",
   "authors": [
     {
       "name": "Kristof Coomans",
