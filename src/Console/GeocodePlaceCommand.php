@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GeocodeCommand extends AbstractGeocodeCommand
+class GeocodePlaceCommand extends AbstractGeocodeCommand
 {
     /**
      * @inheritdoc
