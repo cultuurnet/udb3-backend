@@ -6,13 +6,10 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class GeocodeEventCommand extends AbstractCommand
+class GeocodeEventCommand extends AbstractGeocodeCommand
 {
     /**
      * @inheritdoc
@@ -39,63 +36,23 @@ class GeocodeEventCommand extends AbstractCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function getAllItemsSQLFile()
     {
-        $cdbids = array_values($input->getOption('cdbid'));
-
-        if ($input->getOption('all')) {
-            $cdbids = $this->getAllCdbIds();
-        } elseif (empty($cdbids)) {
-            $cdbids = $this->getOutdatedCdbIds();
-        }
-
-        $count = count($cdbids);
-
-        if ($count == 0) {
-            $output->writeln("Could not find any events with missing or outdated coordinates.");
-            return;
-        }
-
-        $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion(
-            "This action will queue {$count} events for geocoding, continue? [y/N] ",
-            false
-        );
-
-        if (!$helper->ask($input, $output, $question)) {
-            return;
-        }
-
-        foreach ($cdbids as $cdbid) {
-            $this->dispatchGeocodingCommand($cdbid, $output);
-        }
+        return __DIR__ . '/SQL/get_all_events.sql';
     }
 
     /**
-     * @return string[]
+     * @inheritdoc
      */
-    private function getAllCdbIds()
+    protected function getOutdatedItemsSQLFile()
     {
-        $sql = file_get_contents(__DIR__ . '/SQL/get_all_events.sql');
-        $results = $this->getDBALConnection()->query($sql);
-        return $results->fetchAll(\PDO::FETCH_COLUMN);
+        return __DIR__ . '/SQL/get_events_with_missing_or_outdated_coordinates.sql';
     }
 
     /**
-     * @return string[]
+     * @inheritdoc
      */
-    private function getOutdatedCdbIds()
-    {
-        $sql = file_get_contents(__DIR__ . '/SQL/get_events_with_missing_or_outdated_coordinates.sql');
-        $results = $this->getDBALConnection()->query($sql);
-        return $results->fetchAll(\PDO::FETCH_COLUMN);
-    }
-
-    /**
-     * @param string $eventId
-     * @param OutputInterface $output
-     */
-    private function dispatchGeocodingCommand($eventId, OutputInterface $output)
+    protected function dispatchGeocodingCommand($eventId, OutputInterface $output)
     {
         $jsonLdRepository = $this->getJsonLDRepository();
 
@@ -147,16 +104,7 @@ class GeocodeEventCommand extends AbstractCommand
             new UpdateGeoCoordinatesFromAddress($eventId, $address)
         );
 
-        $output->writeln("Dispatched geocode command for {$eventId}.");
-    }
-
-    /**
-     * @return Connection
-     */
-    private function getDBALConnection()
-    {
-        $app = $this->getSilexApplication();
-        return $app['dbal_connection'];
+        $output->writeln("Dispatched geocode command for event {$eventId}.");
     }
 
     /**
