@@ -837,6 +837,7 @@ $app['place_jsonld_projector'] = $app->share(
             $app['place_jsonld_repository'],
             $app['place_iri_generator'],
             $app['organizer_service'],
+            $app['place_relations_repository'],
             $app['media_object_serializer'],
             $app['place_cdbxml_importer'],
             new JsonDocumentLanguageEnricher(
