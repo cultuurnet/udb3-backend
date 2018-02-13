@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Http;
 
+use CultuurNet\UDB3\Http\ApiKeyPsr7RequestAuthorizer;
 use CultuurNet\UDB3\Http\GuzzlePsr7Factory;
 use CultuurNet\UDB3\Http\JwtPsr7RequestAuthorizer;
 use GuzzleHttp\Client as GuzzleClient;
@@ -34,6 +35,14 @@ class HttpServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new JwtPsr7RequestAuthorizer(
                     $app['jwt']
+                );
+            }
+        );
+
+        $app['http.api_key_request_authorizer'] = $app->share(
+            function (Application $app) {
+                return new ApiKeyPsr7RequestAuthorizer(
+                    $app['api_key']
                 );
             }
         );
