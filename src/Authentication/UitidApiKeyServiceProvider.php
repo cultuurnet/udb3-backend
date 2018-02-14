@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
+use CultuurNet\UDB3\Silex\Impersonator;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -66,7 +67,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
-
         /** @var ToggleManager $toggles */
         $toggles = $app['toggles'];
 
@@ -77,6 +77,9 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     $security = $app['security.authorization_checker'];
                     /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
                     $apiKeyAuthenticator = $app['auth.request_authenticator'];
+
+                    // Also store the ApiKey for later use in the impersonator.
+                    $app['auth.api_key'] = $app['auth.api_key_reader']->read($request);
 
                     try {
                         if ($security->isGranted('IS_AUTHENTICATED_FULLY')) {

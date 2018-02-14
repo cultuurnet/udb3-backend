@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\Http\CompositePsr7RequestAuthorizer;
 use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\LocalOfferReadingService;
@@ -29,7 +30,10 @@ class OfferServiceProvider implements ServiceProviderInterface
                 return new DefaultExternalOfferEditingService(
                     $app['http.guzzle'],
                     $app['http.guzzle_psr7_factory'],
-                    $app['http.jwt_request_authorizer']
+                    new CompositePsr7RequestAuthorizer(
+                        $app['http.jwt_request_authorizer'],
+                        $app['http.api_key_request_authorizer']
+                    )
                 );
             }
         );
