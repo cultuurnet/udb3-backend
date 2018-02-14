@@ -272,7 +272,9 @@ $app['api_key'] = $app->share(
         }
 
         // If not impersonating then use the api key from the request.
-        return $app['auth.api_key'];
+        // It is possible to work without api key then null is returned
+        // and will be handled with a pass through authorizer.
+        return isset($app['auth.api_key']) ? $app['auth.api_key'] : null;
     }
 );
 
