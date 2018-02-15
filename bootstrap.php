@@ -261,6 +261,23 @@ $app['jwt'] = $app->share(
     }
 );
 
+$app['api_key'] = $app->share(
+    function(Application $app) {
+        // Check first if we're impersonating someone.
+        // This is done when handling commands.
+        /* @var Impersonator $impersonator */
+        $impersonator = $app['impersonator'];
+        if ($impersonator->getApiKey()) {
+            return $impersonator->getApiKey();
+        }
+
+        // If not impersonating then use the api key from the request.
+        // It is possible to work without api key then null is returned
+        // and will be handled with a pass through authorizer.
+        return isset($app['auth.api_key']) ? $app['auth.api_key'] : null;
+    }
+);
+
 $app['auth_service'] = $app->share(
     function ($app) {
         $uitidConfig = $app['config']['uitid'];

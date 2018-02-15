@@ -32,7 +32,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         $helper = $this->getHelper('question');
         $question = new ConfirmationQuestion(
             "This action will queue {$count} items for geocoding, continue? [y/N] ",
-            false
+            true
         );
 
         if (!$helper->ask($input, $output, $question)) {
