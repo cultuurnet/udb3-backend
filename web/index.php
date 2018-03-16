@@ -276,4 +276,6 @@ $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerP
 
 $app->mount('/', new \CultuurNet\UDB3\Silex\Moderation\ModerationControllerProvider());
 
+$app->mount('/imports', new \CultuurNet\UDB3\Silex\Import\ImportControllerProvider());
+
 $app->run();

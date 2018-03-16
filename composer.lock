@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9638bb520bb6fb85466586bd6025ebd",
+    "content-hash": "c7501dd8362c18437181eaddd9c65da4",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16T09:28:40+00:00"
+            "time": "2015-12-16 09:28:40"
         },
         {
             "name": "2dotstwice/silex-feature-toggles-provider",
@@ -96,7 +96,54 @@
                 "MIT"
             ],
             "description": "Feature toggles for Silex",
-            "time": "2017-07-03T14:15:24+00:00"
+            "time": "2017-07-03 14:15:24"
+        },
+        {
+            "name": "2dotstwice/value-objects",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2dotstwice/value-objects.git",
+                "reference": "3e881256a988465a383efdb4a7a7856c6bc76a11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2dotstwice/value-objects/zipball/3e881256a988465a383efdb4a7a7856c6bc76a11",
+                "reference": "3e881256a988465a383efdb4a7a7856c6bc76a11",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.3",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TwoDotsTwice\\ValueObject\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Bert Ramakers",
+                    "email": "bert@2dotstwice.be"
+                }
+            ],
+            "description": "Classes, traits, interfaces, ... to work with value objects.",
+            "time": "2018-03-06T11:57:41+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -542,7 +589,7 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24T20:22:37+00:00"
+            "time": "2015-08-24 20:22:37"
         },
         {
             "name": "cultuurnet/broadway-amqp",
@@ -589,7 +636,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2017-04-20T12:39:24+00:00"
+            "time": "2017-04-20 12:39:24"
         },
         {
             "name": "cultuurnet/broadway-tools",
@@ -630,7 +677,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-21T13:05:28+00:00"
+            "time": "2017-11-21 13:05:28"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -713,7 +760,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2017-07-05T12:13:57+00:00"
+            "time": "2017-07-05 12:13:57"
         },
         {
             "name": "cultuurnet/clock",
@@ -754,7 +801,7 @@
                 }
             ],
             "description": "Clock abstraction library",
-            "time": "2015-06-08T16:12:34+00:00"
+            "time": "2015-06-08 16:12:34"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -869,7 +916,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2017-04-19T11:56:39+00:00"
+            "time": "2017-04-19 11:56:39"
         },
         {
             "name": "cultuurnet/entry",
@@ -919,7 +966,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2016-01-05T16:01:34+00:00"
+            "time": "2016-01-05 16:01:34"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -968,7 +1015,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-01-24T21:26:16+00:00"
+            "time": "2018-01-24 21:26:16"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1016,7 +1063,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-05-15T08:55:52+00:00"
+            "time": "2017-05-15 08:55:52"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -1060,7 +1107,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23T15:01:13+00:00"
+            "time": "2017-02-23 15:01:13"
         },
         {
             "name": "cultuurnet/search",
@@ -1149,7 +1196,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2017-02-23T10:54:33+00:00"
+            "time": "2017-02-23 10:54:33"
         },
         {
             "name": "cultuurnet/silex-service-provider-jwt",
@@ -1191,7 +1238,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2017-02-23T11:22:30+00:00"
+            "time": "2017-02-23 11:22:30"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1233,7 +1280,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2017-02-23T11:20:01+00:00"
+            "time": "2017-02-23 11:20:01"
         },
         {
             "name": "cultuurnet/udb2-domain-events",
@@ -1282,20 +1329,20 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2017-04-20T15:15:25+00:00"
+            "time": "2017-04-20 15:15:25"
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-2522",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "96a58da9efd19166ad66cfa27eb582864819f7aa"
+                "reference": "16c0b60ff8409eb8afe80656dbacd4b28eb5514b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/96a58da9efd19166ad66cfa27eb582864819f7aa",
-                "reference": "96a58da9efd19166ad66cfa27eb582864819f7aa",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/16c0b60ff8409eb8afe80656dbacd4b28eb5514b",
+                "reference": "16c0b60ff8409eb8afe80656dbacd4b28eb5514b",
                 "shasum": ""
             },
             "require": {
@@ -1312,6 +1359,7 @@
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/search": "~1.1",
                 "cultuurnet/symfony-security-jwt": "~0.1",
+                "cultuurnet/udb3-models": "dev-feature/III-2522 as 0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
@@ -1361,7 +1409,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-02-26T12:54:41+00:00"
+            "time": "2018-03-16 15:28:34"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1412,7 +1460,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-11-13T08:36:01+00:00"
+            "time": "2017-11-13 08:36:01"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1457,7 +1505,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2016-04-13T11:52:34+00:00"
+            "time": "2016-04-13 11:52:34"
         },
         {
             "name": "cultuurnet/udb3-export",
@@ -1513,7 +1561,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-14T13:17:40+00:00"
+            "time": "2017-11-14 13:17:40"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1554,7 +1602,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23T11:57:27+00:00"
+            "time": "2017-02-23 11:57:27"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1603,27 +1651,117 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2017-04-19T11:59:07+00:00"
+            "time": "2017-04-19 11:59:07"
         },
         {
-            "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
+            "name": "cultuurnet/udb3-models",
+            "version": "dev-feature/III-2522",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "73ea505446eae6fbc9071e6eac154228dbf262d6"
+                "url": "https://github.com/cultuurnet/udb3-models.git",
+                "reference": "c24510ef9000b0a44e051c409beff87046a1e921"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/73ea505446eae6fbc9071e6eac154228dbf262d6",
-                "reference": "73ea505446eae6fbc9071e6eac154228dbf262d6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/c24510ef9000b0a44e051c409beff87046a1e921",
+                "reference": "c24510ef9000b0a44e051c409beff87046a1e921",
+                "shasum": ""
+            },
+            "require": {
+                "2dotstwice/value-objects": "~1.0",
+                "cultuurnet/geocoding": "~0.1",
+                "moneyphp/money": "~1.3",
+                "php": "~5.6 || >=7.0",
+                "respect/validation": "~1.1",
+                "symfony/serializer": "~2.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Model\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "time": "2018-03-16 15:47:21"
+        },
+        {
+            "name": "cultuurnet/udb3-models-import",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-models-import.git",
+                "reference": "78f4abfd58f323c65a35acb666a903fa43f63418"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/78f4abfd58f323c65a35acb666a903fa43f63418",
+                "reference": "78f4abfd58f323c65a35acb666a903fa43f63418",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/udb3": "dev-feature/III-2522 as 0.1",
+                "cultuurnet/udb3-models": "dev-feature/III-2522 as 0.1",
+                "cultuurnet/udb3-symfony": "~0.1",
+                "php": "~5.6 || >=7.0"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Model\\Import\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "time": "2018-03-16 15:01:23"
+        },
+        {
+            "name": "cultuurnet/udb3-symfony",
+            "version": "dev-feature/III-2524",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
+                "reference": "875db1d647b65633ad3a855ed6161ccee2126fd9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/875db1d647b65633ad3a855ed6161ccee2126fd9",
+                "reference": "875db1d647b65633ad3a855ed6161ccee2126fd9",
                 "shasum": ""
             },
             "require": {
                 "chrisboulton/php-resque": "1.2",
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-2522 as 0.1",
+                "cultuurnet/udb3-models": "dev-feature/III-2522 as 0.1",
+                "cultuurnet/udb3-models-import": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "guzzlehttp/guzzle": "~6.2",
                 "guzzlehttp/psr7": "~1.2.3",
@@ -1665,7 +1803,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2018-02-26T13:10:36+00:00"
+            "time": "2018-03-16 14:04:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1723,7 +1861,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2018-01-18T11:30:56+00:00"
+            "time": "2018-01-18 11:30:56"
         },
         {
             "name": "cultuurnet/udb3-uitpas-bridge",
@@ -1770,7 +1908,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-12-15T08:48:03+00:00"
+            "time": "2017-12-15 08:48:03"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -1826,7 +1964,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-18T16:28:40+00:00"
+            "time": "2016-05-18 16:28:40"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -3528,16 +3666,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.42",
+            "version": "1.0.43",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "09eabc54e199950041aef258a85847676496fe8e"
+                "reference": "1ce7cc142d906ba58dc54c82915d355a9191c8a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/09eabc54e199950041aef258a85847676496fe8e",
-                "reference": "09eabc54e199950041aef258a85847676496fe8e",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1ce7cc142d906ba58dc54c82915d355a9191c8a8",
+                "reference": "1ce7cc142d906ba58dc54c82915d355a9191c8a8",
                 "shasum": ""
             },
             "require": {
@@ -3608,7 +3746,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2018-01-27T16:03:56+00:00"
+            "time": "2018-03-01T10:27:04+00:00"
         },
         {
             "name": "league/flysystem-ziparchive",
@@ -3970,6 +4108,61 @@
             "time": "2016-01-16T22:03:46+00:00"
         },
         {
+            "name": "moneyphp/money",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moneyphp/money.git",
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/1926c54143da8eec322ae4985014cd73a98b0792",
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "Sylius/SyliusMoneyBundle": "Sylius' Symfony2 integration with Money library",
+                "TheBigBrainsCompany/TbbcMoneyBundle": "Very complete Symfony2 bundle with support for Twig, Doctrine, Forms, ...",
+                "pink-tie/money-bundle": "Pink-Tie's Symfony2 integration with Money library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Money": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias Verraes",
+                    "email": "mathias@verraes.net"
+                }
+            ],
+            "description": "PHP implementation of Fowler's Money pattern",
+            "homepage": "http://verraes.net/2011/04/fowler-money-pattern-in-php/",
+            "keywords": [
+                "Generic Sub-domain",
+                "Value Object",
+                "money"
+            ],
+            "time": "2016-01-16T22:03:46+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.23.0",
             "source": {
@@ -4049,25 +4242,25 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.22.1",
+            "version": "1.24.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc"
+                "reference": "bba6c6e410c6b4317e37a9474aeaa753808c3875"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc",
-                "reference": "7cdf42c0b1cc763ab7e4c33c47a24e27c66bfccc",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bba6c6e410c6b4317e37a9474aeaa753808c3875",
+                "reference": "bba6c6e410c6b4317e37a9474aeaa753808c3875",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "symfony/translation": "~2.6 || ~3.0"
+                "php": ">=5.3.9",
+                "symfony/translation": "~2.6 || ~3.0 || ~4.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "~2",
-                "phpunit/phpunit": "~4.0 || ~5.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.7"
             },
             "type": "library",
             "extra": {
@@ -4098,20 +4291,20 @@
                 "datetime",
                 "time"
             ],
-            "time": "2017-01-16T07:55:07+00:00"
+            "time": "2018-03-10T10:10:14+00:00"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.4",
+            "version": "v3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078"
+                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/e57b3a09784f846411aa7ed664eedb73e3399078",
-                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
+                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
                 "shasum": ""
             },
             "require": {
@@ -4149,7 +4342,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-01-25T21:31:33+00:00"
+            "time": "2018-02-28T20:30:58+00:00"
         },
         {
             "name": "ocramius/proxy-manager",
@@ -5004,6 +5197,69 @@
             "time": "2013-02-06T23:27:19+00:00"
         },
         {
+            "name": "respect/validation",
+            "version": "1.1.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Respect/Validation.git",
+                "reference": "ee9e69776a8e875ac1b5b00d8cf2d2c801c42181"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/ee9e69776a8e875ac1b5b00d8cf2d2c801c42181",
+                "reference": "ee9e69776a8e875ac1b5b00d8cf2d2c801c42181",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "symfony/polyfill-mbstring": "^1.2"
+            },
+            "require-dev": {
+                "egulias/email-validator": "~1.2",
+                "mikey179/vfsstream": "^1.5",
+                "phpunit/phpunit": "~4.0",
+                "symfony/validator": "~2.6.9",
+                "zendframework/zend-validator": "~2.3"
+            },
+            "suggest": {
+                "egulias/email-validator": "Strict (RFC compliant) email validation",
+                "ext-bcmath": "Arbitrary Precision Mathematics",
+                "ext-mbstring": "Multibyte String Functions",
+                "fabpot/php-cs-fixer": "Fix PSR2 and other coding style issues",
+                "symfony/validator": "Use Symfony validator through Respect\\Validation",
+                "zendframework/zend-validator": "Use Zend Framework validator through Respect\\Validation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Respect\\Validation\\": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD Style"
+            ],
+            "authors": [
+                {
+                    "name": "Respect/Validation Contributors",
+                    "homepage": "https://github.com/Respect/Validation/graphs/contributors"
+                }
+            ],
+            "description": "The most awesome validation engine ever created for PHP",
+            "homepage": "http://respect.github.io/Validation/",
+            "keywords": [
+                "respect",
+                "validation",
+                "validator"
+            ],
+            "time": "2018-01-02T21:47:22+00:00"
+        },
+        {
             "name": "silex/silex",
             "version": "v1.3.6",
             "source": {
@@ -5136,16 +5392,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "162ca7d0ea597599967aa63b23418e747da0896b"
+                "reference": "a6ff8b2ffa4eb43046828b303af2e3fedadacc27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/162ca7d0ea597599967aa63b23418e747da0896b",
-                "reference": "162ca7d0ea597599967aa63b23418e747da0896b",
+                "url": "https://api.github.com/repos/symfony/console/zipball/a6ff8b2ffa4eb43046828b303af2e3fedadacc27",
+                "reference": "a6ff8b2ffa4eb43046828b303af2e3fedadacc27",
                 "shasum": ""
             },
             "require": {
@@ -5193,20 +5449,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-29T08:54:45+00:00"
+            "time": "2018-02-26T15:33:21+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "35e36287fc0fdc8a08f70efcd4865ae6d8a6ee55"
+                "reference": "f693ba88189b6384370c13d114cfd010649c31af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/35e36287fc0fdc8a08f70efcd4865ae6d8a6ee55",
-                "reference": "35e36287fc0fdc8a08f70efcd4865ae6d8a6ee55",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/f693ba88189b6384370c13d114cfd010649c31af",
+                "reference": "f693ba88189b6384370c13d114cfd010649c31af",
                 "shasum": ""
             },
             "require": {
@@ -5250,20 +5506,20 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-18T22:12:33+00:00"
+            "time": "2018-02-28T21:47:46+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "d64be24fc1eba62f9daace8a8918f797fc8e87cc"
+                "reference": "f5d2d7dcc33b89e20c2696ea9afcbddf6540081c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/d64be24fc1eba62f9daace8a8918f797fc8e87cc",
-                "reference": "d64be24fc1eba62f9daace8a8918f797fc8e87cc",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/f5d2d7dcc33b89e20c2696ea9afcbddf6540081c",
+                "reference": "f5d2d7dcc33b89e20c2696ea9afcbddf6540081c",
                 "shasum": ""
             },
             "require": {
@@ -5310,20 +5566,20 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:36:31+00:00"
+            "time": "2018-02-11T16:53:59+00:00"
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.4",
+            "version": "v3.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "613e26310776f49a1773b6737c6bd554b8bc8c6f"
+                "reference": "a479817ce0a9e4adfd7d39c6407c95d97c254625"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/613e26310776f49a1773b6737c6bd554b8bc8c6f",
-                "reference": "613e26310776f49a1773b6737c6bd554b8bc8c6f",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/a479817ce0a9e4adfd7d39c6407c95d97c254625",
+                "reference": "a479817ce0a9e4adfd7d39c6407c95d97c254625",
                 "shasum": ""
             },
             "require": {
@@ -5359,20 +5615,20 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-03T07:37:34+00:00"
+            "time": "2018-03-05T18:28:11+00:00"
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.41",
+            "version": "v2.7.43",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "38383ce661cc260dfcd0e4b0b588f3dfa5572fb0"
+                "reference": "c898e1154ab9e220cfd17556751fdd7a07529c64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/38383ce661cc260dfcd0e4b0b588f3dfa5572fb0",
-                "reference": "38383ce661cc260dfcd0e4b0b588f3dfa5572fb0",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/c898e1154ab9e220cfd17556751fdd7a07529c64",
+                "reference": "c898e1154ab9e220cfd17556751fdd7a07529c64",
                 "shasum": ""
             },
             "require": {
@@ -5415,20 +5671,20 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-29T09:18:42+00:00"
+            "time": "2018-02-19T16:21:10+00:00"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "af74cd947d63ae1294aed71b9456f2a04f7f6d45"
+                "reference": "ec519618d94b48b6d11f9861a902016ddc3c36e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/af74cd947d63ae1294aed71b9456f2a04f7f6d45",
-                "reference": "af74cd947d63ae1294aed71b9456f2a04f7f6d45",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/ec519618d94b48b6d11f9861a902016ddc3c36e6",
+                "reference": "ec519618d94b48b6d11f9861a902016ddc3c36e6",
                 "shasum": ""
             },
             "require": {
@@ -5498,7 +5754,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-29T10:48:12+00:00"
+            "time": "2018-03-05T19:06:26+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -5671,16 +5927,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "627ea100720dac15d8165648caac57456dda84aa"
+                "reference": "a12693530e2b9e81017fdfb806cd915b9d1cbbb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/627ea100720dac15d8165648caac57456dda84aa",
-                "reference": "627ea100720dac15d8165648caac57456dda84aa",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/a12693530e2b9e81017fdfb806cd915b9d1cbbb9",
+                "reference": "a12693530e2b9e81017fdfb806cd915b9d1cbbb9",
                 "shasum": ""
             },
             "require": {
@@ -5742,20 +5998,20 @@
                 "uri",
                 "url"
             ],
-            "time": "2018-01-16T18:00:04+00:00"
+            "time": "2018-02-28T21:47:46+00:00"
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.41",
+            "version": "v2.7.43",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "bc0aeb1aaa3ff2d7e143181bf8366fac19bdca42"
+                "reference": "94979b91c6501c9222db989a3a7e4f8e3ced330e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/bc0aeb1aaa3ff2d7e143181bf8366fac19bdca42",
-                "reference": "bc0aeb1aaa3ff2d7e143181bf8366fac19bdca42",
+                "url": "https://api.github.com/repos/symfony/security/zipball/94979b91c6501c9222db989a3a7e4f8e3ced330e",
+                "reference": "94979b91c6501c9222db989a3a7e4f8e3ced330e",
                 "shasum": ""
             },
             "require": {
@@ -5825,20 +6081,20 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-18T10:45:20+00:00"
+            "time": "2018-02-19T14:59:04+00:00"
         },
         {
             "name": "symfony/serializer",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "0af616fd41c3d28858866670e6a96861c023a015"
+                "reference": "c3cfcfcdd154d7465895ba4b425de0a2a6f4326c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/0af616fd41c3d28858866670e6a96861c023a015",
-                "reference": "0af616fd41c3d28858866670e6a96861c023a015",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/c3cfcfcdd154d7465895ba4b425de0a2a6f4326c",
+                "reference": "c3cfcfcdd154d7465895ba4b425de0a2a6f4326c",
                 "shasum": ""
             },
             "require": {
@@ -5889,7 +6145,7 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-10T11:05:18+00:00"
+            "time": "2018-02-14T13:58:24+00:00"
         },
         {
             "name": "symfony/translation",
@@ -5957,7 +6213,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -6006,16 +6262,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.0",
+            "version": "v1.35.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f"
+                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/daa657073e55b0a78cce8fdd22682fddecc6385f",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9c24f2cd39dc1906b76879e099970b7e53724601",
+                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601",
                 "shasum": ""
             },
             "require": {
@@ -6067,7 +6323,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27T18:06:46+00:00"
+            "time": "2018-03-03T16:21:29+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -6678,9 +6934,31 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2522",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2524",
+            "package": "cultuurnet/udb3-symfony"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2522",
+            "package": "cultuurnet/udb3-models"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-symfony": 20,
+        "cultuurnet/udb3-models": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
