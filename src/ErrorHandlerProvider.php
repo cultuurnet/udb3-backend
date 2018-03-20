@@ -7,6 +7,7 @@ use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Variations\Command\ValidationException;
+use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -21,6 +22,14 @@ class ErrorHandlerProvider implements ServiceProviderInterface
             function (ValidationException $e) {
                 $problem = $this->createNewApiProblem($e);
                 $problem['validation_messages'] = $e->getErrors();
+                return new ApiProblemJsonResponse($problem);
+            }
+        );
+
+        $app->error(
+            function (GroupedValidationException $e) {
+                $problem = $this->createNewApiProblem($e);
+                $problem['validation_messages'] = $e->getMessages();
                 return new ApiProblemJsonResponse($problem);
             }
         );

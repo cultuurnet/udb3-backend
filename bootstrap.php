@@ -1492,4 +1492,8 @@ $app['udb3_system_user_metadata'] = $app->share(
     }
 );
 
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventImportServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceImportServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerImportServiceProvider());
+
 return $app;
