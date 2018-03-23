@@ -3,8 +3,10 @@
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
+use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForEventDataValidator;
 use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForPlaceDataValidator;
@@ -14,13 +16,11 @@ use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Symfony\Deserializer\Place\FacilitiesJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
 use CultuurNet\UDB3\Symfony\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Symfony\Offer\OfferPermissionController;
 use CultuurNet\UDB3\Symfony\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Symfony\Offer\PatchOfferRestController;
-use CultuurNet\UDB3\Symfony\Place\PlaceFacilityResolver;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
