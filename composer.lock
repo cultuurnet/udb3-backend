@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ec68129dd19847817e8cf882e45970d",
+    "content-hash": "9a10919e461cda0cffb2ae7d01c2a761",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16T09:28:40+00:00"
+            "time": "2015-12-16 09:28:40"
         },
         {
             "name": "2dotstwice/silex-feature-toggles-provider",
@@ -96,7 +96,7 @@
                 "MIT"
             ],
             "description": "Feature toggles for Silex",
-            "time": "2017-07-03T14:15:24+00:00"
+            "time": "2017-07-03 14:15:24"
         },
         {
             "name": "2dotstwice/value-objects",
@@ -589,20 +589,20 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24T20:22:37+00:00"
+            "time": "2015-08-24 20:22:37"
         },
         {
             "name": "cultuurnet/broadway-amqp",
-            "version": "dev-master",
+            "version": "dev-feature/III-2553",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "2e195059374b19b95485293cc3da8ae25ad7ca2f"
+                "reference": "fd913b4bfba0f0f96c6659bf1f91a83d1bfb2bb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/2e195059374b19b95485293cc3da8ae25ad7ca2f",
-                "reference": "2e195059374b19b95485293cc3da8ae25ad7ca2f",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/fd913b4bfba0f0f96c6659bf1f91a83d1bfb2bb3",
+                "reference": "fd913b4bfba0f0f96c6659bf1f91a83d1bfb2bb3",
                 "shasum": ""
             },
             "require": {
@@ -636,7 +636,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2017-04-20T12:39:24+00:00"
+            "time": "2018-03-22 16:55:12"
         },
         {
             "name": "cultuurnet/broadway-tools",
@@ -677,7 +677,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-21T13:05:28+00:00"
+            "time": "2017-11-21 13:05:28"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -760,7 +760,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2017-07-05T12:13:57+00:00"
+            "time": "2017-07-05 12:13:57"
         },
         {
             "name": "cultuurnet/clock",
@@ -801,7 +801,7 @@
                 }
             ],
             "description": "Clock abstraction library",
-            "time": "2015-06-08T16:12:34+00:00"
+            "time": "2015-06-08 16:12:34"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -916,7 +916,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2017-04-19T11:56:39+00:00"
+            "time": "2017-04-19 11:56:39"
         },
         {
             "name": "cultuurnet/entry",
@@ -966,7 +966,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2016-01-05T16:01:34+00:00"
+            "time": "2016-01-05 16:01:34"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -1015,7 +1015,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-01-24T21:26:16+00:00"
+            "time": "2018-01-24 21:26:16"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1063,7 +1063,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-05-15T08:55:52+00:00"
+            "time": "2017-05-15 08:55:52"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -1107,7 +1107,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23T15:01:13+00:00"
+            "time": "2017-02-23 15:01:13"
         },
         {
             "name": "cultuurnet/search",
@@ -1157,20 +1157,20 @@
         },
         {
             "name": "cultuurnet/silex-amqp",
-            "version": "dev-master",
+            "version": "dev-feature/III-2553",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-amqp.git",
-                "reference": "a63eebb9453e6538dffca0151b5d773526f18c13"
+                "reference": "c010713d87ad1e18bc9408bc62f6d9579b1cdfa9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/a63eebb9453e6538dffca0151b5d773526f18c13",
-                "reference": "a63eebb9453e6538dffca0151b5d773526f18c13",
+                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/c010713d87ad1e18bc9408bc62f6d9579b1cdfa9",
+                "reference": "c010713d87ad1e18bc9408bc62f6d9579b1cdfa9",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/broadway-amqp": "~0.1",
+                "cultuurnet/broadway-amqp": "dev-feature/III-2553 as 0.1",
                 "knplabs/console-service-provider": "~1.0",
                 "silex/silex": "~1.3"
             },
@@ -1196,7 +1196,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2017-02-23T10:54:33+00:00"
+            "time": "2018-03-22 16:58:04"
         },
         {
             "name": "cultuurnet/silex-service-provider-jwt",
@@ -1238,7 +1238,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2017-02-23T11:22:30+00:00"
+            "time": "2017-02-23 11:22:30"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1280,7 +1280,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2017-02-23T11:20:01+00:00"
+            "time": "2017-02-23 11:20:01"
         },
         {
             "name": "cultuurnet/udb2-domain-events",
@@ -1329,7 +1329,7 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2017-04-20T15:15:25+00:00"
+            "time": "2017-04-20 15:15:25"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1337,12 +1337,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "b8b22c25bc98ecf7968c13f852498af73a2b4803"
+                "reference": "d64d1b43508b254a563926eb6b6446a1c3a6d4c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b8b22c25bc98ecf7968c13f852498af73a2b4803",
-                "reference": "b8b22c25bc98ecf7968c13f852498af73a2b4803",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d64d1b43508b254a563926eb6b6446a1c3a6d4c8",
+                "reference": "d64d1b43508b254a563926eb6b6446a1c3a6d4c8",
                 "shasum": ""
             },
             "require": {
@@ -1409,7 +1409,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-03-20T14:58:53+00:00"
+            "time": "2018-03-23 07:55:47"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1460,7 +1460,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-11-13T08:36:01+00:00"
+            "time": "2017-11-13 08:36:01"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1505,7 +1505,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2016-04-13T11:52:34+00:00"
+            "time": "2016-04-13 11:52:34"
         },
         {
             "name": "cultuurnet/udb3-export",
@@ -1561,7 +1561,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-14T13:17:40+00:00"
+            "time": "2017-11-14 13:17:40"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1602,7 +1602,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23T11:57:27+00:00"
+            "time": "2017-02-23 11:57:27"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1651,7 +1651,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2017-04-19T11:59:07+00:00"
+            "time": "2017-04-19 11:59:07"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -1659,12 +1659,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "5c0f5e69a917a2b59f7bb06a9b36f315f6058a55"
+                "reference": "ff54806da505202d4770f8e90c57adad16db6f4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/5c0f5e69a917a2b59f7bb06a9b36f315f6058a55",
-                "reference": "5c0f5e69a917a2b59f7bb06a9b36f315f6058a55",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/ff54806da505202d4770f8e90c57adad16db6f4d",
+                "reference": "ff54806da505202d4770f8e90c57adad16db6f4d",
                 "shasum": ""
             },
             "require": {
@@ -1696,20 +1696,20 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-03-20T12:14:11+00:00"
+            "time": "2018-03-22 08:35:36"
         },
         {
             "name": "cultuurnet/udb3-models-import",
-            "version": "dev-master",
+            "version": "dev-feature/III-2553",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "f004a4c4ed2e65d453790a5c75659d68a0dce59b"
+                "reference": "e600b4258146d5043e41d209c785d0e20eabaac8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/f004a4c4ed2e65d453790a5c75659d68a0dce59b",
-                "reference": "f004a4c4ed2e65d453790a5c75659d68a0dce59b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/e600b4258146d5043e41d209c785d0e20eabaac8",
+                "reference": "e600b4258146d5043e41d209c785d0e20eabaac8",
                 "shasum": ""
             },
             "require": {
@@ -1738,7 +1738,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-03-20T15:08:19+00:00"
+            "time": "2018-03-27 11:13:36"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -1802,7 +1802,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2018-03-20T15:15:33+00:00"
+            "time": "2018-03-20 15:15:33"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1860,7 +1860,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2018-01-18T11:30:56+00:00"
+            "time": "2018-01-18 11:30:56"
         },
         {
             "name": "cultuurnet/udb3-uitpas-bridge",
@@ -1907,7 +1907,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-12-15T08:48:03+00:00"
+            "time": "2017-12-15 08:48:03"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -1963,7 +1963,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-18T16:28:40+00:00"
+            "time": "2016-05-18 16:28:40"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -2128,30 +2128,30 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.4.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97"
+                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/54cacc9b81758b14e3ce750f205a393d52339e97",
-                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5",
+                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "1.*",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^5.7"
+                "phpunit/phpunit": "^6.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -2192,37 +2192,41 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-02-24T16:22:25+00:00"
+            "time": "2017-12-06T07:11:42+00:00"
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.6.2",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "eb152c5100571c7a45470ff2a35095ab3f3b900b"
+                "reference": "b3217d58609e9c8e661cd41357a54d926c4a2a1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/eb152c5100571c7a45470ff2a35095ab3f3b900b",
-                "reference": "eb152c5100571c7a45470ff2a35095ab3f3b900b",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/b3217d58609e9c8e661cd41357a54d926c4a2a1a",
+                "reference": "b3217d58609e9c8e661cd41357a54d926c4a2a1a",
                 "shasum": ""
             },
             "require": {
-                "php": "~5.5|~7.0"
+                "php": "~7.1"
             },
             "conflict": {
                 "doctrine/common": ">2.2,<2.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8|~5.0",
-                "predis/predis": "~1.0",
-                "satooshi/php-coveralls": "~0.6"
+                "alcaeus/mongo-php-adapter": "^1.1",
+                "mongodb/mongodb": "^1.1",
+                "phpunit/phpunit": "^5.7",
+                "predis/predis": "~1.0"
+            },
+            "suggest": {
+                "alcaeus/mongo-php-adapter": "Required to use legacy MongoDB driver"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.7.x-dev"
                 }
             },
             "autoload": {
@@ -2262,24 +2266,24 @@
                 "cache",
                 "caching"
             ],
-            "time": "2017-07-22T12:49:21+00:00"
+            "time": "2017-08-25T07:02:50+00:00"
         },
         {
             "name": "doctrine/collections",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "1a4fb7e902202c33cce8c55989b945612943c2ba"
+                "reference": "a01ee38fcd999f34d9bfbcee59dbda5105449cbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/1a4fb7e902202c33cce8c55989b945612943c2ba",
-                "reference": "1a4fb7e902202c33cce8c55989b945612943c2ba",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/a01ee38fcd999f34d9bfbcee59dbda5105449cbf",
+                "reference": "a01ee38fcd999f34d9bfbcee59dbda5105449cbf",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
                 "doctrine/coding-standard": "~0.1@dev",
@@ -2329,20 +2333,20 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2017-01-03T10:49:41+00:00"
+            "time": "2017-07-22T10:37:32+00:00"
         },
         {
             "name": "doctrine/common",
-            "version": "v2.7.3",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "4acb8f89626baafede6ee5475bc5844096eba8a9"
+                "reference": "f68c297ce6455e8fd794aa8ffaf9fa458f6ade66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/4acb8f89626baafede6ee5475bc5844096eba8a9",
-                "reference": "4acb8f89626baafede6ee5475bc5844096eba8a9",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/f68c297ce6455e8fd794aa8ffaf9fa458f6ade66",
+                "reference": "f68c297ce6455e8fd794aa8ffaf9fa458f6ade66",
                 "shasum": ""
             },
             "require": {
@@ -2351,15 +2355,15 @@
                 "doctrine/collections": "1.*",
                 "doctrine/inflector": "1.*",
                 "doctrine/lexer": "1.*",
-                "php": "~5.6|~7.0"
+                "php": "~7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.4.6"
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7.x-dev"
+                    "dev-master": "2.8.x-dev"
                 }
             },
             "autoload": {
@@ -2402,28 +2406,30 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2017-07-22T08:35:12+00:00"
+            "time": "2017-08-31T08:43:38+00:00"
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.13",
+            "version": "v2.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "729340d8d1eec8f01bff708e12e449a3415af873"
+                "reference": "e3eed9b1facbb0ced3a0995244843a189e7d1b13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/729340d8d1eec8f01bff708e12e449a3415af873",
-                "reference": "729340d8d1eec8f01bff708e12e449a3415af873",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/e3eed9b1facbb0ced3a0995244843a189e7d1b13",
+                "reference": "e3eed9b1facbb0ced3a0995244843a189e7d1b13",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": ">=2.4,<2.8-dev",
-                "php": ">=5.3.2"
+                "doctrine/common": "^2.7.1",
+                "ext-pdo": "*",
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*",
+                "phpunit/phpunit": "^5.4.6",
+                "phpunit/phpunit-mock-objects": "!=3.2.4,!=3.2.5",
                 "symfony/console": "2.*||^3.0"
             },
             "suggest": {
@@ -2435,7 +2441,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5.x-dev"
+                    "dev-master": "2.6.x-dev"
                 }
             },
             "autoload": {
@@ -2473,37 +2479,37 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-07-22T20:44:48+00:00"
+            "time": "2017-11-19T13:38:54+00:00"
         },
         {
             "name": "doctrine/inflector",
-            "version": "v1.1.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae"
+                "reference": "5527a48b7313d15261292c149e55e26eae771b0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/90b2128806bfde671b6952ab8bea493942c1fdae",
-                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/5527a48b7313d15261292c149e55e26eae771b0a",
+                "reference": "5527a48b7313d15261292c149e55e26eae771b0a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "^7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*"
+                "phpunit/phpunit": "^6.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.3.x-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\Inflector\\": "lib/"
+                "psr-4": {
+                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2540,7 +2546,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06T14:35:42+00:00"
+            "time": "2018-01-09T20:05:19+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -3295,22 +3301,22 @@
         },
         {
             "name": "hanneskod/classtools",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hanneskod/classtools.git",
-                "reference": "639caf8f48de38aaa7b68ca786ac6bd0aa6ffcc6"
+                "reference": "c44a6fbe70b1df178c8a02e9a6b2bd85ead97e57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hanneskod/classtools/zipball/639caf8f48de38aaa7b68ca786ac6bd0aa6ffcc6",
-                "reference": "639caf8f48de38aaa7b68ca786ac6bd0aa6ffcc6",
+                "url": "https://api.github.com/repos/hanneskod/classtools/zipball/c44a6fbe70b1df178c8a02e9a6b2bd85ead97e57",
+                "reference": "c44a6fbe70b1df178c8a02e9a6b2bd85ead97e57",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^3.0",
-                "php": ">=5.5.0",
-                "symfony/finder": "^2.7|^3.0"
+                "nikic/php-parser": "^3",
+                "php": ">=7.1",
+                "symfony/finder": "^4"
             },
             "require-dev": {
                 "hanneskod/readme-tester": "dev-master"
@@ -3339,7 +3345,7 @@
                 "metaprogramming",
                 "minimizer"
             ],
-            "time": "2016-12-28T19:35:55+00:00"
+            "time": "2017-12-13T09:13:05+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -4241,16 +4247,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.24.2",
+            "version": "1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "bba6c6e410c6b4317e37a9474aeaa753808c3875"
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bba6c6e410c6b4317e37a9474aeaa753808c3875",
-                "reference": "bba6c6e410c6b4317e37a9474aeaa753808c3875",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/cbcf13da0b531767e39eb86e9687f5deba9857b4",
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4",
                 "shasum": ""
             },
             "require": {
@@ -4290,7 +4296,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-03-10T10:10:14+00:00"
+            "time": "2018-03-19T15:50:49+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -4344,39 +4350,94 @@
             "time": "2018-02-28T20:30:58+00:00"
         },
         {
-            "name": "ocramius/proxy-manager",
-            "version": "1.0.2",
+            "name": "ocramius/package-versions",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Ocramius/ProxyManager.git",
-                "reference": "57e9272ec0e8deccf09421596e0e2252df440e11"
+                "url": "https://github.com/Ocramius/PackageVersions.git",
+                "reference": "4489d5002c49d55576fa0ba786f42dbb009be46f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/57e9272ec0e8deccf09421596e0e2252df440e11",
-                "reference": "57e9272ec0e8deccf09421596e0e2252df440e11",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/4489d5002c49d55576fa0ba786f42dbb009be46f",
+                "reference": "4489d5002c49d55576fa0ba786f42dbb009be46f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
-                "zendframework/zend-code": ">2.2.5,<3.0"
+                "composer-plugin-api": "^1.0.0",
+                "php": "^7.1.0"
             },
             "require-dev": {
+                "composer/composer": "^1.6.3",
+                "ext-zip": "*",
+                "infection/infection": "^0.7.1",
+                "phpunit/phpunit": "^7.0.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PackageVersions\\Installer",
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PackageVersions\\": "src/PackageVersions"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                }
+            ],
+            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+            "time": "2018-02-05T13:05:30+00:00"
+        },
+        {
+            "name": "ocramius/proxy-manager",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ocramius/ProxyManager.git",
+                "reference": "e18ac876b2e4819c76349de8f78ccc8ef1554cd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/e18ac876b2e4819c76349de8f78ccc8ef1554cd7",
+                "reference": "e18ac876b2e4819c76349de8f78ccc8ef1554cd7",
+                "shasum": ""
+            },
+            "require": {
+                "ocramius/package-versions": "^1.1.1",
+                "php": "^7.1.0",
+                "zendframework/zend-code": "^3.1.0"
+            },
+            "require-dev": {
+                "couscous/couscous": "^1.5.2",
                 "ext-phar": "*",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "1.5.*"
+                "humbug/humbug": "dev-master@DEV",
+                "nikic/php-parser": "^3.0.4",
+                "phpbench/phpbench": "^0.12.2",
+                "phpstan/phpstan": "^0.6.4",
+                "phpunit/phpunit": "^5.6.4",
+                "phpunit/phpunit-mock-objects": "^3.4.1",
+                "squizlabs/php_codesniffer": "^2.7.0"
             },
             "suggest": {
                 "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
                 "zendframework/zend-json": "To have the JsonRpc adapter (Remote Object feature)",
                 "zendframework/zend-soap": "To have the Soap adapter (Remote Object feature)",
-                "zendframework/zend-stdlib": "To use the hydrator proxy",
                 "zendframework/zend-xmlrpc": "To have the XmlRpc adapter (Remote Object feature)"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -4392,7 +4453,7 @@
                 {
                     "name": "Marco Pivetta",
                     "email": "ocramius@gmail.com",
-                    "homepage": "http://ocramius.github.com/"
+                    "homepage": "http://ocramius.github.io/"
                 }
             ],
             "description": "A library providing utilities to generate, instantiate and generally operate with Object Proxies",
@@ -4404,20 +4465,20 @@
                 "proxy pattern",
                 "service proxies"
             ],
-            "time": "2015-08-09T04:28:19+00:00"
+            "time": "2017-05-04T11:12:50+00:00"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.11",
+            "version": "v1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8"
+                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/5da4d3c796c275c55f057af5a643ae297d96b4d8",
-                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/965cdeb01fdcab7653253aa81d40441d261f1e66",
+                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66",
                 "shasum": ""
             },
             "require": {
@@ -4452,7 +4513,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-09-27T21:40:39+00:00"
+            "time": "2017-03-13T16:22:52+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -5569,25 +5630,25 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.6",
+            "version": "v4.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "a479817ce0a9e4adfd7d39c6407c95d97c254625"
+                "reference": "44a796d2ecc2a16a5fc8f2956a34ee617934d55f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/a479817ce0a9e4adfd7d39c6407c95d97c254625",
-                "reference": "a479817ce0a9e4adfd7d39c6407c95d97c254625",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/44a796d2ecc2a16a5fc8f2956a34ee617934d55f",
+                "reference": "44a796d2ecc2a16a5fc8f2956a34ee617934d55f",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8"
+                "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -5614,7 +5675,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-05T18:28:11+00:00"
+            "time": "2018-03-05T18:28:26+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -6001,23 +6062,27 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.8",
+            "version": "v2.7.43",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
+                "reference": "94979b91c6501c9222db989a3a7e4f8e3ced330e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "url": "https://api.github.com/repos/symfony/security/zipball/94979b91c6501c9222db989a3a7e4f8e3ced330e",
+                "reference": "94979b91c6501c9222db989a3a7e4f8e3ced330e",
                 "shasum": ""
             },
             "require": {
+                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
-                "symfony/http-foundation": "~2.1",
+                "symfony/http-foundation": "~2.7",
                 "symfony/http-kernel": "~2.4"
+            },
+            "conflict": {
+                "symfony/http-foundation": "<2.7.38|~2.8,<2.8.31"
             },
             "replace": {
                 "symfony/security-acl": "self.version",
@@ -6034,12 +6099,11 @@
                 "symfony/finder": "~2.3",
                 "symfony/intl": "~2.3",
                 "symfony/routing": "~2.2",
-                "symfony/validator": "~2.5,>=2.5.9"
+                "symfony/validator": "~2.7.25|^2.8.18"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -6077,7 +6141,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-23T18:13:52+00:00"
+            "time": "2018-02-19T14:59:04+00:00"
         },
         {
             "name": "symfony/serializer",
@@ -6437,26 +6501,27 @@
         },
         {
             "name": "zendframework/zend-code",
-            "version": "2.6.3",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-code.git",
-                "reference": "95033f061b083e16cdee60530ec260d7d628b887"
+                "reference": "6b1059db5b368db769e4392c6cb6cc139e56640d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/95033f061b083e16cdee60530ec260d7d628b887",
-                "reference": "95033f061b083e16cdee60530ec260d7d628b887",
+                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/6b1059db5b368db769e4392c6cb6cc139e56640d",
+                "reference": "6b1059db5b368db769e4392c6cb6cc139e56640d",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5 || 7.0.0 - 7.0.4 || ^7.0.6",
+                "php": "^7.1",
                 "zendframework/zend-eventmanager": "^2.6 || ^3.0"
             },
             "require-dev": {
                 "doctrine/annotations": "~1.0",
-                "fabpot/php-cs-fixer": "1.7.*",
-                "phpunit/phpunit": "^4.8.21",
+                "ext-phar": "*",
+                "phpunit/phpunit": "^6.2.3",
+                "zendframework/zend-coding-standard": "^1.0.0",
                 "zendframework/zend-stdlib": "^2.7 || ^3.0"
             },
             "suggest": {
@@ -6466,8 +6531,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev",
-                    "dev-develop": "2.7-dev"
+                    "dev-master": "3.2-dev",
+                    "dev-develop": "3.3-dev"
                 }
             },
             "autoload": {
@@ -6485,7 +6550,7 @@
                 "code",
                 "zf2"
             ],
-            "time": "2016-04-20T17:26:42+00:00"
+            "time": "2017-10-20T15:21:32+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -6930,10 +6995,32 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2553",
+            "package": "cultuurnet/udb3-models-import"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2553",
+            "package": "cultuurnet/broadway-amqp"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2553",
+            "package": "cultuurnet/silex-amqp"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "doctrine/migrations": 20
+        "cultuurnet/udb3-models-import": 20,
+        "doctrine/migrations": 20,
+        "cultuurnet/broadway-amqp": 20,
+        "cultuurnet/silex-amqp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
