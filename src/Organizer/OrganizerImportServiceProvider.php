@@ -3,11 +3,10 @@
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Model\Import\Organizer\OrganizerDocumentImporter;
-use CultuurNet\UDB3\Model\Import\Validation\Organizer\OrganizerHasUniqueUrlValidator;
-use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
+use CultuurNet\UDB3\Model\Import\Validation\Organizer\OrganizerValidatorFactory;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
-use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
-use CultuurNet\UDB3\Organizer\DBALWebsiteLookupService;
+use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -20,19 +19,17 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
     {
         $app['organizer_denormalizer'] = $app->share(
             function (Application $app) {
-                // @todo Move to dedicated "OrganizerImportValidator" class.
-                $extraRules = [
-                    new OrganizerHasUniqueUrlValidator(
-                        new OrganizerIDParser(),
-                        new DBALWebsiteLookupService(
-                            $app['dbal_connection'],
-                            'organizer_unique_websites'
-                        )
+                $organizerValidatorFactory = new OrganizerValidatorFactory(
+                    $app['dbal_connection'],
+                    new CultureFeedUserIdentification(
+                        $app['current_user'],
+                        $app['config']['user_permissions']
                     ),
-                ];
-                $validator = new OrganizerValidator($extraRules, true);
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                );
 
-                return new OrganizerDenormalizer($validator);
+                return new OrganizerDenormalizer($organizerValidatorFactory);
             }
         );
 
