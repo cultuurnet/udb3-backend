@@ -5,8 +5,11 @@ namespace CultuurNet\UDB3\Silex\Place;
 use CultuurNet\UDB3\Model\Import\Place\PlaceDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Place\PlaceLegacyBridgeCategoryResolver;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
-use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceValidatorFactory;
+use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceDocumentValidator;
+use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
+use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -18,8 +21,18 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['place_denormalizer'] = $app->share(
-            function () {
-                return new PlaceDenormalizer(new PlaceValidatorFactory());
+            function (Application $app) {
+                return new PlaceDenormalizer(
+                    new PlaceDocumentValidator(
+                        new PlaceIDParser(),
+                        new CultureFeedUserIdentification(
+                            $app['current_user'],
+                            $app['config']['user_permissions']
+                        ),
+                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    )
+                );
             }
         );
 

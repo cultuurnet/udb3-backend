@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a9f724928db9901555daf76ceebf29d",
+    "content-hash": "4fde6e76e2407908cb2283bba0e7869a",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1655,16 +1655,16 @@
         },
         {
             "name": "cultuurnet/udb3-models",
-            "version": "dev-feature/III-2563",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "e355addb288f4a895e39758b01b832b424c8c2b8"
+                "reference": "ff54806da505202d4770f8e90c57adad16db6f4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/e355addb288f4a895e39758b01b832b424c8c2b8",
-                "reference": "e355addb288f4a895e39758b01b832b424c8c2b8",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/ff54806da505202d4770f8e90c57adad16db6f4d",
+                "reference": "ff54806da505202d4770f8e90c57adad16db6f4d",
                 "shasum": ""
             },
             "require": {
@@ -1696,7 +1696,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-03-28T19:29:32+00:00"
+            "time": "2018-03-22T08:35:36+00:00"
         },
         {
             "name": "cultuurnet/udb3-models-import",
@@ -1704,17 +1704,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "deb1a960e27908209ca914092bf41b05aa4dfa7d"
+                "reference": "7704de33aee23ab33e5bbb400f72b756447ad9a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/deb1a960e27908209ca914092bf41b05aa4dfa7d",
-                "reference": "deb1a960e27908209ca914092bf41b05aa4dfa7d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/7704de33aee23ab33e5bbb400f72b756447ad9a6",
+                "reference": "7704de33aee23ab33e5bbb400f72b756447ad9a6",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/udb3": "dev-feature/III-2563 as 0.1",
-                "cultuurnet/udb3-models": "dev-feature/III-2563 as 0.1",
+                "cultuurnet/udb3-models": "~0.1",
                 "php": "~5.6 || >=7.0"
             },
             "require-dev": {
@@ -1738,7 +1738,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-03-28T18:46:51+00:00"
+            "time": "2018-03-29T18:44:56+00:00"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -6941,19 +6941,12 @@
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-2563",
-            "package": "cultuurnet/udb3-models"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2563",
             "package": "cultuurnet/udb3-models-import"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb3": 20,
-        "cultuurnet/udb3-models": 20,
         "cultuurnet/udb3-models-import": 20,
         "doctrine/migrations": 20
     },
