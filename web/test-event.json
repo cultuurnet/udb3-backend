@@ -1,0 +1,18 @@
+{
+    "mainLanguage": "nl",
+    "name": {
+        "nl": "Verjaardag Bert",
+        "en": "Birthday Bert"
+    },
+    "calendarType": "single",
+    "startDate": "2018-04-23T00:00:00+01:00",
+    "endDate": "2018-04-23T23:59:59+01:00",
+    "location": {
+        "@id": "https://io.uitdatabank.be/places/63e1ada9-bd77-42ad-89f4-3f99c46eeb12"
+    },
+    "terms": [
+        {
+            "id": "0.5.0.0.0"
+        }
+    ]
+}

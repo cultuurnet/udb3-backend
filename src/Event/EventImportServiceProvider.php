@@ -54,6 +54,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
                 $eventImporter = new EventDocumentImporter(
                     $app['event_repository'],
                     $app['event_denormalizer'],
+                    $app['import_image_collection_factory'],
                     $app['event_command_bus']
                 );
 

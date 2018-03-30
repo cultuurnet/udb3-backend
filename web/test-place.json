@@ -1,0 +1,35 @@
+{
+    "mainLanguage": "nl",
+    "name": {
+        "nl": "Publiq",
+        "fr": "Publiq",
+        "en": "Publiq",
+        "es": "Publiq"
+    },
+    "calendarType": "permanent",
+    "address": {
+        "nl": {
+            "streetAddress": "Henegouwenkaai 41-43",
+            "postalCode": "1080",
+            "addressLocality": "Brussel",
+            "addressCountry": "BE"
+        },
+        "fr": {
+            "streetAddress": "Quai du Hainaut 41-43",
+            "postalCode": "1080",
+            "addressLocality": "Bruxelles",
+            "addressCountry": "BE"
+        },
+        "en": {
+            "streetAddress": "Henegouwenkaai 41-43",
+            "postalCode": "1080",
+            "addressLocality": "Brussels",
+            "addressCountry": "BE"
+        }
+    },
+    "terms": [
+        {
+            "id": "Yf4aZBfsUEu2NsQqsprngw"
+        }
+    ]
+}

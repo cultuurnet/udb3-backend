@@ -47,6 +47,7 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
                 $placeImporter = new PlaceDocumentImporter(
                     $app['place_repository'],
                     $app['place_denormalizer'],
+                    $app['import_image_collection_factory'],
                     $app['event_command_bus']
                 );
 
