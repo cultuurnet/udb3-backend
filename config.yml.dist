@@ -65,6 +65,9 @@ amqp:
     uitpas:
       exchange: uitpas.e.prod
       queue: udb3.q.prod.uitpas
+    imports:
+      exchange: imports.vagrant.x.entry
+      queue: udb3.vagrant.q.imports-entry
   publish:
     udb3:
       exchange: udb3.e.prod
