@@ -45,7 +45,7 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
                 return new OrganizerDocumentImporter(
                     $app['organizer_repository'],
                     $app['organizer_denormalizer'],
-                    $app['event_command_bus']
+                    $app['imports_command_bus']
                 );
             }
         );

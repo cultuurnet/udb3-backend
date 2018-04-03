@@ -41,7 +41,7 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
                 $placeImporter = new PlaceDocumentImporter(
                     $app['place_repository'],
                     $app['place_denormalizer'],
-                    $app['event_command_bus']
+                    $app['imports_command_bus']
                 );
 
                 $termPreProcessor = new TermPreProcessingDocumentImporter(
