@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Model\Import\Event\EventDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
 use CultuurNet\UDB3\Model\Import\PreProcessing\LocationPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
-use CultuurNet\UDB3\Model\Import\Validation\Event\EventDocumentValidator;
+use CultuurNet\UDB3\Model\Import\Validation\Event\EventImportValidator;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
@@ -25,7 +25,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
         $app['event_denormalizer'] = $app->share(
             function (Application $app) {
                 return new EventDenormalizer(
-                    new EventDocumentValidator(
+                    new EventImportValidator(
                         $app['place_jsonld_repository'],
                         new EventIDParser(),
                         new CultureFeedUserIdentification(
