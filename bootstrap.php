@@ -88,12 +88,12 @@ $app['local_domain'] = \ValueObjects\Web\Domain::specifyType(
  * CultureFeed services.
  */
 $app->register(
-  new CultureFeedServiceProvider(),
-  [
-    'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
-    'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
-    'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
-  ]
+    new CultureFeedServiceProvider(),
+    [
+        'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
+        'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
+        'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
+    ]
 );
 
 /**
@@ -619,18 +619,18 @@ $app['events_locator_event_stream_decorator'] = $app->share(
 );
 
 $app['event_repository'] = $app->share(
-  function ($app) {
-      $repository = new \CultuurNet\UDB3\Event\EventRepository(
-          $app['event_store'],
-          $app['event_bus'],
-          [
-              $app['event_stream_metadata_enricher'],
-              $app['events_locator_event_stream_decorator']
-          ]
-      );
+    function ($app) {
+        $repository = new \CultuurNet\UDB3\Event\EventRepository(
+            $app['event_store'],
+            $app['event_bus'],
+            [
+                $app['event_stream_metadata_enricher'],
+                $app['events_locator_event_stream_decorator']
+            ]
+        );
 
-      return $repository;
-  }
+        return $repository;
+    }
 );
 
 $app['execution_context_metadata_enricher'] = $app->share(
@@ -1279,13 +1279,13 @@ $app['event_export_notification_mail_factory'] = $app->share(
 );
 
 $app['sapi3_search_service'] = $app->share(
-  function ($app) {
-      return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-          new \GuzzleHttp\Psr7\Uri($app['config']['export']['search_url']),
-          new Client(new \GuzzleHttp\Client()),
-          $app['iri_offer_identifier_factory']
-      );
-  }
+    function ($app) {
+        return new \CultuurNet\UDB3\Search\Sapi3SearchService(
+            new \GuzzleHttp\Psr7\Uri($app['config']['export']['search_url']),
+            new Client(new \GuzzleHttp\Client()),
+            $app['iri_offer_identifier_factory']
+        );
+    }
 );
 
 $app['event_export'] = $app->share(
@@ -1499,5 +1499,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Import\ImportServiceProvider($subscribeCoreCommandHandlers));
 $app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 return $app;
