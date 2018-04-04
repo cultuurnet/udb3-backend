@@ -1337,12 +1337,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "cd9bd4adc9c140daeeb2a4b963ddb7555962d0ba"
+                "reference": "07b34e621e616acdaad6df0c2eb165fb6ec95bfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cd9bd4adc9c140daeeb2a4b963ddb7555962d0ba",
-                "reference": "cd9bd4adc9c140daeeb2a4b963ddb7555962d0ba",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/07b34e621e616acdaad6df0c2eb165fb6ec95bfd",
+                "reference": "07b34e621e616acdaad6df0c2eb165fb6ec95bfd",
                 "shasum": ""
             },
             "require": {
@@ -1409,7 +1409,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-03-29T09:48:29+00:00"
+            "time": "2018-04-04T08:06:20+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1704,12 +1704,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "5f8b49ee5c2aa8e7a6f1514990876b0b8923c42d"
+                "reference": "6ce912c5a829ba8ab6f62c258190871fdc741886"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/5f8b49ee5c2aa8e7a6f1514990876b0b8923c42d",
-                "reference": "5f8b49ee5c2aa8e7a6f1514990876b0b8923c42d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/6ce912c5a829ba8ab6f62c258190871fdc741886",
+                "reference": "6ce912c5a829ba8ab6f62c258190871fdc741886",
                 "shasum": ""
             },
             "require": {
@@ -1738,7 +1738,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-04-03T11:41:19+00:00"
+            "time": "2018-04-04T08:14:40+00:00"
         },
         {
             "name": "cultuurnet/udb3-symfony",
