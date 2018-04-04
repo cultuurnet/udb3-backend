@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\SchemaConfigurator as JsonSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\GodUserReadRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
@@ -138,11 +139,14 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
-                return new JsonReadRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(self::JSON_TABLE),
-                    new StringLiteral(self::LABEL_ROLES_TABLE),
-                    new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE)
+                return new GodUserReadRepositoryDecorator(
+                    new JsonReadRepository(
+                        $app['dbal_connection'],
+                        new StringLiteral(self::JSON_TABLE),
+                        new StringLiteral(self::LABEL_ROLES_TABLE),
+                        new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE)
+                    ),
+                    $app['config']['user_permissions']['allow_all']
                 );
             }
         );

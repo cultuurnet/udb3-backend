@@ -2,19 +2,16 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Import\Event\EventDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
 use CultuurNet\UDB3\Model\Import\PreProcessing\LocationPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
-use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\CategoriesExistValidator;
-use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\EventTypeCountValidator;
-use CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category\ThemeCountValidator;
-use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceReferenceExistsValidator;
+use CultuurNet\UDB3\Model\Import\Validation\Event\EventImportValidator;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
-use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
-use Respect\Validation\Rules\AllOf;
-use Respect\Validation\Rules\Key;
+use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -27,25 +24,18 @@ class EventImportServiceProvider implements ServiceProviderInterface
     {
         $app['event_denormalizer'] = $app->share(
             function (Application $app) {
-                // @todo Move to dedicated "EventImportValidator" class.
-                $extraRules = [
-                    new PlaceReferenceExistsValidator(
-                        new PlaceIDParser(),
-                        $app['place_jsonld_repository']
-                    ),
-                    new Key(
-                        'terms',
-                        new AllOf(
-                            new CategoriesExistValidator(new EventLegacyBridgeCategoryResolver(), 'event'),
-                            new EventTypeCountValidator(),
-                            new ThemeCountValidator()
+                return new EventDenormalizer(
+                    new EventImportValidator(
+                        $app['place_jsonld_repository'],
+                        new EventIDParser(),
+                        new CultureFeedUserIdentification(
+                            $app['current_user'],
+                            $app['config']['user_permissions']
                         ),
-                        false
-                    ),
-                ];
-                $validator = new EventValidator($extraRules);
-
-                return new EventDenormalizer($validator);
+                        $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                        $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    )
+                );
             }
         );
 
