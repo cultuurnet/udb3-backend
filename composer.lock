@@ -1659,12 +1659,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "ff54806da505202d4770f8e90c57adad16db6f4d"
+                "reference": "1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/ff54806da505202d4770f8e90c57adad16db6f4d",
-                "reference": "ff54806da505202d4770f8e90c57adad16db6f4d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6",
+                "reference": "1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6",
                 "shasum": ""
             },
             "require": {
@@ -1696,7 +1696,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-03-22T08:35:36+00:00"
+            "time": "2018-04-06T10:27:17+00:00"
         },
         {
             "name": "cultuurnet/udb3-models-import",
