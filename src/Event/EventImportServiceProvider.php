@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Import\Event\EventDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
+use CultuurNet\UDB3\Model\Import\PreProcessing\LabelPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\LocationPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Validation\Event\EventImportValidator;
@@ -59,7 +60,13 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     $app['place_jsonld_repository']
                 );
 
-                return $locationPreProcessor;
+                $labelPreProcessor = new LabelPreProcessingDocumentImporter(
+                    $locationPreProcessor,
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                );
+
+                return $labelPreProcessor;
             }
         );
     }
