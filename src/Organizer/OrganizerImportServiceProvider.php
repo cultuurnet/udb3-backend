@@ -52,7 +52,8 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
                 $labelPreProcessor = new LabelPreProcessingDocumentImporter(
                     $organizerImporter,
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY],
+                    $app['labels.constraint_aware_service']
                 );
 
                 return $labelPreProcessor;
