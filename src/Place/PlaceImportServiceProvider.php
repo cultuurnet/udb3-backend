@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\UDB3\Model\Import\Place\PlaceDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Place\PlaceLegacyBridgeCategoryResolver;
+use CultuurNet\UDB3\Model\Import\PreProcessing\LabelPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceImportValidator;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
@@ -50,7 +51,13 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
                     new PlaceLegacyBridgeCategoryResolver()
                 );
 
-                return $termPreProcessor;
+                $labelPreProcessor = new LabelPreProcessingDocumentImporter(
+                    $termPreProcessor,
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                );
+
+                return $labelPreProcessor;
             }
         );
     }
