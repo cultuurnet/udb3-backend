@@ -419,12 +419,13 @@ $app['cdbxml_contact_info_importer'] = $app->share(
 $app['event_cdbxml_importer'] = $app->share(
     function (Application $app) {
         return new EventCdbXMLImporter(
-            new CdbXMLItemBaseImporter(),
-            $app['udb2_event_cdbid_extractor'],
-            new PriceDescriptionParser(
-                new NumberFormatRepository(),
-                new CurrencyRepository()
+            new CdbXMLItemBaseImporter(
+                new PriceDescriptionParser(
+                    new NumberFormatRepository(),
+                    new CurrencyRepository()
+                )
             ),
+            $app['udb2_event_cdbid_extractor'],
             $app['calendar_factory'],
             $app['cdbxml_contact_info_importer']
         );
@@ -843,7 +844,12 @@ $app['place_iri_generator'] = $app->share(
 $app['place_cdbxml_importer'] = $app->share(
     function (Application $app) {
         return new PlaceCdbXMLImporter(
-            new CdbXMLItemBaseImporter(),
+            new CdbXMLItemBaseImporter(
+                new PriceDescriptionParser(
+                    new NumberFormatRepository(),
+                    new CurrencyRepository()
+                )
+            ),
             $app['calendar_factory'],
             $app['cdbxml_contact_info_importer']
         );
@@ -1406,7 +1412,9 @@ $app->register(new \CultuurNet\UDB3\Silex\Proxy\ProxyServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceEditingServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Place\PlaceReadServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());

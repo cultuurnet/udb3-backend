@@ -34,13 +34,13 @@ class OfferControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $offerServices = [
-            'event' => 'event_editor',
-            'events' => 'event_editor',
-            'place' => 'place_editing_service',
-            'places' => 'place_editing_service',
+            'event' => ['event_editor', 'event_main_language_query'],
+            'events' => ['event_editor', 'event_main_language_query'],
+            'place' => ['place_editing_service', 'place_main_language_query'],
+            'places' => ['place_editing_service', 'place_main_language_query'],
         ];
 
-        foreach ($offerServices as $offerType => $serviceName) {
+        foreach ($offerServices as $offerType => $serviceNames) {
             $controllerName = "{$offerType}_offer_controller";
             $patchControllerName = "patch_{$offerType}_controller";
             $permissionsControllerName = "permissions_{$offerType}_controller";
@@ -48,9 +48,10 @@ class OfferControllerProvider implements ControllerProviderInterface
             $permissionControllerName = "permission_{$offerType}_controller";
 
             $app[$controllerName] = $app->share(
-                function (Application $app) use ($serviceName, $offerType) {
+                function (Application $app) use ($serviceNames, $offerType) {
                     return new EditOfferRestController(
-                        $app[$serviceName],
+                        $app[$serviceNames[0]],
+                        $app[$serviceNames[1]],
                         new LabelJSONDeserializer(),
                         new TitleJSONDeserializer(false, new StringLiteral('name')),
                         new DescriptionJSONDeserializer(),
