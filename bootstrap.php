@@ -423,7 +423,8 @@ $app['event_cdbxml_importer'] = $app->share(
                 new PriceDescriptionParser(
                     new NumberFormatRepository(),
                     new CurrencyRepository()
-                )
+                ),
+                $app['config']['base_price_translations']
             ),
             $app['udb2_event_cdbid_extractor'],
             $app['calendar_factory'],
@@ -455,7 +456,8 @@ $app['event_jsonld_projector'] = $app->share(
             new JsonDocumentLanguageEnricher(
                 new EventJsonDocumentLanguageAnalyzer()
             ),
-            $app['events_not_triggering_update_modified']
+            $app['events_not_triggering_update_modified'],
+            $app['config']['base_price_translations']
         );
 
         return $projector;
@@ -848,7 +850,8 @@ $app['place_cdbxml_importer'] = $app->share(
                 new PriceDescriptionParser(
                     new NumberFormatRepository(),
                     new CurrencyRepository()
-                )
+                ),
+                $app['config']['base_price_translations']
             ),
             $app['calendar_factory'],
             $app['cdbxml_contact_info_importer']
@@ -868,7 +871,8 @@ $app['place_jsonld_projector'] = $app->share(
             new JsonDocumentLanguageEnricher(
                 new PlaceJsonDocumentLanguageAnalyzer()
             ),
-            $app['events_not_triggering_update_modified']
+            $app['events_not_triggering_update_modified'],
+            $app['config']['base_price_translations']
         );
 
         return $projector;
