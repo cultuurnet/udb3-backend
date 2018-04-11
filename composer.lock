@@ -1704,12 +1704,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "ef3c68536fe1336a1221bb96bee09f7f54111b35"
+                "reference": "8a6035182e9209365b398455e19116c0e5258076"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/ef3c68536fe1336a1221bb96bee09f7f54111b35",
-                "reference": "ef3c68536fe1336a1221bb96bee09f7f54111b35",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/8a6035182e9209365b398455e19116c0e5258076",
+                "reference": "8a6035182e9209365b398455e19116c0e5258076",
                 "shasum": ""
             },
             "require": {
@@ -1738,7 +1738,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-04-11 09:23:12"
+            "time": "2018-04-11 13:20:59"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -3653,7 +3653,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
