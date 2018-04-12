@@ -9,6 +9,7 @@ uitid:
     key: ***
     secret: ***
   base_url: http://www.uitid.be/uitid/rest/
+  auto_approve_group_id: ***
 search:
   base_url: http://www.uitid.be/uitid/rest/searchv2
 sync_with_udb2: true
