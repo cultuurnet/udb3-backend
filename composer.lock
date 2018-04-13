@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce097e8048ec887249b63fed15c89fc1",
+    "content-hash": "4bce5e7f7343145b8a1b0531ba44af19",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -805,16 +805,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "1.9",
+            "version": "dev-feature/III-2552",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "5b7d83a2f0c78e63f59e96479b41b5e3c89b3984"
+                "reference": "59f406320ca7fafc0cdb2c1b526531f964582122"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/5b7d83a2f0c78e63f59e96479b41b5e3c89b3984",
-                "reference": "5b7d83a2f0c78e63f59e96479b41b5e3c89b3984",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/59f406320ca7fafc0cdb2c1b526531f964582122",
+                "reference": "59f406320ca7fafc0cdb2c1b526531f964582122",
                 "shasum": ""
             },
             "require": {
@@ -869,7 +869,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2017-11-20T08:54:20+00:00"
+            "time": "2018-04-13 11:27:45"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1704,12 +1704,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "8ffdc203fd33518c9cb1f992c20dadc5c00ef418"
+                "reference": "316b82cd6d5182bf30e674709e6824dcaa2ba394"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/8ffdc203fd33518c9cb1f992c20dadc5c00ef418",
-                "reference": "8ffdc203fd33518c9cb1f992c20dadc5c00ef418",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/316b82cd6d5182bf30e674709e6824dcaa2ba394",
+                "reference": "316b82cd6d5182bf30e674709e6824dcaa2ba394",
                 "shasum": ""
             },
             "require": {
@@ -1739,7 +1739,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-04-12 11:19:39"
+            "time": "2018-04-13 12:03:55"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -1747,12 +1747,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "45750b4c1d82b23c76f4cfeefd2bea5cb1d11f80"
+                "reference": "9a47d9b59350696c37bc3f8a3b61db9b8625b7ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/45750b4c1d82b23c76f4cfeefd2bea5cb1d11f80",
-                "reference": "45750b4c1d82b23c76f4cfeefd2bea5cb1d11f80",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/9a47d9b59350696c37bc3f8a3b61db9b8625b7ee",
+                "reference": "9a47d9b59350696c37bc3f8a3b61db9b8625b7ee",
                 "shasum": ""
             },
             "require": {
@@ -1804,7 +1804,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2018-04-12 12:00:57"
+            "time": "2018-04-13 12:10:39"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -6600,16 +6600,16 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "debedcfc373a293f9250cc9aa03cf121428c8e78"
+                "reference": "10ef03144902d1955f935fff5346ed52f7d99bcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/debedcfc373a293f9250cc9aa03cf121428c8e78",
-                "reference": "debedcfc373a293f9250cc9aa03cf121428c8e78",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/10ef03144902d1955f935fff5346ed52f7d99bcc",
+                "reference": "10ef03144902d1955f935fff5346ed52f7d99bcc",
                 "shasum": ""
             },
             "require": {
@@ -6618,7 +6618,7 @@
             "require-dev": {
                 "athletic/athletic": "~0.1",
                 "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "^2.6.2"
+                "zendframework/zend-coding-standard": "~1.0.0"
             },
             "type": "library",
             "extra": {
@@ -6641,7 +6641,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2016-09-13T14:38:50+00:00"
+            "time": "2018-04-12T16:05:42+00:00"
         },
         {
             "name": "zendframework/zend-validator",
@@ -6937,6 +6937,12 @@
     ],
     "aliases": [
         {
+            "alias": "1.9",
+            "alias_normalized": "1.9.0.0",
+            "version": "dev-feature/III-2552",
+            "package": "cultuurnet/culturefeed-php"
+        },
+        {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-2552",
@@ -6963,6 +6969,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/culturefeed-php": 20,
         "cultuurnet/udb3": 20,
         "cultuurnet/udb3-symfony": 20,
         "cultuurnet/udb3-models-import": 20,
