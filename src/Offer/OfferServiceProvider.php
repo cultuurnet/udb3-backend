@@ -51,7 +51,7 @@ class OfferServiceProvider implements ServiceProviderInterface
         $app['should_auto_approve_new_offer'] = $app->share(
             function (Application $app) {
                 return new ConsumerIsInPermissionGroup(
-                    new StringLiteral($app['config']['uitid']['auto_approve_group_id'])
+                    new StringLiteral((string) $app['config']['uitid']['auto_approve_group_id'])
                 );
             }
         );
