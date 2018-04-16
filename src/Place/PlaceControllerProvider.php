@@ -33,7 +33,10 @@ class PlaceControllerProvider implements ControllerProviderInterface
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
                     $app['media_manager'],
-                    $app['place_iri_generator']
+                    $app['place_iri_generator'],
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
+                    $app['should_auto_approve_new_offer']
                 );
             }
         );

@@ -46,7 +46,8 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     $app['event_repository'],
                     $app['event_denormalizer'],
                     $app['import_image_collection_factory'],
-                    $app['imports_command_bus']
+                    $app['imports_command_bus'],
+                    $app['should_auto_approve_new_offer']
                 );
 
                 $termPreProcessor = new TermPreProcessingDocumentImporter(
