@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4bce5e7f7343145b8a1b0531ba44af19",
+    "content-hash": "e7e62590c1682a14ef00f3b2cac71853",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16 09:28:40"
+            "time": "2015-12-16T09:28:40+00:00"
         },
         {
             "name": "2dotstwice/silex-feature-toggles-provider",
@@ -96,7 +96,7 @@
                 "MIT"
             ],
             "description": "Feature toggles for Silex",
-            "time": "2017-07-03 14:15:24"
+            "time": "2017-07-03T14:15:24+00:00"
         },
         {
             "name": "2dotstwice/value-objects",
@@ -147,16 +147,16 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v2.9.4",
+            "version": "v2.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "7c24bedba95c600bba7b6021185a7d7fa2deb961"
+                "reference": "c07fe163d6a3b3e4b1275981ec004397954afa89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/7c24bedba95c600bba7b6021185a7d7fa2deb961",
-                "reference": "7c24bedba95c600bba7b6021185a7d7fa2deb961",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/c07fe163d6a3b3e4b1275981ec004397954afa89",
+                "reference": "c07fe163d6a3b3e4b1275981ec004397954afa89",
                 "shasum": ""
             },
             "require": {
@@ -198,7 +198,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2018-04-09T14:40:28+00:00"
+            "time": "2018-04-16T11:18:27+00:00"
         },
         {
             "name": "broadway/broadway",
@@ -589,7 +589,7 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24 20:22:37"
+            "time": "2015-08-24T20:22:37+00:00"
         },
         {
             "name": "cultuurnet/broadway-amqp",
@@ -636,7 +636,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2018-04-03 11:29:30"
+            "time": "2018-04-03T11:29:30+00:00"
         },
         {
             "name": "cultuurnet/broadway-tools",
@@ -677,7 +677,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-21 13:05:28"
+            "time": "2017-11-21T13:05:28+00:00"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -760,7 +760,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2017-07-05 12:13:57"
+            "time": "2017-07-05T12:13:57+00:00"
         },
         {
             "name": "cultuurnet/clock",
@@ -801,20 +801,20 @@
                 }
             ],
             "description": "Clock abstraction library",
-            "time": "2015-06-08 16:12:34"
+            "time": "2015-06-08T16:12:34+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "dev-feature/III-2552",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "59f406320ca7fafc0cdb2c1b526531f964582122"
+                "reference": "cbbd88349d7b41144c67b8e918672be6cafa1e04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/59f406320ca7fafc0cdb2c1b526531f964582122",
-                "reference": "59f406320ca7fafc0cdb2c1b526531f964582122",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/cbbd88349d7b41144c67b8e918672be6cafa1e04",
+                "reference": "cbbd88349d7b41144c67b8e918672be6cafa1e04",
                 "shasum": ""
             },
             "require": {
@@ -869,7 +869,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2018-04-13 11:27:45"
+            "time": "2018-04-16T11:18:06+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -916,7 +916,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2017-04-19 11:56:39"
+            "time": "2017-04-19T11:56:39+00:00"
         },
         {
             "name": "cultuurnet/entry",
@@ -966,7 +966,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2016-01-05 16:01:34"
+            "time": "2016-01-05T16:01:34+00:00"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -1015,7 +1015,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-01-24 21:26:16"
+            "time": "2018-01-24T21:26:16+00:00"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1063,7 +1063,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-05-15 08:55:52"
+            "time": "2017-05-15T08:55:52+00:00"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -1107,7 +1107,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23 15:01:13"
+            "time": "2017-02-23T15:01:13+00:00"
         },
         {
             "name": "cultuurnet/search",
@@ -1196,7 +1196,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2018-04-03 11:40:23"
+            "time": "2018-04-03T11:40:23+00:00"
         },
         {
             "name": "cultuurnet/silex-service-provider-jwt",
@@ -1238,7 +1238,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2017-02-23 11:22:30"
+            "time": "2017-02-23T11:22:30+00:00"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1280,7 +1280,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2017-02-23 11:20:01"
+            "time": "2017-02-23T11:20:01+00:00"
         },
         {
             "name": "cultuurnet/udb2-domain-events",
@@ -1329,20 +1329,20 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2017-04-20 15:15:25"
+            "time": "2017-04-20T15:15:25+00:00"
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-2552",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c670478aeba14c3184f8d76be726c1407ea901bb"
+                "reference": "c506c801ad24f6dca485019bfed71dbeba6658ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c670478aeba14c3184f8d76be726c1407ea901bb",
-                "reference": "c670478aeba14c3184f8d76be726c1407ea901bb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c506c801ad24f6dca485019bfed71dbeba6658ae",
+                "reference": "c506c801ad24f6dca485019bfed71dbeba6658ae",
                 "shasum": ""
             },
             "require": {
@@ -1409,20 +1409,20 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-04-12 10:07:34"
+            "time": "2018-04-16T11:32:45+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
-            "version": "dev-feature/III-2552",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "0be2b3f98f362ba419c4abdeaecf320662822625"
+                "reference": "64f83e5d99f22bf23e555e63341da5623c2d45a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/0be2b3f98f362ba419c4abdeaecf320662822625",
-                "reference": "0be2b3f98f362ba419c4abdeaecf320662822625",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/64f83e5d99f22bf23e555e63341da5623c2d45a6",
+                "reference": "64f83e5d99f22bf23e555e63341da5623c2d45a6",
                 "shasum": ""
             },
             "require": {
@@ -1460,7 +1460,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-04-12 07:44:08"
+            "time": "2018-04-16T11:20:28+00:00"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1505,7 +1505,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2016-04-13 11:52:34"
+            "time": "2016-04-13T11:52:34+00:00"
         },
         {
             "name": "cultuurnet/udb3-export",
@@ -1561,7 +1561,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-11-14 13:17:40"
+            "time": "2017-11-14T13:17:40+00:00"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1602,7 +1602,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23 11:57:27"
+            "time": "2017-02-23T11:57:27+00:00"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1651,7 +1651,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2017-04-19 11:59:07"
+            "time": "2017-04-19T11:59:07+00:00"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -1696,25 +1696,25 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-04-06 10:27:17"
+            "time": "2018-04-06T10:27:17+00:00"
         },
         {
             "name": "cultuurnet/udb3-models-import",
-            "version": "dev-feature/III-2552",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "316b82cd6d5182bf30e674709e6824dcaa2ba394"
+                "reference": "bcfd92eaa6100920696cbdea68bbf43d4a201079"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/316b82cd6d5182bf30e674709e6824dcaa2ba394",
-                "reference": "316b82cd6d5182bf30e674709e6824dcaa2ba394",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/bcfd92eaa6100920696cbdea68bbf43d4a201079",
+                "reference": "bcfd92eaa6100920696cbdea68bbf43d4a201079",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/udb3": "~0.1",
-                "cultuurnet/udb3-api-guard": "dev-feature/III-2552 as 0.1",
+                "cultuurnet/udb3-api-guard": "~0.1",
                 "cultuurnet/udb3-models": "~0.1",
                 "php": "~5.6 || >=7.0"
             },
@@ -1739,30 +1739,30 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-04-13 12:03:55"
+            "time": "2018-04-16T11:32:22+00:00"
         },
         {
             "name": "cultuurnet/udb3-symfony",
-            "version": "dev-feature/III-2552",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "9a47d9b59350696c37bc3f8a3b61db9b8625b7ee"
+                "reference": "19249ba17329124294ff338530112b8adfd0d8bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/9a47d9b59350696c37bc3f8a3b61db9b8625b7ee",
-                "reference": "9a47d9b59350696c37bc3f8a3b61db9b8625b7ee",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/19249ba17329124294ff338530112b8adfd0d8bc",
+                "reference": "19249ba17329124294ff338530112b8adfd0d8bc",
                 "shasum": ""
             },
             "require": {
                 "chrisboulton/php-resque": "1.2",
                 "crell/api-problem": "~1.7",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "dev-feature/III-2552 as 0.1",
-                "cultuurnet/udb3-api-guard": "dev-feature/III-2552 as 0.1",
+                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3-api-guard": "~0.1",
                 "cultuurnet/udb3-models": "~0.1",
-                "cultuurnet/udb3-models-import": "dev-feature/III-2552 as 0.1",
+                "cultuurnet/udb3-models-import": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "guzzlehttp/guzzle": "~6.2",
                 "guzzlehttp/psr7": "~1.2.3",
@@ -1804,7 +1804,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2018-04-13 12:10:39"
+            "time": "2018-04-16T11:40:46+00:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1862,7 +1862,7 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2018-01-18 11:30:56"
+            "time": "2018-01-18T11:30:56+00:00"
         },
         {
             "name": "cultuurnet/udb3-uitpas-bridge",
@@ -1909,7 +1909,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-12-15 08:48:03"
+            "time": "2017-12-15T08:48:03+00:00"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -1965,7 +1965,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-18 16:28:40"
+            "time": "2016-05-18T16:28:40+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -3655,7 +3655,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "developer"
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -4243,16 +4243,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.25.0",
+            "version": "1.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4"
+                "reference": "bab61b25da5a28a6a7a5785d34802174b2a24b99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/cbcf13da0b531767e39eb86e9687f5deba9857b4",
-                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bab61b25da5a28a6a7a5785d34802174b2a24b99",
+                "reference": "bab61b25da5a28a6a7a5785d34802174b2a24b99",
                 "shasum": ""
             },
             "require": {
@@ -4271,7 +4271,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Carbon\\": "src/Carbon/"
+                    "": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4292,7 +4292,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-03-19T15:50:49+00:00"
+            "time": "2018-04-16T08:58:42+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -6935,46 +6935,10 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "1.9",
-            "alias_normalized": "1.9.0.0",
-            "version": "dev-feature/III-2552",
-            "package": "cultuurnet/culturefeed-php"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2552",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2552",
-            "package": "cultuurnet/udb3-symfony"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2552",
-            "package": "cultuurnet/udb3-models-import"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2552",
-            "package": "cultuurnet/udb3-api-guard"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/culturefeed-php": 20,
-        "cultuurnet/udb3": 20,
-        "cultuurnet/udb3-symfony": 20,
-        "cultuurnet/udb3-models-import": 20,
-        "doctrine/migrations": 20,
-        "cultuurnet/udb3-api-guard": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
