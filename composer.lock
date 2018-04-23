@@ -1337,12 +1337,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "1563bb47b3069d0710b235bfcae376251a466a5f"
+                "reference": "25b79c9e8642bdc109f74bc14ab7d17e8b665e4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1563bb47b3069d0710b235bfcae376251a466a5f",
-                "reference": "1563bb47b3069d0710b235bfcae376251a466a5f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/25b79c9e8642bdc109f74bc14ab7d17e8b665e4e",
+                "reference": "25b79c9e8642bdc109f74bc14ab7d17e8b665e4e",
                 "shasum": ""
             },
             "require": {
@@ -1409,7 +1409,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-04-23T08:14:51+00:00"
+            "time": "2018-04-23T12:57:02+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1610,12 +1610,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "df4932e232533184c9854bfb02783f32f1098945"
+                "reference": "2b1b9b7be1df371aa550e024f42d3845ea426e3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/df4932e232533184c9854bfb02783f32f1098945",
-                "reference": "df4932e232533184c9854bfb02783f32f1098945",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/2b1b9b7be1df371aa550e024f42d3845ea426e3e",
+                "reference": "2b1b9b7be1df371aa550e024f42d3845ea426e3e",
                 "shasum": ""
             },
             "require": {
@@ -1651,7 +1651,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2017-04-19T11:59:07+00:00"
+            "time": "2018-04-23T13:19:52+00:00"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -1747,12 +1747,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "19249ba17329124294ff338530112b8adfd0d8bc"
+                "reference": "86d64c57de94ca776215059f2af92c19e2218688"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/19249ba17329124294ff338530112b8adfd0d8bc",
-                "reference": "19249ba17329124294ff338530112b8adfd0d8bc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/86d64c57de94ca776215059f2af92c19e2218688",
+                "reference": "86d64c57de94ca776215059f2af92c19e2218688",
                 "shasum": ""
             },
             "require": {
@@ -1804,7 +1804,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2018-04-16T11:40:46+00:00"
+            "time": "2018-04-23T13:34:22+00:00"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
@@ -1917,12 +1917,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/uitid-credentials.git",
-                "reference": "6daab13bfb67d1eb0ceddf9b32474c05a6698a48"
+                "reference": "e37e3415061292e91c46ec7d48bde139658154c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/6daab13bfb67d1eb0ceddf9b32474c05a6698a48",
-                "reference": "6daab13bfb67d1eb0ceddf9b32474c05a6698a48",
+                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/e37e3415061292e91c46ec7d48bde139658154c3",
+                "reference": "e37e3415061292e91c46ec7d48bde139658154c3",
                 "shasum": ""
             },
             "require": {
@@ -1965,7 +1965,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2016-05-18T16:28:40+00:00"
+            "time": "2018-04-23T13:50:41+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -4243,16 +4243,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.26.4",
+            "version": "1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "e3d9014279133a3cccc01f6a691322a2d5a6a87b"
+                "reference": "ef81c39b67200dcd7401c24363dcac05ac3a4fe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/e3d9014279133a3cccc01f6a691322a2d5a6a87b",
-                "reference": "e3d9014279133a3cccc01f6a691322a2d5a6a87b",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ef81c39b67200dcd7401c24363dcac05ac3a4fe9",
+                "reference": "ef81c39b67200dcd7401c24363dcac05ac3a4fe9",
                 "shasum": ""
             },
             "require": {
@@ -4287,7 +4287,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-04-17T15:35:42+00:00"
+            "time": "2018-04-23T09:02:57+00:00"
         },
         {
             "name": "nikic/php-parser",
