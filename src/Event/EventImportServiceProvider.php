@@ -46,7 +46,8 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     $app['event_repository'],
                     $app['event_denormalizer'],
                     $app['import_image_collection_factory'],
-                    $app['imports_command_bus']
+                    $app['imports_command_bus'],
+                    $app['should_auto_approve_new_offer']
                 );
 
                 $termPreProcessor = new TermPreProcessingDocumentImporter(
@@ -63,7 +64,8 @@ class EventImportServiceProvider implements ServiceProviderInterface
                 $labelPreProcessor = new LabelPreProcessingDocumentImporter(
                     $locationPreProcessor,
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
+                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY],
+                    $app['labels.constraint_aware_service']
                 );
 
                 return $labelPreProcessor;

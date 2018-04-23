@@ -29,7 +29,10 @@ class EventControllerProvider implements ControllerProviderInterface
                 return new EditEventRestController(
                     $app['event_editor'],
                     $app['media_manager'],
-                    $app['event_iri_generator']
+                    $app['event_iri_generator'],
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
+                    $app['should_auto_approve_new_offer']
                 );
             }
         );

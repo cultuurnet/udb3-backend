@@ -14,6 +14,8 @@ class ImportControllerProvider implements ControllerProviderInterface
         $app['event_import_controller'] = $app->share(
             function (Application $app) {
                 return new ImportRestController(
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
                     $app['event_importer'],
                     $app['uuid_generator'],
                     $app['event_iri_generator']
@@ -24,6 +26,8 @@ class ImportControllerProvider implements ControllerProviderInterface
         $app['place_import_controller'] = $app->share(
             function (Application $app) {
                 return new ImportRestController(
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
                     $app['place_importer'],
                     $app['uuid_generator'],
                     $app['place_iri_generator']
@@ -34,6 +38,8 @@ class ImportControllerProvider implements ControllerProviderInterface
         $app['organizer_import_controller'] = $app->share(
             function (Application $app) {
                 return new ImportRestController(
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
                     $app['organizer_importer'],
                     $app['uuid_generator'],
                     $app['organizer_iri_generator']
