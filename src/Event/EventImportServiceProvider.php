@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -40,6 +42,25 @@ class EventImportServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['event_importer.file_log_handler'] = $app->share(
+            function () {
+                return new StreamHandler(
+                    __DIR__ . '/../../log/event_importer.log'
+                );
+            }
+        );
+
+        $app['event_importer.logger'] = $app->share(
+            function (Application $app) {
+                $logger = new Logger('event_importer');
+                $logger->pushHandler(
+                    $app['event_importer.file_log_handler']
+                );
+
+                return $logger;
+            }
+        );
+
         $app['event_importer'] = $app->share(
             function (Application $app) {
                 $eventImporter = new EventDocumentImporter(
@@ -47,7 +68,8 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     $app['event_denormalizer'],
                     $app['import_image_collection_factory'],
                     $app['imports_command_bus'],
-                    $app['should_auto_approve_new_offer']
+                    $app['should_auto_approve_new_offer'],
+                    $app['event_importer.logger']
                 );
 
                 $termPreProcessor = new TermPreProcessingDocumentImporter(

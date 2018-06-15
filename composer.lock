@@ -1705,12 +1705,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "bcfd92eaa6100920696cbdea68bbf43d4a201079"
+                "reference": "ff5e7a2df07543de2a9fe7f0121b17985744203a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/bcfd92eaa6100920696cbdea68bbf43d4a201079",
-                "reference": "bcfd92eaa6100920696cbdea68bbf43d4a201079",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/ff5e7a2df07543de2a9fe7f0121b17985744203a",
+                "reference": "ff5e7a2df07543de2a9fe7f0121b17985744203a",
                 "shasum": ""
             },
             "require": {
@@ -1740,7 +1740,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-04-16 11:32:22"
+            "time": "2018-06-15 08:49:30"
         },
         {
             "name": "cultuurnet/udb3-symfony",
