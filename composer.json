@@ -26,7 +26,7 @@
     "silex/silex": "~1.2",
     "deralex/yaml-config-service-provider": "~1.0",
     "monolog/monolog": "~1.11",
-    "chrisboulton/php-resque": "~1.2",
+    "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",
     "doctrine/dbal": "~2.4",
     "predis/predis": "~1.0",
     "rase/socket.io-emitter": "0.6.1",
@@ -70,5 +70,11 @@
       "2dotstwice/*": "source",
       "*": "dist"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/cultuurnet/php-resque.git"
+    }
+  ]
 }

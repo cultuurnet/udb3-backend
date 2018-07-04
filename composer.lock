@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7e62590c1682a14ef00f3b2cac71853",
+    "content-hash": "9bec03f942b09c41ed711976fecdb3a5",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -380,28 +380,40 @@
         },
         {
             "name": "chrisboulton/php-resque",
-            "version": "1.2",
+            "version": "dev-compat-1-2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/chrisboulton/php-resque.git",
-                "reference": "0549d6c88a4aed934655b7c03b6153349d6c3ad0"
+                "url": "https://github.com/cultuurnet/php-resque.git",
+                "reference": "0424ea2521c3519a0739e48ee9701c6f6b1760ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chrisboulton/php-resque/zipball/0549d6c88a4aed934655b7c03b6153349d6c3ad0",
-                "reference": "0549d6c88a4aed934655b7c03b6153349d6c3ad0",
+                "url": "https://api.github.com/repos/cultuurnet/php-resque/zipball/0424ea2521c3519a0739e48ee9701c6f6b1760ed",
+                "reference": "0424ea2521c3519a0739e48ee9701c6f6b1760ed",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "colinmollenhour/credis": "~1.7",
+                "ext-pcntl": "*",
+                "php": ">=5.3.0",
+                "psr/log": "~1.0"
             },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker.",
+                "ext-redis": "Native PHP extension for Redis connectivity. Credis will automatically utilize when available."
+            },
+            "bin": [
+                "bin/resque"
+            ],
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "Resque": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -419,7 +431,50 @@
                 "redis",
                 "resque"
             ],
-            "time": "2012-10-13T07:28:16+00:00"
+            "support": {
+                "source": "https://github.com/cultuurnet/php-resque/tree/compat-1-2"
+            },
+            "time": "2018-06-22T06:42:08+00:00"
+        },
+        {
+            "name": "colinmollenhour/credis",
+            "version": "1.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/colinmollenhour/credis.git",
+                "reference": "8ab6db707c821055f9856b8cf76d5f44beb6fd8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/8ab6db707c821055f9856b8cf76d5f44beb6fd8a",
+                "reference": "8ab6db707c821055f9856b8cf76d5f44beb6fd8a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Client.php",
+                    "Cluster.php",
+                    "Sentinel.php",
+                    "Module.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Mollenhour",
+                    "email": "colin@mollenhour.com"
+                }
+            ],
+            "description": "Credis is a lightweight interface to the Redis key-value store which wraps the phpredis library when available for better performance.",
+            "homepage": "https://github.com/colinmollenhour/credis",
+            "time": "2018-05-07T14:45:04+00:00"
         },
         {
             "name": "commerceguys/intl",
@@ -1705,12 +1760,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "ff5e7a2df07543de2a9fe7f0121b17985744203a"
+                "reference": "d86424b37496d2607c9828ae6efb6c4413a535b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/ff5e7a2df07543de2a9fe7f0121b17985744203a",
-                "reference": "ff5e7a2df07543de2a9fe7f0121b17985744203a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/d86424b37496d2607c9828ae6efb6c4413a535b5",
+                "reference": "d86424b37496d2607c9828ae6efb6c4413a535b5",
                 "shasum": ""
             },
             "require": {
@@ -1740,7 +1795,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-15 08:49:30"
+            "time": "2018-06-22 07:25:33"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -7045,9 +7100,17 @@
             "time": "2017-05-22T02:43:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "1.2",
+            "alias_normalized": "1.2.0.0",
+            "version": "dev-compat-1-2",
+            "package": "chrisboulton/php-resque"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "chrisboulton/php-resque": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
