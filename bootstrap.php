@@ -29,7 +29,10 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
+use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use Http\Adapter\Guzzle6\Client;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
@@ -289,7 +292,9 @@ $app['auth_service'] = $app->share(
     }
 );
 
+$app->register(new GeneralSecurityServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
+$app->register(new OrganizerSecurityServiceProvider());
 
 $app['cache-redis'] = $app->share(
     function (Application $app) {
@@ -560,6 +565,7 @@ $app['event_bus'] = $app->share(
                 'index.projector',
                 'event_permission.projector',
                 'place_permission.projector',
+                OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
                 'amqp.publisher',
                 'udb2_events_cdbxml_enricher',
                 'udb2_actor_events_cdbxml_enricher',
@@ -1423,6 +1429,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceLookupServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\User\UserServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlacePermissionServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\OfferServiceProvider());
 $app->register(new LabelServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
