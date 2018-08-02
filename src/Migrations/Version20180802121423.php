@@ -20,6 +20,7 @@ class Version20180802121423 extends AbstractMigration
 
         $table->addColumn('country', Type::STRING)
             ->setLength(2)
+            ->setDefault('BE')
             ->setNotnull(true);
     }
 
