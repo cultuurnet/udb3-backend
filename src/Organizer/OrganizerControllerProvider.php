@@ -2,11 +2,14 @@
 
 namespace CultuurNet\UDB3\Silex\Organizer;
 
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Symfony\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Symfony\Organizer\EditOrganizerRestController;
 use CultuurNet\UDB3\Symfony\Organizer\ReadOrganizerRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class OrganizerControllerProvider implements ControllerProviderInterface
 {
@@ -25,6 +28,20 @@ class OrganizerControllerProvider implements ControllerProviderInterface
                 return new EditOrganizerRestController(
                     $app['organizer_editing_service'],
                     $app['organizer_iri_generator']
+                );
+            }
+        );
+
+        $app['organizer_permissions_controller'] = $app->share(
+            function (Application $app) {
+                $currentUserId = null;
+                if (!is_null($app['current_user'])) {
+                    $currentUserId = new StringLiteral($app['current_user']->id);
+                }
+                return new OfferPermissionsController(
+                    [Permission::ORGANISATIES_BEWERKEN()],
+                    $app['organizer_permission_voter'],
+                    $currentUserId
                 );
             }
         );
@@ -74,6 +91,9 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             '{organizerId}/labels/{labelName}',
             'organizer_edit_controller:removeLabel'
         );
+
+        $controllers->get("{offerId}/permissions/", "organizer_permissions_controller:getPermissionsForCurrentUser");
+        $controllers->get("{offerId}/permissions/{userId}", "organizer_permissions_controller:getPermissionsForGivenUser");
 
         return $controllers;
     }

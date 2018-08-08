@@ -2,48 +2,36 @@
 
 namespace CultuurNet\UDB3\Silex\Security;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
 use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
+use CultuurNet\UDB3\Organizer\SearchAPI2\IsOrganizerActor;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
+use CultuurNet\UDB3\SearchAPI2\FilteredSearchService;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
-use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
-use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferSecurityServiceProvider implements ServiceProviderInterface
+class OrganizerSecurityServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inheritdoc
      */
     public function register(Application $app)
     {
-        $app['current_user_identification'] = $app->share(
+        $app['organizer_search_api_2'] = $app->share(
             function (Application $app) {
-                return new CultureFeedUserIdentification(
-                    $app['current_user'],
-                    $app['config']['user_permissions']
-                );
+                $search = new FilteredSearchService($app['search_api_2']);
+                $search->filter(new IsOrganizerActor());
+
+                return $search;
             }
         );
 
-        $app['offer_permission_query'] = $app->share(
-            function (Application $app) {
-                return new CombinedPermissionQuery(
-                    [
-                        $app['event_permission.repository'],
-                        $app['place_permission.repository'],
-                    ]
-                );
-            }
-        );
-
-        $app['user_permission_matcher'] = $app->share(
+        $app['organizer_user_permission_matcher'] = $app->share(
             function (Application $app) {
                 $userConstraintReadRepository = new UserConstraintsReadRepository(
                     $app['dbal_connection'],
@@ -52,6 +40,11 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                     new StringLiteral('roles_search')
                 );
 
+                // Note that the current ResultSetPullParser will not actually
+                // parse organizer actors, as it only supports events and
+                // places. However, it correctly returns the total item count,
+                // which is the only thing that is checked by the
+                // UserPermissionMatcher.
                 $resultSetParser = new ResultSetPullParser(
                     new \XMLReader(),
                     $app['event_iri_generator'],
@@ -61,37 +54,26 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                 return new UserPermissionMatcher(
                     $userConstraintReadRepository,
                     new SearchQueryFactory(),
-                    $app['search_api_2'],
+                    $app['organizer_search_api_2'],
                     $resultSetParser
                 );
             }
         );
 
-        $app['offer_permission_voter_inner'] = $app->share(
+        $app['organizer_permission_voter_inner'] = $app->share(
             function (Application $app) {
                 return new CompositeVoter(
-                    new OwnerVoter($app['offer_permission_query']),
-                    new RoleConstraintVoter($app['user_permission_matcher'])
+                    new OwnerVoter($app['organizer_permission.repository']),
+                    new RoleConstraintVoter($app['organizer_user_permission_matcher'])
                 );
             }
         );
 
-        $app['offer_permission_voter'] = $app->share(
+        $app['organizer_permission_voter'] = $app->share(
             function (Application $app) {
                 return new CompositeVoter(
                     $app['god_user_voter'],
-                    $app['offer_permission_voter_inner']
-                );
-            }
-        );
-
-        $app['facility_permission_voter'] = $app->share(
-            function (Application $app) {
-                return new CompositeVoter(
-                    $app['god_user_voter'],
-                    new UserPermissionVoter(
-                        $app['user_permissions_read_repository']
-                    )
+                    $app['organizer_permission_voter_inner']
                 );
             }
         );
