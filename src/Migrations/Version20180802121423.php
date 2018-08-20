@@ -19,9 +19,15 @@ class Version20180802121423 extends AbstractMigration
         $table = $schema->getTable('index_readmodel');
 
         $table->addColumn('country', Type::STRING)
-            ->setLength(2)
-            ->setDefault('BE')
-            ->setNotnull(true);
+            ->setLength(2);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function postUp(Schema $schema)
+    {
+        $this->connection->executeQuery("UPDATE index_readmodel SET country = 'BE'");
     }
 
     /**
