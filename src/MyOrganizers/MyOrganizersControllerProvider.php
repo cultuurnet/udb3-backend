@@ -35,5 +35,4 @@ class MyOrganizersControllerProvider implements ControllerProviderInterface
 
         return $controllers;
     }
-
 }
