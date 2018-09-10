@@ -6,8 +6,9 @@ use CultuurNet\UDB3\MyOrganizers\ReadModel\Doctrine\DBALLookupService;
 use CultuurNet\UDB3\MyOrganizers\ReadModel\Doctrine\DBALRepository;
 use CultuurNet\UDB3\MyOrganizers\ReadModel\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\MyOrganizers\ReadModel\Projector;
+use CultuurNet\UDB3\MyOrganizers\ReadModel\UDB2Projector;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
-use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
+use CultuurNet\UDB3\Silex\User\UserServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -15,6 +16,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 class MyOrganizersServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'my_organizers.projector';
+    public const UDB2_PROJECTOR = 'my_organizers.udb2.projector';
+
     public const LOOKUP = 'my_organizers.lookup';
 
     private const REPOSITORY = 'my_organizers.repository';
@@ -57,8 +60,16 @@ class MyOrganizersServiceProvider implements ServiceProviderInterface
         $app[self::PROJECTOR] = $app->share(
             function (Application $app) {
                 return new Projector(
+                    $app[self::REPOSITORY]
+                );
+            }
+        );
+
+        $app[self::UDB2_PROJECTOR] = $app->share(
+            function (Application $app) {
+                return new UDB2Projector(
                     $app[self::REPOSITORY],
-                    new CdbXmlCreatedByToUserIdResolver($app['uitid_users'])
+                    $app[UserServiceProvider::ITEM_BASE_ADAPTER_FACTORY]
                 );
             }
         );

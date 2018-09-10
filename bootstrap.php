@@ -28,6 +28,7 @@ use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
+use CultuurNet\UDB3\Silex\IndexServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\MyOrganizers\MyOrganizersServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
@@ -560,11 +561,13 @@ $app['event_bus'] = $app->share(
                 'event_history_projector',
                 'place_jsonld_projector',
                 MyOrganizersServiceProvider::PROJECTOR,
+                MyOrganizersServiceProvider::UDB2_PROJECTOR,
                 'organizer_jsonld_projector',
                 'event_calendar_projector',
                 'variations.search.projector',
                 'variations.jsonld.projector',
-                'index.projector',
+                IndexServiceProvider::PROJECTOR,
+                IndexServiceProvider::UDB2_PROJECTOR,
                 'event_permission.projector',
                 'place_permission.projector',
                 OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
