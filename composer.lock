@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea729eb46137bb40faa1525407acb781",
+    "content-hash": "6a27506b647651d07c88cb56c23e7c13",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1274,12 +1274,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/search-v3.git",
-                "reference": "00af4a0194c17d93b365e62af1097439493819f3"
+                "reference": "77faffc1e049c2eba976914f7aac6d3eb0c05e41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/search-v3/zipball/00af4a0194c17d93b365e62af1097439493819f3",
-                "reference": "00af4a0194c17d93b365e62af1097439493819f3",
+                "url": "https://api.github.com/repos/cultuurnet/search-v3/zipball/77faffc1e049c2eba976914f7aac6d3eb0c05e41",
+                "reference": "77faffc1e049c2eba976914f7aac6d3eb0c05e41",
                 "shasum": ""
             },
             "require": {
@@ -1319,7 +1319,7 @@
                 }
             ],
             "description": "Cultuurnet search service for version 3",
-            "time": "2018-09-12 11:27:53"
+            "time": "2018-09-12 11:35:59"
         },
         {
             "name": "cultuurnet/silex-amqp",
@@ -4897,16 +4897,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.4.3",
+            "version": "v2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "9b3899e3c3ddde89016f576edb8c489708ad64cd"
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/9b3899e3c3ddde89016f576edb8c489708ad64cd",
-                "reference": "9b3899e3c3ddde89016f576edb8c489708ad64cd",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
                 "shasum": ""
             },
             "require": {
@@ -4938,10 +4938,11 @@
             "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
             "keywords": [
                 "csprng",
+                "polyfill",
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-04-04T21:48:54+00:00"
+            "time": "2018-07-04T16:31:37+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -6796,27 +6797,23 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.49",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "c6fc8fd5abe4b0452003720450571290e2f8b734"
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/c6fc8fd5abe4b0452003720450571290e2f8b734",
-                "reference": "c6fc8fd5abe4b0452003720450571290e2f8b734",
+                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
                 "shasum": ""
             },
             "require": {
-                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
-                "symfony/http-foundation": "~2.7",
+                "symfony/http-foundation": "~2.1",
                 "symfony/http-kernel": "~2.4"
-            },
-            "conflict": {
-                "symfony/http-foundation": "<2.7.38|~2.8,<2.8.31"
             },
             "replace": {
                 "symfony/security-acl": "self.version",
@@ -6833,11 +6830,12 @@
                 "symfony/finder": "~2.3",
                 "symfony/intl": "~2.3",
                 "symfony/routing": "~2.2",
-                "symfony/validator": "~2.7.25|^2.8.18"
+                "symfony/validator": "~2.5,>=2.5.9"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -6875,7 +6873,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-24T12:39:52+00:00"
+            "time": "2015-12-23T18:13:52+00:00"
         },
         {
             "name": "symfony/serializer",
@@ -7763,7 +7761,8 @@
     "stability-flags": {
         "cultuurnet/udb3-symfony": 20,
         "chrisboulton/php-resque": 20,
-        "doctrine/migrations": 20
+        "doctrine/migrations": 20,
+        "cultuurnet/search-v3": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

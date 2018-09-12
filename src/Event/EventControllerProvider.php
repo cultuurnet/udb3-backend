@@ -19,7 +19,8 @@ class EventControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadEventRestController(
                     $app['event_service'],
-                    $app['event_history_repository']
+                    $app['event_history_repository'],
+                    $app['search_v3_serializer']
                 );
             }
         );
