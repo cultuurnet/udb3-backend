@@ -63,7 +63,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
         $controllers->get('/', 'place_controller:getByPostalCode');
-        $controllers->get('/{cdbid}/calSum', 'place_controller:getCalendarSummary');
+        $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
 
         return $controllers;
     }

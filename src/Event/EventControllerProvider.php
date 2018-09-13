@@ -60,7 +60,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->delete('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
 
-        $controllers->get('/{cdbid}/calSum', 'event_controller:getCalendarSummary');
+        $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
         return $controllers;
     }
