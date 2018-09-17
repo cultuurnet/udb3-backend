@@ -22,7 +22,8 @@ class PlaceControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadPlaceRestController(
                     $app['place_service'],
-                    $app['place_lookup']
+                    $app['place_lookup'],
+                    $app['search_v3_serializer']
                 );
             }
         );
@@ -62,6 +63,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
         $controllers->get('/', 'place_controller:getByPostalCode');
+        $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
 
         return $controllers;
     }

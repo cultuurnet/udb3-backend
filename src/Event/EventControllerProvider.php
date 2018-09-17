@@ -19,7 +19,8 @@ class EventControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadEventRestController(
                     $app['event_service'],
-                    $app['event_history_repository']
+                    $app['event_history_repository'],
+                    $app['search_v3_serializer']
                 );
             }
         );
@@ -58,6 +59,8 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->put('/{itemId}/images/main', 'event_editing_controller:selectMainImage');
         $controllers->delete('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
+
+        $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
         return $controllers;
     }

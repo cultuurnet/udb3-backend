@@ -158,6 +158,13 @@ $app['uitid_consumer_credentials'] = $app->share(
     }
 );
 
+$app['search_v3_serializer'] = $app->share(
+    function () {
+        $service = new \CultuurNet\SearchV3\Serializer\Serializer();
+        return $service;
+    }
+);
+
 $app['event_service'] = $app->share(
     function ($app) {
         $service = new \CultuurNet\UDB3\Event\LocalEventService(
