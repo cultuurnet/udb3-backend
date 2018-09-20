@@ -785,12 +785,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "3367c2d8fd9f6d2f2ecf4824b2046fe03a4bc551"
+                "reference": "d18b37ddeab834dd2347e34eb912208284519b6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/3367c2d8fd9f6d2f2ecf4824b2046fe03a4bc551",
-                "reference": "3367c2d8fd9f6d2f2ecf4824b2046fe03a4bc551",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/d18b37ddeab834dd2347e34eb912208284519b6f",
+                "reference": "d18b37ddeab834dd2347e34eb912208284519b6f",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +836,7 @@
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "time": "2018-09-20 08:20:02"
+            "time": "2018-09-20 10:03:23"
         },
         {
             "name": "cultuurnet/cdb",
@@ -4898,16 +4898,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.4.3",
+            "version": "v2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "9b3899e3c3ddde89016f576edb8c489708ad64cd"
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/9b3899e3c3ddde89016f576edb8c489708ad64cd",
-                "reference": "9b3899e3c3ddde89016f576edb8c489708ad64cd",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
                 "shasum": ""
             },
             "require": {
@@ -4939,10 +4939,11 @@
             "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
             "keywords": [
                 "csprng",
+                "polyfill",
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-04-04T21:48:54+00:00"
+            "time": "2018-07-04T16:31:37+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -6797,27 +6798,23 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.49",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "c6fc8fd5abe4b0452003720450571290e2f8b734"
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/c6fc8fd5abe4b0452003720450571290e2f8b734",
-                "reference": "c6fc8fd5abe4b0452003720450571290e2f8b734",
+                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
                 "shasum": ""
             },
             "require": {
-                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
-                "symfony/http-foundation": "~2.7",
+                "symfony/http-foundation": "~2.1",
                 "symfony/http-kernel": "~2.4"
-            },
-            "conflict": {
-                "symfony/http-foundation": "<2.7.38|~2.8,<2.8.31"
             },
             "replace": {
                 "symfony/security-acl": "self.version",
@@ -6834,11 +6831,12 @@
                 "symfony/finder": "~2.3",
                 "symfony/intl": "~2.3",
                 "symfony/routing": "~2.2",
-                "symfony/validator": "~2.7.25|^2.8.18"
+                "symfony/validator": "~2.5,>=2.5.9"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -6876,7 +6874,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-24T12:39:52+00:00"
+            "time": "2015-12-23T18:13:52+00:00"
         },
         {
             "name": "symfony/serializer",
