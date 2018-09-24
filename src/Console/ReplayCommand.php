@@ -33,8 +33,10 @@ class ReplayCommand extends AbstractCommand
      */
     protected function configure()
     {
-        $aggregateTypeEnumeration = implode(', ',
-            AggregateType::getConstants());
+        $aggregateTypeEnumeration = implode(
+            ', ',
+            AggregateType::getConstants()
+        );
 
         $this
             ->setName('replay')
@@ -89,7 +91,7 @@ class ReplayCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $delay = (int)$input->getOption(self::OPTION_DELAY);
+        $delay = (int) $input->getOption(self::OPTION_DELAY);
 
         $cache = $input->getOption('cache');
         if ($cache) {
@@ -106,11 +108,7 @@ class ReplayCommand extends AbstractCommand
 
         $subscribers = $input->getOption('subscriber');
         if (!empty($subscribers)) {
-            $output->writeln(
-                'Registering the following subscribers with the event bus: ' . implode(', ',
-                    $subscribers)
-            );
-            $this->setSubscribers($subscribers);
+            $this->setSubscribers($subscribers, $output);
         }
 
         $aggregateType = $this->getAggregateType($input, $output);
@@ -213,8 +211,12 @@ class ReplayCommand extends AbstractCommand
     /**
      * @param $subscribers
      */
-    private function setSubscribers($subscribers)
+    private function setSubscribers($subscribers, OutputInterface $output)
     {
+        $subscribersString = implode(', ', $subscribers);
+        $msg = 'Registering the following subscribers with the event bus: %s';
+        $output->writeln(sprintf($msg, $subscribersString));
+
         $app = $this->getSilexApplication();
 
         $config = $app['config'];
@@ -243,7 +245,10 @@ class ReplayCommand extends AbstractCommand
             'event_store'
         );
 
-        $eventStream = $eventStream->withStartId($startId);
+        if ($startId > 0) {
+            $eventStream = $eventStream->withStartId($startId);
+        }
+
         if ($aggregateType) {
             $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
         }
