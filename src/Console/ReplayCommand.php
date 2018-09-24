@@ -6,32 +6,35 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
+use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
-use Knp\Command\Command;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Class ReplayCommand
  *
  * @package CultuurNet\UDB3\Silex\Console
  */
-class ReplayCommand extends Command
+class ReplayCommand extends AbstractCommand
 {
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
     const OPTION_START_ID = 'start-id';
     const OPTION_DELAY = 'delay';
+    const OPTION_CDBID = 'cdbid';
 
     /**
      * @inheritdoc
      */
     protected function configure()
     {
-        $aggregateTypeEnumeration = implode(', ', AggregateType::getConstants());
+        $aggregateTypeEnumeration = implode(', ',
+            AggregateType::getConstants());
 
         $this
             ->setName('replay')
@@ -51,7 +54,7 @@ class ReplayCommand extends Command
             ->addOption(
                 'subscriber',
                 null,
-                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
             )
             ->addOption(
@@ -72,6 +75,12 @@ class ReplayCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'Delay per message, in milliseconds.',
                 0
+            )
+            ->addOption(
+                self::OPTION_CDBID,
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'An array of cdbids of the aggregates to be replayed.'
             );
     }
 
@@ -80,7 +89,7 @@ class ReplayCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $delay = (int) $input->getOption(self::OPTION_DELAY);
+        $delay = (int)$input->getOption(self::OPTION_DELAY);
 
         $cache = $input->getOption('cache');
         if ($cache) {
@@ -98,7 +107,8 @@ class ReplayCommand extends Command
         $subscribers = $input->getOption('subscriber');
         if (!empty($subscribers)) {
             $output->writeln(
-                'Registering the following subscribers with the event bus: ' . implode(', ', $subscribers)
+                'Registering the following subscribers with the event bus: ' . implode(', ',
+                    $subscribers)
             );
             $this->setSubscribers($subscribers);
         }
@@ -106,10 +116,26 @@ class ReplayCommand extends Command
         $aggregateType = $this->getAggregateType($input, $output);
 
         $startId = $input->getOption(self::OPTION_START_ID);
+        $cdbids = $input->getOption(self::OPTION_CDBID);
 
-        $stream = $this->getEventStream($startId, $aggregateType);
+        $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
         $eventBus = $this->getEventBus();
+
+        if ($eventBus instanceof ReplayModeEventBusInterface) {
+            $eventBus->startReplayMode();
+        } else {
+            $helper = $this->getHelper('question');
+            $question = new ConfirmationQuestion(
+                'Warning! The current event bus does not flag replay messages. '
+                . 'This might trigger unintended changes. Continue anyway? [y/N] ',
+                false
+            );
+
+            if (!$helper->ask($input, $output, $question)) {
+                return;
+            }
+        }
 
         /** @var DomainEventStream $eventStream */
         foreach ($stream() as $eventStream) {
@@ -121,20 +147,56 @@ class ReplayCommand extends Command
                 usleep($delay * $eventStream->getIterator()->count() * 1000);
             }
 
-            /** @var DomainMessage $message */
-            foreach ($eventStream->getIterator() as $message) {
-                $output->writeln(
-                    $stream->getPreviousId() . '. ' .
-                    $message->getRecordedOn()->toString() . ' ' .
-                    $message->getType() .
-                    ' (' . $message->getId() . ')'
-                );
-            }
+            $this->logStream($eventStream, $output, $stream, 'before_publish');
 
             if (!$this->isPublishDisabled($input)) {
                 $eventBus->publish($eventStream);
             }
+
+            $this->logStream($eventStream, $output, $stream, 'after_publish');
         }
+
+        if ($eventBus instanceof ReplayModeEventBusInterface) {
+            $eventBus->stopReplayMode();
+        }
+    }
+
+    /**
+     * @param DomainEventStream $eventStream
+     * @param OutputInterface $output
+     * @param EventStream $stream
+     * @param string $marker
+     */
+    private function logStream(
+        DomainEventStream $eventStream,
+        OutputInterface $output,
+        EventStream $stream,
+        $marker
+    ) {
+        /** @var DomainMessage $message */
+        foreach ($eventStream->getIterator() as $message) {
+            $this->logMessage($output, $stream, $message, $marker);
+        }
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param EventStream $stream
+     * @param DomainMessage $message
+     * @param string $marker
+     */
+    private function logMessage(
+        OutputInterface $output,
+        EventStream $stream,
+        DomainMessage $message,
+        $marker
+    ) {
+        $output->writeln(
+            $stream->getLastProcessedId() . '. ' .
+            $message->getRecordedOn()->toString() . ' ' .
+            $message->getType() .
+            ' (' . $message->getId() . ') ' . $marker
+        );
     }
 
     /**
@@ -163,10 +225,14 @@ class ReplayCommand extends Command
     /**
      * @param int $startId
      * @param AggregateType $aggregateType
+     * @param string[] $cdbids
      * @return EventStream
      */
-    private function getEventStream($startId = null, AggregateType $aggregateType = null)
-    {
+    private function getEventStream(
+        $startId = null,
+        AggregateType $aggregateType = null,
+        $cdbids = null
+    ) {
         $app = $this->getSilexApplication();
         $startId = $startId !== null ? $startId : 0;
 
@@ -182,16 +248,26 @@ class ReplayCommand extends Command
             $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
         }
 
+        if ($startId) {
+            $eventStream = $eventStream->withStartId($startId);
+        }
+
+        if ($cdbids) {
+            $eventStream = $eventStream->withCdbids($cdbids);
+        }
+
         return $eventStream;
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return AggregateType|null
      */
-    private function getAggregateType(InputInterface $input, OutputInterface $output)
-    {
+    private function getAggregateType(
+        InputInterface $input,
+        OutputInterface $output
+    ) {
         $aggregateTypeInput = $input->getArgument('aggregate');
 
         $aggregateType = null;

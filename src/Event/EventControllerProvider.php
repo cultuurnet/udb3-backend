@@ -19,7 +19,8 @@ class EventControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadEventRestController(
                     $app['event_service'],
-                    $app['event_history_repository']
+                    $app['event_history_repository'],
+                    $app['search_v3_serializer']
                 );
             }
         );
@@ -30,7 +31,9 @@ class EventControllerProvider implements ControllerProviderInterface
                     $app['event_editor'],
                     $app['media_manager'],
                     $app['event_iri_generator'],
-                    $app['offer.security']
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
+                    $app['should_auto_approve_new_offer']
                 );
             }
         );
@@ -38,34 +41,26 @@ class EventControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers
-            ->get('event/{cdbid}', 'event_controller:get')
-            ->bind('event');
-        $controllers->delete('event/{cdbid}', 'event_editing_controller:deleteEvent');
+        $controllers->post('/', "event_editing_controller:createEvent");
+        $controllers->get('/{cdbid}', 'event_controller:get');
+        $controllers->delete('/{cdbid}', 'event_editing_controller:deleteEvent');
 
-        $controllers
-            ->get('event/{cdbid}/history', 'event_controller:history')
-            ->bind('event-history');
+        $controllers->put('/{cdbid}/audience', 'event_editing_controller:updateAudience');
+        $controllers->put('/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
+        $controllers->put('/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
+        $controllers->put('/{cdbid}/majorInfo', 'event_editing_controller:updateMajorInfo');
+        $controllers->put('/{cdbid}/location/{locationId}', 'event_editing_controller:updateLocation');
+        $controllers->put('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:updateOrganizer');
+        $controllers->delete('/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
+        $controllers->put('/{cdbid}/typicalAgeRange', 'event_editing_controller:updateTypicalAgeRange');
+        $controllers->delete('/{cdbid}/typicalAgeRange', 'event_editing_controller:deleteTypicalAgeRange');
 
-        $controllers->post('event', "event_editing_controller:createEvent");
+        $controllers->post('/{itemId}/images/', 'event_editing_controller:addImage');
+        $controllers->put('/{itemId}/images/main', 'event_editing_controller:selectMainImage');
+        $controllers->delete('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
+        $controllers->put('/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
 
-        $controllers->get('event/{cdbid}/permission', 'event_editing_controller:hasPermission');
-
-        $controllers->post('event/{itemId}/images', 'event_editing_controller:addImage');
-        $controllers->post('event/{itemId}/images/main', 'event_editing_controller:selectMainImage');
-        $controllers->post('event/{itemId}/images/{mediaObjectId}', 'event_editing_controller:updateImage');
-        $controllers->delete('event/{itemId}/images/{mediaObjectId}', 'event_editing_controller:removeImage');
-
-        $controllers->post('event/{cdbid}/nl/description', 'event_editing_controller:updateDescription');
-        $controllers->post('event/{cdbid}/typical-age-range', 'event_editing_controller:updateTypicalAgeRange');
-        $controllers->delete('event/{cdbid}/typical-age-range', 'event_editing_controller:deleteTypicalAgeRange');
-        $controllers->post('event/{cdbid}/major-info', 'event_editing_controller:updateMajorInfo');
-        $controllers->post('event/{cdbid}/bookingInfo', 'event_editing_controller:updateBookingInfo');
-        $controllers->post('event/{cdbid}/contactPoint', 'event_editing_controller:updateContactPoint');
-        $controllers->post('event/{cdbid}/organizer', 'event_editing_controller:updateOrganizer');
-        $controllers->delete('event/{cdbid}/organizer/{organizerId}', 'event_editing_controller:deleteOrganizer');
-        $controllers->put('event/{cdbid}/audience', 'event_editing_controller:updateAudience');
-        $controllers->post('event/{cdbid}/copies/', 'event_editing_controller:copyEvent');
+        $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
         return $controllers;
     }

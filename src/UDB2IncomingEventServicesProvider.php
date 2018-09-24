@@ -20,10 +20,12 @@ use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsPlaceSpecification;
 use CultuurNet\UDB3\UDB2\Event\EventApplier;
 use CultuurNet\UDB3\UDB2\Event\EventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Event\EventToUDB3EventFactory;
+use CultuurNet\UDB3\UDB2\Event\EventXMLValidatorService;
 use CultuurNet\UDB3\UDB2\Label\LabelImporter;
 use CultuurNet\UDB3\UDB2\Media\ImageCollectionFactory;
 use CultuurNet\UDB3\UDB2\Media\MediaImporter;
 use CultuurNet\UDB3\UDB2\OfferToSapiUrlTransformer;
+use CultuurNet\UDB3\UDB2\XML\CompositeXmlValidationService;
 use CultuurNet\UDB3\UDB2\XSD\CachedInMemoryXSDReader;
 use CultuurNet\UDB3\UDB2\XSD\FileGetContentsXSDReader;
 use CultuurNet\UDB3\UDB2\XSD\XSDAwareXMLValidationService;
@@ -145,13 +147,32 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             }
         );
 
-        $app['cdbxml_enricher_xml_validation_service'] = $app->share(
+        $app['xsd_validation_service'] = $app->share(
             function (Application $app) {
                 $reader = new CachedInMemoryXSDReader(
                     new FileGetContentsXSDReader($app['udb2_cdbxml_enricher.xsd'])
                 );
 
                 return new XSDAwareXMLValidationService($reader, LIBXML_ERR_ERROR);
+            }
+        );
+
+        $app['event_cdbxml_enricher_xml_validation_service'] = $app->share(
+            function (Application $app) {
+                return new CompositeXmlValidationService(
+                    $app['xsd_validation_service'],
+                    new EventXMLValidatorService(
+                        new StringLiteral('http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL')
+                    )
+                );
+            }
+        );
+
+        $app['actor_cdbxml_enricher_xml_validation_service'] = $app->share(
+            function (Application $app) {
+                return new CompositeXmlValidationService(
+                    $app['xsd_validation_service']
+                );
             }
         );
 
@@ -167,7 +188,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) use ($importFromSapi, $importValidateXml) {
                 $xmlValidationService = null;
                 if ($importValidateXml) {
-                    $xmlValidationService = $app['cdbxml_enricher_xml_validation_service'];
+                    $xmlValidationService = $app['event_cdbxml_enricher_xml_validation_service'];
                 }
 
                 $enricher = new EventCdbXmlEnricher(
@@ -195,7 +216,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) use ($importFromSapi, $importValidateXml) {
                 $xmlValidationService = null;
                 if ($importValidateXml) {
-                    $xmlValidationService = $app['cdbxml_enricher_xml_validation_service'];
+                    $xmlValidationService = $app['actor_cdbxml_enricher_xml_validation_service'];
                 }
 
                 $enricher = new ActorEventCdbXmlEnricher(
@@ -225,7 +246,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     new Any(),
                     $app['event_repository'],
                     new EventToUDB3EventFactory(),
-                    $app['udb2_media_importer']
+                    $app['udb2_media_importer'],
+                    $app['related_udb3_labels_applier']
                 );
 
                 $logger = new Logger('udb2-events-to-udb3-event-applier');
@@ -243,6 +265,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['place_repository'],
                     new ActorToUDB3PlaceFactory(),
                     new QualifiesAsPlaceSpecification(),
+                    $app['related_udb3_labels_applier'],
                     $app['udb2_media_importer']
                 );
 
@@ -260,7 +283,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $applier = new ActorEventApplier(
                     $app['organizer_repository'],
                     new ActorToUDB3OrganizerFactory(),
-                    new QualifiesAsOrganizerSpecification()
+                    new QualifiesAsOrganizerSpecification(),
+                    $app['related_udb3_labels_applier']
                 );
 
                 $logger = new Logger('udb2-actor-events-to-udb3-organizer-applier');

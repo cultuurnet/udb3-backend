@@ -1,10 +1,8 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\User;
 
+use CultuurNet\UDB3\Cdb\ItemBaseAdapterFactory;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use CultuurNet\UDB3\UiTID\InMemoryCacheDecoratedUsers;
 use CultuurNet\UDB3\UiTID\CultureFeedUsers;
@@ -18,6 +16,8 @@ use Silex\ServiceProviderInterface;
 
 class UserServiceProvider implements ServiceProviderInterface
 {
+    const ITEM_BASE_ADAPTER_FACTORY = 'uitid.item_base_adapter_factory';
+
     public function register(Application $app)
     {
         $app['user_identity_resolver'] = $app->share(
@@ -43,6 +43,18 @@ class UserServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CultureFeedUsers(
                     $app['user_identity_resolver']
+                );
+            }
+        );
+
+        /**
+         * This service can be used to wrap legacy UDB2 cdbxml actor/event objects
+         * with methods convenient for UDB3.
+         */
+        $app[self::ITEM_BASE_ADAPTER_FACTORY] = $app->share(
+            function (Application $app) {
+                return new ItemBaseAdapterFactory(
+                    $app['uitid_users.cdbxml_created_by_resolver']
                 );
             }
         );

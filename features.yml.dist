@@ -23,3 +23,15 @@ toggles:
     name: variations
     conditions: {}
     status: inactive
+  sapi3-export:
+    name: sapi3-export
+    conditions: {}
+    status: inactive
+  uitid-api-key-required:
+    name: uitid-api-key-required
+    conditions: {}
+    status: inactive
+  facility-permission:
+    name: facility-permission
+    conditions: {}
+    status: inactive

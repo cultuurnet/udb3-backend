@@ -3,15 +3,28 @@
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
+use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\LabelJSONDeserializer;
+use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Place\PlaceFacilityResolver;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForEventDataValidator;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForPlaceDataValidator;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
+use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
+use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Symfony\Deserializer\Place\FacilitiesJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
+use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Offer\EditOfferRestController;
+use CultuurNet\UDB3\Symfony\Offer\OfferPermissionController;
+use CultuurNet\UDB3\Symfony\Offer\OfferPermissionsController;
 use CultuurNet\UDB3\Symfony\Offer\PatchOfferRestController;
-use CultuurNet\UDB3\TitleJSONDeserializer;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferControllerProvider implements ControllerProviderInterface
 {
@@ -21,22 +34,35 @@ class OfferControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $offerServices = [
-            'event' => 'event_editor',
-            'place' => 'place_editing_service',
+            'event' => ['event_editor', 'event_main_language_query'],
+            'events' => ['event_editor', 'event_main_language_query'],
+            'place' => ['place_editing_service', 'place_main_language_query'],
+            'places' => ['place_editing_service', 'place_main_language_query'],
         ];
 
-        foreach ($offerServices as $offerType => $serviceName) {
+        foreach ($offerServices as $offerType => $serviceNames) {
             $controllerName = "{$offerType}_offer_controller";
             $patchControllerName = "patch_{$offerType}_controller";
+            $permissionsControllerName = "permissions_{$offerType}_controller";
+            /** @deprecated */
+            $permissionControllerName = "permission_{$offerType}_controller";
 
             $app[$controllerName] = $app->share(
-                function (Application $app) use ($serviceName) {
+                function (Application $app) use ($serviceNames, $offerType) {
                     return new EditOfferRestController(
-                        $app[$serviceName],
+                        $app[$serviceNames[0]],
+                        $app[$serviceNames[1]],
                         new LabelJSONDeserializer(),
-                        new TitleJSONDeserializer(),
+                        new TitleJSONDeserializer(false, new StringLiteral('name')),
                         new DescriptionJSONDeserializer(),
-                        new PriceInfoJSONDeserializer()
+                        new PriceInfoJSONDeserializer(),
+                        new CalendarJSONDeserializer(
+                            new CalendarJSONParser(),
+                            $this->getDataCalendarValidator($offerType)
+                        ),
+                        new FacilitiesJSONDeserializer(
+                            $this->getFacilityResolver($offerType)
+                        )
                     );
                 }
             );
@@ -50,43 +76,124 @@ class OfferControllerProvider implements ControllerProviderInterface
                 }
             );
 
+            $app[$permissionsControllerName] = $app->share(
+                function (Application $app) use ($offerType) {
+                    $currentUserId = null;
+                    if (!is_null($app['current_user'])) {
+                        $currentUserId = new StringLiteral($app['current_user']->id);
+                    }
+                    $permissionsToCheck = array(
+                        Permission::AANBOD_BEWERKEN(),
+                        Permission::AANBOD_MODEREREN(),
+                        Permission::AANBOD_VERWIJDEREN(),
+                    );
+                    return new OfferPermissionsController(
+                        $permissionsToCheck,
+                        $app['offer_permission_voter'],
+                        $currentUserId
+                    );
+                }
+            );
+
+            /** @deprecated */
+            $app[$permissionControllerName] = $app->share(
+                function (Application $app) use ($offerType) {
+                    $currentUserId = null;
+                    if (!is_null($app['current_user'])) {
+                        $currentUserId = new StringLiteral($app['current_user']->id);
+                    }
+
+                    return new OfferPermissionController(
+                        Permission::AANBOD_BEWERKEN(),
+                        $app['offer_permission_voter'],
+                        $currentUserId
+                    );
+                }
+            );
+
+            $controllers->put("{$offerType}/{cdbid}/calendar", "{$controllerName}:updateCalendar");
+            $controllers->put("{$offerType}/{cdbid}/type/{typeId}", "{$controllerName}:updateType");
+            $controllers->put("{$offerType}/{cdbid}/theme/{themeId}", "{$controllerName}:updateTheme");
+            $controllers->put("{$offerType}/{cdbid}/facilities/", "{$controllerName}:updateFacilities");
+
+            $controllers->delete("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:removeLabel")
+                ->assert('label', '.*');
+
+            $controllers->put("{$offerType}/{cdbid}/labels/{label}", "{$controllerName}:addLabel");
+
+            $controllers->put("{$offerType}/{cdbid}/name/{lang}", "{$controllerName}:updateTitle");
+            $controllers->put("{$offerType}/{cdbid}/description/{lang}", "{$controllerName}:updateDescription");
+            $controllers->put("{$offerType}/{cdbid}/priceInfo", "{$controllerName}:updatePriceInfo");
+            $controllers->patch("{$offerType}/{cdbid}", "{$patchControllerName}:handle");
+            $controllers->get("{$offerType}/{offerId}/permissions/", "{$permissionsControllerName}:getPermissionsForCurrentUser");
+            $controllers->get("{$offerType}/{offerId}/permissions/{userId}", "{$permissionsControllerName}:getPermissionsForGivenUser");
+
+
+            /* @deprecated */
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/labels",
-                    "{$controllerName}:addLabel"
-                );
-
-            $controllers
-                ->delete(
-                    "{$offerType}/{cdbid}/labels/{label}",
-                    "{$controllerName}:removeLabel"
+                    "{$controllerName}:addLabelFromJsonBody"
                 );
 
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/title",
-                    "{$controllerName}:translateTitle"
+                    "{$controllerName}:updateTitle"
                 );
 
             $controllers
                 ->post(
                     "{$offerType}/{cdbid}/{lang}/description",
-                    "{$controllerName}:translateDescription"
+                    "{$controllerName}:updateDescription"
                 );
 
             $controllers
-                ->put(
-                    "{$offerType}/{cdbid}/priceInfo",
-                    "{$controllerName}:updatePriceInfo"
+                ->post(
+                    "{$offerType}/{cdbid}/facilities",
+                    "{$controllerName}:updateFacilitiesWithLabel"
                 );
 
             $controllers
-                ->patch(
-                    "{$offerType}/{cdbid}",
-                    "{$patchControllerName}:handle"
+                ->get(
+                    "{$offerType}/{offerId}/permission",
+                    "{$permissionControllerName}:currentUserHasPermission"
+                );
+
+            $controllers
+                ->get(
+                    "{$offerType}/{offerId}/permission/{userId}",
+                    "{$permissionControllerName}:givenUserHasPermission"
                 );
         }
 
         return $controllers;
+    }
+
+    /**
+     * @param string $offerType
+     *
+     * @return DataValidatorInterface
+     */
+    private function getDataCalendarValidator($offerType)
+    {
+        if (strpos($offerType, 'place') !== false) {
+            return new CalendarForPlaceDataValidator();
+        }
+
+        return new CalendarForEventDataValidator();
+    }
+
+    /**
+     * @param string $offerType
+     * @return OfferFacilityResolverInterface
+     */
+    private function getFacilityResolver($offerType)
+    {
+        if (strpos($offerType, 'place') !== false) {
+            return new PlaceFacilityResolver();
+        }
+
+        return new EventFacilityResolver();
     }
 }

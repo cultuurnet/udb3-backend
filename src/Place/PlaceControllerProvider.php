@@ -22,7 +22,8 @@ class PlaceControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadPlaceRestController(
                     $app['place_service'],
-                    $app['place_lookup']
+                    $app['place_lookup'],
+                    $app['search_v3_serializer']
                 );
             }
         );
@@ -32,9 +33,11 @@ class PlaceControllerProvider implements ControllerProviderInterface
                 return new EditPlaceRestController(
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
-                    $app['offer.security'],
                     $app['media_manager'],
-                    $app['place_iri_generator']
+                    $app['place_iri_generator'],
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
+                    $app['should_auto_approve_new_offer']
                 );
             }
         );
@@ -42,31 +45,25 @@ class PlaceControllerProvider implements ControllerProviderInterface
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers
-            ->get('place/{cdbid}', 'place_controller:get')
-            ->bind('place');
-        $controllers->delete('place/{cdbid}', 'place_editing_controller:deletePlace');
-        $controllers->get('place/{cdbid}/events', 'place_editing_controller:getEvents');
+        $controllers->post('/', 'place_editing_controller:createPlace');
+        $controllers->get('/{cdbid}', 'place_controller:get');
+        $controllers->delete('/{cdbid}', 'place_editing_controller:deletePlace');
 
-        $controllers->get('places', 'place_controller:getByPostalCode');
+        $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
+        $controllers->put('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
+        $controllers->put('/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
+        $controllers->put('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:updateOrganizer');
+        $controllers->delete('/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
+        $controllers->delete('/{cdbid}/typicalAgeRange', 'place_editing_controller:deleteTypicalAgeRange');
+        $controllers->put('/{cdbid}/typicalAgeRange', 'place_editing_controller:updateTypicalAgeRange');
 
-        $controllers->post('place', 'place_editing_controller:createPlace');
+        $controllers->post('/{itemId}/images/', 'place_editing_controller:addImage');
+        $controllers->put('/{itemId}/images/main', 'place_editing_controller:selectMainImage');
+        $controllers->delete('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
+        $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
-        $controllers->post('place/{itemId}/images', 'place_editing_controller:addImage');
-        $controllers->post('place/{itemId}/images/main', 'place_editing_controller:selectMainImage');
-        $controllers->post('place/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
-        $controllers->delete('place/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
-
-        $controllers->post('place/{cdbid}/nl/description', 'place_editing_controller:updateDescription');
-        $controllers->post('place/{cdbid}/typical-age-range', 'place_editing_controller:updateTypicalAgeRange');
-        $controllers->delete('place/{cdbid}/typical-age-range', 'place_editing_controller:deleteTypicalAgeRange');
-        $controllers->post('place/{cdbid}/major-info', 'place_editing_controller:updateMajorInfo');
-        $controllers->post('place/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
-        $controllers->post('place/{cdbid}/contactPoint', 'place_editing_controller:updateContactPoint');
-        $controllers->post('place/{cdbid}/facilities', 'place_editing_controller:updateFacilities');
-        $controllers->post('place/{cdbid}/organizer', 'place_editing_controller:updateOrganizer');
-        $controllers->delete('place/{cdbid}/organizer/{organizerId}', 'place_editing_controller:deleteOrganizer');
-        $controllers->get('place/{cdbid}/permission', 'place_editing_controller:hasPermission');
+        $controllers->get('/', 'place_controller:getByPostalCode');
+        $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
 
         return $controllers;
     }

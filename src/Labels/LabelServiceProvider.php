@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepository
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\SchemaConfigurator as JsonSchemaConfigurator;
+use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\GodUserReadRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
@@ -31,6 +32,7 @@ use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Symfony\Management\User\CultureFeedUserIdentification;
+use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -75,6 +77,8 @@ class LabelServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $this->setUpLogger($app);
+
         $this->setUpReadModels($app);
 
         $this->setUpServices($app);
@@ -87,7 +91,15 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $this->setUpQueryFactory($app);
 
-        $this->setUpLogger($app);
+        $app['related_udb3_labels_applier'] = $app->share(
+            function (Application $app) {
+                return new RelatedUDB3LabelApplier(
+                    $app[self::RELATIONS_READ_REPOSITORY],
+                    $app[self::JSON_READ_REPOSITORY],
+                    $app[self::LOGGER]
+                );
+            }
+        );
     }
 
     /**
@@ -103,7 +115,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     private function setUpReadModels(Application $app)
     {
         $app[self::JSON_REPOSITORY_SCHEMA] = $app->share(
-            function (Application $app) {
+            function () {
                 return new JsonSchemaConfigurator(
                     new StringLiteral(self::JSON_TABLE)
                 );
@@ -111,7 +123,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
 
         $app[self::RELATIONS_REPOSITORY_SCHEMA] = $app->share(
-            function (Application $app) {
+            function () {
                 return new RelationsSchemaConfigurator(
                     new StringLiteral(self::RELATIONS_TABLE)
                 );
@@ -119,7 +131,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
 
         $app[self::LABEL_ROLES_REPOSITORY_SCHEMA] = $app->share(
-            function (Application $app) {
+            function () {
                 return new LabelRolesSchemaConfigurator(
                     new StringLiteral(self::LABEL_ROLES_TABLE)
                 );
@@ -128,11 +140,14 @@ class LabelServiceProvider implements ServiceProviderInterface
 
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
-                return new JsonReadRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(self::JSON_TABLE),
-                    new StringLiteral(self::LABEL_ROLES_TABLE),
-                    new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE)
+                return new GodUserReadRepositoryDecorator(
+                    new JsonReadRepository(
+                        $app['dbal_connection'],
+                        new StringLiteral(self::JSON_TABLE),
+                        new StringLiteral(self::LABEL_ROLES_TABLE),
+                        new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE)
+                    ),
+                    $app['config']['user_permissions']['allow_all']
                 );
             }
         );
@@ -293,6 +308,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new RelationsProjector(
                     $app[self::RELATIONS_WRITE_REPOSITORY],
+                    $app[self::RELATIONS_READ_REPOSITORY],
                     new LabelEventRelationTypeResolver()
                 );
             }
@@ -369,7 +385,7 @@ class LabelServiceProvider implements ServiceProviderInterface
             function () {
                 $logger = new Logger('labels');
                 $logger->pushHandler(new StreamHandler('php://stdout'));
-                $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/labels.log'));
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/labels.log'));
 
                 return $logger;
             }

@@ -39,7 +39,7 @@ class DatabaseSchemaInstaller implements DatabaseSchemaInstallerInterface
         // - two helpers for unique event store for organizers and labels.
         // - and some MySQL read models.
         $stores = array(
-            $this->app['event_store'],
+            $this->app['dbal_event_store'],
             $this->app[LabelServiceProvider::UNIQUE_EVENT_STORE],
             $this->app['organizer_store'],
             $this->app['event_relations_repository'],

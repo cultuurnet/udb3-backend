@@ -2,12 +2,15 @@
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
+use CultuurNet\UDB3\Http\CompositePsr7RequestAuthorizer;
 use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\LocalOfferReadingService;
 use CultuurNet\UDB3\Offer\OfferType;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferServiceProvider implements ServiceProviderInterface
 {
@@ -29,7 +32,10 @@ class OfferServiceProvider implements ServiceProviderInterface
                 return new DefaultExternalOfferEditingService(
                     $app['http.guzzle'],
                     $app['http.guzzle_psr7_factory'],
-                    $app['http.jwt_request_authorizer']
+                    new CompositePsr7RequestAuthorizer(
+                        $app['http.jwt_request_authorizer'],
+                        $app['http.api_key_request_authorizer']
+                    )
                 );
             }
         );
@@ -38,6 +44,14 @@ class OfferServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new IriOfferIdentifierFactory(
                     $app['config']['offer_url_regex']
+                );
+            }
+        );
+
+        $app['should_auto_approve_new_offer'] = $app->share(
+            function (Application $app) {
+                return new ConsumerIsInPermissionGroup(
+                    new StringLiteral((string) $app['config']['uitid']['auto_approve_group_id'])
                 );
             }
         );

@@ -9,6 +9,7 @@ uitid:
     key: ***
     secret: ***
   base_url: http://www.uitid.be/uitid/rest/
+  auto_approve_group_id: ***
 search:
   base_url: http://www.uitid.be/uitid/rest/searchv2
 sync_with_udb2: true
@@ -47,6 +48,7 @@ mail:
     name: UiTdatabank BETA
     address: no-reply@uitdatabank.be
 export:
+  search_url: http://udb-search.dev/offers/
   mail:
     subject: Uw export van evenementen
 amqp_execution_delay: 10 # Optional config param with default value of 10 seconds
@@ -61,6 +63,12 @@ amqp:
     udb2:
       exchange: udb2.e.prod
       queue: udb3.q.prod.udb2
+    uitpas:
+      exchange: uitpas.e.prod
+      queue: udb3.q.prod.uitpas
+    imports:
+      exchange: imports.vagrant.x.entry
+      queue: udb3.vagrant.q.imports-entry
   publish:
     udb3:
       exchange: udb3.e.prod
@@ -90,6 +98,18 @@ cdbxml_proxy:
   redirect_domain: "www.domain-cdbxml-service.be"
   redirect_port: 80
 
+calendar_summary_proxy:
+  enabled: "true"
+  pathRegex: ^\/event\/(?<offerId>[a-zA-Z0-9\-]+)\/calendar-summary$
+  redirect_domain: "www.domain-cdbxml-service.be"
+  redirect_port: 80
+
+search_proxy:
+  enabled: "true"
+  pathRegex: ^\/(events|places|organizers|offers)\/$
+  redirect_domain: "www.domain-search-service.dev"
+  redirect_port: 80
+
 jwt:
   keys:
     public:
@@ -107,3 +127,14 @@ udb2_cdbxml_enricher:
 
 jsonld:
   context_directory: ""
+
+google_maps_api_key: "your-api-key" # Optional
+
+uitpas:
+  labels_endpoint: http://udb-uitpas.dev/labels
+
+base_price_translations:
+  nl: 'Basistarief'
+  fr: 'Tarif de base'
+  en: 'Base tariff'
+  de: 'Basisrate'

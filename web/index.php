@@ -7,6 +7,7 @@ use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\FeatureControllerProvider;
+use CultuurNet\UDB3\Silex\MyOrganizers\MyOrganizersControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
 use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
@@ -44,9 +45,16 @@ $app['security.firewalls'] = array(
         'pattern' => (new AnyOfRequestMatcher())
             ->with(new RequestMatcher('^/contexts/.*', null, 'GET'))
             ->with(new RequestMatcher('^/(event|place|label)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '/calsum$', null, 'GET'))
+            ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
+            /* @deprecated */
+            ->with(new RequestMatcher('^/(event|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/event/' . $app['id_pattern'] . '/history', null, 'GET'))
-            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'], null, 'GET'))
+            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))
+            ->with(new RequestMatcher('^/images/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/(places|labels)$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
@@ -105,8 +113,6 @@ $app['security.access_rules'] = array(
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
 );
 
-require __DIR__ . '/../debug.php';
-
 $app['logger.search'] = $app->share(
     function ($app) {
         $logger = new \Monolog\Logger('search');
@@ -148,6 +154,32 @@ if (isset($app['config']['cdbxml_proxy']) &&
             $cdbXmlProxy = $app['cdbxml_proxy'];
 
             return $cdbXmlProxy->handle($request);
+        },
+        Application::EARLY_EVENT
+    );
+}
+
+if (isset($app['config']['calendar_summary_proxy']) &&
+    $app['config']['calendar_summary_proxy']['enabled']) {
+    $app->before(
+        function (Request $request, Application $app) {
+            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy $calendarSummaryProxy */
+            $calendarSummaryProxy = $app['calendar_summary_proxy'];
+
+            return $calendarSummaryProxy->handle($request);
+        },
+        Application::EARLY_EVENT
+    );
+}
+
+if (isset($app['config']['search_proxy']) &&
+    $app['config']['search_proxy']['enabled']) {
+    $app->before(
+        function (Request $request, Application $app) {
+            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy $searchProxy */
+            $searchProxy = $app['search_proxy'];
+
+            return $searchProxy->handle($request);
         },
         Application::EARLY_EVENT
     );
@@ -211,14 +243,19 @@ $app->mount(
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
+/* @deprecated */
+$app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
+$app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
 $app->mount('/organizers', new \CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
+/* @deprecated */
+$app->mount('/', new \CultuurNet\UDB3\Silex\Event\DeprecatedEventControllerProvider());
+$app->mount('/events', new \CultuurNet\UDB3\Silex\Event\EventControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Media\MediaControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\OfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\User\UserControllerProvider());
-$app->mount('dashboard/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
+$app->mount('/', new \CultuurNet\UDB3\Silex\Dashboard\DashboardControllerProvider());
+$app->mount('/', new MyOrganizersControllerProvider());
 $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
@@ -228,7 +265,10 @@ $app->get(
     '/user',
     function (Application $app) {
         return (new JsonResponse())
-            ->setData($app['current_user'])
+            ->setData((object)[
+                'id' => $app['current_user']->id,
+                'nick' => $app['current_user']->nick,
+            ])
             ->setPrivate();
     }
 );
@@ -239,5 +279,7 @@ $app->get(
 $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
 
 $app->mount('/', new \CultuurNet\UDB3\Silex\Moderation\ModerationControllerProvider());
+
+$app->mount('/imports', new \CultuurNet\UDB3\Silex\Import\ImportControllerProvider());
 
 $app->run();

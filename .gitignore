@@ -6,6 +6,7 @@
 /web/downloads/
 /web/uploads/
 /web/media/
+/web/images
 *.pem
 external_id_mapping_organizer.yml
 external_id_mapping_place.yml

@@ -23,7 +23,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
     public function register(Application $application)
     {
         $application[self::PURGE_SERVICE_MANAGER] = $application->share(
-            function (Application $application) use ($application) {
+            function (Application $application) {
                 return $this->createPurgeServiceManager($application);
             }
         );

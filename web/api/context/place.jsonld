@@ -7,6 +7,10 @@
     "udb": "https://io.uitdatabank.be/contexts/",
     "@base": "https://io.uitdatabank.be/contexts/place",
 
+    "mainLanguage": {
+      "@id": "udb:mainLanguage",
+      "@type": "xsd:string"
+    },
     "name": {
       "@id": "schema:name",
       "@type": "xsd:string",
