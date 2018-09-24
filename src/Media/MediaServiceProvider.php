@@ -38,11 +38,7 @@ class MediaServiceProvider implements ServiceProviderInterface
 
         $app['media_object_store'] = $app->share(
             function ($app) {
-                return new AggregateAwareDBALEventStore(
-                    $app['dbal_connection'],
-                    $app['eventstore_payload_serializer'],
-                    new SimpleInterfaceSerializer(),
-                    'event_store',
+                return $app['event_store_factory'](
                     AggregateType::MEDIA_OBJECT()
                 );
             }

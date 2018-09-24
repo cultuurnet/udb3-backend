@@ -247,11 +247,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::UNIQUE_EVENT_STORE] = $app->share(
             function (Application $app) {
-                $eventStore = new AggregateAwareDBALEventStore(
-                    $app['dbal_connection'],
-                    $app['eventstore_payload_serializer'],
-                    new SimpleInterfaceSerializer(),
-                    'event_store',
+                $eventStore = $app['event_store_factory'](
                     AggregateType::LABEL()
                 );
 
