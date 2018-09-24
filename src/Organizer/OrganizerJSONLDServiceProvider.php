@@ -13,6 +13,8 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'organizer_jsonld_projector';
 
+    public const JSONLD_PROJECTED_EVENT_FACTORY = 'organizer_jsonld_projected_event_factory';
+
     public function register(Application $app)
     {
         $app[self::PROJECTOR] = $app->share(
@@ -36,14 +38,20 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
+            function ($app) {
+                return new EventFactory(
+                    $app['organizer_iri_generator']
+                );
+            }
+        );
+
         $app['organizer_jsonld_repository'] = $app->share(
             function ($app) {
                 return new BroadcastingDocumentRepositoryDecorator(
                     $app['real_organizer_jsonld_repository'],
                     $app['event_bus'],
-                    new EventFactory(
-                        $app['organizer_iri_generator']
-                    )
+                    $app[self::JSONLD_PROJECTED_EVENT_FACTORY]
                 );
             }
         );

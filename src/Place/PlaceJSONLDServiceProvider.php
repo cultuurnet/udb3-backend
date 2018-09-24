@@ -23,6 +23,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
     public const RELATED_PROJECTOR = 'related_place_jsonld_projector';
 
     public const JSONLD_REPOSITORY = 'place_jsonld_repository';
+    public const JSONLD_PROJECTED_EVENT_FACTORY = 'place_jsonld_projected_event_factory';
 
     public function register(Application $app)
     {
@@ -56,6 +57,14 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
+            function ($app) {
+                return new EventFactory(
+                    $app['place_iri_generator']
+                );
+            }
+        );
+
         $app[self::JSONLD_REPOSITORY] = $app->share(
             function ($app) {
                 $repository = new CacheDocumentRepository(
@@ -65,9 +74,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
                     $app['event_bus'],
-                    new EventFactory(
-                        $app['place_iri_generator']
-                    )
+                    $app[self::JSONLD_PROJECTED_EVENT_FACTORY]
                 );
             }
         );
