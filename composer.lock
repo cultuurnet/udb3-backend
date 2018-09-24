@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "049d54a61deb138414e47a4ad9e30841",
+    "content-hash": "21074e05a762744bbb44397983261246",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1500,16 +1500,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-2744",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "6fa76232fccf8e9590ed58e5574123b3c3a606cb"
+                "reference": "cac4d47e90d275a128edbb8c4f8e3d956cb5ad31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/6fa76232fccf8e9590ed58e5574123b3c3a606cb",
-                "reference": "6fa76232fccf8e9590ed58e5574123b3c3a606cb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cac4d47e90d275a128edbb8c4f8e3d956cb5ad31",
+                "reference": "cac4d47e90d275a128edbb8c4f8e3d956cb5ad31",
                 "shasum": ""
             },
             "require": {
@@ -1576,7 +1576,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-09-16 13:42:41"
+            "time": "2018-09-23 20:16:23"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7746,6 +7746,12 @@
     ],
     "aliases": [
         {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2744",
+            "package": "cultuurnet/udb3"
+        },
+        {
             "alias": "1.2",
             "alias_normalized": "1.2.0.0",
             "version": "dev-compat-1-2",
@@ -7760,6 +7766,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3": 20,
         "chrisboulton/php-resque": 20,
         "doctrine/migrations": 20,
         "cultuurnet/search-v3": 20
