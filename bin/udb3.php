@@ -2,6 +2,7 @@
 <?php
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Provider\ConsoleServiceProvider;
@@ -59,5 +60,6 @@ $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\GeocodeEventCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PermissionCommand());
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand());
+$consoleApp->add(new FireProjectedToJSONLDCommand());
 
 $consoleApp->run();

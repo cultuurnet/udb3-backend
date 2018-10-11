@@ -2,24 +2,14 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use function array_merge;
-use function array_unique;
-use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
-use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
-use Knp\Command\Command;
 use PDO;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class FireProjectedToJSONLDForRelationsCommand extends Command
+class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJSONLDCommand
 {
     protected function configure()
     {
@@ -32,82 +22,70 @@ class FireProjectedToJSONLDForRelationsCommand extends Command
     {
         $app = $this->getSilexApplication();
 
-        $domainMessageBuilder = new DomainMessageBuilder();
-
         /** @var \Doctrine\DBAL\Connection $connection */
         $connection = $app['dbal_connection'];
 
-        /** @var \Broadway\EventHandling\EventBusInterface $eventBus */
-        $eventBus = $app['event_bus'];
+        $this->inReplayMode(
+            function (
+                EventBusInterface $eventBus,
+                InputInterface $input,
+                OutputInterface $output
+            ) use ($connection) {
+                $domainMessageBuilder = new DomainMessageBuilder();
 
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->startReplayMode();
-        } else {
-            $helper = $this->getHelper('question');
-            $question = new ConfirmationQuestion(
-                'Warning! The current event bus does not flag replay messages. '
-                . 'This might trigger unintended changes. Continue anyway? [y/N] ',
-                false
-            );
+                $queryBuilder = $connection->createQueryBuilder();
 
-            if (!$helper->ask($input, $output, $question)) {
-                return;
-            }
-        }
+                $eventOrganizers = $queryBuilder->select('DISTINCT organizer')
+                    ->from('event_relations')
+                    ->where('organizer IS NOT NULL')
+                    ->execute()
+                    ->fetchAll(PDO::FETCH_COLUMN);
 
-        $queryBuilder = $connection->createQueryBuilder();
+                $queryBuilder = $connection->createQueryBuilder();
+                $placeOrganizers = $queryBuilder->select('DISTINCT organizer')
+                    ->from('place_relations')
+                    ->where('organizer IS NOT NULL')
+                    ->execute()
+                    ->fetchAll(PDO::FETCH_COLUMN);
 
-        $eventOrganizers = $queryBuilder->select('DISTINCT organizer')
-            ->from('event_relations')
-            ->where('organizer IS NOT NULL')
-            ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+                $allOrganizers = array_merge($eventOrganizers, $placeOrganizers);
+                $allOrganizers = array_unique($allOrganizers);
 
-        $queryBuilder = $connection->createQueryBuilder();
-        $placeOrganizers = $queryBuilder->select('DISTINCT organizer')
-            ->from('place_relations')
-            ->where('organizer IS NOT NULL')
-            ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
+                $output->writeln('Organizers of events and places:');
 
-        $allOrganizers = array_merge($eventOrganizers, $placeOrganizers);
-        $allOrganizers = array_unique($allOrganizers);
+                $this->fireEvents(
+                    $allOrganizers,
+                    $this->getEventFactory('organizer'),
+                    $output,
+                    $domainMessageBuilder,
+                    $eventBus
+                );
 
-        $output->writeln('Organizers of events and places:');
+                $output->writeln('');
+                $output->writeln('');
+                $output->writeln('Places at which events are located:');
 
-        $this->fireEvents(
-            $allOrganizers,
-            $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
-            $output,
-            $domainMessageBuilder,
-            $eventBus
+                $queryBuilder = $connection->createQueryBuilder();
+                $eventLocations = $queryBuilder->select('DISTINCT place')
+                    ->from('event_relations')
+                    ->where('place IS NOT NULL')
+                    ->execute()
+                    ->fetchAll(PDO::FETCH_COLUMN);
+
+                $this->fireEvents(
+                    $eventLocations,
+                    $this->getEventFactory('place'),
+                    $output,
+                    $domainMessageBuilder,
+                    $eventBus
+                );
+            },
+            $input,
+            $output
         );
-
-        $output->writeln('');
-        $output->writeln('');
-        $output->writeln('Places at which events are located:');
-
-        $queryBuilder = $connection->createQueryBuilder();
-        $eventLocations = $queryBuilder->select('DISTINCT place')
-            ->from('event_relations')
-            ->where('place IS NOT NULL')
-            ->execute()
-            ->fetchAll(PDO::FETCH_COLUMN);
-
-        $this->fireEvents(
-            $eventLocations,
-            $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
-            $output,
-            $domainMessageBuilder,
-            $eventBus
-        );
-
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->stopReplayMode();
-        }
     }
 
-    private function fireEvents(
+    protected function fireEvents(
         array $ids,
         DocumentEventFactory $eventFactory,
         OutputInterface $output,
@@ -117,18 +95,13 @@ class FireProjectedToJSONLDForRelationsCommand extends Command
         foreach ($ids as $key => $id) {
             $output->writeln($key . ': ' . $id);
 
-            $event = $eventFactory->createEvent($id);
-            $output->writeln($event->getIri());
-
-            $domainMessage = $domainMessageBuilder->create($event);
-
-            try {
-                $eventBus->publish(
-                    new DomainEventStream([$domainMessage])
-                );
-            } catch (EntityNotFoundException $e) {
-                $output->writeln($e->getMessage());
-            }
+            $this->fireEvent(
+                $id,
+                $eventFactory,
+                $output,
+                $domainMessageBuilder,
+                $eventBus
+            );
         }
     }
 }
