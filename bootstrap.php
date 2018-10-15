@@ -3,44 +3,34 @@
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
-use CommerceGuys\Intl\Currency\CurrencyRepository;
-use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
-use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
-use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter as EventCdbXMLImporter;
-use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
-use CultuurNet\UDB3\EventListener\ClassNameEventSpecification;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
+use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
-use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
-use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
-use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter as PlaceCdbXMLImporter;
-use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
-use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\IndexServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\MyOrganizers\MyOrganizersServiceProvider;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
+use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
+use DerAlex\Silex\YamlConfigServiceProvider;
 use Http\Adapter\Guzzle6\Client;
+use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
-use DerAlex\Silex\YamlConfigServiceProvider;
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -394,30 +384,6 @@ $app['event_store'] = $app->share(
     }
 );
 
-$app['event_jsonld_repository'] = $app->share(
-    function ($app) {
-        $cachedRepository =  new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['event_jsonld_cache']
-        );
-
-        $broadcastingRepository = new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
-            $cachedRepository,
-            $app['event_bus'],
-            new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory(
-                $app['event_iri_generator']
-            )
-        );
-
-        return $broadcastingRepository;
-    }
-);
-
-$app['event_jsonld_cache'] = $app->share(
-    function (Application $app) {
-        return $app['cache']('event_jsonld');
-    }
-);
-
 $app['calendar_factory'] = $app->share(
     function () {
         return new CalendarFactory();
@@ -430,53 +396,7 @@ $app['cdbxml_contact_info_importer'] = $app->share(
     }
 );
 
-$app['event_cdbxml_importer'] = $app->share(
-    function (Application $app) {
-        return new EventCdbXMLImporter(
-            new CdbXMLItemBaseImporter(
-                new PriceDescriptionParser(
-                    new NumberFormatRepository(),
-                    new CurrencyRepository()
-                ),
-                $app['config']['base_price_translations']
-            ),
-            $app['udb2_event_cdbid_extractor'],
-            $app['calendar_factory'],
-            $app['cdbxml_contact_info_importer']
-        );
-    }
-);
-
-$app['events_not_triggering_update_modified'] = $app->share(
-    function () {
-        return new ClassNameEventSpecification(
-            new StringLiteral(PlaceProjectedToJSONLD::class),
-            new StringLiteral(OrganizerProjectedToJSONLD::class)
-        );
-    }
-);
-
-$app['event_jsonld_projector'] = $app->share(
-    function ($app) {
-        $projector = new \CultuurNet\UDB3\Event\ReadModel\JSONLD\EventLDProjector(
-            $app['event_jsonld_repository'],
-            $app['event_iri_generator'],
-            $app['event_service'],
-            $app['place_service'],
-            $app['organizer_service'],
-            $app['media_object_serializer'],
-            $app['iri_offer_identifier_factory'],
-            $app['event_cdbxml_importer'],
-            new JsonDocumentLanguageEnricher(
-                new EventJsonDocumentLanguageAnalyzer()
-            ),
-            $app['events_not_triggering_update_modified'],
-            $app['config']['base_price_translations']
-        );
-
-        return $projector;
-    }
-);
+$app->register(new EventJSONLDServiceProvider());
 
 $app['event_calendar_repository'] = $app->share(
     function ($app) {
@@ -564,12 +484,14 @@ $app['event_bus'] = $app->share(
                 'search_cache_manager',
                 'event_relations_projector',
                 'place_relations_projector',
-                'event_jsonld_projector',
+                EventJSONLDServiceProvider::PROJECTOR,
+                EventJSONLDServiceProvider::RELATED_PROJECTOR,
                 'event_history_projector',
-                'place_jsonld_projector',
+                PlaceJSONLDServiceProvider::PROJECTOR,
+                PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
                 MyOrganizersServiceProvider::PROJECTOR,
                 MyOrganizersServiceProvider::UDB2_PROJECTOR,
-                'organizer_jsonld_projector',
+                OrganizerJSONLDServiceProvider::PROJECTOR,
                 'event_calendar_projector',
                 'variations.search.projector',
                 'variations.jsonld.projector',
@@ -611,10 +533,24 @@ $app['event_bus'] = $app->share(
 
             // Allow to override event bus subscribers through configuration.
             // The event replay command line utility uses this.
-            if (isset($app['config']['event_bus']) &&
-                isset($app['config']['event_bus']['subscribers'])) {
+            if (
+                isset($app['config']['event_bus']) &&
+                isset($app['config']['event_bus']['subscribers'])
+            ) {
 
                 $subscribers = $app['config']['event_bus']['subscribers'];
+            }
+
+            if (
+                isset($app['config']['event_bus']) &&
+                isset($app['config']['event_bus']['disable_related_offer_subscribers']) &&
+                $app['config']['event_bus']['disable_related_offer_subscribers'] == TRUE
+             ) {
+                $subscribersToDisable = [
+                    EventJSONLDServiceProvider::RELATED_PROJECTOR,
+                    PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
+                ];
+                $subscribers = array_diff($subscribers, $subscribersToDisable);
             }
 
             foreach ($subscribers as $subscriberServiceId) {
@@ -861,63 +797,7 @@ $app['place_iri_generator'] = $app->share(
     }
 );
 
-$app['place_cdbxml_importer'] = $app->share(
-    function (Application $app) {
-        return new PlaceCdbXMLImporter(
-            new CdbXMLItemBaseImporter(
-                new PriceDescriptionParser(
-                    new NumberFormatRepository(),
-                    new CurrencyRepository()
-                ),
-                $app['config']['base_price_translations']
-            ),
-            $app['calendar_factory'],
-            $app['cdbxml_contact_info_importer']
-        );
-    }
-);
-
-$app['place_jsonld_projector'] = $app->share(
-    function ($app) {
-        $projector = new \CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector(
-            $app['place_jsonld_repository'],
-            $app['place_iri_generator'],
-            $app['organizer_service'],
-            $app['place_relations_repository'],
-            $app['media_object_serializer'],
-            $app['place_cdbxml_importer'],
-            new JsonDocumentLanguageEnricher(
-                new PlaceJsonDocumentLanguageAnalyzer()
-            ),
-            $app['events_not_triggering_update_modified'],
-            $app['config']['base_price_translations']
-        );
-
-        return $projector;
-    }
-);
-
-$app['place_jsonld_repository'] = $app->share(
-    function ($app) {
-        $repository = new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['place_jsonld_cache']
-        );
-
-        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
-            $repository,
-            $app['event_bus'],
-            new \CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory(
-                $app['place_iri_generator']
-            )
-        );
-    }
-);
-
-$app['place_jsonld_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('place_jsonld');
-    }
-);
+$app->register(new PlaceJSONLDServiceProvider());
 
 $app['event_relations_repository'] = $app->share(
     function ($app) {
@@ -1002,44 +882,7 @@ $app['organizer_editing_service'] = $app->share(
     }
 );
 
-$app['organizer_jsonld_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Organizer\OrganizerLDProjector(
-            $app['organizer_jsonld_repository'],
-            $app['organizer_iri_generator'],
-            $app['event_bus'],
-            new JsonDocumentLanguageEnricher(
-                new OrganizerJsonDocumentLanguageAnalyzer()
-            )
-        );
-    }
-);
-
-$app['real_organizer_jsonld_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
-            $app['organizer_jsonld_cache']
-        );
-    }
-);
-
-$app['organizer_jsonld_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
-            $app['real_organizer_jsonld_repository'],
-            $app['event_bus'],
-            new \CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory(
-                $app['organizer_iri_generator']
-            )
-        );
-    }
-);
-
-$app['organizer_jsonld_cache'] = $app->share(
-    function ($app) {
-        return $app['cache']('organizer_jsonld');
-    }
-);
+$app->register(new OrganizerJSONLDServiceProvider());
 
 $app['eventstore_payload_serializer'] = $app->share(
     function ($app) {

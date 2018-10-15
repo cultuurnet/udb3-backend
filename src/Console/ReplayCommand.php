@@ -23,6 +23,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class ReplayCommand extends AbstractCommand
 {
     const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
+    const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
     const OPTION_START_ID = 'start-id';
     const OPTION_DELAY = 'delay';
     const OPTION_CDBID = 'cdbid';
@@ -77,7 +78,14 @@ class ReplayCommand extends AbstractCommand
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'An array of cdbids of the aggregates to be replayed.'
+            )
+            ->addOption(
+                self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS,
+                null,
+                InputOption::VALUE_NONE,
+                'Disables the event bus subscribers that react on relations between organizers, places and events'
             );
+        ;
     }
 
     /**
@@ -106,6 +114,11 @@ class ReplayCommand extends AbstractCommand
                 'Registering the following subscribers with the event bus: ' . implode(', ', $subscribers)
             );
             $this->setSubscribers($subscribers);
+        }
+
+        $disableRelatedOfferSubscribers = $input->getOption(self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS);
+        if ($disableRelatedOfferSubscribers) {
+            $this->disableRelatedOfferSubscribers();
         }
 
         $store = $this->getStore($input);
@@ -213,6 +226,14 @@ class ReplayCommand extends AbstractCommand
 
         $config = $app['config'];
         $config['event_bus']['subscribers'] = $subscribers;
+        $app['config'] = $config;
+    }
+
+    private function disableRelatedOfferSubscribers()
+    {
+        $app = $this->getSilexApplication();
+        $config = $app['config'];
+        $config['event_bus']['disable_related_offer_subscribers'] = true;
         $app['config'] = $config;
     }
 
