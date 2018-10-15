@@ -258,7 +258,7 @@ class ReplayCommand extends AbstractCommand
         $cdbids = null
     ) {
         $app = $this->getSilexApplication();
-        $startId = $startId !== null ? $startId : 0;
+        $startId = $startId !== null ? (int) $startId : 0;
 
         $eventStream = new EventStream(
             $app['dbal_connection'],
@@ -273,10 +273,6 @@ class ReplayCommand extends AbstractCommand
 
         if ($aggregateType) {
             $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
-        }
-
-        if ($startId) {
-            $eventStream = $eventStream->withStartId($startId);
         }
 
         if ($cdbids) {
