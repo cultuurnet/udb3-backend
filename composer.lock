@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "7d740d29f71ecc3a21e7025c6613db6b88cd806a"
+                "reference": "2a772ec3f0edc9e25f54a9c61bdaf0bfc9c0c236"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7d740d29f71ecc3a21e7025c6613db6b88cd806a",
-                "reference": "7d740d29f71ecc3a21e7025c6613db6b88cd806a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/2a772ec3f0edc9e25f54a9c61bdaf0bfc9c0c236",
+                "reference": "2a772ec3f0edc9e25f54a9c61bdaf0bfc9c0c236",
                 "shasum": ""
             },
             "require": {
@@ -1531,12 +1531,13 @@
                 "cultuurnet/valueobjects": "~3.0",
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
+                "ext-json": "*",
                 "ext-tidy": "*",
                 "guzzlehttp/psr7": "~1.2.3",
                 "justinrainbow/json-schema": "1.4.3",
                 "league/flysystem": "~1.0",
                 "league/period": "^3.3",
-                "php": "~5.6 || >=7.0",
+                "php": ">=7.1",
                 "php-http/httplug": "^1.0",
                 "predis/predis": "~1.0",
                 "psr/log": "~1.0",
@@ -1577,7 +1578,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-10-15T12:55:09+00:00"
+            "time": "2018-10-19T06:55:39+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
