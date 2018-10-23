@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40ae93561a81fc8034933ed7e37a5ae1",
+    "content-hash": "300cfaee00f6cc6ac3138552052ed410",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1500,16 +1500,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-2290",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "bdb9045c4fc4f1e23d938e4783d0b57016fc5c25"
+                "reference": "f1a2aa775b2d8476ac7c06a7dcf2ec96266bb102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/bdb9045c4fc4f1e23d938e4783d0b57016fc5c25",
-                "reference": "bdb9045c4fc4f1e23d938e4783d0b57016fc5c25",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f1a2aa775b2d8476ac7c06a7dcf2ec96266bb102",
+                "reference": "f1a2aa775b2d8476ac7c06a7dcf2ec96266bb102",
                 "shasum": ""
             },
             "require": {
@@ -1532,6 +1532,7 @@
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
                 "ext-json": "*",
+                "ext-pdo": "*",
                 "ext-tidy": "*",
                 "guzzlehttp/psr7": "~1.2.3",
                 "justinrainbow/json-schema": "1.4.3",
@@ -1578,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-10-23T10:48:04+00:00"
+            "time": "2018-10-23T11:30:50+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7748,6 +7749,12 @@
     ],
     "aliases": [
         {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2290",
+            "package": "cultuurnet/udb3"
+        },
+        {
             "alias": "1.2",
             "alias_normalized": "1.2.0.0",
             "version": "dev-compat-1-2",
@@ -7762,6 +7769,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "cultuurnet/udb3": 20,
         "chrisboulton/php-resque": 20,
         "doctrine/migrations": 20,
         "cultuurnet/search-v3": 20
