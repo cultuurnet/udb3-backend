@@ -1,17 +1,16 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository;
+use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory;
 use CultuurNet\UDB3\UDB2\Consumer;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class SavedSearchesServiceProvider implements ServiceProviderInterface
 {
@@ -43,7 +42,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
         );
 
         $app['saved_searches_logger'] = $app->share(
-            function (Application $app) {
+            function () {
                 $logger = new \Monolog\Logger('saved_searches');
                 $logger->pushHandler(
                     new \Monolog\Handler\StreamHandler(__DIR__ . '/../../log/saved_searches.log')
@@ -52,15 +51,36 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['udb3_saved_searches_repo'] = $app->share(
+            function (Application $app) {
+                $user = $app['current_user'];
+
+                return new UDB3SavedSearchRepository(
+                    $app['dbal_connection'],
+                    new StringLiteral('saved_searches'),
+                    $app['uuid_generator'],
+                    new StringLiteral($user->id)
+                );
+            }
+        );
+
         $app['saved_searches_repository'] = $app->share(
             function (Application $app) {
-                $uitIDRepository = new UiTIDSavedSearchRepository($app['saved_searches']);
-                $uitIDRepository->setLogger($app['saved_searches_logger']);
                 $user = $app['current_user'];
+
+                if ($app['config']['saved_searches'] === 'udb3-sapi2') {
+                    $savedSearchesRepo = $app['udb3_saved_searches_repo'];
+                } else {
+                    $uitIDRepository = new UiTIDSavedSearchRepository($app['saved_searches']);
+                    $uitIDRepository->setLogger($app['saved_searches_logger']);
+                    $savedSearchesRepo = $uitIDRepository;
+                }
+
                 $fixedRepository = new FixedSavedSearchRepository($user);
+
                 $repository = new CombinedSavedSearchRepository(
                     $fixedRepository,
-                    $uitIDRepository
+                    $savedSearchesRepo
                 );
                 return $repository;
             }

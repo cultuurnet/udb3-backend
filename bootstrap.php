@@ -740,11 +740,19 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
         )
     );
 
-    $commandBus->subscribe(
-        new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
-            $app['saved_searches_service_factory']
-        )
-    );
+    if ($app['config']['saved_searches'] === 'udb3-sapi2') {
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
+                $app['udb3_saved_searches_repo']
+            )
+        );
+    } else {
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
+                $app['saved_searches_service_factory']
+            )
+        );
+    }
 
     /** @var ToggleManager $toggles */
     $toggles = $app['toggles'];
