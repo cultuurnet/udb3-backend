@@ -740,11 +740,7 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
         )
     );
 
-    $commandBus->subscribe(
-        new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
-            $app['saved_searches_service_factory']
-        )
-    );
+    $commandBus->subscribe($app['saved_searches_command_handler']);
 
     /** @var ToggleManager $toggles */
     $toggles = $app['toggles'];
