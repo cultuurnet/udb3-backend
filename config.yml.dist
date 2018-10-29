@@ -140,5 +140,5 @@ base_price_translations:
   de: 'Basisrate'
 
 # Saved searches can be uitid or udb3-sapi2
-saved_searches: uitid
+saved_searches: udb3-sapi2
 

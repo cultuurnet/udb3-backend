@@ -51,13 +51,13 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['udb3_saved_searches_repo'] = $app->share(
+        $app['udb3_saved_searches_repo_sapi2'] = $app->share(
             function (Application $app) {
                 $user = $app['current_user'];
 
                 return new UDB3SavedSearchRepository(
                     $app['dbal_connection'],
-                    new StringLiteral('saved_searches'),
+                    new StringLiteral('saved_searches_sapi2'),
                     $app['uuid_generator'],
                     new StringLiteral($user->id)
                 );
@@ -69,11 +69,10 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                 $user = $app['current_user'];
 
                 if ($app['config']['saved_searches'] === 'udb3-sapi2') {
-                    $savedSearchesRepo = $app['udb3_saved_searches_repo'];
+                    $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi2'];
                 } else {
-                    $uitIDRepository = new UiTIDSavedSearchRepository($app['saved_searches']);
-                    $uitIDRepository->setLogger($app['saved_searches_logger']);
-                    $savedSearchesRepo = $uitIDRepository;
+                    $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
+                    $savedSearchesRepo->setLogger($app['saved_searches_logger']);
                 }
 
                 $fixedRepository = new FixedSavedSearchRepository($user);
@@ -83,6 +82,20 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                     $savedSearchesRepo
                 );
                 return $repository;
+            }
+        );
+
+        $app['saved_searches_command_handler'] = $app->share(
+            function (Application $app) {
+                if ($app['config']['saved_searches'] === 'udb3-sapi2') {
+                    return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
+                        $app['udb3_saved_searches_repo_sapi2']
+                    );
+                } else {
+                    return new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
+                        $app['saved_searches_service_factory']
+                    );
+                }
             }
         );
     }

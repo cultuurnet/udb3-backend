@@ -17,7 +17,7 @@ class Version20181023121440 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $table = $schema->createTable('saved_searches');
+        $table = $schema->createTable('saved_searches_sapi2');
 
         $table->addColumn(SchemaConfigurator::ID, Type::GUID)
             ->setLength(36)
@@ -43,6 +43,6 @@ class Version20181023121440 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $schema->dropTable('saved_searches');
+        $schema->dropTable('saved_searches_sapi2');
     }
 }
