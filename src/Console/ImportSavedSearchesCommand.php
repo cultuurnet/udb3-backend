@@ -62,7 +62,7 @@ class ImportSavedSearchesCommand extends AbstractCommand
             $this->getUDB3SavedSearchesRepository()->write(
                 new StringLiteral($record['USER_UUID']),
                 new StringLiteral($record['NAME']),
-                new QueryString($record['QUERY'])
+                $this->getQueryString($record)
             );
         }
 
@@ -76,5 +76,18 @@ class ImportSavedSearchesCommand extends AbstractCommand
     {
         $app = $this->getSilexApplication();
         return $app['udb3_saved_searches_repo'];
+    }
+
+    /**
+     * @param array $record
+     * @return QueryString
+     */
+    private function getQueryString(array $record): QueryString
+    {
+        if (substr($record['QUERY'], 0, 2) === 'q=') {
+            return new QueryString(substr($record['QUERY'], 2, -1));
+        } else {
+            return new QueryString($record['QUERY']);
+        }
     }
 }
