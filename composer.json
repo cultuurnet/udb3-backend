@@ -13,7 +13,7 @@
     "php": "^7.1",
     "cultuurnet/culturefeed-php": "~1.9.2",
     "cultuurnet/udb2-domain-events": "~0.1",
-    "cultuurnet/udb3": "dev-feature/III-2290 as 0.1",
+    "cultuurnet/udb3": "~0.1",
     "cultuurnet/udb3-doctrine": "~0.1",
     "cultuurnet/udb3-http-foundation": "~0.1",
     "cultuurnet/udb3-symfony": "~0.1",
