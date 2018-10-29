@@ -138,3 +138,7 @@ base_price_translations:
   fr: 'Tarif de base'
   en: 'Base tariff'
   de: 'Basisrate'
+
+# Saved searches can be uitid or udb3-sapi2
+saved_searches: udb3-sapi2
+
