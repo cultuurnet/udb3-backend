@@ -74,6 +74,11 @@ class OrganizerControllerProvider implements ControllerProviderInterface
 
         $controllers->put(
             '/{organizerId}/address',
+            'organizer_edit_controller:updateAddressDeprecated'
+        );
+
+        $controllers->put(
+            '/{organizerId}/address/{lang}',
             'organizer_edit_controller:updateAddress'
         );
 
