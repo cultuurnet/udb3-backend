@@ -43,6 +43,16 @@ class SAPISearchServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['sapi3_search_service'] = $app->share(
+            function ($app) {
+                return new \CultuurNet\UDB3\Search\Sapi3SearchService(
+                    new \GuzzleHttp\Psr7\Uri($app['config']['export']['search_url']),
+                    new Client(new \GuzzleHttp\Client()),
+                    $app['iri_offer_identifier_factory']
+                );
+            }
+        );
+
         $app['search_service'] = $app->share(
             function ($app) {
                 /** @var \Qandidate\Toggle\ToggleManager $toggles */

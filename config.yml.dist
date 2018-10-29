@@ -142,3 +142,8 @@ base_price_translations:
 # Saved searches can be uitid or udb3-sapi2
 saved_searches: udb3-sapi2
 
+# Fallback for sapi version of export service
+# Used when no sapiVersion in export request
+# Possible values are v2 or v3
+export_sapi_version: v3
+

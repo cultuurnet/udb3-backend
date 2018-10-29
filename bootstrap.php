@@ -1145,52 +1145,6 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$app['sapi3_search_service'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-            new \GuzzleHttp\Psr7\Uri($app['config']['export']['search_url']),
-            new Client(new \GuzzleHttp\Client()),
-            $app['iri_offer_identifier_factory']
-        );
-    }
-);
-
-$app['event_export'] = $app->share(
-    function ($app) {
-        /** @var ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
-        if ($toggles->active('variations', $app['toggles.context'])) {
-            $eventService =  $app['personal_variation_decorated_event_service'];
-        } else {
-            $eventService = $app['external_event_service'];
-        }
-
-        $searchService = $toggles->active('sapi3-export', $app['toggles.context']) ?
-            $app['sapi3_search_service'] :
-            $app['search_service'];
-
-        $service = new \CultuurNet\UDB3\EventExport\EventExportService(
-            $eventService,
-            $searchService,
-            new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            realpath(__DIR__ .  '/web/downloads'),
-            new CallableIriGenerator(
-                function ($fileName) use ($app) {
-                    return $app['config']['url'] . '/downloads/' . $fileName;
-                }
-            ),
-            new \CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer(
-                $app['mailer'],
-                $app['event_export_notification_mail_factory']
-            ),
-            new \CultuurNet\UDB3\Search\ResultsGenerator($searchService)
-        );
-
-        return $service;
-    }
-);
-
 $app['amqp-execution-delay'] = isset($app['config']['amqp_execution_delay']) ?
     Natural::fromNative($app['config']['amqp_execution_delay']) :
     Natural::fromNative(10);
