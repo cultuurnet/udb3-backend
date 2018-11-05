@@ -5,20 +5,15 @@ namespace CultuurNet\UDB3\Silex\Console;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
-use League\Csv\Reader;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use ValueObjects\Identity\UUID;
 
-class ImportRoleConstraintsCommand extends AbstractCommand
+class ImportRoleConstraintsCommand extends AbstractCsvImportCommand
 {
     private const ROLE_ID = 'ROLEID';
     private const SAPIVERSION = 'SAPIVERSION';
     private const QUERY = 'QUERY';
-    private const CSV_FILE_ARG = 'csv_file';
-    private const CSV_DELIMETER_OPT = 'csv_delimiter';
 
     /**
      * @inheritdoc
@@ -26,49 +21,31 @@ class ImportRoleConstraintsCommand extends AbstractCommand
      */
     public function configure()
     {
+        parent::configure();
         $this
             ->setName('roles:constraints:import')
-            ->setDescription('Import constraints for a role from the given CSV file')
-            ->addArgument(
-                self::CSV_FILE_ARG,
-                InputArgument::REQUIRED,
-                'Full path to the csv file to import. With ' . self::ROLE_ID . ', ' . self::SAPIVERSION . ' and ' . self::QUERY . ' headers.'
-            )
-            ->addOption(
-                self::CSV_DELIMETER_OPT,
-                'd',
-                InputOption::VALUE_OPTIONAL,
-                'Delimeter for the csv file (default is comma).',
-                ','
-            );
+            ->setDescription('Import constraints for a role from the given CSV file');
     }
 
     /**
      * @inheritdoc
-     * @throws \League\Csv\Exception
-     * @see Command::execute()
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function getColumnHeaders(): string
     {
-        $csvReader = Reader::createFromPath(
-            $input->getArgument(self::CSV_FILE_ARG)
-        );
+        return 'With ' . self::ROLE_ID . ', ' . self::SAPIVERSION . ' and ' . self::QUERY . ' headers.';
+    }
 
-        $csvReader->setHeaderOffset(0)
-            ->setDelimiter(
-                $input->getOption(self::CSV_DELIMETER_OPT)
-            );
+    /**
+     * @inheritdoc
+     */
+    public function processRecord(
+        InputInterface $input,
+        OutputInterface $output,
+        array $record
+    ): void {
+        $output->writeln('Importing constraint for roleID: ' . $record[self::ROLE_ID]);
 
-        $output->writeln('Starting import...');
-
-        $records = $csvReader->getRecords();
-        foreach ($records as $record) {
-            $output->writeln('Importing constraint for roleID: ' . $record[self::ROLE_ID]);
-
-            $this->dispatchAddConstraint($record[self::ROLE_ID], $record[self::SAPIVERSION], $record[self::QUERY]);
-        }
-
-        $output->writeln('Finished import.');
+        $this->dispatchAddConstraint($record[self::ROLE_ID], $record[self::SAPIVERSION], $record[self::QUERY]);
     }
 
     /**

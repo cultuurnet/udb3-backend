@@ -4,69 +4,50 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
-use League\Csv\Reader;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ImportSavedSearchesCommand extends AbstractCommand
+class ImportSavedSearchesCommand extends AbstractCsvImportCommand
 {
-    private const CSV_FILE_ARG = 'csv_file';
-    private const CSV_DELIMETER_OPT = 'csv_delimiter';
+    private const NAME = 'NAME';
+    private const QUERY = 'QUERY';
+    private const USERID = 'USER_UUID';
 
     /**
      * @inheritdoc
      */
     public function configure()
     {
+        parent::configure();
         $this
             ->setName('savedSearches:import')
-            ->setDescription('Import saved searches from the given CSV file')
-            ->addArgument(
-                self::CSV_FILE_ARG,
-                InputArgument::REQUIRED,
-                'Full path to the csv file to import. With NAME, QUERY and USER_ID headers.'
-            )
-            ->addOption(
-                self::CSV_DELIMETER_OPT,
-                'd',
-                InputOption::VALUE_OPTIONAL,
-                'Delimeter for the csv file (default is comma).',
-                ','
-            );
+            ->setDescription('Import saved searches from the given CSV file');
     }
 
     /**
      * @inheritdoc
-     * @throws \League\Csv\Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    public function getColumnHeaders(): string
     {
-        $csvReader = Reader::createFromPath(
-            $input->getArgument(self::CSV_FILE_ARG)
+        return 'With ' . self::NAME . ', ' . self::QUERY . ' and ' . self::USERID . ' headers.';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function processRecord(
+        InputInterface $input,
+        OutputInterface $output,
+        array $record
+    ): void {
+        $output->writeln('Importing query with name: ' . $record[self::NAME]);
+
+        $this->getUDB3SavedSearchesRepository()->write(
+            new StringLiteral($record[self::USERID]),
+            new StringLiteral($record[self::NAME]),
+            $this->getQueryString($record)
         );
-
-        $csvReader->setHeaderOffset(0)
-            ->setDelimiter(
-                $input->getOption(self::CSV_DELIMETER_OPT)
-            );
-
-        $output->writeln('Starting import...');
-
-        $records = $csvReader->getRecords();
-        foreach ($records as $record) {
-            $output->writeln('Importing query with name: ' . $record['NAME']);
-
-            $this->getUDB3SavedSearchesRepository()->write(
-                new StringLiteral($record['USER_UUID']),
-                new StringLiteral($record['NAME']),
-                $this->getQueryString($record)
-            );
-        }
-
-        $output->writeln('Finished import.');
     }
 
     /**
@@ -84,10 +65,10 @@ class ImportSavedSearchesCommand extends AbstractCommand
      */
     private function getQueryString(array $record): QueryString
     {
-        if (substr($record['QUERY'], 0, 2) === 'q=') {
-            return new QueryString(substr($record['QUERY'], 2));
+        if (substr($record[self::QUERY], 0, 2) === 'q=') {
+            return new QueryString(substr($record[self::QUERY], 2));
         } else {
-            return new QueryString($record['QUERY']);
+            return new QueryString($record[self::QUERY]);
         }
     }
 }
