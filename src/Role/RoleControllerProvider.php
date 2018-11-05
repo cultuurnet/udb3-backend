@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Role;
 
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Symfony\Deserializer\Role\QueryJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Role\EditRoleRestController;
 use CultuurNet\UDB3\Symfony\Role\ReadRoleRestController;
 use Silex\Application;
@@ -41,7 +42,8 @@ class RoleControllerProvider implements ControllerProviderInterface
                     $app['role_editing_service'],
                     $app['event_command_bus'],
                     new UpdateRoleRequestDeserializer(),
-                    $app[LabelServiceProvider::READ_SERVICE]
+                    $app[LabelServiceProvider::READ_SERVICE],
+                    new QueryJSONDeserializer()
                 );
             }
         );
