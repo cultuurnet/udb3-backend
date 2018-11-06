@@ -142,3 +142,6 @@ base_price_translations:
 # Saved searches can be uitid or udb3-sapi2
 saved_searches: udb3-sapi2
 
+# Role constraints can be on sapi2 or sapi3
+role_constraints_mode: sapi2
+
