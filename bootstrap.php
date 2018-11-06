@@ -1007,7 +1007,12 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-$app['role_search_repository.table_name'] = new StringLiteral('roles_search');
+if ('sapi3' === $app['config']['role_constraints_mode']) {
+    $app['role_search_repository.table_name'] = new StringLiteral('roles_search_v3');
+}
+else {
+    $app['role_search_repository.table_name'] = new StringLiteral('roles_search');
+}
 
 $app['role_search_repository'] = $app->share(
     function ($app) {
