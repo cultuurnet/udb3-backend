@@ -4,9 +4,11 @@ namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory;
+use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\UDB2\Consumer;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -66,16 +68,8 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
         $app['saved_searches_repository'] = $app->share(
             function (Application $app) {
-                $user = $app['current_user'];
-
-                if ($app['config']['saved_searches'] === 'udb3-sapi2') {
-                    $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi2'];
-                } else {
-                    $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
-                    $savedSearchesRepo->setLogger($app['saved_searches_logger']);
-                }
-
-                $fixedRepository = new FixedSavedSearchRepository($user);
+                $fixedRepository = $this->createFixedSavedSearchRepo($app);
+                $savedSearchesRepo = $this->createSavedSearchesRepo($app);
 
                 $repository = new CombinedSavedSearchRepository(
                     $fixedRepository,
@@ -105,5 +99,39 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
      */
     public function boot(Application $app)
     {
+    }
+
+    /**
+     * @param Application $app
+     * @return SavedSearchRepositoryInterface
+     */
+    private function createFixedSavedSearchRepo(Application $app): SavedSearchRepositoryInterface
+    {
+        $user = $app['current_user'];
+
+        $createdByQueryMode = CreatedByQueryMode::UUID();
+        if (!empty($app['config']['created_by_query_mode'])) {
+            $createdByQueryMode = CreatedByQueryMode::fromNative(
+                $app['config']['created_by_query_mode']
+            );
+        }
+
+        return new FixedSavedSearchRepository($user, $createdByQueryMode);
+    }
+
+    /**
+     * @param Application $app
+     * @return SavedSearchRepositoryInterface
+     */
+    private function createSavedSearchesRepo(Application $app): SavedSearchRepositoryInterface
+    {
+        if ($app['config']['saved_searches'] === 'udb3-sapi2') {
+            $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi2'];
+        } else {
+            $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
+            $savedSearchesRepo->setLogger($app['saved_searches_logger']);
+        }
+
+        return $savedSearchesRepo;
     }
 }
