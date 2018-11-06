@@ -42,7 +42,7 @@ class Version20181106123049 extends AbstractMigration
         $table->addUniqueIndex(
             array(
                 SchemaConfigurator::UUID_COLUMN,
-                SchemaConfigurator::NAME_COLUMN
+                SchemaConfigurator::NAME_COLUMN,
             )
         );
     }
@@ -53,6 +53,5 @@ class Version20181106123049 extends AbstractMigration
     public function down(Schema $schema)
     {
         $schema->dropTable(self::ROLES_SEARCH_V3);
-
     }
 }
