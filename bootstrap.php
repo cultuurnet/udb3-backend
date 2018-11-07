@@ -1042,7 +1042,7 @@ $app['role_search_projector'] = $app->share(
 $app['role_searchv3_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Projector(
-            $app['role_search_repository'],
+            $app['role_searchv3_repository'],
             SapiVersion::V3()
         );
     }
