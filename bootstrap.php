@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
+use CultuurNet\UDB3\ValueObject\SapiVersion;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
@@ -517,6 +518,7 @@ $app['event_bus'] = $app->share(
                 'role_labels_projector',
                 'label_roles_projector',
                 'role_search_projector',
+                'role_searchv3_projector',
                 'role_users_projector',
                 'user_roles_projector',
                 UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
@@ -1007,12 +1009,8 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-if ('sapi3' === $app['config']['role_constraints_mode']) {
-    $app['role_search_repository.table_name'] = new StringLiteral('roles_search_v3');
-}
-else {
-    $app['role_search_repository.table_name'] = new StringLiteral('roles_search');
-}
+$app['role_search_repository.table_name'] = new StringLiteral('roles_search');
+$app['role_searchv3_repository.table_name'] = new StringLiteral('roles_search_v3');
 
 $app['role_search_repository'] = $app->share(
     function ($app) {
@@ -1023,10 +1021,29 @@ $app['role_search_repository'] = $app->share(
     }
 );
 
+$app['role_searchv3_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
+            $app['dbal_connection'],
+            $app['role_searchv3_repository.table_name']
+        );
+    }
+);
+
 $app['role_search_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Projector(
-            $app['role_search_repository']
+            $app['role_search_repository'],
+            SapiVersion::V2()
+        );
+    }
+);
+
+$app['role_searchv3_projector'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Role\ReadModel\Search\Projector(
+            $app['role_search_repository'],
+            SapiVersion::V3()
         );
     }
 );
