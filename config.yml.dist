@@ -139,9 +139,8 @@ base_price_translations:
   en: 'Base tariff'
   de: 'Basisrate'
 
-# The location (uitid/udb3) and syntax (sapi2/sapi3) for saved searches
-# Possible values are uitid, udb3-sapi2 or udb3-sapi3
-saved_searches: udb3-sapi2
+# The location to store the saved searches (uitid or udb3)
+saved_searches_location: udb3
 
 # The mode for the created by query (uuid/email/mixed)
 # When the config is missing uuid will be used by default.

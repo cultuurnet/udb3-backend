@@ -66,6 +66,19 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['udb3_saved_searches_repo_sapi3'] = $app->share(
+            function (Application $app) {
+                $user = $app['current_user'];
+
+                return new UDB3SavedSearchRepository(
+                    $app['dbal_connection'],
+                    new StringLiteral('saved_searches_sapi3'),
+                    $app['uuid_generator'],
+                    new StringLiteral($user->id)
+                );
+            }
+        );
+
         $app['saved_searches_repository'] = $app->share(
             function (Application $app) {
                 $fixedRepository = $this->createFixedSavedSearchRepo($app);
@@ -81,7 +94,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
         $app['saved_searches_command_handler'] = $app->share(
             function (Application $app) {
-                if ($app['config']['saved_searches'] === 'udb3-sapi2') {
+                if ($app['config']['saved_searches'] === 'udb3') {
                     return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
                         $app['udb3_saved_searches_repo_sapi2']
                     );
@@ -125,7 +138,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
      */
     private function createSavedSearchesRepo(Application $app): SavedSearchRepositoryInterface
     {
-        if ($app['config']['saved_searches'] === 'udb3-sapi2') {
+        if ($app['config']['saved_searches'] === 'udb3') {
             $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi2'];
         } else {
             $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
