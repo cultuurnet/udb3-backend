@@ -5,11 +5,13 @@ namespace CultuurNet\UDB3\Silex\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
+use CultuurNet\UDB3\SavedSearches\SavedSearchRepositoryCollection;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
 use CultuurNet\UDB3\UDB2\Consumer;
+use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -94,9 +96,21 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
         $app['saved_searches_command_handler'] = $app->share(
             function (Application $app) {
-                if ($app['config']['saved_searches'] === 'udb3') {
-                    return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
+                if ($app['config']['saved_searches_location'] === 'udb3') {
+                    $savedSearchRepositoryCollection = new SavedSearchRepositoryCollection();
+
+                    $savedSearchRepositoryCollection->addRepository(
+                        new SapiVersion(SapiVersion::V2),
                         $app['udb3_saved_searches_repo_sapi2']
+                    );
+
+                    $savedSearchRepositoryCollection->addRepository(
+                        new SapiVersion(SapiVersion::V3),
+                        $app['udb3_saved_searches_repo_sapi3']
+                    );
+
+                    return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
+                        $savedSearchRepositoryCollection
                     );
                 } else {
                     return new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
@@ -138,7 +152,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
      */
     private function createSavedSearchesRepo(Application $app): SavedSearchRepositoryInterface
     {
-        if ($app['config']['saved_searches'] === 'udb3') {
+        if ($app['config']['saved_searches_location'] === 'udb3') {
             $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi2'];
         } else {
             $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
