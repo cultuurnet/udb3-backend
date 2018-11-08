@@ -99,15 +99,15 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                 if ($app['config']['saved_searches_location'] === 'udb3') {
                     $savedSearchRepositoryCollection = new SavedSearchRepositoryCollection();
 
-                    $savedSearchRepositoryCollection->addRepository(
-                        new SapiVersion(SapiVersion::V2),
-                        $app['udb3_saved_searches_repo_sapi2']
-                    );
-
-                    $savedSearchRepositoryCollection->addRepository(
-                        new SapiVersion(SapiVersion::V3),
-                        $app['udb3_saved_searches_repo_sapi3']
-                    );
+                    $savedSearchRepositoryCollection = $savedSearchRepositoryCollection
+                        ->withRepository(
+                            new SapiVersion(SapiVersion::V2),
+                            $app['udb3_saved_searches_repo_sapi2']
+                        )
+                        ->withRepository(
+                            new SapiVersion(SapiVersion::V3),
+                            $app['udb3_saved_searches_repo_sapi3']
+                        );
 
                     return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
                         $savedSearchRepositoryCollection

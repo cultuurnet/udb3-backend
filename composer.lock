@@ -1038,12 +1038,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "790a7a27f242afe1cc12a95c64eac81cbf402ebc"
+                "reference": "103f8246640293dd5c688e1fbd4a3e5901b8b7ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/790a7a27f242afe1cc12a95c64eac81cbf402ebc",
-                "reference": "790a7a27f242afe1cc12a95c64eac81cbf402ebc",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/103f8246640293dd5c688e1fbd4a3e5901b8b7ad",
+                "reference": "103f8246640293dd5c688e1fbd4a3e5901b8b7ad",
                 "shasum": ""
             },
             "require": {
@@ -1080,7 +1080,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2016-01-05 16:01:34"
+            "time": "2018-11-08 11:30:34"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c8cf8447d190ebc246975fd06e686522bbe1b021"
+                "reference": "193291b904df9eb9e1c1f273e8690299c5d75411"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c8cf8447d190ebc246975fd06e686522bbe1b021",
-                "reference": "c8cf8447d190ebc246975fd06e686522bbe1b021",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/193291b904df9eb9e1c1f273e8690299c5d75411",
+                "reference": "193291b904df9eb9e1c1f273e8690299c5d75411",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-11-07 20:40:38"
+            "time": "2018-11-08 11:49:16"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
