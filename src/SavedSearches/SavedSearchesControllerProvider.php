@@ -18,8 +18,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         $app['saved_searches_read_controller'] = $app->share(
             function (Application $app) {
                 return new ReadSavedSearchesController(
-                    $app['current_user'],
-                    $app['saved_searches_repository']
+                    $app['saved_searches_read_collection']
                 );
             }
         );
@@ -36,7 +35,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/', 'saved_searches_read_controller:ownedByCurrentUser');
+        $controllers->get('/{sapiVersion}', 'saved_searches_read_controller:ownedByCurrentUser');
 
         $controllers->post('/{sapiVersion}', 'saved_searches_edit_controller:save');
         $controllers->delete('/{sapiVersion}/{id}', 'saved_searches_edit_controller:delete');

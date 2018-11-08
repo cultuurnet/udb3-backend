@@ -5,7 +5,8 @@ namespace CultuurNet\UDB3\Silex\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
-use CultuurNet\UDB3\SavedSearches\SavedSearchRepositoryCollection;
+use CultuurNet\UDB3\SavedSearches\SavedSearchReadRepositoryCollection;
+use CultuurNet\UDB3\SavedSearches\SavedSearchWriteRepositoryCollection;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\UiTIDSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchesServiceFactory;
@@ -81,25 +82,50 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['saved_searches_repository'] = $app->share(
+        $app['saved_searches_read_collection'] = $app->share(
             function (Application $app) {
                 $fixedRepository = $this->createFixedSavedSearchRepo($app);
-                $savedSearchesRepo = $this->createSavedSearchesRepo($app);
+                $savedSearchReadRepositoryCollection = new SavedSearchReadRepositoryCollection();
 
-                $repository = new CombinedSavedSearchRepository(
-                    $fixedRepository,
-                    $savedSearchesRepo
-                );
-                return $repository;
+                if ($app['config']['saved_searches_location'] === 'udb3') {
+                    $savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection->withRepository(
+                        new SapiVersion(SapiVersion::V2),
+                        new CombinedSavedSearchRepository(
+                            $fixedRepository,
+                            $app['udb3_saved_searches_repo_sapi2']
+                        )
+                    );
+
+                    $savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection->withRepository(
+                        new SapiVersion(SapiVersion::V3),
+                        new CombinedSavedSearchRepository(
+                            $fixedRepository,
+                            $app['udb3_saved_searches_repo_sapi3']
+                        )
+                    );
+                } else {
+                    $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
+                    $savedSearchesRepo->setLogger($app['saved_searches_logger']);
+
+                    $savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection->withRepository(
+                        new SapiVersion(SapiVersion::V2),
+                        new CombinedSavedSearchRepository(
+                            $fixedRepository,
+                            $savedSearchesRepo
+                        )
+                    );
+                }
+
+                return $savedSearchReadRepositoryCollection;
             }
         );
 
         $app['saved_searches_command_handler'] = $app->share(
             function (Application $app) {
                 if ($app['config']['saved_searches_location'] === 'udb3') {
-                    $savedSearchRepositoryCollection = new SavedSearchRepositoryCollection();
+                    $savedSearchWriteRepositoryCollection = new SavedSearchWriteRepositoryCollection();
 
-                    $savedSearchRepositoryCollection = $savedSearchRepositoryCollection
+                    $savedSearchWriteRepositoryCollection = $savedSearchWriteRepositoryCollection
                         ->withRepository(
                             new SapiVersion(SapiVersion::V2),
                             $app['udb3_saved_searches_repo_sapi2']
@@ -110,7 +136,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                         );
 
                     return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
-                        $savedSearchRepositoryCollection
+                        $savedSearchWriteRepositoryCollection
                     );
                 } else {
                     return new \CultuurNet\UDB3\SavedSearches\SavedSearchesCommandHandler(
@@ -144,21 +170,5 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
         }
 
         return new FixedSavedSearchRepository($user, $createdByQueryMode);
-    }
-
-    /**
-     * @param Application $app
-     * @return SavedSearchRepositoryInterface
-     */
-    private function createSavedSearchesRepo(Application $app): SavedSearchRepositoryInterface
-    {
-        if ($app['config']['saved_searches_location'] === 'udb3') {
-            $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi3'];
-        } else {
-            $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
-            $savedSearchesRepo->setLogger($app['saved_searches_logger']);
-        }
-
-        return $savedSearchesRepo;
     }
 }
