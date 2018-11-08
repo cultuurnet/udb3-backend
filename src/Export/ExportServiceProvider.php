@@ -101,7 +101,7 @@ class ExportServiceProvider implements ServiceProviderInterface
             $eventService,
             $searchService,
             new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
-            realpath(__DIR__ .  '/web/downloads'),
+            realpath(__DIR__ .  '/../../web/downloads'),
             new CallableIriGenerator(
                 function ($fileName) use ($app) {
                     return $app['config']['url'] . '/downloads/' . $fileName;
