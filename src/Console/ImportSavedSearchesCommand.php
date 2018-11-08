@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
+use CultuurNet\UDB3\ValueObject\SapiVersion;
 use League\Csv\Reader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +16,7 @@ class ImportSavedSearchesCommand extends AbstractCommand
 {
     private const CSV_FILE_ARG = 'csv_file';
     private const CSV_DELIMETER_OPT = 'csv_delimiter';
+    private const SAPI_VERSION = 'sapi_version';
 
     /**
      * @inheritdoc
@@ -28,6 +30,13 @@ class ImportSavedSearchesCommand extends AbstractCommand
                 self::CSV_FILE_ARG,
                 InputArgument::REQUIRED,
                 'Full path to the csv file to import. With NAME, QUERY and USER_ID headers.'
+            )
+            ->addOption(
+                self::SAPI_VERSION,
+                's',
+                InputOption::VALUE_OPTIONAL,
+                'The sapi version of the queries (v2 or v3). The default is v2',
+                'v2'
             )
             ->addOption(
                 self::CSV_DELIMETER_OPT,
@@ -59,7 +68,7 @@ class ImportSavedSearchesCommand extends AbstractCommand
         foreach ($records as $record) {
             $output->writeln('Importing query with name: ' . $record['NAME']);
 
-            $this->getUDB3SavedSearchesRepository()->write(
+            $this->getUDB3SavedSearchesRepository($input)->write(
                 new StringLiteral($record['USER_UUID']),
                 new StringLiteral($record['NAME']),
                 $this->getQueryString($record)
@@ -72,10 +81,15 @@ class ImportSavedSearchesCommand extends AbstractCommand
     /**
      * @return UDB3SavedSearchRepository
      */
-    private function getUDB3SavedSearchesRepository()
+    private function getUDB3SavedSearchesRepository(InputInterface $input)
     {
         $app = $this->getSilexApplication();
-        return $app['udb3_saved_searches_repo_sapi2'];
+
+        if ($input->getOption(self::SAPI_VERSION) === SapiVersion::V3) {
+            return $app['udb3_saved_searches_repo_sapi3'];
+        } else {
+            return $app['udb3_saved_searches_repo_sapi2'];
+        }
     }
 
     /**
