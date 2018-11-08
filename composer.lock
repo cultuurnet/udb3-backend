@@ -1038,12 +1038,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "103f8246640293dd5c688e1fbd4a3e5901b8b7ad"
+                "reference": "4785a631405c2387ad61e62365af146a050a1321"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/103f8246640293dd5c688e1fbd4a3e5901b8b7ad",
-                "reference": "103f8246640293dd5c688e1fbd4a3e5901b8b7ad",
+                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/4785a631405c2387ad61e62365af146a050a1321",
+                "reference": "4785a631405c2387ad61e62365af146a050a1321",
                 "shasum": ""
             },
             "require": {
@@ -1080,7 +1080,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2018-11-08 11:30:34"
+            "time": "2018-11-08 13:17:43"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "193291b904df9eb9e1c1f273e8690299c5d75411"
+                "reference": "39d2efeac6dabe805626eb1b76275de55200b52d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/193291b904df9eb9e1c1f273e8690299c5d75411",
-                "reference": "193291b904df9eb9e1c1f273e8690299c5d75411",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/39d2efeac6dabe805626eb1b76275de55200b52d",
+                "reference": "39d2efeac6dabe805626eb1b76275de55200b52d",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-11-08 11:49:16"
+            "time": "2018-11-08 13:27:54"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1919,12 +1919,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "3fe9f8137718535989190025aee03864c2ee97e0"
+                "reference": "c4e250f69a98c475dd46f73c2b116e2ee83d5837"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/3fe9f8137718535989190025aee03864c2ee97e0",
-                "reference": "3fe9f8137718535989190025aee03864c2ee97e0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/c4e250f69a98c475dd46f73c2b116e2ee83d5837",
+                "reference": "c4e250f69a98c475dd46f73c2b116e2ee83d5837",
                 "shasum": ""
             },
             "require": {
@@ -1977,7 +1977,7 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2018-11-08 10:47:19"
+            "time": "2018-11-08 14:14:45"
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
