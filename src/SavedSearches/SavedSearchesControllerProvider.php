@@ -39,7 +39,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         $controllers->get('/', 'saved_searches_read_controller:ownedByCurrentUser');
 
         $controllers->post('/', 'saved_searches_edit_controller:save');
-        $controllers->delete('/{id}', 'saved_searches_edit_controller:delete');
+        $controllers->delete('/{sapiVersion}/{id}', 'saved_searches_edit_controller:delete');
 
         return $controllers;
     }

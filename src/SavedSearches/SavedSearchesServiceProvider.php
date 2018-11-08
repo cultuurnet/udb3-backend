@@ -153,7 +153,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
     private function createSavedSearchesRepo(Application $app): SavedSearchRepositoryInterface
     {
         if ($app['config']['saved_searches_location'] === 'udb3') {
-            $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi2'];
+            $savedSearchesRepo = $app['udb3_saved_searches_repo_sapi3'];
         } else {
             $savedSearchesRepo = new UiTIDSavedSearchRepository($app['saved_searches']);
             $savedSearchesRepo->setLogger($app['saved_searches_logger']);
