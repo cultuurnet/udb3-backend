@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBusInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
+use CultuurNet\UDB3\Silex\AggregateType;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,25 +34,30 @@ class ReplayCommand extends AbstractCommand
      */
     protected function configure()
     {
+        $aggregateTypeEnumeration = implode(
+            ', ',
+            AggregateType::getConstants()
+        );
+
         $this
             ->setName('replay')
             ->setDescription('Replay the event stream to the event bus with only read models attached.')
             ->addArgument(
-                'store',
+                'aggregate',
                 InputArgument::OPTIONAL,
-                'Event store to replay events from',
-                'events'
+                'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.',
+                null
             )
             ->addOption(
                 'cache',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Alternative cache factory method to use, specify the service suffix, for example "redis"'
+                'Alternative cache factory method to use, specify the service suffix, for example "redis".'
             )
             ->addOption(
                 'subscriber',
                 null,
-                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 'Subscribers to register with the event bus. If not specified, all subscribers will be registered.'
             )
             ->addOption(
@@ -110,22 +116,21 @@ class ReplayCommand extends AbstractCommand
 
         $subscribers = $input->getOption('subscriber');
         if (!empty($subscribers)) {
-            $output->writeln(
-                'Registering the following subscribers with the event bus: ' . implode(', ', $subscribers)
-            );
-            $this->setSubscribers($subscribers);
+            $this->setSubscribers($subscribers, $output);
         }
+
+
+        $aggregateType = $this->getAggregateType($input, $output);
 
         $disableRelatedOfferSubscribers = $input->getOption(self::OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS);
         if ($disableRelatedOfferSubscribers) {
             $this->disableRelatedOfferSubscribers();
         }
 
-        $store = $this->getStore($input);
-
-        $startId = (int) $input->getOption(self::OPTION_START_ID);
+        $startId = $input->getOption(self::OPTION_START_ID);
         $cdbids = $input->getOption(self::OPTION_CDBID);
-        $stream = $this->getEventStream($store, $startId, $cdbids);
+
+        $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
         $eventBus = $this->getEventBus();
 
@@ -220,8 +225,12 @@ class ReplayCommand extends AbstractCommand
     /**
      * @param $subscribers
      */
-    private function setSubscribers($subscribers)
+    private function setSubscribers($subscribers, OutputInterface $output)
     {
+        $subscribersString = implode(', ', $subscribers);
+        $msg = 'Registering the following subscribers with the event bus: %s';
+        $output->writeln(sprintf($msg, $subscribersString));
+
         $app = $this->getSilexApplication();
 
         $config = $app['config'];
@@ -238,70 +247,59 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param string $store
-     * @param int|null $startId
+     * @param int $startId
+     * @param AggregateType $aggregateType
      * @param string[] $cdbids
      * @return EventStream
      */
     private function getEventStream(
-        $store = 'events',
         $startId = null,
+        AggregateType $aggregateType = null,
         $cdbids = null
     ) {
         $app = $this->getSilexApplication();
+        $startId = $startId !== null ? (int) $startId : 0;
 
         $eventStream = new EventStream(
             $app['dbal_connection'],
             $app['eventstore_payload_serializer'],
             new SimpleInterfaceSerializer(),
-            $store
+            'event_store'
         );
 
-        if ($startId) {
+        if ($startId > 0) {
             $eventStream = $eventStream->withStartId($startId);
+        }
+
+        if ($aggregateType) {
+            $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
         }
 
         if ($cdbids) {
             $eventStream = $eventStream->withCdbids($cdbids);
         }
 
-        // Older domain messages in the events, places, and organizers
-        // stores are missing some metadata. Add it using the offer locator
-        // class.
-        if (in_array($store, ['events', 'places', 'organizers'])) {
-            $offerLocator = $app[$store . '_locator_event_stream_decorator'];
-            $eventStream = $eventStream->withDomainEventStreamDecorator($offerLocator);
-        }
-
         return $eventStream;
     }
 
     /**
-     * @param InputInterface  $input
-     * @return mixed
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return AggregateType|null
      */
-    private function getStore(InputInterface $input)
-    {
-        $validStores = [
-            'events',
-            'places',
-            'organizers',
-            'variations',
-            'media_objects',
-            'roles',
-            'labels',
-        ];
+    private function getAggregateType(
+        InputInterface $input,
+        OutputInterface $output
+    ) {
+        $aggregateTypeInput = $input->getArgument('aggregate');
 
-        $store = $input->getArgument('store');
+        $aggregateType = null;
 
-        if (!in_array($store, $validStores)) {
-            throw new \RuntimeException(
-                'Invalid store "' . $store . '"", use one of: ' .
-                implode(', ', $validStores)
-            );
+        if (!empty($aggregateTypeInput)) {
+            $aggregateType = AggregateType::get($aggregateTypeInput);
         }
 
-        return $store;
+        return $aggregateType;
     }
 
     /**

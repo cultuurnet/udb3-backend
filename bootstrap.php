@@ -7,6 +7,7 @@ use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
+use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -59,6 +61,18 @@ $app['config'] = array_merge_recursive(
             ],
         ],
     ]
+);
+
+$app['event_store_factory'] = $app->protect(
+    function (AggregateType $aggregateType) use ($app) {
+        return new AggregateAwareDBALEventStore(
+            $app['dbal_connection'],
+            $app['eventstore_payload_serializer'],
+            new \Broadway\Serializer\SimpleInterfaceSerializer(),
+            'event_store',
+            $aggregateType
+        );
+    }
 );
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
@@ -369,12 +383,7 @@ $app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
 
 $app['dbal_event_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
-            $app['dbal_connection'],
-            $app['eventstore_payload_serializer'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'events'
-        );
+        return $app['event_store_factory'](AggregateType::EVENT());
     }
 );
 
@@ -813,12 +822,7 @@ $app['place_relations_repository'] = $app->share(
 
 $app['place_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
-            $app['dbal_connection'],
-            $app['eventstore_payload_serializer'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'places'
-        );
+        return $app['event_store_factory'](AggregateType::PLACE());
     }
 );
 
@@ -890,12 +894,7 @@ $app['eventstore_payload_serializer'] = $app->share(
 
 $app['organizer_store'] = $app->share(
     function ($app) {
-        $eventStore = new \Broadway\EventStore\DBALEventStore(
-            $app['dbal_connection'],
-            $app['eventstore_payload_serializer'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'organizers'
-        );
+        $eventStore = $app['event_store_factory'](AggregateType::ORGANIZER());
 
         return new UniqueDBALEventStoreDecorator(
             $eventStore,
@@ -953,12 +952,7 @@ $app['role_iri_generator'] = $app->share(
 
 $app['role_store'] = $app->share(
     function ($app) {
-        return new \Broadway\EventStore\DBALEventStore(
-            $app['dbal_connection'],
-            $app['eventstore_payload_serializer'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'roles'
-        );
+        return $app['event_store_factory'](AggregateType::ROLE());
     }
 );
 
