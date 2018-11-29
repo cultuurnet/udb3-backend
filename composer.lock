@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "95f679b0170de2509853dbfc14752b09",
+    "content-hash": "e9be5071a1ffba44e012d977afaffbbf",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1500,16 +1500,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-1490",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "370eb1eedecf65f962bbd65432a64d4f23360ef0"
+                "reference": "d1bcf2badd5791717e46a5dce3c13fda5ab17489"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/370eb1eedecf65f962bbd65432a64d4f23360ef0",
-                "reference": "370eb1eedecf65f962bbd65432a64d4f23360ef0",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d1bcf2badd5791717e46a5dce3c13fda5ab17489",
+                "reference": "d1bcf2badd5791717e46a5dce3c13fda5ab17489",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-11-29T07:12:57+00:00"
+            "time": "2018-11-29T07:36:45+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7817,12 +7817,6 @@
     ],
     "aliases": [
         {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1490",
-            "package": "cultuurnet/udb3"
-        },
-        {
             "alias": "1.2",
             "alias_normalized": "1.2.0.0",
             "version": "dev-compat-1-2",
@@ -7843,7 +7837,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cultuurnet/udb3": 20,
         "chrisboulton/php-resque": 20,
         "doctrine/migrations": 20,
         "cultuurnet/udb3-api-guard": 20,
