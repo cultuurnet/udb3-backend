@@ -1128,9 +1128,10 @@ $app['role_users_projector'] = $app->share(
 $app['sapi3_search_service'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-            new \GuzzleHttp\Psr7\Uri($app['config']['export']['search_url']),
+            new \GuzzleHttp\Psr7\Uri($app['config']['export']['search']['url']),
             new Client(new \GuzzleHttp\Client()),
-            $app['iri_offer_identifier_factory']
+            $app['iri_offer_identifier_factory'],
+            $app['config']['export']['search']['api_key'] ?? null
         );
     }
 );
