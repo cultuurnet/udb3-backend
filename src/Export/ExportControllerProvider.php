@@ -20,11 +20,19 @@ class ExportControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        $app['export_search_default_version'] = $app->share(
+            function (Application $app) {
+                return new SapiVersion(
+                    $app['config']['export']['search']['default_version']
+                );
+            }
+        );
+
         $app['json_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsJsonLDJSONDeserializer(
-                        new SapiVersion($app['config']['export_sapi_version'])
+                        $app['export_search_default_version']
                     ),
                     $app['event_export_command_bus']
                 );
@@ -35,7 +43,7 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsCSVJSONDeserializer(
-                        new SapiVersion($app['config']['export_sapi_version'])
+                        $app['export_search_default_version']
                     ),
                     $app['event_export_command_bus']
                 );
@@ -46,7 +54,7 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsOOXMLJSONDeserializer(
-                        new SapiVersion($app['config']['export_sapi_version'])
+                        $app['export_search_default_version']
                     ),
                     $app['event_export_command_bus']
                 );
@@ -57,7 +65,7 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsPDFJSONDeserializer(
-                        new SapiVersion($app['config']['export_sapi_version'])
+                        $app['export_search_default_version']
                     ),
                     $app['event_export_command_bus']
                 );
