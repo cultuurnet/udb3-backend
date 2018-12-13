@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "adf52e0474bcf77309c5c8b1dcac9baec30b2219"
+                "reference": "70b047b1550a22f6546664ca381eaf629e0b5c02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/adf52e0474bcf77309c5c8b1dcac9baec30b2219",
-                "reference": "adf52e0474bcf77309c5c8b1dcac9baec30b2219",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/70b047b1550a22f6546664ca381eaf629e0b5c02",
+                "reference": "70b047b1550a22f6546664ca381eaf629e0b5c02",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-12-11T13:29:18+00:00"
+            "time": "2018-12-13T16:50:53+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1684,12 +1684,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-export.git",
-                "reference": "3dda6299a1958a6c437813fd60b1620cc75fa3ad"
+                "reference": "df70c8bb495e84b387fc631dad0461d3d0009f96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/3dda6299a1958a6c437813fd60b1620cc75fa3ad",
-                "reference": "3dda6299a1958a6c437813fd60b1620cc75fa3ad",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/df70c8bb495e84b387fc631dad0461d3d0009f96",
+                "reference": "df70c8bb495e84b387fc631dad0461d3d0009f96",
                 "shasum": ""
             },
             "require": {
@@ -1733,7 +1733,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-12-11T13:39:55+00:00"
+            "time": "2018-12-13T16:51:35+00:00"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
