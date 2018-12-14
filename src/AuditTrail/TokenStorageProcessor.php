@@ -10,7 +10,8 @@ class TokenStorageProcessor implements ProcessorInterface
 {
     protected $tokenStorage;
 
-    public function __construct(TokenStorage $tokenStorage) {
+    public function __construct(TokenStorage $tokenStorage)
+    {
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -18,7 +19,8 @@ class TokenStorageProcessor implements ProcessorInterface
      * @param array $records
      * @return array The processed records
      */
-    public function __invoke(array $records) {
+    public function __invoke(array $records)
+    {
         $authToken = $this->tokenStorage->getToken();
 
         if ($authToken instanceof JwtUserToken && $authToken->isAuthenticated()) {

@@ -13,9 +13,11 @@ use Monolog\Processor\WebProcessor;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class AuditTrailServiceProvider implements ServiceProviderInterface {
+class AuditTrailServiceProvider implements ServiceProviderInterface
+{
 
-    public function register(Application $app) {
+    public function register(Application $app)
+    {
         $app['audit_trail_logger'] = $app->share(
             function (Application $app) {
                 $streamHandler = new StreamHandler(
@@ -65,6 +67,7 @@ class AuditTrailServiceProvider implements ServiceProviderInterface {
         );
     }
 
-    public function boot(Application $app) {
+    public function boot(Application $app)
+    {
     }
 }

@@ -5,7 +5,8 @@ namespace CultuurNet\UDB3\Silex\AuditTrail;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class AuditTrailLogger {
+abstract class AuditTrailLogger
+{
 
     /**
      * @var LoggerInterface
@@ -18,15 +19,16 @@ abstract class AuditTrailLogger {
         $this->logger = $logger;
     }
 
-    protected function requestNeedsToBeLogged(Request $request): bool {
+    protected function requestNeedsToBeLogged(Request $request): bool
+    {
         if ($request->getMethod() == Request::METHOD_POST ||
             $request->getMethod() == Request::METHOD_PUT ||
             $request->getMethod() == Request::METHOD_PATCH ||
             $request->getMethod() == Request::METHOD_DELETE) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     protected function addToContextBasedOnContentType(

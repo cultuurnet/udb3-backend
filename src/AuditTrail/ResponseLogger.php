@@ -6,7 +6,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ResponseLogger extends AuditTrailLogger {
+class ResponseLogger extends AuditTrailLogger
+{
 
     /**
      * @var LoggerInterface
@@ -19,7 +20,8 @@ class ResponseLogger extends AuditTrailLogger {
         $this->logger = $logger;
     }
 
-    public function logResponse(Request $request, Response $response) {
+    public function logResponse(Request $request, Response $response)
+    {
         if (!$this->requestNeedsToBeLogged($request)) {
             return;
         }
@@ -29,7 +31,8 @@ class ResponseLogger extends AuditTrailLogger {
         $this->logger->info('Outgoing response', $contextValues);
     }
 
-    private function addResponsePayload(Response $response): array {
+    private function addResponsePayload(Response $response): array
+    {
         $contextValues = [];
 
         if (!empty($response->getContent())) {
@@ -39,5 +42,4 @@ class ResponseLogger extends AuditTrailLogger {
 
         return $contextValues;
     }
-
 }

@@ -2,12 +2,13 @@
 
 namespace CultuurNet\UDB3\Silex\AuditTrail;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class RequestLogger extends AuditTrailLogger {
+class RequestLogger extends AuditTrailLogger
+{
 
-    public function logRequest(Request $request) {
+    public function logRequest(Request $request)
+    {
         if (!$this->requestNeedsToBeLogged($request)) {
             return;
         }
