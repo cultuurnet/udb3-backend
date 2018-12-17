@@ -14,7 +14,7 @@ class Version20181217144324 extends AbstractMigration
         'labels',
         'roles',
         'media_objects',
-        'variations'
+        'variations',
     ];
 
     /**
