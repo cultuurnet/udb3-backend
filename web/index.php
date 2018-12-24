@@ -225,7 +225,7 @@ $app->after(function (Request $request, Response $response, Application $app) {
 });
 
 $app->error(function (\Exception $e, Request $request, $code, Application $app) {
-    $app['error_logger']->logError($request, $code);
+    $app['error_logger']->logError($e, $request, $code);
 });
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
