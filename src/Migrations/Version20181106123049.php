@@ -8,11 +8,12 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Add roles_search_v3 table.
  */
 class Version20181106123049 extends AbstractMigration
 {
-    const ROLES_SEARCH_V3 = 'roles_search_v3';
+    private const ROLES_SEARCH_V3 = 'roles_search_v3';
+
     /**
      * @param Schema $schema
      */
