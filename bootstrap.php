@@ -1353,4 +1353,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Import\ImportServiceProvider($subscrib
 $app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
+$app->register(new \CultuurNet\UDB3\Silex\AuditTrailServiceProvider());
+
 return $app;
