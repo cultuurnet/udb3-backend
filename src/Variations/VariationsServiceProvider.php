@@ -2,11 +2,12 @@
 
 namespace CultuurNet\UDB3\Silex\Variations;
 
-use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Variations\DefaultOfferVariationService;
 use CultuurNet\UDB3\Variations\OfferVariationCommandHandler;
 use CultuurNet\UDB3\Variations\OfferVariationRepository;
@@ -54,11 +55,12 @@ class VariationsServiceProvider implements ServiceProviderInterface
 
         $app['variations.event_store'] = $app->share(
             function ($app) {
-                return new DBALEventStore(
+                return new AggregateAwareDBALEventStore(
                     $app['dbal_connection'],
                     $app['eventstore_payload_serializer'],
                     new SimpleInterfaceSerializer(),
-                    'variations'
+                    'event_store',
+                    AggregateType::VARIATION()
                 );
             }
         );
