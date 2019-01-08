@@ -15,6 +15,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
@@ -214,6 +215,18 @@ $app->before(
         $metadataEnricher->setContext(new \Broadway\Domain\Metadata($contextValues));
     }
 );
+
+$app->before(function (Request $request, Application $app) {
+    $app['request_logger']->logRequest($request);
+});
+
+$app->after(function (Request $request, Response $response, Application $app) {
+    $app['response_logger']->logResponse($request, $response);
+});
+
+$app->error(function (\Exception $e, Request $request, $code, Application $app) {
+    $app['error_logger']->logError($e, $request, $code);
+});
 
 $app->mount('events/export', new \CultuurNet\UDB3\Silex\Export\ExportControllerProvider());
 
