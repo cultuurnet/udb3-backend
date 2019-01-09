@@ -62,5 +62,6 @@ $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PermissionCommand());
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand());
 $consoleApp->add(new FireProjectedToJSONLDCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand());
+$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand());
 
 $consoleApp->run();

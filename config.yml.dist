@@ -154,3 +154,6 @@ saved_searches: udb3-sapi2
 # The mode for the created by query (uuid/email/mixed)
 # When the config is missing uuid will be used by default.
 created_by_query_mode: mixed
+
+# Role constraints can be on sapi2 or sapi3
+role_constraints_mode: sapi2
