@@ -148,9 +148,6 @@ base_price_translations:
   en: 'Base tariff'
   de: 'Basisrate'
 
-# The location to store the saved searches (uitid or udb3)
-saved_searches_location: udb3
-
 # The mode for the created by query (uuid/email/mixed)
 # When the config is missing uuid will be used by default.
 created_by_query_mode: mixed
