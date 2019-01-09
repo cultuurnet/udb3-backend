@@ -8,16 +8,18 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Add the table for SAPI3 saved searches.
  */
 class Version20181107142155 extends AbstractMigration
 {
+    private const SAVED_SEARCHES_SAPI3 = 'saved_searches_sapi3';
+
     /**
      * @param Schema $schema
      */
     public function up(Schema $schema)
     {
-        $table = $schema->createTable('saved_searches_sapi3');
+        $table = $schema->createTable(self::SAVED_SEARCHES_SAPI3);
 
         $table->addColumn(SchemaConfigurator::ID, Type::GUID)
             ->setLength(36)
@@ -43,6 +45,6 @@ class Version20181107142155 extends AbstractMigration
      */
     public function down(Schema $schema)
     {
-        $schema->dropTable('saved_searches_sapi3');
+        $schema->dropTable(self::SAVED_SEARCHES_SAPI3);
     }
 }
