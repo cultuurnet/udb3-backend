@@ -224,7 +224,10 @@ $app->after(function (Request $request, Response $response, Application $app) {
     $app['response_logger']->logResponse($request, $response);
 });
 
-$app->error(function (\Exception $e, Request $request, $code, Application $app) {
+$app->error(function (\Exception $e, $code) use ($app) {
+    /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack */
+    $requestStack = $app['request_stack'];
+    $request = $requestStack->getCurrentRequest();
     $app['error_logger']->logError($e, $request, $code);
 });
 
