@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex\Labels;
 
-use Broadway\EventStore\DBALEventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\ConstraintAwareLabelService;
@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelR
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
+use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
@@ -246,11 +247,8 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::UNIQUE_EVENT_STORE] = $app->share(
             function (Application $app) {
-                $eventStore = new DBALEventStore(
-                    $app['dbal_connection'],
-                    $app['eventstore_payload_serializer'],
-                    new SimpleInterfaceSerializer(),
-                    'labels'
+                $eventStore = $app['event_store_factory'](
+                    AggregateType::LABEL()
                 );
 
                 return new UniqueDBALEventStoreDecorator(

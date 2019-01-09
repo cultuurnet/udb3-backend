@@ -1,11 +1,7 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\DatabaseSchemaInstallerInterface;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

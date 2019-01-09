@@ -16,6 +16,9 @@ class ImportSavedSearchesCommand extends AbstractCommand
 {
     private const CSV_FILE_ARG = 'csv_file';
     private const CSV_DELIMETER_OPT = 'csv_delimiter';
+
+    private const USER_OPT = 'user';
+
     private const SAPI_VERSION = 'sapi_version';
 
     /**
@@ -44,6 +47,12 @@ class ImportSavedSearchesCommand extends AbstractCommand
                 InputOption::VALUE_OPTIONAL,
                 'Delimeter for the csv file (default is comma).',
                 ','
+            )
+            ->addOption(
+                self::USER_OPT,
+                '',
+                InputOption::VALUE_REQUIRED,
+                'Only import records of the given user'
             );
     }
 
@@ -62,10 +71,19 @@ class ImportSavedSearchesCommand extends AbstractCommand
                 $input->getOption(self::CSV_DELIMETER_OPT)
             );
 
+        $user = $input->getOption(self::USER_OPT);
+        if ($user) {
+            $output->writeln('Only importing saved searches for user with UUID ' . $user);
+        }
+
         $output->writeln('Starting import...');
 
         $records = $csvReader->getRecords();
         foreach ($records as $record) {
+            if ($user && $record['USER_UUID'] !== $user) {
+                continue;
+            }
+
             $output->writeln('Importing query with name: ' . $record['NAME']);
 
             $this->getUDB3SavedSearchesRepository($input)->write(

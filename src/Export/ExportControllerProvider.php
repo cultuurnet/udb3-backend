@@ -6,12 +6,11 @@ use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSVJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXMLJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
+use CultuurNet\UDB3\EventExport\SapiVersion;
 use CultuurNet\UDB3\Symfony\CommandDeserializerController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class ExportControllerProvider implements ControllerProviderInterface
 {
@@ -21,10 +20,20 @@ class ExportControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        $app['export_search_default_version'] = $app->share(
+            function (Application $app) {
+                return new SapiVersion(
+                    $app['config']['export']['search']['default_version']
+                );
+            }
+        );
+
         $app['json_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsJsonLDJSONDeserializer(),
+                    new ExportEventsAsJsonLDJSONDeserializer(
+                        $app['export_search_default_version']
+                    ),
                     $app['event_export_command_bus']
                 );
             }
@@ -33,7 +42,9 @@ class ExportControllerProvider implements ControllerProviderInterface
         $app['csv_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsCSVJSONDeserializer(),
+                    new ExportEventsAsCSVJSONDeserializer(
+                        $app['export_search_default_version']
+                    ),
                     $app['event_export_command_bus']
                 );
             }
@@ -42,7 +53,9 @@ class ExportControllerProvider implements ControllerProviderInterface
         $app['ooxml_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsOOXMLJSONDeserializer(),
+                    new ExportEventsAsOOXMLJSONDeserializer(
+                        $app['export_search_default_version']
+                    ),
                     $app['event_export_command_bus']
                 );
             }
@@ -51,12 +64,15 @@ class ExportControllerProvider implements ControllerProviderInterface
         $app['pdf_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsPDFJSONDeserializer(),
+                    new ExportEventsAsPDFJSONDeserializer(
+                        $app['export_search_default_version']
+                    ),
                     $app['event_export_command_bus']
                 );
             }
         );
 
+        /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/json', 'json_export_controller:handle');
