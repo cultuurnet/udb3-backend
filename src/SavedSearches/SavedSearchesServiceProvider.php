@@ -54,14 +54,14 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
                 $savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection
                     ->withRepository(
-                        new SapiVersion(SapiVersion::V3),
+                        SapiVersion::V3(),
                         new CombinedSavedSearchRepository(
                             $fixedRepository,
                             $app['udb3_saved_searches_repo_sapi3']
                         )
                     )
                     ->withRepository(
-                        new SapiVersion(SapiVersion::V2),
+                        SapiVersion::V2(),
                         new CombinedSavedSearchRepository(
                             $fixedRepository,
                             $app['udb3_saved_searches_repo_sapi2']
@@ -78,11 +78,11 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
                 $savedSearchWriteRepositoryCollection = $savedSearchWriteRepositoryCollection
                     ->withRepository(
-                        new SapiVersion(SapiVersion::V3),
+                        SapiVersion::V3(),
                         $app['udb3_saved_searches_repo_sapi3']
                     )
                     ->withRepository(
-                        new SapiVersion(SapiVersion::V2),
+                        SapiVersion::V2(),
                         $app['udb3_saved_searches_repo_sapi2']
                     );
 
