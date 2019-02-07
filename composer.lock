@@ -785,12 +785,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "6cdf91eed3e8158da2a245d65f24f738e3a419e8"
+                "reference": "493aa88f7467407c4d5226ff8290a2f46ed2cafd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/6cdf91eed3e8158da2a245d65f24f738e3a419e8",
-                "reference": "6cdf91eed3e8158da2a245d65f24f738e3a419e8",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/493aa88f7467407c4d5226ff8290a2f46ed2cafd",
+                "reference": "493aa88f7467407c4d5226ff8290a2f46ed2cafd",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +836,7 @@
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "time": "2018-11-29 10:00:22"
+            "time": "2019-01-28 09:52:56"
         },
         {
             "name": "cultuurnet/cdb",
