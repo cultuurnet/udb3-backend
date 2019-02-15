@@ -152,5 +152,5 @@ base_price_translations:
 # When the config is missing uuid will be used by default.
 created_by_query_mode: mixed
 
-# Role constraints can be on sapi2 or sapi3
-role_constraints_mode: sapi2
+# Role constraints can use SAPI v2 or v3
+role_constraints_mode: v2
