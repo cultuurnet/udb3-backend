@@ -49,21 +49,22 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
         $app['saved_searches_read_collection'] = $app->share(
             function (Application $app) {
-                $fixedRepository = $this->createFixedSavedSearchRepo($app);
+                $fixedRepositorySapi2 = $this->createFixedSavedSearchRepo($app, SapiVersion::V2());
+                $fixedRepositorySapi3 = $this->createFixedSavedSearchRepo($app, SapiVersion::V3());
                 $savedSearchReadRepositoryCollection = new SavedSearchReadRepositoryCollection();
 
                 $savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection
                     ->withRepository(
                         SapiVersion::V3(),
                         new CombinedSavedSearchRepository(
-                            $fixedRepository,
+                            $fixedRepositorySapi3,
                             $app['udb3_saved_searches_repo_sapi3']
                         )
                     )
                     ->withRepository(
                         SapiVersion::V2(),
                         new CombinedSavedSearchRepository(
-                            $fixedRepository,
+                            $fixedRepositorySapi2,
                             $app['udb3_saved_searches_repo_sapi2']
                         )
                     );
@@ -104,7 +105,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
      * @param Application $app
      * @return SavedSearchRepositoryInterface
      */
-    private function createFixedSavedSearchRepo(Application $app): SavedSearchRepositoryInterface
+    private function createFixedSavedSearchRepo(Application $app, SapiVersion $sapiVersion): SavedSearchRepositoryInterface
     {
         $user = $app['current_user'];
 
@@ -115,6 +116,6 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             );
         }
 
-        return new FixedSavedSearchRepository($user, $createdByQueryMode);
+        return new FixedSavedSearchRepository($user, $createdByQueryMode, $sapiVersion);
     }
 }
