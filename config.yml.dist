@@ -148,9 +148,6 @@ base_price_translations:
   en: 'Base tariff'
   de: 'Basisrate'
 
-# Saved searches can be uitid or udb3-sapi2
-saved_searches: udb3-sapi2
-
 # The mode for the created by query (uuid/email/mixed)
 # When the config is missing uuid will be used by default.
 created_by_query_mode: mixed
