@@ -5,15 +5,16 @@ namespace CultuurNet\UDB3\Silex\Security;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
+use CultuurNet\UDB3\Offer\Security\Sapi3SearchQueryFactory;
+use CultuurNet\UDB3\Offer\Security\Sapi3UserPermissionMatcher;
 use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
 use CultuurNet\UDB3\Organizer\SearchAPI2\IsOrganizerActor;
-use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\FilteredSearchService;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
+use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class OrganizerSecurityServiceProvider implements ServiceProviderInterface
 {
@@ -31,15 +32,8 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['organizer_user_permission_matcher'] = $app->share(
+        $app['organizer_user_permission_matcher.v2'] = $app->share(
             function (Application $app) {
-                $userConstraintReadRepository = new UserConstraintsReadRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral('user_roles'),
-                    new StringLiteral('role_permissions'),
-                    new StringLiteral('roles_search')
-                );
-
                 // Note that the current ResultSetPullParser will not actually
                 // parse organizer actors, as it only supports events and
                 // places. However, it correctly returns the total item count,
@@ -52,11 +46,30 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
                 );
 
                 return new UserPermissionMatcher(
-                    $userConstraintReadRepository,
+                    $app['user_constraints_read_repository.v2'],
                     new SearchQueryFactory(),
                     $app['organizer_search_api_2'],
                     $resultSetParser
                 );
+            }
+        );
+
+        $app['organizer_user_permission_matcher.v3'] = $app->share(
+            function (Application $app) {
+                return new Sapi3UserPermissionMatcher(
+                    $app['user_constraints_read_repository.v3'],
+                    new Sapi3SearchQueryFactory(),
+                    $app[Sapi3SearchServiceProvider::ORGANIZERS_COUNTING_SEARCH_SERVICE]
+                );
+            }
+        );
+
+        $app['organizer_user_permission_matcher'] = $app->share(
+            function (Application $app) {
+                /** @var \CultuurNet\UDB3\ValueObject\SapiVersion $sapiVersion */
+                $sapiVersion = $app['role_constraints_mode'];
+
+                return $app['organizer_user_permission_matcher.' . $sapiVersion->getValue()];
             }
         );
 

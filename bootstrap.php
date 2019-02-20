@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
@@ -1147,17 +1148,6 @@ $app['role_users_projector'] = $app->share(
     }
 );
 
-$app['sapi3_search_service'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-            new \GuzzleHttp\Psr7\Uri($app['config']['export']['search']['url']),
-            new Client(new \GuzzleHttp\Client()),
-            $app['iri_offer_identifier_factory'],
-            $app['config']['export']['search']['api_key'] ?? null
-        );
-    }
-);
-
 $app['event_export_notification_mail_factory'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(
@@ -1295,6 +1285,7 @@ $app['predis.client'] = $app->share(function ($app) {
 });
 
 $app->register(new \CultuurNet\UDB3\Silex\Search\SAPISearchServiceProvider());
+$app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 $app->register(

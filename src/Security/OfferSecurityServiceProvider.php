@@ -10,15 +10,12 @@ use CultuurNet\UDB3\Offer\Security\Sapi3SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Sapi3UserPermissionMatcher;
 use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
-use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
-use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferSecurityServiceProvider implements ServiceProviderInterface
 {
@@ -27,15 +24,6 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['current_user_identification'] = $app->share(
-            function (Application $app) {
-                return new CultureFeedUserIdentification(
-                    $app['current_user'],
-                    $app['config']['user_permissions']
-                );
-            }
-        );
-
         $app['offer_permission_query'] = $app->share(
             function (Application $app) {
                 return new CombinedPermissionQuery(
@@ -44,12 +32,6 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                         $app['place_permission.repository'],
                     ]
                 );
-            }
-        );
-
-        $app['role_constraints_mode'] = $app->share(
-            function (Application $app) {
-                return SapiVersion::fromNative($app['config']['role_constraints_mode']);
             }
         );
 
@@ -79,34 +61,12 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['user_constraints_read_repository.v2'] = $app->share(
-            function (Application $app) {
-                return new UserConstraintsReadRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
-                    new StringLiteral(UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE),
-                    $app['role_search_repository.table_name']
-                );
-            }
-        );
-
         $app['user_permission_matcher.v3'] = $app->share(
             function (Application $app) {
                 return new Sapi3UserPermissionMatcher(
                     $app['user_constraints_read_repository.v3'],
                     new Sapi3SearchQueryFactory(),
-                    $app['sapi3_search_service']
-                );
-            }
-        );
-
-        $app['user_constraints_read_repository.v3'] = $app->share(
-            function (Application $app) {
-                return new UserConstraintsReadRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
-                    new StringLiteral(UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE),
-                    $app['role_search_v3_repository.table_name']
+                    $app[Sapi3SearchServiceProvider::OFFERS_COUNTING_SEARCH_SERVICE]
                 );
             }
         );
