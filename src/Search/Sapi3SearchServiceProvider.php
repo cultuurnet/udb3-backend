@@ -30,8 +30,7 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
                 $search = new \CultuurNet\UDB3\Search\Sapi3CountingSearchService(
                     new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/offers/'),
                     new Client(new \GuzzleHttp\Client()),
-                    $app['config']['search']['v3']['api_key'] ?? null,
-
+                    $app['config']['search']['v3']['api_key'] ?? null
                 );
 
                 return $search->withQueryParameter(
