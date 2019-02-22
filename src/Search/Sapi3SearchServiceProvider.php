@@ -17,7 +17,7 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
         $app[self::SEARCH_SERVICE] = $app->share(
             function ($app) {
                 return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-                    new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/offers/'),
+                    new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/events/'),
                     new Client(new \GuzzleHttp\Client()),
                     $app['iri_offer_identifier_factory'],
                     $app['config']['export']['search']['api_key'] ?? null
