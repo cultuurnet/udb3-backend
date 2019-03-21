@@ -37,9 +37,11 @@ abstract class AuditTrailLogger
 
         $contextValues = [];
 
-        if ($request->getContentType() == 'json') {
+        if ($request->getContentType() == 'json' ||
+            $request->getContentType() == 'jsonld' ||
+            $request->getContentType() == 'txt') {
+            $contextValues['request']['headers'] = $request->headers->all();
             if (!empty($request->getContent())) {
-                $contextValues['request']['headers'] = $request->headers->all();
                 $contextValues['request']['payload'] = json_decode($request->getContent());
             }
         }
