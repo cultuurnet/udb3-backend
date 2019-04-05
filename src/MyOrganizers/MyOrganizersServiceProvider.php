@@ -4,10 +4,8 @@ namespace CultuurNet\UDB3\Silex\MyOrganizers;
 
 use CultuurNet\UDB3\MyOrganizers\ReadModel\Doctrine\DBALLookupService;
 use CultuurNet\UDB3\MyOrganizers\ReadModel\Doctrine\DBALRepository;
-use CultuurNet\UDB3\MyOrganizers\ReadModel\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\MyOrganizers\ReadModel\Projector;
 use CultuurNet\UDB3\MyOrganizers\ReadModel\UDB2Projector;
-use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\User\UserServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -22,31 +20,11 @@ class MyOrganizersServiceProvider implements ServiceProviderInterface
 
     private const REPOSITORY = 'my_organizers.repository';
 
-    private const SCHEMA_CONFIGURATOR = 'my_organizers.schema_configurator';
     private const TABLE_NAME = 'my_organizers.table_name';
-    private const DATABASE_INSTALLER = 'database.installer';
 
     public function register(Application $app)
     {
         $app[self::TABLE_NAME] = new StringLiteral('my_organizers');
-
-        $app[self::SCHEMA_CONFIGURATOR] = $app->share(
-            function (Application $app) {
-                return new SchemaConfigurator($app[self::TABLE_NAME]);
-            }
-        );
-
-        // Add our schema configurator to the database installer.
-        $app[self::DATABASE_INSTALLER] = $app->extend(
-            self::DATABASE_INSTALLER,
-            function (DatabaseSchemaInstaller $installer, Application $app) {
-                $installer->addSchemaConfigurator(
-                    $app[self::SCHEMA_CONFIGURATOR]
-                );
-
-                return $installer;
-            }
-        );
 
         $app[self::REPOSITORY] = $app->share(
             function (Application $app) {

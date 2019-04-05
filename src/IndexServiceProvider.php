@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\UDB3\ReadModel\Index\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\ReadModel\Index\Projector;
 use CultuurNet\UDB3\ReadModel\Index\UDB2Projector;
 use CultuurNet\UDB3\Silex\User\UserServiceProvider;
@@ -52,26 +51,6 @@ class IndexServiceProvider implements ServiceProviderInterface
                     $app[UserServiceProvider::ITEM_BASE_ADAPTER_FACTORY],
                     Domain::specifyType('uitdatabank.be')
                 );
-            }
-        );
-
-
-
-        $app['index.schema_configurator'] = $app->share(
-            function (Application $app) {
-                return new SchemaConfigurator($app['index.table_name']);
-            }
-        );
-
-        // Add our schema configurator to the database installer.
-        $app['database.installer'] = $app->extend(
-            'database.installer',
-            function (DatabaseSchemaInstaller $installer, Application $app) {
-                $installer->addSchemaConfigurator(
-                    $app['index.schema_configurator']
-                );
-
-                return $installer;
             }
         );
     }

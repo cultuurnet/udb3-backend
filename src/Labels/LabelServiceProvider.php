@@ -16,19 +16,15 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Projector as JsonProjector;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\BroadcastingWriteRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository as JsonReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALWriteRepository as JsonWriteRepository;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\SchemaConfigurator as JsonSchemaConfigurator;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\GodUserReadRepositoryDecorator;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Projector as RelationsProjector;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository as RelationsReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALWriteRepository as RelationsWriteRepository;
-use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator as RelationsSchemaConfigurator;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\LabelRolesWriteRepository;
-use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\SchemaConfigurator as LabelRolesSchemaConfigurator;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesProjector;
 use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Silex\AggregateType;
-use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Symfony\Management\User\CultureFeedUserIdentification;
@@ -45,9 +41,6 @@ class LabelServiceProvider implements ServiceProviderInterface
     const RELATIONS_TABLE = 'labels_relations';
     const LABEL_ROLES_TABLE = 'label_roles';
 
-    const JSON_REPOSITORY_SCHEMA = 'labels.json_repository_schema';
-    const RELATIONS_REPOSITORY_SCHEMA = 'labels.relations_repository_schema';
-    const LABEL_ROLES_REPOSITORY_SCHEMA = 'labels.labels_roles_repository_schema';
     const JSON_READ_REPOSITORY = 'labels.json_read_repository';
     const JSON_WRITE_REPOSITORY = 'labels.json_write_repository';
     const RELATIONS_READ_REPOSITORY = 'labels.relations_read_repository';
@@ -114,30 +107,6 @@ class LabelServiceProvider implements ServiceProviderInterface
      */
     private function setUpReadModels(Application $app)
     {
-        $app[self::JSON_REPOSITORY_SCHEMA] = $app->share(
-            function () {
-                return new JsonSchemaConfigurator(
-                    new StringLiteral(self::JSON_TABLE)
-                );
-            }
-        );
-
-        $app[self::RELATIONS_REPOSITORY_SCHEMA] = $app->share(
-            function () {
-                return new RelationsSchemaConfigurator(
-                    new StringLiteral(self::RELATIONS_TABLE)
-                );
-            }
-        );
-
-        $app[self::LABEL_ROLES_REPOSITORY_SCHEMA] = $app->share(
-            function () {
-                return new LabelRolesSchemaConfigurator(
-                    new StringLiteral(self::LABEL_ROLES_TABLE)
-                );
-            }
-        );
-
         $app[self::JSON_READ_REPOSITORY] = $app->share(
             function (Application $app) {
                 return new GodUserReadRepositoryDecorator(
@@ -188,22 +157,6 @@ class LabelServiceProvider implements ServiceProviderInterface
                     $app['dbal_connection'],
                     new StringLiteral(self::LABEL_ROLES_TABLE)
                 );
-            }
-        );
-
-        $app['database.installer'] = $app->extend(
-            'database.installer',
-            function (DatabaseSchemaInstaller $installer, Application $app) {
-                $installer->addSchemaConfigurator(
-                    $app[LabelServiceProvider::JSON_REPOSITORY_SCHEMA]
-                );
-                $installer->addSchemaConfigurator(
-                    $app[LabelServiceProvider::RELATIONS_REPOSITORY_SCHEMA]
-                );
-                $installer->addSchemaConfigurator(
-                    $app[LabelServiceProvider::LABEL_ROLES_REPOSITORY_SCHEMA]
-                );
-                return $installer;
             }
         );
     }
