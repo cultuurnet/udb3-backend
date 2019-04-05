@@ -1162,10 +1162,6 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$app['amqp-execution-delay'] = isset($app['config']['amqp_execution_delay']) ?
-    Natural::fromNative($app['config']['amqp_execution_delay']) :
-    Natural::fromNative(10);
-
 $app['logger.amqp.event_bus_forwarder'] = $app->share(
     function () {
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
