@@ -46,7 +46,6 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\InstallCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ReplayCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\EventAncestorsCommand());
 $consoleApp->add(new \CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand());
