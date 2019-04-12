@@ -46,7 +46,8 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
                 $organizerImporter = new OrganizerDocumentImporter(
                     $app['organizer_repository'],
                     $app['organizer_denormalizer'],
-                    $app['imports_command_bus']
+                    $app['imports_command_bus'],
+                    $app['labels.labels_locked_for_import_repository']
                 );
 
                 $labelPreProcessor = new LabelPreProcessingDocumentImporter(

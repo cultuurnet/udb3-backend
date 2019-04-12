@@ -44,7 +44,8 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
                     $app['place_denormalizer'],
                     $app['import_image_collection_factory'],
                     $app['imports_command_bus'],
-                    $app['should_auto_approve_new_offer']
+                    $app['should_auto_approve_new_offer'],
+                    $app['labels.labels_locked_for_import_repository']
                 );
 
                 $termPreProcessor = new TermPreProcessingDocumentImporter(
