@@ -25,7 +25,7 @@ class ExportServiceProvider implements ServiceProviderInterface
 
                 $eventExportServiceCollection = $eventExportServiceCollection
                     ->withService(
-                        SapiVersion::V2(),
+                        new SapiVersion(SapiVersion::V2),
                         $this->createEventExportService(
                             $app,
                             $app['search_service']
