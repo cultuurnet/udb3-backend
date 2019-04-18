@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "e145704afbd761397dbdc4356810df4d3f2c6bb2"
+                "reference": "1568f0d1e57990003349074ece97faa845048b13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/e145704afbd761397dbdc4356810df4d3f2c6bb2",
-                "reference": "e145704afbd761397dbdc4356810df4d3f2c6bb2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1568f0d1e57990003349074ece97faa845048b13",
+                "reference": "1568f0d1e57990003349074ece97faa845048b13",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-04-11T14:42:58+00:00"
+            "time": "2019-04-18T07:36:26+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1876,12 +1876,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "25088e83d94bb41c887a4cf4229344675d94999f"
+                "reference": "8d1600575741f09da1b53e3f751c52565c946b43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/25088e83d94bb41c887a4cf4229344675d94999f",
-                "reference": "25088e83d94bb41c887a4cf4229344675d94999f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/8d1600575741f09da1b53e3f751c52565c946b43",
+                "reference": "8d1600575741f09da1b53e3f751c52565c946b43",
                 "shasum": ""
             },
             "require": {
@@ -1911,7 +1911,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29T14:07:42+00:00"
+            "time": "2019-04-18T07:43:06+00:00"
         },
         {
             "name": "cultuurnet/udb3-symfony",
@@ -6578,7 +6578,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",

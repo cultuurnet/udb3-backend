@@ -71,6 +71,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     $app['import_image_collection_factory'],
                     $app['imports_command_bus'],
                     $app['should_auto_approve_new_offer'],
+                    $app['labels.labels_locked_for_import_repository'],
                     $app['event_importer.logger']
                 );
 
