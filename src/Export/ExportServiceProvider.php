@@ -60,8 +60,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                     $app['event_export_service_collection'],
                     $app['config']['prince']['binary'],
                     $eventInfoService,
-                    $app['calendar_summary_repository'],
-                    $app['geocoding_service.google_maps_api_key']
+                    $app['calendar_summary_repository']
                 );
             }
         );
