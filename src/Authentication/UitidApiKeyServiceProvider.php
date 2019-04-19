@@ -52,12 +52,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['auth.any_api_key_authenticator'] = $app->share(
-            function () {
-                return new AllowAnyAuthenticator();
-            }
-        );
-
         $app['auth.request_authenticator'] = $app->share(
             function (Application $app) {
                 return new ApiKeyRequestAuthenticator(
