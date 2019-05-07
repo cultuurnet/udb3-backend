@@ -128,6 +128,9 @@ jwt:
   validation:
     iss: http://culudb-jwt-provider.dev
 
+api_key:
+  group_id: ***
+
 udb2_cdbxml_enricher:
   http_response_timeout: 3
   http_connect_timeout: 1
