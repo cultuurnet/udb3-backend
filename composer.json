@@ -44,7 +44,7 @@
     "cultuurnet/uitid-credentials": "~0.1",
     "cultuurnet/udb3-api-guard": "dev-master#205a569b46e0d59485e86eaa93f0db50e3fd96ce as 0.1",
     "cultuurnet/monolog-socketio": "~0.1",
-    "cultuurnet/udb3-export": "dev-feature/III-2831 as 0.1",
+    "cultuurnet/udb3-export": "~0.1",
     "nesbot/carbon": "^1.22",
     "willdurand/geocoder": "~2.8",
     "hanneskod/classtools": "~1.0",
