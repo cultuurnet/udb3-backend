@@ -47,15 +47,17 @@ mail:
   sender:
     name: UiTdatabank BETA
     address: no-reply@uitdatabank.be
+search:
+  v3:
+    base_url: http://udb-search.dev
+    api_key: ***
 export:
-  # Deprecated, use search > url instead
-  search_url: http://udb-search.dev/events/
   search:
     # Fallback for sapi version of export service
     # Used when no sapiVersion in export request
     # Possible values are v2 or v3
     default_version: v3
-    # SAPI3 parameters
+    # SAPI3 parameters, deprecated, use config below search.v3 instead
     url: http://udb-search.dev/events/
     api_key: ***
   mail:
@@ -148,12 +150,9 @@ base_price_translations:
   en: 'Base tariff'
   de: 'Basisrate'
 
-# Saved searches can be uitid or udb3-sapi2
-saved_searches: udb3-sapi2
-
 # The mode for the created by query (uuid/email/mixed)
 # When the config is missing uuid will be used by default.
 created_by_query_mode: mixed
 
-# Role constraints can be on sapi2 or sapi3
-role_constraints_mode: sapi2
+# Role constraints can use SAPI v2 or v3
+role_constraints_mode: v2
