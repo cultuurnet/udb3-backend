@@ -19,10 +19,13 @@ class Version20190509112328 extends AbstractMigration
     {
         $table = $schema->getTable('roles_search_v3');
 
-        $table->changeColumn('constraint_query', [
-            'type' => Type::getType(Type::TEXT),
-            'length' => MySqlPlatform::LENGTH_LIMIT_MEDIUMTEXT + 1,
-        ]);
+        $table->changeColumn(
+            'constraint_query',
+            [
+                'type' => Type::getType(Type::TEXT),
+                'length' => MySqlPlatform::LENGTH_LIMIT_MEDIUMTEXT + 1,
+            ]
+        );
     }
 
     /**
@@ -32,9 +35,12 @@ class Version20190509112328 extends AbstractMigration
     {
         $table = $schema->getTable('roles_search_v3');
 
-        $table->changeColumn('constraint_query', [
-            'type' => Type::getType(Type::STRING),
-            'length' => 255,
-        ]);
+        $table->changeColumn(
+            'constraint_query',
+            [
+                'type' => Type::getType(Type::STRING),
+                'length' => 255,
+            ]
+        );
     }
 }
