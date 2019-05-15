@@ -1684,12 +1684,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-export.git",
-                "reference": "59d339b2e8e5d496911aff8fa9839ab775eea59f"
+                "reference": "beb4b8876a66d11ecb863f9eeb48d5481567a2eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/59d339b2e8e5d496911aff8fa9839ab775eea59f",
-                "reference": "59d339b2e8e5d496911aff8fa9839ab775eea59f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/beb4b8876a66d11ecb863f9eeb48d5481567a2eb",
+                "reference": "beb4b8876a66d11ecb863f9eeb48d5481567a2eb",
                 "shasum": ""
             },
             "require": {
@@ -1733,7 +1733,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2019-05-07T09:41:58+00:00"
+            "time": "2019-05-15T12:46:19+00:00"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -6578,7 +6578,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
