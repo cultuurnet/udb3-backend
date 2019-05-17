@@ -16,6 +16,7 @@ use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Twig_Environment;
+use Twig_Extensions_Extension_Text;
 
 class ExportServiceProvider implements ServiceProviderInterface
 {
@@ -32,6 +33,8 @@ class ExportServiceProvider implements ServiceProviderInterface
                 $twig->addExtension(
                     new GoogleMapUrlGenerator($app['geocoding_service.google_maps_api_key'])
                 );
+
+                $twig->addExtension(new Twig_Extensions_Extension_Text());
 
                 return $twig;
             }
