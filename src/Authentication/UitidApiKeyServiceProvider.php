@@ -7,9 +7,12 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\AllowAnyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
+use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
+use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Silex\Impersonator;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
@@ -17,6 +20,7 @@ use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class UitidApiKeyServiceProvider implements ServiceProviderInterface
 {
@@ -52,12 +56,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['auth.any_api_key_authenticator'] = $app->share(
-            function () {
-                return new AllowAnyAuthenticator();
-            }
-        );
-
         $app['auth.request_authenticator'] = $app->share(
             function (Application $app) {
                 return new ApiKeyRequestAuthenticator(
@@ -82,11 +80,29 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     $app['auth.api_key'] = $app['auth.api_key_reader']->read($request);
 
                     try {
-                        if ($security->isGranted('IS_AUTHENTICATED_FULLY')) {
-                            $apiKeyAuthenticator->authenticate($request);
+                        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+                            // The request is not authenticated so we don't need to do additional checks since the
+                            // firewall will return an unauthorized error response.
+                            return;
                         }
                     } catch (AuthenticationCredentialsNotFoundException $exception) {
-                        // The authentication credentials are missing because the URL is not secured.
+                        // The request is for a public URL so we can skip any checks.
+                        return;
+                    }
+
+                    $apiKeyAuthenticator->authenticate($request);
+
+                    // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
+                    $permissionCheck = new ConsumerIsInPermissionGroup(
+                        new StringLiteral((string) $app['auth.api_key.group_id'])
+                    );
+
+                    /* @var ConsumerReadRepositoryInterface $consumerRepository */
+                    $consumerRepository = $app['auth.consumer_repository'];
+                    $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
+
+                    if (!$permissionCheck->satisfiedBy($consumer)) {
+                        throw new RequestAuthenticationException('Given API key is not authorized to use EntryAPI.');
                     }
                 },
                 Application::LATE_EVENT
