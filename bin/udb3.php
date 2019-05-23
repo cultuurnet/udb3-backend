@@ -79,5 +79,6 @@ $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand());
 $consoleApp->add(new FireProjectedToJSONLDCommand());
 $consoleApp->add(new ImportSavedSearchesCommand());
 $consoleApp->add(new ImportRoleConstraintsCommand());
+$consoleApp->add(new ImportEventCdbXmlCommand());
 
 $consoleApp->run();
