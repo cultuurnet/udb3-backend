@@ -25,6 +25,16 @@
     <target name="test">
         <phingcall target="lint"/>
         <phingcall target="coding-standards"/>
+        <phingcall target="libs"/>
+    </target>
+
+    <target name="libs">
+        <phingcall target="lib-udb3-export"/>
+    </target>
+
+    <target name="lib-udb3-export">
+        <exec dir="./lib/udb3-export" command="composer install" passthru="true" />
+        <exec dir="./lib/udb3-export" command="./vendor/bin/phing" passthru="true" />
     </target>
 
 </project>

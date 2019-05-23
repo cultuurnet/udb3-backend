@@ -80,6 +80,13 @@
     {
       "type": "vcs",
       "url": "https://github.com/cultuurnet/php-resque.git"
+    },
+    {
+      "type": "path",
+      "url": "lib/udb3-export",
+      "options": {
+        "symlink": true
+      }
     }
   ]
 }

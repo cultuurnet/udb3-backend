@@ -1,0 +1,14 @@
+{
+  "customizations": {
+    "brand": "vlieg",
+    "title": "a title",
+    "subtitle": "a subtitle",
+    "footer": "a footer",
+    "publisher": "a publisher"
+  },
+  "email": "john@doe.com",
+  "include": [],
+  "order": {},
+  "perDay": false,
+  "query": "city:doetown"
+}

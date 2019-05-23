@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="nl">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <title>{{ title }}</title>
+
+        <link href="css/export.tips.css" type="text/css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="footer">
+            <p class="footer__pagenumber"></p>
+            {%- if footer %}
+
+            <p class="footer__description">{{ footer }}</p>
+            {%- endif %}
+            {%- if publisher %}
+
+            <p class="footer__publisher">V.U. {{ publisher }}</p>
+            {%- endif %}
+
+        </div>
+
+        <div class="page page--{{ brand }}">
+            <div class="header">
+                <h1 class="header__title">{{ title }}</h1>
+                {% if subtitle -%}
+                <p class="header__baseline">{{ subtitle }}</p>
+                {% endif -%}
+                <div class="header__brand">
+                  <img class="header__brand__image" src="{{logo}}" />
+                  {%- if partner -%}
+                  <p class="header__brand__baseline">in samenwerking met <span class="header__brand__baseline__uit"></span></p>
+                  {%- endif %}
+
+                </div>
+            </div>
+
+            <div class="columns">
+                {%- for event in events %}
+
+                <section class="activity
+                {%- for brand in event.brands %} {{ brand }}{% endfor -%}
+                {%- if event.image is not defined %} imageless{% endif -%}
+                {%- if event.ageFrom %} agedFrom{% endif -%}
+                ">
+                    {% if event.image -%}
+                    <div class="activity__image-container">
+                        <img src="{{ event.image }}?width=600&height=600&maxheight=600&crop=auto" class="activity__image" />
+                        <span class="activity__image__copyright">&copy; {{ event.mediaObject.copyrightHolder }}</span>
+                    </div>
+                    {% endif -%}
+                    {% if event.ageFrom -%}
+                    <p class="activity__leeftijd">{{ event.ageFrom }}+</p>
+                    {% endif -%}
+                    <p class="activity__type">{{ event.type }}</p>
+                    <p class="activity__title">{{ event.title }}</p>
+                    <div class="activity__description">
+                        <p>{{ event.description }}</p>
+                    </div>
+                    <div class="activity__info">
+                        <table class="activity__info__table">
+                            <tr>
+                                <td>
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                </td>
+                                <td class="activity__info__dates">
+                                    {{ event.dates|raw }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-map-marker"></i>&nbsp;
+                                </td>
+                                <td>
+                                    {{ event.address.name }}<br />
+                                    {{ event.address.street }}<br />
+                                    {{ event.address.postcode }} {{ event.address.municipality }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="fa fa-eur"></i>&nbsp;
+                                </td>
+                                <td>
+                                    {{ event.price }}
+                                </td>
+                            </tr>
+                            {%-  if event.price != 'Gratis' and event.uitpas -%}
+                            {% set tarifflabel = brand == "paspartoe" ? "Reductieprijs" : "Kansentarief" %}
+                            {%- for tariff in event.uitpas.prices %}
+
+                            <tr>
+                                <td>
+                                    <i class="fa fa-eur"></i>&nbsp;
+                                </td>
+                                <td>
+                                    {% if not tariff.forOtherCardSystems -%}
+                                        {{ tariff.price }} {{ tarifflabel }} voor {{ tariff.cardSystem }}
+                                    {%- else -%}
+                                        {{ tariff.price }} {{ tarifflabel }} voor kaarthouders uit een andere regio
+                                    {%- endif %}
+
+                                </td>
+                            </tr>
+                            {%- endfor %}
+
+                            {%- endif -%}
+                            {%- if event.taalicoonCount %}
+
+                            <tr>
+                                <td>
+                                    <i class="taalicoon taalicoon-face"></i>
+                                </td>
+                                <td>
+                                    {% for i in range(1, 4) -%}
+                                        {%- if i <= event.taalicoonCount -%}
+                                            {%- set taalicoonBallonClass = 'taalicoon-ballon-filled' -%}
+                                        {%- else -%}
+                                            {%- set taalicoonBallonClass = 'taalicoon-ballon' -%}
+                                        {%- endif -%}
+                                        <i class="taalicoon {{ taalicoonBallonClass }}"></i>
+                                    {% endfor -%}
+                                    <br>
+                                    <p class="taalicoon--description">
+                                        {{ event.taalicoonDescription }}
+                                    </p>
+                                </td>
+                            </tr>
+                        {% else %}
+
+                        {% endif -%}
+                        </table>
+                    </div>
+                    {%- if event.uitpas.advantages %}
+
+                    <div class="activity__uitpas">
+                        <p>
+                            {%- if brand == "paspartoe" -%}
+                                Ga met je Paspartoe:
+                            {%- else -%}
+                                Ga met je UiTPAS:
+                            {%- endif -%}
+                        </p>
+                        <ul>
+                            {%- for advantage in event.uitpas.advantages %}
+
+                            <li>{{ advantage }}</li>
+                            {%- endfor %}
+
+                            {%- for promotion in event.uitpas.promotions %}
+
+                            <li>{{ promotion }}</li>
+                            {%- endfor %}
+
+                        </ul>
+                    </div>
+                    {%- endif %}
+
+                </section>
+                {%- endfor %}
+
+            </div>
+        </div>
+    </body>
+</html>

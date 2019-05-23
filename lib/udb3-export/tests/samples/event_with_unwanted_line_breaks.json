@@ -1,0 +1,69 @@
+{
+  "@id": "https:\/\/io.uitdatabank.be\/event\/ee7c4030-d69f-4584-b0f2-a700955c7df2",
+  "@context": "\/api\/1.0\/event.jsonld",
+  "name": {
+    "nl": "Lezing: \"Hotel Pardon\" (wereldverhalen over verzoening) door Jan De Cock"
+  },
+  "description": {
+    "nl": "<p>Wat is de kracht van verzoening? Jan De Cock trekt de wereld rond\nen ontmoet tientallen slachtoffers van misdaden die we soms\nmoeilijk kunnen vatten en die toch konden ze vergeven.<br>\nJan De Cock ontmoet slachtoffers van misdaden die het laatste woord\nniet aan de feiten hebben gelaten, noch aan de wrok.<br>\nIn een wereld waar de roep naar gerechtigheid steeds vaker gehoord\nwordt als een schreeuw voor meer repressie en straf, biedt Jan De\nCock weerwerk.<br>\nHij trekt de wereld rond en ontmoet tientallen slachtoffers van\ndaden die we soms moeilijk kunnen vatten.<br>\nToch konden ze vergeven: ouders van wie de kinderen door de Noor\nBreivik werden vermoord, moeders van zonen die met de Twin Towers\nten onder gingen, de weduwe van Gerrit Jan Heijn...<br>\nZondert twijfel een onvergetelijk avond.<br>\nGraag doorklikken naar de website van Markant Melle Merelbeke voor\nalle informatie betreffende deze lezing. Iedereen welkom!\n<\/p>"
+  },
+  "available": "2012-11-14T00:00:00+01:00",
+  "image": "http:\/\/media.uitdatabank.be\/20121114\/874ec7d0-ed3f-459b-98f7-1e9622b26175.jpg",
+  "calendarSummary": "di 12\/04\/16 van 20:00 tot 22:00 ",
+  "location": {
+    "@type": "Place",
+    "name": "Merelbeke, Floracenter, Teaterstraat 39",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Merelbeke",
+      "postalCode": "9820",
+      "streetAddress": "Teaterstraat 39"
+    }
+  },
+  "organizer": {
+    "name": "markant Melle Merelbeke",
+    "@type": "Organizer"
+  },
+  "bookingInfo": [
+    {
+      "description": "Basisprijs: \u20ac 7.00; voor niet leden: \u20ac 14,00",
+      "priceCurrency": "EUR",
+      "price": 7
+    }
+  ],
+  "terms": [
+    {
+      "label": "Klassieke muziek",
+      "domain": "theme",
+      "id": "1.8.1.0.0"
+    },
+    {
+      "label": "Scheldeland",
+      "domain": "flanderstouristregion",
+      "id": "reg.366"
+    },
+    {
+      "label": "Lezing of congres",
+      "domain": "eventtype",
+      "id": "0.3.2.0.0"
+    },
+    {
+      "label": "9820 Merelbeke",
+      "domain": "flandersregion",
+      "id": "reg.1503"
+    }
+  ],
+  "creator": "jtack@telenet.be",
+  "created": "2012-11-14T16:32:28+01:00",
+  "modified": "2016-03-31T13:53:45+02:00",
+  "publisher": "Invoerders Algemeen ",
+  "endDate": "2016-04-12T22:00:00+02:00",
+  "startDate": "2016-04-12T20:00:00+02:00",
+  "calendarType": "single",
+  "sameAs": [
+    "http:\/\/www.uitinvlaanderen.be\/agenda\/e\/lezing-hotel-pardon-wereldverhalen-over-verzoening\/ee7c4030-d69f-4584-b0f2-a700955c7df2"
+  ],
+  "seeAlso": [
+    "http:\/\/www.markantvzw.be\/melle-merelbeke"
+  ]
+}
