@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "6094233a770f57385cac960c4da02a362726c534"
+                "reference": "1d4769081d8474ae279e69352dfd53d11856667d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/6094233a770f57385cac960c4da02a362726c534",
-                "reference": "6094233a770f57385cac960c4da02a362726c534",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1d4769081d8474ae279e69352dfd53d11856667d",
+                "reference": "1d4769081d8474ae279e69352dfd53d11856667d",
                 "shasum": ""
             },
             "require": {
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-05-23T11:50:26+00:00"
+            "time": "2019-05-23T19:59:53+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
