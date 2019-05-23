@@ -1684,12 +1684,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-export.git",
-                "reference": "beb4b8876a66d11ecb863f9eeb48d5481567a2eb"
+                "reference": "8a69c24db30abf61aa54e9906d063a47583df9f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/beb4b8876a66d11ecb863f9eeb48d5481567a2eb",
-                "reference": "beb4b8876a66d11ecb863f9eeb48d5481567a2eb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-export/zipball/8a69c24db30abf61aa54e9906d063a47583df9f5",
+                "reference": "8a69c24db30abf61aa54e9906d063a47583df9f5",
                 "shasum": ""
             },
             "require": {
