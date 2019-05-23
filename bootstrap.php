@@ -41,6 +41,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
 
+define('SYSTEM_USER_UUID', '00000000-0000-0000-0000-000000000000');
+
 $app = new Application();
 
 $adapter = new \League\Flysystem\Adapter\Local(__DIR__);
@@ -59,7 +61,7 @@ $app['config'] = array_merge_recursive(
     [
         'user_permissions' => [
             'allow_all' => [
-                '00000000-0000-0000-0000-000000000000'
+                SYSTEM_USER_UUID
             ],
         ],
     ]
@@ -1334,7 +1336,7 @@ $app['udb3_system_user_metadata'] = $app->share(
     function () {
         return new Metadata(
             [
-                'user_id' => '00000000-0000-0000-0000-000000000000',
+                'user_id' => SYSTEM_USER_UUID,
                 'user_nick' => 'udb3',
                 'uitid_token_credentials' => [],
             ]
