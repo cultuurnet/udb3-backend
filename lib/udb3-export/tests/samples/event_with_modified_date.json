@@ -1,0 +1,57 @@
+{
+  "@id":"http:\/\/culudb-silex.dev:8080\/event\/16744083-859a-4d3d-bd1d-16ea5bd3e2a3",
+  "@context":"\/api\/1.0\/event.jsonld",
+  "name":{
+    "nl":"Test Nicolas"
+  },
+  "description":{
+    "nl":"<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do\neiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim\nad minim veniam, quis nostrud exercitation ullamco laboris nisi ut\naliquip ex ea commodo consequat. Duis aute irure dolor in\nreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla\npariatur.<\/p>"
+  },
+  "available":"2015-10-13T00:00:00+02:00",
+  "calendarSummary":null,
+  "location":{
+    "@type":"Place",
+    "@id":"http:\/\/culudb-silex.dev:8080\/place\/2c06e21e-8716-442e-ad68-1476b5d17792"
+  },
+  "organizer":{
+    "@id":"http:\/\/culudb-silex.dev:8080\/organizer\/AA785E84-0E30-452A-5AD27D7E2D3A4824",
+    "@type":"Organizer"
+  },
+  "bookingInfo":[
+    [
+
+    ]
+  ],
+  "terms":[
+    {
+      "label":"Concert",
+      "domain":"eventtype",
+      "id":"0.50.4.0.0"
+    },
+    {
+      "label":"Klassieke muziek",
+      "domain":"eventtype",
+      "id":"1.8.1.0.0"
+    }
+  ],
+  "creator":null,
+  "publisher":null,
+  "startDate":"2015-10-29T20:00:00+01:00",
+  "calendarType":"single",
+  "sameAs":[
+    "http:\/\/www.uitinvlaanderen.be\/agenda\/e\/test-nicolas\/",
+    null
+  ],
+  "seeAlso":[
+
+  ],
+  "contactPoint":[
+    {
+      "email":[
+        "nicolas.leroy+test@gmail.com"
+      ]
+    }
+  ],
+  "created":"2015-10-13T14:27:59+00:00",
+  "modified":"2015-10-13T14:27:59+00:00"
+}

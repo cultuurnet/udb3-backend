@@ -1,0 +1,95 @@
+{
+  "@id": "https:\/\/io.uitdatabank.be\/event\/b68fddc3-3b85-4e8e-83bc-600ace8eb558",
+  "@context": "\/api\/1.0\/event.jsonld",
+  "name": {
+    "nl": "Marleen Merckx & Bert Cosemans: Grote liefde"
+  },
+  "description": {
+    "nl": "<p>Pittige relatiekomedie van Paljas Producties met allerlei\nherkenbare sc\u00e8nes uit het huwelijksleven. Kortom: de bitterzoete en\nherkenbare ergernissen van een koppel. En als je ze niet herkent\nben je beslist geen perfect koppel! Marleen Merckx en Bert Cosemans\nstaan sinds lang weer samen op de planken. Of was het nu\ngescheiden?<br><\/p>\n<p>Een bizarre bruiloft met fijne schoonmoeders. Smeu\u00efge ruzies met\nfoute vrienden. Kortom, botsingen allerhande en niet enkel met zijn\nBMW. Er is altijd wel iets dat een beetje wringt. Maar zolang het\nwringt is er leven. De bitterzoete en herkenbare ergernissen van\neen koppel, en als je ze niet herkent dan ben je beslist geen\nperfect koppel.<\/p>\n<br><p>'Grote liefde'... Samen onderuit... in al haar pracht.<br><br>\n'Grote liefde'\u2026 Samen in dezelfde richting kijken\u2026 die van de\nuitgang.<\/p>\n<br><p>Marleen Merckx en Bert Cosemans weer verenigd op de planken. Of\nwas het nu gescheiden?<\/p>\n<br><p>Een pittige relatiekomedie met allerlei herkenbare sc\u00e8nes uit\nhet huwelijksleven.<\/p>\n<br><p>Een voorstelling van Pajlas Producties.<\/p>\n"
+  },
+  "available": "2015-06-02T00:00:00+02:00",
+  "image": "http:\/\/media.uitdatabank.be\/20150602\/a143f1d3599e6ac8f416334f4ccf39d0.png",
+  "calendarSummary": "do 21\/04\/16 om 20:00 ",
+  "location": {
+    "@type": "Place",
+    "name": "Rode Zaal",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Scherpenheuvel",
+      "postalCode": "3270",
+      "streetAddress": "August Nihoulstraat 74"
+    }
+  },
+  "organizer": {
+    "@id": "https:\/\/io.uitdatabank.be\/organizer\/289C4681-EE51-8AD8-A7851C6434767415",
+    "@context": "\/api\/1.0\/organizer.jsonld",
+    "name": "GC Den Egger",
+    "addresses": [
+      {
+        "addressCountry": "BE",
+        "addressLocality": "Scherpenheuvel",
+        "postalCode": "3270",
+        "streetAddress": "August Nihoulstraat 74"
+      }
+    ],
+    "email": [
+      "info@denegger.be"
+    ],
+    "phone": [
+      "013 46 06 50"
+    ]
+  },
+  "bookingInfo": [
+    {
+      "description": "Basistarief: \u20ac\u00a016,00,-21: \u20ac\u00a014,00,+60: \u20ac\u00a014,00,Youth drop (-18j): \u20ac\u00a08,00,Abonnementstarief: \u20ac\u00a012,00,Basistarief: \u20ac\u00a016,00,-21: \u20ac\u00a014,00,+60: \u20ac\u00a014,00,Youth drop: \u20ac\u00a08,00,Abonnement: \u20ac\u00a012,00",
+      "priceCurrency": "EUR",
+      "price": 16,
+      "url": "http:\/\/app.antigonetickets.be\/nl\/event\/88992\/marleen-merckx--bert-cosemans-grote-liefde"
+    }
+  ],
+  "terms": [
+    {
+      "label": "Humor comedy",
+      "domain": "theme",
+      "id": "1.3.10.0.0"
+    },
+    {
+      "label": "Hageland",
+      "domain": "flanderstouristregion",
+      "id": "reg.360"
+    },
+    {
+      "label": "Theatervoorstelling",
+      "domain": "eventtype",
+      "id": "0.55.0.0.0"
+    },
+    {
+      "label": "3270 Scherpenheuvel-Zichem",
+      "domain": "flandersregion",
+      "id": "reg.692"
+    }
+  ],
+  "creator": "roeland.vangorp@denegger.be",
+  "created": "2015-06-02T15:29:46+02:00",
+  "modified": "2015-06-03T11:40:42+02:00",
+  "publisher": "Scherpenheuvel-Zichem Validatoren",
+  "startDate": "2016-04-21T00:00:00+02:00",
+  "calendarType": "single",
+  "sameAs": [
+    "http:\/\/www.uitinvlaanderen.be\/agenda\/e\/marleen-merckx-bert-cosemans-grote-liefde\/b68fddc3-3b85-4e8e-83bc-600ace8eb558",
+    "88992"
+  ],
+  "seeAlso": [
+    "http:\/\/denegger.be"
+  ],
+  "contactPoint": [
+    {
+      "email": [
+        "info@denegger.be"
+      ],
+      "telephone": [
+        "013460650"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "customizations": {
+    "brand": "vlieg",
+    "logo": "http://foo.bar/logo.svg",
+    "title": "a title"
+  },
+  "query": "city:doetown"
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <title>{{ title }}</title>
+
+        <link href="css/export.map.css" type="text/css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="footer">
+            <p class="footer__pagenumber"></p>
+            {%- if footer %}
+
+            <p class="footer__description">{{ footer }}</p>
+            {%- endif %}
+            {%- if publisher %}
+
+            <p class="footer__publisher">V.U. {{ publisher }}</p>
+            {%- endif %}
+
+        </div>
+
+        <div class="page page--{{ brand }}">
+            <div class="header">
+                <h1 class="header__title">{{ title }}</h1>
+                {% if subtitle -%}
+                <p class="header__baseline">{{ subtitle }}</p>
+                {% endif -%}
+                <div class="header__brand">
+                  <img class="header__brand__image" src="{{logo}}" />
+                  {%- if partner -%}
+                  <p class="header__brand__baseline">in samenwerking met <span class="header__brand__baseline__uit"></span></p>
+                  {%- endif %}
+
+                </div>
+
+            </div>
+
+            <div class="activities">
+                {# Buffer up to 9 events and show them on a map with the event details underneath. #}
+                {# Repeat this until we have looped over all events. #}
+                {% set eventsBuffer = [] %}
+                {% for event in events %}
+                    {% set eventsBuffer = eventsBuffer|merge([event]) %}
+
+                    {% if eventsBuffer|length == 9 %}
+                        {% include 'export.map.activities.html.twig' with {'events': eventsBuffer} only %}
+                        {% set eventsBuffer = [] %}
+                    {% endif %}
+                {% endfor %}
+
+                {# Clear the last buffer if not empty (in case the number of events is not an exact multiple of 9). #}
+                {% if eventsBuffer is not empty %}
+                    {% include 'export.map.activities.html.twig' with {'events': eventsBuffer} only %}
+                {% endif %}
+            </div>
+        </div>
+    </body>
+</html>
