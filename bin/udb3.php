@@ -2,8 +2,24 @@
 <?php
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
+use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
+use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
+use CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
+use CultuurNet\UDB3\Silex\Console\GeocodeEventCommand;
+use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
+use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
+use CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand;
+use CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand;
+use CultuurNet\UDB3\Silex\Console\InstallCommand;
+use CultuurNet\UDB3\Silex\Console\PermissionCommand;
+use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
+use CultuurNet\UDB3\Silex\Console\ReplayCommand;
+use CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand;
+use CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand;
+use CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand;
 use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Provider\ConsoleServiceProvider;
 
@@ -46,22 +62,22 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\InstallCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ReplayCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\EventAncestorsCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PurgeModelCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ConcludeCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\GeocodeEventCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\PermissionCommand());
+$consoleApp->add(new InstallCommand());
+$consoleApp->add(new ReplayCommand());
+$consoleApp->add(new EventAncestorsCommand());
+$consoleApp->add(new UpdateCdbXMLCommand());
+$consoleApp->add(new SearchCacheWarmCommand());
+$consoleApp->add(new SearchCacheClearCommand());
+$consoleApp->add(new EventCdbXmlCommand());
+$consoleApp->add(new PurgeModelCommand());
+$consoleApp->add(new ConcludeCommand());
+$consoleApp->add(new ConcludeByCdbidCommand());
+$consoleApp->add(new GeocodePlaceCommand());
+$consoleApp->add(new GeocodeEventCommand());
+$consoleApp->add(new PermissionCommand());
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand());
 $consoleApp->add(new FireProjectedToJSONLDCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand());
-$consoleApp->add(new \CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand());
+$consoleApp->add(new ImportSavedSearchesCommand());
+$consoleApp->add(new ImportRoleConstraintsCommand());
 
 $consoleApp->run();
