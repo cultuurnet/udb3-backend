@@ -150,8 +150,7 @@ class ImportConsumerServiceProvider implements ServiceProviderInterface
                     $app['import_deserializer_locator'],
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new StringLiteral($app['config']['amqp']['consumers']['imports']['exchange']),
-                    new StringLiteral($app['config']['amqp']['consumers']['imports']['queue']),
-                    $app['amqp-execution-delay']->toNative()
+                    new StringLiteral($app['config']['amqp']['consumers']['imports']['queue'])
                 );
 
                 $consumer->setLogger($app['imports_logger']);

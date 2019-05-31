@@ -38,6 +38,7 @@ use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
+use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
@@ -97,7 +98,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
             function (Application $app) {
                 return new EventBusForwardingConsumerFactory(
-                    $app['amqp-execution-delay'],
+                    new Natural(0),
                     $app['amqp.connection'],
                     $app['logger.amqp.event_bus_forwarder'],
                     $app['udb2_deserializer_locator'],
