@@ -22,7 +22,7 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadPlaceRestController(
                     $app['place_service'],
-                    $app['place_lookup']
+                    $app['search_v3_serializer']
                 );
             }
         );
@@ -33,7 +33,10 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
                     $app['place_editing_service'],
                     $app['event_relations_repository'],
                     $app['media_manager'],
-                    $app['place_iri_generator']
+                    $app['place_iri_generator'],
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
+                    $app['should_auto_approve_new_offer']
                 );
             }
         );
@@ -46,8 +49,6 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
             ->bind('place');
         $controllers->delete('place/{cdbid}', 'place_editing_controller:deletePlace');
         $controllers->get('place/{cdbid}/events', 'place_editing_controller:getEvents');
-
-        $controllers->get('places', 'place_controller:getByPostalCode');
 
         $controllers->post('place', 'place_editing_controller:createPlace');
 
