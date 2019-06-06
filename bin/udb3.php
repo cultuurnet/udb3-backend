@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand;
 use CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand;
+use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
 use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Provider\ConsoleServiceProvider;
 
@@ -80,5 +81,6 @@ $consoleApp->add(new FireProjectedToJSONLDCommand());
 $consoleApp->add(new ImportSavedSearchesCommand());
 $consoleApp->add(new ImportRoleConstraintsCommand());
 $consoleApp->add(new ImportEventCdbXmlCommand());
+$consoleApp->add(new ValidatePlaceJsonLdCommand());
 
 $consoleApp->run();
