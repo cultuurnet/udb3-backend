@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
-use CultuurNet\UDB3\Silex\IndexServiceProvider;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\MyOrganizers\MyOrganizersServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
