@@ -1204,12 +1204,6 @@ $app['impersonator'] = $app->share(
     }
 );
 
-$app['database.installer'] = $app->share(
-    function (Application $app) {
-        return new \CultuurNet\UDB3\Silex\DatabaseSchemaInstaller($app);
-    }
-);
-
 $app['amqp.content_type_map'] = $app->share(
     function () {
         return \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
@@ -1256,11 +1250,6 @@ $app->register(new LabelServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleReadingServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
-
-$app->register(
-    new \CultuurNet\UDB3\Silex\DoctrineMigrationsServiceProvider(),
-    ['migrations.config_file' => __DIR__ . '/migrations.yml']
-);
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),

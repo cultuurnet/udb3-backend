@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\ReadModel\Permission\Projector;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\SchemaConfigurator;
-use CultuurNet\UDB3\Silex\DatabaseSchemaInstaller;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -41,27 +39,6 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
                 );
 
                 return $projector;
-            }
-        );
-
-        $app['event_permission.schema_configurator'] = $app->share(
-            function (Application $app) {
-                return new SchemaConfigurator(
-                    $app['event_permission.table_name'],
-                    $app['event_permission.id_field']
-                );
-            }
-        );
-
-        // Add our schema configurator to the database installer.
-        $app['database.installer'] = $app->extend(
-            'database.installer',
-            function (DatabaseSchemaInstaller $installer, Application $app) {
-                $installer->addSchemaConfigurator(
-                    $app['event_permission.schema_configurator']
-                );
-
-                return $installer;
             }
         );
     }

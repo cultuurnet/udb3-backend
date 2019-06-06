@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand;
 use CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand;
-use CultuurNet\UDB3\Silex\Console\InstallCommand;
 use CultuurNet\UDB3\Silex\Console\PermissionCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
@@ -63,7 +62,6 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new InstallCommand());
 $consoleApp->add(new ReplayCommand());
 $consoleApp->add(new EventAncestorsCommand());
 $consoleApp->add(new UpdateCdbXMLCommand());
