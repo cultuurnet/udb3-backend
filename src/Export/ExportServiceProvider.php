@@ -6,6 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportServiceCollection;
 use CultuurNet\UDB3\EventExport\EventExportServiceInterface;
+use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory;
 use CultuurNet\UDB3\EventExport\SapiVersion;
@@ -14,18 +15,38 @@ use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Twig_Environment;
+use Twig_Extensions_Extension_Text;
 
 class ExportServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app['event_export_twig_environment'] = $app->share(
+            function ($app) {
+                $loader = new \Twig_Loader_Filesystem(
+                    __DIR__ . '/../../vendor/cultuurnet/udb3-export/src/Format/HTML/templates'
+                );
+
+                $twig = new Twig_Environment($loader);
+
+                $twig->addExtension(
+                    new GoogleMapUrlGenerator($app['geocoding_service.google_maps_api_key'])
+                );
+
+                $twig->addExtension(new Twig_Extensions_Extension_Text());
+
+                return $twig;
+            }
+        );
+
         $app['event_export_service_collection'] = $app->share(
             function ($app) {
                 $eventExportServiceCollection = new EventExportServiceCollection();
 
                 $eventExportServiceCollection = $eventExportServiceCollection
                     ->withService(
-                        SapiVersion::V2(),
+                        new SapiVersion(SapiVersion::V2),
                         $this->createEventExportService(
                             $app,
                             $app['search_service']
@@ -60,7 +81,8 @@ class ExportServiceProvider implements ServiceProviderInterface
                     $app['event_export_service_collection'],
                     $app['config']['prince']['binary'],
                     $eventInfoService,
-                    $app['calendar_summary_repository']
+                    $app['calendar_summary_repository'],
+                    $app['event_export_twig_environment']
                 );
             }
         );

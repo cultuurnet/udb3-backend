@@ -41,6 +41,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
 
+define('SYSTEM_USER_UUID', '00000000-0000-0000-0000-000000000000');
+
 $app = new Application();
 
 $adapter = new \League\Flysystem\Adapter\Local(__DIR__);
@@ -59,7 +61,7 @@ $app['config'] = array_merge_recursive(
     [
         'user_permissions' => [
             'allow_all' => [
-                '00000000-0000-0000-0000-000000000000'
+                SYSTEM_USER_UUID
             ],
         ],
     ]
@@ -1162,10 +1164,6 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$app['amqp-execution-delay'] = isset($app['config']['amqp_execution_delay']) ?
-    Natural::fromNative($app['config']['amqp_execution_delay']) :
-    Natural::fromNative(10);
-
 $app['logger.amqp.event_bus_forwarder'] = $app->share(
     function () {
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
@@ -1283,7 +1281,12 @@ $app->register(
     )
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider());
+$app->register(
+    new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider(),
+    [
+        'auth.api_key.group_id' => $app['config']['api_key']['group_id'],
+    ]
+);
 
 $app->register(
     new \CultuurNet\UDB3\Silex\UDB2IncomingEventServicesProvider(),
@@ -1318,7 +1321,7 @@ $app['udb3_system_user_metadata'] = $app->share(
     function () {
         return new Metadata(
             [
-                'user_id' => '00000000-0000-0000-0000-000000000000',
+                'user_id' => SYSTEM_USER_UUID,
                 'user_nick' => 'udb3',
                 'uitid_token_credentials' => [],
             ]

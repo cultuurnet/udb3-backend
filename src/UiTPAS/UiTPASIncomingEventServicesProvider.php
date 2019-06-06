@@ -12,6 +12,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
@@ -48,7 +49,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
         $app['uitpas_event_bus_forwarding_consumer_factory'] = $app->share(
             function (Application $app) {
                 return new EventBusForwardingConsumerFactory(
-                    $app['amqp-execution-delay'],
+                    new Natural(0),
                     $app['amqp.connection'],
                     $app['uitpas_logger'],
                     $app['uitpas_deserializer_locator'],

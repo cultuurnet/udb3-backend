@@ -18,9 +18,6 @@ class Version20170731151814 extends AbstractMigration
     public function up(Schema $schema)
     {
         $this->getIndexTable($schema)
-            ->setPrimaryKey(['entity_id']);
-
-        $this->getIndexTable($schema)
             ->changeColumn(
                 'zip',
                 [

@@ -1,0 +1,108 @@
+{
+  "@id": "http:\/\/culudb-silex.dev:8080\/event\/152dc82b-d04b-4c8d-9ee6-55402ec3a958",
+  "@context": "\/api\/1.0\/event.jsonld",
+  "name": {"nl": "Jan De Smet, Stoomboot & Stefan Bracaval"},
+  "description": {"nl": "<p>Opnieuw twee dagen na elkaar en ook ditmaal brengen ze drie\nartiestenmee die garant staan voor authenticiteit en originaliteit.\nDe eerste gastis niemand minder dan Stoomboot, die in het seizoen\n2014 doorbrakmet zijn bejubelde debuutalbum. Verder is ooK fluitist\nStefan Bracavalopnieuw van de partij. als kers op de taart doet\nniemand minder dan deonnavolgbare Jan De Smet mee.Als founding\nf<br>\nOpnieuw twee dagen na elkaar en ook ditmaal brengen ze drie\nartiestenmee die garant staan voor authenticiteit en originaliteit.\nDe eerste gastis niemand minder dan Stoomboot, die in het seizoen\n2014 doorbrakmet zijn bejubelde debuutalbum. Verder is ooK fluitist\nStefan Bracavalopnieuw van de partij. als kers op de taart doet\nniemand minder dan deonnavolgbare Jan De Smet mee.<br><br><br><br>\nAls founding father van de Nieuwe Snaar en fan van het eerste uur\nvanMandolinman staat Jan ongetwijfeld garant voor meerdere\nhoogtepuntenvan deze avond. Het wordt een unieke en overgetelijke\neditie,met vier mandolines, een dwarsfluit, twee stemmen \u00e9n bovenal\neen karrenvracht aan goede songs.\n<\/p>"},
+  "available": "2014-08-13T19:28:29+02:00",
+  "image": "http:\/\/media.uitdatabank.be\/20140813\/GCDEWILDEMAN_459_2043_foto-jan-de-smet-van36.jpg",
+  "calendarSummary": "za 23\/05\/15 om 20:30  zo 24\/05\/15 om 20:30 ",
+  "location": {
+    "@type": "Place",
+    "@id": "http:\/\/culudb-silex.dev:8080\/place\/61DA6E33-D632-A342-28F34D5E9E1688B3",
+    "@context": "\/api\/1.0\/place.jsonld",
+    "description": "De Wildeman is een gezellig gemeenschapscentrum in Herent aan de rand van leuven. Al meer dan tien jaar komen hier grote namen en lokale sterren. Theater, Muziek, Cabaret,.. De Wildeman biedt, vanop de eerste rij, cultuur aan democratische prijzen. Kortom: een gezellige avond uit!",
+    "name": {"nl": "GC De Wildeman"},
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Herent",
+      "postalCode": "3020",
+      "streetAddress": "Schoolstraat 15"
+    },
+    "priceInfo": [
+      {
+        "category": "base",
+        "name": "Basistarief",
+        "price": 0,
+        "priceCurrency": "EUR"
+      }
+    ],
+    "terms": [
+      {
+        "label": "Locatie",
+        "domain": "actortype",
+        "id": "8.15.0.0.0"
+      },
+      {
+        "label": "Organisator(en)",
+        "domain": "actortype",
+        "id": "8.11.0.0.0"
+      },
+      {
+        "label": "Assistentie",
+        "domain": "facility",
+        "id": "3.23.2.0.0"
+      },
+      {
+        "label": "Lokaal",
+        "domain": "publicscope",
+        "id": "6.1.0.0.0"
+      },
+      {
+        "label": "Cultuur, gemeenschaps of ontmoetingscentrum",
+        "domain": "actortype",
+        "id": "8.6.0.0.0"
+      }
+    ]
+  },
+  "organizer": {
+    "name": "gc de wildeman",
+    "email": ["info@gcdewildeman.be"],
+    "phone": ["016 211 431"],
+    "@type": "Organizer"
+  },
+  "bookingInfo": [
+    {
+      "description": "kassa: \u20ac 20.00",
+      "currency": "EUR",
+      "price": 18
+    }
+  ],
+  "terms": [
+    {
+      "label": "Folk en wereldmuziek",
+      "domain": "theme",
+      "id": "1.8.4.0.0"
+    },
+    {
+      "label": "Regionaal",
+      "domain": "publicscope",
+      "id": "6.2.0.0.0"
+    },
+    {
+      "label": "Groene Gordel",
+      "domain": "flanderstouristregion",
+      "id": "reg.364"
+    },
+    {
+      "label": "Concert",
+      "domain": "eventtype",
+      "id": "0.50.4.0.0"
+    },
+    {
+      "label": "3020 Herent",
+      "domain": "flandersregion",
+      "id": "reg.643"
+    }
+  ],
+  "creator": "zapapimport",
+  "created": "2014-08-13T19:28:28+02:00",
+  "publisher": "System Manager",
+  "endDate": "2015-05-24T00:00:00+02:00",
+  "startDate": "2015-05-23T20:30:00+02:00",
+  "calendarType": "multiple",
+  "performer": [{"name": "MANdolinMAN invites"}],
+  "sameAs": [
+    "http:\/\/www.uitinvlaanderen.be\/agenda\/e\/jan-de-smet-stoomboot-stefan-bracaval\/152dc82b-d04b-4c8d-9ee6-55402ec3a958",
+    "GCDEWILDEMAN:GCDewildeman_importcdb_459"
+  ]
+}

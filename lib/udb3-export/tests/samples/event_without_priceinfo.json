@@ -1,0 +1,89 @@
+{
+  "@id": "http:\/\/culudb-silex.dev:8080\/event\/405a0c6a-c48f-4c5f-960c-df337237b9d6",
+  "@context": "\/api\/1.0\/event.jsonld",
+  "name": {"nl": "Lessenreeks MURGA"},
+  "description": {"nl": "<p>Wij zijn Murga \u00e7ava, een vrolijke groep van 20 percussionisten,\njong en oud, uit Herent en omgeving. Bij ons is iedereen welkom!\nMuzikale voorkennis is geen vereiste. Behalve percussie staan we\nook open voor blazers, dansers of ander talent. Kom gratis met ons\nkennismaken op maandag 1 september 2014 tussen 20u en 21u30 in De\nWildeman in Herent!<\/p>"},
+  "available": "2014-07-02T00:00:00+02:00",
+  "calendarSummary": "van 01\/09\/14 tot 29\/06\/15",
+  "location": {
+    "@type": "Place",
+    "@id": "http:\/\/culudb-silex.dev:8080\/place\/61DA6E33-D632-A342-28F34D5E9E1688B3",
+    "@context": "\/api\/1.0\/place.jsonld",
+    "description": "De Wildeman is een gezellig gemeenschapscentrum in Herent aan de rand van leuven. Al meer dan tien jaar komen hier grote namen en lokale sterren. Theater, Muziek, Cabaret,.. De Wildeman biedt, vanop de eerste rij, cultuur aan democratische prijzen. Kortom: een gezellige avond uit!",
+    "name": {"nl": "GC De Wildeman"},
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Herent",
+      "postalCode": "3020",
+      "streetAddress": "Schoolstraat 15"
+    },
+    "bookingInfo": {
+      "description": "",
+      "name": "standard price",
+      "price": 0,
+      "priceCurrency": "EUR"
+    },
+    "terms": [
+      {
+        "label": "Locatie",
+        "domain": "actortype",
+        "id": "8.15.0.0.0"
+      },
+      {
+        "label": "Organisator(en)",
+        "domain": "actortype",
+        "id": "8.11.0.0.0"
+      },
+      {
+        "label": "Assistentie",
+        "domain": "facility",
+        "id": "3.23.2.0.0"
+      },
+      {
+        "label": "Lokaal",
+        "domain": "publicscope",
+        "id": "6.1.0.0.0"
+      },
+      {
+        "label": "Cultuur, gemeenschaps of ontmoetingscentrum",
+        "domain": "actortype",
+        "id": "8.6.0.0.0"
+      }
+    ]
+  },
+  "terms": [
+    {
+      "label": "Amusementsmuziek",
+      "domain": "theme",
+      "id": "1.8.3.5.0"
+    },
+    {
+      "label": "Lokaal",
+      "domain": "publicscope",
+      "id": "6.1.0.0.0"
+    },
+    {
+      "label": "Groene Gordel",
+      "domain": "flanderstouristregion",
+      "id": "reg.364"
+    },
+    {
+      "label": "Cursus of workshop",
+      "domain": "eventtype",
+      "id": "0.3.1.0.0"
+    },
+    {
+      "label": "3020 Herent",
+      "domain": "flandersregion",
+      "id": "reg.643"
+    }
+  ],
+  "creator": "murgaherent@gmail.com",
+  "created": "2014-07-02T11:18:49+02:00",
+  "publisher": "Invoerders Algemeen ",
+  "startDate": "2014-09-01T00:00:00+02:00",
+  "endDate": "2015-06-29T00:00:00+02:00",
+  "calendarType": "periodic",
+  "sameAs": ["http:\/\/www.uitinvlaanderen.be\/agenda\/e\/lessenreeks-murga\/405a0c6a-c48f-4c5f-960c-df337237b9d6"],
+  "image": "http:\/\/media.uitdatabank.be\/20141211\/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg"
+}

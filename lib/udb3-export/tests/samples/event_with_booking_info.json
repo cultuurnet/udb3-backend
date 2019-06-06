@@ -1,0 +1,105 @@
+{
+  "@id": "https:\/\/udb-silex-test.uitdatabank.be\/event\/caacf59e-29e7-4787-9197-bf3933e86288",
+  "@context": "\/contexts\/event",
+  "name": {
+    "nl": "Testing Museumpas event (tentoonstelling Q1-2 2017)"
+  },
+  "location": {
+    "@type": "Place",
+    "@id": "https:\/\/udb-silex-test.uitdatabank.be\/place\/311b5e88-2c60-499f-9302-f6c10551b4f5",
+    "@context": "\/contexts\/place",
+    "name": {
+      "nl": "SMAK"
+    },
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Gent",
+      "postalCode": "9000",
+      "streetAddress": "Jan Hoetplein 1"
+    },
+    "calendarType": "permanent",
+    "availableTo": "2100-01-01T00:00:00+00:00",
+    "terms": [
+      {
+        "id": "GnPFp9uvOUyqhOckIFMKmg",
+        "label": "Museum of galerij",
+        "domain": "eventtype"
+      }
+    ],
+    "created": "2016-12-01T09:12:35+00:00",
+    "modified": "2016-12-01T09:12:35+00:00",
+    "creator": "barbara.lefebure@cultuurnet.be",
+    "workflowStatus": "DRAFT"
+  },
+  "availableTo": "2017-06-30T23:59:59+02:00",
+  "sameAs": [
+    "http:\/\/www.uitinvlaanderen.be\/agenda\/e\/testing-museumpas-event\/caacf59e-29e7-4787-9197-bf3933e86288"
+  ],
+  "terms": [
+    {
+      "id": "0.0.0.0.0",
+      "label": "Tentoonstelling",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.1.0.0.0",
+      "label": "Audiovisuele kunst",
+      "domain": "theme"
+    }
+  ],
+  "created": "2017-01-09T14:21:49+00:00",
+  "modified": "2017-01-09T14:21:49+00:00",
+  "creator": "stan@cultuurnet.be",
+  "workflowStatus": "APPROVED",
+  "audience": {
+    "audienceType": "everyone"
+  },
+  "organizer": {
+    "@type": "Organizer",
+    "@id": "https:\/\/udb-silex-test.uitdatabank.be\/organizers\/6bd731a8-598d-460f-b534-98a604fc4983",
+    "@context": "\/contexts\/organizer",
+    "url": "http:\/\/smak.be",
+    "name": "SMAK",
+    "created": "2016-12-01T09:13:26+00:00",
+    "creator": "83b90b27-0ce3-449a-9816-2cf1e44ab56e (BLE)",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Gent",
+      "postalCode": "9000",
+      "streetAddress": "jehgf"
+    },
+    "contactPoint": {
+      "phone": [],
+      "email": [],
+      "url": [
+        "http:\/\/www.smak.be"
+      ]
+    },
+    "hiddenLabels": [
+      "UITPAS",
+      "UiTPAS Gent",
+      "Museumpas"
+    ]
+  },
+  "availableFrom": "2017-01-09T15:22:05+01:00",
+  "calendarType": "periodic",
+  "startDate": "2017-01-01T00:00:00+01:00",
+  "endDate": "2017-06-30T00:00:00+02:00",
+  "contactPoint": {
+    "phone": [
+      "0234567891"
+    ],
+    "email": [],
+    "url": []
+  },
+  "bookingInfo": {
+    "phone": "09987654321",
+    "email": "dirk@du.de",
+    "url": "http:\/\/www.museumpas.be\/smak",
+    "urlLabel": "Reserveer plaatsen",
+    "name": "",
+    "description": "",
+    "availabilityStarts": "",
+    "availabilityEnds": ""
+  }
+}
