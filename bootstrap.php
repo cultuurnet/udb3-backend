@@ -508,8 +508,6 @@ $app['event_bus'] = $app->share(
                 'event_calendar_projector',
                 'variations.search.projector',
                 'variations.jsonld.projector',
-                IndexServiceProvider::PROJECTOR,
-                IndexServiceProvider::UDB2_PROJECTOR,
                 'event_permission.projector',
                 'place_permission.projector',
                 OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
@@ -1234,7 +1232,6 @@ $app->register(
 
 $app->register(new \CultuurNet\UDB3\Silex\Proxy\ProxyServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\IndexServiceProvider());
 $app->register(new MyOrganizersServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventReadServiceProvider());
