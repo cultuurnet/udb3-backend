@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
-use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
@@ -147,12 +146,6 @@ $app['event_iri_generator'] = $app->share(
                 return $app['config']['url'] . '/event/' . $cdbid;
             }
         );
-    }
-);
-
-$app['entity_iri_generator_factory'] = $app->share(
-    function ($app) {
-        return new EntityIriGeneratorFactory($app['config']['url']);
     }
 );
 
