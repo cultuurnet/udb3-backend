@@ -26,7 +26,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ResqueCommandBusServiceProvider implements ServiceProviderInterface
+class CommandBusServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

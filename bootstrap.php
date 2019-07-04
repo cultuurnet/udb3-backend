@@ -86,7 +86,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Resque\ResqueCommandBusServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Resque\CommandBusServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
