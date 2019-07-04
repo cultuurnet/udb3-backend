@@ -724,11 +724,6 @@ $app['event_command_bus_base'] = function (Application $app) {
 };
 
 /**
- * "Event" command bus.
- */
-$app['resque_command_bus_factory']('event');
-
-/**
  * Tie command handlers to command bus.
  * @param CommandBusInterface $commandBus
  * @param Application $app
@@ -793,7 +788,7 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
     return $commandBus;
 };
 
-$app->extend('event_command_bus_out', $subscribeCoreCommandHandlers);
+$app->extend('event_command_bus', $subscribeCoreCommandHandlers);
 
 /** Place **/
 

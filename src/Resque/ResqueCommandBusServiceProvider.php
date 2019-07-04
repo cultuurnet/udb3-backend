@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Resque;
 
+use Broadway\CommandHandling\SimpleCommandBus;
 use CultuurNet\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
@@ -99,6 +100,19 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
                 );
             }
         );
+
+        $app['event_command_bus'] = $app->share(
+            function () use ($app) {
+                return new ValidatingCommandBusDecorator(
+                    new ContextDecoratedCommandBus(
+                        new SimpleCommandBus(),
+                        $app
+                    ),
+                    $app['event_command_validator']
+                );
+            }
+        );
+
 
         $app['resque_command_bus_factory'] = $app->protect(
             function ($queueName) use ($app) {
