@@ -709,20 +709,6 @@ $app['logger.command_bus'] = $app->share(
     }
 );
 
-$app['event_command_bus_base'] = function (Application $app) {
-    $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus(
-    );
-
-    $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus(
-        $mainCommandBus,
-        'event',
-        $app['command_bus_event_dispatcher']
-    );
-    $commandBus->setLogger($app['logger.command_bus']);
-
-    return $commandBus;
-};
-
 /**
  * Tie command handlers to command bus.
  * @param CommandBusInterface $commandBus
