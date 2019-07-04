@@ -113,6 +113,11 @@ class CommandBusServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['event_command_validator'] = $app->share(
+            function () {
+                return new CompositeCommandValidator();
+            }
+        );
 
         $app['resque_command_bus_factory'] = $app->protect(
             function ($queueName) use ($app) {
