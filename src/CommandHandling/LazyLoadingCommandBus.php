@@ -2,9 +2,10 @@
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
-use Broadway\CommandHandling\SimpleCommandBus;
+use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandHandlerInterface;
 
-class LazyLoadingSimpleCommandBus extends SimpleCommandBus
+class LazyLoadingCommandBus implements CommandBusInterface
 {
     /**
      * @var bool
@@ -15,6 +16,16 @@ class LazyLoadingSimpleCommandBus extends SimpleCommandBus
      * @var callable
      */
     private $beforeFirstDispatch;
+
+    /**
+     * @var CommandBusInterface
+     */
+    private $commandBus;
+
+    public function __construct(CommandBusInterface $commandBus)
+    {
+        $this->commandBus = $commandBus;
+    }
 
     public function beforeFirstDispatch(callable $beforeFirstDispatch): void
     {
@@ -28,6 +39,11 @@ class LazyLoadingSimpleCommandBus extends SimpleCommandBus
             call_user_func($this->beforeFirstDispatch, $this);
         }
 
-        parent::dispatch($command);
+        $this->commandBus->dispatch($command);
+    }
+
+    public function subscribe(CommandHandlerInterface $handler)
+    {
+        $this->commandBus->subscribe($handler);
     }
 }

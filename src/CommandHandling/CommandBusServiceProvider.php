@@ -103,12 +103,14 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 
         $app['event_command_bus'] = $app->share(
             function () use ($app) {
-                return new ValidatingCommandBusDecorator(
-                    new ContextDecoratedCommandBus(
-                        new SimpleCommandBus(),
-                        $app
-                    ),
-                    $app['event_command_validator']
+                return new LazyLoadingCommandBus(
+                    new ValidatingCommandBusDecorator(
+                        new ContextDecoratedCommandBus(
+                            new SimpleCommandBus(),
+                            $app
+                        ),
+                        $app['event_command_validator']
+                    )
                 );
             }
         );

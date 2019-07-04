@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\AggregateType;
-use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingSimpleCommandBus;
+use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -716,7 +716,7 @@ $app['logger.command_bus'] = $app->share(
  * @param Application $app
  * @return CommandBusInterface
  */
-$subscribeCoreCommandHandlers = function (LazyLoadingSimpleCommandBus $commandBus, Application $app) {
+$subscribeCoreCommandHandlers = function (LazyLoadingCommandBus $commandBus, Application $app) {
     $commandBus->beforeFirstDispatch(
         function (CommandBusInterface $commandBus) use ($app) {
             // The order is important because the label first needs to be created
