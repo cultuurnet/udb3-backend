@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex\Resque;
+namespace CultuurNet\UDB3\Silex\CommandHandling;
 
 use Broadway\CommandHandling\SimpleCommandBus;
 use CultuurNet\Broadway\CommandHandling\Validation\CompositeCommandValidator;
