@@ -87,21 +87,25 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['authorized_command_bus'] = $app->share(
+            function () use ($app) {
+                return new AuthorizedCommandBus(
+                    new SimpleContextAwareCommandBus(),
+                    new CultureFeedUserIdentification(
+                        $app['current_user'],
+                        $app['config']['user_permissions']
+                    ),
+                    $app['command_bus.security']
+                );
+            }
+        );
+
         $app['resque_command_bus_factory'] = $app->protect(
             function ($queueName) use ($app) {
                 $app[$queueName . '_command_bus_factory'] = function () use ($app, $queueName) {
 
-                    $authorizedCommandBus = new AuthorizedCommandBus(
-                        new SimpleContextAwareCommandBus(),
-                        new CultureFeedUserIdentification(
-                            $app['current_user'],
-                            $app['config']['user_permissions']
-                        ),
-                        $app['command_bus.security']
-                    );
-
                     $commandBus = new ResqueCommandBus(
-                        $authorizedCommandBus,
+                        $app['authorized_command_bus'],
                         $queueName,
                         $app['command_bus_event_dispatcher']
                     );
