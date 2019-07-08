@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -86,7 +87,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Resque\ResqueCommandBusServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\CommandHandling\CommandBusServiceProvider());
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -709,91 +710,76 @@ $app['logger.command_bus'] = $app->share(
     }
 );
 
-$app['event_command_bus_base'] = function (Application $app) {
-    $mainCommandBus = new \CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus(
-    );
-
-    $commandBus = new \CultuurNet\UDB3\CommandHandling\ResqueCommandBus(
-        $mainCommandBus,
-        'event',
-        $app['command_bus_event_dispatcher']
-    );
-    $commandBus->setLogger($app['logger.command_bus']);
-
-    return $commandBus;
-};
-
-/**
- * "Event" command bus.
- */
-$app['resque_command_bus_factory']('event');
-
 /**
  * Tie command handlers to command bus.
  * @param CommandBusInterface $commandBus
  * @param Application $app
  * @return CommandBusInterface
  */
-$subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Application $app) {
-    // The order is important because the label first needs to be created
-    // before it can be added.
-    $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
+$subscribeCoreCommandHandlers = function (LazyLoadingCommandBus $commandBus, Application $app) {
+    $commandBus->beforeFirstDispatch(
+        function (CommandBusInterface $commandBus) use ($app) {
+            // The order is important because the label first needs to be created
+            // before it can be added.
+            $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
 
-    $commandBus->subscribe(
-        new \CultuurNet\UDB3\Event\EventCommandHandler(
-            $app['event_repository'],
-            $app['organizer_repository'],
-            $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-            $app['media_manager']
-        )
+            $commandBus->subscribe(
+                new \CultuurNet\UDB3\Event\EventCommandHandler(
+                    $app['event_repository'],
+                    $app['organizer_repository'],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app['media_manager']
+                )
+            );
+
+            $commandBus->subscribe(
+                new \CultuurNet\UDB3\Event\ConcludeCommandHandler(
+                    $app['event_repository']
+                )
+            );
+
+            $commandBus->subscribe($app['saved_searches_command_handler']);
+
+            /** @var ToggleManager $toggles */
+            $toggles = $app['toggles'];
+            if ($toggles->active('variations', $app['toggles.context'])) {
+                $commandBus->subscribe(
+                    $app['variations.command_handler']
+                );
+            }
+
+            $commandBus->subscribe(
+                new \CultuurNet\UDB3\Place\CommandHandler(
+                    $app['place_repository'],
+                    $app['organizer_repository'],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app['media_manager']
+                )
+            );
+
+            $commandBus->subscribe(
+                (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler(
+                    $app['organizer_repository'],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                ))
+                    ->withOrganizerRelationService($app['place_organizer_relation_service'])
+                    ->withOrganizerRelationService($app['event_organizer_relation_service'])
+            );
+
+            $commandBus->subscribe(
+                new \CultuurNet\UDB3\Role\CommandHandler($app['real_role_repository'])
+            );
+
+            $commandBus->subscribe($app['media_manager']);
+            $commandBus->subscribe($app['place_geocoordinates_command_handler']);
+            $commandBus->subscribe($app['event_geocoordinates_command_handler']);
+        }
     );
-
-    $commandBus->subscribe(
-        new \CultuurNet\UDB3\Event\ConcludeCommandHandler(
-            $app['event_repository']
-        )
-    );
-
-    $commandBus->subscribe($app['saved_searches_command_handler']);
-
-    /** @var ToggleManager $toggles */
-    $toggles = $app['toggles'];
-    if ($toggles->active('variations', $app['toggles.context'])) {
-        $commandBus->subscribe(
-            $app['variations.command_handler']
-        );
-    }
-
-    $commandBus->subscribe(
-        new \CultuurNet\UDB3\Place\CommandHandler(
-            $app['place_repository'],
-            $app['organizer_repository'],
-            $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-            $app['media_manager']
-        )
-    );
-
-    $commandBus->subscribe(
-        (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler(
-            $app['organizer_repository'],
-            $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-        ))
-            ->withOrganizerRelationService($app['place_organizer_relation_service'])
-            ->withOrganizerRelationService($app['event_organizer_relation_service'])
-    );
-
-    $commandBus->subscribe(
-        new \CultuurNet\UDB3\Role\CommandHandler($app['real_role_repository'])
-    );
-
-    $commandBus->subscribe($app['media_manager']);
-    $commandBus->subscribe($app['place_geocoordinates_command_handler']);
-    $commandBus->subscribe($app['event_geocoordinates_command_handler']);
 
     return $commandBus;
 };
 
-$app->extend('event_command_bus_out', $subscribeCoreCommandHandlers);
+$app->extend('event_command_bus', $subscribeCoreCommandHandlers);
 
 /** Place **/
 

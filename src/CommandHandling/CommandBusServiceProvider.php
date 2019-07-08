@@ -1,7 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex\Resque;
+namespace CultuurNet\UDB3\Silex\CommandHandling;
 
+use Broadway\CommandHandling\SimpleCommandBus;
 use CultuurNet\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
@@ -25,7 +26,7 @@ use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ResqueCommandBusServiceProvider implements ServiceProviderInterface
+class CommandBusServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
@@ -87,21 +88,45 @@ class ResqueCommandBusServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['authorized_command_bus'] = $app->share(
+            function () use ($app) {
+                return new AuthorizedCommandBus(
+                    new SimpleContextAwareCommandBus(),
+                    new CultureFeedUserIdentification(
+                        $app['current_user'],
+                        $app['config']['user_permissions']
+                    ),
+                    $app['command_bus.security']
+                );
+            }
+        );
+
+        $app['event_command_bus'] = $app->share(
+            function () use ($app) {
+                return new LazyLoadingCommandBus(
+                    new ValidatingCommandBusDecorator(
+                        new ContextDecoratedCommandBus(
+                            new SimpleCommandBus(),
+                            $app
+                        ),
+                        $app['event_command_validator']
+                    )
+                );
+            }
+        );
+
+        $app['event_command_validator'] = $app->share(
+            function () {
+                return new CompositeCommandValidator();
+            }
+        );
+
         $app['resque_command_bus_factory'] = $app->protect(
             function ($queueName) use ($app) {
                 $app[$queueName . '_command_bus_factory'] = function () use ($app, $queueName) {
 
-                    $authorizedCommandBus = new AuthorizedCommandBus(
-                        new SimpleContextAwareCommandBus(),
-                        new CultureFeedUserIdentification(
-                            $app['current_user'],
-                            $app['config']['user_permissions']
-                        ),
-                        $app['command_bus.security']
-                    );
-
                     $commandBus = new ResqueCommandBus(
-                        $authorizedCommandBus,
+                        $app['authorized_command_bus'],
                         $queueName,
                         $app['command_bus_event_dispatcher']
                     );
