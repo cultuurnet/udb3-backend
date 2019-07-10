@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1562768771">
+  <project timestamp="1562768771">
+    <package name="CultuurNet\UDB3\Silex\Curators\Events">
+      <file name="/Users/bert/Projects/madewithlove/publiq/udb3-vagrant/source/udb3-silex/src/Curators/Events/NewsArticleAboutEventAdded.php">
+        <class name="NewsArticleAboutEventAdded" namespace="CultuurNet\UDB3\Silex\Curators\Events">
+          <metrics complexity="3" methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="4" elements="8" coveredelements="6"/>
+        </class>
+        <line num="22" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="24" type="stmt" count="2"/>
+        <line num="25" type="stmt" count="2"/>
+        <line num="26" type="stmt" count="2"/>
+        <line num="28" type="method" name="getNewsArticleId" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="33" type="method" name="getEventId" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="35" type="stmt" count="1"/>
+        <metrics loc="37" ncloc="31" classes="1" methods="3" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="4" elements="8" coveredelements="6"/>
+      </file>
+    </package>
+    <package name="CultuurNet\UDB3\Silex\Curators\Deserializers">
+      <file name="/Users/bert/Projects/madewithlove/publiq/udb3-vagrant/source/udb3-silex/src/Curators/Events/NewsArticleAboutEventAddedJSONDeserializer.php">
+        <class name="NewsArticleAboutEventAddedJSONDeserializer" namespace="CultuurNet\UDB3\Silex\Curators\Deserializers">
+          <metrics complexity="4" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="11" coveredelements="11"/>
+        </class>
+        <line num="15" type="method" name="getContentType" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="17" type="stmt" count="1"/>
+        <line num="20" type="method" name="deserialize" visibility="public" complexity="3" crap="3" count="4"/>
+        <line num="22" type="stmt" count="4"/>
+        <line num="24" type="stmt" count="4"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="28" type="stmt" count="3"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="32" type="stmt" count="2"/>
+        <line num="33" type="stmt" count="2"/>
+        <line num="35" type="stmt" count="2"/>
+        <metrics loc="37" ncloc="37" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="9" elements="11" coveredelements="11"/>
+      </file>
+    </package>
+    <package name="CultuurNet\UDB3\Silex\Curators">
+      <file name="/Users/bert/Projects/madewithlove/publiq/udb3-vagrant/source/udb3-silex/src/Curators/NewsArticleId.php">
+        <class name="NewsArticleId" namespace="CultuurNet\UDB3\Silex\Curators">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="11" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/bert/Projects/madewithlove/publiq/udb3-vagrant/source/udb3-silex/src/Curators/NewsArticleProcessManager.php">
+        <class name="NewsArticleProcessManager" namespace="CultuurNet\UDB3\Silex\Curators">
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="14" elements="17" coveredelements="17"/>
+        </class>
+        <line num="21" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="31" type="method" name="handle" visibility="public" complexity="2" crap="2" count="1"/>
+        <line num="34" type="stmt" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="38" type="stmt" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <line num="40" type="stmt" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="45" type="method" name="handleNewsArticleAboutEventAdded" visibility="private" complexity="1" crap="1" count="1"/>
+        <line num="47" type="stmt" count="1"/>
+        <line num="48" type="stmt" count="1"/>
+        <line num="49" type="stmt" count="1"/>
+        <line num="50" type="stmt" count="1"/>
+        <line num="53" type="stmt" count="1"/>
+        <metrics loc="54" ncloc="46" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="14" elements="17" coveredelements="17"/>
+      </file>
+    </package>
+    <metrics files="4" loc="139" ncloc="125" classes="3" methods="8" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="27" elements="36" coveredelements="34"/>
+  </project>
+</coverage>
