@@ -1,6 +1,7 @@
 /vendor/
 /*.yml
 !/.travis.yml
+/build/
 /cache/
 /log/
 /web/downloads/
