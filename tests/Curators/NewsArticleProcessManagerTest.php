@@ -13,8 +13,8 @@ use CultuurNet\UDB3\SimpleEventBus;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class NewsArticleProcessManagerTest extends TestCase
@@ -25,7 +25,7 @@ final class NewsArticleProcessManagerTest extends TestCase
     private $eventBusForwardingConsumer;
 
     /**
-     * @var OfferEditingServiceInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var OfferEditingServiceInterface|MockObject
      */
     private $offerEditingService;
 
@@ -54,10 +54,10 @@ final class NewsArticleProcessManagerTest extends TestCase
             $deserializer
         );
 
-        /* @var AMQPStreamConnection|PHPUnit_Framework_MockObject_MockObject $connection */
+        /* @var AMQPStreamConnection|MockObject $connection */
         $connection = $this->createMock(AMQPStreamConnection::class);
 
-        /* @var AMQPChannel|PHPUnit_Framework_MockObject_MockObject $channel */
+        /* @var AMQPChannel|MockObject $channel */
         $channel = $this->createMock(AMQPChannel::class);
 
         $connection->expects($this->any())
