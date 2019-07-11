@@ -9,9 +9,10 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\EventExport\SapiVersion;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Web\EmailAddress;
 
-class ExportEventsAsPDFTest extends \PHPUnit_Framework_TestCase
+class ExportEventsAsPDFTest extends TestCase
 {
     /**
      * @var ExportEventsAsPDF

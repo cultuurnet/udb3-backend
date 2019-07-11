@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\EventExport;
 
-use CultuurNet\UDB3\EventExport\PriceFormatter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class PriceFormatterTest
  * @package CultuurNet\UDB3\EventExport\Format\HTML
  */
-class PriceFormatterTest extends \PHPUnit_Framework_TestCase
+class PriceFormatterTest extends TestCase
 {
     /**
      * @test

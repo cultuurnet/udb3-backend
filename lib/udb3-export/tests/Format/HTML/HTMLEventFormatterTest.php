@@ -13,9 +13,10 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\TaalicoonDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
+class HTMLEventFormatterTest extends TestCase
 {
     /**
      * @var HTMLEventFormatter
@@ -639,13 +640,5 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertEquals($expectedMediaObject, $formattedEvent['mediaObject']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_include_coordinates_when_set()
-    {
-
     }
 }

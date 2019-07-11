@@ -9,8 +9,9 @@ use CultureFeed_Uitpas_Event_CultureEvent;
 use CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions;
 use DateTimeImmutable;
 use CultuurNet\Clock\FrozenClock;
+use PHPUnit\Framework\TestCase;
 
-class EventOrganizerPromotionQueryFactoryTest extends \PHPUnit_Framework_TestCase
+class EventOrganizerPromotionQueryFactoryTest extends TestCase
 {
     /**
      * @var EventOrganizerPromotionQueryFactory

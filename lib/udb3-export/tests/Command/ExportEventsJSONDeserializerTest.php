@@ -6,10 +6,11 @@ use CultuurNet\Deserializer\DeserializerInterface;
 use CultuurNet\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\EventExport\SapiVersion;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-class ExportEventsJSONDeserializerTest extends \PHPUnit_Framework_TestCase
+class ExportEventsJSONDeserializerTest extends TestCase
 {
     /**
      * @var ExportEventsJSONDeserializer|\PHPUnit_Framework_MockObject_MockObject
