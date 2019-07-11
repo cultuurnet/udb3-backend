@@ -13,6 +13,9 @@ use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
 
 final class NewsArticleProcessManager implements EventListenerInterface
 {
+    private const LABEL = 'curatoren';
+    private const LABEL_VISIBILE = false;
+
     /**
      * @var CommandBusInterface
      */
@@ -47,7 +50,7 @@ final class NewsArticleProcessManager implements EventListenerInterface
         $this->commandBus->dispatch(
             new AddLabel(
                 $newsArticleAboutEventAdded->getEventId(),
-                new Label('curatoren', false)
+                new Label(self::LABEL, self::LABEL_VISIBILE)
             )
         );
     }
