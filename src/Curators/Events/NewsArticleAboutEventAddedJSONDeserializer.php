@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Silex\Curators\Events;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\Deserializer\MissingValueException;
-use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer

@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
 use CultuurNet\UDB3\SimpleEventBus;
-use PhpAmqpLib\Channel\AbstractChannel;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
