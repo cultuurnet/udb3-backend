@@ -8,8 +8,9 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use PHPUnit\Framework\TestCase;
 
-class TabularDataEventFormatterTest extends \PHPUnit_Framework_TestCase
+class TabularDataEventFormatterTest extends TestCase
 {
 
     private function getJSONEventFromFile($fileName)

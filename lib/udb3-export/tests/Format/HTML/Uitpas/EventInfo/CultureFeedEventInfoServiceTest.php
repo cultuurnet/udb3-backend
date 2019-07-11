@@ -14,12 +14,13 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventFactory;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\PromotionQueryFactoryInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class CultureFeedEventInfoServiceTest
  * @package CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo
  */
-class CultureFeedEventInfoServiceTest extends \PHPUnit_Framework_TestCase
+class CultureFeedEventInfoServiceTest extends TestCase
 {
     /**
      * @var \CultureFeed_Uitpas|\PHPUnit_Framework_MockObject_MockObject

@@ -21,14 +21,14 @@ use CultuurNet\UDB3\Search\SearchServiceInterface;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Traversable;
 use ValueObjects\Number\Integer;
 use ValueObjects\Web\EmailAddress;
 use ValueObjects\Web\Url;
 
-class EventExportServiceTest extends PHPUnit_Framework_TestCase
+class EventExportServiceTest extends TestCase
 {
     /**
      * @var EventExportService

@@ -3,10 +3,11 @@
 namespace CultuurNet\UDB3\EventExport;
 
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ValueObjects\Web\EmailAddress;
 
-class EventExportServiceCollectionTest extends \PHPUnit_Framework_TestCase
+class EventExportServiceCollectionTest extends TestCase
 {
     /**
      * @var \CultuurNet\UDB3\EventExport\SapiVersion

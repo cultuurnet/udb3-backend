@@ -4,15 +4,16 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML\Properties;
 
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use \InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class TitleTest extends \PHPUnit_Framework_TestCase
+class TitleTest extends TestCase
 {
     /**
      * @test
      */
     public function it_should_be_at_least_one_character_long()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         new Title('');
     }
 }

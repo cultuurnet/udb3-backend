@@ -5,7 +5,9 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
-class TransformingIteratorIteratorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TransformingIteratorIteratorTest extends TestCase
 {
     /**
      * @test

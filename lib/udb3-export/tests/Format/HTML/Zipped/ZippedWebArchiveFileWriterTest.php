@@ -9,10 +9,11 @@ use Alchemy\Zippy\Zippy;
 use CultuurNet\UDB3\EventExport\Format\HTML\HTMLFileWriter;
 use CultuurNet\UDB3\EventExport\Format\HTML\Zipped\ZippedWebArchiveFileWriter;
 
+use PHPUnit\Framework\TestCase;
 use \Twig_Environment;
 use \Twig_Loader_Filesystem;
 
-class ZippedWebArchiveFileWriterTest extends \PHPUnit_Framework_TestCase
+class ZippedWebArchiveFileWriterTest extends TestCase
 {
     /**
      * @var string
