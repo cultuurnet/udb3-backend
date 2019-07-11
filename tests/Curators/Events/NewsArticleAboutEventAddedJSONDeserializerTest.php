@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Curators\Events;
 
-use CultuurNet\UDB3\Silex\Curators\Deserializers\NewsArticleAboutEventAddedJSONDeserializer;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 

@@ -10,7 +10,7 @@ use CultuurNet\BroadwayAMQP\EventBusForwardingConsumer;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Silex\Curators\Deserializers\NewsArticleAboutEventAddedJSONDeserializer;
+use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
 use CultuurNet\UDB3\SimpleEventBus;
 use PhpAmqpLib\Channel\AbstractChannel;
