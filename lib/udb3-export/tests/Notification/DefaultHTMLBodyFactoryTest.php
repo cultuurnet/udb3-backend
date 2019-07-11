@@ -3,8 +3,9 @@
 namespace CultuurNet\UDB3\EventExport\Notification;
 
 use CultuurNet\UDB3\EventExport\EventExportResult;
+use PHPUnit\Framework\TestCase;
 
-class DefaultHTMLBodyFactoryTest extends \PHPUnit_Framework_TestCase
+class DefaultHTMLBodyFactoryTest extends TestCase
 {
     /**
      * @test
