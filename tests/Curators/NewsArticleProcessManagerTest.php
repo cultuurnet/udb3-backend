@@ -100,7 +100,7 @@ final class NewsArticleProcessManagerTest extends TestCase
         $message = new AMQPMessage(
             json_encode(
                 [
-                    'newsArticleId' => 876323,
+                    'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
                     'eventId' => 'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
                 ]
             ),
@@ -114,8 +114,8 @@ final class NewsArticleProcessManagerTest extends TestCase
         $this->eventBusForwardingConsumer->consume($message);
 
         $expectedEvent = new NewsArticleAboutEventAdded(
-            new NewsArticleId(876323),
-            new StringLiteral('F8E5055F-66C4-4929-ABB9-822B9F5328F1')
+            'c4c19563-06e3-43fa-a15c-73a91c54b27e',
+            'F8E5055F-66C4-4929-ABB9-822B9F5328F1'
         );
 
         $expectedCommand = new AddLabel(

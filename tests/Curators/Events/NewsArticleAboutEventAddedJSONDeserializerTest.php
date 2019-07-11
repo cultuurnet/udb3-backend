@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Curators\Events;
 
-use CultuurNet\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Silex\Curators\Deserializers\NewsArticleAboutEventAddedJSONDeserializer;
-use CultuurNet\UDB3\Silex\Curators\NewsArticleId;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -49,11 +47,14 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
     public function it_should_deserialize_a_complete_event()
     {
         $expected = new NewsArticleAboutEventAdded(
-            new NewsArticleId(74567),
-            new StringLiteral('C0D870F6-2883-4565-A020-7CF12BDE5F51')
+            'c4c19563-06e3-43fa-a15c-73a91c54b27e',
+            'C0D870F6-2883-4565-A020-7CF12BDE5F51'
         );
 
-        $event = json_encode(['newsArticleId' => 74567, 'eventId' => 'C0D870F6-2883-4565-A020-7CF12BDE5F51']);
+        $event = json_encode([
+            'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
+            'eventId' => 'C0D870F6-2883-4565-A020-7CF12BDE5F51',
+        ]);
         $actual = $this->deserializer->deserialize(new StringLiteral($event));
 
         $this->assertEquals($expected, $actual);

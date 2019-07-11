@@ -5,32 +5,31 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Curators\Events;
 
 use CultuurNet\UDB3\Silex\Curators\NewsArticleId;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class NewsArticleAboutEventAdded
 {
     /**
-     * @var NewsArticleId
+     * @var string
      */
     private $newsArticleId;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $eventId;
 
-    public function __construct(NewsArticleId $newsArticleId, StringLiteral $eventId)
+    public function __construct(string $newsArticleId, string $eventId)
     {
         $this->newsArticleId = $newsArticleId;
         $this->eventId = $eventId;
     }
 
-    public function getNewsArticleId(): NewsArticleId
+    public function getNewsArticleId(): string
     {
         return $this->newsArticleId;
     }
 
-    public function getEventId(): StringLiteral
+    public function getEventId(): string
     {
         return $this->eventId;
     }

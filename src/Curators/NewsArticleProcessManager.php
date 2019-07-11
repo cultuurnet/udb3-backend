@@ -46,7 +46,7 @@ final class NewsArticleProcessManager implements EventListenerInterface
     {
         $this->commandBus->dispatch(
             new AddLabel(
-                $newsArticleAboutEventAdded->getEventId()->toNative(),
+                $newsArticleAboutEventAdded->getEventId(),
                 new Label('curatoren', false)
             )
         );

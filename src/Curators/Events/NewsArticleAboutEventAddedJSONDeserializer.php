@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex\Curators\Deserializers;
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
-use CultuurNet\UDB3\Silex\Curators\NewsArticleId;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer
@@ -29,9 +28,6 @@ final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer
             throw new MissingValueException('eventId is missing');
         }
 
-        $newsArticleId = new NewsArticleId((int) $json->newsArticleId);
-        $eventId = new StringLiteral($json->eventId);
-
-        return new NewsArticleAboutEventAdded($newsArticleId, $eventId);
+        return new NewsArticleAboutEventAdded($json->newsArticleId, $json->eventId);
     }
 }
