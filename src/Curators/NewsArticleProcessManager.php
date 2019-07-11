@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Curators;
 
-use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
 
 final class NewsArticleProcessManager implements EventListenerInterface
 {
     private const LABEL = 'curatoren';
-    private const LABEL_VISIBILE = false;
+    private const LABEL_VISIBLE = false;
 
     /**
-     * @var CommandBusInterface
+     * @var OfferEditingServiceInterface
      */
-    private $commandBus;
+    private $offerEditingService;
 
-    public function __construct(CommandBusInterface $commandBus)
+    public function __construct(OfferEditingServiceInterface $offerEditingService)
     {
-        $this->commandBus = $commandBus;
+        $this->offerEditingService = $offerEditingService;
     }
 
     /**
@@ -47,11 +46,9 @@ final class NewsArticleProcessManager implements EventListenerInterface
 
     private function handleNewsArticleAboutEventAdded(NewsArticleAboutEventAdded $newsArticleAboutEventAdded): void
     {
-        $this->commandBus->dispatch(
-            new AddLabel(
-                $newsArticleAboutEventAdded->getEventId(),
-                new Label(self::LABEL, self::LABEL_VISIBILE)
-            )
+        $this->offerEditingService->addLabel(
+            $newsArticleAboutEventAdded->getEventId(),
+            new Label(self::LABEL, self::LABEL_VISIBLE)
         );
     }
 }

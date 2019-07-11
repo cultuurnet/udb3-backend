@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Curators;
 
-use CultuurNet\BroadwayAMQP\CommandBusForwardingConsumer;
+use CultuurNet\BroadwayAMQP\EventBusForwardingConsumer;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use Monolog\Handler\StreamHandler;
@@ -42,11 +42,11 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['curators_command_bus_forwarding_consumer'] = $app->share(
+        $app['curators_event_bus_forwarding_consumer'] = $app->share(
             function (Application $app) {
-                $consumer = new CommandBusForwardingConsumer(
+                $consumer = new EventBusForwardingConsumer(
                     $app['amqp.connection'],
-                    $app['event_command_bus'],
+                    $app['event_bus'],
                     $app['curators_deserializer_locator'],
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['exchange']),
@@ -56,6 +56,14 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                 $consumer->setLogger($app['curators_logger']);
 
                 return $consumer;
+            }
+        );
+
+        $app['curators_news_article_process_manager'] = $app->share(
+            function (Application $app) {
+                return new NewsArticleProcessManager(
+                    $app['event_editor']
+                );
             }
         );
     }

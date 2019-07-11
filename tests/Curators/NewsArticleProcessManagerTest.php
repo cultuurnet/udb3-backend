@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Curators;
 
-use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use Broadway\EventHandling\TraceableEventBus;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumer;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
-use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
-use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
 use CultuurNet\UDB3\SimpleEventBus;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -28,14 +25,9 @@ final class NewsArticleProcessManagerTest extends TestCase
     private $eventBusForwardingConsumer;
 
     /**
-     * @var TraceableEventBus
+     * @var OfferEditingServiceInterface|PHPUnit_Framework_MockObject_MockObject
      */
-    private $eventBus;
-
-    /**
-     * @var TraceableCommandBus
-     */
-    private $commandBus;
+    private $offerEditingService;
 
     /**
      * @var array
@@ -46,18 +38,14 @@ final class NewsArticleProcessManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->commandBus = new TraceableCommandBus();
-        $this->commandBus->record();
+        $this->offerEditingService = $this->createMock(OfferEditingServiceInterface::class);
 
         $processManager = new NewsArticleProcessManager(
-            $this->commandBus
+            $this->offerEditingService
         );
 
-        $this->eventBus = new TraceableEventBus(
-            new SimpleEventBus()
-        );
-        $this->eventBus->trace();
-        $this->eventBus->subscribe($processManager);
+        $eventBus = new SimpleEventBus();
+        $eventBus->subscribe($processManager);
 
         $deserializer = new NewsArticleAboutEventAddedJSONDeserializer();
         $deserializerLocator = new SimpleDeserializerLocator();
@@ -78,7 +66,7 @@ final class NewsArticleProcessManagerTest extends TestCase
 
         $this->eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $connection,
-            $this->eventBus,
+            $eventBus,
             $deserializerLocator,
             new StringLiteral('test_consumer_tag'),
             new StringLiteral('test_exchange'),
@@ -107,25 +95,15 @@ final class NewsArticleProcessManagerTest extends TestCase
                 'content_type' => 'application/vnd.cultuurnet.curators-api.events.news-article-about-event-added+json',
             ]
         );
-
         $message->delivery_info = $this->messageDeliveryInfo;
 
+        $this->offerEditingService->expects($this->once())
+            ->method('addLabel')
+            ->with(
+                'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
+                new Label('curatoren', false)
+            );
+
         $this->eventBusForwardingConsumer->consume($message);
-
-        $expectedEvent = new NewsArticleAboutEventAdded(
-            'c4c19563-06e3-43fa-a15c-73a91c54b27e',
-            'F8E5055F-66C4-4929-ABB9-822B9F5328F1'
-        );
-
-        $expectedCommand = new AddLabel(
-            'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
-            new Label('curatoren', false)
-        );
-
-        $actualEvents = $this->eventBus->getEvents();
-        $actualCommands = $this->commandBus->getRecordedCommands();
-
-        $this->assertContains($expectedEvent, $actualEvents, '', false, false, false);
-        $this->assertContains($expectedCommand, $actualCommands, '', false, false, false);
     }
 }

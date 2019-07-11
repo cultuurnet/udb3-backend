@@ -63,7 +63,7 @@ $consoleApp->add(
 );
 
 $consoleApp->add(
-    (new ConsumeCommand('amqp-listen-curators', 'curators_command_bus_forwarding_consumer'))
+    (new ConsumeCommand('amqp-listen-curators', 'curators_event_bus_forwarding_consumer'))
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
