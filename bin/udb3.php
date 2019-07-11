@@ -62,6 +62,11 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
+$consoleApp->add(
+    (new ConsumeCommand('amqp-listen-curators', 'curators_command_bus_forwarding_consumer'))
+        ->withHeartBeat('dbal_connection:keepalive')
+);
+
 $consoleApp->add(new ReplayCommand());
 $consoleApp->add(new EventAncestorsCommand());
 $consoleApp->add(new UpdateCdbXMLCommand());

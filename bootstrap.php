@@ -18,6 +18,7 @@ use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
+use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\IndexServiceProvider;
@@ -1323,5 +1324,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\AuditTrailServiceProvider());
+
+$app->register(new CuratorsServiceProvider());
 
 return $app;
