@@ -194,7 +194,7 @@ class HTMLEventFormatter
     {
         if ($this->calendarSummaryRepository) {
             try {
-                $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::HTML(), Format::LARGE());
+                $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::HTML(), Format::SMALL());
             } catch (SummaryUnavailableException $exception) {
                 //TODO: Log the missing summaries.
             };
