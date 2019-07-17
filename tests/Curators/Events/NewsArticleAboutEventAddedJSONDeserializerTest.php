@@ -14,7 +14,7 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
      */
     private $deserializer;
 
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         $this->deserializer = new NewsArticleAboutEventAddedJSONDeserializer();
