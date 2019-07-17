@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="UDB3-Silex" default="test">
     <fileset id="php" dir=".">
+        <include name="app/**/*.php"/>
         <include name="src/**/*.php"/>
     </fileset>
 
