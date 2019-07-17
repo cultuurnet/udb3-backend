@@ -79,6 +79,9 @@ amqp:
     imports:
       exchange: imports.vagrant.x.entry
       queue: udb3.vagrant.q.imports-entry
+    curators:
+      exchange: curators.vagrant.x.events
+      queue: udb3.vagrant.q.curators-events
   publish:
     udb3:
       exchange: udb3.e.prod

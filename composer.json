@@ -65,6 +65,11 @@
       "CultuurNet\\UDB3\\Silex\\": ["app/", "src/"]
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "CultuurNet\\UDB3\\Silex\\": "tests/"
+    }
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "0.x-dev"

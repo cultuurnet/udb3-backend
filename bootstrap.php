@@ -18,6 +18,7 @@ use CultuurNet\UDB3\ReadModel\Index\EntityIriGeneratorFactory;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
+use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\IndexServiceProvider;
@@ -537,6 +538,7 @@ $app['event_bus'] = function ($app) {
             'place_geocoordinates_process_manager',
             'event_geocoordinates_process_manager',
             'uitpas_event_process_manager',
+            'curators_news_article_process_manager',
         ];
 
         $initialSubscribersCount = count($subscribers);
@@ -559,7 +561,7 @@ $app['event_bus'] = function ($app) {
             isset($app['config']['event_bus']) &&
             isset($app['config']['event_bus']['disable_related_offer_subscribers']) &&
             $app['config']['event_bus']['disable_related_offer_subscribers'] == TRUE
-         ) {
+        ) {
             $subscribersToDisable = [
                 EventJSONLDServiceProvider::RELATED_PROJECTOR,
                 PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
@@ -1321,5 +1323,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Import\ImportConsumerServiceProvider()
 $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\AuditTrailServiceProvider());
+
+$app->register(new CuratorsServiceProvider());
 
 return $app;

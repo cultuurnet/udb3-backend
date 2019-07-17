@@ -23,8 +23,20 @@
         </phplint>
     </target>
 
+    <!--
+        The PHPUnit task of Phing does not support white-lists for code
+        coverage. Therefore we use the exec task instead.
+    -->
+    <target name="unit-tests">
+        <exec
+                command="./vendor/bin/phpunit"
+                checkreturn="true"
+                passthru="true"/>
+    </target>
+
     <target name="test">
         <phingcall target="lint"/>
+        <phingcall target="unit-tests"/>
         <phingcall target="coding-standards"/>
         <phingcall target="libs"/>
     </target>
