@@ -106,7 +106,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                 return new LazyLoadingCommandBus(
                     new ValidatingCommandBusDecorator(
                         new ContextDecoratedCommandBus(
-                            new SimpleCommandBus(),
+                            $app['authorized_command_bus'],
                             $app
                         ),
                         $app['event_command_validator']
