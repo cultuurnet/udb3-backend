@@ -311,6 +311,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
                     ],
                     'hiddenLabels' => [
                         'Bar',
+                        'uitpas gent',
                         'UiTPAS Oostende',
                     ],
                 ],
@@ -336,6 +337,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
             new AddLabel($eventId->toNative(), new Label('Paspartoe', true)),
+            new AddLabel($eventId->toNative(), new Label('UiTPAS Gent', false)),
             new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende', false)),
         ];
 
