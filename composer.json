@@ -93,6 +93,13 @@
       "options": {
         "symlink": true
       }
+    },
+    {
+      "type": "path",
+      "url": "lib/udb3-uitpas-bridge",
+      "options": {
+        "symlink": true
+      }
     }
   ]
 }

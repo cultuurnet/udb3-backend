@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bce1d9ed110d0838e636dd4226a00d3",
+    "content-hash": "0612177beea1fb14b8474740a54c99f4",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -2043,16 +2043,11 @@
         {
             "name": "cultuurnet/udb3-uitpas-bridge",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-uitpas-bridge.git",
-                "reference": "c987c07bcb648c44cbe3a4e38dfe13e5ea1b5920"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-bridge/zipball/c987c07bcb648c44cbe3a4e38dfe13e5ea1b5920",
-                "reference": "c987c07bcb648c44cbe3a4e38dfe13e5ea1b5920",
-                "shasum": ""
+                "type": "path",
+                "url": "lib/udb3-uitpas-bridge",
+                "reference": "3840ed8648b027a545f698ec81103f2a8bbb1981",
+                "shasum": null
             },
             "require": {
                 "2dotstwice/collection": "~1.0",
@@ -2081,11 +2076,17 @@
                     "CultuurNet\\UDB3\\UiTPAS\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\UiTPAS\\": "tests/"
+                }
+            },
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29T14:25:13+00:00"
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "cultuurnet/uitid-credentials",
