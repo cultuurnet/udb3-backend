@@ -317,6 +317,8 @@ class TabularDataEventFormatterTest extends TestCase
         $eventWithUnwantedLineBreaks = $this->getJSONEventFromFile('event_with_unwanted_line_breaks.json');
 
         $formatter = new TabularDataEventFormatter($includedProperties);
+
+        /* @codingStandardsIgnoreStart */
         $expectedDescription = 'Wat is de kracht van verzoening? Jan De Cock trekt de wereld rond en ontmoet tientallen slachtoffers van misdaden die we soms moeilijk kunnen vatten en die toch konden ze vergeven.'
         . PHP_EOL . 'Jan De Cock ontmoet slachtoffers van misdaden die het laatste woord niet aan de feiten hebben gelaten, noch aan de wrok.'
         . PHP_EOL . 'In een wereld waar de roep naar gerechtigheid steeds vaker gehoord wordt als een schreeuw voor meer repressie en straf, biedt Jan De Cock weerwerk.'
@@ -324,6 +326,7 @@ class TabularDataEventFormatterTest extends TestCase
         . PHP_EOL . 'Toch konden ze vergeven: ouders van wie de kinderen door de Noor Breivik werden vermoord, moeders van zonen die met de Twin Towers ten onder gingen, de weduwe van Gerrit Jan Heijn...'
         . PHP_EOL . 'Zondert twijfel een onvergetelijk avond.'
         . PHP_EOL . 'Graag doorklikken naar de website van Markant Melle Merelbeke voor alle informatie betreffende deze lezing. Iedereen welkom!';
+        /* @codingStandardsIgnoreEnd */
 
         $formattedEvent = $formatter->formatEvent($eventWithUnwantedLineBreaks);
         $expectedFormatting = array(
@@ -530,8 +533,10 @@ class TabularDataEventFormatterTest extends TestCase
 
         $expectedFormattedEvent = [
             'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
-            'calendarSummary.short' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
-            'calendarSummary.long' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'calendarSummary.short' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'calendarSummary.long' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
