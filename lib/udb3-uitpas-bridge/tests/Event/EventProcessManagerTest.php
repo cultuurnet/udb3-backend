@@ -187,6 +187,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
                         'Foo',
                         'Paspartoe',
                         'Bar',
+                        'uitpas gent',
                         'UiTPAS Oostende',
                     ],
                 ],
@@ -212,6 +213,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
             new AddLabel($eventId->toNative(), new Label('Paspartoe', true)),
+            new AddLabel($eventId->toNative(), new Label('UiTPAS Gent', true)),
             new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende', true)),
         ];
 
