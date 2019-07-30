@@ -180,7 +180,7 @@ class EventProcessManager implements EventListenerInterface
         foreach ($labels1 as $label1) {
             foreach ($labels2 as $label2) {
                 if ($label1->equals($label2)) {
-                    $matchingLabels[] = $label1;
+                    $matchingLabels[] = new Label((string) $label1, $visible);
                     break;
                 }
             }
@@ -191,10 +191,10 @@ class EventProcessManager implements EventListenerInterface
         );
 
         $commands = array_map(
-            function (Label $matchingLabel) use ($eventId, $visible) {
+            function (Label $matchingLabel) use ($eventId) {
                 return new AddLabel(
                     $eventId,
-                    new Label((string) $matchingLabel, $visible)
+                    $matchingLabel
                 );
             },
             $matchingLabels
