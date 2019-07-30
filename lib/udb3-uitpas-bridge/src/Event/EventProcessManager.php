@@ -137,12 +137,22 @@ class EventProcessManager implements EventListenerInterface
             return;
         }
 
-        $organizerLabels = isset($jsonLD->organizer->labels) ? $jsonLD->organizer->labels : [];
+        $organizerLabels = array_map(
+            function (string $labelName) {
+                return new Label($labelName);
+            },
+            isset($jsonLD->organizer->labels) ? $jsonLD->organizer->labels : []
+        );
         $this->logger->info(
             'Found organizer labels on event ' . $eventId . ': ' . implode(', ', $organizerLabels)
         );
 
-        $hiddenOrganizerLabels = isset($jsonLD->organizer->hiddenLabels) ? $jsonLD->organizer->hiddenLabels : [];
+        $hiddenOrganizerLabels = array_map(
+            function (string $labelName) {
+                return new Label($labelName, false);
+            },
+            isset($jsonLD->organizer->hiddenLabels) ? $jsonLD->organizer->hiddenLabels : []
+        );
         $this->logger->info(
             'Found hidden organizer labels on event ' . $eventId . ': ' . implode(', ', $hiddenOrganizerLabels)
         );
@@ -161,15 +171,15 @@ class EventProcessManager implements EventListenerInterface
     /**
      * @param string $eventId
      * @param Label[] $labels1
-     * @param string[] $labels2
+     * @param Label[] $labels2
      * @param bool $visible
      */
-    private function addIntersectingLabelsToEvent($eventId, array $labels1, $labels2, $visible)
+    private function addIntersectingLabelsToEvent($eventId, array $labels1, array $labels2, $visible)
     {
         $matchingLabels = [];
         foreach ($labels1 as $label1) {
             foreach ($labels2 as $label2) {
-                if ($label1->equals(new Label($label2))) {
+                if ($label1->equals($label2)) {
                     $matchingLabels[] = $label1;
                     break;
                 }
