@@ -15,9 +15,11 @@ class DefaultHTMLBodyFactoryTest extends TestCase
         $eventExportResult = new EventExportResult('http://google.be');
         $defaultHTMLBodyFactory = new DefaultHTMLBodyFactory();
 
+        /* @codingStandardsIgnoreStart */
         $expectedBody = '<p>Beste, <br /><br />Hierbij vind je de link naar de door jou geëxporteerde documenten uit UiTdatabank: <a href="http://google.be">http://google.be</a><br /><br />
         Mocht je vragen hebben, of meer informatie wensen over onze diensten, kan je terecht bij vragen@uitdatabank.be.<br /><br />
         Met vriendelijke groeten,<br />Het UiTdatabank team</p>';
+        /* @codingStandardsIgnoreEnd */
 
         $this->assertEquals(
             $expectedBody,
