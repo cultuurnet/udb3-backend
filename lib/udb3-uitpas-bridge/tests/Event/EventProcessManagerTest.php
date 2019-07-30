@@ -15,10 +15,11 @@ use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepositoryInterface;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
+class EventProcessManagerTest extends TestCase
 {
     /**
      * @var DocumentRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
