@@ -176,28 +176,28 @@ class EventProcessManager implements EventListenerInterface
      */
     private function addIntersectingLabelsToEvent($eventId, array $labels1, array $labels2, $visible)
     {
-        $matchingLabels = [];
+        $labelsToAdd = [];
         foreach ($labels1 as $label1) {
             foreach ($labels2 as $label2) {
                 if ($label1->equals($label2)) {
-                    $matchingLabels[] = new Label((string) $label1, $visible);
+                    $labelsToAdd[] = new Label((string) $label1, $visible);
                     break;
                 }
             }
         }
 
         $this->logger->info(
-            'Found uitpas organizer labels on event ' . $eventId . ': ' . implode(', ', $matchingLabels)
+            'Found uitpas organizer labels on event ' . $eventId . ': ' . implode(', ', $labelsToAdd)
         );
 
         $commands = array_map(
-            function (Label $matchingLabel) use ($eventId) {
+            function (Label $labelToAdd) use ($eventId) {
                 return new AddLabel(
                     $eventId,
-                    $matchingLabel
+                    $labelToAdd
                 );
             },
-            $matchingLabels
+            $labelsToAdd
         );
 
         $this->dispatchCommands($commands);
