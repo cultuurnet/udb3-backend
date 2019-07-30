@@ -157,13 +157,6 @@ class EventProcessManager implements EventListenerInterface
             'Found hidden organizer labels on event ' . $eventId . ': ' . implode(', ', $hiddenOrganizerLabels)
         );
 
-        $potentialLabelsToCopyAsString = array_map(
-            function (Label $label) {
-                return (string) $label;
-            },
-            $potentialLabelsToCopy
-        );
-
         $this->addIntersectingLabelsToEvent($eventId, $potentialLabelsToCopy, $organizerLabels, true);
         $this->addIntersectingLabelsToEvent($eventId, $potentialLabelsToCopy, $hiddenOrganizerLabels, false);
     }
