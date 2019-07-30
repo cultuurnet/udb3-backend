@@ -15,10 +15,11 @@ use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepositoryInterface;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
+class EventProcessManagerTest extends TestCase
 {
     /**
      * @var DocumentRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -187,6 +188,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
                         'Foo',
                         'Paspartoe',
                         'Bar',
+                        'uitpas gent',
                         'UiTPAS Oostende',
                     ],
                 ],
@@ -212,6 +214,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
             new AddLabel($eventId->toNative(), new Label('Paspartoe', true)),
+            new AddLabel($eventId->toNative(), new Label('UiTPAS Gent', true)),
             new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende', true)),
         ];
 
@@ -309,6 +312,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
                     ],
                     'hiddenLabels' => [
                         'Bar',
+                        'uitpas gent',
                         'UiTPAS Oostende',
                     ],
                 ],
@@ -334,6 +338,7 @@ class EventProcessManagerTest extends \PHPUnit_Framework_TestCase
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Kempen')),
             new RemoveLabel($eventId->toNative(), new Label('UiTPAS Maasmechelen')),
             new AddLabel($eventId->toNative(), new Label('Paspartoe', true)),
+            new AddLabel($eventId->toNative(), new Label('UiTPAS Gent', false)),
             new AddLabel($eventId->toNative(), new Label('UiTPAS Oostende', false)),
         ];
 
