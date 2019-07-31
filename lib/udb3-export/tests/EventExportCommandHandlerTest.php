@@ -12,10 +12,11 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\EventExport\Format\JSONLD\JSONLDFileFormat;
 use CultuurNet\UDB3\EventExport\Format\TabularData\CSV\CSVFileFormat;
 use CultuurNet\UDB3\EventExport\Format\TabularData\OOXML\OOXMLFileFormat;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Web\EmailAddress;
 
-class EventExportCommandHandlerTest extends \PHPUnit_Framework_TestCase
+class EventExportCommandHandlerTest extends TestCase
 {
     /**
      * @var EventExportServiceInterface|\PHPUnit_Framework_MockObject_MockObject

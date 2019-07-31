@@ -5,7 +5,9 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
-class JSONLDEventFormatterTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class JSONLDEventFormatterTest extends TestCase
 {
     private function getJSONEventFromFile($fileName)
     {
@@ -31,10 +33,12 @@ class JSONLDEventFormatterTest extends \PHPUnit_Framework_TestCase
 
         $event = $formatter->formatEvent($eventWithTerms);
 
+        /* @codingStandardsIgnoreStart */
         $this->assertEquals(
             '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","terms":[{"label":"Geschiedenis","domain":"theme","id":"1.11.0.0.0"},{"label":"Cursus of workshop","domain":"eventtype","id":"0.3.1.0.0"}]}',
             $event
         );
+        /* @codingStandardsIgnoreEnd */
     }
 
     /**
@@ -70,9 +74,11 @@ class JSONLDEventFormatterTest extends \PHPUnit_Framework_TestCase
 
         $event = $formatter->formatEvent($eventWithTerms);
 
+        /* @codingStandardsIgnoreStart */
         $this->assertEquals(
             '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","terms":[{"label":"Cursus of workshop","domain":"eventtype","id":"0.3.1.0.0"}]}',
             $event
         );
+        /* @codingStandardsIgnoreEnd */
     }
 }

@@ -13,9 +13,10 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\TaalicoonDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
+class HTMLEventFormatterTest extends TestCase
 {
     /**
      * @var HTMLEventFormatter
@@ -27,7 +28,9 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
         $this->eventFormatter = new HTMLEventFormatter();
 
         if (!class_exists('IntlDateFormatter')) {
-            $this->markTestSkipped('IntlDateFormatter is missing, please install the PHP intl extension in order to run this test.');
+            $this->markTestSkipped(
+                'IntlDateFormatter is missing, please install the PHP intl extension in order to run this test.'
+            );
         }
     }
 
@@ -79,7 +82,9 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
         $expectedFormattedFreeEvent = [
             'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
             'image' => 'http://media.uitdatabank.be/20141211/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
-            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis van de godsdienst uit de doeken...',
+            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. '
+                . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis '
+                . 'van de godsdienst uit de doeken...',
             'address' => [
                 'name' => 'Cultuurcentrum De Kruisboog',
                 'street' => 'Sint-Jorisplein 20 ',
@@ -91,7 +96,8 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
             'type' => 'Cursus of workshop',
             'price' => 'Gratis',
             'brands' => array(),
-            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedFreeEvent, $freeEvent);
 
@@ -111,7 +117,10 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
             'image' => 'http://media.uitdatabank.be/20141211/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
             'type' => 'Cursus of workshop',
             'title' => 'Lessenreeks MURGA',
-            'description' => "Wij zijn Murga çava, een vrolijke groep van 20 percussionisten,\njong en oud, uit Herent en omgeving. Bij ons is iedereen welkom!\nMuzikale voorkennis is geen vereiste. Behalve percussie staan we\nook open voor blazers, dansers of ander talent...",
+            'description' => "Wij zijn Murga çava, een vrolijke groep van 20 percussionisten,\n"
+                . "jong en oud, uit Herent en omgeving. Bij ons is iedereen welkom!\n"
+                . "Muzikale voorkennis is geen vereiste. Behalve percussie staan we\n"
+                . "ook open voor blazers, dansers of ander talent...",
             'address' => [
                 'name' => 'GC De Wildeman',
                 'street' => 'Schoolstraat 15',
@@ -146,7 +155,8 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
             ],
             'price' => 'Gratis',
             'brands' => array(),
-            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutDescription);
     }
@@ -160,7 +170,9 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
         $expectedFormattedEvent = [
             'type' => 'Cursus of workshop',
             'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
-            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis van de godsdienst uit de doeken...',
+            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. '
+                . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis '
+                . 'van de godsdienst uit de doeken...',
             'address' => [
                 'name' => 'Cultuurcentrum De Kruisboog',
                 'street' => 'Sint-Jorisplein 20 ',
@@ -171,7 +183,8 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
             ],
             'price' => 'Niet ingevoerd',
             'brands' => array(),
-            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutImage);
     }
@@ -181,10 +194,13 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
         $expectedFormattedEvent = [
             'type' => 'Cursus of workshop',
             'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
-            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis van de godsdienst uit de doeken...',
+            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. '
+                . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis '
+                . 'van de godsdienst uit de doeken...',
             'price' => 'Gratis',
             'brands' => array(),
-            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
 
         return [
@@ -246,7 +262,9 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
         $eventWithoutEventType = $this->getFormattedEventFromJSONFile('event_without_eventtype.json');
         $expectedFormattedEvent = [
             'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
-            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis van de godsdienst uit de doeken...',
+            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. '
+                . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis '
+                . 'van de godsdienst uit de doeken...',
             'address' => [
                 'name' => 'Cultuurcentrum De Kruisboog',
                 'street' => 'Sint-Jorisplein 20 ',
@@ -257,7 +275,8 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
             ],
             'price' => 'Gratis',
             'brands' => array(),
-            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutEventType);
     }
@@ -403,7 +422,9 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
             ],
             'type' => 'Cursus of workshop',
             'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
-            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis van de godsdienst uit de doeken...',
+            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. '
+                . 'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis '
+                . 'van de godsdienst uit de doeken...',
             'address' => [
                 'name' => 'Cultuurcentrum De Kruisboog',
                 'street' => 'Sint-Jorisplein 20 ',
@@ -414,7 +435,8 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
             ],
             'price' => 'Niet ingevoerd',
             'brands' => array(),
-            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
+                . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
 
         $this->assertEquals(
@@ -639,13 +661,5 @@ class HTMLEventFormatterTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertEquals($expectedMediaObject, $formattedEvent['mediaObject']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_include_coordinates_when_set()
-    {
-
     }
 }

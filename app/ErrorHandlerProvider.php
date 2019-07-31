@@ -6,6 +6,7 @@ use Crell\ApiProblem\ApiProblem;
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\Variations\Command\ValidationException;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
@@ -45,6 +46,14 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (EntityNotFoundException $e) {
                 $problem = $this->createNewApiProblem($e);
+                return new ApiProblemJsonResponse($problem);
+            }
+        );
+
+        $app->error(
+            function (CommandAuthorizationException $e) {
+                $problem = $this->createNewApiProblem($e);
+                $problem->setStatus(401);
                 return new ApiProblemJsonResponse($problem);
             }
         );

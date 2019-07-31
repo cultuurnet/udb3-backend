@@ -56,12 +56,18 @@
   "require-dev": {
     "escapestudios/symfony2-coding-standard": "~2.9",
     "squizlabs/php_codesniffer": "~2.2",
-    "phing/phing": "~2.10"
+    "phing/phing": "~2.10",
+    "phpunit/phpunit": "^7.5"
   },
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "CultuurNet\\UDB3\\Silex\\": "src/"
+      "CultuurNet\\UDB3\\Silex\\": ["app/", "src/"]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CultuurNet\\UDB3\\Silex\\": "tests/"
     }
   },
   "extra": {

@@ -11,8 +11,9 @@ use GuzzleHttp\Psr7\Response;
 use Http\Client\Exception\HttpException;
 use Http\Client\HttpClient;
 use League\Uri\Schemes\Http;
+use PHPUnit\Framework\TestCase;
 
-class HttpCalendarSummaryRepositoryTest extends \PHPUnit_Framework_TestCase
+class HttpCalendarSummaryRepositoryTest extends TestCase
 {
     /**
      * @test

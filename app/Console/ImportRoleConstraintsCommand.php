@@ -2,12 +2,15 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\Repository\AggregateNotFoundException;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
+use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use ValueObjects\Identity\UUID;
 
@@ -52,20 +55,29 @@ class ImportRoleConstraintsCommand extends AbstractCsvImportCommand
         OutputInterface $output,
         array $record
     ): void {
-        $output->writeln('Importing constraint for roleID: ' . $record[self::ROLE_ID]);
+        $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
+        $logger = new ConsoleLogger($output);
 
-        $mode = $input->getOption('mode');
-        if ('update' === $mode) {
-            $this->dispatchUpdateConstraint(
-                $record[self::ROLE_ID],
-                $record[self::SAPIVERSION],
-                $record[self::QUERY]
-            );
-        } else {
-            $this->dispatchAddConstraint(
-                $record[self::ROLE_ID],
-                $record[self::SAPIVERSION],
-                $record[self::QUERY]
+        $logger->info('Importing constraint for roleID: ' . $record[self::ROLE_ID]);
+
+        try {
+            $mode = $input->getOption('mode');
+            if ('update' === $mode) {
+                $this->dispatchUpdateConstraint(
+                    $record[self::ROLE_ID],
+                    $record[self::SAPIVERSION],
+                    $record[self::QUERY]
+                );
+            } else {
+                $this->dispatchAddConstraint(
+                    $record[self::ROLE_ID],
+                    $record[self::SAPIVERSION],
+                    $record[self::QUERY]
+                );
+            }
+        } catch (AggregateNotFoundException $e) {
+            $logger->error(
+                'Could not import role constraint for roleID: ' . $record[self::ROLE_ID] . ' (role not found)'
             );
         }
     }
