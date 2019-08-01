@@ -1,0 +1,25 @@
+{
+  "mainLanguage": "en",
+  "website": "http://www.hetdepot.be/",
+  "name": "Het Depot",
+  "address": {
+    "addressCountry": "BE",
+    "addressLocality": "Leuven",
+    "postalCode": 3000,
+    "streetAddress": "Martelarenplein 12"
+  },
+  "contact": [
+    {
+      "type": "url",
+      "value": "https://www.facebook.com/hetdepot"
+    },
+    {
+      "type": "email",
+      "value": "jos@hetdepot.be"
+    },
+    {
+      "type": "phone",
+      "value": "+32 498 71 49 96"
+    }
+  ]
+}

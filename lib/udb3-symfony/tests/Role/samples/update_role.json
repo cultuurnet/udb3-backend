@@ -1,0 +1,4 @@
+{
+  "name": "editRoleName",
+  "constraint": "category_flandersregion_name:\"Regio Aalst\""
+}

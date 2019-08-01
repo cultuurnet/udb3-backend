@@ -1,0 +1,34 @@
+{
+  "name": "Test place",
+  "location": {
+    "id": null,
+    "name": "",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "",
+      "postalCode": "",
+      "streetAddress": ""
+    }
+  },
+  "address": {
+    "addressCountry": "BE",
+    "addressLocality": "Leuven",
+    "postalCode": "3000",
+    "streetAddress": "Kerkstraat 1"
+  },
+  "type": {
+    "label": "Archeologische Site",
+    "id": "3CuHvenJ+EGkcvhXLg9Ykg",
+    "primary": true
+  },
+  "calendar": {
+    "type": "permanent"
+  },
+  "contactPoint": {
+    "url": [],
+    "phone": [],
+    "email": []
+  },
+  "workflowStatus": "DRAFT",
+  "audienceType": "everyone"
+}

@@ -1,0 +1,56 @@
+{
+  "id": "16c5de06-a266-47ca-9423-8b19f80b8319",
+  "name": {
+    "nl": "Terminator VII"
+  },
+  "location": {
+    "id": "73fa4fe2-8f4f-45a5-af58-67c024e7e458",
+    "name": "Hier",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Leuven",
+      "postalCode": "3000",
+      "streetAddress": "Kerkstraat 69"
+    }
+  },
+  "type": {
+    "id": "0.50.6.0.0",
+    "label": "Film",
+    "domain": "eventtype"
+  },
+  "theme": {
+    "id": "1.7.11.0.0",
+    "label": "Cinefiel",
+    "domain": "theme"
+  },
+  "activeCalendarType": "multiple",
+  "activeCalendarLabel": "Eén of meerdere dagen",
+  "calendarType": "multiple",
+  "startDate": "2016-10-12T22:00:00.000Z",
+  "endDate": "2016-10-14T22:00:00.000Z",
+  "timestamps": [
+    {
+      "date": "2016-10-12T22:00:00.000Z",
+      "startHour": "",
+      "endHour": "",
+      "showStartHour": false,
+      "showEndHour": ""
+    },
+    {
+      "date": "2016-10-13T22:00:00.000Z",
+      "startHour": "",
+      "endHour": "",
+      "showStartHour": false,
+      "showEndHour": ""
+    },
+    {
+      "date": "2016-10-14T22:00:00.000Z",
+      "startHour": "",
+      "endHour": "",
+      "showStartHour": false,
+      "showEndHour": ""
+    }
+  ],
+  "image": "http://udb-silex.dev/media/30cb8c5e-4732-4f7b-ba34-4b4737a15d37.jpeg",
+  "workflowStatus": "DRAFT"
+}
