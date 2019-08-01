@@ -47,7 +47,7 @@
 
     <target name="lib-udb3-export">
         <exec dir="./lib/udb3-export" command="composer install" passthru="true" />
-        <exec dir="./lib/udb3-export" command="./vendor/bin/phing" passthru="true" />
+        <exec dir="./lib/udb3-export" command="./vendor/bin/phing" passthru="true" checkreturn="true" />
     </target>
 
 </project>
