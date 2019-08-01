@@ -353,7 +353,7 @@ class HTMLEventFormatterTest extends TestCase
         $repository = $this->createMock(CalendarSummaryRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('get')
-            ->with($id, ContentType::HTML(), Format::LARGE())
+            ->with($id, ContentType::HTML(), Format::SMALL())
             ->willReturn($calendarSummary);
         return $repository;
     }
