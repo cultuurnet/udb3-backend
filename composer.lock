@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48046628eb6094d366c4abd449bb0cde",
+    "content-hash": "e413a783144a205394cde4b396067f12",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1918,16 +1918,11 @@
         {
             "name": "cultuurnet/udb3-symfony",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "1b0f2482f3623c145f254cae4ccd0e9b0111cabd"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/1b0f2482f3623c145f254cae4ccd0e9b0111cabd",
-                "reference": "1b0f2482f3623c145f254cae4ccd0e9b0111cabd",
-                "shasum": ""
+                "type": "path",
+                "url": "lib/udb3-symfony",
+                "reference": "0d6caa7e8ac24501597594e6e20f175269f395b1",
+                "shasum": null
             },
             "require": {
                 "chrisboulton/php-resque": "1.2",
@@ -1966,7 +1961,11 @@
                     "CultuurNet\\UDB3\\Symfony\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Symfony\\": "tests/"
+                }
+            },
             "license": [
                 "GPL-3.0-only"
             ],
@@ -1981,7 +1980,9 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2019-07-31T14:38:23+00:00"
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
