@@ -8,9 +8,11 @@ class DefaultPlainTextBodyFactory implements BodyFactoryInterface
 {
     public function getBodyFor(EventExportResult $eventExportResult)
     {
+        $url = $eventExportResult->getUrl();
+
         return 'Beste,
 
-        Hierbij vind je de link naar de door jou geëxporteerde documenten uit UiTdatabank: ' . $eventExportResult->getUrl() . '
+        Hierbij vind je de link naar de door jou geëxporteerde documenten uit UiTdatabank: ' . $url . '
 
         Mocht je vragen hebben, of meer informatie wensen over onze diensten, kan je terecht bij vragen@uitdatabank.be.
 

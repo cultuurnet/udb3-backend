@@ -45,8 +45,4 @@
                 checkreturn="true" />
     </target>
 
-    <target name="githooks">
-        <copy file="contrib/pre-commit" todir=".git/hooks" />
-    </target>
-
 </project>
