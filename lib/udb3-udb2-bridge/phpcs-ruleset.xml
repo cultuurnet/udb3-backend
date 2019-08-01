@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="UDB3">
+    <rule ref="PSR2" />
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>*/test/*</exclude-pattern>
+        <exclude-pattern>*/spec/*</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+        <exclude-pattern>*/test/*</exclude-pattern>
+    </rule>
+</ruleset>
