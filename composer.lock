@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49e6758cd4473797dcf25e9cb8dbc1d2",
+    "content-hash": "48046628eb6094d366c4abd449bb0cde",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1874,16 +1874,11 @@
         {
             "name": "cultuurnet/udb3-models-import",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "99d7be0622e98eb94d1b2bf5cc22bc97fb313484"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/99d7be0622e98eb94d1b2bf5cc22bc97fb313484",
-                "reference": "99d7be0622e98eb94d1b2bf5cc22bc97fb313484",
-                "shasum": ""
+                "type": "path",
+                "url": "lib/udb3-models-import",
+                "reference": "b7c676df3a00bf9f712ece784c65fa9bf2f1f936",
+                "shasum": null
             },
             "require": {
                 "cultuurnet/udb3": "~0.1",
@@ -1908,11 +1903,17 @@
                     "CultuurNet\\UDB3\\Model\\Import\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Model\\Import\\": "tests/"
+                }
+            },
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2019-07-31T14:44:06+00:00"
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "cultuurnet/udb3-symfony",
