@@ -61,4 +61,9 @@
         <exec dir="./lib/udb3-models-import" command="./vendor/bin/phing" passthru="true" />
     </target>
 
+    <target name="lib-udb3-symfony">
+        <exec dir="./lib/udb3-symfony" command="composer install" passthru="true" />
+        <exec dir="./lib/udb3-symfony" command="./vendor/bin/phing" passthru="true" />
+    </target>
+
 </project>
