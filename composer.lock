@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bce1d9ed110d0838e636dd4226a00d3",
+    "content-hash": "49e6758cd4473797dcf25e9cb8dbc1d2",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1985,16 +1985,11 @@
         {
             "name": "cultuurnet/udb3-udb2-bridge",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "2d5922af555ddd4802bc1805a31900d86e038c6a"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/2d5922af555ddd4802bc1805a31900d86e038c6a",
-                "reference": "2d5922af555ddd4802bc1805a31900d86e038c6a",
-                "shasum": ""
+                "type": "path",
+                "url": "lib/udb3-udb2-bridge",
+                "reference": "3bf295d62a13e718ba5a552646cdb96315c9f861",
+                "shasum": null
             },
             "require": {
                 "cultuurnet/auth": "~1.2",
@@ -2023,7 +2018,11 @@
                     "CultuurNet\\UDB3\\UDB2\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\UDB2\\": "test/"
+                }
+            },
             "license": [
                 "Apache-2.0"
             ],
@@ -2038,7 +2037,9 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2018-06-29T14:23:18+00:00"
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "cultuurnet/udb3-uitpas-bridge",
