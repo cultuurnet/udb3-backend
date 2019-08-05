@@ -1,0 +1,21 @@
+{
+  "openingHours": [
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": [
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday"
+      ]
+    },
+    {
+      "opens": "09:00",
+      "closes": "12:00",
+      "dayOfWeek": [
+        "saturday"
+      ]
+    }
+  ]
+}

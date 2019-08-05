@@ -1,0 +1,55 @@
+{
+  "id": "24632440-bacd-4cdb-8477-3c33dc95a789",
+  "name": {
+    "nl": "Friday Night Magic"
+  },
+  "location": {
+    "id": "c62bdbe4-467a-4517-be3b-aab8b1b950ec",
+    "name": "area 51 👽",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Gent",
+      "postalCode": "9000",
+      "streetAddress": "waddup 1"
+    }
+  },
+  "address": {
+    "addressCountry": "BE",
+    "addressLocality": "",
+    "postalCode": "",
+    "streetAddress": ""
+  },
+  "type": {
+    "id": "0.50.4.0.0",
+    "label": "Concert",
+    "domain": "eventtype"
+  },
+  "theme": {
+    "id": "1.8.3.1.0",
+    "label": "Pop en rock",
+    "domain": "theme"
+  },
+  "activeCalendarType": "multiple",
+  "activeCalendarLabel": "Eén of meerdere dagen",
+  "calendarType": "multiple",
+  "timestamps": [
+    {
+      "date": "2016-10-12T22:00:00.000Z",
+      "startHour": "14:00",
+      "startHourAsDate": "2016-10-13T14:00:00+02:00",
+      "endHourAsDate": "2016-10-13T14:00:00+02:00",
+      "showStartHour": true,
+      "showEndHour": true
+    },
+    {
+      "date": "2016-10-13T22:00:00.000Z",
+      "startHour": "09:00",
+      "startHourAsDate": "2016-10-14T09:00:00+02:00",
+      "endHour": "13:00",
+      "endHourAsDate": "2016-10-14T13:00:00+02:00",
+      "showStartHour": true,
+      "showEndHour": true
+    }
+  ],
+  "workflowStatus": "DRAFT"
+}

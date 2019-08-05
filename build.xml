@@ -43,11 +43,29 @@
 
     <target name="libs">
         <phingcall target="lib-udb3-export"/>
+        <phingcall target="lib-udb3-udb2-bridge"/>
+        <phingcall target="lib-udb3-models-import"/>
+        <phingcall target="lib-udb3-symfony"/>
     </target>
 
     <target name="lib-udb3-export">
         <exec dir="./lib/udb3-export" command="composer install" passthru="true" />
         <exec dir="./lib/udb3-export" command="./vendor/bin/phing" passthru="true" checkreturn="true" />
+    </target>
+
+    <target name="lib-udb3-udb2-bridge">
+        <exec dir="./lib/udb3-udb2-bridge" command="composer install" passthru="true" />
+        <exec dir="./lib/udb3-udb2-bridge" command="./vendor/bin/phing" passthru="true" checkreturn="true" />
+    </target>
+
+    <target name="lib-udb3-models-import">
+        <exec dir="./lib/udb3-models-import" command="composer install" passthru="true" />
+        <exec dir="./lib/udb3-models-import" command="./vendor/bin/phing" passthru="true" checkreturn="true" />
+    </target>
+
+    <target name="lib-udb3-symfony">
+        <exec dir="./lib/udb3-symfony" command="composer install" passthru="true" />
+        <exec dir="./lib/udb3-symfony" command="./vendor/bin/phing" passthru="true" checkreturn="true" />
     </target>
 
 </project>

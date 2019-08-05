@@ -1,0 +1,32 @@
+{
+  "calendarType": "multiple",
+  "timestamps": [
+    {
+      "date": "2017-05-24T22:00:00.000Z",
+      "startHour": "10:00",
+      "startHourAsDate": "2017-05-25T08:00:00.000Z",
+      "showStartHour": true,
+      "endHour": "16:00",
+      "endHourAsDate": "2017-05-25T14:00:00.000Z",
+      "showEndHour": true
+    },
+    {
+      "date": "2017-05-24T22:00:00.000Z",
+      "startHour": "20:00",
+      "startHourAsDate": "2017-05-25T18:00:00.000Z",
+      "showStartHour": true,
+      "endHour": "01:00",
+      "endHourAsDate": "2017-05-25T23:00:00.000Z",
+      "showEndHour": true
+    },
+    {
+      "date": "2017-06-27T22:00:00.000Z",
+      "startHour": "10:00",
+      "startHourAsDate": "2017-06-28T08:00:00.000Z",
+      "showStartHour": true,
+      "endHour": "16:00",
+      "endHourAsDate": "2017-06-30T14:00:00.000Z",
+      "showEndHour": true
+    }
+  ]
+}

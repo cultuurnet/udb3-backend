@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bce1d9ed110d0838e636dd4226a00d3",
+    "content-hash": "e413a783144a205394cde4b396067f12",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1874,16 +1874,11 @@
         {
             "name": "cultuurnet/udb3-models-import",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-models-import.git",
-                "reference": "99d7be0622e98eb94d1b2bf5cc22bc97fb313484"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models-import/zipball/99d7be0622e98eb94d1b2bf5cc22bc97fb313484",
-                "reference": "99d7be0622e98eb94d1b2bf5cc22bc97fb313484",
-                "shasum": ""
+                "type": "path",
+                "url": "lib/udb3-models-import",
+                "reference": "b7c676df3a00bf9f712ece784c65fa9bf2f1f936",
+                "shasum": null
             },
             "require": {
                 "cultuurnet/udb3": "~0.1",
@@ -1908,25 +1903,26 @@
                     "CultuurNet\\UDB3\\Model\\Import\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Model\\Import\\": "tests/"
+                }
+            },
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2019-07-31T14:44:06+00:00"
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "cultuurnet/udb3-symfony",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-symfony-php.git",
-                "reference": "1b0f2482f3623c145f254cae4ccd0e9b0111cabd"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-symfony-php/zipball/1b0f2482f3623c145f254cae4ccd0e9b0111cabd",
-                "reference": "1b0f2482f3623c145f254cae4ccd0e9b0111cabd",
-                "shasum": ""
+                "type": "path",
+                "url": "lib/udb3-symfony",
+                "reference": "0d6caa7e8ac24501597594e6e20f175269f395b1",
+                "shasum": null
             },
             "require": {
                 "chrisboulton/php-resque": "1.2",
@@ -1965,7 +1961,11 @@
                     "CultuurNet\\UDB3\\Symfony\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Symfony\\": "tests/"
+                }
+            },
             "license": [
                 "GPL-3.0-only"
             ],
@@ -1980,21 +1980,18 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "time": "2019-07-31T14:38:23+00:00"
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "cultuurnet/udb3-udb2-bridge",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-udb2-bridge.git",
-                "reference": "2d5922af555ddd4802bc1805a31900d86e038c6a"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-udb2-bridge/zipball/2d5922af555ddd4802bc1805a31900d86e038c6a",
-                "reference": "2d5922af555ddd4802bc1805a31900d86e038c6a",
-                "shasum": ""
+                "type": "path",
+                "url": "lib/udb3-udb2-bridge",
+                "reference": "3bf295d62a13e718ba5a552646cdb96315c9f861",
+                "shasum": null
             },
             "require": {
                 "cultuurnet/auth": "~1.2",
@@ -2023,7 +2020,11 @@
                     "CultuurNet\\UDB3\\UDB2\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\UDB2\\": "test/"
+                }
+            },
             "license": [
                 "Apache-2.0"
             ],
@@ -2038,7 +2039,9 @@
                 }
             ],
             "description": "PHP libraries for bridging UDB3 with UDB2",
-            "time": "2018-06-29T14:23:18+00:00"
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "cultuurnet/udb3-uitpas-bridge",

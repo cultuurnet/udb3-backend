@@ -1,0 +1,23 @@
+{
+  "calendarType": "multiple",
+  "timestamps": [
+    {
+      "date": "2017-05-24T22:00:00.000Z",
+      "startHour": "22:00",
+      "startHourAsDate": "2017-05-25T20:00:00.000Z",
+      "showStartHour": true,
+      "endHour": "01:00",
+      "endHourAsDate": "2017-05-25T23:00:00.000Z",
+      "showEndHour": true
+    },
+    {
+      "date": "2017-05-25T22:00:00.000Z",
+      "startHour": "22:00",
+      "startHourAsDate": "2017-05-26T20:00:00.000Z",
+      "showStartHour": true,
+      "endHour": "01:00",
+      "endHourAsDate": "2017-05-26T23:00:00.000Z",
+      "showEndHour": true
+    }
+  ]
+}

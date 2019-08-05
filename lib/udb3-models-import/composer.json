@@ -1,0 +1,36 @@
+{
+  "name": "cultuurnet/udb3-models-import",
+  "description": "",
+  "type": "library",
+  "license": "Apache-2.0",
+  "authors": [],
+  "require": {
+    "php": ">=7.1",
+    "cultuurnet/udb3": "~0.1",
+    "cultuurnet/udb3-api-guard": "~0.1",
+    "cultuurnet/udb3-models": "~0.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5.7",
+    "squizlabs/php_codesniffer": "~2.3",
+    "phing/phing": "~2.11",
+    "satooshi/php-coveralls": "~0.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "CultuurNet\\UDB3\\Model\\Import\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CultuurNet\\UDB3\\Model\\Import\\": "tests/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.x-dev"
+    }
+  }
+}

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <event availablefrom="2017-04-08T19:24:45" availableto="2017-08-26T00:00:00" cdbid="d9b7d2b9-2dd4-48d7-905d-803e679b6378" createdby="jordvandenhoudt@hotmail.com" creationdate="2017-04-08T19:24:47" externalurl="https://io.uitdatabank.be/event/d9b7d2b9-2dd4-48d7-905d-803e679b6378" externalid="CDB:d9b7d2b9-2dd4-48d7-905d-803e679b6378" lastupdated="2017-10-20T08:40:29" lastupdatedby="tina.allard@begijnendijk.be" owner="Invoerders Algemeen " pctcomplete="85" private="false" published="true" publisher="469781698cdbbd84d5c9c60822a5a8ff" validator="Begijnendijk Validatoren" wfstatus="approved" isparent="false">
+        <calendar>
+            <periods>
+                <period>
+                    <datefrom>2017-04-28</datefrom>
+                    <dateto>2017-08-25</dateto>
+                </period>
+            </periods>
+        </calendar>
+        <categories>
+            <category type="theme" catid="1.51.14.0.0">Atletiek, wandelen en fietsen</category>
+            <category type="flanderstouristregion" catid="reg.360">Hageland</category>
+            <category type="eventtype" catid="0.59.0.0.0">Sportactiviteit</category>
+            <category type="flandersregion" catid="reg.673">3130 Betekom (Begijnendijk)</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Betekom</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.799332</xcoordinate>
+                        <ycoordinate>51.012934</ycoordinate>
+                    </gis>
+                    <housenr>36</housenr>
+                    <street>Vijversstraat</street>
+                    <zipcode>3130</zipcode>
+                </physical>
+            </address>
+            <mail>jordvandenhoudt@yahoo.com</mail>
+        </contactinfo>
+        <eventdetails>
+            <eventdetail lang="nl">
+                <calendarsummary />
+                <longdescription>&lt;p&gt;Waar en Wanneer een G-loop?&lt;br /&gt;
+                    1.	Meetshovenloop Betekom-Aarschot&lt;br /&gt;
+                    •	vrijdag 28 april 2017 – 18.45u – 1 km&lt;br /&gt;
+                    •	Zaal Verhaegen, Grote Baan 115 3130 Betekom&lt;br /&gt;
+                    •	www.roba-atletiek.be – contact: joseph.janssens@gmail.com&lt;br /&gt;
+                    2.	Aarschotse Stratenloop&lt;br /&gt;
+                    •	Maandag 5 juni 2017 – 14.00u – 800 m&lt;br /&gt;
+                    •	De Knoet, Schaluin 3200 Aarschot&lt;br /&gt;
+                    •	www.knoet.be – contact: joseph.janssens@gmail.com&lt;br /&gt;
+                    3.	Grote Prijs Paul Dams Tremelo&lt;br /&gt;
+                    •	Vrijdag 21 juli 2017 – 14.00u – 1 km&lt;br /&gt;
+                    •	Café De Flintstones, Schrieksebaan 78 3120 Tremelo&lt;br /&gt;
+                    •	www.gorunning.be/9580 – contact: paul.mj@telenet.be&lt;br /&gt;
+                    4.	Stratenloop Gelrode&lt;br /&gt;
+                    •	Zaterdag 5 augustus 2017 – 15.00u – 1 km&lt;br /&gt;
+                    •	Sportiva Gelrode – Lambert Verlindenplein 3200 Gelrode-Aarschot&lt;br /&gt;
+                    •	www.gelrode.be/stratenloop – contact: stratenloop@gelrode.be&lt;br /&gt;
+                    5.	BSJ Jogging Ourodenberg-Aarschot&lt;br /&gt;
+                    •	Vrijdag 25 augustus 2017 – 18.45u – 800 m&lt;br /&gt;
+                    •	VBS Ourodenberg, Kerkstraat 3200 Aarschot&lt;br /&gt;
+                    •	www.bsjsport.be – contact: gerd.joos@siba.be
+                    &lt;/p&gt;
+                    &lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/g-stratenloopcriterium-regio-aarschot/d9b7d2b9-2dd4-48d7-905d-803e679b6378"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</longdescription>
+                <media>
+                    <file creationdate="4/8/2017 7:24:47 PM" main="true">
+                        <copyright>ROBA-BETA</copyright>
+                        <filename>logo_g-loop_criterium.png</filename>
+                        <filetype>png</filetype>
+                        <hlink>//media.uitdatabank.be/20170408/logo_g-loop_criterium.png</hlink>
+                        <mediatype>photo</mediatype>
+                    </file>
+                    <file>
+                        <hlink>http://www.roba-atletiek.be/organisatie/g-stratenloopcriterium-regio-aarschot</hlink>
+                        <mediatype>website</mediatype>
+                        <title>webresource</title>
+                    </file>
+                </media>
+                <price>
+                    <pricevalue>0.00</pricevalue>
+                </price>
+                <shortdescription>Er wordt voor de eerste maal een G-stratenloopcriterium in de regio Aarschot georganiseerd. We integreren in het reguliere programma van 5 stratenlopen een G-loop voor personen met een verstandelijke of psychische beperking. We willen hen laten proeven van bewegen, nieuwe kansen bieden om sportief actief te zijn, en de beleving en het sociale gebeuren van stratenlopen laten ervaren.
+                </shortdescription>
+                <title>G-stratenloopcriterium regio Aarschot</title>
+            </eventdetail>
+        </eventdetails>
+        <keywords>
+            <keyword>jogging</keyword>
+            <keyword>Lopen</keyword>
+            <keyword>atletiek</keyword>
+            <keyword>stratenloop</keyword>
+            <keyword>verstandelijke beperking</keyword>
+            <keyword>psychische beperking</keyword>
+            <keyword visible="false">gsportvlaanderen</keyword>
+        </keywords>
+        <location>
+            <address>
+                <physical>
+                    <city>Betekom</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.799332</xcoordinate>
+                        <ycoordinate>51.012934</ycoordinate>
+                    </gis>
+                    <housenr>36</housenr>
+                    <street>Vijversstraat</street>
+                    <zipcode>3130</zipcode>
+                </physical>
+            </address>
+            <label>ROBA-BETA</label>
+        </location>
+        <organiser>
+            <label>ROBA-BETA</label>
+        </organiser>
+    </event>
+</cdbxml>

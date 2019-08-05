@@ -1,0 +1,131 @@
+{
+  "id": "46b30b1c-831d-4590-97a4-aa1918d89bb9",
+  "name": {
+    "nl": "Build your own Terminator"
+  },
+  "location": {
+    "id": "16a3dc3a-625d-4dd8-a618-fe87a6099185",
+    "name": "test-locatie",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Leuven",
+      "postalCode": "3000",
+      "streetAddress": "kerkstraat 69"
+    }
+  },
+  "address": {
+    "addressCountry": "BE",
+    "addressLocality": "",
+    "postalCode": "",
+    "streetAddress": ""
+  },
+  "type": {
+    "label": "Cursus of workshop",
+    "id": "0.3.1.0.0",
+    "primary": true,
+    "themes": [
+      {
+        "id": "1.42.0.0.0",
+        "label": "Creativiteit"
+      },
+      {
+        "id": "1.21.0.0.0",
+        "label": "Computer en techniek"
+      },
+      {
+        "id": "1.37.0.0.0",
+        "label": "Opvoeding"
+      },
+      {
+        "id": "1.61.0.0.0",
+        "label": "Persoon en relaties"
+      },
+      {
+        "id": "1.43.0.0.0",
+        "label": "Interculturele vorming"
+      },
+      {
+        "id": "1.41.0.0.0",
+        "label": "Kunst en kunsteducatie"
+      },
+      {
+        "id": "1.37.1.0.0",
+        "label": "Gezondheid en zorg"
+      },
+      {
+        "id": "1.65.0.0.0",
+        "label": "Voeding"
+      },
+      {
+        "id": "1.37.2.0.0",
+        "label": "Samenleving"
+      },
+      {
+        "id": "1.64.0.0.0",
+        "label": "Milieu en natuur"
+      },
+      {
+        "id": "1.25.0.0.0",
+        "label": "Wetenschap"
+      },
+      {
+        "id": "1.44.0.0.0",
+        "label": "Zingeving, filosofie en religie"
+      }
+    ]
+  },
+  "theme": {
+    "id": "1.21.0.0.0",
+    "label": "Computer en techniek"
+  },
+  "activeCalendarType": "multiple",
+  "activeCalendarLabel": "Eén of meerdere dagen",
+  "calendarType": "multiple",
+  "startDate": "2017-02-28T08:00:00.000Z",
+  "endDate": "2017-02-28T16:00:00.000Z",
+  "timestamps": [
+    {
+      "date": "2017-02-27T23:00:00.000Z",
+      "startHour": "09:00",
+      "startHourAsDate": "2017-02-28T08:00:00.000Z",
+      "endHourAsDate": "2017-02-28T10:00:00.000Z",
+      "endHour": "11:00",
+      "showStartHour": true,
+      "showEndHour": true
+    },
+    {
+      "date": "2017-02-28T23:00:00.000Z",
+      "startHour": "12:00",
+      "startHourAsDate": "2017-02-29T11:00:00.000Z",
+      "endHourAsDate": "2017-02-29T13:00:00.000Z",
+      "endHour": "14:00",
+      "showStartHour": true,
+      "showEndHour": true
+    },
+    {
+      "date": "2017-02-27T23:00:00.000Z",
+      "startHour": "12:00",
+      "startHourAsDate": "2017-02-28T11:00:00.000Z",
+      "endHourAsDate": "2017-02-28T13:00:00.000Z",
+      "endHour": "14:00",
+      "showStartHour": true,
+      "showEndHour": true
+    },
+    {
+      "date": "2017-02-27T23:00:00.000Z",
+      "startHour": "16:00",
+      "startHourAsDate": "2017-02-28T15:00:00.000Z",
+      "endHourAsDate": "2017-02-28T17:00:00.000Z",
+      "endHour": "18:00",
+      "showStartHour": true,
+      "showEndHour": true
+    }
+  ],
+  "contactPoint": {
+    "url": [],
+    "phone": [],
+    "email": []
+  },
+  "workflowStatus": "DRAFT",
+  "audienceType": "everyone"
+}

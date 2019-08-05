@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdb:cdbxml xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+  <cdb:actor asset="true" availablefrom="2016-07-20T11:53:56" availableto="2016-07-20T11:53:56" createdby="cultuurnet001" creationdate="2010-01-06T13:31:13" cdbid="31413BDF-DFC7-7A9F-10403618C2816E44" externalid="Cultuurnet:organisation_1624" lastupdated="2016-07-20T11:53:56" lastupdatedby="stan@cultuurnet.be" owner="Invoerders Algemeen ">
+    <cdb:actordetails>
+      <cdb:actordetail lang="nl">
+        <cdb:media>
+          <cdb:file>
+            <cdb:hlink>http://www.ccdewerf.be</cdb:hlink>
+            <cdb:mediatype>webresource</cdb:mediatype>
+          </cdb:file>
+          <cdb:file>
+            <cdb:hlink>
+              http://toevla.vlaanderen.be/publiek/nl/register/detail/4184
+            </cdb:hlink>
+            <cdb:mediatype>website</cdb:mediatype>
+          </cdb:file>
+        </cdb:media>
+        <cdb:shortdescription>
+          De Werf is hét cultuurcentrum van Aalst. Het CC organiseert elk seizoen (jaarlijks van september tot juni) concerten, dans- en theatervoorstellingen, comedy-optredens, familietheater, evenementen voor jongeren, cursussen, lezingen, workshopw, tentoonstellingen...
+        </cdb:shortdescription>
+        <cdb:title>CC De Werf</cdb:title>
+      </cdb:actordetail>
+    </cdb:actordetails>
+    <cdb:categories>
+      <cdb:category catid="8.11.0.0.0" type="actortype">Organisator(en)</cdb:category>
+      <cdb:category catid="6.3.0.0.0" type="publicscope">Nationaal</cdb:category>
+      <cdb:category catid="reg.1340" type="flandersregion">9300 Aalst</cdb:category>
+    </cdb:categories>
+    <cdb:contactinfo>
+      <cdb:address>
+        <cdb:physical>
+          <cdb:city>Aalst</cdb:city>
+          <cdb:country>BE</cdb:country>
+          <cdb:housenr>51</cdb:housenr>
+          <cdb:street>Molenstraat</cdb:street>
+          <cdb:zipcode>9300</cdb:zipcode>
+        </cdb:physical>
+      </cdb:address>
+      <cdb:mail>ccdewerf@aalst.be</cdb:mail>
+      <cdb:phone type="phone">+32 53 73 28 12</cdb:phone>
+      <cdb:url>http://www.ccdewerf.be</cdb:url>
+      <cdb:url main="true">
+        http://toevla.vlaanderen.be/publiek/nl/register/detail/4184
+      </cdb:url>
+    </cdb:contactinfo>
+    <cdb:keywords>
+      <cdb:keyword>Aanvaarden van SABAM-cultuurchèques</cdb:keyword>
+      <cdb:keyword visible="false">Toevlalocatie</cdb:keyword>
+      <cdb:keyword>toevlalocatie</cdb:keyword>
+      <cdb:keyword visible="false">UiTPAS Regio Aalst</cdb:keyword>
+    </cdb:keywords>
+  </cdb:actor>
+</cdb:foo>
