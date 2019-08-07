@@ -28,7 +28,8 @@ class FileGetContentsXSDReaderTest extends TestCase
         $file = __DIR__ . '/does/not/exist.xsd.xml';
         $reader = new FileGetContentsXSDReader($file);
 
-        $this->setExpectedException(\RuntimeException::class, 'Could not read XSD file from ' . $file);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Could not read XSD file from ' . $file);
 
         $reader->read();
     }

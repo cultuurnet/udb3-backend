@@ -104,7 +104,8 @@ class EventCdbXmlEnricherTest extends TestCase
             $errors
         );
 
-        $this->setExpectedException(XMLValidationException::class, 'Oops (Line: 0, column: 0)');
+        $this->expectException(XMLValidationException::class);
+        $this->expectExceptionMessage( 'Oops (Line: 0, column: 0)');
 
         $this->publish($incomingEvent);
     }
