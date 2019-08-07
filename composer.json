@@ -109,13 +109,6 @@
     },
     {
       "type": "path",
-      "url": "lib/udb3-udb2-bridge",
-      "options": {
-        "symlink": true
-      }
-    },
-    {
-      "type": "path",
       "url": "lib/udb3-models-import",
       "options": {
         "symlink": true
