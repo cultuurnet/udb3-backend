@@ -17,9 +17,11 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Symfony\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Title;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use ValueObjects\Identity\UUID;
 
 class EditEventRestControllerTest extends \PHPUnit_Framework_TestCase
@@ -134,6 +136,29 @@ class EditEventRestControllerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($expectedResponseContent, $response->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_create_an_event_with_invalid_location_id(): void
+    {
+        $request = new Request([], [], [], [], [], [], $this->getMajorInfoJson());
+        $invalidLocationId = new LocationId('fe282e4f-35f5-480d-a90b-2720ab883b0a');
+
+        $this->eventEditor
+            ->expects($this->once())
+            ->method('createEvent')
+            ->with(
+                new Language('en'),
+                new Title('foo'),
+                new EventType('1.8.2', 'PARTY!'),
+                $invalidLocationId
+            )
+            ->willThrowException(LocationNotFound::withLocationId($invalidLocationId));
+
+        $this->expectException(BadRequestHttpException::class);
+        $this->controller->createEvent($request);
     }
 
     /**
