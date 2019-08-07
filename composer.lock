@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "63c41cd92b30b853e797d8305623f913",
+    "content-hash": "59e19c2da76ac82cd7b7908a081b7b9a",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1677,64 +1677,6 @@
             ],
             "description": "UDB3 integration with Doctrine Cache",
             "time": "2016-04-13 11:52:34"
-        },
-        {
-            "name": "cultuurnet/udb3-export",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "lib/udb3-export",
-                "reference": "8a69c24db30abf61aa54e9906d063a47583df9f5",
-                "shasum": null
-            },
-            "require": {
-                "cultuurnet/calendar-summary": "~1.1",
-                "cultuurnet/deserializer": "~0.1",
-                "cultuurnet/udb3": "~0.1",
-                "cultuurnet/valueobjects": "~3.0",
-                "gridonic/princexml-php": "~1.1.1",
-                "league/flysystem": "~1.0",
-                "league/flysystem-ziparchive": "~1.0",
-                "league/uri": "^4.2",
-                "php": ">=7.1",
-                "php-http/httplug": "~1.0.0",
-                "phpoffice/phpexcel": "~1.8",
-                "psr/log": "~1.0",
-                "symfony/process": "~3.0",
-                "twig/twig": "~1.0",
-                "webmozart/assert": "^1.2"
-            },
-            "require-dev": {
-                "alchemy/zippy": "~0.2",
-                "mikey179/vfsstream": "~1.6.2",
-                "monolog/monolog": "~1.11",
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "2.6.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\EventExport\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\EventExport\\": "tests/"
-                }
-            },
-            "license": [
-                "Apache-2.0"
-            ],
-            "transport-options": {
-                "symlink": true
-            }
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
