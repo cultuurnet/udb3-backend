@@ -30,7 +30,9 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
     public function createForEvent(
         CultureFeed_Uitpas_Event_CultureEvent $event
     ) {
-        /** @var CultureFeed_Uitpas_Calendar $eventCalendar */
+        /**
+ * @var CultureFeed_Uitpas_Calendar $eventCalendar 
+*/
         $eventCalendar = $event->calendar;
         if ($eventCalendar) {
             $dateRange = $this->getDateRangeFromUitpasCalendar($eventCalendar);
@@ -60,11 +62,15 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
         $dateRange = new CultureFeed_Uitpas_Calendar_Period();
 
         if (!empty($uitpasCalendar->periods)) {
-            /** @var CultureFeed_Uitpas_Calendar_Period $firstPeriod */
+            /**
+ * @var CultureFeed_Uitpas_Calendar_Period $firstPeriod 
+*/
             $firstPeriod = reset($uitpasCalendar->periods);
             $dateRange->datefrom = $firstPeriod->datefrom;
 
-            /** @var CultureFeed_Uitpas_Calendar_Period $lastPeriod */
+            /**
+ * @var CultureFeed_Uitpas_Calendar_Period $lastPeriod 
+*/
             $lastPeriod =  end($uitpasCalendar->periods);
             $dateRange->dateto = $lastPeriod->dateto;
         } elseif (!empty($uitpasCalendar->timestamps)) {
@@ -74,20 +80,24 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
              * actual timestamps. This way events that only span one day
              * are also covered
              */
-            /** @var \CultureFeed_Uitpas_Calendar_Timestamp $firstPeriod */
+            /**
+ * @var \CultureFeed_Uitpas_Calendar_Timestamp $firstPeriod 
+*/
             $firstTimestamp = reset($uitpasCalendar->timestamps);
             $firstTimestampDate = new \DateTime();
             $firstTimestampDate
-              ->setTimestamp($firstTimestamp->date)
-              ->setTime(0, 0, 0);
+                ->setTimestamp($firstTimestamp->date)
+                ->setTime(0, 0, 0);
             $dateRange->datefrom = $firstTimestampDate->getTimestamp();
 
-            /** @var \CultureFeed_Uitpas_Calendar_Timestamp $lastTimestamp */
+            /**
+ * @var \CultureFeed_Uitpas_Calendar_Timestamp $lastTimestamp 
+*/
             $lastTimestamp =  end($uitpasCalendar->timestamps);
             $lastTimestampDate = new \DateTime();
             $lastTimestampDate
-              ->setTimestamp($lastTimestamp->date)
-              ->setTime(24, 59, 59);
+                ->setTimestamp($lastTimestamp->date)
+                ->setTime(24, 59, 59);
             $dateRange->dateto = $lastTimestampDate->getTimestamp();
         } else {
             // If there is no useful calendar info, start from the time the

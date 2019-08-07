@@ -38,11 +38,11 @@ class DefaultMessageFactory implements MessageFactoryInterface
     private $senderName;
 
     /**
-     * @param BodyFactoryInterface $plainTextBodyFactory
-     * @param BodyFactoryInterface $htmlBodyFactory
+     * @param BodyFactoryInterface    $plainTextBodyFactory
+     * @param BodyFactoryInterface    $htmlBodyFactory
      * @param SubjectFactoryInterface $subjectFactory
-     * @param string $senderAddress
-     * @param string $senderName
+     * @param string                  $senderAddress
+     * @param string                  $senderName
      */
     public function __construct(
         BodyFactoryInterface $plainTextBodyFactory,
@@ -59,7 +59,7 @@ class DefaultMessageFactory implements MessageFactoryInterface
     }
 
     /**
-     * @param EmailAddress $address
+     * @param EmailAddress      $address
      * @param EventExportResult $eventExportResult
      * @return \Swift_Message
      */

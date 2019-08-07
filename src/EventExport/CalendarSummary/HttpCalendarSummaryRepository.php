@@ -20,7 +20,7 @@ class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterfac
 
     /**
      * @param HttpClient $httpClient
-     * @param Http $calendarSummariesLocation
+     * @param Http       $calendarSummariesLocation
      */
     public function __construct(HttpClient $httpClient, Http $calendarSummariesLocation)
     {
@@ -29,9 +29,9 @@ class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterfac
     }
 
     /**
-     * @param string $offerId
+     * @param string      $offerId
      * @param ContentType $type
-     * @param Format $format
+     * @param Format      $format
      *
      * @throws SummaryUnavailableException
      *

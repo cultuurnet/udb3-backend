@@ -10,7 +10,7 @@ use ValueObjects\Web\EmailAddress;
 interface MessageFactoryInterface
 {
     /**
-     * @param EmailAddress $address
+     * @param EmailAddress      $address
      * @param EventExportResult $eventExportResult
      * @return \Swift_Message
      */

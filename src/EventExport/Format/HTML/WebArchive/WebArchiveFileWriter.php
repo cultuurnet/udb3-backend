@@ -40,8 +40,8 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
     protected $calendarSummaryRepository;
 
     /**
-     * @param HTMLFileWriter $htmlFileWriter
-     * @param EventInfoServiceInterface|null $uitpas
+     * @param HTMLFileWriter                          $htmlFileWriter
+     * @param EventInfoServiceInterface|null          $uitpas
      * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
@@ -131,7 +131,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
     /**
      * Expands a path relative to the tmp:// mount point to a full path.
      *
-     * @param string $tmpPath
+     * @param  string $tmpPath
      * @return string
      */
     protected function expandTmpPath($tmpPath)
@@ -140,7 +140,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param string $dir
+     * @param string             $dir
      * @param \Traversable|array $events
      */
     protected function writeHtml($dir, $events)

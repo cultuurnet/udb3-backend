@@ -69,11 +69,11 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param EventExportQuery $query
-     * @param SapiVersion $sapiVersion
+     * @param EventExportQuery  $query
+     * @param SapiVersion       $sapiVersion
      * @param EmailAddress|null $address
-     * @param string[]|null $selection
-     * @param string[]|null $include
+     * @param string[]|null     $selection
+     * @param string[]|null     $include
      * @return ExportEvents
      */
     abstract protected function createCommand(

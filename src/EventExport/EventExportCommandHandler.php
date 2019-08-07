@@ -47,11 +47,11 @@ class EventExportCommandHandler extends CommandHandler implements LoggerAwareInt
     private $twig;
 
     /**
-     * @param EventExportServiceCollection $eventExportServiceCollection
-     * @param string $princeXMLBinaryPath
-     * @param EventInfoServiceInterface|null $uitpas
+     * @param EventExportServiceCollection       $eventExportServiceCollection
+     * @param string                             $princeXMLBinaryPath
+     * @param EventInfoServiceInterface|null     $uitpas
      * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
-     * @param Twig_Environment|null $twig
+     * @param Twig_Environment|null              $twig
      */
     public function __construct(
         EventExportServiceCollection $eventExportServiceCollection,

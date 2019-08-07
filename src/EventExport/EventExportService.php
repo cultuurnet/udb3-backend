@@ -54,13 +54,13 @@ class EventExportService implements EventExportServiceInterface
     protected $resultsGenerator;
 
     /**
-     * @param EventServiceInterface $eventService
-     * @param SearchServiceInterface $searchService
-     * @param UuidGeneratorInterface $uuidGenerator
-     * @param string $publicDirectory
-     * @param IriGeneratorInterface $iriGenerator
+     * @param EventServiceInterface       $eventService
+     * @param SearchServiceInterface      $searchService
+     * @param UuidGeneratorInterface      $uuidGenerator
+     * @param string                      $publicDirectory
+     * @param IriGeneratorInterface       $iriGenerator
      * @param NotificationMailerInterface $mailer
-     * @param ResultsGeneratorInterface $resultsGenerator
+     * @param ResultsGeneratorInterface   $resultsGenerator
      */
     public function __construct(
         EventServiceInterface $eventService,
@@ -190,8 +190,8 @@ class EventExportService implements EventExportServiceInterface
     /**
      * Get all events formatted as JSON-LD.
      *
-     * @param \Traversable $events
-     * @param LoggerInterface $logger
+     * @param  \Traversable    $events
+     * @param  LoggerInterface $logger
      * @return \Generator
      */
     private function getEventsAsJSONLD($events, LoggerInterface $logger)
@@ -206,7 +206,7 @@ class EventExportService implements EventExportServiceInterface
     }
 
     /**
-     * @param string $id
+     * @param string          $id
      *   A string uniquely identifying an event.
      *
      * @param LoggerInterface $logger
@@ -235,7 +235,7 @@ class EventExportService implements EventExportServiceInterface
 
     /**
      * @param FileFormatInterface $fileFormat
-     * @param string $tmpPath
+     * @param string              $tmpPath
      * @return string
      */
     private function getFinalFilePath(
@@ -254,7 +254,7 @@ class EventExportService implements EventExportServiceInterface
      * Generator that yields each unique search result.
      *
      * @param EventExportQuery $query
-     * @param LoggerInterface $logger
+     * @param LoggerInterface  $logger
      *
      * @return \Generator
      */
@@ -273,7 +273,7 @@ class EventExportService implements EventExportServiceInterface
 
     /**
      * @param EmailAddress $address
-     * @param string $url
+     * @param string       $url
      */
     protected function notifyByMail(EmailAddress $address, $url)
     {

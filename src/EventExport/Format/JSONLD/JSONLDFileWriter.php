@@ -52,7 +52,7 @@ class JSONLDFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param Resource $file
+     * @param Resource     $file
      * @param \Traversable $events
      */
     protected function writeEvents($file, $events)

@@ -244,7 +244,7 @@ class HTMLEventFormatterTest extends TestCase
      * @test
      * @dataProvider locationVariationsDataProvider
      * @param string $sample
-     * @param array $expectedFormattedEvent
+     * @param array  $expectedFormattedEvent
      */
     public function it_gracefully_handles_events_without_or_with_partial_location(
         $sample,
@@ -369,7 +369,7 @@ class HTMLEventFormatterTest extends TestCase
     }
 
     /**
-     * @param array $event
+     * @param array  $event
      * @param string $expected
      */
     private function assertFormattedEventDates($event, $expected)
@@ -388,7 +388,9 @@ class HTMLEventFormatterTest extends TestCase
     {
         $eventWithoutImage = $this->getJSONEventFromFile('event_without_image.json');
 
-        /** @var EventInfoServiceInterface|\PHPUnit_Framework_MockObject_MockObject $uitpas */
+        /**
+ * @var EventInfoServiceInterface|\PHPUnit_Framework_MockObject_MockObject $uitpas 
+*/
         $uitpas = $this->createMock(EventInfoServiceInterface::class);
 
         $prices = $priceData['original'];

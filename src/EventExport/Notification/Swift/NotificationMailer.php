@@ -27,7 +27,7 @@ class NotificationMailer implements NotificationMailerInterface
     private $messageFactory;
 
     /**
-     * @param \Swift_Mailer $mailer
+     * @param \Swift_Mailer           $mailer
      * @param MessageFactoryInterface $mailFactory
      */
     public function __construct(

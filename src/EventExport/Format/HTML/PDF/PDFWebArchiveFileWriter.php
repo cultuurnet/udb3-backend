@@ -19,9 +19,9 @@ class PDFWebArchiveFileWriter extends WebArchiveFileWriter
     protected $prince;
 
     /**
-     * @param string $princeXMLBinaryPath
-     * @param HTMLFileWriter $htmlFileWriter
-     * @param EventInfoServiceInterface|null $uitpas
+     * @param string                                  $princeXMLBinaryPath
+     * @param HTMLFileWriter                          $htmlFileWriter
+     * @param EventInfoServiceInterface|null          $uitpas
      * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(

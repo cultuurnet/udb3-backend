@@ -14,6 +14,7 @@ class Url implements MediaSpecificationInterface
 
     /**
      * Url constructor.
+     *
      * @param string $url
      */
     public function __construct($url)

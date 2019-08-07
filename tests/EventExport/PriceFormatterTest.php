@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class PriceFormatterTest
+ *
  * @package CultuurNet\UDB3\EventExport\Format\HTML
  */
 class PriceFormatterTest extends TestCase

@@ -13,7 +13,9 @@ use \IteratorIterator;
  */
 class TransformingIteratorIterator extends IteratorIterator
 {
-    /** @var callable */
+    /**
+ * @var callable 
+*/
     private $function;
 
     public function __construct(Traversable $iterator, callable $function)

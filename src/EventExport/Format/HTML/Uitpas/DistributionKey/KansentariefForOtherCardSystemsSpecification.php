@@ -12,8 +12,8 @@ class KansentariefForOtherCardSystemsSpecification implements DistributionKeySpe
         $satisfied = false;
 
         foreach ($distributionKey->conditions as $condition) {
-            if ($condition->definition == $condition::DEFINITION_KANSARM &&
-                $condition->value == $condition::VALUE_AT_LEAST_ONE_CARDSYSTEM
+            if ($condition->definition == $condition::DEFINITION_KANSARM 
+                && $condition->value == $condition::VALUE_AT_LEAST_ONE_CARDSYSTEM
             ) {
                 $satisfied = true;
                 break;

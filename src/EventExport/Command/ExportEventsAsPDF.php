@@ -69,11 +69,11 @@ class ExportEventsAsPDF implements ExportEventsInterface
     private $template;
 
     /**
-     * @param EventExportQuery $query
-     * @param SapiVersion $sapiVersion
-     * @param string $brand
-     * @param string $logo
-     * @param Title $title
+     * @param EventExportQuery   $query
+     * @param SapiVersion        $sapiVersion
+     * @param string             $brand
+     * @param string             $logo
+     * @param Title              $title
      * @param WebArchiveTemplate $template
      */
     public function __construct(

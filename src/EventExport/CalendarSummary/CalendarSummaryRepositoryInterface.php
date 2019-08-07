@@ -5,9 +5,9 @@ namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 interface CalendarSummaryRepositoryInterface
 {
     /**
-     * @param string $offerId
+     * @param string      $offerId
      * @param ContentType $type
-     * @param Format $format
+     * @param Format      $format
      *
      * @return string|null
      *

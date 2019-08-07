@@ -8,7 +8,7 @@ namespace CultuurNet\UDB3\EventExport;
 interface FileWriterInterface
 {
     /**
-     * @param string $filePath
+     * @param string       $filePath
      * @param \Traversable $events
      * @return void
      */

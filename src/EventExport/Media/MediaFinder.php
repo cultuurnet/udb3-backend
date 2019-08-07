@@ -13,6 +13,7 @@ class MediaFinder
 
     /**
      * MediaFinder constructor.
+     *
      * @param MediaSpecificationInterface $specification
      */
     public function __construct(MediaSpecificationInterface $specification)

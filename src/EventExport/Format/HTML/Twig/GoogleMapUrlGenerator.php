@@ -22,16 +22,18 @@ class GoogleMapUrlGenerator extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('googleMapUrl', function (array $coordinates, int $widthInPixels, int $heightInPixels) {
-                return $this->generateGoogleMapUrl($coordinates, $widthInPixels, $heightInPixels);
-            }),
+            new TwigFunction(
+                'googleMapUrl', function (array $coordinates, int $widthInPixels, int $heightInPixels) {
+                    return $this->generateGoogleMapUrl($coordinates, $widthInPixels, $heightInPixels);
+                }
+            ),
         ];
     }
 
     /**
      * @param string[] $markers
-     * @param int $widthInPixels
-     * @param int $heightInPixels
+     * @param int      $widthInPixels
+     * @param int      $heightInPixels
      * @return string
      */
     public function generateGoogleMapUrl(array $markers, int $widthInPixels, int $heightInPixels): string

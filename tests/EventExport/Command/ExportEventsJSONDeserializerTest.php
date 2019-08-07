@@ -103,7 +103,7 @@ class ExportEventsJSONDeserializerTest extends TestCase
      * @dataProvider commandDataProvider
      *
      * @param DeserializerInterface $deserializer
-     * @param string $expectedCommandType
+     * @param string                $expectedCommandType
      */
     public function it_can_create_different_command_types(
         DeserializerInterface $deserializer,

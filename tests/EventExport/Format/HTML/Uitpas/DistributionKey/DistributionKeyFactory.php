@@ -11,7 +11,7 @@ use CultureFeed_Uitpas_DistributionKey;
 class DistributionKeyFactory
 {
     /**
-     * @param string $tariff
+     * @param string                                         $tariff
      * @param CultureFeed_Uitpas_DistributionKey_Condition[] $conditions
      * @return CultureFeed_Uitpas_DistributionKey
      */

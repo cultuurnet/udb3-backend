@@ -24,9 +24,9 @@ class TabularDataFileWriter implements FileWriterInterface
     protected $tabularDataFileWriterFactory;
 
     /**
-     * @param TabularDataFileWriterFactoryInterface $tabularDataFileWriterFactory
+     * @param TabularDataFileWriterFactoryInterface   $tabularDataFileWriterFactory
      * @param $include
-     * @param EventInfoServiceInterface $uitpas
+     * @param EventInfoServiceInterface               $uitpas
      * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
@@ -64,7 +64,7 @@ class TabularDataFileWriter implements FileWriterInterface
 
     /**
      * @param TabularDataFileWriterInterface $tabularDataFileWriter
-     * @param \Traversable $events
+     * @param \Traversable                   $events
      */
     protected function writeEvents(
         TabularDataFileWriterInterface $tabularDataFileWriter,

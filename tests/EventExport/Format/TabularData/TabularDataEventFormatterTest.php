@@ -169,7 +169,7 @@ class TabularDataEventFormatterTest extends TestCase
      * @dataProvider eventDateProvider
      *
      * @param $eventFile
-     * @param array $expectedFormattedEvent
+     * @param array     $expectedFormattedEvent
      */
     public function it_formats_dates($eventFile, $expectedFormattedEvent)
     {
@@ -341,7 +341,7 @@ class TabularDataEventFormatterTest extends TestCase
      * @test
      * @dataProvider kansentariefEventInfoProvider
      * @param EventInfo $eventInfo
-     * @param array $expectedFormatting
+     * @param array     $expectedFormatting
      */
     public function it_should_add_a_kansentarief_column_when_kansentarief_is_included(
         EventInfo $eventInfo,
@@ -560,45 +560,55 @@ class TabularDataEventFormatterTest extends TestCase
     {
         return [
             'voor iedereen' => [
-                'offerJson' => json_encode([
+                'offerJson' => json_encode(
+                    [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
                         'audienceType' => 'everyone'
                     ]
-                ]),
+                    ]
+                ),
                 'toegang' => 'Voor iedereen'
             ],
             'enkel voor leden' => [
-                'offerJson' => json_encode([
+                'offerJson' => json_encode(
+                    [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
                         'audienceType' => 'members'
                     ]
-                ]),
+                    ]
+                ),
                 'toegang' => 'Enkel voor leden'
             ],
             'specifiek voor scholen' => [
-                'offerJson' => json_encode([
+                'offerJson' => json_encode(
+                    [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
                         'audienceType' => 'education'
                     ]
-                ]),
+                    ]
+                ),
                 'toegang' => 'Specifiek voor scholen'
             ],
             'unknown audience type' => [
-                'offerJson' => json_encode([
+                'offerJson' => json_encode(
+                    [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
                         'audienceType' => 'unknown'
                     ]
-                ]),
+                    ]
+                ),
                 'toegang' => 'Voor iedereen'
             ],
             'no audience type' => [
-                'offerJson' => json_encode([
+                'offerJson' => json_encode(
+                    [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d'
-                ]),
+                    ]
+                ),
                 'toegang' => 'Voor iedereen'
             ],
         ];
@@ -673,10 +683,12 @@ class TabularDataEventFormatterTest extends TestCase
                 ['d1f0e71d-a9a8-4069-81fb-530134502c58', ContentType::PLAIN(), Format::MEDIUM()],
                 ['d1f0e71d-a9a8-4069-81fb-530134502c58', ContentType::PLAIN(), Format::LARGE()]
             )
-            ->will($this->onConsecutiveCalls(
-                $smallCalendarSummary,
-                $largeCalendarSummary
-            ));
+            ->will(
+                $this->onConsecutiveCalls(
+                    $smallCalendarSummary,
+                    $largeCalendarSummary
+                )
+            );
 
         $event = $this->getJSONEventFromFile('event_with_dates.json');
         $formatter = new TabularDataEventFormatter($includedProperties, null, $calendarSummaryRepository);

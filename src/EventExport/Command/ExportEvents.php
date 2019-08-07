@@ -37,11 +37,11 @@ abstract class ExportEvents implements ExportEventsInterface
     private $include;
 
     /**
-     * @param EventExportQuery $query
-     * @param SapiVersion $sapiVersion
+     * @param EventExportQuery  $query
+     * @param SapiVersion       $sapiVersion
      * @param EmailAddress|null $address
-     * @param string[] $selection
-     * @param string[] $include
+     * @param string[]          $selection
+     * @param string[]          $include
      */
     public function __construct(
         EventExportQuery $query,

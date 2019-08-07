@@ -30,9 +30,9 @@ class PriceFormatter
     protected $useFreeLabel = false;
 
     /**
-     * @param int $significantDecimals
-     * @param string $decimalPoint
-     * @param string $thousandsSeparator
+     * @param int          $significantDecimals
+     * @param string       $decimalPoint
+     * @param string       $thousandsSeparator
      * @param string|false $freeLabel
      */
     public function __construct(

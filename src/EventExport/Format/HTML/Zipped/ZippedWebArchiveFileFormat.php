@@ -14,11 +14,11 @@ class ZippedWebArchiveFileFormat extends WebArchiveFileFormat implements FileFor
     protected $uitpas;
 
     /**
-     * @param string $brand
-     * @param string $title
-     * @param string|null $subtitle
-     * @param string|null $footer
-     * @param string|null $publisher
+     * @param string                         $brand
+     * @param string                         $title
+     * @param string|null                    $subtitle
+     * @param string|null                    $footer
+     * @param string|null                    $publisher
      * @param EventInfoServiceInterface|null $uitpas
      */
     public function __construct(

@@ -14,6 +14,7 @@ class UitpasInfoFormatter
 
     /**
      * UitpasInfoFormatter constructor.
+     *
      * @param PriceFormatter $priceFormatter
      */
     public function __construct(PriceFormatter $priceFormatter)

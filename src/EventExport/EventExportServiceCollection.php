@@ -13,7 +13,7 @@ class EventExportServiceCollection
     private $eventExportServices;
 
     /**
-     * @param SapiVersion $sapiVersion
+     * @param SapiVersion                 $sapiVersion
      * @param EventExportServiceInterface $eventExportService
      * @return EventExportServiceCollection
      */
@@ -40,7 +40,7 @@ class EventExportServiceCollection
     }
 
     /**
-     * @param FileFormatInterface $fileFormat
+     * @param FileFormatInterface   $fileFormat
      * @param ExportEventsInterface $exportEvents
      */
     public function delegateToServiceWithAppropriateSapiVersion(

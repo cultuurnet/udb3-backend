@@ -63,7 +63,7 @@ class HTMLEventFormatter
     protected $calendarSummaryRepository;
 
     /**
-     * @param EventInfoServiceInterface|null $uitpas
+     * @param EventInfoServiceInterface|null     $uitpas
      * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
      */
     public function __construct(
@@ -186,9 +186,9 @@ class HTMLEventFormatter
      * Adds the calendar info by trying to fetch the large summary.
      * If the large formatted summary is missing, the summary that is available on the event will be used as fallback.
      *
-     * @param string $eventId
+     * @param string   $eventId
      * @param stdClass $event
-     * @param array $formattedEvent
+     * @param array    $formattedEvent
      */
     private function addCalendarInfo($eventId, stdClass $event, array &$formattedEvent)
     {
@@ -205,7 +205,7 @@ class HTMLEventFormatter
 
     /**
      * @param string $eventId
-     * @param array $formattedEvent
+     * @param array  $formattedEvent
      */
     private function addUitpasInfo($eventId, array &$formattedEvent)
     {
@@ -230,7 +230,9 @@ class HTMLEventFormatter
 
         foreach ($this->taalicoonSpecs as $name => $spec) {
             $i++;
-            /** @var EventSpecificationInterface $spec */
+            /**
+ * @var EventSpecificationInterface $spec 
+*/
             if ($spec->isSatisfiedBy($event)) {
                 $satisfiedCount++;
                 $taalicoonCount = $i;
@@ -252,17 +254,19 @@ class HTMLEventFormatter
      */
     private function getBrands($event)
     {
-        return array_keys(array_filter(
-            $this->brandSpecs,
-            function (EventSpecificationInterface $brandSpec) use ($event) {
-                return $brandSpec->isSatisfiedBy($event);
-            }
-        ));
+        return array_keys(
+            array_filter(
+                $this->brandSpecs,
+                function (EventSpecificationInterface $brandSpec) use ($event) {
+                    return $brandSpec->isSatisfiedBy($event);
+                }
+            )
+        );
     }
 
     /**
      * @param stdClass $event
-     * @param array $formattedEvent
+     * @param array    $formattedEvent
      */
     private function addPriceInfo($event, &$formattedEvent)
     {
@@ -283,7 +287,7 @@ class HTMLEventFormatter
 
     /**
      * @param stdClass $event
-     * @param array $formattedEvent
+     * @param array    $formattedEvent
      */
     private function addMediaObject($event, &$formattedEvent)
     {

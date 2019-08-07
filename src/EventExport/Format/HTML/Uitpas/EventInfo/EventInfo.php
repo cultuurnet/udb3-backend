@@ -25,9 +25,9 @@ class EventInfo
     protected $promotions;
 
     /**
-     * @param array $prices
+     * @param array            $prices
      * @param EventAdvantage[] $advantages
-     * @param string[] $promotions
+     * @param string[]         $promotions
      */
     public function __construct($prices, $advantages, $promotions)
     {

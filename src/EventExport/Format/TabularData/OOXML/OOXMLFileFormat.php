@@ -25,8 +25,8 @@ class OOXMLFileFormat implements FileFormatInterface
     protected $calendarSummaryRepository;
 
     /**
-     * @param string[]|null $include
-     * @param EventInfoServiceInterface|null $uitpas
+     * @param string[]|null                      $include
+     * @param EventInfoServiceInterface|null     $uitpas
      * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
      */
     public function __construct(

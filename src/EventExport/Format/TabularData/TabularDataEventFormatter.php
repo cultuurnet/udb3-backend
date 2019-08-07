@@ -22,12 +22,14 @@ class TabularDataEventFormatter
 {
     /**
      * Class used to filter out HTML from strings.
+     *
      * @var StripHtmlStringFilter
      */
     protected $htmlFilter;
 
     /**
      * A list of all included properties
+     *
      * @var string[]
      */
     protected $includedProperties;
@@ -63,8 +65,8 @@ class TabularDataEventFormatter
     protected $currencyRepository;
 
     /**
-     * @param string[] $include A list of properties to include
-     * @param EventInfoServiceInterface|null $uitpas
+     * @param string[]                                $include                   A list of properties to include
+     * @param EventInfoServiceInterface|null          $uitpas
      * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
@@ -313,9 +315,11 @@ class TabularDataEventFormatter
                             []
                         );
 
-                        $formattedTariffs = array_reduce($cardSystems, function ($tariffs, $cardSystemPrices) {
-                            return $tariffs ? $tariffs . ' | ' . $cardSystemPrices : $cardSystemPrices;
-                        });
+                        $formattedTariffs = array_reduce(
+                            $cardSystems, function ($tariffs, $cardSystemPrices) {
+                                return $tariffs ? $tariffs . ' | ' . $cardSystemPrices : $cardSystemPrices;
+                            }
+                        );
 
                         if (!empty($formattedTariffs)) {
                             return $formattedTariffs;
@@ -362,8 +366,8 @@ class TabularDataEventFormatter
             'organizer' => [
                 'name' => 'organisatie',
                 'include' => function ($event) {
-                    if (property_exists($event, 'organizer') &&
-                        isset($event->organizer->name)
+                    if (property_exists($event, 'organizer') 
+                        && isset($event->organizer->name)
                     ) {
                         // @replay_i18n
                         // @see https://jira.uitdatabank.be/browse/III-2201
@@ -779,7 +783,7 @@ class TabularDataEventFormatter
      * Gives a formatter that tries to fetch a summary in plain text.
      * If the formatted summary is missing, the summary that is available on the event will be used as fallback.
      *
-     * @param Format $format
+     * @param Format                                  $format
      * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      *
      * @return string

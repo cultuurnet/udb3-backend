@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class CultureFeedEventInfoServiceTest
+ *
  * @package CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo
  */
 class CultureFeedEventInfoServiceTest extends TestCase

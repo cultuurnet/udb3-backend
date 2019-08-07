@@ -23,8 +23,8 @@ class HTMLFileWriter implements FileWriterInterface
     protected $twig;
 
     /**
-     * @param string $template
-     * @param array $variables
+     * @param string           $template
+     * @param array            $variables
      * @param Twig_Environment $twig
      */
     public function __construct(

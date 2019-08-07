@@ -13,13 +13,13 @@ abstract class WebArchiveFileFormat
     protected $htmlFileWriter;
 
     /**
-     * @param WebArchiveTemplate $template
-     * @param string $brand
-     * @param string $logo
-     * @param string $title
-     * @param string|null $subtitle
-     * @param string|null $footer
-     * @param string|null $publisher
+     * @param WebArchiveTemplate    $template
+     * @param string                $brand
+     * @param string                $logo
+     * @param string                $title
+     * @param string|null           $subtitle
+     * @param string|null           $footer
+     * @param string|null           $publisher
      * @param Twig_Environment|null $twig
      */
     public function __construct(

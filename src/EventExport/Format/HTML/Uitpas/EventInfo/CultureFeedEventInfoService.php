@@ -46,7 +46,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     protected $promotionQueryFactory;
 
     /**
-     * @param CultureFeed_Uitpas $uitpas
+     * @param CultureFeed_Uitpas             $uitpas
      * @param PromotionQueryFactoryInterface $promotionQueryFactory
      */
     public function __construct(
@@ -82,7 +82,9 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
 
         $resultSet = $this->uitpas->searchEvents($eventQuery);
 
-        /** @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent */
+        /**
+ * @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent 
+*/
         $uitpasEvent = reset($resultSet->objects);
 
         if ($uitpasEvent) {
@@ -111,10 +113,12 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
 
         foreach ($event->cardSystems as $cardSystem) {
             foreach ($cardSystem->distributionKeys as $key) {
-                $prices = array_merge($prices, $this->getUitpasPricesFromDistributionKey(
-                    $cardSystem,
-                    $key
-                ));
+                $prices = array_merge(
+                    $prices, $this->getUitpasPricesFromDistributionKey(
+                        $cardSystem,
+                        $key
+                    )
+                );
             }
         }
 
@@ -139,7 +143,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     /**
      * Get a list of formatted promotions
      *
-     * @param \CultureFeed_Uitpas_Event_CultureEvent $event
+     * @param  \CultureFeed_Uitpas_Event_CultureEvent $event
      * @return string[]
      */
     private function getUitpasPointsPromotionsFromEvent(\CultureFeed_Uitpas_Event_CultureEvent $event)
@@ -147,7 +151,9 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         $promotions = [];
         $promotionQuery = $this->promotionQueryFactory->createForEvent($event);
 
-        /** @var \CultureFeed_PointsPromotion[] $promotionQueryResults */
+        /**
+ * @var \CultureFeed_PointsPromotion[] $promotionQueryResults 
+*/
         $promotionQueryResults = [];
 
         try {
@@ -181,7 +187,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     }
 
     /**
-     * @param CultureFeed_Uitpas_CardSystem $cardSystem
+     * @param CultureFeed_Uitpas_CardSystem      $cardSystem
      * @param CultureFeed_Uitpas_DistributionKey $key
      * @return array
      */

@@ -205,7 +205,9 @@ class EventExportServiceTest extends TestCase
      */
     private function getFileFormat($fileNameExtension)
     {
-        /** @var FileFormatInterface|\PHPUnit_Framework_MockObject_MockObject $fileFormat */
+        /**
+ * @var FileFormatInterface|\PHPUnit_Framework_MockObject_MockObject $fileFormat 
+*/
         $fileFormat = $this->createMock(FileFormatInterface::class);
 
         $fileFormat->expects($this->any())
@@ -271,7 +273,9 @@ class EventExportServiceTest extends TestCase
             $this->publicDirectory->hasChild($expectedExportFileName)
         );
 
-        /** @var vfsStreamFile $file */
+        /**
+ * @var vfsStreamFile $file 
+*/
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 
         $this->assertJsonStringEqualsJsonString(
@@ -433,7 +437,9 @@ class EventExportServiceTest extends TestCase
             $query
         );
 
-        /** @var vfsStreamFile $file */
+        /**
+ * @var vfsStreamFile $file 
+*/
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 
         $this->assertJsonStringEqualsJsonString(
