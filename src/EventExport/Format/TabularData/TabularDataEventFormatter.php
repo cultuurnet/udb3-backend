@@ -241,7 +241,7 @@ class TabularDataEventFormatter
                 'include' => function ($event) {
                     return $this->parseEventIdFromUrl($event);
                 },
-                'property' => 'id'
+                'property' => 'id',
             ],
             'name' => [
                 'name' => 'titel',
@@ -250,14 +250,14 @@ class TabularDataEventFormatter
                         return reset($event->name);
                     }
                 },
-                'property' => 'name'
+                'property' => 'name',
             ],
             'creator' => [
                 'name' => 'auteur',
                 'include' => function ($event) {
                     return $event->creator;
                 },
-                'property' => 'creator'
+                'property' => 'creator',
             ],
             'priceInfo.base' => [
                 'name' => 'basistarief',
@@ -275,7 +275,7 @@ class TabularDataEventFormatter
 
                     return $basePrice ? $this->basePriceFormatter->format($basePrice->price) : '';
                 },
-                'property' => 'priceInfo'
+                'property' => 'priceInfo',
             ],
             'priceInfo.all' => [
                 'name' => 'prijsinformatie',
@@ -286,7 +286,7 @@ class TabularDataEventFormatter
 
                     return $this->formatPriceInfo($event->priceInfo);
                 },
-                'property' => 'priceInfo'
+                'property' => 'priceInfo',
             ],
             'kansentarief' => [
                 'name' => 'kansentarief',
@@ -327,22 +327,22 @@ class TabularDataEventFormatter
                         }
                     }
                 },
-                'property' => 'kansentarief'
+                'property' => 'kansentarief',
             ],
             'bookingInfo.url' => [
                 'name' => 'reservatie url',
                 'include' => $this->includeBookingInfo('url'),
-                'property' => 'bookingInfo'
+                'property' => 'bookingInfo',
             ],
             'bookingInfo.phone' => [
                 'name' => 'reservatie tel',
                 'include' => $this->includeBookingInfo('phone'),
-                'property' => 'bookingInfo'
+                'property' => 'bookingInfo',
             ],
             'bookingInfo.email' => [
                 'name' => 'reservatie e-mail',
                 'include' => $this->includeBookingInfo('email'),
-                'property' => 'bookingInfo'
+                'property' => 'bookingInfo',
             ],
             'description' => [
                 'name' => 'omschrijving',
@@ -362,7 +362,7 @@ class TabularDataEventFormatter
                         return $this->htmlFilter->filter($description);
                     }
                 },
-                'property' => 'description'
+                'property' => 'description',
             ],
             'organizer' => [
                 'name' => 'organisatie',
@@ -381,17 +381,17 @@ class TabularDataEventFormatter
                         }
                     }
                 },
-                'property' => 'organizer'
+                'property' => 'organizer',
             ],
             'calendarSummary.short' => [
                 'name' => 'korte kalendersamenvatting',
                 'include' => $this->calendarSummaryFormatter(Format::MEDIUM(), $this->calendarSummaryRepository),
-                'property' => 'calendarSummary'
+                'property' => 'calendarSummary',
             ],
             'calendarSummary.long' => [
                 'name' => 'lange kalendersamenvatting',
                 'include' => $this->calendarSummaryFormatter(Format::LARGE(), $this->calendarSummaryRepository),
-                'property' => 'calendarSummary'
+                'property' => 'calendarSummary',
             ],
             'labels.visible' => [
                 'name' => 'labels',
@@ -400,7 +400,7 @@ class TabularDataEventFormatter
                         return implode(';', $event->labels);
                     }
                 },
-                'property' => 'labels'
+                'property' => 'labels',
             ],
             'labels.hidden' => [
                 'name' => 'verborgen labels',
@@ -409,14 +409,14 @@ class TabularDataEventFormatter
                         return implode(';', $event->hiddenLabels);
                     }
                 },
-                'property' => 'labels'
+                'property' => 'labels',
             ],
             'typicalAgeRange' => [
                 'name' => 'leeftijd',
                 'include' => function ($event) {
                     return $event->typicalAgeRange;
                 },
-                'property' => 'typicalAgeRange'
+                'property' => 'typicalAgeRange',
             ],
             'performer' => [
                 'name' => 'uitvoerders',
@@ -430,7 +430,7 @@ class TabularDataEventFormatter
                         return implode(';', $performerNames);
                     }
                 },
-                'property' => 'performer'
+                'property' => 'performer',
             ],
             'language' => [
                 'name' => 'taal van het aanbod',
@@ -439,7 +439,7 @@ class TabularDataEventFormatter
                         return implode(';', $event->language);
                     }
                 },
-                'property' => 'language'
+                'property' => 'language',
             ],
             'terms.theme' => [
                 'name' => 'thema',
@@ -452,7 +452,7 @@ class TabularDataEventFormatter
                         }
                     }
                 },
-                'property' => 'terms.theme'
+                'property' => 'terms.theme',
             ],
             'terms.eventtype' => [
                 'name' => 'soort aanbod',
@@ -465,7 +465,7 @@ class TabularDataEventFormatter
                         }
                     }
                 },
-                'property' => 'terms.eventtype'
+                'property' => 'terms.eventtype',
             ],
             'created' => [
                 'name' => 'datum aangemaakt',
@@ -476,7 +476,7 @@ class TabularDataEventFormatter
                         return '';
                     }
                 },
-                'property' => 'created'
+                'property' => 'created',
             ],
             'modified' => [
                 'name' => 'datum laatste aanpassing',
@@ -487,7 +487,7 @@ class TabularDataEventFormatter
                         return '';
                     }
                 },
-                'property' => 'modified'
+                'property' => 'modified',
             ],
             'available' => [
                 'name' => 'embargodatum',
@@ -498,7 +498,7 @@ class TabularDataEventFormatter
                         return '';
                     }
                 },
-                'property' => 'available'
+                'property' => 'available',
             ],
             'startDate' => [
                 'name' => 'startdatum',
@@ -509,7 +509,7 @@ class TabularDataEventFormatter
                         return '';
                     }
                 },
-                'property' => 'startDate'
+                'property' => 'startDate',
             ],
             'endDate' => [
                 'name' => 'einddatum',
@@ -520,14 +520,14 @@ class TabularDataEventFormatter
                         return '';
                     }
                 },
-                'property' => 'endDate'
+                'property' => 'endDate',
             ],
             'calendarType' => [
                 'name' => 'tijd type',
                 'include' => function ($event) {
                     return $event->calendarType;
                 },
-                'property' => 'calendarType'
+                'property' => 'calendarType',
             ],
             'location' => [
                 'name' => 'locatie naam',
@@ -536,50 +536,50 @@ class TabularDataEventFormatter
                         return reset($event->location->name);
                     }
                 },
-                'property' => 'location'
+                'property' => 'location',
             ],
             'address.streetAddress' => [
                 'name' => 'straat',
                 'include' => function ($event) {
                     return $this->getAddressField($event, 'streetAddress');
                 },
-                'property' => 'address.streetAddress'
+                'property' => 'address.streetAddress',
             ],
             'address.postalCode' => [
                 'name' => 'postcode',
                 'include' => function ($event) {
                     return $this->getAddressField($event, 'postalCode');
                 },
-                'property' => 'address.postalCode'
+                'property' => 'address.postalCode',
             ],
             'address.addressLocality' => [
                 'name' => 'gemeente',
                 'include' => function ($event) {
                     return $this->getAddressField($event, 'addressLocality');
                 },
-                'property' => 'address.addressLocality'
+                'property' => 'address.addressLocality',
             ],
             'address.addressCountry' => [
                 'name' => 'land',
                 'include' => function ($event) {
                     return $this->getAddressField($event, 'addressCountry');
                 },
-                'property' => 'address.addressCountry'
+                'property' => 'address.addressCountry',
             ],
             'image.url' => [
                 'name' => 'afbeelding URL',
                 'include' => $this->includeMainImageInfo('contentUrl'),
-                'property' => 'image'
+                'property' => 'image',
             ],
             'image.description' => [
                 'name' => 'afbeelding beschrijving',
                 'include' => $this->includeMainImageInfo('description'),
-                'property' => 'image'
+                'property' => 'image',
             ],
             'image.copyrightHolder' => [
                 'name' => 'afbeelding copyright',
                 'include' => $this->includeMainImageInfo('copyrightHolder'),
-                'property' => 'image'
+                'property' => 'image',
             ],
             'sameAs' => [
                 'name' => 'externe ids',
@@ -594,7 +594,7 @@ class TabularDataEventFormatter
                         return implode("\r\n", $ids);
                     }
                 },
-                'property' => 'sameAs'
+                'property' => 'sameAs',
             ],
             'contactPoint.email' => [
                 'name' => 'contact e-mail',
@@ -604,7 +604,7 @@ class TabularDataEventFormatter
                         'email'
                     );
                 },
-                'property' => 'contactPoint'
+                'property' => 'contactPoint',
             ],
             'contactPoint.phone' => [
                 'name' => 'contact tel',
@@ -614,7 +614,7 @@ class TabularDataEventFormatter
                         'phone'
                     );
                 },
-                'property' => 'contactPoint'
+                'property' => 'contactPoint',
             ],
             'contactPoint.url' => [
                 'name' => 'contact url',
@@ -624,28 +624,28 @@ class TabularDataEventFormatter
                         'url'
                     );
                 },
-                'property' => 'contactPoint'
+                'property' => 'contactPoint',
             ],
             'contactPoint.reservations.email' => [
                 'name' => 'e-mail reservaties',
                 'include' => function ($event) use ($contactPoint) {
                     return '';
                 },
-                'property' => 'contactPoint'
+                'property' => 'contactPoint',
             ],
             'contactPoint.reservations.telephone' => [
                 'name' => 'telefoon reservaties',
                 'include' => function ($event) use ($contactPoint) {
                         return '';
                 },
-                'property' => 'contactPoint'
+                'property' => 'contactPoint',
             ],
             'contactPoint.reservations.url' => [
                 'name' => 'online reservaties',
                 'include' => function ($event) use ($contactPoint) {
                     return '';
                 },
-                'property' => 'contactPoint'
+                'property' => 'contactPoint',
             ],
             'audience' => [
                 'name' => 'toegang',
@@ -665,7 +665,7 @@ class TabularDataEventFormatter
 
                     return $toegang;
                 },
-                'property' => 'audience'
+                'property' => 'audience',
             ]
         ];
     }

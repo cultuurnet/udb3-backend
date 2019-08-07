@@ -87,17 +87,17 @@ class HTMLEventFormatter
         $truncateFilter->beSentenceFriendly();
         $this->filters->addFilter($truncateFilter);
 
-        $this->taalicoonSpecs = array(
+        $this->taalicoonSpecs = [
             'EEN_TAALICOON' => new Has1Taalicoon(),
             'TWEE_TAALICONEN' => new Has2Taaliconen(),
             'DRIE_TAALICONEN' => new Has3Taaliconen(),
-            'VIER_TAALICONEN' => new Has4Taaliconen()
-        );
+            'VIER_TAALICONEN' => new Has4Taaliconen(),
+        ];
 
-        $this->brandSpecs = array(
+        $this->brandSpecs = [
             'uitpas' => new HasUiTPASBrand(),
-            'vlieg' => new HasVliegBrand()
-        );
+            'vlieg' => new HasVliegBrand(),
+        ];
     }
 
     /**

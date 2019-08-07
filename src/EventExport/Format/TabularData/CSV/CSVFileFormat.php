@@ -37,7 +37,7 @@ class CSVFileFormat implements FileFormatInterface
     public function getWriter()
     {
         return new TabularDataFileWriter(
-            new CSVFileWriterFactory,
+            new CSVFileWriterFactory(),
             $this->include
         );
     }

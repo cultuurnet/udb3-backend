@@ -87,7 +87,7 @@ class EventExportCommandHandler extends CommandHandler implements LoggerAwareInt
         ExportEventsAsCSV $exportCommand
     ): void {
         $this->eventExportServiceCollection->delegateToServiceWithAppropriateSapiVersion(
-            new CSVFileFormat($exportCommand->getInclude()),
+            new CSVFileFormat($exportCommand->getInclude(), $this->uitpas),
             $exportCommand,
             $this->logger
         );

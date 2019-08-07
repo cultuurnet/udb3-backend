@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo;
 
+use CultureFeed_PointsPromotion;
 use CultureFeed_Uitpas;
 use CultureFeed_Uitpas_CardSystem;
 use CultureFeed_Uitpas_DistributionKey;
@@ -82,9 +83,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
 
         $resultSet = $this->uitpas->searchEvents($eventQuery);
 
-        /**
- * @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent
-*/
+        /** @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent */
         $uitpasEvent = reset($resultSet->objects);
 
         if ($uitpasEvent) {
@@ -152,9 +151,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         $promotions = [];
         $promotionQuery = $this->promotionQueryFactory->createForEvent($event);
 
-        /**
- * @var \CultureFeed_PointsPromotion[] $promotionQueryResults
-*/
+        /** @var CultureFeed_PointsPromotion[] $promotionQueryResults */
         $promotionQueryResults = [];
 
         try {

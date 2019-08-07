@@ -126,10 +126,10 @@ class EventExportService implements EventExportServiceInterface
         if ($totalItemCount < 1) {
             $logger->error(
                 'not_exported',
-                array(
+                [
                     'query' => (string) $query,
-                    'error' => "query did not return any results"
-                )
+                    'error' => "query did not return any results",
+                ]
             );
 
             return false;
