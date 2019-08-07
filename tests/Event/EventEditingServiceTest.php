@@ -27,6 +27,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use Broadway\Repository\RepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
+use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -81,6 +82,11 @@ class DefaultEventEditingServiceTest extends TestCase
      */
     private $eventStore;
 
+    /**
+     * @var PlaceRepository|MockObject
+     */
+    private $placeRepository;
+
     protected function setUp()
     {
         $this->eventService = $this->createMock(EventServiceInterface::class);
@@ -88,6 +94,7 @@ class DefaultEventEditingServiceTest extends TestCase
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
         $this->readRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->placeRepository = $this->createMock(PlaceRepository::class);
 
         $this->eventStore = new TraceableEventStore(
             new InMemoryEventStore()
@@ -107,7 +114,8 @@ class DefaultEventEditingServiceTest extends TestCase
             $this->readRepository,
             $this->commandFactory,
             $this->writeRepository,
-            $this->labelService
+            $this->labelService,
+            $this->placeRepository
         );
     }
 

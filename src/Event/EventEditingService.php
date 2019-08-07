@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
+use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
@@ -32,6 +33,11 @@ class EventEditingService extends DefaultOfferEditingService
      */
     protected $writeRepository;
 
+    /**
+     * @var PlaceRepository
+     */
+    private $placeRepository;
+
     public function __construct(
         EventServiceInterface $eventService,
         CommandBusInterface $commandBus,
@@ -39,7 +45,8 @@ class EventEditingService extends DefaultOfferEditingService
         DocumentRepositoryInterface $readRepository,
         OfferCommandFactoryInterface $commandFactory,
         RepositoryInterface $writeRepository,
-        LabelServiceInterface $labelService
+        LabelServiceInterface $labelService,
+        PlaceRepository $placeRepository
     ) {
         parent::__construct(
             $commandBus,
@@ -52,6 +59,7 @@ class EventEditingService extends DefaultOfferEditingService
         );
         $this->eventService = $eventService;
         $this->writeRepository = $writeRepository;
+        $this->placeRepository = $placeRepository;
     }
 
     /**

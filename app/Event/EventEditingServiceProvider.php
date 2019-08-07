@@ -25,7 +25,8 @@ class EventEditingServiceProvider implements ServiceProviderInterface
                     $app['event_jsonld_repository'],
                     new EventCommandFactory(),
                     $app['event_repository'],
-                    $app['labels.constraint_aware_service']
+                    $app['labels.constraint_aware_service'],
+                    $app['place_repository']
                 );
             }
         );
