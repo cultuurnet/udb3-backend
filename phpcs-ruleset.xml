@@ -15,6 +15,9 @@
     <rule ref="Symfony2.NamingConventions.ValidClassName.InvalidAbstractName">
         <exclude-pattern>*</exclude-pattern>
     </rule>
+    <rule ref="Symfony2.NamingConventions.ValidClassName.InvalidInterfaceName">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
     <rule ref="Symfony2.Objects.ObjectInstantiation" />
     <rule ref="Symfony2.WhiteSpace.BinaryOperatorSpacing" />
 
