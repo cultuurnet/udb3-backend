@@ -151,11 +151,11 @@ class EventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInterfac
      */
     private function internalSendRequest(Url $url)
     {
-        $this->logger->debug('retrieving cdbxml from ' . (string)$url);
+        $this->logger->debug('retrieving cdbxml from ' . (string) $url);
 
         $request = new Request(
             'GET',
-            (string)$url,
+            (string) $url,
             [
                 'Accept' => 'application/xml',
             ]
@@ -175,7 +175,7 @@ class EventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInterfac
             );
 
             throw new EventNotFoundException(
-                'Unable to retrieve event from ' . (string)$url
+                'Unable to retrieve event from ' . (string) $url
             );
         }
 

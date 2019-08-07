@@ -30,8 +30,8 @@ class ActorUpdatedEnrichedWithCdbXml extends ActorUpdated implements CdbXmlConta
             $url
         );
 
-        $this->setCdbXml((string)$cdbXml);
-        $this->setCdbXmlNamespaceUri((string)$cdbXmlNamespaceUri);
+        $this->setCdbXml((string) $cdbXml);
+        $this->setCdbXmlNamespaceUri((string) $cdbXmlNamespaceUri);
     }
 
     public static function fromActorUpdated(

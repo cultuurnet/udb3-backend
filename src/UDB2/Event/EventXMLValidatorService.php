@@ -27,8 +27,8 @@ class EventXMLValidatorService implements XMLValidationServiceInterface
         $errors = [];
 
         $cdbXmlEvent = EventItemFactory::createEventFromCdbXml(
-            (string)$this->cdbXmlNamespaceUri,
-            (string)$xml
+            (string) $this->cdbXmlNamespaceUri,
+            (string) $xml
         );
 
         if ($cdbXmlEvent &&

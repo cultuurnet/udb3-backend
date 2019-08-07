@@ -252,7 +252,7 @@ class ActorEventApplier implements EventListenerInterface, LoggerAwareInterface
             $this->logger->info(
                 'No existing offer with the same id found so it is safe to import.',
                 [
-                    'offer-id' => (string)$id,
+                    'offer-id' => (string) $id,
                 ]
             );
         }
@@ -278,7 +278,7 @@ class ActorEventApplier implements EventListenerInterface, LoggerAwareInterface
             } catch (UnsupportedMIMETypeException $e) {
                 $this->logger->error(
                     'Unable to import images for offer. ' . $e->getMessage(),
-                    ['offer-id' => (string)$id]
+                    ['offer-id' => (string) $id]
                 );
             };
         }

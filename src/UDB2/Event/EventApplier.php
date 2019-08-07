@@ -141,8 +141,8 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
     private function factorCdbXmlEvent(CdbXmlContainerInterface $event)
     {
         $cdbXmlEvent = EventItemFactory::createEventFromCdbXml(
-            (string)$event->getCdbXmlNamespaceUri(),
-            (string)$event->getCdbXml()
+            (string) $event->getCdbXmlNamespaceUri(),
+            (string) $event->getCdbXml()
         );
 
         return $cdbXmlEvent;
@@ -162,14 +162,14 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
             $this->logger->info(
                 'Offer succesfully updated.',
                 [
-                    'offer-id' => (string)$entityId,
+                    'offer-id' => (string) $entityId,
                 ]
             );
         } catch (AggregateNotFoundException $e) {
             $this->logger->debug(
                 'Update failed because offer did not exist yet, trying to create it as a fallback.',
                 [
-                    'offer-id' => (string)$entityId,
+                    'offer-id' => (string) $entityId,
                 ]
             );
 
@@ -178,7 +178,7 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
             $this->logger->info(
                 'Offer succesfully created.',
                 [
-                    'offer-id' => (string)$entityId,
+                    'offer-id' => (string) $entityId,
                 ]
             );
         }
@@ -198,14 +198,14 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
             $this->logger->info(
                 'Offer succesfully created.',
                 [
-                    'offer-id' => (string)$entityId,
+                    'offer-id' => (string) $entityId,
                 ]
             );
         } catch (OfferAlreadyImportedException $e) {
             $this->logger->debug(
                 'An offer with the same id already exists, trying to update as a fallback.',
                 [
-                    'offer-id' => (string)$entityId,
+                    'offer-id' => (string) $entityId,
                 ]
             );
 
@@ -214,7 +214,7 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
             $this->logger->info(
                 'Offer succesfully updated.',
                 [
-                    'offer-id' => (string)$entityId,
+                    'offer-id' => (string) $entityId,
                 ]
             );
         }
@@ -229,7 +229,7 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         CdbXmlContainerInterface $cdbXml
     ) {
         /** @var UpdateableWithCdbXmlInterface|Event $entity */
-        $entity = $this->eventRepository->load((string)$entityId);
+        $entity = $this->eventRepository->load((string) $entityId);
 
         $entity->updateWithCdbXml(
             $cdbXml->getCdbXml(),
@@ -264,7 +264,7 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
             $this->logger->info(
                 'No existing offer with the same id found so it is safe to import.',
                 [
-                    'offer-id' => (string)$id,
+                    'offer-id' => (string) $id,
                 ]
             );
         }
@@ -289,7 +289,7 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         } catch (UnsupportedMIMETypeException $e) {
             $this->logger->error(
                 'Unable to import images for offer. ' . $e->getMessage(),
-                ['offer-id' => (string)$id]
+                ['offer-id' => (string) $id]
             );
         };
 

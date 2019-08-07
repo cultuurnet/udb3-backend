@@ -23,7 +23,7 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
 {
     const SUPPORTED_UDB2_MEDIA_TYPES = [
         CultureFeed_Cdb_Data_File::MEDIA_TYPE_PHOTO,
-        CultureFeed_Cdb_Data_File::MEDIA_TYPE_IMAGEWEB
+        CultureFeed_Cdb_Data_File::MEDIA_TYPE_IMAGEWEB,
     ];
 
     /**
@@ -104,14 +104,13 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
                     empty($fileType) ? MIMEType::fromSubtype('octet-stream') : MIMEType::fromSubtype($fileType),
                     empty($udb2Description) ? $fallbackDescription : new Description($udb2Description),
                     empty($udb2Copyright) ? $fallbackCopyright : new CopyrightHolder($udb2Copyright),
-                    Url::fromNative((string)$normalizedUri),
+                    Url::fromNative((string) $normalizedUri),
                     $language
                 );
 
                 return !$images->getMain() && $file->isMain()
                     ? $images->withMain($image)
                     : $images->with($image);
-
             },
             new ImageCollection()
         );
@@ -133,11 +132,11 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
      */
     private function identify(Http $httpUri)
     {
-        if (isset($this->uuidRegex) && \preg_match('/' . $this->uuidRegex . '/', (string)$httpUri, $matches)) {
+        if (isset($this->uuidRegex) && \preg_match('/' . $this->uuidRegex . '/', (string) $httpUri, $matches)) {
             return UUID::fromNative($matches['uuid']);
         }
 
         $namespace = BaseUuid::uuid5(BaseUuid::NAMESPACE_DNS, $httpUri->getHost());
-        return UUID::fromNative((string)BaseUuid::uuid5($namespace, (string)$httpUri));
+        return UUID::fromNative((string) BaseUuid::uuid5($namespace, (string) $httpUri));
     }
 }

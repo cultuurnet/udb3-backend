@@ -13,9 +13,9 @@ class EventToUDB3EventFactory implements EventToUDB3AggregateFactoryInterface
         StringLiteral $cdbXmlNamespaceUri
     ) {
         return Event::importFromUDB2(
-            (string)$id,
-            (string)$cdbXml,
-            (string)$cdbXmlNamespaceUri
+            (string) $id,
+            (string) $cdbXml,
+            (string) $cdbXmlNamespaceUri
         );
     }
 }

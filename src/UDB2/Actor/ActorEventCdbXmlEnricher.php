@@ -196,11 +196,11 @@ class ActorEventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInt
      */
     private function internalSendRequest(Url $url)
     {
-        $this->logger->debug('retrieving cdbxml from ' . (string)$url);
+        $this->logger->debug('retrieving cdbxml from ' . (string) $url);
 
         $request = new Request(
             'GET',
-            (string)$url,
+            (string) $url,
             [
                 'Accept' => 'application/xml',
             ]
@@ -220,7 +220,7 @@ class ActorEventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInt
             );
 
             throw new ActorNotFoundException(
-                'Unable to retrieve actor from ' . (string)$url
+                'Unable to retrieve actor from ' . (string) $url
             );
         }
 

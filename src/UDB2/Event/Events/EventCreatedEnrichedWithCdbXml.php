@@ -26,8 +26,8 @@ class EventCreatedEnrichedWithCdbXml extends EventCreated implements CdbXmlConta
     ) {
         parent::__construct($eventId, $time, $author, $url);
 
-        $this->setCdbXml((string)$cdbXml);
-        $this->setCdbXmlNamespaceUri((string)$cdbXmlNamespaceUri);
+        $this->setCdbXml((string) $cdbXml);
+        $this->setCdbXmlNamespaceUri((string) $cdbXmlNamespaceUri);
     }
 
     public static function fromEventCreated(

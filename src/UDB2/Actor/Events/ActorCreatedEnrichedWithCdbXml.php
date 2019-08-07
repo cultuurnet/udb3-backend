@@ -26,8 +26,8 @@ class ActorCreatedEnrichedWithCdbXml extends ActorCreated implements CdbXmlConta
             $url
         );
 
-        $this->setCdbXml((string)$cdbXml);
-        $this->setCdbXmlNamespaceUri((string)$cdbXmlNamespaceUri);
+        $this->setCdbXml((string) $cdbXml);
+        $this->setCdbXmlNamespaceUri((string) $cdbXmlNamespaceUri);
     }
 
     public static function fromActorCreated(
