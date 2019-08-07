@@ -167,6 +167,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
      */
     private function getJsonData($fileName)
     {
-        return file_get_contents(__DIR__ . '/' . $fileName);
+        return file_get_contents(__DIR__.'/'.$fileName);
     }
 }

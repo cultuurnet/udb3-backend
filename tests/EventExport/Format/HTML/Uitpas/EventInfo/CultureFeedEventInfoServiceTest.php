@@ -104,7 +104,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
 
             $cardSystem = new CardSystem();
             $cardSystem->id = $cardSystemId;
-            $cardSystem->name = 'UiTPAS regio ' . $cardSystemId;
+            $cardSystem->name = 'UiTPAS regio '.$cardSystemId;
             $cardSystem->distributionKeys = [$distributionKey];
 
             $event->cardSystems[] = $cardSystem;
@@ -248,7 +248,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
 
         $this->assertTrue(
             $testLogHandler->hasError(
-                'Can\'t retrieve promotions for event with id:' . $event->cdbid
+                'Can\'t retrieve promotions for event with id:'.$event->cdbid
             )
         );
     }

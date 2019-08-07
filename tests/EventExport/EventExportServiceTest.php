@@ -114,7 +114,7 @@ class EventExportServiceTest extends TestCase
         $this->searchResults = array_map(
             function ($i) {
                 return new IriOfferIdentifier(
-                    Url::fromNative('http://example.com/event/' . $i),
+                    Url::fromNative('http://example.com/event/'.$i),
                     (string) $i,
                     OfferType::EVENT()
                 );
@@ -206,7 +206,7 @@ class EventExportServiceTest extends TestCase
     private function getFileFormat($fileNameExtension)
     {
         /**
- * @var FileFormatInterface|\PHPUnit_Framework_MockObject_MockObject $fileFormat 
+ * @var FileFormatInterface|\PHPUnit_Framework_MockObject_MockObject $fileFormat
 */
         $fileFormat = $this->createMock(FileFormatInterface::class);
 
@@ -274,7 +274,7 @@ class EventExportServiceTest extends TestCase
         );
 
         /**
- * @var vfsStreamFile $file 
+ * @var vfsStreamFile $file
 */
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 
@@ -306,7 +306,7 @@ class EventExportServiceTest extends TestCase
         $exportIriBase = 'http://example.com/export/';
 
         $createIri = function ($item) use ($exportIriBase) {
-            return $exportIriBase . $item;
+            return $exportIriBase.$item;
         };
 
         $expectedExportUrl = $createIri($expectedExportFileName);
@@ -356,7 +356,7 @@ class EventExportServiceTest extends TestCase
         $exportIriBase = 'http://example.com/export/';
 
         $createIri = function ($item) use ($exportIriBase) {
-            return $exportIriBase . $item;
+            return $exportIriBase.$item;
         };
 
         $this->iriGenerator->expects($this->once())
@@ -438,7 +438,7 @@ class EventExportServiceTest extends TestCase
         );
 
         /**
- * @var vfsStreamFile $file 
+ * @var vfsStreamFile $file
 */
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 

@@ -52,7 +52,7 @@ class HTMLFileWriterTest extends TestCase
         $events = [];
 
         $twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem(__DIR__ . '/templates')
+            new \Twig_Loader_Filesystem(__DIR__.'/templates')
         );
 
         $fileWriter = new HTMLFileWriter(
@@ -75,28 +75,28 @@ class HTMLFileWriterTest extends TestCase
                 [
                     'name' => 'world'
                 ],
-                __DIR__ . '/results/hello-world.html',
+                __DIR__.'/results/hello-world.html',
             ],
             [
                 'hello.html.twig',
                 [
                     'name' => 'Belgium'
                 ],
-                __DIR__ . '/results/hello-belgium.html',
+                __DIR__.'/results/hello-belgium.html',
             ],
             [
                 'goodbye.html.twig',
                 [
                     'name' => 'world'
                 ],
-                __DIR__ . '/results/goodbye-world.html',
+                __DIR__.'/results/goodbye-world.html',
             ],
             [
                 'goodbye.html.twig',
                 [
                     'name' => 'Belgium'
                 ],
-                __DIR__ . '/results/goodbye-belgium.html',
+                __DIR__.'/results/goodbye-belgium.html',
             ],
         ];
     }
@@ -118,7 +118,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator(array()));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_without_events.html');
+        $expected = file_get_contents(__DIR__.'/results/export_without_events.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -132,14 +132,8 @@ class HTMLFileWriterTest extends TestCase
                 'image' => 'http://media.uitdatabank.be/20140715/p18qn74oth1uvnnpidhj1i6t1f9p1.png',
                 'type' => 'Cursus of workshop',
                 'title' => 'De muziek van de middeleeuwen // Een middeleeuwse muziekgeschiedenis in veertig toppers',
-                'description' => 'Alhoewel de middeleeuwen zo’n duizend jaar duurden, '
-                    . 'is het grootste deel van de ...',
-                'dates' => '<time itemprop="startDate" datetime="2014-04-23T">'
-                    . '<span class="cf-weekday cf-meta">woensdag</span> '
-                    . '<span class="cf-date">23 april 2014</span> '
-                    . '<span class="cf-from cf-meta">om</span> '
-                    . '<span class="cf-time"></span>'
-                    . '</time>',
+                'description' => 'Alhoewel de middeleeuwen zo’n duizend jaar duurden, '.'is het grootste deel van de ...',
+                'dates' => '<time itemprop="startDate" datetime="2014-04-23T">'.'<span class="cf-weekday cf-meta">woensdag</span> '.'<span class="cf-date">23 april 2014</span> '.'<span class="cf-from cf-meta">om</span> '.'<span class="cf-time"></span>'.'</time>',
                 'address' => array(
                     'name' => 'CC De Werf',
                     'street' => 'Molenstraat 51',
@@ -161,13 +155,7 @@ class HTMLFileWriterTest extends TestCase
                 'type' => 'Spel of quiz',
                 'title' => 'Speurtocht Kapitein Massimiliaan en de vliegende Hollander',
                 'description' => 'Een familiespel voor jong en oud! Worden jullie de nieuwe matrozen van de ...',
-                'dates' => '<p><time itemprop="startDate" datetime="2014-04-23">'
-                    . '<span class="cf-date">23 april 2014</span>'
-                    . '</time>'
-                    . '<span class="cf-to cf-meta">tot</span>'
-                    . '<time itemprop="endDate" datetime="2014-04-30">'
-                    . '<span class="cf-date">30 april 2014</span>'
-                    . '</time></p>',
+                'dates' => '<p><time itemprop="startDate" datetime="2014-04-23">'.'<span class="cf-date">23 april 2014</span>'.'</time>'.'<span class="cf-to cf-meta">tot</span>'.'<time itemprop="endDate" datetime="2014-04-30">'.'<span class="cf-date">30 april 2014</span>'.'</time></p>',
                 'address' => array(
                     'name' => 'Museum aan de Stroom (MAS)',
                     'street' => 'Hanzestedenplaats 1',
@@ -195,7 +183,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export.html');
+        $expected = file_get_contents(__DIR__.'/results/export.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -216,9 +204,7 @@ class HTMLFileWriterTest extends TestCase
                     'municipality' => 'Tienen',
                 ],
                 'price' => 'Niet ingevoerd',
-                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
-                    . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '
-                    . 'ma 30/03/15 van 13:30 tot 16:30 ',
+                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 ]
         ];
 
@@ -231,7 +217,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_without_image.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_without_image.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -252,9 +238,7 @@ class HTMLFileWriterTest extends TestCase
                     'municipality' => 'Tienen',
                 ],
                 'price' => 'Niet ingevoerd',
-                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
-                    . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '
-                    . 'ma 30/03/15 van 13:30 tot 16:30 ',
+                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
             ]
@@ -269,7 +253,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_taaliconen.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_with_taaliconen.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -290,9 +274,7 @@ class HTMLFileWriterTest extends TestCase
                     'municipality' => 'Tienen',
                 ],
                 'price' => 'Niet ingevoerd',
-                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
-                    . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '
-                    . 'ma 30/03/15 van 13:30 tot 16:30 ',
+                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 4,
                 'taalicoonDescription' => 'Je spreekt en begrijpt vlot Nederlands.',
             ]
@@ -307,7 +289,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_four_taaliconen.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_with_four_taaliconen.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -328,9 +310,7 @@ class HTMLFileWriterTest extends TestCase
                     'municipality' => 'Tienen',
                 ],
                 'price' => 'Niet ingevoerd',
-                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
-                    . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '
-                    . 'ma 30/03/15 van 13:30 tot 16:30 ',
+                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
                 'brands' => [
@@ -349,7 +329,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_uitpas_brand.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_with_uitpas_brand.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -370,9 +350,7 @@ class HTMLFileWriterTest extends TestCase
                     'municipality' => 'Tienen',
                 ],
                 'price' => 'Niet ingevoerd',
-                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
-                    . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '
-                    . 'ma 30/03/15 van 13:30 tot 16:30 ',
+                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
                 'brands' => [
@@ -391,7 +369,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_age_range.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_with_age_range.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -409,9 +387,7 @@ class HTMLFileWriterTest extends TestCase
                     'municipality' => 'Tienen',
                 ],
                 'price' => 'Niet ingevoerd',
-                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
-                    . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '
-                    . 'ma 30/03/15 van 13:30 tot 16:30 ',
+                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
                 'brands' => [
@@ -455,7 +431,7 @@ class HTMLFileWriterTest extends TestCase
         );
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_uitpas_info.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_with_uitpas_info.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -477,7 +453,7 @@ class HTMLFileWriterTest extends TestCase
 
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_uitpas_info_paspartoe_branded.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_with_uitpas_info_paspartoe_branded.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
     
@@ -498,9 +474,7 @@ class HTMLFileWriterTest extends TestCase
                     'municipality' => 'Tienen',
                 ],
                 'price' => 'Niet ingevoerd',
-                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '
-                    . 'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '
-                    . 'ma 30/03/15 van 13:30 tot 16:30 ',
+                'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
             ]
@@ -517,7 +491,7 @@ class HTMLFileWriterTest extends TestCase
 
         $fileWriter->write($this->filePath, new \ArrayIterator($events));
 
-        $expected = file_get_contents(__DIR__ . '/results/export_event_with_custom_logo.html');
+        $expected = file_get_contents(__DIR__.'/results/export_event_with_custom_logo.html');
         $this->assertHTMLFileContents($expected, $this->filePath);
     }
 
@@ -535,7 +509,7 @@ class HTMLFileWriterTest extends TestCase
      */
     protected function getFilePath()
     {
-        return tempnam(sys_get_temp_dir(), uniqid()) . '.html';
+        return tempnam(sys_get_temp_dir(), uniqid()).'.html';
     }
 
     /**

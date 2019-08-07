@@ -55,7 +55,6 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
             ),
             $command
         );
-
     }
 
     /**
@@ -126,7 +125,7 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
     private function getJSONStringFromFile($fileName)
     {
         $json = file_get_contents(
-            __DIR__ . '/' . $fileName
+            __DIR__.'/'.$fileName
         );
 
         return new StringLiteral($json);

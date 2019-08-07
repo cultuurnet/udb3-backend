@@ -28,6 +28,5 @@ class DefaultPlainTextBodyFactoryTest extends TestCase
             $expectedBody,
             $defaultPlainTextBodyFactory->getBodyFor($eventExportResult)
         );
-
     }
 }

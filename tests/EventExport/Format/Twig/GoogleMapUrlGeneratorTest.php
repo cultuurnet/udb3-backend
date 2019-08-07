@@ -36,10 +36,10 @@ class GoogleMapUrlGeneratorTest extends TestCase
         ];
 
         $expected = 'https://maps.googleapis.com/maps/api/staticmap?size=800x400&scale=2';
-        $expected .= '&markers=' . $coordinate1;
-        $expected .= '&markers=' . $coordinate2;
-        $expected .= '&markers=' . $coordinate3;
-        $expected .= '&key=' . self::TEST_API_KEY;
+        $expected .= '&markers='.$coordinate1;
+        $expected .= '&markers='.$coordinate2;
+        $expected .= '&markers='.$coordinate3;
+        $expected .= '&key='.self::TEST_API_KEY;
 
         $this->assertEquals(
             $expected,

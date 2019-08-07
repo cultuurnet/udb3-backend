@@ -25,6 +25,5 @@ class DefaultHTMLBodyFactoryTest extends TestCase
             $expectedBody,
             $defaultHTMLBodyFactory->getBodyFor($eventExportResult)
         );
-
     }
 }

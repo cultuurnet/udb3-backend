@@ -34,7 +34,7 @@ class ZippedWebArchiveFileWriterTest extends TestCase
      */
     protected function getFilePath()
     {
-        return tempnam(sys_get_temp_dir(), uniqid()) . '.zip';
+        return tempnam(sys_get_temp_dir(), uniqid()).'.zip';
     }
 
     /**
@@ -51,7 +51,7 @@ class ZippedWebArchiveFileWriterTest extends TestCase
                     'name' => 'world',
                 ],
                 new Twig_Environment(
-                    new Twig_Loader_Filesystem(__DIR__ . '/../templates')
+                    new Twig_Loader_Filesystem(__DIR__.'/../templates')
                 )
             )
         );
@@ -65,21 +65,21 @@ class ZippedWebArchiveFileWriterTest extends TestCase
 
         $archive = $zippy->open($this->filePath);
 
-        $extractToDir = sys_get_temp_dir() . '/' . uniqid('html-extract');
+        $extractToDir = sys_get_temp_dir().'/'.uniqid('html-extract');
 
         $this->assertFileNotExists($extractToDir);
         mkdir($extractToDir);
 
         $archive->extract($extractToDir);
 
-        $this->assertFileExists($extractToDir . '/html/index.html');
+        $this->assertFileExists($extractToDir.'/html/index.html');
         $this->assertFileEquals(
-            __DIR__ . '/../results/hello-world.html',
-            $extractToDir . '/html/index.html'
+            __DIR__.'/../results/hello-world.html',
+            $extractToDir.'/html/index.html'
         );
 
-        $this->assertFileExists($extractToDir . '/html/fonts');
-        $this->assertFileExists($extractToDir . '/html/css');
-        $this->assertFileExists($extractToDir . '/html/img');
+        $this->assertFileExists($extractToDir.'/html/fonts');
+        $this->assertFileExists($extractToDir.'/html/css');
+        $this->assertFileExists($extractToDir.'/html/img');
     }
 }

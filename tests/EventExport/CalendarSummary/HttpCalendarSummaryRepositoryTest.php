@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Response;
 use Http\Client\Exception\HttpException;
 use Http\Client\HttpClient;
 use League\Uri\Schemes\Http;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HttpCalendarSummaryRepositoryTest extends TestCase
@@ -30,9 +31,7 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
         );
 
         $summariesLocation = Http::createFromString('http://uitdatabank.io/');
-        /**
- * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject $httpClient 
-*/
+        /** @var HttpClient|MockObject $httpClient */
         $httpClient = $this->createMock(HttpClient::class);
 
         $repository = new HttpCalendarSummaryRepository($httpClient, $summariesLocation);
@@ -52,15 +51,11 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
     public function it_should_throw_an_unavailable_exception_when_processing_the_summary_request_fails()
     {
         $offerId = 'D352C4E6-90C6-4120-8DBB-A09B486170CD';
-        /**
- * @var HttpException|\PHPUnit_Framework_MockObject_MockObject $httpException 
-*/
+        /** @var HttpException|MockObject $httpException */
         $httpException = $this->createMock(HttpException::class);
 
         $summariesLocation = Http::createFromString('http://uitdatabank.io/');
-        /**
- * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject $httpClient 
-*/
+        /** @var HttpClient|MockObject $httpClient */
         $httpClient = $this->createMock(HttpClient::class);
 
         $repository = new HttpCalendarSummaryRepository($httpClient, $summariesLocation);
