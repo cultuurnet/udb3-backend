@@ -39,47 +39,47 @@ class DefaultEventEditingServiceTest extends TestCase
     /**
      * @var EventEditingService
      */
-    protected $eventEditingService;
+    private $eventEditingService;
 
     /**
      * @var EventServiceInterface|MockObject
      */
-    protected $eventService;
+    private $eventService;
 
     /**
      * @var CommandBusInterface|MockObject
      */
-    protected $commandBus;
+    private $commandBus;
 
     /**
      * @var UuidGeneratorInterface|MockObject
      */
-    protected $uuidGenerator;
+    private $uuidGenerator;
 
     /**
      * @var OfferCommandFactoryInterface|MockObject
      */
-    protected $commandFactory;
+    private $commandFactory;
 
     /**
      * @var DocumentRepositoryInterface|MockObject
      */
-    protected $readRepository;
+    private $readRepository;
 
     /**
      * @var RepositoryInterface|MockObject
      */
-    protected $writeRepository;
+    private $writeRepository;
 
     /**
      * @var Label\LabelServiceInterface|MockObject
      */
-    protected $labelService;
+    private $labelService;
 
     /**
      * @var TraceableEventStore
      */
-    protected $eventStore;
+    private $eventStore;
 
     protected function setUp()
     {
