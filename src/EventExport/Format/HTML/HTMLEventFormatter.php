@@ -228,11 +228,9 @@ class HTMLEventFormatter
         $i = 0;
         $satisfiedCount = 0;
 
+        /** @var EventSpecificationInterface $spec */
         foreach ($this->taalicoonSpecs as $name => $spec) {
             $i++;
-            /**
- * @var EventSpecificationInterface $spec
-*/
             if ($spec->isSatisfiedBy($event)) {
                 $satisfiedCount++;
                 $taalicoonCount = $i;
