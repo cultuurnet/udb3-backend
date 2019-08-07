@@ -107,13 +107,6 @@
     },
     {
       "type": "path",
-      "url": "lib/udb3-export",
-      "options": {
-        "symlink": true
-      }
-    },
-    {
-      "type": "path",
       "url": "lib/udb3-udb2-bridge",
       "options": {
         "symlink": true
