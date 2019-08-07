@@ -81,7 +81,7 @@ class DefaultEventEditingServiceTest extends TestCase
      */
     protected $eventStore;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->eventService = $this->createMock(EventServiceInterface::class);
         $this->commandBus = $this->createMock(CommandBusInterface::class);
