@@ -80,7 +80,8 @@
       "cultuurnet/*": "source",
       "2dotstwice/*": "source",
       "*": "dist"
-    }
+    },
+    "sort-packages": true
   },
   "repositories": [
     {
