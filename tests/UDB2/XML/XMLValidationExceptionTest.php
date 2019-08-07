@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UDB2\XML;
 
-class XMLValidationExceptionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class XMLValidationExceptionTest extends TestCase
 {
     /**
      * @test

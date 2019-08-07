@@ -3,9 +3,10 @@
 namespace CultuurNet\UDB3\UDB2\Event;
 
 use CultuurNet\UDB3\UDB2\XML\XMLValidationError;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventXMLValidatorServiceTest extends \PHPUnit_Framework_TestCase
+class EventXMLValidatorServiceTest extends TestCase
 {
     /**
      * @test

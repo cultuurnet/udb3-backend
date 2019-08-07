@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UDB2\XSD;
 
-class FileGetContentsXSDReaderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class FileGetContentsXSDReaderTest extends TestCase
 {
     /**
      * @test

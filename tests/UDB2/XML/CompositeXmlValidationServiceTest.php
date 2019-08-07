@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UDB2\XML;
 
-class CompositeXmlValidationServiceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CompositeXmlValidationServiceTest extends TestCase
 {
     /**
      * @test

@@ -11,10 +11,11 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Web\Url;
 
-class ImageCollectionFactoryTest extends \PHPUnit_Framework_TestCase
+class ImageCollectionFactoryTest extends TestCase
 {
     /**
      * @test

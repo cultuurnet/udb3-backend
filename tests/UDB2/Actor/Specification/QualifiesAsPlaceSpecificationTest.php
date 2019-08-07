@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UDB2\Actor\Specification;
 
-class QualifiesAsPlaceSpecificationTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class QualifiesAsPlaceSpecificationTest extends TestCase
 {
     /**
      * @var QualifiesAsPlaceSpecification

@@ -15,11 +15,12 @@ use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Organizer\Organizer;
 use CultuurNet\UDB3\Place\Place;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class RelatedUDB3LabelApplierTest extends \PHPUnit_Framework_TestCase
+class RelatedUDB3LabelApplierTest extends TestCase
 {
     /**
      * @var LabelsRelationsRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject

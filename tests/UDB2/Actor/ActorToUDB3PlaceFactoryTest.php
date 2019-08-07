@@ -6,8 +6,9 @@ use Broadway\Domain\AggregateRoot;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Place;
+use PHPUnit\Framework\TestCase;
 
-class ActorToUDB3PlaceFactoryTest extends \PHPUnit_Framework_TestCase
+class ActorToUDB3PlaceFactoryTest extends TestCase
 {
     /**
      * @test

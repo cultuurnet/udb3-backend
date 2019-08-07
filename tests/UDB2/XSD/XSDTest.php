@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UDB2\XSD;
 
-class XSDTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class XSDTest extends TestCase
 {
     /**
      * @var string

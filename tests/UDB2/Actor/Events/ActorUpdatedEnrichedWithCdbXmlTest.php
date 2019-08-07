@@ -2,10 +2,11 @@
 
 namespace CultuurNet\UDB3\UDB2\Actor\Events;
 
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-class ActorUpdatedEnrichedWithCdbXmlTest extends \PHPUnit_Framework_TestCase
+class ActorUpdatedEnrichedWithCdbXmlTest extends TestCase
 {
     public function testProperties()
     {

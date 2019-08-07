@@ -9,8 +9,9 @@ use Broadway\Domain\AggregateRoot;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Organizer;
+use PHPUnit\Framework\TestCase;
 
-class ActorToUDB3OrganizerFactoryTest extends \PHPUnit_Framework_TestCase
+class ActorToUDB3OrganizerFactoryTest extends TestCase
 {
     /**
      * @test

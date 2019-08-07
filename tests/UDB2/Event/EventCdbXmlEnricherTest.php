@@ -17,11 +17,12 @@ use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-class EventCdbXmlEnricherTest extends \PHPUnit_Framework_TestCase
+class EventCdbXmlEnricherTest extends TestCase
 {
     /**
      * @var TraceableEventBus

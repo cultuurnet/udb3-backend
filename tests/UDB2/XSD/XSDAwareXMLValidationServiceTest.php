@@ -3,8 +3,9 @@
 namespace CultuurNet\UDB3\UDB2\XSD;
 
 use CultuurNet\UDB3\UDB2\XML\XMLValidationError;
+use PHPUnit\Framework\TestCase;
 
-class XSDAwareXMLValidationServiceTest extends \PHPUnit_Framework_TestCase
+class XSDAwareXMLValidationServiceTest extends TestCase
 {
     /**
      * @var FileGetContentsXSDReader

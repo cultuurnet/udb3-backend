@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UDB2\Actor\Specification;
 
-class QualifiesAsOrganizerSpecificationTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class QualifiesAsOrganizerSpecificationTest extends TestCase
 {
     /**
      * @var ActorSpecificationInterface

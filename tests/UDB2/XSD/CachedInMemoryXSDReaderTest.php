@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UDB2\XSD;
 
-class CachedInMemoryXSDReaderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CachedInMemoryXSDReaderTest extends TestCase
 {
     /**
      * @var XSD
