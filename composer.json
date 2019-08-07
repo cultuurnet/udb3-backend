@@ -77,7 +77,7 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "CultuurNet\\UDB3\\Silex\\": ["app/", "src/"],
+      "CultuurNet\\UDB3\\Silex\\": "app/",
       "CultuurNet\\UDB3\\": "src/"
     }
   },

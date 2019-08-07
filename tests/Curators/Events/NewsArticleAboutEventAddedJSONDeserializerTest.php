@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Curators\Events;
+namespace CultuurNet\UDB3\Curators\Events;
 
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
