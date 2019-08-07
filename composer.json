@@ -67,9 +67,12 @@
     "willdurand/geocoder": "~2.8"
   },
   "require-dev": {
+    "alchemy/zippy": "~0.2",
     "escapestudios/symfony2-coding-standard": "~2.9",
+    "mikey179/vfsStream": "~1.6.2",
     "phing/phing": "~2.10",
     "phpunit/phpunit": "^7.5",
+    "satooshi/php-coveralls": "~0.7",
     "squizlabs/php_codesniffer": "~2.2"
   },
   "prefer-stable": true,
