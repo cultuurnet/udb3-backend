@@ -18,10 +18,11 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Place\PlaceRepository;
+use CultuurNet\UDB3\Symfony\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
-class EventEditingService extends DefaultOfferEditingService
+class EventEditingService extends DefaultOfferEditingService implements EventEditingServiceInterface
 {
     /**
      * @var EventServiceInterface
@@ -74,6 +75,12 @@ class EventEditingService extends DefaultOfferEditingService
         $theme = null
     ) {
         $eventId = $this->uuidGenerator->generate();
+
+        try {
+            $this->placeRepository->load($location->toNative());
+        } catch (AggregateNotFoundException $e) {
+            throw LocationNotFound::withLocationId($location);
+        }
 
         $event = Event::create(
             $eventId,
