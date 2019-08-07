@@ -111,6 +111,12 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
     ) {
         $eventId = $this->uuidGenerator->generate();
 
+        try {
+            $this->placeRepository->load($location->toNative());
+        } catch (AggregateNotFoundException $e) {
+            throw LocationNotFound::withLocationId($location);
+        }
+
         $event = Event::create(
             $eventId,
             $mainLanguage,

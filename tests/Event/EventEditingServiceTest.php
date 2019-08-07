@@ -317,6 +317,40 @@ class DefaultEventEditingServiceTest extends TestCase
     /**
      * @test
      */
+    public function it_will_not_create_and_automatically_approve_an_event_when_location_cannot_be_found(): void
+    {
+        $mainLanguage = new Language('nl');
+        $title = new Title('Title');
+        $eventType = new EventType('0.50.4.0.0', 'concert');
+        $invalidLocation = new LocationId(UUID::generateAsString());
+        $calendar = new Calendar(CalendarType::PERMANENT());
+        $theme = null;
+
+        $this->eventStore->trace();
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn('generated-uuid');
+
+        $this->placeRepository->method('load')
+            ->with($invalidLocation->toNative())
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->expectException(LocationNotFound::class);
+
+        $this->eventEditingService->createApprovedEvent(
+            $mainLanguage,
+            $title,
+            $eventType,
+            $invalidLocation,
+            $calendar,
+            $theme
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_copy_an_existing_event()
     {
         $eventId = 'e49430ca-5729-4768-8364-02ddb385517a';
