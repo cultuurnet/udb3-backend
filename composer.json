@@ -78,12 +78,14 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "CultuurNet\\UDB3\\Silex\\": ["app/", "src/"]
+      "CultuurNet\\UDB3\\Silex\\": ["app/", "src/"],
+      "CultuurNet\\UDB3\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "CultuurNet\\UDB3\\Silex\\": "tests/"
+      "CultuurNet\\UDB3\\Silex\\": "tests/",
+      "CultuurNet\\UDB3\\": "tests//"
     }
   },
   "extra": {
