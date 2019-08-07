@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Search\Results;
-use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use org\bovigo\vfs\vfsStream;
@@ -34,27 +33,27 @@ class EventExportServiceTest extends TestCase
     protected $eventExportService;
 
     /**
-     * @var EventServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventServiceInterface|MockObject
      */
     protected $eventService;
 
     /**
-     * @var SearchServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var SearchServiceInterface|MockObject
      */
     protected $searchService;
 
     /**
-     * @var UuidGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UuidGeneratorInterface|MockObject
      */
     protected $uuidGenerator;
 
     /**
-     * @var IriGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IriGeneratorInterface|MockObject
      */
     protected $iriGenerator;
 
     /**
-     * @var NotificationMailerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var NotificationMailerInterface|MockObject
      */
     protected $mailer;
 
@@ -79,7 +78,7 @@ class EventExportServiceTest extends TestCase
     protected $searchResultsDetails;
 
     /**
-     * @var ResultsGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ResultsGeneratorInterface|MockObject
      */
     protected $resultsGenerator;
 

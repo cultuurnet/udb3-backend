@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -23,12 +24,12 @@ class MediaImporterTest extends TestCase
     private $importer;
 
     /**
-     * @var MediaManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MediaManagerInterface|MockObject
      */
     private $mediaManager;
 
     /**
-     * @var ImageCollectionFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ImageCollectionFactoryInterface|MockObject
      */
     private $imageCollectionFactory;
 

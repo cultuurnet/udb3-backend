@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Organizer\Organizer;
 use CultuurNet\UDB3\Place\Place;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Identity\UUID;
@@ -23,17 +24,17 @@ use ValueObjects\StringLiteral\StringLiteral;
 class RelatedUDB3LabelApplierTest extends TestCase
 {
     /**
-     * @var LabelsRelationsRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelsRelationsRepositoryInterface|MockObject
      */
     private $labelsRelationsRepository;
 
     /**
-     * @var LabelsRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelsRepositoryInterface|MockObject
      */
     private $labelsRepository;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|MockObject
      */
     private $logger;
 
@@ -148,7 +149,7 @@ class RelatedUDB3LabelApplierTest extends TestCase
 
     /**
      * @param string $aggregateType
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     private function createAggregate($aggregateType)
     {

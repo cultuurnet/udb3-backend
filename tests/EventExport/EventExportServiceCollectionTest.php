@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\EventExport;
 
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ValueObjects\Web\EmailAddress;
@@ -20,12 +21,12 @@ class EventExportServiceCollectionTest extends TestCase
     private $sapi2;
 
     /**
-     * @var \CultuurNet\UDB3\EventExport\EventExportService|\PHPUnit_Framework_MockObject_MockObject
+     * @var \CultuurNet\UDB3\EventExport\EventExportService|MockObject
      */
     private $serviceForSapi2;
 
     /**
-     * @var \CultuurNet\UDB3\EventExport\EventExportService|\PHPUnit_Framework_MockObject_MockObject
+     * @var \CultuurNet\UDB3\EventExport\EventExportService|MockObject
      */
     private $serviceForSapi3;
 

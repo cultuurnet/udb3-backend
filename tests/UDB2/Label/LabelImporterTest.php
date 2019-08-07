@@ -12,12 +12,13 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
 use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class LabelImporterTest extends TestCase
 {
     /**
-     * @var LabelServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelServiceInterface|MockObject
      */
     private $labelService;
 

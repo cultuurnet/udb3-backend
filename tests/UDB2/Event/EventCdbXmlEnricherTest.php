@@ -17,6 +17,7 @@ use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Http\Client\HttpClient;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -30,12 +31,12 @@ class EventCdbXmlEnricherTest extends TestCase
     private $eventBus;
 
     /**
-     * @var HttpClient|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpClient|MockObject
      */
     private $httpClient;
 
     /**
-     * @var XMLValidationServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var XMLValidationServiceInterface|MockObject
      */
     private $xmlValidationService;
 

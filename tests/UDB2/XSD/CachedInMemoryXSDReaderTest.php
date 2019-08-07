@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\UDB2\XSD;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CachedInMemoryXSDReaderTest extends TestCase
@@ -12,7 +13,7 @@ class CachedInMemoryXSDReaderTest extends TestCase
     private $xsd;
 
     /**
-     * @var XSDReaderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var XSDReaderInterface|MockObject
      */
     private $decoratedReader;
 
