@@ -654,7 +654,7 @@ class TabularDataEventFormatter
                     $toegangTypes = [
                         'everyone' => 'Voor iedereen',
                         'members' => 'Enkel voor leden',
-                        'education' => 'Specifiek voor scholen'
+                        'education' => 'Specifiek voor scholen',
                     ];
 
                     $toegang = $toegangTypes['everyone'];
@@ -666,7 +666,7 @@ class TabularDataEventFormatter
                     return $toegang;
                 },
                 'property' => 'audience',
-            ]
+            ],
         ];
     }
 

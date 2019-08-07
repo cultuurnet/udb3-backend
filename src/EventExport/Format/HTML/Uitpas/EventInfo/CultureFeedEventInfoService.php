@@ -201,7 +201,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
             $uitpasPrices[] = [
                 'price' => $tariffAsNumeric,
                 'cardSystem' => $cardSystem->name,
-                'forOtherCardSystems' => false
+                'forOtherCardSystems' => false,
             ];
         }
 
