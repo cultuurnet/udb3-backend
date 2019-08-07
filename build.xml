@@ -42,14 +42,8 @@
     </target>
 
     <target name="libs">
-        <phingcall target="lib-udb3-udb2-bridge"/>
         <phingcall target="lib-udb3-models-import"/>
         <phingcall target="lib-udb3-symfony"/>
-    </target>
-
-    <target name="lib-udb3-udb2-bridge">
-        <exec dir="./lib/udb3-udb2-bridge" command="composer install" passthru="true" />
-        <exec dir="./lib/udb3-udb2-bridge" command="./vendor/bin/phing" passthru="true" checkreturn="true" />
     </target>
 
     <target name="lib-udb3-models-import">

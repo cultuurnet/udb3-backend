@@ -14,6 +14,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventFactory;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\PromotionQueryFactoryInterface;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -24,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 class CultureFeedEventInfoServiceTest extends TestCase
 {
     /**
-     * @var \CultureFeed_Uitpas|\PHPUnit_Framework_MockObject_MockObject
+     * @var \CultureFeed_Uitpas|MockObject
      */
     protected $uitpas;
 
@@ -34,7 +35,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
     protected $infoService;
 
     /**
-     * @var PromotionQueryFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var PromotionQueryFactoryInterface|MockObject
      */
     protected $promotionQueryFactory;
 

@@ -14,12 +14,14 @@
     "2dotstwice/silex-feature-toggles-provider": "~0.1",
     "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",
     "crell/api-problem": "~1.7",
+    "cultuurnet/auth": "~1.2",
     "cultuurnet/broadway-amqp": "~0.1",
     "cultuurnet/broadway-tools": "~0.1",
     "cultuurnet/calendar-summary": "~1.1",
     "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/culturefeed-php": "~1.9.2",
     "cultuurnet/deserializer": "~0.1",
+    "cultuurnet/entry": "~0.1",
     "cultuurnet/hydra": "~0.1",
     "cultuurnet/monolog-socketio": "~0.1",
     "cultuurnet/search-v3": "dev-master",
@@ -33,7 +35,6 @@
     "cultuurnet/udb3-models": "~0.1",
     "cultuurnet/udb3-models-import": "~0.1",
     "cultuurnet/udb3-symfony": "~0.1",
-    "cultuurnet/udb3-udb2-bridge": "~0.1",
     "cultuurnet/udb3-uitpas-bridge": "~0.1",
     "cultuurnet/uitid-credentials": "~0.1",
     "cultuurnet/valueobjects": "~3.0",
@@ -41,6 +42,7 @@
     "doctrine/dbal": "~2.4",
     "doctrine/migrations": "~1.0@dev",
     "gridonic/princexml-php": "~1.1.1",
+    "guzzlehttp/psr7": "~1.2.3",
     "hanneskod/classtools": "~1.0",
     "jdesrosiers/silex-cors-provider": "~0.1.4",
     "jeremykendall/php-domain-parser": "4.0.3-alpha as 1.3.1",
@@ -104,13 +106,6 @@
     {
       "type": "vcs",
       "url": "https://github.com/cultuurnet/php-resque.git"
-    },
-    {
-      "type": "path",
-      "url": "lib/udb3-udb2-bridge",
-      "options": {
-        "symlink": true
-      }
     },
     {
       "type": "path",

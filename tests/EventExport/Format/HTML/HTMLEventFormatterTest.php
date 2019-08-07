@@ -13,6 +13,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\TaalicoonDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -325,11 +326,11 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @param string $id
      * @param string $calendarSummary
-     * @return CalendarSummaryRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return CalendarSummaryRepositoryInterface|MockObject
      */
     private function getCalendarSummaryRepositoryWhichReturns($id, $calendarSummary)
     {
-        /* @var CalendarSummaryRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject $repository */
+        /* @var CalendarSummaryRepositoryInterface|MockObject $repository */
         $repository = $this->createMock(CalendarSummaryRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('get')
@@ -369,7 +370,7 @@ class HTMLEventFormatterTest extends TestCase
         $eventWithoutImage = $this->getJSONEventFromFile('event_without_image.json');
 
         /**
- * @var EventInfoServiceInterface|\PHPUnit_Framework_MockObject_MockObject $uitpas
+ * @var EventInfoServiceInterface|MockObject $uitpas
 */
         $uitpas = $this->createMock(EventInfoServiceInterface::class);
 

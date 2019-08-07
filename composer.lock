@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "59e19c2da76ac82cd7b7908a081b7b9a",
+    "content-hash": "667f08104d2e0ade8f5ae2039e961d70",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1922,65 +1922,6 @@
                 }
             ],
             "description": "UDB3 integration with Symfony HTTPFoundation",
-            "transport-options": {
-                "symlink": true
-            }
-        },
-        {
-            "name": "cultuurnet/udb3-udb2-bridge",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "lib/udb3-udb2-bridge",
-                "reference": "3bf295d62a13e718ba5a552646cdb96315c9f861",
-                "shasum": null
-            },
-            "require": {
-                "cultuurnet/auth": "~1.2",
-                "cultuurnet/cdb": "~2.2.0",
-                "cultuurnet/entry": "~0.1",
-                "cultuurnet/udb2-domain-events": "~0.1",
-                "cultuurnet/udb3": "~0.1",
-                "guzzlehttp/psr7": "~1.2.3",
-                "league/uri": "^4.2",
-                "php-http/httplug": "~1.0.0"
-            },
-            "require-dev": {
-                "phing/phing": "~2.10",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "2.6.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\UDB2\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\UDB2\\": "test/"
-                }
-            },
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Bram Cordie",
-                    "email": "bram@2dotstwice.be"
-                }
-            ],
-            "description": "PHP libraries for bridging UDB3 with UDB2",
             "transport-options": {
                 "symlink": true
             }
