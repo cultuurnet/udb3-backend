@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e413a783144a205394cde4b396067f12",
+    "content-hash": "4dd3844faf3a0990c1993bb79e61cd7c",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16T09:28:40+00:00"
+            "time": "2015-12-16 09:28:40"
         },
         {
             "name": "2dotstwice/silex-feature-toggles-provider",
@@ -96,7 +96,7 @@
                 "MIT"
             ],
             "description": "Feature toggles for Silex",
-            "time": "2017-07-03T14:15:24+00:00"
+            "time": "2017-07-03 14:15:24"
         },
         {
             "name": "2dotstwice/value-objects",
@@ -644,7 +644,7 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24T20:22:37+00:00"
+            "time": "2015-08-24 20:22:37"
         },
         {
             "name": "cultuurnet/broadway-amqp",
@@ -691,7 +691,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2018-06-29T14:20:00+00:00"
+            "time": "2018-06-29 14:20:00"
         },
         {
             "name": "cultuurnet/broadway-tools",
@@ -732,7 +732,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-09-28T12:46:42+00:00"
+            "time": "2018-09-28 12:46:42"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -836,7 +836,7 @@
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "time": "2019-02-07T08:32:01+00:00"
+            "time": "2019-02-07 08:32:01"
         },
         {
             "name": "cultuurnet/cdb",
@@ -874,7 +874,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2018-10-17T12:47:54+00:00"
+            "time": "2018-10-17 12:47:54"
         },
         {
             "name": "cultuurnet/clock",
@@ -915,7 +915,7 @@
                 }
             ],
             "description": "Clock abstraction library",
-            "time": "2015-06-08T16:12:34+00:00"
+            "time": "2015-06-08 16:12:34"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -983,7 +983,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2018-11-08T09:30:52+00:00"
+            "time": "2018-11-08 09:30:52"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1030,7 +1030,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2018-06-29T14:27:41+00:00"
+            "time": "2018-06-29 14:27:41"
         },
         {
             "name": "cultuurnet/entry",
@@ -1080,7 +1080,7 @@
                 }
             ],
             "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2018-11-08T13:17:43+00:00"
+            "time": "2018-11-08 13:17:43"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -1129,7 +1129,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-06-29T14:21:16+00:00"
+            "time": "2018-06-29 14:21:16"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1177,7 +1177,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2018-06-29T14:26:23+00:00"
+            "time": "2018-06-29 14:26:23"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -1221,7 +1221,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29T14:28:08+00:00"
+            "time": "2018-06-29 14:28:08"
         },
         {
             "name": "cultuurnet/search",
@@ -1320,7 +1320,7 @@
                 }
             ],
             "description": "Cultuurnet search service for version 3",
-            "time": "2019-02-14T11:49:27+00:00"
+            "time": "2019-02-14 11:49:27"
         },
         {
             "name": "cultuurnet/silex-amqp",
@@ -1363,7 +1363,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2018-06-29T14:15:23+00:00"
+            "time": "2018-06-29 14:15:23"
         },
         {
             "name": "cultuurnet/silex-service-provider-jwt",
@@ -1405,7 +1405,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT authentication for Silex",
-            "time": "2018-06-29T14:29:16+00:00"
+            "time": "2018-06-29 14:29:16"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1447,7 +1447,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2018-06-29T14:29:57+00:00"
+            "time": "2018-06-29 14:29:57"
         },
         {
             "name": "cultuurnet/udb2-domain-events",
@@ -1496,7 +1496,7 @@
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2018-06-29T14:27:15+00:00"
+            "time": "2018-06-29 14:27:15"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1579,7 +1579,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-07-31T14:14:53+00:00"
+            "time": "2019-07-31 14:14:53"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1631,7 +1631,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-10-03T08:52:10+00:00"
+            "time": "2018-10-03 08:52:10"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -1676,7 +1676,7 @@
                 }
             ],
             "description": "UDB3 integration with Doctrine Cache",
-            "time": "2016-04-13T11:52:34+00:00"
+            "time": "2016-04-13 11:52:34"
         },
         {
             "name": "cultuurnet/udb3-export",
@@ -1775,7 +1775,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29T14:28:42+00:00"
+            "time": "2018-06-29 14:28:42"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1824,7 +1824,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2018-06-29T14:15:52+00:00"
+            "time": "2018-06-29 14:15:52"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -1869,7 +1869,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29T14:08:37+00:00"
+            "time": "2018-06-29 14:08:37"
         },
         {
             "name": "cultuurnet/udb3-models-import",
@@ -2088,7 +2088,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29T14:25:13+00:00"
+            "time": "2018-06-29 14:25:13"
         },
         {
             "name": "cultuurnet/uitid-credentials",
@@ -2144,7 +2144,7 @@
                 }
             ],
             "description": "Brief description of this PHP library",
-            "time": "2018-11-08T09:40:00+00:00"
+            "time": "2018-11-08 09:40:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -6582,7 +6582,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -8436,16 +8436,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.13",
+            "version": "7.5.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "b9278591caa8630127f96c63b598712b699e671c"
+                "reference": "2834789aeb9ac182ad69bfdf9ae91856a59945ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b9278591caa8630127f96c63b598712b699e671c",
-                "reference": "b9278591caa8630127f96c63b598712b699e671c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2834789aeb9ac182ad69bfdf9ae91856a59945ff",
+                "reference": "2834789aeb9ac182ad69bfdf9ae91856a59945ff",
                 "shasum": ""
             },
             "require": {
@@ -8505,8 +8505,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -8516,7 +8516,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-06-19T12:01:51+00:00"
+            "time": "2019-07-15T06:24:08+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -9226,9 +9226,9 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "chrisboulton/php-resque": 20,
-        "doctrine/migrations": 20,
+        "cultuurnet/search-v3": 20,
         "cultuurnet/udb3-api-guard": 20,
-        "cultuurnet/search-v3": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
