@@ -1,7 +1,5 @@
 <?php
-/**
- * @file
- */
+
 namespace CultuurNet\UDB3\EventExport\Notification\Swift;
 
 use CultuurNet\UDB3\EventExport\EventExportResult;
