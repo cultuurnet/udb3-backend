@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\SearchServiceInterface;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Traversable;
@@ -198,13 +199,11 @@ class EventExportServiceTest extends TestCase
     /**
      * @param string $fileNameExtension
      *
-     * @return FileFormatInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return FileFormatInterface|MockObject
      */
     private function getFileFormat($fileNameExtension)
     {
-        /**
- * @var FileFormatInterface|\PHPUnit_Framework_MockObject_MockObject $fileFormat
-*/
+        /** @var FileFormatInterface|MockObject $fileFormat */
         $fileFormat = $this->createMock(FileFormatInterface::class);
 
         $fileFormat->expects($this->any())
@@ -270,9 +269,7 @@ class EventExportServiceTest extends TestCase
             $this->publicDirectory->hasChild($expectedExportFileName)
         );
 
-        /**
- * @var vfsStreamFile $file
-*/
+        /** @var vfsStreamFile $file */
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 
         $this->assertJsonStringEqualsJsonString(
