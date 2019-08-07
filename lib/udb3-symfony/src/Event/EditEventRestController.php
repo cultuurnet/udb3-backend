@@ -17,12 +17,14 @@ use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Symfony\Deserializer\Event\CreateEventJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\Event\MajorInfoJSONDeserializer;
+use CultuurNet\UDB3\Symfony\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
 use CultuurNet\UDB3\Symfony\OfferRestBaseController;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class EditEventRestController extends OfferRestBaseController
@@ -122,14 +124,18 @@ class EditEventRestController extends OfferRestBaseController
 
         $createMethod = $approve ? 'createApprovedEvent' : 'createEvent';
 
-        $eventId = $this->editor->$createMethod(
-            $createEvent->getMainLanguage(),
-            $createEvent->getTitle(),
-            $createEvent->getType(),
-            $createEvent->getLocation(),
-            $createEvent->getCalendar(),
-            $createEvent->getTheme()
-        );
+        try {
+            $eventId = $this->editor->$createMethod(
+                $createEvent->getMainLanguage(),
+                $createEvent->getTitle(),
+                $createEvent->getType(),
+                $createEvent->getLocation(),
+                $createEvent->getCalendar(),
+                $createEvent->getTheme()
+            );
+        } catch (LocationNotFound $exception) {
+            throw new BadRequestHttpException('Invalid location id');
+        }
 
         return new JsonResponse(
             [
