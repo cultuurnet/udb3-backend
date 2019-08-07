@@ -84,14 +84,9 @@ class DefaultEventEditingServiceTest extends TestCase
     public function setUp()
     {
         $this->eventService = $this->createMock(EventServiceInterface::class);
-
         $this->commandBus = $this->createMock(CommandBusInterface::class);
-
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
-
-        /** @var DocumentRepositoryInterface $repository */
         $this->readRepository = $this->createMock(DocumentRepositoryInterface::class);
 
         $this->eventStore = new TraceableEventStore(
