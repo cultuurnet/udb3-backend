@@ -43,7 +43,7 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
         $this->spreadsheet->getActiveSheet()->fromArray(
             $row,
             '',
-            'A' . $this->i
+            'A'.$this->i
         );
 
         $this->i++;

@@ -31,7 +31,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
         CultureFeed_Uitpas_Event_CultureEvent $event
     ) {
         /**
- * @var CultureFeed_Uitpas_Calendar $eventCalendar 
+ * @var CultureFeed_Uitpas_Calendar $eventCalendar
 */
         $eventCalendar = $event->calendar;
         if ($eventCalendar) {
@@ -63,13 +63,13 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
 
         if (!empty($uitpasCalendar->periods)) {
             /**
- * @var CultureFeed_Uitpas_Calendar_Period $firstPeriod 
+ * @var CultureFeed_Uitpas_Calendar_Period $firstPeriod
 */
             $firstPeriod = reset($uitpasCalendar->periods);
             $dateRange->datefrom = $firstPeriod->datefrom;
 
             /**
- * @var CultureFeed_Uitpas_Calendar_Period $lastPeriod 
+ * @var CultureFeed_Uitpas_Calendar_Period $lastPeriod
 */
             $lastPeriod =  end($uitpasCalendar->periods);
             $dateRange->dateto = $lastPeriod->dateto;
@@ -81,7 +81,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
              * are also covered
              */
             /**
- * @var \CultureFeed_Uitpas_Calendar_Timestamp $firstPeriod 
+ * @var \CultureFeed_Uitpas_Calendar_Timestamp $firstPeriod
 */
             $firstTimestamp = reset($uitpasCalendar->timestamps);
             $firstTimestampDate = new \DateTime();
@@ -91,7 +91,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
             $dateRange->datefrom = $firstTimestampDate->getTimestamp();
 
             /**
- * @var \CultureFeed_Uitpas_Calendar_Timestamp $lastTimestamp 
+ * @var \CultureFeed_Uitpas_Calendar_Timestamp $lastTimestamp
 */
             $lastTimestamp =  end($uitpasCalendar->timestamps);
             $lastTimestampDate = new \DateTime();

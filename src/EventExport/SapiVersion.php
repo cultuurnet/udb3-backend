@@ -58,7 +58,7 @@ class SapiVersion
     {
         if (!in_array($version, $this->allowedValues())) {
             throw new \InvalidArgumentException(
-                'Sapi version "' . $version . '" is not allowed.'
+                'Sapi version "'.$version.'" is not allowed.'
             );
         }
     }

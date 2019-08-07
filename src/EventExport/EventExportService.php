@@ -97,7 +97,7 @@ class EventExportService implements EventExportServiceInterface
         // do a pre query to test if the query is valid and check the item count
         try {
             $preQueryResult = $this->searchService->search(
-                (string)$query,
+                (string) $query,
                 1,
                 0
             );
@@ -106,7 +106,7 @@ class EventExportService implements EventExportServiceInterface
             $logger->error(
                 'not_exported',
                 array(
-                    'query' => (string)$query,
+                    'query' => (string) $query,
                     'error' => $e->getMessage(),
                     'exception_class' => get_class($e),
                 )
@@ -119,7 +119,7 @@ class EventExportService implements EventExportServiceInterface
             'total items: {totalItems}',
             [
                 'totalItems' => $totalItemCount,
-                'query' => (string)$query,
+                'query' => (string) $query,
             ]
         );
 
@@ -127,7 +127,7 @@ class EventExportService implements EventExportServiceInterface
             $logger->error(
                 'not_exported',
                 array(
-                    'query' => (string)$query,
+                    'query' => (string) $query,
                     'error' => "query did not return any results"
                 )
             );
@@ -157,8 +157,7 @@ class EventExportService implements EventExportServiceInterface
 
             if (!$moved) {
                 throw new \RuntimeException(
-                    'Unable to move export file to public directory ' .
-                    $this->publicDirectory
+                    'Unable to move export file to public directory '.$this->publicDirectory
                 );
             }
 
@@ -244,8 +243,8 @@ class EventExportService implements EventExportServiceInterface
     ) {
         $fileUniqueId = basename($tmpPath);
         $extension = $fileFormat->getFileNameExtension();
-        $finalFileName = $fileUniqueId . '.' . $extension;
-        $finalPath = $this->publicDirectory . '/' . $finalFileName;
+        $finalFileName = $fileUniqueId.'.'.$extension;
+        $finalPath = $this->publicDirectory.'/'.$finalFileName;
 
         return $finalPath;
     }
@@ -260,7 +259,7 @@ class EventExportService implements EventExportServiceInterface
      */
     private function search(EventExportQuery $query, LoggerInterface $logger)
     {
-        $events = $this->resultsGenerator->search((string)$query);
+        $events = $this->resultsGenerator->search((string) $query);
 
         foreach ($events as $eventIdentifier) {
             $event = $this->getEvent((string) $eventIdentifier->getIri(), $logger);

@@ -39,7 +39,7 @@ class ZippedWebArchiveFileWriter extends WebArchiveFileWriter
         );
 
         $webArchiveFiles = $this->mountManager->listContents(
-            'tmp://' . $directory,
+            'tmp://'.$directory,
             true
         );
 
@@ -48,12 +48,12 @@ class ZippedWebArchiveFileWriter extends WebArchiveFileWriter
                 continue;
             }
 
-            $from = $file['filesystem'] . '://' . $file['path'];
+            $from = $file['filesystem'].'://'.$file['path'];
 
             $pathWithoutUpperDirectory = $this->pathWithoutUpperDirectory(
                 $file['path']
             );
-            $to = 'zip://html/' . $pathWithoutUpperDirectory;
+            $to = 'zip://html/'.$pathWithoutUpperDirectory;
 
 
             $this->mountManager->copy($from, $to);

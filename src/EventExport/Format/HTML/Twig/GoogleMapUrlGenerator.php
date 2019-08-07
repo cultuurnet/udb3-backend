@@ -23,7 +23,8 @@ class GoogleMapUrlGenerator extends AbstractExtension
     {
         return [
             new TwigFunction(
-                'googleMapUrl', function (array $coordinates, int $widthInPixels, int $heightInPixels) {
+                'googleMapUrl',
+                function (array $coordinates, int $widthInPixels, int $heightInPixels) {
                     return $this->generateGoogleMapUrl($coordinates, $widthInPixels, $heightInPixels);
                 }
             ),
@@ -41,13 +42,13 @@ class GoogleMapUrlGenerator extends AbstractExtension
         $markers = array_unique($markers);
 
         $url = self::STATIC_MAP_URL;
-        $url .= '?size=' . $widthInPixels . 'x' . $heightInPixels . '&scale=2';
+        $url .= '?size='.$widthInPixels.'x'.$heightInPixels.'&scale=2';
 
         foreach ($markers as $marker) {
-            $url .= '&markers=' . $marker;
+            $url .= '&markers='.$marker;
         }
 
-        $url .= '&key=' . $this->googleMapsApiKey;
+        $url .= '&key='.$this->googleMapsApiKey;
 
         return $url;
     }

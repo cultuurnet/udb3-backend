@@ -36,7 +36,6 @@ class NotificationMailer implements NotificationMailerInterface
     ) {
         $this->mailer = $mailer;
         $this->messageFactory = $mailFactory;
-
     }
 
     public function sendNotificationMail(
@@ -47,6 +46,6 @@ class NotificationMailer implements NotificationMailerInterface
 
         $sent = $this->mailer->send($message);
 
-        print 'sent ' . $sent . ' e-mails' . PHP_EOL;
+        print 'sent '.$sent.' e-mails'.PHP_EOL;
     }
 }

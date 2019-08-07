@@ -26,7 +26,7 @@ class JSONLDEventFormatter
             // The address property is nested inside location.
             // The whole location property gets included instead of pulling it
             // out and placing it directly on the object.
-            if (in_array('address', $include) 
+            if (in_array('address', $include)
                 && !in_array('location', $include)
             ) {
                 array_push($include, 'location');
@@ -37,7 +37,7 @@ class JSONLDEventFormatter
                 ['bookingInfo.url'],
                 $include
             );
-            if (!empty($includedBookingInfoProperties) 
+            if (!empty($includedBookingInfoProperties)
                 && !in_array('bookingInfo', $include)
             ) {
                 array_push($include, 'bookingInfo');
@@ -66,7 +66,8 @@ class JSONLDEventFormatter
         $terms = array_map(
             function ($term) use ($termPrefix) {
                 return str_replace($termPrefix, "", $term);
-            }, $prefixedTerms
+            },
+            $prefixedTerms
         );
 
         return $terms;

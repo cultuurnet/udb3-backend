@@ -306,8 +306,8 @@ class TabularDataEventFormatter
                                     ? $cardSystems[$tariff['cardSystem']]
                                     : '';
                                 $cardSystem = empty($cardSystem)
-                                    ? $tariff['cardSystem'] .': € ' . $tariff['price']
-                                    : $cardSystem . ' / € ' . $tariff['price'];
+                                    ? $tariff['cardSystem'].': € '.$tariff['price']
+                                    : $cardSystem.' / € '.$tariff['price'];
 
                                 $cardSystems[$tariff['cardSystem']] = $cardSystem;
                                 return $cardSystems;
@@ -316,8 +316,9 @@ class TabularDataEventFormatter
                         );
 
                         $formattedTariffs = array_reduce(
-                            $cardSystems, function ($tariffs, $cardSystemPrices) {
-                                return $tariffs ? $tariffs . ' | ' . $cardSystemPrices : $cardSystemPrices;
+                            $cardSystems,
+                            function ($tariffs, $cardSystemPrices) {
+                                return $tariffs ? $tariffs.' | '.$cardSystemPrices : $cardSystemPrices;
                             }
                         );
 
@@ -366,7 +367,7 @@ class TabularDataEventFormatter
             'organizer' => [
                 'name' => 'organisatie',
                 'include' => function ($event) {
-                    if (property_exists($event, 'organizer') 
+                    if (property_exists($event, 'organizer')
                         && isset($event->organizer->name)
                     ) {
                         // @replay_i18n
@@ -555,7 +556,6 @@ class TabularDataEventFormatter
                 'name' => 'gemeente',
                 'include' => function ($event) {
                     return $this->getAddressField($event, 'addressLocality');
-
                 },
                 'property' => 'address.addressLocality'
             ],
@@ -563,7 +563,6 @@ class TabularDataEventFormatter
                 'name' => 'land',
                 'include' => function ($event) {
                     return $this->getAddressField($event, 'addressCountry');
-
                 },
                 'property' => 'address.addressCountry'
             ],
@@ -748,7 +747,7 @@ class TabularDataEventFormatter
             $tariffName = $tariff->name;
         }
 
-        return $tariffName . ': ' . $tariffPrice;
+        return $tariffName.': '.$tariffPrice;
     }
 
     /**

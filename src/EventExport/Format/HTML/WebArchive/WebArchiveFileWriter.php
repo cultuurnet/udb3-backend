@@ -84,8 +84,8 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
             }
 
             $this->mountManager->copy(
-                $asset['filesystem'] . '://' . $asset['path'],
-                'tmp://' . $tmpDir . '/' . $asset['path']
+                $asset['filesystem'].'://'.$asset['path'],
+                'tmp://'.$tmpDir.'/'.$asset['path']
             );
         };
     }
@@ -103,7 +103,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
                 ),
                 // @todo make this configurable
                 'assets' => new Filesystem(
-                    new Local(__DIR__ . '/assets')
+                    new Local(__DIR__.'/assets')
                 ),
             ]
         );
@@ -111,7 +111,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
 
     protected function removeTemporaryArchiveDirectory($tmpDir)
     {
-        $this->mountManager->deleteDir('tmp://' . $tmpDir);
+        $this->mountManager->deleteDir('tmp://'.$tmpDir);
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
     protected function createTemporaryArchiveDirectory()
     {
         $exportDir = uniqid('html-export');
-        $path = 'tmp://' . $exportDir;
+        $path = 'tmp://'.$exportDir;
         $this->mountManager->createDir($path);
 
         return $exportDir;
@@ -136,7 +136,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
      */
     protected function expandTmpPath($tmpPath)
     {
-        return $this->tmpDir . '/' . $tmpPath;
+        return $this->tmpDir.'/'.$tmpPath;
     }
 
     /**
@@ -145,7 +145,7 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
      */
     protected function writeHtml($dir, $events)
     {
-        $filePath = $dir . '/index.html';
+        $filePath = $dir.'/index.html';
 
         // TransformingIteratorIterator requires a Traversable,
         // so if $events is a regular array we need to wrap it
@@ -169,7 +169,6 @@ abstract class WebArchiveFileWriter implements FileWriterInterface
             $this->expandTmpPath($filePath),
             $formattedEvents
         );
-
     }
 
     /**

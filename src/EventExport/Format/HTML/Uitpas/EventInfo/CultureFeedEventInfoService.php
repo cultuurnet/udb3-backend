@@ -83,7 +83,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         $resultSet = $this->uitpas->searchEvents($eventQuery);
 
         /**
- * @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent 
+ * @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent
 */
         $uitpasEvent = reset($resultSet->objects);
 
@@ -114,7 +114,8 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         foreach ($event->cardSystems as $cardSystem) {
             foreach ($cardSystem->distributionKeys as $key) {
                 $prices = array_merge(
-                    $prices, $this->getUitpasPricesFromDistributionKey(
+                    $prices,
+                    $this->getUitpasPricesFromDistributionKey(
                         $cardSystem,
                         $key
                     )
@@ -152,7 +153,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         $promotionQuery = $this->promotionQueryFactory->createForEvent($event);
 
         /**
- * @var \CultureFeed_PointsPromotion[] $promotionQueryResults 
+ * @var \CultureFeed_PointsPromotion[] $promotionQueryResults
 */
         $promotionQueryResults = [];
 
@@ -161,7 +162,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         } catch (\Exception $e) {
             if ($this->logger) {
                 $this->logger->error(
-                    'Can\'t retrieve promotions for event with id:' . $event->cdbid,
+                    'Can\'t retrieve promotions for event with id:'.$event->cdbid,
                     ['exception' => $e]
                 );
             }
