@@ -6,6 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
+use Broadway\Repository\AggregateNotFoundException;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
@@ -29,6 +30,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Symfony\Event\Location\LocationNotFound;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
@@ -275,6 +277,40 @@ class DefaultEventEditingServiceTest extends TestCase
                 new Approved($eventId),
             ],
             $this->eventStore->getEvents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_create_and_event_when_location_cannot_be_found(): void
+    {
+        $mainLanguage = new Language('nl');
+        $title = new Title('Title');
+        $eventType = new EventType('0.50.4.0.0', 'concert');
+        $invalidLocation = new LocationId(UUID::generateAsString());
+        $calendar = new Calendar(CalendarType::PERMANENT());
+        $theme = null;
+
+        $this->eventStore->trace();
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn('generated-uuid');
+
+        $this->placeRepository->method('load')
+            ->with($invalidLocation->toNative())
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->expectException(LocationNotFound::class);
+
+        $this->eventEditingService->createEvent(
+            $mainLanguage,
+            $title,
+            $eventType,
+            $invalidLocation,
+            $calendar,
+            $theme
         );
     }
 
