@@ -7,8 +7,9 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterfac
 use CultuurNet\UDB3\Model\Validation\Place\PlaceValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use PHPUnit\Framework\TestCase;
 
-class PlaceImportValidatorTest extends \PHPUnit_Framework_TestCase
+class PlaceImportValidatorTest extends TestCase
 {
     /**
      * @var UUIDParser

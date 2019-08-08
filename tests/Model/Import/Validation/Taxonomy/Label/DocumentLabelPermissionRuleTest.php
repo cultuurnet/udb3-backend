@@ -6,10 +6,11 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\ValidationException;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DocumentLabelPermissionRuleTest extends \PHPUnit_Framework_TestCase
+class DocumentLabelPermissionRuleTest extends TestCase
 {
     /**
      * @var EventIDParser

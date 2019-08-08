@@ -8,10 +8,11 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterfac
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\ValidationException;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LabelPermissionRuleTest extends \PHPUnit_Framework_TestCase
+class LabelPermissionRuleTest extends TestCase
 {
     /**
      * @var UUID

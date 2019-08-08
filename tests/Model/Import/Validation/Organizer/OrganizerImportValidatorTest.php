@@ -8,8 +8,9 @@ use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use PHPUnit\Framework\TestCase;
 
-class OrganizerImportValidatorTest extends \PHPUnit_Framework_TestCase
+class OrganizerImportValidatorTest extends TestCase
 {
     /**
      * @var UUIDParser
