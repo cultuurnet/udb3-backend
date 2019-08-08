@@ -68,11 +68,6 @@ class EventExportServiceTest extends TestCase
     protected $searchResults;
 
     /**
-     * @var IriOfferIdentifier[]
-     */
-    private $offerIdentifiers;
-
-    /**
      * @var array
      */
     protected $searchResultsDetails;
