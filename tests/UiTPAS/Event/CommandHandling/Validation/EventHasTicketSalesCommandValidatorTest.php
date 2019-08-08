@@ -11,10 +11,11 @@ use CultuurNet\UDB3\Place\Commands\UpdatePriceInfo as UpdatePlacePriceInfo;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Money\Currency;
 
-class EventHasTicketSalesCommandValidatorTest extends \PHPUnit_Framework_TestCase
+class EventHasTicketSalesCommandValidatorTest extends TestCase
 {
     /**
      * @var \CultureFeed_Uitpas|\PHPUnit_Framework_MockObject_MockObject

@@ -3,9 +3,10 @@
 namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventCardSystemsUpdatedDeserializerTest extends \PHPUnit_Framework_TestCase
+class EventCardSystemsUpdatedDeserializerTest extends TestCase
 {
     /**
      * @var EventCardSystemsUpdatedDeserializer

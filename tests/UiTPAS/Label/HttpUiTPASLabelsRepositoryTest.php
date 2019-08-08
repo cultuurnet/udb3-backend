@@ -6,8 +6,9 @@ use CultuurNet\UDB3\Label;
 use Guzzle\Http\Client;
 use Guzzle\Http\Message\Request;
 use Guzzle\Http\Message\Response;
+use PHPUnit\Framework\TestCase;
 
-class HttpUiTPASLabelsRepositoryTest extends \PHPUnit_Framework_TestCase
+class HttpUiTPASLabelsRepositoryTest extends TestCase
 {
     /**
      * @var Client|\PHPUnit_Framework_MockObject_MockObject

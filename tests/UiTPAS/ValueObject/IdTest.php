@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UiTPAS\ValueObject;
 
-class IdTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class IdTest extends TestCase
 {
     /**
      * @test

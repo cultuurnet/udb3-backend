@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 
-class EventHasTicketSalesExceptionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class EventHasTicketSalesExceptionTest extends TestCase
 {
     /**
      * @test
