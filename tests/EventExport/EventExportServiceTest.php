@@ -183,13 +183,6 @@ class EventExportServiceTest extends TestCase
                 }
             );
 
-        $offerIdentifiers = array_filter(
-            $this->searchResults,
-            function ($offerIdentifier) use ($unavailableEventIds) {
-                return !in_array($offerIdentifier->getId(), $unavailableEventIds);
-            }
-        );
-
         $this->resultsGenerator->expects($this->any())
             ->method('search')
             ->willReturn(new ArrayIterator($this->searchResults));
