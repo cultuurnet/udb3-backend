@@ -36,7 +36,6 @@
     "cultuurnet/udb3-doctrine": "~0.1",
     "cultuurnet/udb3-http-foundation": "~0.1",
     "cultuurnet/udb3-models": "~0.1",
-    "cultuurnet/udb3-uitpas-bridge": "~0.1",
     "cultuurnet/uitid-credentials": "~0.1",
     "cultuurnet/valueobjects": "~3.0",
     "deralex/yaml-config-service-provider": "~1.0",
