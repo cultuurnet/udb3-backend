@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Title;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
@@ -370,7 +371,8 @@ class EditOrganizerRestControllerTest extends TestCase
      */
     public function it_throws_an_exception_when_no_cdbid_is_given_to_delete()
     {
-        $this->setExpectedException(\InvalidArgumentException::class, 'Required field cdbid is missing');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Required field cdbid is missing');
         $this->controller->delete('');
     }
 

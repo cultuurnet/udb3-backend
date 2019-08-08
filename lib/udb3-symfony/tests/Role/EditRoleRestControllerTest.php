@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\Symfony\Deserializer\Role\QueryJSONDeserializer;
 use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Identity\UUID;
@@ -227,7 +228,8 @@ class EditRoleRestControllerTest extends TestCase
      */
     public function it_throws_an_exception_when_no_roleId_is_given_to_delete()
     {
-        $this->setExpectedException(\InvalidArgumentException::class, 'Required field roleId is missing');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Required field roleId is missing');
         $this->controller->delete('');
     }
 

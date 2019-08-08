@@ -26,7 +26,7 @@ class ContactPointJSONDeserializerTest extends TestCase
     {
         $data = new StringLiteral('[{"type":"foo","value":"0123456789"}]');
 
-        $this->setExpectedException(DataValidationException::class);
+        $this->expectException(DataValidationException::class);
 
         $this->contactPointJSONDeserializer->deserialize($data);
     }
