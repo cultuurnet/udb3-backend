@@ -128,6 +128,7 @@ class BookingInfoDataValidatorTest extends TestCase
         ];
 
         $this->validator->validate($given);
+        $this->expectNotToPerformAssertions();
     }
 
     /**
