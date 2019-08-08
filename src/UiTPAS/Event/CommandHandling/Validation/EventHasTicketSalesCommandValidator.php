@@ -47,9 +47,11 @@ class EventHasTicketSalesCommandValidator implements CommandValidatorInterface
             // By design to catch all exceptions and map an exception to no ticket sales.
             // This is done to allow setting price and organizer even when UiTPAS has issues.
             // All exceptions will be logged.
-            $this->logger->warning('Ticket call sales failed with exception message "'
+            $this->logger->warning(
+                'Ticket call sales failed with exception message "'
                 . $exception->getMessage() . '" and exception code "' . $exception->getCode() . '". '
-                . 'Assuming no ticket sales for event ' . $eventId);
+                . 'Assuming no ticket sales for event ' . $eventId
+            );
 
             return;
         }
