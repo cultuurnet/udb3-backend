@@ -39,7 +39,7 @@ class OrganizerImportValidator extends OrganizerValidator
                 $userIdentification,
                 $labelsRepository,
                 $labelRelationsRepository
-            )
+            ),
         ];
 
         parent::__construct($extraRules, $urlRequired);

@@ -53,7 +53,7 @@ class EventImportValidator extends EventValidator
                 $userIdentification,
                 $labelsRepository,
                 $labelRelationsRepository
-            )
+            ),
         ];
 
         parent::__construct($extraRules);

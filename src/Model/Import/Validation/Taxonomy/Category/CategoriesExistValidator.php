@@ -31,7 +31,7 @@ class CategoriesExistValidator extends Validator
                     )
                 ))->setName($propertyName),
                 new AlwaysValid()
-            )
+            ),
         ];
 
         parent::__construct($rules);

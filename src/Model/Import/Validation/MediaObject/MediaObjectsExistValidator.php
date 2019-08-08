@@ -31,7 +31,7 @@ class MediaObjectsExistValidator extends Validator
                     )
                 ))->setName('mediaObject'),
                 new AlwaysValid()
-            )
+            ),
         ];
 
         parent::__construct($rules);

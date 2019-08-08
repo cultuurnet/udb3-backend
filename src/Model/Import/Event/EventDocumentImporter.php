@@ -214,7 +214,7 @@ class EventDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        $command_classes = array_map(
+        $commandClasses = array_map(
             'get_class',
             $commands
         );
@@ -227,14 +227,14 @@ class EventDocumentImporter implements DocumentImporterInterface
             LogLevel::DEBUG,
             'commands to dispatch for import of entity {entity_id}: {commands}',
             $logContext + [
-                'commands' => implode(', ', $command_classes)
+                'commands' => implode(', ', $commandClasses),
             ]
         );
 
         foreach ($commands as $command) {
-            $command_id = $this->commandBus->dispatch($command);
-            if (empty($command_id)) {
-                $command_id = '(((empty)))';
+            $commandId = $this->commandBus->dispatch($command);
+            if (empty($commandId)) {
+                $commandId = '(((empty)))';
             }
 
             $this->logger->log(
@@ -242,7 +242,7 @@ class EventDocumentImporter implements DocumentImporterInterface
                 'dispatched command: {class} with id {command_id}, targeting event {entity_id}',
                 $logContext + [
                     'class' => get_class($command),
-                    'command_id' => $command_id,
+                    'command_id' => $commandId,
                 ]
             );
         }

@@ -51,7 +51,7 @@ class CategoryCountValidator extends Validator
                     }
                 ))->setName($name)->setTemplate($error),
                 new AlwaysValid()
-            )
+            ),
         ];
 
         parent::__construct($rules);
