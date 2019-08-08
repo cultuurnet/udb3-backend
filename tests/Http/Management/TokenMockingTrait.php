@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Http\Management;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use Lcobucci\JWT\Claim\Basic as BasicClaim;
 use Lcobucci\JWT\Token as JwtToken;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 
 trait TokenMockingTrait
@@ -16,7 +17,7 @@ trait TokenMockingTrait
      */
     private function createMockToken($userId)
     {
-        /** @var \PHPUnit_Framework_MockObject_MockBuilder $mockBuilder */
+        /** @var MockBuilder $mockBuilder */
         $mockBuilder = $this->getMockBuilder(JwtUserToken::class);
 
         /** @var JwtUserToken|MockObject $token */
