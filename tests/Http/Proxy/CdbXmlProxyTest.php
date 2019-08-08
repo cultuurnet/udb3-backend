@@ -3,6 +3,8 @@
 namespace CultuurNet\UDB3\Symfony\Proxy;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -10,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Hostname;
 use ValueObjects\Web\PortNumber;
+use Zend\Diactoros\Uri;
 
 class CdbXmlProxyTest extends TestCase
 {
@@ -48,8 +51,19 @@ class CdbXmlProxyTest extends TestCase
      */
     public function it_handles_requests_with_given_accept_and_get_method()
     {
-        $response = $this->cdbXmlProxy->handle($this->request);
-
+        $handler = new MockHandler([new Response(200)]);
+        $client = new Client(['handler' => $handler]);
+        $cdbXmlProxy = new CdbXmlProxy(
+            new StringLiteral(self::APPLICATION_XML),
+            new Hostname('www.google.be'),
+            new PortNumber(80),
+            new DiactorosFactory(),
+            new HttpFoundationFactory(),
+            $client
+        );
+        $response = $cdbXmlProxy->handle($this->request);
+        $lastRequest = $handler->getLastRequest();
+        $this->assertEquals(new Uri('http://www.google.be:80/'), $lastRequest->getUri());
         $this->assertEquals(200, $response->getStatusCode());
     }
 
