@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\MyOrganizers;
 
-use CultuurNet\UDB3\Symfony\MyOrganizers\MyOrganizersController;
+use CultuurNet\UDB3\Http\MyOrganizers\MyOrganizersController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Symfony\Event\Location\LocationNotFound;
+use CultuurNet\UDB3\Http\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 

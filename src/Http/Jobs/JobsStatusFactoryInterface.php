@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Jobs;
+namespace CultuurNet\UDB3\Http\Jobs;
 
 use ValueObjects\StringLiteral\StringLiteral;
 

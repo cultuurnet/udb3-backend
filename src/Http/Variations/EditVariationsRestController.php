@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Variations;
+namespace CultuurNet\UDB3\Http\Variations;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\Symfony\CommandDeserializerControllerTrait;
+use CultuurNet\UDB3\Http\CommandDeserializerControllerTrait;
 use CultuurNet\UDB3\Variations\Command\DeleteOfferVariation;
 use CultuurNet\UDB3\Variations\Command\EditDescriptionJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\Id;

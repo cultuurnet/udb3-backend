@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\DataValidator;
+namespace CultuurNet\UDB3\Http\Deserializer\DataValidator;
 
 use CultuurNet\Deserializer\DataValidationException;
 

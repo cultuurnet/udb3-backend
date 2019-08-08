@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\PriceInfo;
+namespace CultuurNet\UDB3\Http\Deserializer\PriceInfo;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 
 class PriceInfoDataValidator implements DataValidatorInterface
 {

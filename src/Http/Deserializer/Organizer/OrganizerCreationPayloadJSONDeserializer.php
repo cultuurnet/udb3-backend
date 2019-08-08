@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Organizer;
+namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Symfony\Deserializer\Address\AddressJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\ContactPoint\ContactPointJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
 use CultuurNet\UDB3\Title;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;

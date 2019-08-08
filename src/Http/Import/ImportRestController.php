@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Import;
+namespace CultuurNet\UDB3\Http\Import;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;

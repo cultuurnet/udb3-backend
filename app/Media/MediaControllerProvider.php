@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Media;
 
-use CultuurNet\UDB3\Symfony\Media\ReadMediaRestController;
-use CultuurNet\UDB3\Symfony\Media\EditMediaRestController;
+use CultuurNet\UDB3\Http\Media\ReadMediaRestController;
+use CultuurNet\UDB3\Http\Media\EditMediaRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

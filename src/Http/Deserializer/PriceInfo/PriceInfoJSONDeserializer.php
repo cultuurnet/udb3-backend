@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\PriceInfo;
+namespace CultuurNet\UDB3\Http\Deserializer\PriceInfo;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\Deserializer\MissingValueException;
@@ -9,7 +9,7 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Offer;
+namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
-use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
+use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;

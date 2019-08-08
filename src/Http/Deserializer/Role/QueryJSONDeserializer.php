@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Role;
+namespace CultuurNet\UDB3\Http\Deserializer\Role;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Role\ValueObjects\Query;

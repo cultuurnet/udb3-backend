@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Label;
+namespace CultuurNet\UDB3\Http\Label;
 
 use PHPUnit\Framework\TestCase;
 

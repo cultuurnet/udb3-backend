@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Place;
+namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\CompositeDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\RequiredPropertiesDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\CompositeDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
 
 class CreatePlaceDataValidator implements DataValidatorInterface
 {

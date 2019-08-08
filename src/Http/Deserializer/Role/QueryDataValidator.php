@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Role;
+namespace CultuurNet\UDB3\Http\Deserializer\Role;
 
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\NotEmptyPropertiesDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\RequiredPropertiesDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\NotEmptyPropertiesDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
 
 class QueryDataValidator implements DataValidatorInterface
 {

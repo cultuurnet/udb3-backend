@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Role;
+namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use Crell\ApiProblem\ApiProblem;
@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
-use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
+use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;

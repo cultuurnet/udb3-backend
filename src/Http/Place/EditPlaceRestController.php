@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Place;
+namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
@@ -10,11 +10,11 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\Address\AddressJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Place\CreatePlaceJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Place\MajorInfoJSONDeserializer;
-use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
-use CultuurNet\UDB3\Symfony\OfferRestBaseController;
+use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Place\CreatePlaceJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Place\MajorInfoJSONDeserializer;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
+use CultuurNet\UDB3\Http\OfferRestBaseController;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;

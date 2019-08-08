@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony;
+namespace CultuurNet\UDB3\Http;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\ContactPoint;
@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\BookingInfo\BookingInfoJSONDeserializer;
-use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
+use CultuurNet\UDB3\Http\Deserializer\BookingInfo\BookingInfoJSONDeserializer;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

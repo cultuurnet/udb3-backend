@@ -1,15 +1,15 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Place;
+namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\Deserializer\JSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Address\AddressJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForPlaceDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
-use CultuurNet\UDB3\Symfony\Deserializer\Event\EventTypeJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Theme\ThemeJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForPlaceDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
+use CultuurNet\UDB3\Http\Deserializer\Event\EventTypeJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeJSONDeserializer;
 use CultuurNet\UDB3\Title;
 use ValueObjects\StringLiteral\StringLiteral;
 

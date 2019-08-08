@@ -1,14 +1,14 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Place;
+namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Place;
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Symfony\ApiProblemJsonResponseTrait;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
+use CultuurNet\UDB3\Http\JsonLdResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadPlaceRestController

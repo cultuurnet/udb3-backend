@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Place;
+namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;

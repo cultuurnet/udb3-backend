@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Event;
+namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\RequiredPropertiesDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
 
 class EventTypeDataValidator implements DataValidatorInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Calendar;
+namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;

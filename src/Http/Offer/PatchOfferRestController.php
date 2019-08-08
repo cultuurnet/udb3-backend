@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Offer;
+namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;

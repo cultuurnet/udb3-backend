@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Variations;
+namespace CultuurNet\UDB3\Http\Variations;
 
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\Hydra\Symfony\PageUrlGenerator;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Http\JsonLdResponse;
 use CultuurNet\UDB3\Variations\ReadModel\Search\CriteriaFromParameterBagFactory;
 use CultuurNet\UDB3\Variations\ReadModel\Search\RepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

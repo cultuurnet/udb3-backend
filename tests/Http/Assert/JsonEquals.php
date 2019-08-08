@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Assert;
+namespace CultuurNet\UDB3\Http\Assert;
 
 use PHPUnit\Framework\TestCase;
 

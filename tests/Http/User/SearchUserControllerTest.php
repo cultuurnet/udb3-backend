@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\User;
+namespace CultuurNet\UDB3\Http\User;
 
-use CultuurNet\UDB3\Symfony\Assert\JsonEquals;
+use CultuurNet\UDB3\Http\Assert\JsonEquals;
 use CultuurNet\UDB3\User\CultureFeedUserIdentityDetailsFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

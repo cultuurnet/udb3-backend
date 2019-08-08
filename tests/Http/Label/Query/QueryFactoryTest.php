@@ -1,9 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Label\Query;
+namespace CultuurNet\UDB3\Http\Label\Query;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use CultuurNet\UDB3\Symfony\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Number\Natural;

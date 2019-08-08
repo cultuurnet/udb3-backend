@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\JSONLD;
+namespace CultuurNet\UDB3\Http\JSONLD;
 
 use ValueObjects\Enum\Enum;
 

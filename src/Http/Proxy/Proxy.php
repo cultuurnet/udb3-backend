@@ -1,9 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Proxy;
+namespace CultuurNet\UDB3\Http\Proxy;
 
-use CultuurNet\UDB3\Symfony\Proxy\Filter\FilterInterface;
-use CultuurNet\UDB3\Symfony\Proxy\RequestTransformer\RequestTransformerInterface;
+use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
+use CultuurNet\UDB3\Http\Proxy\RequestTransformer\RequestTransformerInterface;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;

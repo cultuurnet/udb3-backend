@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\ContactPoint;
+namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\ContactPoint;

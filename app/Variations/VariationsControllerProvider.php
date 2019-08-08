@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Silex\Variations;
 
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Symfony\CommandDeserializerController;
-use CultuurNet\UDB3\Symfony\Variations\EditVariationsRestController;
-use CultuurNet\UDB3\Symfony\Variations\ReadVariationsRestController;
+use CultuurNet\UDB3\Http\CommandDeserializerController;
+use CultuurNet\UDB3\Http\Variations\EditVariationsRestController;
+use CultuurNet\UDB3\Http\Variations\ReadVariationsRestController;
 use CultuurNet\UDB3\Variations\Command\CreateOfferVariationJSONDeserializer;
 use CultuurNet\UDB3\Variations\Model\Properties\DefaultUrlValidator;
 use Silex\Application;

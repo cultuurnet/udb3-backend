@@ -1,15 +1,15 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Place;
+namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Symfony\Deserializer\Address\AddressDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForPlaceDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\CompositeDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\RequiredPropertiesDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\Event\EventTypeDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\Theme\ThemeDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\Address\AddressDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForPlaceDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\CompositeDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\Event\EventTypeDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\Theme\ThemeDataValidator;
 
 class MajorInfoDataValidator implements DataValidatorInterface
 {

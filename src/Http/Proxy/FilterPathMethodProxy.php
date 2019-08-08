@@ -1,16 +1,16 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Proxy;
+namespace CultuurNet\UDB3\Http\Proxy;
 
-use CultuurNet\UDB3\Symfony\Proxy\Filter\AndFilter;
-use CultuurNet\UDB3\Symfony\Proxy\Filter\FilterInterface;
-use CultuurNet\UDB3\Symfony\Proxy\Filter\MethodFilter;
-use CultuurNet\UDB3\Symfony\Proxy\Filter\OrFilter;
-use CultuurNet\UDB3\Symfony\Proxy\Filter\PathFilter;
-use CultuurNet\UDB3\Symfony\Proxy\Filter\PreflightFilter;
-use CultuurNet\UDB3\Symfony\Proxy\RequestTransformer\CombinedReplacer;
-use CultuurNet\UDB3\Symfony\Proxy\RequestTransformer\DomainReplacer;
-use CultuurNet\UDB3\Symfony\Proxy\RequestTransformer\PortReplacer;
+use CultuurNet\UDB3\Http\Proxy\Filter\AndFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\FilterInterface;
+use CultuurNet\UDB3\Http\Proxy\Filter\MethodFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\OrFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\PathFilter;
+use CultuurNet\UDB3\Http\Proxy\Filter\PreflightFilter;
+use CultuurNet\UDB3\Http\Proxy\RequestTransformer\CombinedReplacer;
+use CultuurNet\UDB3\Http\Proxy\RequestTransformer\DomainReplacer;
+use CultuurNet\UDB3\Http\Proxy\RequestTransformer\PortReplacer;
 use GuzzleHttp\ClientInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;

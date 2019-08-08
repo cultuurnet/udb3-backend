@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Jobs;
+namespace CultuurNet\UDB3\Http\Jobs;
 
 use Resque_Job_Status;
 use ValueObjects\StringLiteral\StringLiteral;

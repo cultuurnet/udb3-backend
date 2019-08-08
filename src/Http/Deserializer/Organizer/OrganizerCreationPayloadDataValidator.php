@@ -1,13 +1,13 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Organizer;
+namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Symfony\Deserializer\Address\AddressDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\ContactPoint\ContactPointDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\CompositeDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\RequiredPropertiesDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\Address\AddressDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\CompositeDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
 use CultuurNet\UDB3\Title;
 
 class OrganizerCreationPayloadDataValidator implements DataValidatorInterface

@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
-use CultuurNet\UDB3\Symfony\Event\EditEventRestController;
-use CultuurNet\UDB3\Symfony\Event\ReadEventRestController;
+use CultuurNet\UDB3\Http\Event\EditEventRestController;
+use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

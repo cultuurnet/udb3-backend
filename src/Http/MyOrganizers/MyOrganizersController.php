@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\MyOrganizers;
+namespace CultuurNet\UDB3\Http\MyOrganizers;
 
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\Hydra\Symfony\PageUrlGenerator;

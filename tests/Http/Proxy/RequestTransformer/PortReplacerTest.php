@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Proxy\RequestTransformer;
+namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\TestCase;

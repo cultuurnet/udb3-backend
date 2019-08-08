@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony;
+namespace CultuurNet\UDB3\Http;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Language;

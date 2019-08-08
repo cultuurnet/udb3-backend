@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Management\User;
+namespace CultuurNet\UDB3\Http\Management\User;
 
 use ValueObjects\StringLiteral\StringLiteral;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Label;
+namespace CultuurNet\UDB3\Http\Label;
 
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
@@ -8,9 +8,9 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
-use CultuurNet\UDB3\Symfony\Label\Query\QueryFactoryInterface;
-use CultuurNet\UDB3\Symfony\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
+use CultuurNet\UDB3\Http\Label\Query\QueryFactoryInterface;
+use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

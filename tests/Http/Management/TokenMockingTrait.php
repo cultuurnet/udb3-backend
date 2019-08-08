@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Management;
+namespace CultuurNet\UDB3\Http\Management;
 
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use Lcobucci\JWT\Claim\Basic as BasicClaim;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Role;
+namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DeserializerInterface;
@@ -12,8 +12,8 @@ use CultuurNet\UDB3\Role\Commands\RenameRole;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\Symfony\Deserializer\Role\QueryJSONDeserializer;
-use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
+use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

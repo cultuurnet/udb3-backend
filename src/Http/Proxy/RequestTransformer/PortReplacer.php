@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Proxy\RequestTransformer;
+namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
 use Psr\Http\Message\RequestInterface;
 use ValueObjects\Web\PortNumber;

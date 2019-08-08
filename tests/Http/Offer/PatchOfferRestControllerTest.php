@@ -1,7 +1,7 @@
 <?php
 
 
-namespace CultuurNet\UDB3\Symfony\Offer;
+namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Event\Commands\Moderation\Approve;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Role;
+namespace CultuurNet\UDB3\Http\Role;
 
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInte
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use CultuurNet\UDB3\Role\Services\RoleReadingServiceInterface;
-use CultuurNet\UDB3\Symfony\Assert\JsonEquals;
+use CultuurNet\UDB3\Http\Assert\JsonEquals;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use PHPUnit_Framework_MockObject_MockObject;

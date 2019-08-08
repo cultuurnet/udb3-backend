@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Event;
+namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;

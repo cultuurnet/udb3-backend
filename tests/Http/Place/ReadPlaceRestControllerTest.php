@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Place;
+namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\UDB3\EntityServiceInterface;

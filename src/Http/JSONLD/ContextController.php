@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\JSONLD;
+namespace CultuurNet\UDB3\Http\JSONLD;
 
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Http\JsonLdResponse;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 

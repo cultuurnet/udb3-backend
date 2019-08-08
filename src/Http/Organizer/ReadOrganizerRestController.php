@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Organizer;
+namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Symfony\ApiProblemJsonResponseTrait;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
+use CultuurNet\UDB3\Http\JsonLdResponse;
 
 class ReadOrganizerRestController
 {

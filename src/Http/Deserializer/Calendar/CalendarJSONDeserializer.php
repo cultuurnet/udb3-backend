@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Calendar;
+namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Timestamp;
 use ValueObjects\StringLiteral\StringLiteral;
 

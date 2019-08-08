@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Label;
+namespace CultuurNet\UDB3\Http\Label;
 
 use CultuurNet\UDB3\Label\Services\WriteResult;
 use CultuurNet\UDB3\Label\Services\WriteServiceInterface;

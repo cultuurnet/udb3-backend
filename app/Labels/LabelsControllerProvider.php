@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Labels;
 
-use CultuurNet\UDB3\Symfony\Label\EditRestController;
-use CultuurNet\UDB3\Symfony\Label\ReadRestController;
+use CultuurNet\UDB3\Http\Label\EditRestController;
+use CultuurNet\UDB3\Http\Label\ReadRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

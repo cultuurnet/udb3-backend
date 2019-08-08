@@ -1,12 +1,12 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Search;
+namespace CultuurNet\UDB3\Http\Search;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
-use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\JsonLdResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

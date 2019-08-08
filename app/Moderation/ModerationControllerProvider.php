@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Moderation;
 
-use CultuurNet\UDB3\Symfony\Search\SearchController;
+use CultuurNet\UDB3\Http\Search\SearchController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

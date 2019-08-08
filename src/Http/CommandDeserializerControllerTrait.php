@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony;
+namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DeserializerInterface;

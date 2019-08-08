@@ -1,12 +1,12 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Jobs;
+namespace CultuurNet\UDB3\Http\Jobs;
 
 use ValueObjects\Enum\Enum;
 
 /**
  * Class JobStatus
- * @package CultuurNet\UDB3\Symfony\Jobs
+ * @package CultuurNet\UDB3\Http\Jobs
  * @method static JobStatus WAITING()
  * @method static JobStatus RUNNING()
  * @method static JobStatus FAILED()

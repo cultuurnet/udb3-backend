@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Calendar;
+namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\Validators\StartDateEndDateValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\Validators\TimeSpanValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\StartDateEndDateValidator;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\TimeSpanValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 
 class CalendarForEventDataValidator implements DataValidatorInterface
 {

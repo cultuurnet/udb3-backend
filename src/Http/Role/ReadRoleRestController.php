@@ -1,13 +1,13 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Role;
+namespace CultuurNet\UDB3\Http\Role;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\Services\RoleReadingServiceInterface;
-use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

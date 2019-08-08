@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Calendar\Validators;
+namespace CultuurNet\UDB3\Http\Deserializer\Calendar\Validators;
 
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 
 class StartDateEndDateValidator
 {

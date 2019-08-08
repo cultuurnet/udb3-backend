@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\User;
+namespace CultuurNet\UDB3\Http\User;
 
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Web\EmailAddress;

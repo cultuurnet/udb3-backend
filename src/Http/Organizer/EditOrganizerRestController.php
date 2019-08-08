@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Organizer;
+namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\Address\AddressJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\ContactPoint\ContactPointJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Organizer\UrlJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
-use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
+use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Organizer\OrganizerCreationPayloadJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Organizer\UrlJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

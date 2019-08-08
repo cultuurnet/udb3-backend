@@ -1,17 +1,17 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Event;
+namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
-use CultuurNet\UDB3\Symfony\ApiProblemJsonResponseTrait;
+use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\EventServiceInterface;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Http\JsonLdResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadEventRestController

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Calendar;
+namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 class TimeSpan
 {

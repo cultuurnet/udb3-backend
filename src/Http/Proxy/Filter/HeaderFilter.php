@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Proxy\Filter;
+namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use Psr\Http\Message\RequestInterface;
 use ValueObjects\StringLiteral\StringLiteral;

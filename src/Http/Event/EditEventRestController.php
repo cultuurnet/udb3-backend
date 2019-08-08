@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Event;
+namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
@@ -12,14 +12,14 @@ use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarForEventDataValidator;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
-use CultuurNet\UDB3\Symfony\Deserializer\Event\CreateEventJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Event\MajorInfoJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Event\Location\LocationNotFound;
-use CultuurNet\UDB3\Symfony\HttpFoundation\NoContent;
-use CultuurNet\UDB3\Symfony\OfferRestBaseController;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
+use CultuurNet\UDB3\Http\Deserializer\Event\CreateEventJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Event\MajorInfoJSONDeserializer;
+use CultuurNet\UDB3\Http\Event\Location\LocationNotFound;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
+use CultuurNet\UDB3\Http\OfferRestBaseController;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

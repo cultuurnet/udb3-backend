@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Calendar\Validators;
+namespace CultuurNet\UDB3\Http\Deserializer\Calendar\Validators;
 
 class TimeSpanValidator
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Jobs;
+namespace CultuurNet\UDB3\Http\Jobs;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

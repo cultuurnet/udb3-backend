@@ -1,9 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\BookingInfo;
+namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
 class BookingInfoDataValidatorTest extends TestCase

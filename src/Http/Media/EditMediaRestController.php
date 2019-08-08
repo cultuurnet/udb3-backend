@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Media;
+namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;

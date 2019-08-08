@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Organizer;
+namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Address\Address;

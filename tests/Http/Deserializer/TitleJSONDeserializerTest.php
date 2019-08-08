@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer;
+namespace CultuurNet\UDB3\Http\Deserializer;
 
 use CultuurNet\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Title;

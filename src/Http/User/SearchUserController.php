@@ -1,9 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\User;
+namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\Hydra\PagedCollection;
-use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use CultuurNet\UDB3\Http\JsonLdResponse;
 use CultuurNet\UDB3\User\CultureFeedUserIdentityDetailsFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Event\Location;
+namespace CultuurNet\UDB3\Http\Event\Location;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use RuntimeException;

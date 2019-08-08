@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\HttpFoundation;
+namespace CultuurNet\UDB3\Http\HttpFoundation;
 
 use Crell\ApiProblem\ApiProblem;
 use Symfony\Component\HttpFoundation\JsonResponse;

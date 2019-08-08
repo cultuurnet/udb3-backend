@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Offer;
+namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Calendar;
@@ -16,11 +16,11 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\Calendar\CalendarJSONParser;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
+use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

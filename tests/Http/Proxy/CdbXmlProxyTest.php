@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Proxy;
+namespace CultuurNet\UDB3\Http\Proxy;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;

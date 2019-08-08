@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\BookingInfo;
+namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\BookingInfo;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use ValueObjects\StringLiteral\StringLiteral;
 

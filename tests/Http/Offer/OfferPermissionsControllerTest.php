@@ -1,10 +1,10 @@
 <?php
 /** @deprecated */
-namespace CultuurNet\UDB3\Symfony\Offer;
+namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Symfony\Assert\JsonEquals;
+use CultuurNet\UDB3\Http\Assert\JsonEquals;
 use GuzzleHttp\Tests\Psr7\Str;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -1,13 +1,13 @@
 <?php
 
-namespace CultuurNet\UDB3\Symfony\Deserializer\Place;
+namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\RequiredPropertiesDataValidator;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class FacilitiesJSONDeserializer extends JSONDeserializer
