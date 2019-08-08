@@ -1,0 +1,32 @@
+{
+  "type": "single",
+  "timestamps": [
+    {
+      "start": "2020-01-26T09:00:00+01:00",
+      "end": "2020-02-01T16:00:00+01:00"
+    },
+    {
+      "start": "2020-02-03T09:00:00+01:00",
+      "end": "2020-02-10T16:00:00+01:00"
+    }
+  ],
+  "openingHours": [
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": [
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday"
+      ]
+    },
+    {
+      "opens": "09:00",
+      "closes": "12:00",
+      "dayOfWeek": [
+        "saturday"
+      ]
+    }
+  ]
+}

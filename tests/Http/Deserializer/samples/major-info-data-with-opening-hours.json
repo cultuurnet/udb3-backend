@@ -1,0 +1,48 @@
+{
+  "id": "eb0a8307-4b14-4545-af90-5ec4334b511a",
+  "name": {
+    "nl": "sprekende titel"
+  },
+  "location": {
+    "id": "28cf728d-441b-4912-b3b0-f03df0d22491",
+    "name": "Hier",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Leuven",
+      "postalCode": "3000",
+      "streetAddress": "Daarstraat 1"
+    }
+  },
+  "type": {
+    "id": "0.17.0.0.0",
+    "label": "Route",
+    "domain": "eventtype"
+  },
+  "activeCalendarType": "permanent",
+  "activeCalendarLabel": "Permanent",
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "dayOfWeek": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday"
+      ],
+      "opens": "10:00",
+      "closes": "19:00",
+      "label": "Maandag, Dinsdag, Woensdag, Donderdag, Vrijdag"
+    },
+    {
+      "dayOfWeek": [
+        "saturday",
+        "sunday"
+      ],
+      "opens": "12:00",
+      "closes": "19:00",
+      "label": "Zaterdag, Zondag"
+    }
+  ],
+  "workflowStatus": "DRAFT"
+}

@@ -38,22 +38,6 @@
         <phingcall target="lint"/>
         <phingcall target="unit-tests"/>
         <phingcall target="coding-standards"/>
-        <phingcall target="libs"/>
-    </target>
-
-    <target name="libs">
-        <phingcall target="lib-udb3-export"/>
-        <phingcall target="lib-udb3-uitpas-bridge"/>
-    </target>
-
-    <target name="lib-udb3-export">
-        <exec dir="./lib/udb3-export" command="composer install" passthru="true" />
-        <exec dir="./lib/udb3-export" command="./vendor/bin/phing" passthru="true" />
-    </target>
-
-    <target name="lib-udb3-uitpas-bridge">
-        <exec dir="./lib/udb3-uitpas-bridge" command="composer install" passthru="true" />
-        <exec dir="./lib/udb3-uitpas-bridge" command="./vendor/bin/phing" passthru="true" />
     </target>
 
 </project>

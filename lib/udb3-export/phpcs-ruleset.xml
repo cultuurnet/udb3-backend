@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<ruleset name="UDB3\EventExport">
-    <rule ref="PSR2" />
-
-    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
-        <exclude-pattern>*/tests/*</exclude-pattern>
-    </rule>
-</ruleset>

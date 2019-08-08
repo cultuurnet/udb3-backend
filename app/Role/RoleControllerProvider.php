@@ -4,9 +4,9 @@ namespace CultuurNet\UDB3\Silex\Role;
 
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Symfony\Deserializer\Role\QueryJSONDeserializer;
-use CultuurNet\UDB3\Symfony\Role\EditRoleRestController;
-use CultuurNet\UDB3\Symfony\Role\ReadRoleRestController;
+use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
+use CultuurNet\UDB3\Http\Role\EditRoleRestController;
+use CultuurNet\UDB3\Http\Role\ReadRoleRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

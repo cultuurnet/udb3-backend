@@ -1,0 +1,12 @@
+{
+  "EAD2E60D-A319-4F10-9D22-40911FB6542E": {
+    "uuid": "EAD2E60D-A319-4F10-9D22-40911FB6542E",
+    "email": "john@example.com",
+    "username": "johndoe"
+  },
+  "E039C73A-D157-482F-A09B-C1F78DC589BC": {
+    "uuid": "E039C73A-D157-482F-A09B-C1F78DC589BC",
+    "email": "jane@example.com",
+    "username": "janedoe"
+  }
+}

@@ -5,8 +5,8 @@
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Symfony\Place\EditPlaceRestController;
-use CultuurNet\UDB3\Symfony\Place\ReadPlaceRestController;
+use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
+use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -22,7 +22,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadPlaceRestController(
                     $app['place_service'],
-                    $app['place_lookup'],
                     $app['search_v3_serializer']
                 );
             }
@@ -62,7 +61,6 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->delete('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:removeImage');
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
-        $controllers->get('/', 'place_controller:getByPostalCode');
         $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
 
         return $controllers;

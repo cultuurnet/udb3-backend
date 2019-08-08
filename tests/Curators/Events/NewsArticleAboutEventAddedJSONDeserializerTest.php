@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Curators\Events;
+namespace CultuurNet\UDB3\Curators\Events;
 
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -50,10 +50,12 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
             'C0D870F6-2883-4565-A020-7CF12BDE5F51'
         );
 
-        $event = json_encode([
+        $event = json_encode(
+            [
             'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
             'eventId' => 'C0D870F6-2883-4565-A020-7CF12BDE5F51',
-        ]);
+            ]
+        );
         $actual = $this->deserializer->deserialize(new StringLiteral($event));
 
         $this->assertEquals($expected, $actual);

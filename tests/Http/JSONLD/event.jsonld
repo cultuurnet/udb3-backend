@@ -1,0 +1,10 @@
+{
+  "@context": {
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "udb": "https://io.uitdatabank.be/contexts/",
+    "@base": "https://io.uitdatabank.be/contexts/place"
+  }
+}

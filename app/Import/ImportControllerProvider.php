@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Import;
 
-use CultuurNet\UDB3\Symfony\Import\ImportRestController;
+use CultuurNet\UDB3\Http\Import\ImportRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

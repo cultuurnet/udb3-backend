@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex\Curators;
+namespace CultuurNet\UDB3\Curators;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
-use CultuurNet\UDB3\Silex\Curators\Events\NewsArticleAboutEventAdded;
+use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAdded;
 
 final class NewsArticleProcessManager implements EventListenerInterface
 {
