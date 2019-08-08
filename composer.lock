@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e41693cb8e88994d0e9b3912cf58854b",
+    "content-hash": "7cbbabe02407b7215b8867fb0069d585",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1853,75 +1853,6 @@
             "license": [
                 "Apache-2.0"
             ],
-            "transport-options": {
-                "symlink": true
-            }
-        },
-        {
-            "name": "cultuurnet/udb3-symfony",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "lib/udb3-symfony",
-                "reference": "0d6caa7e8ac24501597594e6e20f175269f395b1",
-                "shasum": null
-            },
-            "require": {
-                "chrisboulton/php-resque": "1.2",
-                "crell/api-problem": "~1.7",
-                "cultuurnet/calendar-summary-v3": "dev-master",
-                "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3": "~0.1",
-                "cultuurnet/udb3-api-guard": "~0.1",
-                "cultuurnet/udb3-models": "~0.1",
-                "cultuurnet/udb3-models-import": "~0.1",
-                "cultuurnet/valueobjects": "~3.0",
-                "ext-json": "*",
-                "guzzlehttp/guzzle": "~6.2",
-                "guzzlehttp/psr7": "~1.2.3",
-                "php": ">=7.1",
-                "symfony/http-foundation": "~2.7.2",
-                "symfony/http-kernel": "~2.3",
-                "symfony/psr-http-message-bridge": "~0.2.0",
-                "symfony/routing": "~2.3",
-                "zendframework/zend-diactoros": "^1.3"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\Symfony\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\Symfony\\": "tests/"
-                }
-            },
-            "license": [
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be"
-                }
-            ],
-            "description": "UDB3 integration with Symfony HTTPFoundation",
             "transport-options": {
                 "symlink": true
             }
