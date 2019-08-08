@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Http\Event\Location;
+namespace CultuurNet\UDB3\Event\Location;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use RuntimeException;
