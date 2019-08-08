@@ -42,7 +42,7 @@
     "doctrine/dbal": "~2.4",
     "doctrine/migrations": "~1.0@dev",
     "gridonic/princexml-php": "~1.1.1",
-    "guzzlehttp/guzzle": "~6.2",
+    "guzzlehttp/guzzle": "^6.3",
     "guzzlehttp/psr7": "^1.4",
     "hanneskod/classtools": "~1.0",
     "jdesrosiers/silex-cors-provider": "~0.1.4",
