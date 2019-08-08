@@ -2,9 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Media;
 
-use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
-use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ImageUploaderService;
 use CultuurNet\UDB3\Media\MediaManager;

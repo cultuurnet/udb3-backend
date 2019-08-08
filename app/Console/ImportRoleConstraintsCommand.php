@@ -7,7 +7,6 @@ use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\UpdateConstraint;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
-use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;

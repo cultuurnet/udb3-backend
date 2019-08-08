@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
