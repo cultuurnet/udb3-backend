@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\FeatureControllerProvider;
 use CultuurNet\UDB3\Silex\MyOrganizers\MyOrganizersControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\Symfony\Management\PermissionsVoter;
-use CultuurNet\UDB3\Symfony\Management\UserPermissionsVoter;
+use CultuurNet\UDB3\Http\Management\PermissionsVoter;
+use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -151,7 +151,7 @@ if (isset($app['config']['cdbxml_proxy']) &&
     $app['config']['cdbxml_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy $cdbXmlProxy */
+            /** @var \CultuurNet\UDB3\Http\Proxy\CdbXmlProxy $cdbXmlProxy */
             $cdbXmlProxy = $app['cdbxml_proxy'];
 
             return $cdbXmlProxy->handle($request);
@@ -164,7 +164,7 @@ if (isset($app['config']['calendar_summary_proxy']) &&
     $app['config']['calendar_summary_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy $calendarSummaryProxy */
+            /** @var \CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy $calendarSummaryProxy */
             $calendarSummaryProxy = $app['calendar_summary_proxy'];
 
             return $calendarSummaryProxy->handle($request);
@@ -177,7 +177,7 @@ if (isset($app['config']['search_proxy']) &&
     $app['config']['search_proxy']['enabled']) {
     $app->before(
         function (Request $request, Application $app) {
-            /** @var \CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy $searchProxy */
+            /** @var \CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy $searchProxy */
             $searchProxy = $app['search_proxy'];
 
             return $searchProxy->handle($request);
