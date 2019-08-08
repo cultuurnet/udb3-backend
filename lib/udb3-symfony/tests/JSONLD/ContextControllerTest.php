@@ -3,10 +3,11 @@
 namespace CultuurNet\UDB3\Symfony\JSONLD;
 
 use CultuurNet\UDB3\Symfony\JsonLdResponse;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-class ContextControllerTest extends \PHPUnit_Framework_TestCase
+class ContextControllerTest extends TestCase
 {
     /**
      * @var ContextController

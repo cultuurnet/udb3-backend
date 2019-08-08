@@ -2,17 +2,19 @@
 
 namespace CultuurNet\UDB3\Symfony\Assert;
 
+use PHPUnit\Framework\TestCase;
+
 class JsonEquals
 {
     /**
-     * @var \PHPUnit_Framework_TestCase
+     * @var TestCase
      */
     private $testCase;
 
     /**
-     * @param \PHPUnit_Framework_TestCase $testCase
+     * @param TestCase $testCase
      */
-    public function __construct(\PHPUnit_Framework_TestCase $testCase)
+    public function __construct(TestCase $testCase)
     {
         $this->testCase = $testCase;
     }

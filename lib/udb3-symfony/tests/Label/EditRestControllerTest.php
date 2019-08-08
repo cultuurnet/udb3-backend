@@ -7,10 +7,11 @@ use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Identity\UUID;
 
-class EditRestControllerTest extends \PHPUnit_Framework_TestCase
+class EditRestControllerTest extends TestCase
 {
     /**
      * @var UUID

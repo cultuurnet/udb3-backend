@@ -4,9 +4,10 @@ namespace CultuurNet\UDB3\Symfony\Proxy\Filter;
 
 use CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex;
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PreflightFilterTest extends \PHPUnit_Framework_TestCase
+class PreflightFilterTest extends TestCase
 {
     /**
      * @var Request

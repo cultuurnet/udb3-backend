@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use CultuurNet\UDB3\Role\Services\RoleReadingServiceInterface;
 use CultuurNet\UDB3\Symfony\Assert\JsonEquals;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class ReadRoleRestControllerTest extends \PHPUnit_Framework_TestCase
+class ReadRoleRestControllerTest extends TestCase
 {
     const EXISTING_ID = 'existingId';
     const NON_EXISTING_ID = 'nonExistingId';

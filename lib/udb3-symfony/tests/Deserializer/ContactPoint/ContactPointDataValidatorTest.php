@@ -3,8 +3,9 @@
 namespace CultuurNet\UDB3\Symfony\Deserializer\ContactPoint;
 
 use CultuurNet\Deserializer\DataValidationException;
+use PHPUnit\Framework\TestCase;
 
-class ContactPointDataValidatorTest extends \PHPUnit_Framework_TestCase
+class ContactPointDataValidatorTest extends TestCase
 {
     /**
      * @var ContactPointDataValidator

@@ -5,9 +5,10 @@ namespace CultuurNet\UDB3\Symfony\Organizer;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ReadOrganizerRestControllerTest extends \PHPUnit_Framework_TestCase
+class ReadOrganizerRestControllerTest extends TestCase
 {
     const EXISTING_ID = 'existingId';
     const NON_EXISTING_ID = 'nonExistingId';

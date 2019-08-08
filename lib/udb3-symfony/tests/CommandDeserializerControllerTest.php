@@ -4,11 +4,12 @@ namespace CultuurNet\UDB3\Symfony;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DeserializerInterface;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CommandDeserializerControllerTest extends \PHPUnit_Framework_TestCase
+class CommandDeserializerControllerTest extends TestCase
 {
     /**
      * @var DeserializerInterface|\PHPUnit_Framework_MockObject_MockObject

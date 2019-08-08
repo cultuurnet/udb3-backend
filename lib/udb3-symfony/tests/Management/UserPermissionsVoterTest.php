@@ -4,13 +4,13 @@ namespace CultuurNet\UDB3\Symfony\Management;
 
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use ValueObjects\Identity\UUID;
 
-class UserPermissionsVoterTest extends PHPUnit_Framework_TestCase
+class UserPermissionsVoterTest extends TestCase
 {
     use TokenMockingTrait;
 

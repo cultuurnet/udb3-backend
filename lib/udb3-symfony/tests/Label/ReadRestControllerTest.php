@@ -11,13 +11,14 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Symfony\Label\Query\QueryFactoryInterface;
 use CultuurNet\UDB3\Symfony\Management\User\UserIdentificationInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ReadRestControllerTest extends \PHPUnit_Framework_TestCase
+class ReadRestControllerTest extends TestCase
 {
     /**
      * @var Entity

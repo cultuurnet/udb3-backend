@@ -6,9 +6,10 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class MajorInfoJSONDeserializerTest extends \PHPUnit_Framework_TestCase
+class MajorInfoJSONDeserializerTest extends TestCase
 {
     /**
      * @test

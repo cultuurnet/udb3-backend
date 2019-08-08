@@ -3,10 +3,11 @@
 namespace CultuurNet\UDB3\Symfony\Proxy\RequestTransformer;
 
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Web\Hostname;
 use ValueObjects\Web\PortNumber;
 
-class CombinedReplacerTest extends \PHPUnit_Framework_TestCase
+class CombinedReplacerTest extends TestCase
 {
     const ORIGINAL_DOMAIN = 'www.original.be';
     const REPLACED_DOMAIN = 'www.replaced.be';

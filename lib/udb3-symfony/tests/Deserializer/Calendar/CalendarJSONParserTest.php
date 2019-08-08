@@ -7,10 +7,11 @@ use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Timestamp;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
-class CalendarJSONParserTest extends \PHPUnit_Framework_TestCase
+class CalendarJSONParserTest extends TestCase
 {
     /**
      * @var array

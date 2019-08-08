@@ -4,10 +4,11 @@ namespace CultuurNet\UDB3\Symfony\Proxy\RequestTransformer;
 
 use CultuurNet\UDB3\Symfony\Proxy\Filter\AcceptFilter;
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use ValueObjects\Web\Hostname;
 
-class DomainReplacerTest extends \PHPUnit_Framework_TestCase
+class DomainReplacerTest extends TestCase
 {
     const ORIGINAL_DOMAIN = 'www.original.be';
     const REPLACED_DOMAIN = 'www.replaced.be';

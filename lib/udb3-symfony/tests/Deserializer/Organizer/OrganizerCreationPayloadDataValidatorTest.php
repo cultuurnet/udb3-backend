@@ -3,8 +3,9 @@
 namespace CultuurNet\UDB3\Symfony\Deserializer\Organizer;
 
 use CultuurNet\Deserializer\DataValidationException;
+use PHPUnit\Framework\TestCase;
 
-class OrganizerCreationPayloadDataValidatorTest extends \PHPUnit_Framework_TestCase
+class OrganizerCreationPayloadDataValidatorTest extends TestCase
 {
     /**
      * @var OrganizerCreationPayloadDataValidator

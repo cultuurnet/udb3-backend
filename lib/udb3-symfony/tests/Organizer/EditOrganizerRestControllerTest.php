@@ -13,12 +13,13 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-class EditOrganizerRestControllerTest extends \PHPUnit_Framework_TestCase
+class EditOrganizerRestControllerTest extends TestCase
 {
     /**
      * @var OrganizerEditingServiceInterface|\PHPUnit_Framework_MockObject_MockObject

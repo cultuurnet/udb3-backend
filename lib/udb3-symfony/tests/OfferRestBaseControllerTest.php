@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferRestBaseControllerTest extends \PHPUnit_Framework_TestCase
+class OfferRestBaseControllerTest extends TestCase
 {
     /**
      * @var OfferEditingServiceInterface|PHPUnit_Framework_MockObject_MockObject

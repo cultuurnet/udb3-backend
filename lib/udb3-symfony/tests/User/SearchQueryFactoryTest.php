@@ -2,9 +2,10 @@
 
 namespace CultuurNet\UDB3\Symfony\User;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class SearchQueryFactoryTest extends \PHPUnit_Framework_TestCase
+class SearchQueryFactoryTest extends TestCase
 {
     /**
      * @var SearchQueryFactory

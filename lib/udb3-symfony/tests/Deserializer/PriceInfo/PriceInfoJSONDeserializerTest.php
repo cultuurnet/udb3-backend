@@ -11,10 +11,11 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
 use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PriceInfoJSONDeserializerTest extends \PHPUnit_Framework_TestCase
+class PriceInfoJSONDeserializerTest extends TestCase
 {
     /**
      * @var PriceInfoJSONDeserializer

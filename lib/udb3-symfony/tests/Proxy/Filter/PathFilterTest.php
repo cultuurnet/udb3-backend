@@ -4,8 +4,9 @@ namespace CultuurNet\UDB3\Symfony\Proxy\Filter;
 
 use CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex;
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\TestCase;
 
-class PathFilterTest extends \PHPUnit_Framework_TestCase
+class PathFilterTest extends TestCase
 {
     /**
      * @test

@@ -7,10 +7,11 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\SavedSearchReadRepositoryCollection;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ReadSavedSearchesControllerTest extends \PHPUnit_Framework_TestCase
+class ReadSavedSearchesControllerTest extends TestCase
 {
     /**
      * @var SavedSearchRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject

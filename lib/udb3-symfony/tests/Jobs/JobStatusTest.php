@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Symfony\Jobs;
 
-class JobStatusTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class JobStatusTest extends TestCase
 {
     /**
      * @test

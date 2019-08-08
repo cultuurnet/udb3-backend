@@ -3,9 +3,10 @@
 namespace CultuurNet\UDB3\Symfony\Proxy\Filter;
 
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ContentTypeFilterTest extends \PHPUnit_Framework_TestCase
+class ContentTypeFilterTest extends TestCase
 {
     const APPLICATION_XML = 'application/xml';
 

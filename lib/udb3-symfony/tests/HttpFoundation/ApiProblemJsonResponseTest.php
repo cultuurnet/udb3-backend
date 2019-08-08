@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\Symfony;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiProblemJsonResponseTest extends PHPUnit_Framework_TestCase
+class ApiProblemJsonResponseTest extends TestCase
 {
     /**
      * @test

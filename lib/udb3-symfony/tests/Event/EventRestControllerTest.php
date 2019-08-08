@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Symfony\Event;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use DateTimeZone;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use CultuurNet\UDB3\Event\EventServiceInterface;
@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 
-class EventRestControllerTest extends PHPUnit_Framework_TestCase
+class EventRestControllerTest extends TestCase
 {
     const EXISTING_ID = 'existingId';
     const NON_EXISTING_ID = 'nonExistingId';

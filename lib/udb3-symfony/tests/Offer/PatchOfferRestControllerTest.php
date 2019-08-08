@@ -15,13 +15,12 @@ use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate as FlagAsInapp
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject as RejectPlace;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\OfferType;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit_Framework_TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PatchOfferRestControllerTest extends PHPUnit_Framework_TestCase
+class PatchOfferRestControllerTest extends TestCase
 {
     /**
      * @var CommandBusInterface | PHPUnit_Framework_MockObject_MockObject

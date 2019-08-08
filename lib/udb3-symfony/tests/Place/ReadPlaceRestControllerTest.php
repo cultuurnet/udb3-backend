@@ -6,11 +6,12 @@ use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use CultuurNet\SearchV3\ValueObjects\Place;
 
-class ReadPlaceRestControllerTest extends \PHPUnit_Framework_TestCase
+class ReadPlaceRestControllerTest extends TestCase
 {
     const EXISTING_ID = 'existingId';
     const NON_EXISTING_ID = 'nonExistingId';

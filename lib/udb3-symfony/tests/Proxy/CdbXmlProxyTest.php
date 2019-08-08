@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Symfony\Proxy;
 
 use GuzzleHttp\Client;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Hostname;
 use ValueObjects\Web\PortNumber;
 
-class CdbXmlProxyTest extends \PHPUnit_Framework_TestCase
+class CdbXmlProxyTest extends TestCase
 {
     const APPLICATION_XML = 'application/xml';
 

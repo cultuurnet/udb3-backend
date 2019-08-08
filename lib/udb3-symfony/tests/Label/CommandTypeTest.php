@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Symfony\Label;
 
-class CommandTypeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CommandTypeTest extends TestCase
 {
     /**
      * @test

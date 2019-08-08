@@ -18,13 +18,13 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
 use ValueObjects\Identity\UUID;
 
-class EditPlaceRestControllerTest extends PHPUnit_Framework_TestCase
+class EditPlaceRestControllerTest extends TestCase
 {
     /**
      * @var EditPlaceRestController

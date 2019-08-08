@@ -3,9 +3,10 @@
 namespace CultuurNet\UDB3\Symfony\Proxy\RequestTransformer;
 
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Web\PortNumber;
 
-class PortReplacerTest extends \PHPUnit_Framework_TestCase
+class PortReplacerTest extends TestCase
 {
     const ORIGINAL_PORT = '8080';
     const REPLACED_PORT = '666';

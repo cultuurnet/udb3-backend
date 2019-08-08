@@ -4,10 +4,11 @@ namespace CultuurNet\UDB3\Symfony\Offer;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferPermissionControllerTest extends \PHPUnit_Framework_TestCase
+class OfferPermissionControllerTest extends TestCase
 {
     /**
      * @var Permission

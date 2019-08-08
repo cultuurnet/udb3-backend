@@ -2,9 +2,10 @@
 
 namespace CultuurNet\UDB3\Symfony\Management\User;
 
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CultureFeedUserIdentificationTest extends \PHPUnit_Framework_TestCase
+class CultureFeedUserIdentificationTest extends TestCase
 {
     /**
      * @var \CultureFeed_User

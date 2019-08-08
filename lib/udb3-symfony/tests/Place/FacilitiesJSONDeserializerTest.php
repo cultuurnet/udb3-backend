@@ -6,9 +6,10 @@ use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class FacilitiesJSONDeserializerTest extends \PHPUnit_Framework_TestCase
+class FacilitiesJSONDeserializerTest extends TestCase
 {
     /**
      * @var OfferFacilityResolverInterface|\PHPUnit_Framework_MockObject_MockObject

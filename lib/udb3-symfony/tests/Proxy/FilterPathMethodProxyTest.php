@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Symfony\Proxy;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +12,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Hostname;
 use ValueObjects\Web\PortNumber;
 
-class FilterPathMethodProxyTest extends \PHPUnit_Framework_TestCase
+class FilterPathMethodProxyTest extends TestCase
 {
     /**
      * @var FilterPathMethodProxy

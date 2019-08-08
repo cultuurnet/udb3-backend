@@ -15,11 +15,12 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\Symfony\Deserializer\Role\QueryJSONDeserializer;
 use CultuurNet\UDB3\Symfony\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EditRoleRestControllerTest extends \PHPUnit_Framework_TestCase
+class EditRoleRestControllerTest extends TestCase
 {
     /**
      * @var string

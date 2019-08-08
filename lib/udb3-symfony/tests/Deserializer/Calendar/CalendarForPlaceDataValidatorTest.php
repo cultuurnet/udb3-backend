@@ -3,8 +3,9 @@
 namespace CultuurNet\UDB3\Symfony\Deserializer\Calendar;
 
 use CultuurNet\Deserializer\DataValidationException;
+use PHPUnit\Framework\TestCase;
 
-class CalendarForPlaceDataValidatorTest extends \PHPUnit_Framework_TestCase
+class CalendarForPlaceDataValidatorTest extends TestCase
 {
     /**
      * @var CalendarForPlaceDataValidator

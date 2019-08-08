@@ -22,11 +22,12 @@ use CultuurNet\UDB3\Symfony\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Symfony\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Symfony\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EditOfferRestControllerTest extends \PHPUnit_Framework_TestCase
+class EditOfferRestControllerTest extends TestCase
 {
     /**
      * @var OfferEditingServiceInterface|\PHPUnit_Framework_MockObject_MockObject

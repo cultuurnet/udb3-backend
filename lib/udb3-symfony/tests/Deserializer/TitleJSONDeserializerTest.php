@@ -4,9 +4,10 @@ namespace CultuurNet\UDB3\Symfony\Deserializer;
 
 use CultuurNet\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class TitleJSONDeserializerTest extends \PHPUnit_Framework_TestCase
+class TitleJSONDeserializerTest extends TestCase
 {
     /**
      * @var TitleJSONDeserializer

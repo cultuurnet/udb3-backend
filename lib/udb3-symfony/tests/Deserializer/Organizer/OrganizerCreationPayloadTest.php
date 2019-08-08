@@ -9,10 +9,11 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use ValueObjects\Web\Url;
 
-class OrganizerCreationPayloadTest extends \PHPUnit_Framework_TestCase
+class OrganizerCreationPayloadTest extends TestCase
 {
     /**
      * @var Language

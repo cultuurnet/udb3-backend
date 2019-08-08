@@ -6,10 +6,11 @@ use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Symfony\Assert\JsonEquals;
 use GuzzleHttp\Tests\Psr7\Str;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferPermissionsControllerTest extends \PHPUnit_Framework_TestCase
+class OfferPermissionsControllerTest extends TestCase
 {
     /**
      * @var array
