@@ -70,11 +70,7 @@ class OfferPermissionsControllerTest extends TestCase
      */
     public function it_returns_an_array_of_permissions_for_the_current_user()
     {
-        foreach ($this->permissions as $permission) {
-            $this->voter
-                ->method('isAllowed')
-                ->willReturn(true);
-        }
+        $this->voter->method('isAllowed')->willReturn(true);
 
         $actualResponse = $this->controllerWithUser
             ->getPermissionsForCurrentUser('b06a4ab4-a75b-49d1-b4ab-1992c1db908a');
@@ -95,11 +91,7 @@ class OfferPermissionsControllerTest extends TestCase
      */
     public function it_returns_an_array_of_permissions_for_a_given_user()
     {
-        foreach ($this->permissions as $permission) {
-            $this->voter
-                ->method('isAllowed')
-                ->willReturn(true);
-        }
+        $this->voter->method('isAllowed')->willReturn(true);
 
         $actualResponse = $this->controllerWithUser
             ->getPermissionsForGivenUser(
