@@ -38,16 +38,6 @@
         <phingcall target="lint"/>
         <phingcall target="unit-tests"/>
         <phingcall target="coding-standards"/>
-        <phingcall target="libs"/>
-    </target>
-
-    <target name="libs">
-        <phingcall target="lib-udb3-models-import"/>
-    </target>
-
-    <target name="lib-udb3-models-import">
-        <exec dir="./lib/udb3-models-import" command="composer install" passthru="true" />
-        <exec dir="./lib/udb3-models-import" command="./vendor/bin/phing" passthru="true" checkreturn="true" />
     </target>
 
 </project>
