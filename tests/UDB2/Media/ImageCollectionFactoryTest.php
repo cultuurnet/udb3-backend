@@ -129,18 +129,4 @@ class ImageCollectionFactoryTest extends TestCase
         $images = $factory->fromUdb2Item($event);
         $this->assertEquals($expectedImages, $images);
     }
-
-    /**
-     * @param CultureFeed_Cdb_Item_Base $cdbItem
-     * @return CultureFeed_Cdb_Data_Media
-     */
-    private function getMedia(CultureFeed_Cdb_Item_Base $cdbItem)
-    {
-        $details = $cdbItem->getDetails();
-        $details->rewind();
-
-        return $details
-            ->current()
-            ->getMedia();
-    }
 }
