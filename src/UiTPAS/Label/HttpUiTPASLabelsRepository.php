@@ -30,17 +30,17 @@ class HttpUiTPASLabelsRepository implements UiTPASLabelsRepositoryInterface
         $this->endpoint = (string) $endpoint;
     }
 
-    public function loadAll()
+    public function loadAll(): array
     {
         $response = $this->httpClient->get($this->endpoint)->send();
         $content = $response->getBody();
-        $data = json_decode($content, true);
-        $strings = array_values($data);
+        $labels = json_decode($content, true);
+
         return array_map(
-            function ($labelString) {
-                return new Label($labelString);
+            function (string $label) {
+                return new Label($label);
             },
-            $strings
+            $labels
         );
     }
 }
