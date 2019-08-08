@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\UiTPAS\Label;
 
 use CultuurNet\UDB3\Label;
 
-interface UiTPASLabelsRepositoryInterface
+interface UiTPASLabelsRepository
 {
     /**
      * @return Label[]

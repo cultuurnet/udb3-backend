@@ -13,7 +13,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
-use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepositoryInterface;
+use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -32,7 +32,7 @@ class EventProcessManagerTest extends TestCase
     private $commandBus;
 
     /**
-     * @var UiTPASLabelsRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UiTPASLabelsRepository|\PHPUnit_Framework_MockObject_MockObject
      */
     private $uitpasLabelsRepository;
 
@@ -70,7 +70,7 @@ class EventProcessManagerTest extends TestCase
     {
         $this->eventDocumentRepository = $this->createMock(DocumentRepositoryInterface::class);
         $this->commandBus = $this->createMock(CommandBusInterface::class);
-        $this->uitpasLabelsRepository = $this->createMock(UiTPASLabelsRepositoryInterface::class);
+        $this->uitpasLabelsRepository = $this->createMock(UiTPASLabelsRepository::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->eventProcessManager = new EventProcessManager(
