@@ -5,12 +5,13 @@ namespace CultuurNet\UDB3\Model\Import\PreProcessing;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class TermPreProcessingDocumentImporterTest extends TestCase
 {
     /**
-     * @var DocumentImporterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentImporterInterface|MockObject
      */
     private $importer;
 

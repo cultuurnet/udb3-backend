@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -20,22 +21,22 @@ use ValueObjects\StringLiteral\StringLiteral;
 class LabelPreProcessingDocumentImporterTest extends TestCase
 {
     /**
-     * @var DocumentImporterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentImporterInterface|MockObject
      */
     private $importer;
 
     /**
-     * @var LabelRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelRepository|MockObject
      */
     private $labelsRepository;
 
     /**
-     * @var LabelRelationsRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelRelationsRepository|MockObject
      */
     private $labelRelationsRepository;
 
     /**
-     * @var LabelServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelServiceInterface|MockObject
      */
     private $labelService;
 

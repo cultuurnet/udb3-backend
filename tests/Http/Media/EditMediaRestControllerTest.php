@@ -3,9 +3,8 @@
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
-use CultuurNet\UDB3\Media\ImageUploadResult;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +14,7 @@ use ValueObjects\Identity\UUID;
 class EditMediaRestControllerTest extends TestCase
 {
     /**
-     * @var ImageUploaderInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var ImageUploaderInterface|MockObject
      */
     protected $imageUploader;
 

@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactoryInterface;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,17 +37,17 @@ class ReadRestControllerTest extends TestCase
     private $query;
 
     /**
-     * @var ReadServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ReadServiceInterface|MockObject
      */
     private $readService;
 
     /**
-     * @var UserIdentificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UserIdentificationInterface|MockObject
      */
     private $userIdentification;
 
     /**
-     * @var QueryFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var QueryFactoryInterface|MockObject
      */
     private $queryFactory;
 

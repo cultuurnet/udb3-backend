@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\ValidationException;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -18,17 +19,17 @@ class DocumentLabelPermissionRuleTest extends TestCase
     private $uuidParser;
 
     /**
-     * @var UserIdentificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UserIdentificationInterface|MockObject
      */
     private $userIdentification;
 
     /**
-     * @var LabelsRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelsRepository|MockObject
      */
     private $labelsRepository;
 
     /**
-     * @var LabelRelationsRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelRelationsRepository|MockObject
      */
     private $labelRelationsRepository;
 

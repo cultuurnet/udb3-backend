@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\ValidationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,17 +33,17 @@ class ImportRestControllerTest extends TestCase
     private $apiKey;
 
     /**
-     * @var ConsumerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerInterface|MockObject
      */
     private $consumer;
 
     /**
-     * @var DocumentImporterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentImporterInterface|MockObject
      */
     private $importer;
 
     /**
-     * @var UuidGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UuidGeneratorInterface|MockObject
      */
     private $uuidGenerator;
 

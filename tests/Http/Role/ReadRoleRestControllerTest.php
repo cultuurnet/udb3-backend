@@ -10,9 +10,9 @@ use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use CultuurNet\UDB3\Role\Services\RoleReadingServiceInterface;
 use CultuurNet\UDB3\Http\Assert\JsonEquals;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -30,7 +30,7 @@ class ReadRoleRestControllerTest extends TestCase
     private $roleRestController;
 
     /**
-     * @var RoleReadingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RoleReadingServiceInterface|MockObject
      */
     private $roleService;
 
@@ -40,7 +40,7 @@ class ReadRoleRestControllerTest extends TestCase
     private $jsonDocument;
 
     /**
-     * @var RepositoryInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var RepositoryInterface|MockObject
      */
     private $roleSearchRepository;
 
@@ -60,7 +60,7 @@ class ReadRoleRestControllerTest extends TestCase
     private $authorizationList;
 
     /**
-     * @var UserPermissionsReadRepositoryInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var UserPermissionsReadRepositoryInterface|MockObject
      */
     private $permissionsRepository;
 
@@ -71,7 +71,7 @@ class ReadRoleRestControllerTest extends TestCase
     {
         $this->jsonDocument = new JsonDocument('id', 'role');
 
-        /** @var EntityServiceInterface|\PHPUnit_Framework_MockObject_MockObject $entityServiceInterface */
+        /** @var EntityServiceInterface|MockObject $entityServiceInterface */
         $entityServiceInterface = $this->createMock(EntityServiceInterface::class);
 
         $this->roleService = $this->createMock(RoleReadingServiceInterface::class);

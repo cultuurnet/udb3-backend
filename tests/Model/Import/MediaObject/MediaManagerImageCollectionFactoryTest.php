@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID as Udb3UUID;
 use ValueObjects\Web\Url as Udb3Url;
@@ -27,7 +28,7 @@ use ValueObjects\Web\Url as Udb3Url;
 class MediaManagerImageCollectionFactoryTest extends TestCase
 {
     /**
-     * @var MediaManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MediaManagerInterface|MockObject
      */
     private $mediaManager;
 

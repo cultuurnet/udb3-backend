@@ -8,6 +8,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Psr7\Response as Psr7Response;
 use GuzzleHttp\Psr7\Uri;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -17,27 +18,27 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 class ProxyTest extends TestCase
 {
     /**
-     * @var FilterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var FilterInterface|MockObject
      */
     private $filter;
 
     /**
-     * @var RequestTransformerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RequestTransformerInterface|MockObject
      */
     private $requestTransformer;
 
     /**
-     * @var DiactorosFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var DiactorosFactory|MockObject
      */
     private $diactorosFactory;
 
     /**
-     * @var HttpFoundationFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var HttpFoundationFactory|MockObject
      */
     private $httpFoundationFactory;
 
     /**
-     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClientInterface|MockObject
      */
     private $client;
 

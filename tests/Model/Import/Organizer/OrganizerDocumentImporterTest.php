@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use ValueObjects\Web\Url;
@@ -33,7 +34,7 @@ use ValueObjects\Web\Url;
 class OrganizerDocumentImporterTest extends TestCase
 {
     /**
-     * @var RepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RepositoryInterface|MockObject
      */
     private $repository;
 
@@ -48,7 +49,7 @@ class OrganizerDocumentImporterTest extends TestCase
     private $commandBus;
 
     /**
-     * @var LockedLabelRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LockedLabelRepository|MockObject
      */
     private $lockedLabelRepository;
 
