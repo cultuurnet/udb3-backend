@@ -121,13 +121,6 @@
       "options": {
         "symlink": true
       }
-    },
-    {
-      "type": "path",
-      "url": "lib/udb3-symfony",
-      "options": {
-        "symlink": true
-      }
     }
   ]
 }
