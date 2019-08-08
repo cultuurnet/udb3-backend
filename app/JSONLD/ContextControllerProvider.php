@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\JSONLD;
 
-use CultuurNet\UDB3\Symfony\JSONLD\ContextController;
+use CultuurNet\UDB3\Http\JSONLD\ContextController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

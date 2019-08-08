@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<ruleset name="Package">
-    <rule ref="PSR2" />
-
-    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
-        <exclude-pattern>*/tests/*</exclude-pattern>
-    </rule>
-</ruleset>

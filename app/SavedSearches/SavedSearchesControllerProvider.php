@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
-use CultuurNet\UDB3\Symfony\SavedSearches\EditSavedSearchesRestController;
-use CultuurNet\UDB3\Symfony\SavedSearches\ReadSavedSearchesController;
+use CultuurNet\UDB3\Http\SavedSearches\EditSavedSearchesRestController;
+use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

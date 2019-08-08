@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Symfony\Offer\OfferPermissionsController;
-use CultuurNet\UDB3\Symfony\Organizer\EditOrganizerRestController;
-use CultuurNet\UDB3\Symfony\Organizer\ReadOrganizerRestController;
+use CultuurNet\UDB3\Http\Offer\OfferPermissionsController;
+use CultuurNet\UDB3\Http\Organizer\EditOrganizerRestController;
+use CultuurNet\UDB3\Http\Organizer\ReadOrganizerRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

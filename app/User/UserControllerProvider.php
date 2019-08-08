@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Silex\User;
 
-use CultuurNet\UDB3\Symfony\User\SearchQueryFactory;
-use CultuurNet\UDB3\Symfony\User\SearchUserController;
-use CultuurNet\UDB3\Symfony\User\UserIdentityController;
-use CultuurNet\UDB3\Symfony\User\UserLabelMemoryRestController;
+use CultuurNet\UDB3\Http\User\SearchQueryFactory;
+use CultuurNet\UDB3\Http\User\SearchUserController;
+use CultuurNet\UDB3\Http\User\UserIdentityController;
+use CultuurNet\UDB3\Http\User\UserLabelMemoryRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

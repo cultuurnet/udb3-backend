@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex\Proxy;
 
-use CultuurNet\UDB3\Symfony\Proxy\CdbXmlProxy;
-use CultuurNet\UDB3\Symfony\Proxy\FilterPathMethodProxy;
-use CultuurNet\UDB3\Symfony\Proxy\FilterPathRegex;
+use CultuurNet\UDB3\Http\Proxy\CdbXmlProxy;
+use CultuurNet\UDB3\Http\Proxy\FilterPathMethodProxy;
+use CultuurNet\UDB3\Http\Proxy\FilterPathRegex;
 use GuzzleHttp\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

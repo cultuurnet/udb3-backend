@@ -5,8 +5,8 @@
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Symfony\Place\EditPlaceRestController;
-use CultuurNet\UDB3\Symfony\Place\ReadPlaceRestController;
+use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
+use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

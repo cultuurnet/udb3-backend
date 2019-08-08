@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Jobs;
 
-use CultuurNet\UDB3\Symfony\Jobs\ReadRestController;
-use CultuurNet\UDB3\Symfony\Jobs\ResqueJobStatusFactory;
+use CultuurNet\UDB3\Http\Jobs\ReadRestController;
+use CultuurNet\UDB3\Http\Jobs\ResqueJobStatusFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
