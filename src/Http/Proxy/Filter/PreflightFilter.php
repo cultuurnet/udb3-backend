@@ -15,14 +15,16 @@ class PreflightFilter implements FilterInterface
 
     public function __construct(FilterPathRegex $path, StringLiteral $method)
     {
-        $this->preflightFilter = new AndFilter([
-            new PathFilter($path),
-            new MethodFilter(new StringLiteral('OPTIONS')),
-            new HeaderFilter(
-                new StringLiteral('Access-Control-Request-Method'),
-                $method
-            ),
-        ]);
+        $this->preflightFilter = new AndFilter(
+            [
+                new PathFilter($path),
+                new MethodFilter(new StringLiteral('OPTIONS')),
+                new HeaderFilter(
+                    new StringLiteral('Access-Control-Request-Method'),
+                    $method
+                ),
+            ]
+        );
     }
 
     public function matches(RequestInterface $request)

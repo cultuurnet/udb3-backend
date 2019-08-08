@@ -107,7 +107,7 @@ class ReadRestController
         $limit = 0;
 
         if ($query->getOffset() && $query->getLimit()) {
-            $pageNumber = (int)($query->getOffset()->toNative() /
+            $pageNumber = (int) ($query->getOffset()->toNative() /
                 $query->getLimit()->toNative());
         }
 

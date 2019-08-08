@@ -122,8 +122,8 @@ class EditOrganizerRestController
         $titleJSONDeserializer = new TitleJSONDeserializer(
             false,
             new StringLiteral('name')
-        )
-        ;
+        );
+
         $title = $titleJSONDeserializer->deserialize(
             new StringLiteral($request->getContent())
         );

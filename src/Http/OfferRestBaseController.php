@@ -60,14 +60,14 @@ abstract class OfferRestBaseController
 
     public function updateTypicalAgeRange(Request $request, string $cdbid): Response
     {
-        $body_content = json_decode($request->getContent());
+        $bodyContent = json_decode($request->getContent());
 
         // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (empty($body_content->typicalAgeRange)) {
+        if (empty($bodyContent->typicalAgeRange)) {
             return new JsonResponse(['error' => "typicalAgeRange required"], 400);
         }
 
-        $ageRange = AgeRange::fromString($body_content->typicalAgeRange);
+        $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
 
         $this->editor->updateTypicalAgeRange($cdbid, $ageRange);
 
@@ -93,14 +93,14 @@ abstract class OfferRestBaseController
      */
     public function updateOrganizerFromJsonBody(Request $request, string $cdbid): Response
     {
-        $body_content = json_decode($request->getContent());
+        $bodyContent = json_decode($request->getContent());
 
         // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (empty($body_content->organizer)) {
+        if (empty($bodyContent->organizer)) {
             return new JsonResponse(['error' => "organizer required"], 400);
         }
 
-        $this->editor->updateOrganizer($cdbid, $body_content->organizer);
+        $this->editor->updateOrganizer($cdbid, $bodyContent->organizer);
 
         return new NoContent();
     }
@@ -114,22 +114,22 @@ abstract class OfferRestBaseController
 
     public function updateContactPoint(Request $request, string $cdbid): Response
     {
-        $body_content = json_decode($request->getContent());
+        $bodyContent = json_decode($request->getContent());
 
         // @todo Use a data validator and change to an exception so it can be converted to an API problem
-        if (empty($body_content->contactPoint) ||
-            !isset($body_content->contactPoint->url) ||
-            !isset($body_content->contactPoint->email) ||
-            !isset($body_content->contactPoint->phone)) {
+        if (empty($bodyContent->contactPoint) ||
+            !isset($bodyContent->contactPoint->url) ||
+            !isset($bodyContent->contactPoint->email) ||
+            !isset($bodyContent->contactPoint->phone)) {
             return new JsonResponse(['error' => "contactPoint and his properties required"], 400);
         }
 
         $this->editor->updateContactPoint(
             $cdbid,
             new ContactPoint(
-                $body_content->contactPoint->phone,
-                $body_content->contactPoint->email,
-                $body_content->contactPoint->url
+                $bodyContent->contactPoint->phone,
+                $bodyContent->contactPoint->email,
+                $bodyContent->contactPoint->url
             )
         );
 
@@ -148,13 +148,13 @@ abstract class OfferRestBaseController
 
     public function addImage(Request $request, string $itemId): Response
     {
-        $body_content = json_decode($request->getContent());
-        if (empty($body_content->mediaObjectId)) {
+        $bodyContent = json_decode($request->getContent());
+        if (empty($bodyContent->mediaObjectId)) {
             return new JsonResponse(['error' => "media object id required"], 400);
         }
 
         // @todo Validate that this id exists and is in fact an image and not a different type of media object
-        $imageId = new UUID($body_content->mediaObjectId);
+        $imageId = new UUID($bodyContent->mediaObjectId);
 
         $this->editor->addImage($itemId, $imageId);
 
@@ -163,12 +163,12 @@ abstract class OfferRestBaseController
 
     public function selectMainImage(Request $request, string $itemId): Response
     {
-        $body_content = json_decode($request->getContent());
-        if (empty($body_content->mediaObjectId)) {
+        $bodyContent = json_decode($request->getContent());
+        if (empty($bodyContent->mediaObjectId)) {
             return new JsonResponse(['error' => "media object id required"], 400);
         }
 
-        $mediaObjectId = new UUID($body_content->mediaObjectId);
+        $mediaObjectId = new UUID($bodyContent->mediaObjectId);
 
         // @todo MediaManagerInterface has no getImage() method.
         // Also, can we be sure that the given $mediaObjectId points to an image and not a different type?
@@ -181,9 +181,9 @@ abstract class OfferRestBaseController
 
     public function updateImage(Request $request, string $itemId, string $mediaObjectId): Response
     {
-        $body_content = json_decode($request->getContent());
-        $description = new StringLiteral($body_content->description);
-        $copyrightHolder = new StringLiteral($body_content->copyrightHolder);
+        $bodyContent = json_decode($request->getContent());
+        $description = new StringLiteral($bodyContent->description);
+        $copyrightHolder = new StringLiteral($bodyContent->copyrightHolder);
         $imageId = new UUID($mediaObjectId);
 
         // @todo MediaManagerInterface has no getImage() method.

@@ -76,13 +76,13 @@ class EditRoleRestController
      */
     public function create(Request $request)
     {
-        $body_content = json_decode($request->getContent());
-        if (empty($body_content->name)) {
+        $bodyContent = json_decode($request->getContent());
+        if (empty($bodyContent->name)) {
             throw new \InvalidArgumentException('Required fields are missing');
         }
 
         $roleId = $this->service->create(
-            new StringLiteral($body_content->name)
+            new StringLiteral($bodyContent->name)
         );
 
         return new JsonResponse(['roleId' => $roleId->toNative()], 201);

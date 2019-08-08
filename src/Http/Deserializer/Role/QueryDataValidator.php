@@ -18,7 +18,7 @@ class QueryDataValidator implements DataValidatorInterface
     {
         $this->requiredFieldsValidator = new NotEmptyPropertiesDataValidator(
             [
-                'query'
+                'query',
             ]
         );
     }

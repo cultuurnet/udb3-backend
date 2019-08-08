@@ -44,7 +44,7 @@ class CompositeDataValidator implements DataValidatorInterface
         $c = clone $this;
         $c->validators[] = [
             'validator' => $validator,
-            'depth' => $depth
+            'depth' => $depth,
         ];
         return $c;
     }

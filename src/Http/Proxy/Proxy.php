@@ -76,9 +76,12 @@ class Proxy
             // exact same request and end up in an infinite loop.
             $psr7Request = $this->requestTransformer->transform($psr7Request);
 
-            $psr7Response = $this->client->send($psr7Request, [
-                'http_errors' => false,
-            ]);
+            $psr7Response = $this->client->send(
+                $psr7Request,
+                [
+                    'http_errors' => false,
+                ]
+            );
             $response = $this->httpFoundationFactory->createResponse($psr7Response);
 
             // Without removing the transfer encoding the consuming client would

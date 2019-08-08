@@ -70,7 +70,7 @@ class EditPlaceRestController extends OfferRestBaseController
      * Constructs a RestController.
      *
      * @param PlaceEditingServiceInterface $placeEditor
-     * @param RepositoryInterface $event_relations_repository
+     * @param RepositoryInterface $eventRelationsRepository
      * @param MediaManagerInterface $mediaManager
      * @param IriGeneratorInterface $iriGenerator
      * @param ApiKeyReaderInterface $apiKeyReader
@@ -79,7 +79,7 @@ class EditPlaceRestController extends OfferRestBaseController
      */
     public function __construct(
         PlaceEditingServiceInterface $placeEditor,
-        RepositoryInterface $event_relations_repository,
+        RepositoryInterface $eventRelationsRepository,
         MediaManagerInterface $mediaManager,
         IriGeneratorInterface $iriGenerator,
         ApiKeyReaderInterface $apiKeyReader,
@@ -87,7 +87,7 @@ class EditPlaceRestController extends OfferRestBaseController
         ConsumerSpecificationInterface $shouldApprove
     ) {
         parent::__construct($placeEditor, $mediaManager);
-        $this->eventRelationsRepository = $event_relations_repository;
+        $this->eventRelationsRepository = $eventRelationsRepository;
         $this->iriGenerator = $iriGenerator;
 
         $this->apiKeyReader = $apiKeyReader;
@@ -126,7 +126,7 @@ class EditPlaceRestController extends OfferRestBaseController
 
         $createMethod = $approve ? 'createApprovedPlace' : 'createPlace';
 
-        $place_id = $this->editor->$createMethod(
+        $placeId = $this->editor->$createMethod(
             $majorInfo->getMainLanguage(),
             $majorInfo->getTitle(),
             $majorInfo->getType(),
@@ -137,8 +137,8 @@ class EditPlaceRestController extends OfferRestBaseController
 
         return new JsonResponse(
             [
-                'placeId' => $place_id,
-                'url' => $this->iriGenerator->iri($place_id),
+                'placeId' => $placeId,
+                'url' => $this->iriGenerator->iri($placeId),
             ],
             201
         );

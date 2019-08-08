@@ -140,7 +140,7 @@ class EditEventRestController extends OfferRestBaseController
         return new JsonResponse(
             [
                 'eventId' => $eventId,
-                'url' => $this->iriGenerator->iri($eventId)
+                'url' => $this->iriGenerator->iri($eventId),
             ],
             201
         );
@@ -213,9 +213,11 @@ class EditEventRestController extends OfferRestBaseController
 
         $copiedEventId = $this->editor->copyEvent($cdbid, $copyCalendar);
 
-        return JsonResponse::create([
-            'eventId' => $copiedEventId,
-            'url' => $this->iriGenerator->iri($copiedEventId),
-        ]);
+        return JsonResponse::create(
+            [
+                'eventId' => $copiedEventId,
+                'url' => $this->iriGenerator->iri($copiedEventId),
+            ]
+        );
     }
 }

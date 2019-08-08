@@ -55,15 +55,19 @@ class FilterPathMethodProxy extends Proxy
      */
     private function createFilter(FilterPathRegex $path, StringLiteral $method)
     {
-        $pathMethodFilter = new AndFilter([
-            new PathFilter($path),
-            new MethodFilter($method),
-        ]);
+        $pathMethodFilter = new AndFilter(
+            [
+                new PathFilter($path),
+                new MethodFilter($method),
+            ]
+        );
 
-        return new OrFilter([
-            $pathMethodFilter,
-            new PreflightFilter($path, $method),
-        ]);
+        return new OrFilter(
+            [
+                $pathMethodFilter,
+                new PreflightFilter($path, $method),
+            ]
+        );
     }
 
     /**
