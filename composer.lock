@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "667f08104d2e0ade8f5ae2039e961d70",
+    "content-hash": "e41693cb8e88994d0e9b3912cf58854b",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -785,12 +785,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "9ebf3f727c058b0b20bbaf75eb21e528906a9271"
+                "reference": "683122764da40b708f1785ba98b1d6aa710d972a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/9ebf3f727c058b0b20bbaf75eb21e528906a9271",
-                "reference": "9ebf3f727c058b0b20bbaf75eb21e528906a9271",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/683122764da40b708f1785ba98b1d6aa710d972a",
+                "reference": "683122764da40b708f1785ba98b1d6aa710d972a",
                 "shasum": ""
             },
             "require": {
@@ -836,7 +836,7 @@
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "time": "2019-02-07 08:32:01"
+            "time": "2019-03-13 16:49:38"
         },
         {
             "name": "cultuurnet/cdb",
@@ -5967,16 +5967,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.50",
+            "version": "v2.7.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "e8eb43e042f839b01afe6b5019e4c0c204634dfb"
+                "reference": "b67e5cbd2bf837fb3681f2c4965826d6c6758532"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/e8eb43e042f839b01afe6b5019e4c0c204634dfb",
-                "reference": "e8eb43e042f839b01afe6b5019e4c0c204634dfb",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b67e5cbd2bf837fb3681f2c4965826d6c6758532",
+                "reference": "b67e5cbd2bf837fb3681f2c4965826d6c6758532",
                 "shasum": ""
             },
             "require": {
@@ -6019,20 +6019,20 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-08-02T06:59:56+00:00"
+            "time": "2019-04-16T09:58:21+00:00"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v2.8.49",
+            "version": "v2.8.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "3df0207d4c973eb9c91b38a608aef4654dc256fa"
+                "reference": "a01e2b4b267fda24dba9b06cd1c575ca87a51ad2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/3df0207d4c973eb9c91b38a608aef4654dc256fa",
-                "reference": "3df0207d4c973eb9c91b38a608aef4654dc256fa",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/a01e2b4b267fda24dba9b06cd1c575ca87a51ad2",
+                "reference": "a01e2b4b267fda24dba9b06cd1c575ca87a51ad2",
                 "shasum": ""
             },
             "require": {
@@ -6103,7 +6103,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2018-12-06T14:45:07+00:00"
+            "time": "2019-04-17T16:42:28+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -6383,7 +6383,7 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v2.8.49",
+            "version": "v2.8.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
@@ -7008,16 +7008,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.6",
+            "version": "1.8.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "20da13beba0dde8fb648be3cc19765732790f46e"
+                "reference": "a85e67b86e9b8520d07e6415fcbcb8391b44a75b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/20da13beba0dde8fb648be3cc19765732790f46e",
-                "reference": "20da13beba0dde8fb648be3cc19765732790f46e",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/a85e67b86e9b8520d07e6415fcbcb8391b44a75b",
+                "reference": "a85e67b86e9b8520d07e6415fcbcb8391b44a75b",
                 "shasum": ""
             },
             "require": {
@@ -7037,9 +7037,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8.x-dev",
-                    "dev-develop": "1.9.x-dev",
-                    "dev-release-2.0": "2.0.x-dev"
+                    "dev-release-1.8": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -7068,7 +7066,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-09-05T19:29:37+00:00"
+            "time": "2019-08-06T17:53:53+00:00"
         },
         {
             "name": "zendframework/zend-eventmanager",
@@ -9201,6 +9199,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "chrisboulton/php-resque": 20,
+        "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
