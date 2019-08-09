@@ -84,7 +84,6 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
         $app['uitpas_event_process_manager'] = $app->share(
             function (Application $app) {
                 return new EventProcessManager(
-                    $app['event_jsonld_repository'],
                     $app['event_command_bus'],
                     $app['uitpas_label_repository'],
                     $app['uitpas_logger']
