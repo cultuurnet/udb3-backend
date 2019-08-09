@@ -25,7 +25,7 @@ class ExportServiceProvider implements ServiceProviderInterface
         $app['event_export_twig_environment'] = $app->share(
             function ($app) {
                 $loader = new \Twig_Loader_Filesystem(
-                    __DIR__ . '/../../vendor/cultuurnet/udb3-export/src/Format/HTML/templates'
+                    __DIR__ . '/../../src/EventExport/Format/HTML/templates'
                 );
 
                 $twig = new Twig_Environment($loader);
