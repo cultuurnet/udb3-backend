@@ -76,6 +76,7 @@ class EventProcessManager implements EventListenerInterface
 
         $uitPasLabels = $this->uitpasLabelsRepository->loadAll();
 
+        // Create a list of UiTPAS labels that are supposed to be on the event.
         $expectedUitPasLabelsForEvent = array_map(
             function (CardSystem $cardSystem) use ($uitPasLabels, $eventId) {
                 $id = $cardSystem->getId()->toNative();
@@ -93,6 +94,7 @@ class EventProcessManager implements EventListenerInterface
         );
         $expectedUitPasLabelsForEvent = array_filter($expectedUitPasLabelsForEvent);
 
+        // Create a list of UiTPAS labels that are not supposed to be on the event.
         $uitPasLabelsToRemoveIfApplied = [];
         foreach ($uitPasLabels as $uitPasLabel) {
             $remove = true;
@@ -109,11 +111,15 @@ class EventProcessManager implements EventListenerInterface
             }
         }
 
+        // Attempt to remove the labels that are not supposed to be on the event.
+        // The event aggregate will check if the label is present and only record a LabelRemoved event if it was.
         $this->logger->info(
             'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
         );
         $this->removeLabelsFromEvent($eventId, $uitPasLabelsToRemoveIfApplied);
 
+        // Attempt to add the labels that are supposed to be on the event.
+        // The event aggregate will check if the label is present and only record a LabelAdded event if it was not.
         if (count($expectedUitPasLabelsForEvent) > 0) {
             $this->logger->info(
                 'Adding UiTPAS labels for active card systems on event ' . $eventId . '(if not applied yet)'
