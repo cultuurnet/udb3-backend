@@ -114,7 +114,7 @@ class EventProcessManager implements EventListenerInterface
         );
         $this->removeLabelsFromEvent($eventId, $uitPasLabelsToRemoveIfApplied);
 
-        if ($eventCardSystemsUpdated->getCardSystems()->length() > 0) {
+        if (count($expectedUitPasLabelsForEvent) > 0) {
             $this->logger->info(
                 'Adding UiTPAS labels for active card systems on event ' . $eventId . '(if not applied yet)'
             );
