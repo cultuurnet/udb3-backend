@@ -8,12 +8,13 @@ use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class LocationPreProcessingDocumentImporterTest extends TestCase
 {
     /**
-     * @var DocumentImporterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentImporterInterface|MockObject
      */
     private $importer;
 
@@ -23,7 +24,7 @@ class LocationPreProcessingDocumentImporterTest extends TestCase
     private $placeIdParser;
 
     /**
-     * @var DocumentRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentRepositoryInterface|MockObject
      */
     private $placeDocumentRepository;
 

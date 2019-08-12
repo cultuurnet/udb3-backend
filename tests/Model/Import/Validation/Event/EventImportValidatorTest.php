@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class EventImportValidatorTest extends TestCase
@@ -23,17 +24,17 @@ class EventImportValidatorTest extends TestCase
     private $uuidParser;
 
     /**
-     * @var UserIdentificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UserIdentificationInterface|MockObject
      */
     private $userIdentification;
 
     /**
-     * @var LabelsRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelsRepository|MockObject
      */
     private $labelsRepository;
 
     /**
-     * @var LabelRelationsRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelRelationsRepository|MockObject
      */
     private $labelRelationsRepository;
 

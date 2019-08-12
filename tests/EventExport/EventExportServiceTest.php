@@ -68,11 +68,6 @@ class EventExportServiceTest extends TestCase
     protected $searchResults;
 
     /**
-     * @var IriOfferIdentifier[]
-     */
-    private $offerIdentifiers;
-
-    /**
      * @var array
      */
     protected $searchResultsDetails;
@@ -182,13 +177,6 @@ class EventExportServiceTest extends TestCase
                     ];
                 }
             );
-
-        $offerIdentifiers = array_filter(
-            $this->searchResults,
-            function ($offerIdentifier) use ($unavailableEventIds) {
-                return !in_array($offerIdentifier->getId(), $unavailableEventIds);
-            }
-        );
 
         $this->resultsGenerator->expects($this->any())
             ->method('search')

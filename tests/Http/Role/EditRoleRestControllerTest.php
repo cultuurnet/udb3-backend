@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
 use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Identity\UUID;
@@ -34,27 +35,27 @@ class EditRoleRestControllerTest extends TestCase
     private $labelId;
 
     /**
-     * @var RoleEditingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RoleEditingServiceInterface|MockObject
      */
     private $editService;
 
     /**
-     * @var CommandBusInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var CommandBusInterface|MockObject
      */
     private $commandBus;
 
     /**
-     * @var UpdateRoleRequestDeserializer|\PHPUnit_Framework_MockObject_MockObject
+     * @var UpdateRoleRequestDeserializer|MockObject
      */
     private $updateRoleRequestDeserializer;
 
     /**
-     * @var QueryJSONDeserializer|\PHPUnit_Framework_MockObject_MockObject
+     * @var QueryJSONDeserializer|MockObject
      */
     private $queryJsonDeserializer;
 
     /**
-     * @var ReadServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ReadServiceInterface|MockObject
      */
     private $labelService;
 

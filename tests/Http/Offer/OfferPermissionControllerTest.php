@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -16,7 +17,7 @@ class OfferPermissionControllerTest extends TestCase
     private $permission;
 
     /**
-     * @var PermissionVoterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var PermissionVoterInterface|MockObject
      */
     private $voter;
 

@@ -6,7 +6,6 @@ use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Storage\PurgeServiceInterface;
 use CultuurNet\UDB3\Storage\PurgeServiceManager;
 use Knp\Command\Command;
-use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

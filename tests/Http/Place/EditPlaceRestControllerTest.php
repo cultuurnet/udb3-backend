@@ -18,8 +18,8 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
 use ValueObjects\Identity\UUID;
@@ -32,22 +32,22 @@ class EditPlaceRestControllerTest extends TestCase
     private $placeRestController;
 
     /**
-     * @var PlaceEditingServiceInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var PlaceEditingServiceInterface|MockObject
      */
     private $placeEditingService;
 
     /**
-     * @var RepositoryInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var RepositoryInterface|MockObject
      */
     private $relationsRepository;
 
     /**
-     * @var MediaManagerInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var MediaManagerInterface|MockObject
      */
     private $mediaManager;
 
     /**
-     * @var IriGeneratorInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var IriGeneratorInterface|MockObject
      */
     private $iriGenerator;
 
@@ -67,12 +67,12 @@ class EditPlaceRestControllerTest extends TestCase
     private $apiKey;
 
     /**
-     * @var ConsumerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerInterface|\MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerSpecificationInterface|\MockObject
      */
     private $shouldApprove;
 

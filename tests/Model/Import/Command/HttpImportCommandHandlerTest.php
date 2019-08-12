@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Message\RequestInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
@@ -22,7 +23,7 @@ class HttpImportCommandHandlerTest extends TestCase
     private $iriGenerator;
 
     /**
-     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClientInterface|MockObject
      */
     private $httpClient;
 

@@ -5,8 +5,6 @@ namespace CultuurNet\UDB3\Http\User;
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\JsonLdResponse;
-use CultuurNet\UDB3\UiTID\UsersInterface;
-use CultuurNet\UDB3\User\CultureFeedUserIdentityDetailsFactoryInterface;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolverInterface;
 use Symfony\Component\HttpFoundation\Response;

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
@@ -17,7 +18,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class CalendarJSONDeserializerTest extends TestCase
 {
     /**
-     * @var DataValidatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DataValidatorInterface|MockObject
      */
     private $calendarDataValidator;
 

@@ -5,7 +5,6 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Event\Events\EventCdbXMLInterface;
 use CultuurNet\UDB3\UDB2\EventCdbXmlServiceInterface;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

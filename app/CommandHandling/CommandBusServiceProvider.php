@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
-use Broadway\CommandHandling\SimpleCommandBus;
 use CultuurNet\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;

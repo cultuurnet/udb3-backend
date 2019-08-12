@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "364cace96922dc43627af8a7360c9c64",
+    "content-hash": "8352e94f512a063d3bffe3c62a9131d7",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1814,6 +1814,53 @@
             "time": "2018-06-29 14:08:37"
         },
         {
+            "name": "cultuurnet/udb3-uitpas-bridge",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-uitpas-bridge.git",
+                "reference": "c987c07bcb648c44cbe3a4e38dfe13e5ea1b5920"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-uitpas-bridge/zipball/c987c07bcb648c44cbe3a4e38dfe13e5ea1b5920",
+                "reference": "c987c07bcb648c44cbe3a4e38dfe13e5ea1b5920",
+                "shasum": ""
+            },
+            "require": {
+                "2dotstwice/collection": "~1.0",
+                "broadway/broadway": "~0.10",
+                "cultuurnet/broadway-tools": "~0.1",
+                "cultuurnet/culturefeed-php": "~1.9",
+                "cultuurnet/deserializer": "~0.1",
+                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/valueobjects": "~3.0",
+                "php": "~5.6 || >=7.0"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\UiTPAS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "time": "2018-06-29 14:25:13"
+        },
+        {
             "name": "cultuurnet/uitid-credentials",
             "version": "dev-master",
             "source": {
@@ -1871,22 +1918,22 @@
         },
         {
             "name": "cultuurnet/valueobjects",
-            "version": "v3.0",
+            "version": "v3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/valueobjects.git",
-                "reference": "de7ab566be73e9e2c73bbbf05177646b11fc2b05"
+                "reference": "8a533b1c039d05fdd26fbd092bc9bcdb2ae9ae5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/valueobjects/zipball/de7ab566be73e9e2c73bbbf05177646b11fc2b05",
-                "reference": "de7ab566be73e9e2c73bbbf05177646b11fc2b05",
+                "url": "https://api.github.com/repos/cultuurnet/valueobjects/zipball/8a533b1c039d05fdd26fbd092bc9bcdb2ae9ae5a",
+                "reference": "8a533b1c039d05fdd26fbd092bc9bcdb2ae9ae5a",
                 "shasum": ""
             },
             "require": {
                 "league/geotools": "~0.3.1",
                 "marc-mabe/php-enum": "~1.0",
-                "mathiasverraes/money": "~1.2",
+                "moneyphp/money": "~1.3",
                 "php": ">=5.3.3",
                 "ramsey/uuid": "~2.5",
                 "zendframework/zend-validator": "~2.2"
@@ -1911,16 +1958,16 @@
             ],
             "authors": [
                 {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/nicolopignatelli/valueobjects/graphs/contributors"
-                },
-                {
                     "name": "Nicolò Pignatelli",
                     "email": "pignatelli.nicolo@gmail.com"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/nicolopignatelli/valueobjects/graphs/contributors"
                 }
             ],
             "description": "A PHP library/collection of classes aimed to help developers using and undestanding immutable objects.",
-            "time": "2015-05-15T13:19:42+00:00"
+            "time": "2019-08-08T14:52:13+00:00"
         },
         {
             "name": "danielstjules/stringy",
@@ -3990,62 +4037,6 @@
                 "typehint"
             ],
             "time": "2015-10-04T17:35:32+00:00"
-        },
-        {
-            "name": "mathiasverraes/money",
-            "version": "v1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/moneyphp/money.git",
-                "reference": "1926c54143da8eec322ae4985014cd73a98b0792"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/moneyphp/money/zipball/1926c54143da8eec322ae4985014cd73a98b0792",
-                "reference": "1926c54143da8eec322ae4985014cd73a98b0792",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "suggest": {
-                "Sylius/SyliusMoneyBundle": "Sylius' Symfony2 integration with Money library",
-                "TheBigBrainsCompany/TbbcMoneyBundle": "Very complete Symfony2 bundle with support for Twig, Doctrine, Forms, ...",
-                "pink-tie/money-bundle": "Pink-Tie's Symfony2 integration with Money library"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Money": "lib"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mathias Verraes",
-                    "email": "mathias@verraes.net"
-                }
-            ],
-            "description": "PHP implementation of Fowler's Money pattern",
-            "homepage": "http://verraes.net/2011/04/fowler-money-pattern-in-php/",
-            "keywords": [
-                "Generic Sub-domain",
-                "Value Object",
-                "money"
-            ],
-            "abandoned": "moneyphp/money",
-            "time": "2016-01-16T22:03:46+00:00"
         },
         {
             "name": "moneyphp/money",
@@ -7319,6 +7310,62 @@
                 "symfony"
             ],
             "time": "2017-06-08T10:48:30+00:00"
+        },
+        {
+            "name": "mathiasverraes/money",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moneyphp/money.git",
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/1926c54143da8eec322ae4985014cd73a98b0792",
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "Sylius/SyliusMoneyBundle": "Sylius' Symfony2 integration with Money library",
+                "TheBigBrainsCompany/TbbcMoneyBundle": "Very complete Symfony2 bundle with support for Twig, Doctrine, Forms, ...",
+                "pink-tie/money-bundle": "Pink-Tie's Symfony2 integration with Money library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Money": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias Verraes",
+                    "email": "mathias@verraes.net"
+                }
+            ],
+            "description": "PHP implementation of Fowler's Money pattern",
+            "homepage": "http://verraes.net/2011/04/fowler-money-pattern-in-php/",
+            "keywords": [
+                "Generic Sub-domain",
+                "Value Object",
+                "money"
+            ],
+            "abandoned": "moneyphp/money",
+            "time": "2016-01-16T22:03:46+00:00"
         },
         {
             "name": "mikey179/vfsstream",

@@ -58,6 +58,7 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
@@ -69,7 +70,7 @@ use ValueObjects\Web\Url;
 class PlaceDocumentImporterTest extends TestCase
 {
     /**
-     * @var RepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RepositoryInterface|MockObject
      */
     private $repository;
 
@@ -79,7 +80,7 @@ class PlaceDocumentImporterTest extends TestCase
     private $denormalizer;
 
     /**
-     * @var ImageCollectionFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var ImageCollectionFactory|MockObject
      */
     private $imageCollectionFactory;
 
@@ -89,17 +90,17 @@ class PlaceDocumentImporterTest extends TestCase
     private $commandBus;
 
     /**
-     * @var ConsumerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerInterface|MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerSpecificationInterface|MockObject
      */
     private $shouldApprove;
 
     /**
-     * @var LockedLabelRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LockedLabelRepository|MockObject
      */
     private $lockedLabelRepository;
 

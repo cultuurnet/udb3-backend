@@ -4,7 +4,6 @@
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion;
 
 use CultureFeed_Uitpas_Event_CultureEvent;
-use CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions;
 use CultureFeed_Uitpas_Calendar;
 use CultureFeed_Uitpas_Calendar_Period;
 use CultuurNet\Clock\Clock;

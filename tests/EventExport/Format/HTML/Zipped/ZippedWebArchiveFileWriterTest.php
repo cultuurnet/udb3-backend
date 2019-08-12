@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML\Zipped;
 
 use Alchemy\Zippy\Zippy;
 use CultuurNet\UDB3\EventExport\Format\HTML\HTMLFileWriter;
-use CultuurNet\UDB3\EventExport\Format\HTML\Zipped\ZippedWebArchiveFileWriter;
-
 use PHPUnit\Framework\TestCase;
 use \Twig_Environment;
 use \Twig_Loader_Filesystem;

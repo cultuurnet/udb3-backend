@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DeserializerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,12 +13,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 class CommandDeserializerControllerTest extends TestCase
 {
     /**
-     * @var DeserializerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DeserializerInterface|MockObject
      */
     private $deserializer;
 
     /**
-     * @var CommandBusInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var CommandBusInterface|MockObject
      */
     private $commandBus;
 

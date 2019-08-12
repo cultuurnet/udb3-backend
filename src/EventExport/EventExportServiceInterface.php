@@ -2,10 +2,8 @@
 
 namespace CultuurNet\UDB3\EventExport;
 
-use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Web\EmailAddress;
-use ValueObjects\Web\Url;
 
 interface EventExportServiceInterface
 {

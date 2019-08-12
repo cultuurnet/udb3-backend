@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Title;
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
@@ -23,12 +24,12 @@ use ValueObjects\Web\Url;
 class EditOrganizerRestControllerTest extends TestCase
 {
     /**
-     * @var OrganizerEditingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OrganizerEditingServiceInterface|MockObject
      */
     private $editService;
 
     /**
-     * @var IriGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IriGeneratorInterface|MockObject
      */
     private $iriGenerator;
 

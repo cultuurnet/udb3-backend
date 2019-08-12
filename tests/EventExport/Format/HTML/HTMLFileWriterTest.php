@@ -2,9 +2,7 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
-use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
 use PHPUnit\Framework\TestCase;
-use Twig_Environment;
 
 class HTMLFileWriterTest extends TestCase
 {

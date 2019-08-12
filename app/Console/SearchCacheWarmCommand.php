@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Search\Cache\CacheManager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Input\InputInterface;

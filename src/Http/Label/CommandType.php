@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Http\Label;
 
-use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Enum\Enum;
 
 /**

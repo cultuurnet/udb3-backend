@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Http\Jobs;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ReadRestControllerTest extends TestCase
 {
     /**
-     * @var JobsStatusFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var JobsStatusFactoryInterface|MockObject
      */
     private $jobsStatusFactory;
 

@@ -4,13 +4,14 @@ namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\UDB3\Http\Assert\JsonEquals;
 use CultuurNet\UDB3\User\CultureFeedUserIdentityDetailsFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class SearchUserControllerTest extends TestCase
 {
     /**
-     * @var \ICultureFeed|\PHPUnit_Framework_MockObject_MockObject
+     * @var \ICultureFeed|MockObject
      */
     private $cultureFeed;
 
