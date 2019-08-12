@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Properties;
 
-use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use \InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

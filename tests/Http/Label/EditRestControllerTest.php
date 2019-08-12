@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Identity\UUID;
@@ -19,7 +20,7 @@ class EditRestControllerTest extends TestCase
     private $uuid;
 
     /**
-     * @var WriteServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var WriteServiceInterface|MockObject
      */
     private $writeService;
 

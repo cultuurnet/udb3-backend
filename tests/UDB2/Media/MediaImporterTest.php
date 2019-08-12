@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class MediaImporterTest extends TestCase

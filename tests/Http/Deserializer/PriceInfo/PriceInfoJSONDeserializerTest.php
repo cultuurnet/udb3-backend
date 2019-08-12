@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Http\Deserializer\PriceInfo;
 
 use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;

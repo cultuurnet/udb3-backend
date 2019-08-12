@@ -64,6 +64,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ValueObjects\Identity\UUID;
@@ -74,7 +75,7 @@ use ValueObjects\Web\Url;
 class EventDocumentImporterTest extends TestCase
 {
     /**
-     * @var RepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RepositoryInterface|MockObject
      */
     private $repository;
 
@@ -84,7 +85,7 @@ class EventDocumentImporterTest extends TestCase
     private $denormalizer;
 
     /**
-     * @var ImageCollectionFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @var ImageCollectionFactory|MockObject
      */
     private $imageCollectionFactory;
 
@@ -94,17 +95,17 @@ class EventDocumentImporterTest extends TestCase
     private $commandBus;
 
     /**
-     * @var ConsumerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerInterface|MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerSpecificationInterface|MockObject
      */
     private $shouldApprove;
 
     /**
-     * @var LockedLabelRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LockedLabelRepository|MockObject
      */
     private $lockedLabelRepository;
 

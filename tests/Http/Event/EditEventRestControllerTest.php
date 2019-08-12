@@ -19,8 +19,8 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use ValueObjects\Identity\UUID;
@@ -33,17 +33,17 @@ class EditEventRestControllerTest extends TestCase
     private $controller;
 
     /**
-     * @var EventEditingServiceInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var EventEditingServiceInterface|MockObject
      */
     private $eventEditor;
 
     /**
-     * @var MediaManagerInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var MediaManagerInterface|MockObject
      */
     private $mediaManager;
 
     /**
-     * @var IriGeneratorInterface|PHPUnit_Framework_MockObject_MockObject
+     * @var IriGeneratorInterface|MockObject
      */
     private $iriGenerator;
 
@@ -63,12 +63,12 @@ class EditEventRestControllerTest extends TestCase
     private $apiKey;
 
     /**
-     * @var ConsumerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerInterface|\MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConsumerSpecificationInterface|MockObject
      */
     private $shouldApprove;
 

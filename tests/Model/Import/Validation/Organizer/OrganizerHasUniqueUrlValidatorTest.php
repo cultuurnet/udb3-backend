@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Model\Import\Validation\Organizer;
 
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\CallbackException;
 use ValueObjects\Web\Url;
@@ -11,7 +12,7 @@ use ValueObjects\Web\Url;
 class OrganizerHasUniqueUrlValidatorTest extends TestCase
 {
     /**
-     * @var WebsiteLookupServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var WebsiteLookupServiceInterface|MockObject
      */
     private $lookupService;
 

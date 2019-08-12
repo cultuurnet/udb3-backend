@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Silex\Role;
 use CultuurNet\UDB3\Role\Services\LocalRoleReadingService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class RoleReadingServiceProvider implements ServiceProviderInterface
 {

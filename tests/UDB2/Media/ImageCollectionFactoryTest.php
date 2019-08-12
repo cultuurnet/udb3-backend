@@ -2,8 +2,6 @@
 
 namespace CultuurNet\UDB3\UDB2\Media;
 
-use CultureFeed_Cdb_Data_Media;
-use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
@@ -128,19 +126,5 @@ class ImageCollectionFactoryTest extends TestCase
 
         $images = $factory->fromUdb2Item($event);
         $this->assertEquals($expectedImages, $images);
-    }
-
-    /**
-     * @param CultureFeed_Cdb_Item_Base $cdbItem
-     * @return CultureFeed_Cdb_Data_Media
-     */
-    private function getMedia(CultureFeed_Cdb_Item_Base $cdbItem)
-    {
-        $details = $cdbItem->getDetails();
-        $details->rewind();
-
-        return $details
-            ->current()
-            ->getMedia();
     }
 }

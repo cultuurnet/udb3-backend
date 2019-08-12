@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class OrganizerImportValidatorTest extends TestCase
@@ -18,22 +19,22 @@ class OrganizerImportValidatorTest extends TestCase
     private $uuidParser;
 
     /**
-     * @var WebsiteLookupServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var WebsiteLookupServiceInterface|MockObject
      */
     private $websiteLookupService;
 
     /**
-     * @var UserIdentificationInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var UserIdentificationInterface|MockObject
      */
     private $userIdentification;
 
     /**
-     * @var LabelsRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelsRepository|MockObject
      */
     private $labelsRepository;
 
     /**
-     * @var LabelRelationsRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var LabelRelationsRepository|MockObject
      */
     private $labelRelationsRepository;
 

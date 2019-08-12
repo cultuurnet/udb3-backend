@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Http\Organizer;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,7 +16,7 @@ class ReadOrganizerRestControllerTest extends TestCase
     const REMOVED_ID = 'removedId';
 
     /**
-     * @var EntityServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EntityServiceInterface|MockObject
      */
     private $service;
 

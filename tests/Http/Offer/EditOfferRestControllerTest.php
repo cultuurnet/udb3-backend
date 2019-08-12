@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\TitleJSONDeserializer;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Money\Currency;
@@ -30,12 +31,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 class EditOfferRestControllerTest extends TestCase
 {
     /**
-     * @var OfferEditingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OfferEditingServiceInterface|MockObject
      */
     private $editService;
 
     /**
-     * @var MainLanguageQueryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MainLanguageQueryInterface|MockObject
      */
     private $mainLanguageQuery;
 
@@ -65,12 +66,12 @@ class EditOfferRestControllerTest extends TestCase
     private $calendarDeserializer;
 
     /**
-     * @var DataValidatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DataValidatorInterface|MockObject
      */
     private $calendarDataValidator;
 
     /**
-     * @var DeserializerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DeserializerInterface|MockObject
      */
     private $facilitiesJSONDeserializer;
 

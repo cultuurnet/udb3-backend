@@ -2,9 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Labels;
 
-use Broadway\Serializer\SimpleInterfaceSerializer;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
-use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Label\CommandHandler;
 use CultuurNet\UDB3\Label\ConstraintAwareLabelService;

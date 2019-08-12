@@ -36,7 +36,6 @@ use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');

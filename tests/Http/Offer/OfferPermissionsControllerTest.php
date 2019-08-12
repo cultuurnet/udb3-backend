@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Assert\JsonEquals;
 use GuzzleHttp\Tests\Psr7\Str;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -18,7 +19,7 @@ class OfferPermissionsControllerTest extends TestCase
     private $permissions;
 
     /**
-     * @var PermissionVoterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var PermissionVoterInterface|MockObject
      */
     private $voter;
 
@@ -69,11 +70,7 @@ class OfferPermissionsControllerTest extends TestCase
      */
     public function it_returns_an_array_of_permissions_for_the_current_user()
     {
-        foreach ($this->permissions as $permission) {
-            $this->voter
-                ->method('isAllowed')
-                ->willReturn(true);
-        }
+        $this->voter->method('isAllowed')->willReturn(true);
 
         $actualResponse = $this->controllerWithUser
             ->getPermissionsForCurrentUser('b06a4ab4-a75b-49d1-b4ab-1992c1db908a');
@@ -94,11 +91,7 @@ class OfferPermissionsControllerTest extends TestCase
      */
     public function it_returns_an_array_of_permissions_for_a_given_user()
     {
-        foreach ($this->permissions as $permission) {
-            $this->voter
-                ->method('isAllowed')
-                ->willReturn(true);
-        }
+        $this->voter->method('isAllowed')->willReturn(true);
 
         $actualResponse = $this->controllerWithUser
             ->getPermissionsForGivenUser(

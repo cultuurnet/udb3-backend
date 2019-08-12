@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Http\Search\SearchController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class SAPISearchControllerProvider implements ControllerProviderInterface
 {
