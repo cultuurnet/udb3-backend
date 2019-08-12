@@ -25,7 +25,7 @@ class EventProcessManager implements EventListenerInterface
     /**
      * @var UiTPASLabelsRepository
      */
-    private $uitpasLabelsRepository;
+    private $uitPasLabelsRepository;
 
     /**
      * @var LoggerInterface
@@ -34,16 +34,16 @@ class EventProcessManager implements EventListenerInterface
 
     /**
      * @param CommandBusInterface $commandBus
-     * @param UiTPASLabelsRepository $uitpasLabelsRepository
+     * @param UiTPASLabelsRepository $uitPasLabelsRepository
      * @param LoggerInterface $logger
      */
     public function __construct(
         CommandBusInterface $commandBus,
-        UiTPASLabelsRepository $uitpasLabelsRepository,
+        UiTPASLabelsRepository $uitPasLabelsRepository,
         LoggerInterface $logger
     ) {
         $this->commandBus = $commandBus;
-        $this->uitpasLabelsRepository = $uitpasLabelsRepository;
+        $this->uitPasLabelsRepository = $uitPasLabelsRepository;
         $this->logger = $logger;
     }
 
@@ -75,7 +75,7 @@ class EventProcessManager implements EventListenerInterface
 
         $this->logger->info('Handling updated card systems message for event ' . $eventId);
 
-        $uitPasLabels = $this->uitpasLabelsRepository->loadAll();
+        $uitPasLabels = $this->uitPasLabelsRepository->loadAll();
 
         $applicableLabelsForEvent = $this->determineApplicableLabelsForEvent(
             $eventCardSystemsUpdated->getCardSystems(),
