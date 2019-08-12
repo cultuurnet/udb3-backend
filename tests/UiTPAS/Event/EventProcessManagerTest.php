@@ -229,7 +229,12 @@ class EventProcessManagerTest extends TestCase
         $this->eventProcessManager->handle($domainMessage);
 
         $this->assertContains(
-            'Could not find UiTPAS label for card system 7 on event cbee7413-ac1e-4dfb-8004-34767eafb8b7',
+            'Handling updated card systems message for event cbee7413-ac1e-4dfb-8004-34767eafb8b7',
+            $this->infoLogs
+        );
+
+        $this->assertContains(
+            'Could not find UiTPAS label for card system 7',
             $this->warningLogs
         );
     }

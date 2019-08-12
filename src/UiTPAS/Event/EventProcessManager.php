@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Psr\Log\LoggerInterface;
@@ -76,56 +77,84 @@ class EventProcessManager implements EventListenerInterface
 
         $uitPasLabels = $this->uitpasLabelsRepository->loadAll();
 
-        // Create a list of UiTPAS labels that are supposed to be on the event.
-        $expectedUitPasLabelsForEvent = array_map(
-            function (CardSystem $cardSystem) use ($uitPasLabels, $eventId) {
-                $id = $cardSystem->getId()->toNative();
-
-                if (isset($uitPasLabels[$id])) {
-                    return $uitPasLabels[$id];
-                } else {
-                    $this->logger->warning(
-                        'Could not find UiTPAS label for card system ' . $id . ' on event ' . $eventId
-                    );
-                    return null;
-                }
-            },
-            $eventCardSystemsUpdated->getCardSystems()->toArray()
+        $applicableLabelsForEvent = $this->determineApplicableLabelsForEvent(
+            $eventCardSystemsUpdated->getCardSystems(),
+            $uitPasLabels
         );
-        $expectedUitPasLabelsForEvent = array_filter($expectedUitPasLabelsForEvent);
 
-        // Create a list of UiTPAS labels that are not supposed to be on the event.
-        $uitPasLabelsToRemoveIfApplied = [];
-        foreach ($uitPasLabels as $uitPasLabel) {
-            $remove = true;
+        $inapplicableLabelsForEvent = $this->determineInapplicableLabelsForEvent(
+            $applicableLabelsForEvent,
+            $uitPasLabels
+        );
 
-            foreach ($expectedUitPasLabelsForEvent as $expectedUitPasLabelForEvent) {
-                if ($uitPasLabel->equals($expectedUitPasLabelForEvent)) {
-                    $remove = false;
-                    break;
-                }
-            }
-
-            if ($remove) {
-                $uitPasLabelsToRemoveIfApplied[] = $uitPasLabel;
-            }
-        }
-
-        // Attempt to remove the labels that are not supposed to be on the event.
+        // Dispatch commands to remove the labels that are not supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelRemoved event if it was.
-        $this->logger->info(
-            'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
-        );
-        $this->removeLabelsFromEvent($eventId, $uitPasLabelsToRemoveIfApplied);
+        $this->removeLabelsFromEvent($eventId, $inapplicableLabelsForEvent);
 
-        // Attempt to add the labels that are supposed to be on the event.
+        // Dispatch commands to add the labels that are supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelAdded event if it was not.
-        if (count($expectedUitPasLabelsForEvent) > 0) {
-            $this->logger->info(
-                'Adding UiTPAS labels for active card systems on event ' . $eventId . '(if not applied yet)'
-            );
-            $this->addLabelsToEvent($eventId, $expectedUitPasLabelsForEvent);
+        $this->addLabelsToEvent($eventId, $applicableLabelsForEvent);
+    }
+
+    /**
+     * @param CardSystems $cardSystems
+     * @param Label[] $uitPasLabels
+     * @return Label[]
+     */
+    private function determineApplicableLabelsForEvent(
+        CardSystems $cardSystems,
+        array $uitPasLabels
+    ): array {
+        $convertCardSystemToLabel = function (CardSystem $cardSystem) use ($uitPasLabels) {
+            $cardSystemId = $cardSystem->getId()->toNative();
+
+            if (isset($uitPasLabels[$cardSystemId])) {
+                return $uitPasLabels[$cardSystemId];
+            } else {
+                $this->logger->warning(
+                    'Could not find UiTPAS label for card system ' . $cardSystemId
+                );
+                return null;
+            }
+        };
+
+        return array_filter(
+            array_map($convertCardSystemToLabel, $cardSystems->toArray())
+        );
+    }
+
+    /**
+     * @param Label[] $applicableLabels
+     * @param Label[] $uitPasLabels
+     * @return Label[]
+     */
+    private function determineInapplicableLabelsForEvent(
+        array $applicableLabels,
+        array $uitPasLabels
+    ): array {
+        $uitPasLabelDoesNotApply = function (Label $uitPasLabel) use ($applicableLabels) {
+            return !$this->labelsContain($applicableLabels, $uitPasLabel);
+        };
+
+        return array_filter(
+            $uitPasLabels,
+            $uitPasLabelDoesNotApply
+        );
+    }
+
+    /**
+     * @param Label[] $haystack
+     * @param Label $needle
+     * @return bool
+     */
+    private function labelsContain(array $haystack, Label $needle): bool
+    {
+        foreach ($haystack as $label) {
+            if ($needle->equals($label)) {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -134,6 +163,10 @@ class EventProcessManager implements EventListenerInterface
      */
     private function removeLabelsFromEvent($eventId, array $labels)
     {
+        $this->logger->info(
+            'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
+        );
+
         $commands = array_map(
             function (Label $label) use ($eventId) {
                 return new RemoveLabel(
@@ -153,6 +186,14 @@ class EventProcessManager implements EventListenerInterface
      */
     private function addLabelsToEvent($eventId, array $labels)
     {
+        if (count($labels) === 0) {
+            return;
+        }
+
+        $this->logger->info(
+            'Adding UiTPAS labels for active card systems on event ' . $eventId . '(if not applied yet)'
+        );
+
         $commands = array_map(
             function (Label $label) use ($eventId) {
                 return new AddLabel(
