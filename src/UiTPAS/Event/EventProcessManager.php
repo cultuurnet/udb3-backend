@@ -7,29 +7,25 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Event\Commands\RemoveLabel;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
-use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepositoryInterface;
+use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Psr\Log\LoggerInterface;
 
 class EventProcessManager implements EventListenerInterface
 {
-    /**
-     * @var DocumentRepositoryInterface
-     */
-    private $eventDocumentRepository;
-
     /**
      * @var CommandBusInterface
      */
     private $commandBus;
 
     /**
-     * @var UiTPASLabelsRepositoryInterface
+     * @var UiTPASLabelsRepository
      */
-    private $uitpasLabelsRepository;
+    private $uitPasLabelsRepository;
 
     /**
      * @var LoggerInterface
@@ -37,20 +33,17 @@ class EventProcessManager implements EventListenerInterface
     private $logger;
 
     /**
-     * @param DocumentRepositoryInterface $eventDocumentRepository
      * @param CommandBusInterface $commandBus
-     * @param UiTPASLabelsRepositoryInterface $uitpasLabelsRepository
+     * @param UiTPASLabelsRepository $uitPasLabelsRepository
      * @param LoggerInterface $logger
      */
     public function __construct(
-        DocumentRepositoryInterface $eventDocumentRepository,
         CommandBusInterface $commandBus,
-        UiTPASLabelsRepositoryInterface $uitpasLabelsRepository,
+        UiTPASLabelsRepository $uitPasLabelsRepository,
         LoggerInterface $logger
     ) {
-        $this->eventDocumentRepository = $eventDocumentRepository;
         $this->commandBus = $commandBus;
-        $this->uitpasLabelsRepository = $uitpasLabelsRepository;
+        $this->uitPasLabelsRepository = $uitPasLabelsRepository;
         $this->logger = $logger;
     }
 
@@ -82,22 +75,86 @@ class EventProcessManager implements EventListenerInterface
 
         $this->logger->info('Handling updated card systems message for event ' . $eventId);
 
-        $uitpasLabels = $this->uitpasLabelsRepository->loadAll();
+        $uitPasLabels = $this->uitPasLabelsRepository->loadAll();
 
-        // Simply remove all UiTPAS labels from the event, even if they're
-        // found on the JSON-LD or not. This is the best way to make sure
-        // there are no UiTPAS labels on the event, and the aggregate will
-        // just ignore the commands if the labels are not present anyway.
-        // Even if the UiTPAS labels are added again from the organizer.
-        // Otherwise we would have to check the event has UiTPAS labels
-        // which are not present on the organizer.
-        $this->logger->info('Removing all UiTPAS labels from event ' . $eventId);
-        $this->removeLabelsFromEvent($eventId, $uitpasLabels);
+        $applicableLabelsForEvent = $this->determineApplicableLabelsForEvent(
+            $eventCardSystemsUpdated->getCardSystems(),
+            $uitPasLabels
+        );
 
-        if ($eventCardSystemsUpdated->getCardSystems()->length() > 0) {
-            $this->logger->info('Inheriting UiTPAS labels from organizer on event ' . $eventId);
-            $this->copyMatchingLabelsFromOrganizerToEvent($eventId, $uitpasLabels);
+        $inapplicableLabelsForEvent = $this->determineInapplicableLabelsForEvent(
+            $applicableLabelsForEvent,
+            $uitPasLabels
+        );
+
+        // Dispatch commands to remove the labels that are not supposed to be on the event.
+        // The event aggregate will check if the label is present and only record a LabelRemoved event if it was.
+        $this->removeLabelsFromEvent($eventId, $inapplicableLabelsForEvent);
+
+        // Dispatch commands to add the labels that are supposed to be on the event.
+        // The event aggregate will check if the label is present and only record a LabelAdded event if it was not.
+        $this->addLabelsToEvent($eventId, $applicableLabelsForEvent);
+    }
+
+    /**
+     * @param CardSystems $cardSystems
+     * @param Label[] $uitPasLabels
+     * @return Label[]
+     */
+    private function determineApplicableLabelsForEvent(
+        CardSystems $cardSystems,
+        array $uitPasLabels
+    ): array {
+        $convertCardSystemToLabel = function (CardSystem $cardSystem) use ($uitPasLabels) {
+            $cardSystemId = $cardSystem->getId()->toNative();
+
+            if (!isset($uitPasLabels[$cardSystemId])) {
+                $this->logger->warning(
+                    'Could not find UiTPAS label for card system ' . $cardSystemId
+                );
+                return null;
+            }
+
+            return $uitPasLabels[$cardSystemId];
+        };
+
+        return array_filter(
+            array_map($convertCardSystemToLabel, $cardSystems->toArray())
+        );
+    }
+
+    /**
+     * @param Label[] $applicableLabels
+     * @param Label[] $uitPasLabels
+     * @return Label[]
+     */
+    private function determineInapplicableLabelsForEvent(
+        array $applicableLabels,
+        array $uitPasLabels
+    ): array {
+        $uitPasLabelDoesNotApply = function (Label $uitPasLabel) use ($applicableLabels) {
+            return !$this->labelsContain($applicableLabels, $uitPasLabel);
+        };
+
+        return array_filter(
+            $uitPasLabels,
+            $uitPasLabelDoesNotApply
+        );
+    }
+
+    /**
+     * @param Label[] $haystack
+     * @param Label $needle
+     * @return bool
+     */
+    private function labelsContain(array $haystack, Label $needle): bool
+    {
+        foreach ($haystack as $label) {
+            if ($needle->equals($label)) {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -106,6 +163,10 @@ class EventProcessManager implements EventListenerInterface
      */
     private function removeLabelsFromEvent($eventId, array $labels)
     {
+        $this->logger->info(
+            'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
+        );
+
         $commands = array_map(
             function (Label $label) use ($eventId) {
                 return new RemoveLabel(
@@ -121,76 +182,26 @@ class EventProcessManager implements EventListenerInterface
 
     /**
      * @param string $eventId
-     * @param Label[] $potentialLabelsToCopy
+     * @param Label[] $labels
      */
-    private function copyMatchingLabelsFromOrganizerToEvent($eventId, array $potentialLabelsToCopy)
+    private function addLabelsToEvent($eventId, array $labels)
     {
-        $eventDocument = $this->eventDocumentRepository->get($eventId);
-        if (!$eventDocument) {
-            $this->logger->error('Event with id ' . $eventId . ' not found in injected DocumentRepository!');
+        if (count($labels) === 0) {
             return;
         }
 
-        $jsonLD = $eventDocument->getBody();
-        if (!isset($jsonLD->organizer)) {
-            $this->logger->error('Found no organizer on event ' . $eventId);
-            return;
-        }
-
-        $organizerLabels = array_map(
-            function (string $labelName) {
-                return new Label($labelName);
-            },
-            isset($jsonLD->organizer->labels) ? $jsonLD->organizer->labels : []
-        );
         $this->logger->info(
-            'Found organizer labels on event ' . $eventId . ': ' . implode(', ', $organizerLabels)
-        );
-
-        $hiddenOrganizerLabels = array_map(
-            function (string $labelName) {
-                return new Label($labelName, false);
-            },
-            isset($jsonLD->organizer->hiddenLabels) ? $jsonLD->organizer->hiddenLabels : []
-        );
-        $this->logger->info(
-            'Found hidden organizer labels on event ' . $eventId . ': ' . implode(', ', $hiddenOrganizerLabels)
-        );
-
-        $this->addIntersectingLabelsToEvent($eventId, $potentialLabelsToCopy, $organizerLabels, true);
-        $this->addIntersectingLabelsToEvent($eventId, $potentialLabelsToCopy, $hiddenOrganizerLabels, false);
-    }
-
-    /**
-     * @param string $eventId
-     * @param Label[] $labels1
-     * @param Label[] $labels2
-     * @param bool $visible
-     */
-    private function addIntersectingLabelsToEvent($eventId, array $labels1, array $labels2, $visible)
-    {
-        $labelsToAdd = [];
-        foreach ($labels1 as $label1) {
-            foreach ($labels2 as $label2) {
-                if ($label1->equals($label2)) {
-                    $labelsToAdd[] = new Label((string) $label1, $visible);
-                    break;
-                }
-            }
-        }
-
-        $this->logger->info(
-            'Found uitpas organizer labels on event ' . $eventId . ': ' . implode(', ', $labelsToAdd)
+            'Adding UiTPAS labels for active card systems on event ' . $eventId . '(if not applied yet)'
         );
 
         $commands = array_map(
-            function (Label $labelToAdd) use ($eventId) {
+            function (Label $label) use ($eventId) {
                 return new AddLabel(
                     $eventId,
-                    $labelToAdd
+                    $label
                 );
             },
-            $labelsToAdd
+            $labels
         );
 
         $this->dispatchCommands($commands);
