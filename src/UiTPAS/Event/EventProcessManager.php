@@ -108,14 +108,14 @@ class EventProcessManager implements EventListenerInterface
         $convertCardSystemToLabel = function (CardSystem $cardSystem) use ($uitPasLabels) {
             $cardSystemId = $cardSystem->getId()->toNative();
 
-            if (isset($uitPasLabels[$cardSystemId])) {
-                return $uitPasLabels[$cardSystemId];
-            } else {
+            if (!isset($uitPasLabels[$cardSystemId])) {
                 $this->logger->warning(
                     'Could not find UiTPAS label for card system ' . $cardSystemId
                 );
                 return null;
             }
+
+            return $uitPasLabels[$cardSystemId];
         };
 
         return array_filter(
