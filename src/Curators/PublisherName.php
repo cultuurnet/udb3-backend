@@ -11,7 +11,7 @@ class PublisherName
      */
     private $name;
 
-    private function __construct(string $name)
+    public function __construct(string $name)
     {
         if (!self::isValid($name)) {
             throw new InvalidArgumentException('Invalid publisher: ' . $name);
