@@ -19,11 +19,6 @@ final class PublisherName
         $this->name = $name;
     }
 
-    public static function fromName(string $name): self
-    {
-        return new self($name);
-    }
-
     private static function isValid(string $name): bool
     {
         return !empty($name);
