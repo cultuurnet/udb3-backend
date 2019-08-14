@@ -6,12 +6,6 @@ use InvalidArgumentException;
 
 class Publisher
 {
-    private const BRUZZ = 'bruzz';
-
-    private static $knownPublishers = [
-        self::BRUZZ,
-    ];
-
     /**
      * @var string
      */
@@ -20,14 +14,9 @@ class Publisher
     private function __construct(string $name)
     {
         if (!self::isValid($name)) {
-            throw new InvalidArgumentException('Unknown publisher: ' . $name);
+            throw new InvalidArgumentException('Invalid publisher: ' . $name);
         }
         $this->name = $name;
-    }
-
-    public static function bruzz(): self
-    {
-        return new self(self::BRUZZ);
     }
 
     public static function fromName(string $name): self
@@ -37,7 +26,7 @@ class Publisher
 
     private static function isValid(string $name): bool
     {
-        return in_array($name, self::$knownPublishers);
+        return !empty($name);
     }
 
     public function getName(): string

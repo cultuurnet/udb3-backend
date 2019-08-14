@@ -46,7 +46,7 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
     {
         $event = json_encode(
             [
-                'newsArticleId' => 74567,
+                'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
                 'publisher' => 'bruzz',
             ]
         );
@@ -63,7 +63,7 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
         $event = json_encode(
             [
                 'eventId' => 'C0D870F6-2883-4565-A020-7CF12BDE5F51',
-                'newsArticleId' => 74567,
+                'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
             ]
         );
 
@@ -74,13 +74,13 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_publisher_is_unknown()
+    public function it_should_throw_an_exception_if_publisher_is_invalid()
     {
         $event = json_encode(
             [
                 'eventId' => 'C0D870F6-2883-4565-A020-7CF12BDE5F51',
-                'newsArticleId' => 74567,
-                'publisher' => 'DEFINITELY_NOT_A_PUBLISHER',
+                'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
+                'publisher' => '',
             ]
         );
 
@@ -96,7 +96,7 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
         $expected = new NewsArticleAboutEventAdded(
             'c4c19563-06e3-43fa-a15c-73a91c54b27e',
             'C0D870F6-2883-4565-A020-7CF12BDE5F51',
-            Publisher::bruzz()
+            Publisher::fromName('bruzz')
         );
 
         $event = json_encode(
