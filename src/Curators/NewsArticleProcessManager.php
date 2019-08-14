@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAdded;
+use InvalidArgumentException;
 
 final class NewsArticleProcessManager implements EventListenerInterface
 {
@@ -51,9 +52,17 @@ final class NewsArticleProcessManager implements EventListenerInterface
 
     private function handleNewsArticleAboutEventAdded(NewsArticleAboutEventAdded $newsArticleAboutEventAdded): void
     {
-        $this->offerEditingService->addLabel(
-            $newsArticleAboutEventAdded->getEventId(),
-            $this->labelFactory->forPublisher($newsArticleAboutEventAdded->getPublisher())
-        );
+        try {
+            $label = $this->labelFactory->forPublisher($newsArticleAboutEventAdded->getPublisher());
+        } catch (InvalidArgumentException $e) {
+            $label = null;
+        }
+
+        if ($label) {
+            $this->offerEditingService->addLabel(
+                $newsArticleAboutEventAdded->getEventId(),
+                $label
+            );
+        }
     }
 }
