@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators\Events;
 
+use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Curators\Publisher;
+use InvalidArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer
@@ -27,6 +30,16 @@ final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer
             throw new MissingValueException('eventId is missing');
         }
 
-        return new NewsArticleAboutEventAdded($json->newsArticleId, $json->eventId);
+        if (!isset($json->publisher)) {
+            throw new MissingValueException('publisher is missing');
+        }
+
+        try {
+            $publisher = Publisher::fromName($json->publisher);
+        } catch (InvalidArgumentException $e) {
+            throw new DataValidationException($e->getMessage());
+        }
+
+        return new NewsArticleAboutEventAdded($json->newsArticleId, $json->eventId, $publisher);
     }
 }
