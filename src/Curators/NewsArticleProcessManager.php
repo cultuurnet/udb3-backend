@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Curators;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAdded;
 use InvalidArgumentException;
