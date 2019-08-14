@@ -89,6 +89,7 @@ final class NewsArticleProcessManagerTest extends TestCase
                 [
                     'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
                     'eventId' => 'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
+                    'publisher' => 'bruzz',
                 ]
             ),
             [
