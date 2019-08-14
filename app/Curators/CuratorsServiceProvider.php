@@ -65,7 +65,9 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new NewsArticleProcessManager(
                     $app['event_editor'],
-                    new LabelFactory()
+                    new LabelFactory(
+                        $app['config']['curator_labels']
+                    )
                 );
             }
         );

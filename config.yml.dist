@@ -161,3 +161,7 @@ created_by_query_mode: mixed
 
 # Role constraints can use SAPI v2 or v3
 role_constraints_mode: v2
+
+# Curator label mapping
+curator_labels:
+  bruzz: BRUZZ-redactioneel

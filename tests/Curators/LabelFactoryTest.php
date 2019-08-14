@@ -14,7 +14,11 @@ class LabelFactoryTest extends TestCase
 
     protected function setUp()
     {
-        $this->labelFactory = new LabelFactory();
+        $this->labelFactory = new LabelFactory(
+            [
+                'bruzz' => 'BRUZZ-redactioneel',
+            ]
+        );
     }
 
     /**
