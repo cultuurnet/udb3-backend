@@ -43,11 +43,11 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
-        $this->assertEquals(new Id('7'), $cardSystems->getByKey(7)->getId());
-        $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems->getByKey(7)->getName());
-        $this->assertEquals(new Id('25'), $cardSystems->getByKey(25)->getId());
-        $this->assertEquals(new StringLiteral('UiTPAS Dender'), $cardSystems->getByKey(25)->getName());
-        $this->assertCount(2, $cardSystems->toArray());
+        $this->assertEquals(new Id('7'), $cardSystems[7]->getId());
+        $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems[7]->getName());
+        $this->assertEquals(new Id('25'), $cardSystems[25]->getId());
+        $this->assertEquals(new StringLiteral('UiTPAS Dender'), $cardSystems[25]->getName());
+        $this->assertCount(2, $cardSystems);
     }
 
     /**
@@ -71,9 +71,9 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
-        $this->assertEquals(new Id('7'), $cardSystems->getByKey(7)->getId());
-        $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems->getByKey(7)->getName());
-        $this->assertCount(1, $cardSystems->toArray());
+        $this->assertEquals(new Id('7'), $cardSystems[7]->getId());
+        $this->assertEquals(new StringLiteral('UiTPAS Oostende'), $cardSystems[7]->getName());
+        $this->assertCount(1, $cardSystems);
     }
 
     /**
@@ -92,7 +92,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
         $cardSystems = $event->getCardSystems();
 
         $this->assertEquals('48ef34b0-e34a-4a15-9ae2-a5a01f189f90', $event->getId());
-        $this->assertCount(0, $cardSystems->toArray());
+        $this->assertCount(0, $cardSystems);
     }
 
     /**

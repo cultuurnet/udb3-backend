@@ -11,7 +11,6 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^7.1",
-    "2dotstwice/collection": "~1.0",
     "2dotstwice/silex-feature-toggles-provider": "~0.1",
     "broadway/broadway": "~0.10",
     "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",

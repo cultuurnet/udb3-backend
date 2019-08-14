@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
-use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Psr\Log\LoggerInterface;
@@ -97,12 +96,12 @@ class EventProcessManager implements EventListenerInterface
     }
 
     /**
-     * @param CardSystems $cardSystems
+     * @param CardSystem[] $cardSystems
      * @param Label[] $uitPasLabels
      * @return Label[]
      */
     private function determineApplicableLabelsForEvent(
-        CardSystems $cardSystems,
+        array $cardSystems,
         array $uitPasLabels
     ): array {
         $convertCardSystemToLabel = function (CardSystem $cardSystem) use ($uitPasLabels) {
@@ -119,7 +118,7 @@ class EventProcessManager implements EventListenerInterface
         };
 
         return array_filter(
-            array_map($convertCardSystemToLabel, $cardSystems->toArray())
+            array_map($convertCardSystemToLabel, $cardSystems)
         );
     }
 

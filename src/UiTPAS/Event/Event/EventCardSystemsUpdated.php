@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
-use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 
 class EventCardSystemsUpdated
@@ -13,17 +13,17 @@ class EventCardSystemsUpdated
     private $id;
 
     /**
-     * @var CardSystems
+     * @var CardSystem[]
      */
     private $cardSystems;
 
     /**
      * @param Id $id
-     * @param CardSystems $cardSystems
+     * @param CardSystem[] $cardSystems
      */
     public function __construct(
         Id $id,
-        CardSystems $cardSystems
+        array $cardSystems
     ) {
         $this->id = $id;
         $this->cardSystems = $cardSystems;
@@ -38,9 +38,9 @@ class EventCardSystemsUpdated
     }
 
     /**
-     * @return CardSystems
+     * @return CardSystem[]
      */
-    public function getCardSystems()
+    public function getCardSystems(): array
     {
         return $this->cardSystems;
     }
