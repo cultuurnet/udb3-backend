@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators\Events;
 
-use CultuurNet\UDB3\Curators\Publisher;
+use CultuurNet\UDB3\Curators\PublisherName;
 
 final class NewsArticleAboutEventAdded
 {
@@ -19,11 +19,11 @@ final class NewsArticleAboutEventAdded
     private $eventId;
 
     /**
-     * @var Publisher
+     * @var PublisherName
      */
     private $publisher;
 
-    public function __construct(string $newsArticleId, string $eventId, Publisher $publisher)
+    public function __construct(string $newsArticleId, string $eventId, PublisherName $publisher)
     {
         $this->newsArticleId = $newsArticleId;
         $this->eventId = $eventId;
@@ -40,7 +40,7 @@ final class NewsArticleAboutEventAdded
         return $this->eventId;
     }
 
-    public function getPublisher(): Publisher
+    public function getPublisher(): PublisherName
     {
         return $this->publisher;
     }

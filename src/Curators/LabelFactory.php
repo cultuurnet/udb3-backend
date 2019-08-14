@@ -17,7 +17,7 @@ class LabelFactory
         $this->labelMapping = $labelMapping;
     }
 
-    public function forPublisher(Publisher $publisher): Label
+    public function forPublisher(PublisherName $publisher): Label
     {
         if (!array_key_exists($publisher->getName(), $this->labelMapping)) {
             throw new InvalidArgumentException('No label defined for publisher ' . $publisher->getName());

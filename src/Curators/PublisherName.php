@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Curators;
 
 use InvalidArgumentException;
 
-class Publisher
+class PublisherName
 {
     /**
      * @var string

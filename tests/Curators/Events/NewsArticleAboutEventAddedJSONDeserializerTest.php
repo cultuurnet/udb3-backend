@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Curators\Events;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\Deserializer\MissingValueException;
-use CultuurNet\UDB3\Curators\Publisher;
+use CultuurNet\UDB3\Curators\PublisherName;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -96,7 +96,7 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
         $expected = new NewsArticleAboutEventAdded(
             'c4c19563-06e3-43fa-a15c-73a91c54b27e',
             'C0D870F6-2883-4565-A020-7CF12BDE5F51',
-            Publisher::fromName('bruzz')
+            PublisherName::fromName('bruzz')
         );
 
         $event = json_encode(

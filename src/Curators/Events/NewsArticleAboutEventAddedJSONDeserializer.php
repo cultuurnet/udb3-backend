@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Curators\Events;
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\Deserializer\MissingValueException;
-use CultuurNet\UDB3\Curators\Publisher;
+use CultuurNet\UDB3\Curators\PublisherName;
 use InvalidArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -35,7 +35,7 @@ final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer
         }
 
         try {
-            $publisher = Publisher::fromName($json->publisher);
+            $publisher = PublisherName::fromName($json->publisher);
         } catch (InvalidArgumentException $e) {
             throw new DataValidationException($e->getMessage());
         }
