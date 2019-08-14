@@ -12,9 +12,6 @@ use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAdded;
 
 final class NewsArticleProcessManager implements EventListenerInterface
 {
-    private const LABEL = 'curatoren';
-    private const LABEL_VISIBLE = false;
-
     /**
      * @var OfferEditingServiceInterface
      */
