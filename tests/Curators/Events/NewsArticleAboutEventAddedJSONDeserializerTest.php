@@ -25,7 +25,6 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
 
     /**
      * @test
-     * @expectedException \CultuurNet\Deserializer\MissingValueException
      */
     public function it_should_throw_an_exception_if_news_article_id_is_missing()
     {
@@ -35,12 +34,13 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
                 'publisher' => 'bruzz',
             ]
         );
+
+        $this->expectException(MissingValueException::class);
         $this->deserializer->deserialize(new StringLiteral($event));
     }
 
     /**
      * @test
-     * @expectedException \CultuurNet\Deserializer\MissingValueException
      */
     public function it_should_throw_an_exception_if_event_id_is_missing()
     {
@@ -50,6 +50,8 @@ final class NewsArticleAboutEventAddedJSONDeserializerTest extends TestCase
                 'publisher' => 'bruzz',
             ]
         );
+
+        $this->expectException(MissingValueException::class);
         $this->deserializer->deserialize(new StringLiteral($event));
     }
 
