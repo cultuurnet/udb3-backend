@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Curators;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumer;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
+use CultuurNet\UDB3\Curators\LabelFactory;
 use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -63,7 +64,10 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
         $app['curators_news_article_process_manager'] = $app->share(
             function (Application $app) {
                 return new NewsArticleProcessManager(
-                    $app['event_editor']
+                    $app['event_editor'],
+                    new LabelFactory(
+                        $app['config']['curator_labels']
+                    )
                 );
             }
         );

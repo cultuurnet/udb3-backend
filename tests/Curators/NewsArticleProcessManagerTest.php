@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\SimpleEventBus;
+use InvalidArgumentException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -34,14 +35,21 @@ final class NewsArticleProcessManagerTest extends TestCase
      */
     private $messageDeliveryInfo;
 
+    /**
+     * @var LabelFactory|MockObject
+     */
+    private $labelFactory;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->offerEditingService = $this->createMock(OfferEditingServiceInterface::class);
+        $this->labelFactory = $this->createMock(LabelFactory::class);
 
         $processManager = new NewsArticleProcessManager(
-            $this->offerEditingService
+            $this->offerEditingService,
+            $this->labelFactory
         );
 
         $eventBus = new SimpleEventBus();
@@ -82,13 +90,14 @@ final class NewsArticleProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_a_curatoren_label_to_an_event_if_a_news_article_is_created_about_it()
+    public function it_should_add_a_matching_label_to_an_event_if_a_news_article_is_created_about_it()
     {
         $message = new AMQPMessage(
             json_encode(
                 [
                     'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
                     'eventId' => 'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
+                    'publisher' => 'bruzz',
                 ]
             ),
             [
@@ -97,12 +106,48 @@ final class NewsArticleProcessManagerTest extends TestCase
         );
         $message->delivery_info = $this->messageDeliveryInfo;
 
+        $expectedLabel = new Label('TEST_LABEL', false);
+
+        $this->labelFactory->expects($this->once())
+            ->method('forPublisher')
+            ->with(new PublisherName('bruzz'))
+            ->willReturn($expectedLabel);
+
         $this->offerEditingService->expects($this->once())
             ->method('addLabel')
             ->with(
                 'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
-                new Label('curatoren', false)
+                $expectedLabel
             );
+
+        $this->eventBusForwardingConsumer->consume($message);
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_add_a_label_if_no_matching_label_was_configured()
+    {
+        $message = new AMQPMessage(
+            json_encode(
+                [
+                    'newsArticleId' => 'c4c19563-06e3-43fa-a15c-73a91c54b27e',
+                    'eventId' => 'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
+                    'publisher' => 'bruzz',
+                ]
+            ),
+            [
+                'content_type' => 'application/vnd.cultuurnet.curators-api.events.news-article-about-event-added+json',
+            ]
+        );
+        $message->delivery_info = $this->messageDeliveryInfo;
+
+        $this->labelFactory->expects($this->once())
+            ->method('forPublisher')
+            ->with(new PublisherName('bruzz'))
+            ->willThrowException(new InvalidArgumentException());
+
+        $this->offerEditingService->expects($this->never())->method('addLabel');
 
         $this->eventBusForwardingConsumer->consume($message);
     }

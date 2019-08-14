@@ -6,23 +6,28 @@ namespace CultuurNet\UDB3\Curators;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAdded;
+use InvalidArgumentException;
 
 final class NewsArticleProcessManager implements EventListenerInterface
 {
-    private const LABEL = 'curatoren';
-    private const LABEL_VISIBLE = false;
-
     /**
      * @var OfferEditingServiceInterface
      */
     private $offerEditingService;
 
-    public function __construct(OfferEditingServiceInterface $offerEditingService)
-    {
+    /**
+     * @var LabelFactory
+     */
+    private $labelFactory;
+
+    public function __construct(
+        OfferEditingServiceInterface $offerEditingService,
+        LabelFactory $labelFactory
+    ) {
         $this->offerEditingService = $offerEditingService;
+        $this->labelFactory = $labelFactory;
     }
 
     /**
@@ -46,9 +51,17 @@ final class NewsArticleProcessManager implements EventListenerInterface
 
     private function handleNewsArticleAboutEventAdded(NewsArticleAboutEventAdded $newsArticleAboutEventAdded): void
     {
-        $this->offerEditingService->addLabel(
-            $newsArticleAboutEventAdded->getEventId(),
-            new Label(self::LABEL, self::LABEL_VISIBLE)
-        );
+        try {
+            $label = $this->labelFactory->forPublisher($newsArticleAboutEventAdded->getPublisher());
+        } catch (InvalidArgumentException $e) {
+            $label = null;
+        }
+
+        if ($label) {
+            $this->offerEditingService->addLabel(
+                $newsArticleAboutEventAdded->getEventId(),
+                $label
+            );
+        }
     }
 }
