@@ -39,4 +39,9 @@ class Publisher
     {
         return in_array($name, self::$knownPublishers);
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
