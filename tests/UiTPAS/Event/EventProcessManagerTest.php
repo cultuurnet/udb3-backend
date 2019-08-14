@@ -7,11 +7,8 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Event\Commands\RemoveLabel;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
-use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
@@ -123,9 +120,8 @@ class EventProcessManagerTest extends TestCase
     public function it_should_remove_every_uitpas_label_from_an_event_if_it_has_no_card_systems_after_an_update()
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
-        $cardSystems = new CardSystems();
 
-        $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
+        $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, []);
 
         $domainMessage = DomainMessage::recordNow(
             'cbee7413-ac1e-4dfb-8004-34767eafb8b7',
@@ -158,28 +154,20 @@ class EventProcessManagerTest extends TestCase
     public function it_should_add_uitpas_labels_for_active_card_systems_to_an_updated_event_with_card_systems()
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
-        $cardSystems = (new CardSystems())
-            ->withKey(
-                'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa',
-                new CardSystem(
-                    new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
-                    new StringLiteral('Mock CS Paspartoe')
-                )
+        $cardSystems = [
+            'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new CardSystem(
+                new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
+                new StringLiteral('Mock CS Paspartoe')
+            ),
+            'f23ccb75-190a-4814-945e-c95e83101cc5' => new CardSystem(
+                new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
+                new StringLiteral('Mock CS UiTPAS Gent')
+            ),
+            '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
+                new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
+                new StringLiteral('Mock CS UiTPAS Oostende')
             )
-            ->withKey(
-                'f23ccb75-190a-4814-945e-c95e83101cc5',
-                new CardSystem(
-                    new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
-                    new StringLiteral('Mock CS UiTPAS Gent')
-                )
-            )
-            ->withKey(
-                '98ce6fbc-fb68-4efc-b8c7-95763cb967dd',
-                new CardSystem(
-                    new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
-                    new StringLiteral('Mock CS UiTPAS Oostende')
-                )
-            );
+        ];
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 
@@ -214,8 +202,7 @@ class EventProcessManagerTest extends TestCase
     public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system()
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
-        $cardSystems = (new CardSystems())
-            ->withKey(7, new CardSystem(new Id('7'), new StringLiteral('Mock CS')));
+        $cardSystems = [7 => new CardSystem(new Id('7'), new StringLiteral('Mock CS'))];
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 

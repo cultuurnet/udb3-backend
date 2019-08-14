@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
 use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
-use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystems;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -34,7 +33,7 @@ class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
             throw new \InvalidArgumentException('Expected cardSystems property to be an array.');
         }
 
-        $cardSystems = new CardSystems();
+        $cardSystems = [];
         foreach ($dto->cardSystems as $cardSystemDTO) {
             if (!isset($cardSystemDTO->id)) {
                 throw new \InvalidArgumentException('Encountered cardSystems entry without id.');
@@ -44,12 +43,9 @@ class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
                 throw new \InvalidArgumentException('Encountered cardSystems entry without name.');
             }
 
-            $cardSystems = $cardSystems->withKey(
-                $cardSystemDTO->id,
-                new CardSystem(
-                    new Id((string) $cardSystemDTO->id),
-                    new StringLiteral($cardSystemDTO->name)
-                )
+            $cardSystems[$cardSystemDTO->id] = new CardSystem(
+                new Id((string) $cardSystemDTO->id),
+                new StringLiteral($cardSystemDTO->name)
             );
         }
 
