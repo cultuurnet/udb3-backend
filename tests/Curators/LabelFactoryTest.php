@@ -3,32 +3,39 @@
 namespace CultuurNet\UDB3\Curators;
 
 use CultuurNet\UDB3\Label;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class LabelFactoryTest extends TestCase
 {
     /**
-     * @var LabelFactory
+     * @test
      */
-    private $labelFactory;
-
-    protected function setUp()
+    public function it_will_create_label_for_known_publishers()
     {
-        $this->labelFactory = new LabelFactory(
+        $labelFactory = new LabelFactory(
             [
                 'bruzz' => 'BRUZZ-redactioneel',
             ]
         );
+        $expected = new Label('BRUZZ-redactioneel', false);
+        $label = $labelFactory->forPublisher(Publisher::bruzz());
+
+        $this->assertEquals($expected, $label);
     }
 
     /**
      * @test
      */
-    public function it_will_create_label_for_known_publishers()
+    public function it_will_throw_an_exception_for_unknown_publishers()
     {
-        $expected = new Label('BRUZZ-redactioneel', false);
-        $label = $this->labelFactory->forPublisher(Publisher::bruzz());
+        $labelFactory = new LabelFactory(
+            [
+                'SOME_PUBLISHER' => 'SOME_LABEL',
+            ]
+        );
 
-        $this->assertEquals($expected, $label);
+        $this->expectException(InvalidArgumentException::class);
+        $labelFactory->forPublisher(Publisher::bruzz());
     }
 }
