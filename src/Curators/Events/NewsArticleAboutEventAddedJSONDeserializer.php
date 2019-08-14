@@ -35,7 +35,7 @@ final class NewsArticleAboutEventAddedJSONDeserializer extends JSONDeserializer
         }
 
         try {
-            $publisher = PublisherName::fromName($json->publisher);
+            $publisher = new PublisherName($json->publisher);
         } catch (InvalidArgumentException $e) {
             throw new DataValidationException($e->getMessage());
         }

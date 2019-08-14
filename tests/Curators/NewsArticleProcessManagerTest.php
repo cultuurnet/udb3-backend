@@ -110,7 +110,7 @@ final class NewsArticleProcessManagerTest extends TestCase
 
         $this->labelFactory->expects($this->once())
             ->method('forPublisher')
-            ->with(PublisherName::fromName('bruzz'))
+            ->with(new PublisherName('bruzz'))
             ->willReturn($expectedLabel);
 
         $this->offerEditingService->expects($this->once())
@@ -144,7 +144,7 @@ final class NewsArticleProcessManagerTest extends TestCase
 
         $this->labelFactory->expects($this->once())
             ->method('forPublisher')
-            ->with(PublisherName::fromName('bruzz'))
+            ->with(new PublisherName('bruzz'))
             ->willThrowException(new InvalidArgumentException());
 
         $this->offerEditingService->expects($this->never())->method('addLabel');

@@ -13,6 +13,6 @@ class PublisherTest extends TestCase
     public function it_will_throw_exception_on_invalid_publisher()
     {
         $this->expectException(InvalidArgumentException::class);
-        PublisherName::fromName('');
+        new PublisherName('');
     }
 }

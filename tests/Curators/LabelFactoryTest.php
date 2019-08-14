@@ -19,7 +19,7 @@ class LabelFactoryTest extends TestCase
             ]
         );
         $expected = new Label('BRUZZ-redactioneel', false);
-        $label = $labelFactory->forPublisher(PublisherName::fromName('bruzz'));
+        $label = $labelFactory->forPublisher(new PublisherName('bruzz'));
 
         $this->assertEquals($expected, $label);
     }
@@ -36,6 +36,6 @@ class LabelFactoryTest extends TestCase
         );
 
         $this->expectException(InvalidArgumentException::class);
-        $labelFactory->forPublisher(PublisherName::fromName('bruzz'));
+        $labelFactory->forPublisher(new PublisherName('bruzz'));
     }
 }
