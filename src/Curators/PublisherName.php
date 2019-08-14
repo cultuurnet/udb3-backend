@@ -24,7 +24,7 @@ final class PublisherName
         return !empty($name);
     }
 
-    public function getName(): string
+    public function toString(): string
     {
         return $this->name;
     }
