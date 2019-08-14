@@ -34,14 +34,21 @@ final class NewsArticleProcessManagerTest extends TestCase
      */
     private $messageDeliveryInfo;
 
+    /**
+     * @var LabelFactory|MockObject
+     */
+    private $labelFactory;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->offerEditingService = $this->createMock(OfferEditingServiceInterface::class);
+        $this->labelFactory = $this->createMock(LabelFactory::class);
 
         $processManager = new NewsArticleProcessManager(
-            $this->offerEditingService
+            $this->offerEditingService,
+            $this->labelFactory
         );
 
         $eventBus = new SimpleEventBus();
@@ -98,11 +105,18 @@ final class NewsArticleProcessManagerTest extends TestCase
         );
         $message->delivery_info = $this->messageDeliveryInfo;
 
+        $expectedLabel = new Label('TEST_LABEL', false);
+
+        $this->labelFactory->expects($this->once())
+            ->method('forPublisher')
+            ->with(Publisher::bruzz())
+            ->willReturn($expectedLabel);
+
         $this->offerEditingService->expects($this->once())
             ->method('addLabel')
             ->with(
                 'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
-                new Label('curatoren', false)
+                $expectedLabel
             );
 
         $this->eventBusForwardingConsumer->consume($message);

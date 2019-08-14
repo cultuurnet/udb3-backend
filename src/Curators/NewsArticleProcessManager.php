@@ -20,9 +20,17 @@ final class NewsArticleProcessManager implements EventListenerInterface
      */
     private $offerEditingService;
 
-    public function __construct(OfferEditingServiceInterface $offerEditingService)
-    {
+    /**
+     * @var LabelFactory
+     */
+    private $labelFactory;
+
+    public function __construct(
+        OfferEditingServiceInterface $offerEditingService,
+        LabelFactory $labelFactory
+    ) {
         $this->offerEditingService = $offerEditingService;
+        $this->labelFactory = $labelFactory;
     }
 
     /**
@@ -48,7 +56,7 @@ final class NewsArticleProcessManager implements EventListenerInterface
     {
         $this->offerEditingService->addLabel(
             $newsArticleAboutEventAdded->getEventId(),
-            new Label(self::LABEL, self::LABEL_VISIBLE)
+            $this->labelFactory->forPublisher($newsArticleAboutEventAdded->getPublisher())
         );
     }
 }
