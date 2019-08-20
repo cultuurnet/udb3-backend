@@ -19,13 +19,12 @@ class LabelFactory
 
     public function forPublisher(PublisherName $publisher): Label
     {
-        if (!array_key_exists($publisher->toString(), $this->labelMapping)) {
-            throw new InvalidArgumentException('No label defined for publisher ' . $publisher->toString());
+        foreach (array_keys($this->labelMapping) as $key) {
+            if ($publisher->equals(new PublisherName($key))) {
+                return new Label($this->labelMapping[$key], false);
+            }
         }
 
-        return new Label(
-            $this->labelMapping[$publisher->toString()],
-            false
-        );
+        throw new InvalidArgumentException('No label defined for publisher ' . $publisher->toString());
     }
 }

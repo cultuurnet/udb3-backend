@@ -28,4 +28,9 @@ final class PublisherName
     {
         return $this->name;
     }
+
+    public function equals(PublisherName $other): bool
+    {
+        return mb_strtolower($this->name) === mb_strtolower($other->name);
+    }
 }
