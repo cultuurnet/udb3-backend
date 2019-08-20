@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Curators;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-class PublisherTest extends TestCase
+class PublisherNameTest extends TestCase
 {
     /**
      * @test
