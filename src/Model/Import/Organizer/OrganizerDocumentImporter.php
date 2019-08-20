@@ -103,6 +103,11 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateAddress($id, $address, $mainLanguage);
         }
 
+        foreach ($adapter->getAddressTranslations() as $language => $address) {
+            $language = new Language($language);
+            $commands[] = new UpdateAddress($id, $address, $language);
+        }
+
         foreach ($adapter->getTitleTranslations() as $language => $title) {
             $language = new Language($language);
             $commands[] = new UpdateTitle($id, $title, $language);

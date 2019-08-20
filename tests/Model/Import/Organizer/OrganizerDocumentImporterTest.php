@@ -230,6 +230,19 @@ class OrganizerDocumentImporterTest extends TestCase
             ),
             $recordedCommands
         );
+        $this->assertContainsObject(
+            new UpdateAddress(
+                $id,
+                new Address(
+                    new Street('Quai du Hainaut 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Bruxelles'),
+                    Country::fromNative('BE')
+                ),
+                new Language('fr')
+            ),
+            $recordedCommands
+        );
     }
 
     /**
