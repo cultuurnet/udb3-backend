@@ -15,4 +15,13 @@ class PublisherNameTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         new PublisherName('');
     }
+
+    /**
+     * @test
+     */
+    public function it_is_case_insensitive(): void
+    {
+        $publisher = new PublisherName('Bruzz');
+        $this->assertEquals('bruzz', $publisher->toString());
+    }
 }
