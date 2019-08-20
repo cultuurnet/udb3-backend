@@ -22,6 +22,7 @@ class PublisherNameTest extends TestCase
     public function it_is_case_insensitive(): void
     {
         $publisher = new PublisherName('Bruzz');
-        $this->assertEquals('bruzz', $publisher->toString());
+        $otherPublisher = new PublisherName('bruzz');
+        $this->assertTrue($publisher->equals($otherPublisher));
     }
 }

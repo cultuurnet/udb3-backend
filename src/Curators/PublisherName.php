@@ -16,7 +16,7 @@ final class PublisherName
         if (!self::isValid($name)) {
             throw new InvalidArgumentException('Invalid publisher: ' . $name);
         }
-        $this->name = strtolower($name);
+        $this->name = $name;
     }
 
     private static function isValid(string $name): bool
@@ -27,5 +27,10 @@ final class PublisherName
     public function toString(): string
     {
         return $this->name;
+    }
+
+    public function equals(PublisherName $other): bool
+    {
+        return mb_strtolower($this->name) === mb_strtolower($other->name);
     }
 }
