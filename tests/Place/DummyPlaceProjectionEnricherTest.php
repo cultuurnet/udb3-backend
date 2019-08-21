@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
@@ -34,30 +35,36 @@ class DummyPlaceProjectionEnricherTest extends TestCase
     /**
      * @test
      */
-    public function it_should_call_the_repository(): void
+    public function it_should_ignore_events_for_non_dummy_locations(): void
     {
         $id = Uuid::uuid4()->toString();
-        $this->repository->expects($this->once())->method('get')->with($id);
-        $this->enricher->get($id);
+        $eventJson = $this->getEventJsonForLocation(Uuid::uuid4()->toString());
+        $readModel = new JsonDocument($id, $eventJson);
+        $this->repository->expects($this->once())->method('get')->with($id)->willReturn($readModel);
+        $ignoredReadModel = $this->enricher->get($id);
+        $this->assertEquals($readModel, $ignoredReadModel);
     }
 
     /**
      * @test
      */
-    public function it_should_ignore_events_for_non_dummy_locations(): void
+    public function it_should_enrich_events_for_dummy_locations(): void
     {
         $id = Uuid::uuid4()->toString();
-        $eventJson = $this->getEventJsonForLocation(Uuid::uuid4()->toString());
-        $this->repository->expects($this->once())->method('get')->with($id)->willReturn($eventJson);
-        $enrichedJson = $this->enricher->get($id);
-        $this->assertEquals($eventJson, $enrichedJson);
+        $eventJson = $this->getEventJsonForLocation($this->dummyLocationId);
+        $readModel = new JsonDocument($id, $eventJson);
+        $this->repository->expects($this->once())->method('get')->with($id)->willReturn($readModel);
+        $enrichedReadModel = $this->enricher->get($id);
+        $this->assertNotEquals($readModel, $enrichedReadModel);
     }
 
     private function getEventJsonForLocation(string $locationId): string
     {
         return json_encode(
             [
-                'foo' => 'bar',
+                'place' => [
+                    '@id' => 'https://example.com/entity/' . $locationId,
+                ],
             ]
         );
     }
