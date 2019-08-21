@@ -165,3 +165,7 @@ role_constraints_mode: v2
 # Curator label mapping
 curator_labels:
   bruzz: BRUZZ-redactioneel
+
+bookable_event:
+  dummy_location_ids:
+    - c3f9278e-228b-4199-8f9a-b9716a17e58f
