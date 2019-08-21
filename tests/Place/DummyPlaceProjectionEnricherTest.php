@@ -56,6 +56,7 @@ class DummyPlaceProjectionEnricherTest extends TestCase
         $this->repository->expects($this->once())->method('get')->with($id)->willReturn($readModel);
         $enrichedReadModel = $this->enricher->get($id);
         $this->assertNotEquals($readModel, $enrichedReadModel);
+        $this->assertTrue($enrichedReadModel->getBody()->isDummyLocationForEducationEvents);
     }
 
     private function getEventJsonForLocation(string $locationId): string
