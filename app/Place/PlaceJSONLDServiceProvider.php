@@ -71,7 +71,10 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                 $repository = new DummyPlaceProjectionEnricher(
                     new CacheDocumentRepository(
                         $app['place_jsonld_cache']
-                    )
+                    ),
+                    [
+                        $app['config']['bookable_event']['dummy_location_ids'],
+                    ]
                 );
 
                 return new BroadcastingDocumentRepositoryDecorator(
