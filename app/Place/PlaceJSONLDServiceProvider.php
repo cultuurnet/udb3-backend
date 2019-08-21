@@ -7,6 +7,7 @@ use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
@@ -67,8 +68,10 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 
         $app[self::JSONLD_REPOSITORY] = $app->share(
             function ($app) {
-                $repository = new CacheDocumentRepository(
-                    $app['place_jsonld_cache']
+                $repository = new DummyPlaceProjectionEnricher(
+                    new CacheDocumentRepository(
+                        $app['place_jsonld_cache']
+                    )
                 );
 
                 return new BroadcastingDocumentRepositoryDecorator(
