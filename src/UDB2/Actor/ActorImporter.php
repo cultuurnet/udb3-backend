@@ -65,13 +65,6 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
      */
     private $labelApplier;
 
-    /**
-     * @param RepositoryInterface $repository
-     * @param ActorToUDB3AggregateFactoryInterface $actorFactory
-     * @param ActorSpecificationInterface $actorSpecification
-     * @param LabelApplierInterface $labelApplier
-     * @param MediaImporter $mediaImporter
-     */
     public function __construct(
         RepositoryInterface $repository,
         ActorToUDB3AggregateFactoryInterface $actorFactory,
@@ -88,12 +81,9 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @param ActorCreatedEnrichedWithCdbXml $actorCreated
-     */
     private function applyActorCreatedEnrichedWithCdbXml(
         ActorCreatedEnrichedWithCdbXml $actorCreated
-    ) {
+    ): void {
         if (!$this->isSatisfiedBy($actorCreated)) {
             return;
         }
@@ -104,12 +94,9 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
         );
     }
 
-    /**
-     * @param ActorUpdatedEnrichedWithCdbXml $actorUpdated
-     */
     private function applyActorUpdatedEnrichedWithCdbXml(
         ActorUpdatedEnrichedWithCdbXml $actorUpdated
-    ) {
+    ): void {
         if (!$this->isSatisfiedBy($actorUpdated)) {
             return;
         }
@@ -120,11 +107,7 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
         );
     }
 
-    /**
-     * @param CdbXmlContainerInterface $actorCdbXml
-     * @return bool
-     */
-    private function isSatisfiedBy(CdbXmlContainerInterface $actorCdbXml)
+    private function isSatisfiedBy(CdbXmlContainerInterface $actorCdbXml): bool
     {
         $actor = ActorItemFactory::createActorFromCdbXml(
             $actorCdbXml->getCdbXmlNamespaceUri(),
@@ -143,44 +126,29 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
         return $satisfied;
     }
 
-    /**
-     * @param StringLiteral $entityId
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function updateWithCreateFallback(
         StringLiteral $entityId,
         CdbXmlContainerInterface $cdbXml
-    ) {
+    ): void {
         try {
             $this->update($entityId, $cdbXml);
 
-            $this->debug(
+            $this->logger->debug(
                 'Actor succesfully updated.'
             );
         } catch (AggregateNotFoundException $e) {
-            $this->debug(
+            $this->logger->debug(
                 'Update failed because entity did not exist yet, trying to create it as a fallback.'
             );
 
             $this->create($entityId, $cdbXml);
 
-            $this->debug(
+            $this->logger->debug(
                 'Actor succesfully created.'
             );
         }
     }
 
-    private function debug($message)
-    {
-        if ($this->logger) {
-            $this->logger->debug($message);
-        }
-    }
-
-    /**
-     * @param StringLiteral $entityId
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function createWithUpdateFallback(
         StringLiteral $entityId,
         CdbXmlContainerInterface $cdbXml
@@ -188,30 +156,26 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
         try {
             $this->create($entityId, $cdbXml);
 
-            $this->debug(
+            $this->logger->debug(
                 'Actor succesfully created.'
             );
         } catch (OfferAlreadyImportedException $e) {
-            $this->debug(
+            $this->logger->debug(
                 'An offer with the same id already exists, trying to update as a fallback.'
             );
 
             $this->update($entityId, $cdbXml);
 
-            $this->debug(
+            $this->logger->debug(
                 'Actor succesfully updated.'
             );
         }
     }
 
-    /**
-     * @param StringLiteral $entityId
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function update(
         StringLiteral $entityId,
         CdbXmlContainerInterface $cdbXml
-    ) {
+    ): void {
         $entityId = (string) $entityId;
 
         /** @var UpdateableWithCdbXmlInterface|Organizer|Place $entity */
@@ -237,14 +201,10 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
         $this->repository->save($entity);
     }
 
-    /**
-     * @param StringLiteral $id
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function create(
         StringLiteral $id,
         CdbXmlContainerInterface $cdbXml
-    ) {
+    ): void {
         try {
             $this->repository->load((string) $id);
             throw new OfferAlreadyImportedException('An offer with id: ' . $id . 'was already imported.');
