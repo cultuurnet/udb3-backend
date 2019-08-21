@@ -19,7 +19,6 @@ use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsOrganizerSpecification;
 use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsPlaceSpecification;
 use CultuurNet\UDB3\UDB2\Event\EventApplier;
 use CultuurNet\UDB3\UDB2\Event\EventCdbXmlEnricher;
-use CultuurNet\UDB3\UDB2\Event\EventToUDB3EventFactory;
 use CultuurNet\UDB3\UDB2\Event\EventXMLValidatorService;
 use CultuurNet\UDB3\UDB2\Label\LabelImporter;
 use CultuurNet\UDB3\UDB2\Media\ImageCollectionFactory;
@@ -246,7 +245,6 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 $applier = new EventApplier(
                     new Any(),
                     $app['event_repository'],
-                    new EventToUDB3EventFactory(),
                     $app['udb2_media_importer'],
                     $app['related_udb3_labels_applier']
                 );

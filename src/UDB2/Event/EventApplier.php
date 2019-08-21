@@ -40,11 +40,6 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
     protected $offerSpecification;
 
     /**
-     * EventToUDB3AggregateFactoryInterface
-     */
-    protected $offerFactory;
-
-    /**
      * @var MediaImporter
      */
     protected $mediaImporter;
@@ -59,23 +54,14 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
      */
     private $labelApplier;
 
-    /**
-     * @param SpecificationInterface $offerSpecification
-     * @param RepositoryInterface $eventRepository
-     * @param EventToUDB3AggregateFactoryInterface $offerFactory
-     * @param MediaImporter $mediaImporter
-     * @param LabelApplierInterface $labelApplier
-     */
     public function __construct(
         SpecificationInterface $offerSpecification,
         RepositoryInterface $eventRepository,
-        EventToUDB3AggregateFactoryInterface $offerFactory,
         MediaImporter $mediaImporter,
         LabelApplierInterface $labelApplier
     ) {
         $this->offerSpecification = $offerSpecification;
         $this->eventRepository = $eventRepository;
-        $this->offerFactory = $offerFactory;
         $this->mediaImporter = $mediaImporter;
         $this->labelApplier = $labelApplier;
 
@@ -269,11 +255,10 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
             );
         }
 
-        /** @var UpdateableWithCdbXmlInterface|Event $entity */
-        $entity = $this->offerFactory->createFromCdbXml(
+        $entity = Event::importFromUDB2(
             $id,
-            new StringLiteral($cdbXml->getCdbXml()),
-            new StringLiteral($cdbXml->getCdbXmlNamespaceUri())
+            $cdbXml->getCdbXml(),
+            $cdbXml->getCdbXmlNamespaceUri()
         );
 
         $cdbEvent = EventItemFactory::createEventFromCdbXml(
