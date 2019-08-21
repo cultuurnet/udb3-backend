@@ -35,7 +35,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  * Entities targeted by the ActorEventApplier need to implement
  * UpdateableWithCdbXmlInterface.
  */
-class ActorEventApplier implements EventListenerInterface, LoggerAwareInterface
+class ActorImporter implements EventListenerInterface, LoggerAwareInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
     use LoggerAwareTrait;

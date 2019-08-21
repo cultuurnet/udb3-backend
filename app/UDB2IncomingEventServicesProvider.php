@@ -11,7 +11,7 @@ use CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\Event\Any;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
-use CultuurNet\UDB3\UDB2\Actor\ActorEventApplier;
+use CultuurNet\UDB3\UDB2\Actor\ActorImporter;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3OrganizerFactory;
 use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3PlaceFactory;
@@ -260,7 +260,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_actor_events_to_udb3_place_applier'] = $app->share(
             function (Application $app) {
-                $applier = new ActorEventApplier(
+                $applier = new ActorImporter(
                     $app['place_repository'],
                     new ActorToUDB3PlaceFactory(),
                     new QualifiesAsPlaceSpecification(),
@@ -279,7 +279,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_actor_events_to_udb3_organizer_applier'] = $app->share(
             function (Application $app) {
-                $applier = new ActorEventApplier(
+                $applier = new ActorImporter(
                     $app['organizer_repository'],
                     new ActorToUDB3OrganizerFactory(),
                     new QualifiesAsOrganizerSpecification(),
