@@ -72,9 +72,7 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     new CacheDocumentRepository(
                         $app['place_jsonld_cache']
                     ),
-                    [
-                        $app['config']['bookable_event']['dummy_location_ids'],
-                    ]
+                    $app['config']['bookable_event']['dummy_location_ids']
                 );
 
                 return new BroadcastingDocumentRepositoryDecorator(
