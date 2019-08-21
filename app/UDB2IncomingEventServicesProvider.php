@@ -11,15 +11,14 @@ use CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\Event\Any;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
-use CultuurNet\UDB3\UDB2\Actor\ActorEventApplier;
+use CultuurNet\UDB3\UDB2\Actor\ActorImporter;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3OrganizerFactory;
 use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3PlaceFactory;
 use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsOrganizerSpecification;
 use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsPlaceSpecification;
-use CultuurNet\UDB3\UDB2\Event\EventApplier;
+use CultuurNet\UDB3\UDB2\Event\EventImporter;
 use CultuurNet\UDB3\UDB2\Event\EventCdbXmlEnricher;
-use CultuurNet\UDB3\UDB2\Event\EventToUDB3EventFactory;
 use CultuurNet\UDB3\UDB2\Event\EventXMLValidatorService;
 use CultuurNet\UDB3\UDB2\Label\LabelImporter;
 use CultuurNet\UDB3\UDB2\Media\ImageCollectionFactory;
@@ -243,10 +242,9 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_events_to_udb3_event_applier'] = $app->share(
             function (Application $app) {
-                $applier = new EventApplier(
+                $applier = new EventImporter(
                     new Any(),
                     $app['event_repository'],
-                    new EventToUDB3EventFactory(),
                     $app['udb2_media_importer'],
                     $app['related_udb3_labels_applier']
                 );
@@ -262,7 +260,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_actor_events_to_udb3_place_applier'] = $app->share(
             function (Application $app) {
-                $applier = new ActorEventApplier(
+                $applier = new ActorImporter(
                     $app['place_repository'],
                     new ActorToUDB3PlaceFactory(),
                     new QualifiesAsPlaceSpecification(),
@@ -281,7 +279,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_actor_events_to_udb3_organizer_applier'] = $app->share(
             function (Application $app) {
-                $applier = new ActorEventApplier(
+                $applier = new ActorImporter(
                     $app['organizer_repository'],
                     new ActorToUDB3OrganizerFactory(),
                     new QualifiesAsOrganizerSpecification(),

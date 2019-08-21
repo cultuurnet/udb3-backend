@@ -29,7 +29,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  * Wether the UDB2 CdbXML event should be processed is defined by an
  * implementation of SpecificationInterface.
  */
-class EventApplier implements EventListenerInterface, LoggerAwareInterface
+class EventImporter implements EventListenerInterface, LoggerAwareInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
     use LoggerAwareTrait;
@@ -38,11 +38,6 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
      * @var SpecificationInterface
      */
     protected $offerSpecification;
-
-    /**
-     * EventToUDB3AggregateFactoryInterface
-     */
-    protected $offerFactory;
 
     /**
      * @var MediaImporter
@@ -59,23 +54,14 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
      */
     private $labelApplier;
 
-    /**
-     * @param SpecificationInterface $offerSpecification
-     * @param RepositoryInterface $eventRepository
-     * @param EventToUDB3AggregateFactoryInterface $offerFactory
-     * @param MediaImporter $mediaImporter
-     * @param LabelApplierInterface $labelApplier
-     */
     public function __construct(
         SpecificationInterface $offerSpecification,
         RepositoryInterface $eventRepository,
-        EventToUDB3AggregateFactoryInterface $offerFactory,
         MediaImporter $mediaImporter,
         LabelApplierInterface $labelApplier
     ) {
         $this->offerSpecification = $offerSpecification;
         $this->eventRepository = $eventRepository;
-        $this->offerFactory = $offerFactory;
         $this->mediaImporter = $mediaImporter;
         $this->labelApplier = $labelApplier;
 
@@ -91,13 +77,13 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         return $this->offerSpecification->isSatisfiedByEvent($event);
     }
 
-    /**
-     * @param EventCreatedEnrichedWithCdbXml $eventCreated
-     */
     protected function applyEventCreatedEnrichedWithCdbXml(
         EventCreatedEnrichedWithCdbXml $eventCreated
-    ) {
-        $cdbXmlEvent = $this->factorCdbXmlEvent($eventCreated);
+    ): void {
+        $cdbXmlEvent = EventItemFactory::createEventFromCdbXml(
+            (string) $eventCreated->getCdbXmlNamespaceUri(),
+            (string) $eventCreated->getCdbXml()
+        );
 
         if (!$this->isSatisfiedBy($cdbXmlEvent)) {
             $this->logger->debug(
@@ -115,13 +101,13 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         );
     }
 
-    /**
-     * @param EventUpdatedEnrichedWithCdbXml $eventUpdated
-     */
     protected function applyEventUpdatedEnrichedWithCdbXml(
         EventUpdatedEnrichedWithCdbXml $eventUpdated
-    ) {
-        $cdbXmlEvent = $this->factorCdbXmlEvent($eventUpdated);
+    ): void {
+        $cdbXmlEvent = EventItemFactory::createEventFromCdbXml(
+            (string) $eventUpdated->getCdbXmlNamespaceUri(),
+            (string) $eventUpdated->getCdbXml()
+        );
 
         if (!$this->isSatisfiedBy($cdbXmlEvent)) {
             $this->logger->debug('UDB2 event does not satisfy the criteria');
@@ -134,28 +120,10 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         );
     }
 
-    /**
-     * @param CdbXmlContainerInterface $event
-     * @return CultureFeed_Cdb_Item_Event
-     */
-    private function factorCdbXmlEvent(CdbXmlContainerInterface $event)
-    {
-        $cdbXmlEvent = EventItemFactory::createEventFromCdbXml(
-            (string) $event->getCdbXmlNamespaceUri(),
-            (string) $event->getCdbXml()
-        );
-
-        return $cdbXmlEvent;
-    }
-
-    /**
-     * @param StringLiteral $entityId
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function updateWithCreateFallback(
         StringLiteral $entityId,
         CdbXmlContainerInterface $cdbXml
-    ) {
+    ): void {
         try {
             $this->update($entityId, $cdbXml);
 
@@ -184,14 +152,10 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         }
     }
 
-    /**
-     * @param $entityId
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function createWithUpdateFallback(
         StringLiteral $entityId,
         CdbXmlContainerInterface $cdbXml
-    ) {
+    ): void {
         try {
             $this->create($entityId, $cdbXml);
 
@@ -220,14 +184,10 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         }
     }
 
-    /**
-     * @param StringLiteral $entityId
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function update(
         StringLiteral $entityId,
         CdbXmlContainerInterface $cdbXml
-    ) {
+    ): void {
         /** @var UpdateableWithCdbXmlInterface|Event $entity */
         $entity = $this->eventRepository->load((string) $entityId);
 
@@ -249,14 +209,10 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
         $this->eventRepository->save($entity);
     }
 
-    /**
-     * @param StringLiteral $id
-     * @param CdbXmlContainerInterface $cdbXml
-     */
     private function create(
         StringLiteral $id,
         CdbXmlContainerInterface $cdbXml
-    ) {
+    ): void {
         try {
             $this->eventRepository->load((string) $id);
             throw new OfferAlreadyImportedException('An offer with id: ' . $id . 'was already imported.');
@@ -269,11 +225,10 @@ class EventApplier implements EventListenerInterface, LoggerAwareInterface
             );
         }
 
-        /** @var UpdateableWithCdbXmlInterface|Event $entity */
-        $entity = $this->offerFactory->createFromCdbXml(
+        $entity = Event::importFromUDB2(
             $id,
-            new StringLiteral($cdbXml->getCdbXml()),
-            new StringLiteral($cdbXml->getCdbXmlNamespaceUri())
+            $cdbXml->getCdbXml(),
+            $cdbXml->getCdbXmlNamespaceUri()
         );
 
         $cdbEvent = EventItemFactory::createEventFromCdbXml(
