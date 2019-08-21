@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
@@ -14,11 +13,16 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
     private $repository;
 
     /**
-     * @param DocumentRepositoryInterface $repository
+     * @var string[]
      */
-    public function __construct(DocumentRepositoryInterface $repository)
-    {
+    private $dummyLocationIds = [];
+
+    public function __construct(
+        DocumentRepositoryInterface $repository,
+        array $dummyLocationIds
+    ) {
         $this->repository = $repository;
+        $this->dummyLocationIds = $dummyLocationIds;
     }
 
     public function get($id)
