@@ -29,7 +29,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  * Wether the UDB2 CdbXML event should be processed is defined by an
  * implementation of SpecificationInterface.
  */
-class EventApplier implements EventListenerInterface, LoggerAwareInterface
+class EventImporter implements EventListenerInterface, LoggerAwareInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
     use LoggerAwareTrait;

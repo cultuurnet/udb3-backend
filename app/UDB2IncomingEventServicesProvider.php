@@ -17,7 +17,7 @@ use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3OrganizerFactory;
 use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3PlaceFactory;
 use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsOrganizerSpecification;
 use CultuurNet\UDB3\UDB2\Actor\Specification\QualifiesAsPlaceSpecification;
-use CultuurNet\UDB3\UDB2\Event\EventApplier;
+use CultuurNet\UDB3\UDB2\Event\EventImporter;
 use CultuurNet\UDB3\UDB2\Event\EventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Event\EventXMLValidatorService;
 use CultuurNet\UDB3\UDB2\Label\LabelImporter;
@@ -242,7 +242,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_events_to_udb3_event_applier'] = $app->share(
             function (Application $app) {
-                $applier = new EventApplier(
+                $applier = new EventImporter(
                     new Any(),
                     $app['event_repository'],
                     $app['udb2_media_importer'],
