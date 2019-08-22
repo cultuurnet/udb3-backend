@@ -1319,7 +1319,7 @@ $app->register(new \CultuurNet\UDB3\Silex\AuditTrailServiceProvider());
 $app->register(new CuratorsServiceProvider());
 
 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
-    LocationId::setDummyPlaceForEducationIds($app['config']);
+    LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
 }
 
 return $app;
