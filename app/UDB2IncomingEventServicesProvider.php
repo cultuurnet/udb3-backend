@@ -246,7 +246,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     new Any(),
                     $app['event_repository'],
                     $app['udb2_media_importer'],
-                    $app['related_udb3_labels_applier']
+                    $app['related_udb3_labels_applier'],
+                    $app['udb2_event_cdbid_extractor']
                 );
 
                 $logger = new Logger('udb2-events-to-udb3-event-applier');

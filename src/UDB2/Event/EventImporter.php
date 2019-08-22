@@ -6,6 +6,7 @@ use Broadway\EventHandling\EventListenerInterface;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\RepositoryInterface;
 use CultureFeed_Cdb_Item_Event;
+use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\Cdb\Event\SpecificationInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -57,16 +58,23 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
      */
     private $labelApplier;
 
+    /**
+     * @var EventCdbIdExtractorInterface
+     */
+    private $eventCdbIdExtractor;
+
     public function __construct(
         SpecificationInterface $offerSpecification,
         RepositoryInterface $eventRepository,
         MediaImporter $mediaImporter,
-        LabelApplierInterface $labelApplier
+        LabelApplierInterface $labelApplier,
+        EventCdbIdExtractorInterface $eventCdbIdExtractor
     ) {
         $this->offerSpecification = $offerSpecification;
         $this->eventRepository = $eventRepository;
         $this->mediaImporter = $mediaImporter;
         $this->labelApplier = $labelApplier;
+        $this->eventCdbIdExtractor = $eventCdbIdExtractor;
 
         $this->logger = new NullLogger();
     }
@@ -209,9 +217,12 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
 
         $this->labelApplier->apply($udb3Event);
 
-        $locationId = new LocationId($cdbEvent->getLocation()->getCdbid());
-        if ($locationId->isDummyPlaceForEducation()) {
-            $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
+        $locationId = $this->eventCdbIdExtractor->getRelatedPlaceCdbId($cdbEvent);
+        if ($locationId) {
+            $locationId = new LocationId($locationId);
+            if ($locationId->isDummyPlaceForEducation()) {
+                $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
+            }
         }
 
         $this->eventRepository->save($udb3Event);
@@ -256,9 +267,12 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
             );
         };
 
-        $locationId = new LocationId($cdbEvent->getLocation()->getCdbid());
-        if ($locationId->isDummyPlaceForEducation()) {
-            $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
+        $locationId = $this->eventCdbIdExtractor->getRelatedPlaceCdbId($cdbEvent);
+        if ($locationId) {
+            $locationId = new LocationId($locationId);
+            if ($locationId->isDummyPlaceForEducation()) {
+                $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
+            }
         }
 
         $this->eventRepository->save($udb3Event);
