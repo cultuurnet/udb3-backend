@@ -188,13 +188,13 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
     }
 
     private function update(
-        StringLiteral $entityId,
+        StringLiteral $eventId,
         CdbXmlContainerInterface $cdbXml
     ): void {
-        /** @var UpdateableWithCdbXmlInterface|Event $aggregate */
-        $aggregate = $this->eventRepository->load((string) $entityId);
+        /** @var UpdateableWithCdbXmlInterface|Event $udb3Event */
+        $udb3Event = $this->eventRepository->load((string) $eventId);
 
-        $aggregate->updateWithCdbXml(
+        $udb3Event->updateWithCdbXml(
             $cdbXml->getCdbXml(),
             $cdbXml->getCdbXmlNamespaceUri()
         );
@@ -205,36 +205,36 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         );
 
         $imageCollection = $this->mediaImporter->importImages($cdbEvent);
-        $aggregate->updateImagesFromUDB2($imageCollection);
+        $udb3Event->updateImagesFromUDB2($imageCollection);
 
-        $this->labelApplier->apply($aggregate);
+        $this->labelApplier->apply($udb3Event);
 
         $locationId = new LocationId($cdbEvent->getLocation()->getCdbid());
         if ($locationId->isDummyPlaceForEducation()) {
-            $aggregate->updateAudience(new Audience(AudienceType::EDUCATION()));
+            $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
         }
 
-        $this->eventRepository->save($aggregate);
+        $this->eventRepository->save($udb3Event);
     }
 
     private function create(
-        StringLiteral $id,
+        StringLiteral $eventId,
         CdbXmlContainerInterface $cdbXml
     ): void {
         try {
-            $this->eventRepository->load((string) $id);
-            throw new OfferAlreadyImportedException('An offer with id: ' . $id . 'was already imported.');
+            $this->eventRepository->load((string) $eventId);
+            throw new OfferAlreadyImportedException('An offer with id: ' . $eventId . 'was already imported.');
         } catch (AggregateNotFoundException $e) {
             $this->logger->info(
                 'No existing offer with the same id found so it is safe to import.',
                 [
-                    'offer-id' => (string) $id,
+                    'offer-id' => (string) $eventId,
                 ]
             );
         }
 
-        $aggregate = Event::importFromUDB2(
-            $id,
+        $udb3Event = Event::importFromUDB2(
+            $eventId,
             $cdbXml->getCdbXml(),
             $cdbXml->getCdbXmlNamespaceUri()
         );
@@ -247,20 +247,20 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         try {
             $imageCollection = $this->mediaImporter->importImages($cdbEvent);
             if ($imageCollection->length() > 0) {
-                $aggregate->importImagesFromUDB2($imageCollection);
+                $udb3Event->importImagesFromUDB2($imageCollection);
             }
         } catch (UnsupportedMIMETypeException $e) {
             $this->logger->error(
                 'Unable to import images for offer. ' . $e->getMessage(),
-                ['offer-id' => (string) $id]
+                ['offer-id' => (string) $eventId]
             );
         };
 
         $locationId = new LocationId($cdbEvent->getLocation()->getCdbid());
         if ($locationId->isDummyPlaceForEducation()) {
-            $aggregate->updateAudience(new Audience(AudienceType::EDUCATION()));
+            $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
         }
 
-        $this->eventRepository->save($aggregate);
+        $this->eventRepository->save($udb3Event);
     }
 }
