@@ -68,11 +68,15 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
 
         $app[self::JSONLD_REPOSITORY] = $app->share(
             function ($app) {
+                $dummyPlaceIds = [];
+                if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
+                    $dummyPlaceIds = $app['config']['bookable_event']['dummy_place_ids'];
+                }
                 $repository = new DummyPlaceProjectionEnricher(
                     new CacheDocumentRepository(
                         $app['place_jsonld_cache']
                     ),
-                    $app['config']['bookable_event']['dummy_place_ids']
+                    $dummyPlaceIds
                 );
 
                 return new BroadcastingDocumentRepositoryDecorator(
