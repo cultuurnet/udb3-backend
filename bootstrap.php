@@ -7,6 +7,7 @@ use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
@@ -1316,5 +1317,9 @@ $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\AuditTrailServiceProvider());
 
 $app->register(new CuratorsServiceProvider());
+
+if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
+    LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
+}
 
 return $app;
