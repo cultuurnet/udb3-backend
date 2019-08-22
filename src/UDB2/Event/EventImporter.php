@@ -11,6 +11,9 @@ use CultuurNet\UDB3\Cdb\Event\SpecificationInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\Event\Event;
+use CultuurNet\UDB3\Event\ValueObjects\Audience;
+use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Media\Properties\UnsupportedMIMETypeException;
 use CultuurNet\UDB3\UDB2\Event\Events\EventCreatedEnrichedWithCdbXml;
@@ -188,10 +191,10 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         StringLiteral $entityId,
         CdbXmlContainerInterface $cdbXml
     ): void {
-        /** @var UpdateableWithCdbXmlInterface|Event $entity */
-        $entity = $this->eventRepository->load((string) $entityId);
+        /** @var UpdateableWithCdbXmlInterface|Event $aggregate */
+        $aggregate = $this->eventRepository->load((string) $entityId);
 
-        $entity->updateWithCdbXml(
+        $aggregate->updateWithCdbXml(
             $cdbXml->getCdbXml(),
             $cdbXml->getCdbXmlNamespaceUri()
         );
@@ -202,11 +205,16 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         );
 
         $imageCollection = $this->mediaImporter->importImages($cdbEvent);
-        $entity->updateImagesFromUDB2($imageCollection);
+        $aggregate->updateImagesFromUDB2($imageCollection);
 
-        $this->labelApplier->apply($entity);
+        $this->labelApplier->apply($aggregate);
 
-        $this->eventRepository->save($entity);
+        $locationId = new LocationId($cdbEvent->getLocation()->getCdbid());
+        if ($locationId->isDummyPlaceForEducation()) {
+            $aggregate->updateAudience(new Audience(AudienceType::EDUCATION()));
+        }
+
+        $this->eventRepository->save($aggregate);
     }
 
     private function create(
@@ -225,7 +233,7 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
             );
         }
 
-        $entity = Event::importFromUDB2(
+        $aggregate = Event::importFromUDB2(
             $id,
             $cdbXml->getCdbXml(),
             $cdbXml->getCdbXmlNamespaceUri()
@@ -239,7 +247,7 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         try {
             $imageCollection = $this->mediaImporter->importImages($cdbEvent);
             if ($imageCollection->length() > 0) {
-                $entity->importImagesFromUDB2($imageCollection);
+                $aggregate->importImagesFromUDB2($imageCollection);
             }
         } catch (UnsupportedMIMETypeException $e) {
             $this->logger->error(
@@ -248,6 +256,11 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
             );
         };
 
-        $this->eventRepository->save($entity);
+        $locationId = new LocationId($cdbEvent->getLocation()->getCdbid());
+        if ($locationId->isDummyPlaceForEducation()) {
+            $aggregate->updateAudience(new Audience(AudienceType::EDUCATION()));
+        }
+
+        $this->eventRepository->save($aggregate);
     }
 }
