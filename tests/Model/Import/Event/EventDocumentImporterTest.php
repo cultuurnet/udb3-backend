@@ -608,6 +608,39 @@ class EventDocumentImporterTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_force_audience_type_to_education_for_dummy_place(): void
+    {
+        $dummyPlaceId = UUID::generateAsString();
+        LocationId::setDummyPlaceForEducationIds([$dummyPlaceId]);
+        $document = $this->getEventDocument();
+        $body = $document->getBody();
+        $body['audience']['audienceType'] = AudienceType::EVERYONE()->toNative();
+        $body['location']['@id'] = 'https://io.uitdatabank.be/places/' . $dummyPlaceId;
+        $document = $document->withBody($body);
+        $id = $document->getId();
+
+        $this->expectEventIdExists($id);
+        $this->expectNoImages();
+        $this->expectNoLockedLabels();
+
+        $this->commandBus->record();
+
+        $this->importer->import($document);
+
+        $recordedCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertContainsObject(
+            new UpdateAudience(
+                $id,
+                new Audience(AudienceType::EDUCATION())
+            ),
+            $recordedCommands
+        );
+    }
+
     private function getEventId()
     {
         return 'c33b4498-0932-4fbe-816f-c6641f30ba3b';
