@@ -63,9 +63,7 @@ class DummyPlaceProjectionEnricherTest extends TestCase
     {
         return json_encode(
             [
-                'place' => [
-                    '@id' => 'https://example.com/entity/' . $placeId,
-                ],
+                '@id' => 'https://example.com/entity/' . $placeId,
             ]
         );
     }
