@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3898a90ab41a6b81933e9cac0d518b687611c69d"
+                "reference": "a965fa9634268ccc7eb82582c0a1c6878269e325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3898a90ab41a6b81933e9cac0d518b687611c69d",
-                "reference": "3898a90ab41a6b81933e9cac0d518b687611c69d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a965fa9634268ccc7eb82582c0a1c6878269e325",
+                "reference": "a965fa9634268ccc7eb82582c0a1c6878269e325",
                 "shasum": ""
             },
             "require": {
@@ -1570,16 +1570,12 @@
             ],
             "authors": [
                 {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Bram Cordie",
-                    "email": "bram@2dotstwice.be"
+                    "name": "Publiq vwz",
+                    "email": "info@publiq.be"
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-08-08 07:15:18"
+            "time": "2019-08-22 11:24:53"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
