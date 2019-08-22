@@ -30,7 +30,7 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
         $readModel = $this->repository->get($id);
         foreach ($this->dummyPlaceIds as $dummyPlaceId) {
             $body = $readModel->getBody();
-            if (strpos($body->place->{'@id'}, $dummyPlaceId) !== false) {
+            if (strpos($body->{'@id'}, $dummyPlaceId) !== false) {
                 $body->isDummyPlaceForEducationEvents = true;
                 return $readModel->withBody($body);
             }
