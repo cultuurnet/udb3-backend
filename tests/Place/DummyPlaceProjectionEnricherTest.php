@@ -23,22 +23,22 @@ class DummyPlaceProjectionEnricherTest extends TestCase
     /**
      * @var string
      */
-    private $dummyLocationId;
+    private $dummyPlaceId;
 
     protected function setUp()
     {
-        $this->dummyLocationId = Uuid::uuid4()->toString();
+        $this->dummyPlaceId = Uuid::uuid4()->toString();
         $this->repository = $this->createMock(DocumentRepositoryInterface::class);
-        $this->enricher = new DummyPlaceProjectionEnricher($this->repository, [$this->dummyLocationId]);
+        $this->enricher = new DummyPlaceProjectionEnricher($this->repository, [$this->dummyPlaceId]);
     }
 
     /**
      * @test
      */
-    public function it_should_ignore_events_for_non_dummy_locations(): void
+    public function it_should_ignore_events_for_non_dummy_places(): void
     {
         $id = Uuid::uuid4()->toString();
-        $eventJson = $this->getEventJsonForLocation(Uuid::uuid4()->toString());
+        $eventJson = $this->getEventJsonForPlace(Uuid::uuid4()->toString());
         $readModel = new JsonDocument($id, $eventJson);
         $this->repository->expects($this->once())->method('get')->with($id)->willReturn($readModel);
         $ignoredReadModel = $this->enricher->get($id);
@@ -48,23 +48,23 @@ class DummyPlaceProjectionEnricherTest extends TestCase
     /**
      * @test
      */
-    public function it_should_enrich_events_for_dummy_locations(): void
+    public function it_should_enrich_events_for_dummy_places(): void
     {
         $id = Uuid::uuid4()->toString();
-        $eventJson = $this->getEventJsonForLocation($this->dummyLocationId);
+        $eventJson = $this->getEventJsonForPlace($this->dummyPlaceId);
         $readModel = new JsonDocument($id, $eventJson);
         $this->repository->expects($this->once())->method('get')->with($id)->willReturn($readModel);
         $enrichedReadModel = $this->enricher->get($id);
         $this->assertNotEquals($readModel, $enrichedReadModel);
-        $this->assertTrue($enrichedReadModel->getBody()->isDummyLocationForEducationEvents);
+        $this->assertTrue($enrichedReadModel->getBody()->isDummyPlaceForEducationEvents);
     }
 
-    private function getEventJsonForLocation(string $locationId): string
+    private function getEventJsonForPlace(string $placeId): string
     {
         return json_encode(
             [
                 'place' => [
-                    '@id' => 'https://example.com/entity/' . $locationId,
+                    '@id' => 'https://example.com/entity/' . $placeId,
                 ],
             ]
         );

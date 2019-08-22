@@ -15,23 +15,23 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
     /**
      * @var string[]
      */
-    private $dummyLocationIds = [];
+    private $dummyPlaceIds = [];
 
     public function __construct(
         DocumentRepositoryInterface $repository,
-        array $dummyLocationIds
+        array $dummyPlaceIds
     ) {
         $this->repository = $repository;
-        $this->dummyLocationIds = $dummyLocationIds;
+        $this->dummyPlaceIds = $dummyPlaceIds;
     }
 
     public function get($id)
     {
         $readModel = $this->repository->get($id);
-        foreach ($this->dummyLocationIds as $dummyLocationId) {
+        foreach ($this->dummyPlaceIds as $dummyPlaceId) {
             $body = $readModel->getBody();
-            if (strpos($body->place->{'@id'}, $dummyLocationId) !== false) {
-                $body->isDummyLocationForEducationEvents = true;
+            if (strpos($body->place->{'@id'}, $dummyPlaceId) !== false) {
+                $body->isDummyPlaceForEducationEvents = true;
                 return $readModel->withBody($body);
             }
         }
