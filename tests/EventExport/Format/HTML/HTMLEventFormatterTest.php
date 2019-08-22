@@ -89,6 +89,7 @@ class HTMLEventFormatterTest extends TestCase
                 'municipality' => 'Tienen',
                 'country' => 'BE',
                 'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
+                'isDummyAddress' => false,
             ],
             'type' => 'Cursus of workshop',
             'price' => 'Gratis',
@@ -101,6 +102,33 @@ class HTMLEventFormatterTest extends TestCase
         $expectedFormattedPricedEvent = $expectedFormattedFreeEvent;
         $expectedFormattedPricedEvent['price'] = '10,5';
         $this->assertEventFormatting($expectedFormattedPricedEvent, $pricedEvent);
+    }
+
+    /**
+     * @test
+     */
+    public function it_marks_the_address_as_dummy_if_the_location_is_a_dummy_for_bookable_education_events()
+    {
+        $freeEvent = $this->getFormattedEventFromJSONFile('event_with_dummy_location.json');
+        $expectedFormattedFreeEvent = [
+            'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
+            'image' => 'http://media.uitdatabank.be/20141211/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
+            'description' => 'De islam is niet meer weg te denken uit onze maatschappij. '.'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis '.'van de godsdienst uit de doeken...',
+            'address' => [
+                'name' => 'Cultuurcentrum De Kruisboog',
+                'street' => 'Sint-Jorisplein 20 ',
+                'postcode' => '3300',
+                'municipality' => 'Tienen',
+                'country' => 'BE',
+                'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
+                'isDummyAddress' => true,
+            ],
+            'type' => 'Cursus of workshop',
+            'price' => 'Gratis',
+            'brands' => array(),
+            'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
+        ];
+        $this->assertEventFormatting($expectedFormattedFreeEvent, $freeEvent);
     }
 
     /**
@@ -121,6 +149,7 @@ class HTMLEventFormatterTest extends TestCase
                 'municipality' => 'Herent',
                 'country' => 'BE',
                 'concatenated' => 'Schoolstraat 15 3020 Herent BE',
+                'isDummyAddress' => false,
             ],
             'price' => 'Niet ingevoerd',
             'brands' => array(),
@@ -145,6 +174,7 @@ class HTMLEventFormatterTest extends TestCase
                 'municipality' => 'Tienen',
                 'country' => 'BE',
                 'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
+                'isDummyAddress' => false,
             ],
             'price' => 'Gratis',
             'brands' => array(),
@@ -170,6 +200,7 @@ class HTMLEventFormatterTest extends TestCase
                 'municipality' => 'Tienen',
                 'country' => 'BE',
                 'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
+                'isDummyAddress' => false,
             ],
             'price' => 'Niet ingevoerd',
             'brands' => array(),
@@ -199,6 +230,7 @@ class HTMLEventFormatterTest extends TestCase
                 $expectedFormattedEvent + [
                     'address' => [
                         'name' => 'Cultuurcentrum De Kruisboog',
+                        'isDummyAddress' => false,
                     ]
                 ]
             ],
@@ -211,6 +243,7 @@ class HTMLEventFormatterTest extends TestCase
                         'municipality' => 'Tienen',
                         'country' => 'BE',
                         'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
+                        'isDummyAddress' => false,
                     ]
                 ]
             ],
@@ -220,6 +253,7 @@ class HTMLEventFormatterTest extends TestCase
                     'address' => [
                         'latitude' => '50.804739',
                         'longitude' => '4.936491',
+                        'isDummyAddress' => false,
                     ]
                 ]
             ]
@@ -256,6 +290,7 @@ class HTMLEventFormatterTest extends TestCase
                 'municipality' => 'Tienen',
                 'country' => 'BE',
                 'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
+                'isDummyAddress' => false,
             ],
             'price' => 'Gratis',
             'brands' => array(),
@@ -367,9 +402,7 @@ class HTMLEventFormatterTest extends TestCase
     {
         $eventWithoutImage = $this->getJSONEventFromFile('event_without_image.json');
 
-        /**
- * @var EventInfoServiceInterface|MockObject $uitpas
-*/
+        /* @var EventInfoServiceInterface|MockObject $uitpas */
         $uitpas = $this->createMock(EventInfoServiceInterface::class);
 
         $prices = $priceData['original'];
@@ -411,6 +444,7 @@ class HTMLEventFormatterTest extends TestCase
                 'municipality' => 'Tienen',
                 'country' => 'BE',
                 'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
+                'isDummyAddress' => false,
             ],
             'price' => 'Niet ingevoerd',
             'brands' => array(),

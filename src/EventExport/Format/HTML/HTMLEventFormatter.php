@@ -156,6 +156,11 @@ class HTMLEventFormatter
                     'longitude' => $event->location->geo->longitude,
                 ];
             }
+
+            $address['isDummyAddress'] = false;
+            if (isset($event->location->isDummyPlaceForEducationEvents)) {
+                $address['isDummyAddress'] = (bool) $event->location->isDummyPlaceForEducationEvents;
+            }
         }
 
         if (!empty($address)) {
