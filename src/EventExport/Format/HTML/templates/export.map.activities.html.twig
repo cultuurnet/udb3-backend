@@ -70,7 +70,11 @@
                             <i class="fa fa-map-marker"></i>&nbsp;
                         </td>
                         <td>
-                            {{ event.address.name }}, {{ event.address.street }}, {{ event.address.postcode }} {{ event.address.municipality }}
+                            {{ event.address.name }}
+                            {%-  if not event.address.isDummyAddress -%}
+                                , {{ event.address.street }}, {{ event.address.postcode }} {{ event.address.municipality }}
+                            {%- endif %}
+
                         </td>
                     </tr>
                     <tr>
