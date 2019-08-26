@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Place;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Offer\OfferEditingServiceWithLabelMemory;
 use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\DefaultPlaceEditingService;
@@ -35,6 +36,15 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
                 return new PlaceOrganizerRelationService(
                     $app['place_editing_service'],
                     $app['place_relations_repository']
+                );
+            }
+        );
+
+        $app[LocationMarkedAsDuplicateProcessManager::class] = $app->share(
+            function ($app) {
+                return new LocationMarkedAsDuplicateProcessManager(
+                    $app['event_relations_repository'],
+                    $app['event_command_bus']
                 );
             }
         );
