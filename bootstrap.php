@@ -7,6 +7,7 @@ use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
+use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
@@ -530,6 +531,7 @@ $app['event_bus'] = function ($app) {
             'event_geocoordinates_process_manager',
             'uitpas_event_process_manager',
             'curators_news_article_process_manager',
+            LocationMarkedAsDuplicateProcessManager::class,
         ];
 
         $initialSubscribersCount = count($subscribers);
