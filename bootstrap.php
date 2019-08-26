@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
@@ -745,6 +746,8 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
                 $app['media_manager']
             )
         );
+
+        $commandBus->subscribe(new MarkAsDuplicateCommandHandler($app['place_repository']));
 
         $commandBus->subscribe(
             (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler(
