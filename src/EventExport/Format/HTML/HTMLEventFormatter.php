@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
+use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\EventSpecificationInterface;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications\Has1Taalicoon;
@@ -199,8 +200,8 @@ class HTMLEventFormatter
     {
         if ($this->calendarSummaryRepository) {
             try {
-                $calendarType = $event->calendarType;
-                $calendarSummaryFormat = ($calendarType == "multiple" ? Format::SMALL() : Format::LARGE());
+                $calendarType = CalendarType::fromNative($event->calendarType);
+                $calendarSummaryFormat = $calendarType->sameValueAs(CalendarType::MULTIPLE()) ? Format::SMALL() : Format::LARGE();
                 $calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::HTML(), $calendarSummaryFormat);
             } catch (SummaryUnavailableException $exception) {
                 //TODO: Log the missing summaries.
