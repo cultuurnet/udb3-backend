@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand;
 use CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand;
+use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\PermissionCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
@@ -85,5 +86,6 @@ $consoleApp->add(new ImportSavedSearchesCommand());
 $consoleApp->add(new ImportRoleConstraintsCommand());
 $consoleApp->add(new ImportEventCdbXmlCommand());
 $consoleApp->add(new ValidatePlaceJsonLdCommand());
+$consoleApp->add(new MarkPlaceAsDuplicateCommand());
 
 $consoleApp->run();

@@ -6,6 +6,7 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\EventEditingService;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
+use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -36,6 +37,15 @@ class EventEditingServiceProvider implements ServiceProviderInterface
                 return new EventOrganizerRelationService(
                     $app['event_editor'],
                     $app['event_relations_repository']
+                );
+            }
+        );
+
+        $app[LocationMarkedAsDuplicateProcessManager::class] = $app->share(
+            function ($app) {
+                return new LocationMarkedAsDuplicateProcessManager(
+                    $app['event_relations_repository'],
+                    $app['event_command_bus']
                 );
             }
         );
