@@ -8,6 +8,7 @@ use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
+use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
@@ -532,6 +533,7 @@ $app['event_bus'] = function ($app) {
             'uitpas_event_process_manager',
             'curators_news_article_process_manager',
             LocationMarkedAsDuplicateProcessManager::class,
+            RelocateEventToCanonicalPlace::class,
         ];
 
         $initialSubscribersCount = count($subscribers);
