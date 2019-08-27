@@ -19,7 +19,7 @@ class ReadRestControllerTest extends TestCase
     /**
      * @var ReadRestController
      */
-    private $readRestConstroller;
+    private $readRestController;
 
     protected function setUp()
     {
@@ -27,7 +27,7 @@ class ReadRestControllerTest extends TestCase
             JobsStatusFactoryInterface::class
         );
 
-        $this->readRestConstroller = new ReadRestController(
+        $this->readRestController = new ReadRestController(
             $this->jobsStatusFactory
         );
     }
@@ -40,7 +40,7 @@ class ReadRestControllerTest extends TestCase
         $jobStatus = JobStatus::RUNNING();
         $this->mockCreateFromJobId($jobStatus);
 
-        $response = $this->readRestConstroller->get('jobId');
+        $response = $this->readRestController->get('jobId');
 
         $expectedResponse = new JsonResponse($jobStatus->toNative());
 
@@ -54,7 +54,7 @@ class ReadRestControllerTest extends TestCase
     {
         $this->mockCreateFromJobId(null);
 
-        $response = $this->readRestConstroller->get('jobId');
+        $response = $this->readRestController->get('jobId');
 
         $apiProblem = new ApiProblem('No status for job with id: jobId');
         $apiProblem->setStatus(Response::HTTP_BAD_REQUEST);
