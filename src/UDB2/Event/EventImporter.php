@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\UDB2\Event;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\RepositoryInterface;
@@ -11,6 +12,7 @@ use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\Cdb\Event\SpecificationInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
+use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
@@ -62,6 +64,11 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
      * @var EventCdbIdExtractorInterface
      */
     private $eventCdbIdExtractor;
+
+    /**
+     * @var CommandBusInterface
+     */
+    private $commandBus;
 
     public function __construct(
         SpecificationInterface $offerSpecification,
@@ -226,6 +233,11 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         }
 
         $this->eventRepository->save($udb3Event);
+
+        if ($locationId) {
+            // We dispatch UpdateLocation here to potentially relocate the location to its canonical place
+            $this->commandBus->dispatch(new UpdateLocation($eventId, $locationId));
+        }
     }
 
     private function create(
@@ -276,5 +288,10 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         }
 
         $this->eventRepository->save($udb3Event);
+
+        if ($locationId) {
+            // We dispatch UpdateLocation here to potentially relocate the location to its canonical place
+            $this->commandBus->dispatch(new UpdateLocation($eventId, $locationId));
+        }
     }
 }
