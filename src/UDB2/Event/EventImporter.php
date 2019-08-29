@@ -238,7 +238,7 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
 
         if ($locationId) {
             // We dispatch UpdateLocation here to potentially relocate the location to its canonical place
-            $this->commandBus->dispatch(new UpdateLocation($eventId, $locationId));
+            $this->commandBus->dispatch(new UpdateLocation((string) $eventId, $locationId));
         }
     }
 
@@ -259,7 +259,7 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         }
 
         $udb3Event = Event::importFromUDB2(
-            $eventId,
+            (string) $eventId,
             $cdbXml->getCdbXml(),
             $cdbXml->getCdbXmlNamespaceUri()
         );
