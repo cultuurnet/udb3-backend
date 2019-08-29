@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\Cdb\Event\SpecificationInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
+use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
@@ -226,19 +227,20 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
 
         $this->labelApplier->apply($udb3Event);
 
+        $this->eventRepository->save($udb3Event);
+
         $locationId = $this->eventCdbIdExtractor->getRelatedPlaceCdbId($cdbEvent);
         if ($locationId) {
             $locationId = new LocationId($locationId);
-            if ($locationId->isDummyPlaceForEducation()) {
-                $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
-            }
         }
-
-        $this->eventRepository->save($udb3Event);
 
         if ($locationId) {
             // We dispatch UpdateLocation here to potentially relocate the location to its canonical place
             $this->commandBus->dispatch(new UpdateLocation((string) $eventId, $locationId));
+        }
+
+        if ($locationId && $locationId->isDummyPlaceForEducation()) {
+            $this->commandBus->dispatch(new UpdateAudience((string) $eventId, new Audience(AudienceType::EDUCATION())));
         }
     }
 
@@ -284,9 +286,6 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         $locationId = $this->eventCdbIdExtractor->getRelatedPlaceCdbId($cdbEvent);
         if ($locationId) {
             $locationId = new LocationId($locationId);
-            if ($locationId->isDummyPlaceForEducation()) {
-                $udb3Event->updateAudience(new Audience(AudienceType::EDUCATION()));
-            }
         }
 
         $this->eventRepository->save($udb3Event);
@@ -294,6 +293,10 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         if ($locationId) {
             // We dispatch UpdateLocation here to potentially relocate the location to its canonical place
             $this->commandBus->dispatch(new UpdateLocation((string) $eventId, $locationId));
+        }
+
+        if ($locationId && $locationId->isDummyPlaceForEducation()) {
+            $this->commandBus->dispatch(new UpdateAudience((string) $eventId, new Audience(AudienceType::EDUCATION())));
         }
     }
 }
