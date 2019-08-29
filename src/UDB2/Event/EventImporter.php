@@ -75,13 +75,15 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         RepositoryInterface $eventRepository,
         MediaImporter $mediaImporter,
         LabelApplierInterface $labelApplier,
-        EventCdbIdExtractorInterface $eventCdbIdExtractor
+        EventCdbIdExtractorInterface $eventCdbIdExtractor,
+        CommandBusInterface $commandBus
     ) {
         $this->offerSpecification = $offerSpecification;
         $this->eventRepository = $eventRepository;
         $this->mediaImporter = $mediaImporter;
         $this->labelApplier = $labelApplier;
         $this->eventCdbIdExtractor = $eventCdbIdExtractor;
+        $this->commandBus = $commandBus;
 
         $this->logger = new NullLogger();
     }
@@ -291,7 +293,7 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
 
         if ($locationId) {
             // We dispatch UpdateLocation here to potentially relocate the location to its canonical place
-            $this->commandBus->dispatch(new UpdateLocation($eventId, $locationId));
+            $this->commandBus->dispatch(new UpdateLocation((string) $eventId, $locationId));
         }
     }
 }
