@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodeEventCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
+use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand;
 use CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
@@ -85,6 +86,7 @@ $consoleApp->add(new FireProjectedToJSONLDCommand());
 $consoleApp->add(new ImportSavedSearchesCommand());
 $consoleApp->add(new ImportRoleConstraintsCommand());
 $consoleApp->add(new ImportEventCdbXmlCommand());
+$consoleApp->add(new ImportPlaceCdbXmlCommand());
 $consoleApp->add(new ValidatePlaceJsonLdCommand());
 $consoleApp->add(new MarkPlaceAsDuplicateCommand());
 
