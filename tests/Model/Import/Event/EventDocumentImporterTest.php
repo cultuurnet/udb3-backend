@@ -43,10 +43,8 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
-use CultuurNet\UDB3\Model\Import\PreProcessing\LocationPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
-use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as Udb3ModelUUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder as Udb3ModelCopyrightHolder;
@@ -125,11 +123,6 @@ class EventDocumentImporterTest extends TestCase
     private $placeDocumentRepository;
 
     /**
-     * @var LocationPreProcessingDocumentImporter
-     */
-    private $locationPreProcessingImporter;
-
-    /**
      * @var DocumentImporterInterface
      */
     private $importer;
@@ -164,13 +157,7 @@ class EventDocumentImporterTest extends TestCase
             $this->getPlaceDocument()->toJsonDocument()
         );
 
-        $this->locationPreProcessingImporter = new LocationPreProcessingDocumentImporter(
-            $this->termPreProcessingImporter,
-            new PlaceIDParser(),
-            $this->placeDocumentRepository
-        );
-
-        $this->importer = $this->locationPreProcessingImporter;
+        $this->importer = $this->termPreProcessingImporter;
     }
 
     /**
