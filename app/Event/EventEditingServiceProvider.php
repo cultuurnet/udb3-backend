@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
+use CultuurNet\UDB3\Search\ResultsGenerator;
+use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -46,7 +48,7 @@ class EventEditingServiceProvider implements ServiceProviderInterface
         $app[LocationMarkedAsDuplicateProcessManager::class] = $app->share(
             function ($app) {
                 return new LocationMarkedAsDuplicateProcessManager(
-                    $app['event_relations_repository'],
+                    new ResultsGenerator($app[Sapi3SearchServiceProvider::SEARCH_SERVICE]),
                     $app['event_command_bus']
                 );
             }
