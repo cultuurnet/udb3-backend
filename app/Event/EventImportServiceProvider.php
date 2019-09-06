@@ -6,10 +6,8 @@ use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Import\Event\EventDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Event\EventLegacyBridgeCategoryResolver;
 use CultuurNet\UDB3\Model\Import\PreProcessing\LabelPreProcessingDocumentImporter;
-use CultuurNet\UDB3\Model\Import\PreProcessing\LocationPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Validation\Event\EventImportValidator;
-use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -80,14 +78,8 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     new EventLegacyBridgeCategoryResolver()
                 );
 
-                $locationPreProcessor = new LocationPreProcessingDocumentImporter(
-                    $termPreProcessor,
-                    new PlaceIDParser(),
-                    $app['place_jsonld_repository']
-                );
-
                 $labelPreProcessor = new LabelPreProcessingDocumentImporter(
-                    $locationPreProcessor,
+                    $termPreProcessor,
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                     $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY],
                     $app['labels.constraint_aware_service']
