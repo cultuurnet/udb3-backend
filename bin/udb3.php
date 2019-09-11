@@ -4,6 +4,7 @@
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
+use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
 use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
 use CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
@@ -89,5 +90,6 @@ $consoleApp->add(new ImportEventCdbXmlCommand());
 $consoleApp->add(new ImportPlaceCdbXmlCommand());
 $consoleApp->add(new ValidatePlaceJsonLdCommand());
 $consoleApp->add(new MarkPlaceAsDuplicateCommand());
+$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand());
 
 $consoleApp->run();
