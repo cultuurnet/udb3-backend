@@ -6,9 +6,11 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
+use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use ValueObjects\Identity\UUID;
 
@@ -27,30 +29,37 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-            $this->getEventBus()->publish(
-                new DomainEventStream(
-                    [
-                        DomainMessage::recordNow(
-                            UUID::generateAsString(),
-                            0,
-                            Metadata::deserialize([]),
-                            new MarkedAsDuplicate(
-                                $input->getArgument(self::DUPLICATE_PLACE_ID_ARGUMENT),
-                                $input->getArgument(self::CANONICAL_PLACE_ID_ARGUMENT)
-                            )
-                        ),
-                    ]
-                )
-            );
-            $output->writeln('Successfully re-dispatched MarkedAsDuplicate event');
+        $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
+        $logger = new ConsoleLogger($output);
+        $this->getProcessManager()->setLogger($logger);
+
+        $this->getEventBus()->publish(
+            new DomainEventStream(
+                [
+                    DomainMessage::recordNow(
+                        UUID::generateAsString(),
+                        0,
+                        Metadata::deserialize([]),
+                        new MarkedAsDuplicate(
+                            $input->getArgument(self::DUPLICATE_PLACE_ID_ARGUMENT),
+                            $input->getArgument(self::CANONICAL_PLACE_ID_ARGUMENT)
+                        )
+                    ),
+                ]
+            )
+        );
+        $logger->info('Successfully re-dispatched MarkedAsDuplicate event');
     }
 
-    /**
-     * @return EventBusInterface
-     */
-    protected function getEventBus()
+    protected function getEventBus(): EventBusInterface
     {
         $app = $this->getSilexApplication();
         return $app['event_bus'];
+    }
+
+    protected function getProcessManager(): LocationMarkedAsDuplicateProcessManager
+    {
+        $app = $this->getSilexApplication();
+        return $app[LocationMarkedAsDuplicateProcessManager::class];
     }
 }
