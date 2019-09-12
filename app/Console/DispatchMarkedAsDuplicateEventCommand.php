@@ -27,22 +27,21 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-            $this->getEventBus()->publish(
-                new DomainEventStream(
-                    [
-                        DomainMessage::recordNow(
-                            UUID::generateAsString(),
-                            0,
-                            Metadata::deserialize([]),
-                            new MarkedAsDuplicate(
-                                $input->getArgument(self::DUPLICATE_PLACE_ID_ARGUMENT),
-                                $input->getArgument(self::CANONICAL_PLACE_ID_ARGUMENT)
-                            )
-                        ),
-                    ]
-                )
-            );
-            $output->writeln('Successfully re-dispatched MarkedAsDuplicate event');
+        $this->getEventBus()->publish(
+            new DomainEventStream(
+                [
+                    DomainMessage::recordNow(
+                        UUID::generateAsString(),
+                        0,
+                        Metadata::deserialize([]),
+                        new MarkedAsDuplicate(
+                            $input->getArgument(self::DUPLICATE_PLACE_ID_ARGUMENT),
+                            $input->getArgument(self::CANONICAL_PLACE_ID_ARGUMENT)
+                        )
+                    ),
+                ]
+            )
+        );
     }
 
     /**
