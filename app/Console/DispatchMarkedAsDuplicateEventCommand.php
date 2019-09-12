@@ -44,10 +44,7 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
         );
     }
 
-    /**
-     * @return EventBusInterface
-     */
-    protected function getEventBus()
+    protected function getEventBus(): EventBusInterface
     {
         $app = $this->getSilexApplication();
         return $app['event_bus'];
