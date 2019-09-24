@@ -211,27 +211,33 @@ class EventDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateDescription($id, $language, $description);
         }
 
+        $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
+        $commands[] = new ImportImages($id, $images);
+
+        $this->dispatchCommands($commands, $id);
+
+        /** Dispatch label updates separately to avoid issues with labels added after import.
+         *  The ImportLabels command only retains labels that are already on the event.
+         */
+        $commands = [];
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);
         $commands[] = (new ImportLabels($id, $import->getLabels()))
             ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels);
 
-        $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
-        $commands[] = new ImportImages($id, $images);
+        $this->dispatchCommands($commands, $id);
+    }
 
-        $commandClasses = array_map(
-            'get_class',
-            $commands
-        );
-
+    private function dispatchCommands(array $commands, string $entityId)
+    {
         $logContext = [
-            'entity_id' => $id,
+            'entity_id' => $entityId,
         ];
 
         $this->logger->log(
             LogLevel::DEBUG,
             'commands to dispatch for import of entity {entity_id}: {commands}',
             $logContext + [
-                'commands' => implode(', ', $commandClasses),
+                'commands' => implode(', ', array_map('get_class', $commands)),
             ]
         );
 

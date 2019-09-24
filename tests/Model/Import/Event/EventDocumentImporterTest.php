@@ -207,8 +207,8 @@ class EventDocumentImporterTest extends TestCase
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
-            new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportLabels($id, new Labels()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -269,8 +269,8 @@ class EventDocumentImporterTest extends TestCase
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
-            new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportLabels($id, new Labels()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -321,8 +321,8 @@ class EventDocumentImporterTest extends TestCase
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
-            new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportLabels($id, new Labels()),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
