@@ -221,8 +221,10 @@ class EventDocumentImporter implements DocumentImporterInterface
          */
         $commands = [];
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);
+        $unlockedLabels = $this->lockedLabelRepository->getUnlockedLabelsForItem($id);
         $commands[] = (new ImportLabels($id, $import->getLabels()))
-            ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels);
+            ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels)
+            ->withLabelsToRemoveWhenOnOffer($unlockedLabels);
 
         $this->dispatchCommands($commands, $id);
     }
