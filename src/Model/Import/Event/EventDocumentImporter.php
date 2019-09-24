@@ -218,20 +218,20 @@ class EventDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        $commandClasses = array_map(
-            'get_class',
-            $commands
-        );
+        $this->dispatchCommands($commands, $id);
+    }
 
+    private function dispatchCommands(array $commands, string $entityId)
+    {
         $logContext = [
-            'entity_id' => $id,
+            'entity_id' => $entityId,
         ];
 
         $this->logger->log(
             LogLevel::DEBUG,
             'commands to dispatch for import of entity {entity_id}: {commands}',
             $logContext + [
-                'commands' => implode(', ', $commandClasses),
+                'commands' => implode(', ', array_map('get_class', $commands)),
             ]
         );
 
