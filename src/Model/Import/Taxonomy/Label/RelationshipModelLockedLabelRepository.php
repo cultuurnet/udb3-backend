@@ -21,7 +21,7 @@ final class RelationshipModelLockedLabelRepository implements LockedLabelReposit
         $this->relationshipRepository = $relationshipRepository;
     }
 
-    public function getLockedLabelsForItem($itemId)
+    public function getLockedLabelsForItem(string $itemId): Labels
     {
         // Get all related labels for the item but filter out those that were imported via the JSON CRUD API.
         // The remaining labels should be considered locked for removal via imports.
@@ -29,6 +29,31 @@ final class RelationshipModelLockedLabelRepository implements LockedLabelReposit
             $this->relationshipRepository->getLabelRelationsForItem(new StringLiteral($itemId)),
             function (LabelRelation $labelRelation) {
                 return !$labelRelation->isImported();
+            }
+        );
+
+        $labels = array_map(
+            function (LabelRelation $labelRelation) {
+                return new Label(
+                    new LabelName(
+                        $labelRelation->getLabelName()->toNative()
+                    )
+                );
+            },
+            $labelRelations
+        );
+
+        return Labels::fromArray($labels);
+    }
+
+    public function getUnlockedLabelsForItem(string $itemId): Labels
+    {
+        // Get all related labels for the item that were imported via the JSON CRUD API.
+        // These are considered unlocked for removal.
+        $labelRelations = array_filter(
+            $this->relationshipRepository->getLabelRelationsForItem(new StringLiteral($itemId)),
+            function (LabelRelation $labelRelation) {
+                return $labelRelation->isImported();
             }
         );
 

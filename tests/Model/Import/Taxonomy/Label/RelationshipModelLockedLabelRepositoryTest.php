@@ -81,4 +81,53 @@ final class RelationshipModelLockedLabelRepositoryTest extends TestCase
 
         $this->assertEquals($expectedLabels, $actualLabels);
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_imported_labels_related_to_the_given_item()
+    {
+        $itemId = 'A09D5CAA-DFD7-43D1-BEE1-1307ECB3A1C1';
+
+        $relations = [
+            new LabelRelation(
+                new Udb3LabelName('applied_via_ui_1'),
+                RelationType::EVENT(),
+                new StringLiteral($itemId),
+                false
+            ),
+            new LabelRelation(
+                new Udb3LabelName('imported_1'),
+                RelationType::EVENT(),
+                new StringLiteral($itemId),
+                true
+            ),
+            new LabelRelation(
+                new Udb3LabelName('applied_via_ui_2'),
+                RelationType::EVENT(),
+                new StringLiteral($itemId),
+                false
+            ),
+            new LabelRelation(
+                new Udb3LabelName('imported_2'),
+                RelationType::EVENT(),
+                new StringLiteral($itemId),
+                true
+            ),
+        ];
+
+        $this->relationshipsRepository->expects($this->once())
+            ->method('getLabelRelationsForItem')
+            ->with($itemId)
+            ->willReturn($relations);
+
+        $expectedLabels = new Labels(
+            new Label(new LabelName('imported_1')),
+            new Label(new LabelName('imported_2'))
+        );
+
+        $actualLabels = $this->lockedLabelRepository->getUnlockedLabelsForItem($itemId);
+
+        $this->assertEquals($expectedLabels, $actualLabels);
+    }
 }
