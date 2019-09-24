@@ -6,9 +6,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 
 interface LockedLabelRepository
 {
-    /**
-     * @param $itemId
-     * @return Labels
-     */
-    public function getLockedLabelsForItem($itemId);
+    public function getLockedLabelsForItem(string $itemId): Labels;
+
+    public function getUnlockedLabelsForItem(string $itemId): Labels;
 }
