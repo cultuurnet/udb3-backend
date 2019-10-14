@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b0daf58866b1d87a9ac125ee2cb89cf",
+    "content-hash": "6332db6b7f6a5fa5df99b81e52423a54",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "9f7c3ff759b9be2b5894860a2050261d8ffa5cd5"
+                "reference": "7b233a909118737b2cafec49fed1adde3b8d5ba0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9f7c3ff759b9be2b5894860a2050261d8ffa5cd5",
-                "reference": "9f7c3ff759b9be2b5894860a2050261d8ffa5cd5",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7b233a909118737b2cafec49fed1adde3b8d5ba0",
+                "reference": "7b233a909118737b2cafec49fed1adde3b8d5ba0",
                 "shasum": ""
             },
             "require": {
@@ -1575,7 +1575,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-10-14T11:58:53+00:00"
+            "time": "2019-10-14T13:00:15+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",

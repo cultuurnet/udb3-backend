@@ -30,7 +30,7 @@
     "cultuurnet/silex-amqp": "~0.1",
     "cultuurnet/silex-service-provider-jwt": "~0.1",
     "cultuurnet/udb2-domain-events": "~0.1",
-    "cultuurnet/udb3": "dev-master#9f7c3ff759b9be2b5894860a2050261d8ffa5cd5",
+    "cultuurnet/udb3": "dev-master#7b233a909118737b2cafec49fed1adde3b8d5ba0",
     "cultuurnet/udb3-api-guard": "~0.1",
     "cultuurnet/udb3-doctrine": "~0.1",
     "cultuurnet/udb3-http-foundation": "~0.1",
