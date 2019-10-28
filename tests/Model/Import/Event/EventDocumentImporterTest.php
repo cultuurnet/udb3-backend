@@ -204,12 +204,12 @@ class EventDocumentImporterTest extends TestCase
             new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
-            new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
             new ImportLabels($id, new Labels()),
+            new DeleteCurrentOrganizer($id),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -267,12 +267,12 @@ class EventDocumentImporterTest extends TestCase
             new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
-            new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
             new ImportLabels($id, new Labels()),
+            new DeleteCurrentOrganizer($id),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -320,12 +320,12 @@ class EventDocumentImporterTest extends TestCase
             new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
-            new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
             new ImportImages($id, new ImageCollection()),
             new ImportLabels($id, new Labels()),
+            new DeleteCurrentOrganizer($id),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
