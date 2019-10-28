@@ -214,12 +214,6 @@ class EventDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        $this->dispatchCommands($commands, $id);
-
-        /** Dispatch label updates separately to avoid issues with labels added after import.
-         *  The ImportLabels command only retains labels that are already on the event.
-         */
-        $commands = [];
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);
         $unlockedLabels = $this->lockedLabelRepository->getUnlockedLabelsForItem($id);
         $commands[] = (new ImportLabels($id, $import->getLabels()))
