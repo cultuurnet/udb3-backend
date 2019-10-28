@@ -182,13 +182,6 @@ class EventDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateDescription($id, $mainLanguage, $description);
         }
 
-        $organizerId = $adapter->getOrganizerId();
-        if ($organizerId) {
-            $commands[] = new UpdateOrganizer($id, $organizerId);
-        } else {
-            $commands[] = new DeleteCurrentOrganizer($id);
-        }
-
         $ageRange = $adapter->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($id, $ageRange);
@@ -214,17 +207,20 @@ class EventDocumentImporter implements DocumentImporterInterface
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        $this->dispatchCommands($commands, $id);
-
-        /** Dispatch label updates separately to avoid issues with labels added after import.
-         *  The ImportLabels command only retains labels that are already on the event.
-         */
-        $commands = [];
         $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);
         $unlockedLabels = $this->lockedLabelRepository->getUnlockedLabelsForItem($id);
         $commands[] = (new ImportLabels($id, $import->getLabels()))
             ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels)
             ->withLabelsToRemoveWhenOnOffer($unlockedLabels);
+
+        // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
+        // which might cause race conditions if we're still dispatching other commands here as well.
+        $organizerId = $adapter->getOrganizerId();
+        if ($organizerId) {
+            $commands[] = new UpdateOrganizer($id, $organizerId);
+        } else {
+            $commands[] = new DeleteCurrentOrganizer($id);
+        }
 
         $this->dispatchCommands($commands, $id);
     }
