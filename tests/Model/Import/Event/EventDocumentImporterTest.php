@@ -193,6 +193,7 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventDoesNotExist($id);
         $this->expectNoImages();
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
         $this->expectCreateEvent($event);
 
         $this->commandBus->record();
@@ -203,12 +204,12 @@ class EventDocumentImporterTest extends TestCase
             new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
-            new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
-            new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportLabels($id, new Labels()),
+            new DeleteCurrentOrganizer($id),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -255,6 +256,7 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventDoesNotExist($id);
         $this->expectNoImages();
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
         $this->expectCreateEvent($event);
 
         $this->commandBus->record();
@@ -265,12 +267,12 @@ class EventDocumentImporterTest extends TestCase
             new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
-            new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
-            new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportLabels($id, new Labels()),
+            new DeleteCurrentOrganizer($id),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -289,6 +291,7 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventIdExists($id);
         $this->expectNoImages();
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -317,12 +320,12 @@ class EventDocumentImporterTest extends TestCase
             new UpdateAudience($id, new Audience(AudienceType::EVERYONE())),
             new UpdateBookingInfo($id, new BookingInfo()),
             new UpdateContactPoint($id, new ContactPoint()),
-            new DeleteCurrentOrganizer($id),
             new DeleteTypicalAgeRange($id),
             new UpdateTitle($id, new Language('fr'), new Title('Nom example')),
             new UpdateTitle($id, new Language('en'), new Title('Example name')),
-            new ImportLabels($id, new Labels()),
             new ImportImages($id, new ImageCollection()),
+            new ImportLabels($id, new Labels()),
+            new DeleteCurrentOrganizer($id),
         ];
 
         $recordedCommands = $this->commandBus->getRecordedCommands();
@@ -347,6 +350,7 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventIdExists($id);
         $this->expectNoImages();
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -381,6 +385,7 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventIdExists($id);
         $this->expectNoImages();
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -408,6 +413,7 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventIdExists($id);
         $this->expectNoImages();
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -442,6 +448,7 @@ class EventDocumentImporterTest extends TestCase
         $this->expectEventIdExists($id);
         $this->expectNoImages();
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
 
         $this->commandBus->record();
 
@@ -489,6 +496,7 @@ class EventDocumentImporterTest extends TestCase
 
         $this->expectEventIdExists($id);
         $this->expectNoLockedLabels();
+        $this->expectNoUnlockedLabels();
 
         $expectedImages = ImageCollection::fromArray(
             [
@@ -568,10 +576,21 @@ class EventDocumentImporterTest extends TestCase
             new Label(new LabelName('locked1')),
             new Label(new LabelName('locked2'))
         );
+        $unlockedLabels = new Labels(
+            new Label(new LabelName('foo'), true),
+            new Label(new LabelName('bar'), true),
+            new Label(new LabelName('lorem'), false),
+            new Label(new LabelName('ipsum'), false)
+        );
         $this->lockedLabelRepository->expects($this->once())
             ->method('getLockedLabelsForItem')
             ->with($id)
             ->willReturn($lockedLabels);
+
+        $this->lockedLabelRepository->expects($this->once())
+            ->method('getUnlockedLabelsForItem')
+            ->with($id)
+            ->willReturn($unlockedLabels);
 
         $this->commandBus->record();
 
@@ -590,7 +609,8 @@ class EventDocumentImporterTest extends TestCase
                         new Label(new LabelName('ipsum'), false)
                     )
                 )
-            )->withLabelsToKeepIfAlreadyOnOffer($lockedLabels),
+            )->withLabelsToKeepIfAlreadyOnOffer($lockedLabels)
+                ->withLabelsToRemoveWhenOnOffer($unlockedLabels),
             $recordedCommands
         );
     }
@@ -762,6 +782,13 @@ class EventDocumentImporterTest extends TestCase
             ->willReturn(new Labels());
     }
 
+    private function expectNoUnlockedLabels()
+    {
+        $this->lockedLabelRepository->expects($this->any())
+            ->method('getUnlockedLabelsForItem')
+            ->willReturn(new Labels());
+    }
+
     private function assertContainsObject($needle, array $haystack)
     {
         $this->assertContains(
@@ -772,4 +799,5 @@ class EventDocumentImporterTest extends TestCase
             false
         );
     }
+
 }

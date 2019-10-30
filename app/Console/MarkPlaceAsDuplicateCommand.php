@@ -2,11 +2,13 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MarkPlaceAsDuplicateCommand extends AbstractCommand
@@ -24,6 +26,10 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
+        $logger = new ConsoleLogger($output);
+        $this->getProcessManager()->setLogger($logger);
+
         try {
             $this->getCommandBus()->dispatch(
                 new MarkAsDuplicate(
@@ -31,9 +37,15 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
                     $input->getArgument(self::CANONICAL_PLACE_ID_ARGUMENT)
                 )
             );
-            $output->writeln('Successfully marked place as duplicate');
+            $logger->info('Successfully marked place as duplicate');
         } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
-            $output->writeln($e->getMessage());
+            $logger->error($e->getMessage());
         }
+    }
+
+    protected function getProcessManager(): LocationMarkedAsDuplicateProcessManager
+    {
+        $app = $this->getSilexApplication();
+        return $app[LocationMarkedAsDuplicateProcessManager::class];
     }
 }

@@ -182,13 +182,6 @@ class EventDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateDescription($id, $mainLanguage, $description);
         }
 
-        $organizerId = $adapter->getOrganizerId();
-        if ($organizerId) {
-            $commands[] = new UpdateOrganizer($id, $organizerId);
-        } else {
-            $commands[] = new DeleteCurrentOrganizer($id);
-        }
-
         $ageRange = $adapter->getAgeRange();
         if ($ageRange) {
             $commands[] = new UpdateTypicalAgeRange($id, $ageRange);
@@ -211,27 +204,38 @@ class EventDocumentImporter implements DocumentImporterInterface
             $commands[] = new UpdateDescription($id, $language, $description);
         }
 
-        $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);
-        $commands[] = (new ImportLabels($id, $import->getLabels()))
-            ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels);
-
         $images = $this->imageCollectionFactory->fromMediaObjectReferences($import->getMediaObjectReferences());
         $commands[] = new ImportImages($id, $images);
 
-        $commandClasses = array_map(
-            'get_class',
-            $commands
-        );
+        $lockedLabels = $this->lockedLabelRepository->getLockedLabelsForItem($id);
+        $unlockedLabels = $this->lockedLabelRepository->getUnlockedLabelsForItem($id);
+        $commands[] = (new ImportLabels($id, $import->getLabels()))
+            ->withLabelsToKeepIfAlreadyOnOffer($lockedLabels)
+            ->withLabelsToRemoveWhenOnOffer($unlockedLabels);
 
+        // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
+        // which might cause race conditions if we're still dispatching other commands here as well.
+        $organizerId = $adapter->getOrganizerId();
+        if ($organizerId) {
+            $commands[] = new UpdateOrganizer($id, $organizerId);
+        } else {
+            $commands[] = new DeleteCurrentOrganizer($id);
+        }
+
+        $this->dispatchCommands($commands, $id);
+    }
+
+    private function dispatchCommands(array $commands, string $entityId)
+    {
         $logContext = [
-            'entity_id' => $id,
+            'entity_id' => $entityId,
         ];
 
         $this->logger->log(
             LogLevel::DEBUG,
             'commands to dispatch for import of entity {entity_id}: {commands}',
             $logContext + [
-                'commands' => implode(', ', $commandClasses),
+                'commands' => implode(', ', array_map('get_class', $commands)),
             ]
         );
 
