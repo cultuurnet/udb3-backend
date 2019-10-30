@@ -57,17 +57,25 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
      */
     public function fromUdb2Item(CultureFeed_Cdb_Item_Base $item)
     {
-        $dutch = new Language('nl');
-        $dutchDetail = $item
-            ->getDetails()
-            ->getDetailByLanguage('nl');
-        $title = $dutchDetail->getTitle();
+        $details = $item->getDetails();
+        $detail = $details->getDetailByLanguage('nl');
+
+        if (!$detail) {
+            $details->rewind();
+            $detail = $details->current();
+        }
+
+        if (!$detail) {
+            return new ImageCollection();
+        }
+
+        $title = $detail->getTitle();
 
         return $this->fromUdb2Media(
-            $dutchDetail->getMedia(),
+            $detail->getMedia(),
             new Description($title),
             new CopyrightHolder($title),
-            $dutch
+            new Language($detail->getLanguage())
         );
     }
 
