@@ -527,6 +527,7 @@ $app['event_bus'] = function ($app) {
             UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
             'place_geocoordinates_process_manager',
             'event_geocoordinates_process_manager',
+            'organizer_geocoordinates_process_manager',
             'uitpas_event_process_manager',
             'curators_news_article_process_manager',
             LocationMarkedAsDuplicateProcessManager::class,
@@ -766,6 +767,7 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
         $commandBus->subscribe($app['media_manager']);
         $commandBus->subscribe($app['place_geocoordinates_command_handler']);
         $commandBus->subscribe($app['event_geocoordinates_command_handler']);
+        $commandBus->subscribe($app['organizer_geocoordinates_command_handler']);
     };
 
     if ($commandBus instanceof LazyLoadingCommandBus) {
@@ -1297,6 +1299,7 @@ $app->register(
 
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
 $app['udb3_system_user_metadata'] = $app->share(
     function () {
