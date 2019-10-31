@@ -78,7 +78,7 @@ class ImageCollectionFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_pick_the_dutch_images_from_an_udb2_item()
+    public function it_should_only_pick_the_dutch_images_from_an_udb2_item_if_there_is_a_dutch_eventdetail(): void
     {
         $image = new Image(
             UUID::fromNative('84c4ddea-a00d-5241-bb1a-f4c01cef0a76'),
@@ -90,6 +90,32 @@ class ImageCollectionFactoryTest extends TestCase
         );
         $expectedImages = (new ImageCollection())->with($image);
         $cdbXml = file_get_contents(__DIR__ . '/samples/event_with_dutch_and_french_images.xml');
+        $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
+
+        $event = EventItemFactory::createEventFromCdbXml($cdbXmlNamespaceUri, $cdbXml);
+
+        $factory = new ImageCollectionFactory();
+
+        $images = $factory->fromUdb2Item($event);
+
+        $this->assertEquals($expectedImages, $images);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_only_pick_the_images_from_the_first_eventdetail_if_there_is_no_dutch_eventdetail(): void
+    {
+        $image = new Image(
+            UUID::fromNative('e42af85b-4f72-5186-94f0-cd69d763e8e6'),
+            MIMEType::fromNative('image/jpeg'),
+            new Description('RB'),
+            new CopyrightHolder('faire soi-même'),
+            Url::fromNative('http://85.255.197.172/images/20140108/1554d6f6-bed1-4303-8d42-3fcec4601e0d.jpg'),
+            new Language('fr')
+        );
+        $expectedImages = (new ImageCollection())->with($image);
+        $cdbXml = file_get_contents(__DIR__ . '/samples/event_with_german_and_french_images.xml');
         $cdbXmlNamespaceUri = \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.3');
 
         $event = EventItemFactory::createEventFromCdbXml($cdbXmlNamespaceUri, $cdbXml);
