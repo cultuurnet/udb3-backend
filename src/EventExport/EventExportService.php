@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Event\EventNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
@@ -52,15 +53,20 @@ class EventExportService implements EventExportServiceInterface
      * @var ResultsGeneratorInterface
      */
     protected $resultsGenerator;
+    /**
+     * @var int
+     */
+    private $maxAmountOfItems;
 
     /**
-     * @param EventServiceInterface       $eventService
-     * @param SearchServiceInterface      $searchService
-     * @param UuidGeneratorInterface      $uuidGenerator
-     * @param string                      $publicDirectory
-     * @param IriGeneratorInterface       $iriGenerator
+     * @param EventServiceInterface $eventService
+     * @param SearchServiceInterface $searchService
+     * @param UuidGeneratorInterface $uuidGenerator
+     * @param string $publicDirectory
+     * @param IriGeneratorInterface $iriGenerator
      * @param NotificationMailerInterface $mailer
-     * @param ResultsGeneratorInterface   $resultsGenerator
+     * @param ResultsGeneratorInterface $resultsGenerator
+     * @param int $maxAmountOfItems
      */
     public function __construct(
         EventServiceInterface $eventService,
@@ -69,7 +75,8 @@ class EventExportService implements EventExportServiceInterface
         $publicDirectory,
         IriGeneratorInterface $iriGenerator,
         NotificationMailerInterface $mailer,
-        ResultsGeneratorInterface $resultsGenerator
+        ResultsGeneratorInterface $resultsGenerator,
+        int $maxAmountOfItems
     ) {
         $this->eventService = $eventService;
         $this->searchService = $searchService;
@@ -78,6 +85,7 @@ class EventExportService implements EventExportServiceInterface
         $this->iriGenerator = $iriGenerator;
         $this->mailer = $mailer;
         $this->resultsGenerator = $resultsGenerator;
+        $this->maxAmountOfItems = $maxAmountOfItems;
     }
 
     /**
@@ -92,6 +100,10 @@ class EventExportService implements EventExportServiceInterface
     ) {
         if (!$logger instanceof LoggerInterface) {
             $logger = new NullLogger();
+        }
+
+        if (is_array($selection) && !empty($selection) && count($selection) > $this->maxAmountOfItems) {
+            throw new MaximumNumberOfExportItemsExceeded();
         }
 
         // do a pre query to test if the query is valid and check the item count
@@ -113,6 +125,10 @@ class EventExportService implements EventExportServiceInterface
             );
 
             throw ($e);
+        }
+
+        if ($totalItemCount > $this->maxAmountOfItems) {
+            throw new MaximumNumberOfExportItemsExceeded();
         }
 
         $logger->debug(
@@ -157,7 +173,7 @@ class EventExportService implements EventExportServiceInterface
 
             if (!$moved) {
                 throw new \RuntimeException(
-                    'Unable to move export file to public directory '.$this->publicDirectory
+                    'Unable to move export file to public directory ' . $this->publicDirectory
                 );
             }
 
@@ -189,8 +205,8 @@ class EventExportService implements EventExportServiceInterface
     /**
      * Get all events formatted as JSON-LD.
      *
-     * @param  \Traversable    $events
-     * @param  LoggerInterface $logger
+     * @param \Traversable $events
+     * @param LoggerInterface $logger
      * @return \Generator
      */
     private function getEventsAsJSONLD($events, LoggerInterface $logger)
@@ -205,7 +221,7 @@ class EventExportService implements EventExportServiceInterface
     }
 
     /**
-     * @param string          $id
+     * @param string $id
      *   A string uniquely identifying an event.
      *
      * @param LoggerInterface $logger
@@ -234,7 +250,7 @@ class EventExportService implements EventExportServiceInterface
 
     /**
      * @param FileFormatInterface $fileFormat
-     * @param string              $tmpPath
+     * @param string $tmpPath
      * @return string
      */
     private function getFinalFilePath(
@@ -243,8 +259,8 @@ class EventExportService implements EventExportServiceInterface
     ) {
         $fileUniqueId = basename($tmpPath);
         $extension = $fileFormat->getFileNameExtension();
-        $finalFileName = $fileUniqueId.'.'.$extension;
-        $finalPath = $this->publicDirectory.'/'.$finalFileName;
+        $finalFileName = $fileUniqueId . '.' . $extension;
+        $finalPath = $this->publicDirectory . '/' . $finalFileName;
 
         return $finalPath;
     }
@@ -253,7 +269,7 @@ class EventExportService implements EventExportServiceInterface
      * Generator that yields each unique search result.
      *
      * @param EventExportQuery $query
-     * @param LoggerInterface  $logger
+     * @param LoggerInterface $logger
      *
      * @return \Generator
      */
@@ -272,7 +288,7 @@ class EventExportService implements EventExportServiceInterface
 
     /**
      * @param EmailAddress $address
-     * @param string       $url
+     * @param string $url
      */
     protected function notifyByMail(EmailAddress $address, $url)
     {
