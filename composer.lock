@@ -1583,17 +1583,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "205a569b46e0d59485e86eaa93f0db50e3fd96ce"
+                "reference": "a4f9364c6e4851917f234e716aacefa6ace43180"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/205a569b46e0d59485e86eaa93f0db50e3fd96ce",
-                "reference": "205a569b46e0d59485e86eaa93f0db50e3fd96ce",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/a4f9364c6e4851917f234e716aacefa6ace43180",
+                "reference": "a4f9364c6e4851917f234e716aacefa6ace43180",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/valueobjects": "~3.0",
-                "symfony/http-foundation": "~2.7"
+                "psr/http-message": "^1.0"
             },
             "require-dev": {
                 "cultuurnet/culturefeed-php": "~1.8",
@@ -1627,7 +1627,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-10-03T08:52:10+00:00"
+            "time": "2019-10-30T13:36:21+00:00"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
