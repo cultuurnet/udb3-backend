@@ -27,9 +27,23 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
                 );
             }
         );
+        /** @var \Qandidate\Toggle\ToggleManager $toggles */
+        $toggles = $app['toggles'];
+
+
+        $replayFiltering = $toggles->active(
+            'organizer-geocordinates-replay-filtering-event',
+            $app['toggles.context']
+        );
 
         $app['organizer_geocoordinates_process_manager'] = $app->share(
-            function (Application $app) {
+            function (Application $app) use ($replayFiltering) {
+                if (!$replayFiltering) {
+                    return new GeoCoordinatesProcessManager(
+                        $app['event_command_bus']
+                    );
+                }
+
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus']
