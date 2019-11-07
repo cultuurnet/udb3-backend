@@ -8,11 +8,11 @@ use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\EventServiceInterface;
-use CultuurNet\UDB3\Http\JsonLdResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadEventRestController
@@ -56,7 +56,7 @@ class ReadEventRestController
         $this->userIdentification = $userIdentification;
     }
 
-    public function get(string $cdbid): JsonLdResponse
+    public function get(string $cdbid): JsonResponse
     {
         $response = null;
 

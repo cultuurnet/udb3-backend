@@ -4,7 +4,9 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
+use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use DateTimeZone;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +40,11 @@ class ReadEventRestControllerTest extends TestCase
      * @var Event
      */
     private $event;
+
+    /**
+     * @var UserIdentificationInterface|MockObject
+     */
+    private $userIdentification;
 
     /**
      * @inheritdoc
@@ -92,6 +99,8 @@ class ReadEventRestControllerTest extends TestCase
                 }
             );
 
+        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
+
         /**
          * @var EventServiceInterface $eventServiceInterface
          * @var DocumentRepositoryInterface $documentRepositoryInterface
@@ -99,7 +108,8 @@ class ReadEventRestControllerTest extends TestCase
         $this->eventRestController = new ReadEventRestController(
             $eventServiceInterface,
             $documentRepositoryInterface,
-            $serializerInterface
+            $serializerInterface,
+            $this->userIdentification
         );
     }
 
@@ -108,6 +118,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_json_history_for_an_event()
     {
+        $this->givenGodUser();
         $jsonResponse = $this->eventRestController->history(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
@@ -119,6 +130,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_event()
     {
+        $this->givenGodUser();
         $jsonResponse = $this->eventRestController->history(self::NON_EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
@@ -129,6 +141,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_error_HTTP_GONE_for_a_removed_event()
     {
+        $this->givenGodUser();
         $jsonResponse = $this->eventRestController->history(self::REMOVED_ID);
 
         $this->assertEquals(Response::HTTP_GONE, $jsonResponse->getStatusCode());
@@ -164,5 +177,19 @@ class ReadEventRestControllerTest extends TestCase
         $calSumResponse = $this->eventRestController->getCalendarSummary(self::EXISTING_ID, $request);
 
         $this->assertEquals($this->calSum, $calSumResponse);
+    }
+
+    private function givenGodUser(): void
+    {
+        $this->userIdentification
+            ->method('isGodUser')
+            ->willReturn(true);
+    }
+
+    private function givenRegularUser(): void
+    {
+        $this->userIdentification
+            ->method('isGodUser')
+            ->willReturn(false);
     }
 }
