@@ -116,7 +116,7 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function returns_a_http_response_with_json_history_for_an_event()
+    public function returns_a_http_response_with_json_history_for_an_event(): void
     {
         $this->givenGodUser();
         $jsonResponse = $this->eventRestController->history(self::EXISTING_ID);
@@ -128,7 +128,7 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_event()
+    public function returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_event(): void
     {
         $this->givenGodUser();
         $jsonResponse = $this->eventRestController->history(self::NON_EXISTING_ID);
@@ -139,7 +139,7 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function returns_a_http_response_with_error_HTTP_GONE_for_a_removed_event()
+    public function returns_a_http_response_with_error_HTTP_GONE_for_a_removed_event(): void
     {
         $this->givenGodUser();
         $jsonResponse = $this->eventRestController->history(self::REMOVED_ID);
@@ -150,7 +150,18 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_json_get_for_an_event()
+    public function returns_a_http_response_with_error_FORBIDDEN_for_a_regular_user(): void
+    {
+        $this->givenRegularUser();
+        $jsonResponse = $this->eventRestController->history(self::EXISTING_ID);
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $jsonResponse->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_http_response_with_json_get_for_an_event(): void
     {
         $jsonResponse = $this->eventRestController->get(self::EXISTING_ID);
 
@@ -161,7 +172,7 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event()
+    public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event(): void
     {
         $jsonResponse = $this->eventRestController->get(self::NON_EXISTING_ID);
 
@@ -171,7 +182,7 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_a_calendar_summary_for_an_event()
+    public function it_returns_a_http_response_with_a_calendar_summary_for_an_event(): void
     {
         $request = new Request(array('style' => 'text', 'format' => 'lg'));
         $calSumResponse = $this->eventRestController->getCalendarSummary(self::EXISTING_ID, $request);

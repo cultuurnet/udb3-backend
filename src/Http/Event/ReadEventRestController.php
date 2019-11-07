@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReadEventRestController
 {
@@ -79,7 +80,11 @@ class ReadEventRestController
         $response = null;
 
         if (!$this->userIdentification->isGodUser()) {
-            return $this->createApiProblemJsonResponse(self::HISTORY_ERROR_FORBIDDEN, $cdbid, 403);
+            return $this->createApiProblemJsonResponse(
+                self::HISTORY_ERROR_FORBIDDEN,
+                $cdbid,
+                Response::HTTP_FORBIDDEN
+            );
         }
 
         try {
