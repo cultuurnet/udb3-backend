@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
+use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -20,7 +21,11 @@ class EventControllerProvider implements ControllerProviderInterface
                 return new ReadEventRestController(
                     $app['event_service'],
                     $app['event_history_repository'],
-                    $app['search_v3_serializer']
+                    $app['search_v3_serializer'],
+                    new CultureFeedUserIdentification(
+                        $app['current_user'],
+                        $app['config']['user_permissions']
+                    )
                 );
             }
         );
