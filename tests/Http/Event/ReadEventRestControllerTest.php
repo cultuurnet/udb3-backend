@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 
-class EventRestControllerTest extends TestCase
+class ReadEventRestControllerTest extends TestCase
 {
     const EXISTING_ID = 'existingId';
     const NON_EXISTING_ID = 'nonExistingId';
