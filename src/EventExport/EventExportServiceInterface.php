@@ -33,6 +33,6 @@ interface EventExportServiceInterface
         EventExportQuery $query,
         EmailAddress $address = null,
         LoggerInterface $logger = null,
-        $selection = null
+        ?array $selection = null
     );
 }

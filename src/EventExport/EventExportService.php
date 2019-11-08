@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use Generator;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -53,11 +54,12 @@ class EventExportService implements EventExportServiceInterface
      * @var ResultsGeneratorInterface
      */
     protected $resultsGenerator;
+
     /**
      * @var int
      */
     private $maxAmountOfItems;
-    
+
     public function __construct(
         EventServiceInterface $eventService,
         SearchServiceInterface $searchService,
@@ -83,7 +85,7 @@ class EventExportService implements EventExportServiceInterface
         EventExportQuery $query,
         EmailAddress $address = null,
         LoggerInterface $logger = null,
-        $selection = null
+        ?array $selection = null
     ) {
         if (!$logger instanceof LoggerInterface) {
             $logger = new NullLogger();
@@ -206,42 +208,27 @@ class EventExportService implements EventExportServiceInterface
         }
     }
 
-    /**
-     * Get all events formatted as JSON-LD.
-     *
-     * @param \Traversable $events
-     * @param LoggerInterface $logger
-     * @return \Generator
-     */
-    private function getEventsAsJSONLD(array $events, LoggerInterface $logger)
+    private function getEventsAsJSONLD(array $eventIris, LoggerInterface $logger): Generator
     {
-        foreach ($events as $eventId) {
-            $event = $this->getEvent($eventId, $logger);
+        foreach ($eventIris as $eventIri) {
+            $event = $this->getEventAsJSONLD($eventIri, $logger);
 
             if ($event) {
-                yield $eventId => $event;
+                yield $eventIri => $event;
             }
         }
     }
 
-    /**
-     * @param string $id
-     *   A string uniquely identifying an event.
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return array|null
-     *   An event array or null if the event was not found.
-     */
-    private function getEvent($id, LoggerInterface $logger)
+    private function getEventAsJSONLD(string $iri, LoggerInterface $logger): ?string
     {
         try {
-            $event = $this->eventService->getEvent($id);
+            /* @var string|null $event */
+            $event = $this->eventService->getEvent($iri);
         } catch (EventNotFoundException $e) {
             $logger->error(
                 $e->getMessage(),
                 [
-                    'eventId' => $id,
+                    'eventId' => $iri,
                     'exception' => $e,
                 ]
             );
@@ -252,37 +239,12 @@ class EventExportService implements EventExportServiceInterface
         return $event;
     }
 
-    /**
-     * @param FileFormatInterface $fileFormat
-     * @param string $tmpPath
-     * @return string
-     */
-    private function getFinalFilePath(
-        FileFormatInterface $fileFormat,
-        $tmpPath
-    ) {
-        $fileUniqueId = basename($tmpPath);
-        $extension = $fileFormat->getFileNameExtension();
-        $finalFileName = $fileUniqueId . '.' . $extension;
-        $finalPath = $this->publicDirectory . '/' . $finalFileName;
-
-        return $finalPath;
-    }
-
-    /**
-     * Generator that yields each unique search result.
-     *
-     * @param EventExportQuery $query
-     * @param LoggerInterface $logger
-     *
-     * @return \Generator
-     */
-    private function search(EventExportQuery $query, LoggerInterface $logger)
+    private function search(EventExportQuery $query, LoggerInterface $logger): Generator
     {
         $events = $this->resultsGenerator->search((string) $query);
 
         foreach ($events as $eventIdentifier) {
-            $event = $this->getEvent((string) $eventIdentifier->getIri(), $logger);
+            $event = $this->getEventAsJSONLD((string) $eventIdentifier->getIri(), $logger);
 
             if ($event) {
                 yield $eventIdentifier->getId() => $event;
@@ -290,11 +252,21 @@ class EventExportService implements EventExportServiceInterface
         }
     }
 
+    private function getFinalFilePath(
+        FileFormatInterface $fileFormat,
+        string $tmpPath
+    ): string {
+        $fileUniqueId = basename($tmpPath);
+        $extension = $fileFormat->getFileNameExtension();
+        $finalFileName = $fileUniqueId . '.' . $extension;
+        return $this->publicDirectory . '/' . $finalFileName;
+    }
+
     /**
      * @param EmailAddress $address
      * @param string $url
      */
-    protected function notifyByMail(EmailAddress $address, $url)
+    private function notifyByMail(EmailAddress $address, $url): void
     {
         $this->mailer->sendNotificationMail(
             $address,
