@@ -15,25 +15,6 @@ class DeprecatedEventControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['event_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadEventRestController(
-                    $app['event_service'],
-                    $app['event_history_repository']
-                );
-            }
-        );
-
-        $app['event_editing_controller'] = $app->share(
-            function (Application $app) {
-                return new EditEventRestController(
-                    $app['event_editor'],
-                    $app['media_manager'],
-                    $app['event_iri_generator']
-                );
-            }
-        );
-
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
