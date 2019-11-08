@@ -173,11 +173,11 @@ class EventExportServiceTest extends TestCase
                         );
                     }
 
-                    return [
+                    return json_encode([
                         '@id' => $eventId,
                         '@type' => 'Event',
                         'foo' => 'bar',
-                    ];
+                    ]);
                 }
             );
 
@@ -211,7 +211,11 @@ class EventExportServiceTest extends TestCase
             ->method('write')
             ->willReturnCallback(
                 function ($tmpPath, Traversable $events) {
-                    $contents = json_encode(iterator_to_array($events));
+                    $contents = iterator_to_array($events);
+                    $contents = array_map(function ($content) {
+                        return json_decode($content);
+                    }, $contents);
+                    $contents = json_encode($contents);
                     file_put_contents($tmpPath, $contents);
                 }
             );
