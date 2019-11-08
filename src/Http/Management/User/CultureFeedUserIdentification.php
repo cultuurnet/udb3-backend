@@ -2,50 +2,47 @@
 
 namespace CultuurNet\UDB3\Http\Management\User;
 
+use CultureFeed_User;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CultureFeedUserIdentification implements UserIdentificationInterface
 {
     /**
-     * @var \CultureFeed_User
+     * @var CultureFeed_User|null
      */
     private $cultureFeedUser;
 
     /**
-     * @var \string[]
+     * @var string[]
      */
     private $permissionList;
 
-    /**
-     * CultureFeedUserIdentification constructor.
-     * @param \CultureFeed_User $cultureFeedUser
-     * @param \string[] $permissionList
-     */
     public function __construct(
-        \CultureFeed_User $cultureFeedUser,
+        ?CultureFeed_User $cultureFeedUser,
         array $permissionList
     ) {
         $this->cultureFeedUser = $cultureFeedUser;
         $this->permissionList = $permissionList;
     }
 
-
-    /**
-     * @return bool
-     */
-    public function isGodUser()
+    public function isGodUser(): bool
     {
+        if (!$this->cultureFeedUser) {
+            return false;
+        }
+
         return in_array(
             $this->cultureFeedUser->id,
             $this->permissionList['allow_all']
         );
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getId()
+    public function getId(): ?StringLiteral
     {
+        if (!$this->cultureFeedUser) {
+            return null;
+        }
+
         return new StringLiteral($this->cultureFeedUser->id);
     }
 }

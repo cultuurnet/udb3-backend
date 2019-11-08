@@ -50,7 +50,6 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/(events|places)/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
             /* @deprecated */
             ->with(new RequestMatcher('^/(event|place)/' . $app['id_pattern'] . '/permission/.+$', null, 'GET'))
-            ->with(new RequestMatcher('^/event/' . $app['id_pattern'] . '/history', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/' . $app['id_pattern'] . '/permissions/.+$', null, 'GET'))
             ->with(new RequestMatcher('^/media/' . $app['id_pattern'] . '$', null, 'GET'))
