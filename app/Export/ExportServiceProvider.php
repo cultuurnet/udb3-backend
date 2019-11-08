@@ -134,7 +134,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                 $app['event_export_notification_mail_factory']
             ),
             new \CultuurNet\UDB3\Search\ResultsGenerator($searchService),
-            $app['config']['max_export_items']
+            $app['config']['export']['max_items']
         );
     }
 }

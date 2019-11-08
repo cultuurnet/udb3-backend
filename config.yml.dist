@@ -52,6 +52,7 @@ search:
     base_url: http://udb-search.dev
     api_key: ***
 export:
+  max_items: 5000
   search:
     # Fallback for sapi version of export service
     # Used when no sapiVersion in export request
@@ -169,5 +170,3 @@ curator_labels:
 bookable_event:
   dummy_place_ids:
     - c3f9278e-228b-4199-8f9a-b9716a17e58f
-
-max_export_items: 10000
