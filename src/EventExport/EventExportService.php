@@ -57,22 +57,12 @@ class EventExportService implements EventExportServiceInterface
      * @var int
      */
     private $maxAmountOfItems;
-
-    /**
-     * @param EventServiceInterface $eventService
-     * @param SearchServiceInterface $searchService
-     * @param UuidGeneratorInterface $uuidGenerator
-     * @param string $publicDirectory
-     * @param IriGeneratorInterface $iriGenerator
-     * @param NotificationMailerInterface $mailer
-     * @param ResultsGeneratorInterface $resultsGenerator
-     * @param int $maxAmountOfItems
-     */
+    
     public function __construct(
         EventServiceInterface $eventService,
         SearchServiceInterface $searchService,
         UuidGeneratorInterface $uuidGenerator,
-        $publicDirectory,
+        string $publicDirectory,
         IriGeneratorInterface $iriGenerator,
         NotificationMailerInterface $mailer,
         ResultsGeneratorInterface $resultsGenerator,
@@ -88,9 +78,6 @@ class EventExportService implements EventExportServiceInterface
         $this->maxAmountOfItems = $maxAmountOfItems;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function exportEvents(
         FileFormatInterface $fileFormat,
         EventExportQuery $query,
@@ -102,66 +89,83 @@ class EventExportService implements EventExportServiceInterface
             $logger = new NullLogger();
         }
 
-        if (is_array($selection) && !empty($selection) && count($selection) > $this->maxAmountOfItems) {
-            throw new MaximumNumberOfExportItemsExceeded();
-        }
+        if (is_array($selection) && !empty($selection)) {
+            $totalItemCount = count($selection);
 
-        // do a pre query to test if the query is valid and check the item count
-        try {
-            $preQueryResult = $this->searchService->search(
-                (string) $query,
-                1,
-                0
-            );
-            $totalItemCount = $preQueryResult->getTotalItems()->toNative();
-        } catch (ClientErrorResponseException $e) {
-            $logger->error(
-                'not_exported',
-                array(
-                    'query' => (string) $query,
-                    'error' => $e->getMessage(),
-                    'exception_class' => get_class($e),
-                )
-            );
+            if ($totalItemCount > $this->maxAmountOfItems) {
+                $logger->error(
+                    'not_exported',
+                    [
+                        'query' => (string) $query,
+                        'error' => "total amount of items ({$totalItemCount}) exceeded {$this->maxAmountOfItems}",
+                    ]
+                );
 
-            throw ($e);
-        }
+                throw new MaximumNumberOfExportItemsExceeded();
+            }
 
-        if ($totalItemCount > $this->maxAmountOfItems) {
-            throw new MaximumNumberOfExportItemsExceeded();
-        }
+            $events = $this->getEventsAsJSONLD($selection, $logger);
+        } else {
+            // do a pre query to test if the query is valid and check the item count
+            try {
+                $preQueryResult = $this->searchService->search(
+                    (string) $query,
+                    1,
+                    0
+                );
+                $totalItemCount = $preQueryResult->getTotalItems()->toNative();
+            } catch (ClientErrorResponseException $e) {
+                $logger->error(
+                    'not_exported',
+                    array(
+                        'query' => (string) $query,
+                        'error' => $e->getMessage(),
+                        'exception_class' => get_class($e),
+                    )
+                );
 
-        $logger->debug(
-            'total items: {totalItems}',
-            [
-                'totalItems' => $totalItemCount,
-                'query' => (string) $query,
-            ]
-        );
+                throw $e;
+            }
 
-        if ($totalItemCount < 1) {
-            $logger->error(
-                'not_exported',
+            if ($totalItemCount > $this->maxAmountOfItems) {
+                $logger->error(
+                    'not_exported',
+                    [
+                        'query' => (string) $query,
+                        'error' => "total amount of items ({$totalItemCount}) exceeded {$this->maxAmountOfItems}",
+                    ]
+                );
+
+                throw new MaximumNumberOfExportItemsExceeded();
+            }
+
+            $logger->debug(
+                'total items: {totalItems}',
                 [
+                    'totalItems' => $totalItemCount,
                     'query' => (string) $query,
-                    'error' => "query did not return any results",
                 ]
             );
 
-            return false;
+            if ($totalItemCount < 1) {
+                $logger->error(
+                    'not_exported',
+                    [
+                        'query' => (string) $query,
+                        'error' => "query did not return any results",
+                    ]
+                );
+
+                return false;
+            }
+
+            $events = $this->search($query, $logger);
         }
 
         try {
             $tmpDir = sys_get_temp_dir();
             $tmpFileName = $this->uuidGenerator->generate();
             $tmpPath = "{$tmpDir}/{$tmpFileName}";
-
-            // $events are keyed here by the authoritative event ID.
-            if (is_array($selection) && !empty($selection)) {
-                $events = $this->getEventsAsJSONLD($selection, $logger);
-            } else {
-                $events = $this->search($query, $logger);
-            }
 
             $fileWriter = $fileFormat->getWriter();
             $fileWriter->write($tmpPath, $events);
@@ -209,7 +213,7 @@ class EventExportService implements EventExportServiceInterface
      * @param LoggerInterface $logger
      * @return \Generator
      */
-    private function getEventsAsJSONLD($events, LoggerInterface $logger)
+    private function getEventsAsJSONLD(array $events, LoggerInterface $logger)
     {
         foreach ($events as $eventId) {
             $event = $this->getEvent($eventId, $logger);
