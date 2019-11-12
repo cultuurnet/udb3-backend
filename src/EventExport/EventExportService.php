@@ -3,12 +3,14 @@
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Event\EventNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use Generator;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -54,22 +56,19 @@ class EventExportService implements EventExportServiceInterface
     protected $resultsGenerator;
 
     /**
-     * @param EventServiceInterface       $eventService
-     * @param SearchServiceInterface      $searchService
-     * @param UuidGeneratorInterface      $uuidGenerator
-     * @param string                      $publicDirectory
-     * @param IriGeneratorInterface       $iriGenerator
-     * @param NotificationMailerInterface $mailer
-     * @param ResultsGeneratorInterface   $resultsGenerator
+     * @var int
      */
+    private $maxAmountOfItems;
+
     public function __construct(
         EventServiceInterface $eventService,
         SearchServiceInterface $searchService,
         UuidGeneratorInterface $uuidGenerator,
-        $publicDirectory,
+        string $publicDirectory,
         IriGeneratorInterface $iriGenerator,
         NotificationMailerInterface $mailer,
-        ResultsGeneratorInterface $resultsGenerator
+        ResultsGeneratorInterface $resultsGenerator,
+        int $maxAmountOfItems
     ) {
         $this->eventService = $eventService;
         $this->searchService = $searchService;
@@ -78,74 +77,97 @@ class EventExportService implements EventExportServiceInterface
         $this->iriGenerator = $iriGenerator;
         $this->mailer = $mailer;
         $this->resultsGenerator = $resultsGenerator;
+        $this->maxAmountOfItems = $maxAmountOfItems;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function exportEvents(
         FileFormatInterface $fileFormat,
         EventExportQuery $query,
         EmailAddress $address = null,
         LoggerInterface $logger = null,
-        $selection = null
+        ?array $selection = null
     ) {
         if (!$logger instanceof LoggerInterface) {
             $logger = new NullLogger();
         }
 
-        // do a pre query to test if the query is valid and check the item count
-        try {
-            $preQueryResult = $this->searchService->search(
-                (string) $query,
-                1,
-                0
-            );
-            $totalItemCount = $preQueryResult->getTotalItems()->toNative();
-        } catch (ClientErrorResponseException $e) {
-            $logger->error(
-                'not_exported',
-                array(
-                    'query' => (string) $query,
-                    'error' => $e->getMessage(),
-                    'exception_class' => get_class($e),
-                )
-            );
+        if (is_array($selection) && !empty($selection)) {
+            $totalItemCount = count($selection);
 
-            throw ($e);
-        }
+            if ($totalItemCount > $this->maxAmountOfItems) {
+                $logger->error(
+                    'not_exported',
+                    [
+                        'query' => (string) $query,
+                        'error' => "total amount of items ({$totalItemCount}) exceeded {$this->maxAmountOfItems}",
+                    ]
+                );
 
-        $logger->debug(
-            'total items: {totalItems}',
-            [
-                'totalItems' => $totalItemCount,
-                'query' => (string) $query,
-            ]
-        );
+                throw new MaximumNumberOfExportItemsExceeded();
+            }
 
-        if ($totalItemCount < 1) {
-            $logger->error(
-                'not_exported',
+            $events = $this->getEventsAsJSONLD($selection, $logger);
+        } else {
+            // do a pre query to test if the query is valid and check the item count
+            try {
+                $preQueryResult = $this->searchService->search(
+                    (string) $query,
+                    1,
+                    0
+                );
+                $totalItemCount = $preQueryResult->getTotalItems()->toNative();
+            } catch (ClientErrorResponseException $e) {
+                $logger->error(
+                    'not_exported',
+                    array(
+                        'query' => (string) $query,
+                        'error' => $e->getMessage(),
+                        'exception_class' => get_class($e),
+                    )
+                );
+
+                throw $e;
+            }
+
+            if ($totalItemCount > $this->maxAmountOfItems) {
+                $logger->error(
+                    'not_exported',
+                    [
+                        'query' => (string) $query,
+                        'error' => "total amount of items ({$totalItemCount}) exceeded {$this->maxAmountOfItems}",
+                    ]
+                );
+
+                throw new MaximumNumberOfExportItemsExceeded();
+            }
+
+            $logger->debug(
+                'total items: {totalItems}',
                 [
+                    'totalItems' => $totalItemCount,
                     'query' => (string) $query,
-                    'error' => "query did not return any results",
                 ]
             );
 
-            return false;
+            if ($totalItemCount < 1) {
+                $logger->error(
+                    'not_exported',
+                    [
+                        'query' => (string) $query,
+                        'error' => "query did not return any results",
+                    ]
+                );
+
+                return false;
+            }
+
+            $events = $this->search($query, $logger);
         }
 
         try {
             $tmpDir = sys_get_temp_dir();
             $tmpFileName = $this->uuidGenerator->generate();
             $tmpPath = "{$tmpDir}/{$tmpFileName}";
-
-            // $events are keyed here by the authoritative event ID.
-            if (is_array($selection) && !empty($selection)) {
-                $events = $this->getEventsAsJSONLD($selection, $logger);
-            } else {
-                $events = $this->search($query, $logger);
-            }
 
             $fileWriter = $fileFormat->getWriter();
             $fileWriter->write($tmpPath, $events);
@@ -157,7 +179,7 @@ class EventExportService implements EventExportServiceInterface
 
             if (!$moved) {
                 throw new \RuntimeException(
-                    'Unable to move export file to public directory '.$this->publicDirectory
+                    'Unable to move export file to public directory ' . $this->publicDirectory
                 );
             }
 
@@ -186,42 +208,27 @@ class EventExportService implements EventExportServiceInterface
         }
     }
 
-    /**
-     * Get all events formatted as JSON-LD.
-     *
-     * @param  \Traversable    $events
-     * @param  LoggerInterface $logger
-     * @return \Generator
-     */
-    private function getEventsAsJSONLD($events, LoggerInterface $logger)
+    private function getEventsAsJSONLD(array $eventIris, LoggerInterface $logger): Generator
     {
-        foreach ($events as $eventId) {
-            $event = $this->getEvent($eventId, $logger);
+        foreach ($eventIris as $eventIri) {
+            $event = $this->getEventAsJSONLD($eventIri, $logger);
 
             if ($event) {
-                yield $eventId => $event;
+                yield $eventIri => $event;
             }
         }
     }
 
-    /**
-     * @param string          $id
-     *   A string uniquely identifying an event.
-     *
-     * @param LoggerInterface $logger
-     *
-     * @return array|null
-     *   An event array or null if the event was not found.
-     */
-    private function getEvent($id, LoggerInterface $logger)
+    private function getEventAsJSONLD(string $iri, LoggerInterface $logger): ?string
     {
         try {
-            $event = $this->eventService->getEvent($id);
+            /* @var string|null $event */
+            $event = $this->eventService->getEvent($iri);
         } catch (EventNotFoundException $e) {
             $logger->error(
                 $e->getMessage(),
                 [
-                    'eventId' => $id,
+                    'eventId' => $iri,
                     'exception' => $e,
                 ]
             );
@@ -232,37 +239,12 @@ class EventExportService implements EventExportServiceInterface
         return $event;
     }
 
-    /**
-     * @param FileFormatInterface $fileFormat
-     * @param string              $tmpPath
-     * @return string
-     */
-    private function getFinalFilePath(
-        FileFormatInterface $fileFormat,
-        $tmpPath
-    ) {
-        $fileUniqueId = basename($tmpPath);
-        $extension = $fileFormat->getFileNameExtension();
-        $finalFileName = $fileUniqueId.'.'.$extension;
-        $finalPath = $this->publicDirectory.'/'.$finalFileName;
-
-        return $finalPath;
-    }
-
-    /**
-     * Generator that yields each unique search result.
-     *
-     * @param EventExportQuery $query
-     * @param LoggerInterface  $logger
-     *
-     * @return \Generator
-     */
-    private function search(EventExportQuery $query, LoggerInterface $logger)
+    private function search(EventExportQuery $query, LoggerInterface $logger): Generator
     {
         $events = $this->resultsGenerator->search((string) $query);
 
         foreach ($events as $eventIdentifier) {
-            $event = $this->getEvent((string) $eventIdentifier->getIri(), $logger);
+            $event = $this->getEventAsJSONLD((string) $eventIdentifier->getIri(), $logger);
 
             if ($event) {
                 yield $eventIdentifier->getId() => $event;
@@ -270,11 +252,21 @@ class EventExportService implements EventExportServiceInterface
         }
     }
 
+    private function getFinalFilePath(
+        FileFormatInterface $fileFormat,
+        string $tmpPath
+    ): string {
+        $fileUniqueId = basename($tmpPath);
+        $extension = $fileFormat->getFileNameExtension();
+        $finalFileName = $fileUniqueId . '.' . $extension;
+        return $this->publicDirectory . '/' . $finalFileName;
+    }
+
     /**
      * @param EmailAddress $address
-     * @param string       $url
+     * @param string $url
      */
-    protected function notifyByMail(EmailAddress $address, $url)
+    private function notifyByMail(EmailAddress $address, $url): void
     {
         $this->mailer->sendNotificationMail(
             $address,

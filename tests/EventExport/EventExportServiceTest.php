@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\EventExport;
 
 use ArrayIterator;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Event\EventNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
@@ -27,6 +28,8 @@ use ValueObjects\Web\Url;
 
 class EventExportServiceTest extends TestCase
 {
+    const AMOUNT = 19;
+
     /**
      * @var EventExportService
      */
@@ -98,15 +101,15 @@ class EventExportServiceTest extends TestCase
             $this->publicDirectory->url(),
             $this->iriGenerator,
             $this->mailer,
-            $this->resultsGenerator
+            $this->resultsGenerator,
+            self::AMOUNT
         );
 
-        $amount = 19;
-        $range = range(1, $amount);
+        $range = range(1, self::AMOUNT);
         $this->searchResults = array_map(
             function ($i) {
                 return new IriOfferIdentifier(
-                    Url::fromNative('http://example.com/event/'.$i),
+                    Url::fromNative('http://example.com/event/' . $i),
                     (string) $i,
                     OfferType::EVENT()
                 );
@@ -138,19 +141,19 @@ class EventExportServiceTest extends TestCase
                     OfferIdentifierCollection::fromArray(
                         array_slice($this->searchResults, 0, 1)
                     ),
-                    new Integer($amount)
+                    new Integer(self::AMOUNT)
                 ),
                 new Results(
                     OfferIdentifierCollection::fromArray(
                         array_slice($this->searchResults, 0, 10)
                     ),
-                    new Integer($amount)
+                    new Integer(self::AMOUNT)
                 ),
                 new Results(
                     OfferIdentifierCollection::fromArray(
                         array_slice($this->searchResults, 10)
                     ),
-                    new Integer($amount)
+                    new Integer(self::AMOUNT)
                 )
             );
     }
@@ -170,11 +173,11 @@ class EventExportServiceTest extends TestCase
                         );
                     }
 
-                    return [
+                    return json_encode([
                         '@id' => $eventId,
                         '@type' => 'Event',
                         'foo' => 'bar',
-                    ];
+                    ]);
                 }
             );
 
@@ -208,7 +211,11 @@ class EventExportServiceTest extends TestCase
             ->method('write')
             ->willReturnCallback(
                 function ($tmpPath, Traversable $events) {
-                    $contents = json_encode(iterator_to_array($events));
+                    $contents = iterator_to_array($events);
+                    $contents = array_map(function ($content) {
+                        return json_decode($content);
+                    }, $contents);
+                    $contents = json_encode($contents);
                     file_put_contents($tmpPath, $contents);
                 }
             );
@@ -287,7 +294,7 @@ class EventExportServiceTest extends TestCase
         $exportIriBase = 'http://example.com/export/';
 
         $createIri = function ($item) use ($exportIriBase) {
-            return $exportIriBase.$item;
+            return $exportIriBase . $item;
         };
 
         $expectedExportUrl = $createIri($expectedExportFileName);
@@ -337,7 +344,7 @@ class EventExportServiceTest extends TestCase
         $exportIriBase = 'http://example.com/export/';
 
         $createIri = function ($item) use ($exportIriBase) {
-            return $exportIriBase.$item;
+            return $exportIriBase . $item;
         };
 
         $this->iriGenerator->expects($this->once())
@@ -419,8 +426,8 @@ class EventExportServiceTest extends TestCase
         );
 
         /**
- * @var vfsStreamFile $file
-*/
+         * @var vfsStreamFile $file
+         */
         $file = $this->publicDirectory->getChild($expectedExportFileName);
 
         $this->assertJsonStringEqualsJsonString(
@@ -472,6 +479,67 @@ class EventExportServiceTest extends TestCase
                 ]
             );
 
+        $this->eventExportService->exportEvents(
+            $fileFormat,
+            $query,
+            null,
+            $logger,
+            $selection
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_if_number_of_items_for_query_is_greater_than_allowed()
+    {
+
+        $query = new EventExportQuery('city:Leuven');
+        $logger = $this->createMock(LoggerInterface::class);
+
+
+        /** @var FileFormatInterface|MockObject $fileFormat */
+        $fileFormat = $this->createMock(FileFormatInterface::class);
+
+        $this->expectException(MaximumNumberOfExportItemsExceeded::class);
+
+        $this->eventExportService = new EventExportService(
+            $this->eventService,
+            $this->searchService,
+            $this->uuidGenerator,
+            $this->publicDirectory->url(),
+            $this->iriGenerator,
+            $this->mailer,
+            $this->resultsGenerator,
+            self::AMOUNT - 1
+        );
+
+        $this->eventExportService->exportEvents(
+            $fileFormat,
+            $query,
+            null,
+            $logger
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_if_number_of_selection_is_greater_than_allowed()
+    {
+
+        $query = new EventExportQuery('city:Leuven');
+        $logger = $this->createMock(LoggerInterface::class);
+
+        /** @var FileFormatInterface|MockObject $fileFormat */
+        $fileFormat = $this->createMock(FileFormatInterface::class);
+
+        $selection = [];
+
+        for ($i = 0; $i < self::AMOUNT + 1; $i++) {
+            $selection[] = 'dummyItem';
+        }
+        $this->expectException(MaximumNumberOfExportItemsExceeded::class);
         $this->eventExportService->exportEvents(
             $fileFormat,
             $query,

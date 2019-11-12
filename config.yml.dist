@@ -52,6 +52,7 @@ search:
     base_url: http://udb-search.dev
     api_key: ***
 export:
+  max_items: 5000
   search:
     # Fallback for sapi version of export service
     # Used when no sapiVersion in export request
