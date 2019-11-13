@@ -3,7 +3,7 @@
  * @file
  */
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\CommandHandling;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Auth\TokenCredentials;
