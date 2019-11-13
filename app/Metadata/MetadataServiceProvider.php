@@ -19,13 +19,13 @@ final class MetadataServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['execution_context_metadata_enricher'] = $app::share(
-            static function () {
+            function () {
                 return new ExecutionContextMetadataEnricher();
             }
         );
 
         $app['event_stream_metadata_enricher'] = $app::share(
-            static function ($app) {
+            function ($app) {
                 $eventStreamDecorator = new MetadataEnrichingEventStreamDecorator();
                 $eventStreamDecorator->registerEnricher(
                     $app['execution_context_metadata_enricher']
