@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 
 use DateTime;
 use JsonSerializable;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class Log implements JsonSerializable
 {
@@ -40,8 +39,8 @@ class Log implements JsonSerializable
 
     public function __construct(
         DateTime $date,
-        StringLiteral $description,
-        StringLiteral $author = null,
+        string $description,
+        string $author = null,
         string $apiKey = null,
         string $api = null,
         string $consumerName = null
@@ -61,11 +60,11 @@ class Log implements JsonSerializable
     {
         $log = [
             'date' => $this->date->format('c'),
-            'description' => $this->description->toNative(),
+            'description' => $this->description,
         ];
 
         if ($this->author) {
-            $log['author'] = $this->author->toNative();
+            $log['author'] = $this->author;
         }
 
         if ($this->apiKey) {

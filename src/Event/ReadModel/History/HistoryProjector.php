@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Event\ReadModel\History;
 
+use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
+use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
@@ -13,16 +15,30 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
-use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjector;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
+use DateTime;
+use DateTimeZone;
 
-class HistoryProjector extends OfferHistoryProjector implements EventListenerInterface
+class HistoryProjector implements EventListenerInterface
 {
+    use DelegateEventHandlingToSpecificMethodTrait;
+
+    /**
+     * @var DocumentRepositoryInterface
+     */
+    private $documentRepository;
+
+    public function __construct(DocumentRepositoryInterface $documentRepository)
+    {
+        $this->documentRepository = $documentRepository;
+    }
 
     protected function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $udb2Event = EventItemFactory::createEventFromCdbXml(
             $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
             $eventImportedFromUDB2->getCdbXml()
@@ -31,11 +47,11 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
         $this->writeHistory(
             $eventImportedFromUDB2->getEventId(),
             new Log(
-                $this->dateFromUdb2DateString(
+                $this->udb2DateStringToNativeDate(
                     $udb2Event->getCreationDate()
                 ),
-                new StringLiteral('Aangemaakt in UDB2'),
-                new StringLiteral($udb2Event->getCreatedBy())
+                'Aangemaakt in UDB2',
+                $udb2Event->getCreatedBy()
             )
         );
 
@@ -45,7 +61,7 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
                 $this->domainMessageDateToNativeDate(
                     $domainMessage->getRecordedOn()
                 ),
-                new StringLiteral('Geïmporteerd vanuit UDB2'),
+                'Geïmporteerd vanuit UDB2',
                 null,
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),
@@ -57,12 +73,12 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
     protected function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->writeHistory(
             $eventUpdatedFromUDB2->getEventId(),
             new Log(
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                new StringLiteral('Geüpdatet vanuit UDB2'),
+                'Geüpdatet vanuit UDB2',
                 null,
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),
@@ -71,21 +87,17 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
         );
     }
 
-    /**
-     * @param EventCreated $eventCreated
-     * @param DomainMessage $domainMessage
-     */
     protected function applyEventCreated(
         EventCreated $eventCreated,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->writeHistory(
             $eventCreated->getEventId(),
             new Log(
                 $this->domainMessageDateToNativeDate(
                     $domainMessage->getRecordedOn()
                 ),
-                new StringLiteral('Aangemaakt in UiTdatabank'),
+                'Aangemaakt in UiTdatabank',
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),
@@ -94,21 +106,17 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
         );
     }
 
-    /**
-     * @param EventCopied $eventCopied
-     * @param DomainMessage $domainMessage
-     */
     protected function applyEventCopied(
         EventCopied $eventCopied,
         DomainMessage $domainMessage
-    ) {
+    ): void {
         $this->writeHistory(
             $eventCopied->getItemId(),
             new Log(
                 $this->domainMessageDateToNativeDate(
                     $domainMessage->getRecordedOn()
                 ),
-                new StringLiteral('Event gekopieerd van ' . $eventCopied->getOriginalEventId()),
+                'Event gekopieerd van ' . $eventCopied->getOriginalEventId(),
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),
@@ -117,35 +125,158 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
         );
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelAddedClassName()
-    {
-        return LabelAdded::class;
+    protected function applyLabelAdded(
+        LabelAdded $labelAdded,
+        DomainMessage $domainMessage
+    ): void {
+        $this->writeHistory(
+            $labelAdded->getItemId(),
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                "Label '{$labelAdded->getLabel()}' toegepast",
+                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
+        );
     }
 
-    /**
-     * @return string
-     */
-    protected function getLabelRemovedClassName()
-    {
-        return LabelRemoved::class;
+    protected function applyLabelRemoved(
+        LabelRemoved $labelRemoved,
+        DomainMessage $domainMessage
+    ): void {
+        $this->writeHistory(
+            $labelRemoved->getItemId(),
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                "Label '{$labelRemoved->getLabel()}' verwijderd",
+                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
+        );
     }
 
-    /**
-     * @return string
-     */
-    protected function getTitleTranslatedClassName()
-    {
-        return TitleTranslated::class;
+    protected function applyTitleTranslated(
+        TitleTranslated $titleTranslated,
+        DomainMessage $domainMessage
+    ): void {
+        $this->writeHistory(
+            $titleTranslated->getItemId(),
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                "Titel vertaald ({$titleTranslated->getLanguage()})",
+                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
+        );
     }
 
-    /**
-     * @return string
-     */
-    protected function getDescriptionTranslatedClassName()
+    protected function applyDescriptionTranslated(
+        DescriptionTranslated $descriptionTranslated,
+        DomainMessage $domainMessage
+    ): void {
+        $this->writeHistory(
+            $descriptionTranslated->getItemId(),
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                "Beschrijving vertaald ({$descriptionTranslated->getLanguage()})",
+                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
+        );
+    }
+
+    protected function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
     {
-        return DescriptionTranslated::class;
+        $dateString = $date->toString();
+        return DateTime::createFromFormat(
+            BroadwayDateTime::FORMAT_STRING,
+            $dateString
+        );
+    }
+
+    protected function udb2DateStringToNativeDate($dateString): DateTime
+    {
+        return DateTime::createFromFormat(
+            'Y-m-d?H:i:s',
+            $dateString,
+            new DateTimeZone('Europe/Brussels')
+        );
+    }
+
+    protected function loadDocumentFromRepositoryByEventId(string $eventId): JsonDocument
+    {
+        $historyDocument = $this->documentRepository->get($eventId);
+
+        if (!$historyDocument) {
+            $historyDocument = new JsonDocument($eventId, '[]');
+        }
+
+        return $historyDocument;
+    }
+
+    protected function writeHistory(string $eventId, Log $log): void
+    {
+        $historyDocument = $this->loadDocumentFromRepositoryByEventId($eventId);
+
+        $history = $historyDocument->getBody();
+
+        // Append most recent one to the top.
+        array_unshift($history, $log);
+
+        $this->documentRepository->save(
+            $historyDocument->withBody($history)
+        );
+    }
+
+    protected function getAuthorFromMetadata(Metadata $metadata): ?string
+    {
+        $properties = $metadata->serialize();
+
+        if (isset($properties['user_nick'])) {
+            return (string) $properties['user_nick'];
+        }
+
+        return null;
+    }
+
+    protected function getConsumerFromMetadata(Metadata $metadata): ?string
+    {
+        $properties = $metadata->serialize();
+
+        if (isset($properties['consumer']['name'])) {
+            return (string) $properties['consumer']['name'];
+        }
+
+        return null;
+    }
+
+    protected function getApiKeyFromMetadata(Metadata $metadata): ?string
+    {
+        $properties = $metadata->serialize();
+
+        if (isset($properties['auth_api_key'])) {
+            return $properties['auth_api_key'];
+        }
+
+        return null;
+    }
+
+    protected function getApiFromMetadata(Metadata $metadata): ?string
+    {
+        $properties = $metadata->serialize();
+
+        if (isset($properties['api'])) {
+            return $properties['api'];
+        }
+
+        return null;
     }
 }
