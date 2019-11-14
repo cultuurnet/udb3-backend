@@ -1279,7 +1279,6 @@ $app['udb3_system_user_metadata'] = $app->share(
             [
                 'user_id' => SYSTEM_USER_UUID,
                 'user_nick' => 'udb3',
-                'uitid_token_credentials' => [],
             ]
         );
     }
