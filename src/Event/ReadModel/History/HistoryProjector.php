@@ -48,7 +48,8 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
                 new StringLiteral('Geïmporteerd vanuit UDB2'),
                 null,
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }
@@ -64,7 +65,8 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
                 new StringLiteral('Geüpdatet vanuit UDB2'),
                 null,
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }
@@ -86,7 +88,8 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
                 new StringLiteral('Aangemaakt in UiTdatabank'),
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }
@@ -108,7 +111,8 @@ class HistoryProjector extends OfferHistoryProjector implements EventListenerInt
                 new StringLiteral('Event gekopieerd van ' . $eventCopied->getOriginalEventId()),
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }

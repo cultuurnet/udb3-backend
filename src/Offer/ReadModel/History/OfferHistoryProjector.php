@@ -109,7 +109,8 @@ abstract class OfferHistoryProjector
                 new StringLiteral("Label '{$labelAdded->getLabel()}' toegepast"),
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }
@@ -129,7 +130,8 @@ abstract class OfferHistoryProjector
                 new StringLiteral("Label '{$labelRemoved->getLabel()}' verwijderd"),
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }
@@ -145,7 +147,8 @@ abstract class OfferHistoryProjector
                 new StringLiteral("Titel vertaald ({$titleTranslated->getLanguage()})"),
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }
@@ -161,7 +164,8 @@ abstract class OfferHistoryProjector
                 new StringLiteral("Beschrijving vertaald ({$descriptionTranslated->getLanguage()})"),
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata())
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
         );
     }
