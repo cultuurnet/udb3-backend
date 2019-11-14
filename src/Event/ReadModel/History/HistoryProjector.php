@@ -35,7 +35,7 @@ class HistoryProjector implements EventListenerInterface
         $this->documentRepository = $documentRepository;
     }
 
-    protected function applyEventImportedFromUDB2(
+    private function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2,
         DomainMessage $domainMessage
     ): void {
@@ -70,7 +70,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function applyEventUpdatedFromUDB2(
+    private function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2,
         DomainMessage $domainMessage
     ): void {
@@ -87,7 +87,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function applyEventCreated(
+    private function applyEventCreated(
         EventCreated $eventCreated,
         DomainMessage $domainMessage
     ): void {
@@ -97,7 +97,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function applyEventCopied(
+    private function applyEventCopied(
         EventCopied $eventCopied,
         DomainMessage $domainMessage
     ): void {
@@ -107,7 +107,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function applyLabelAdded(
+    private function applyLabelAdded(
         LabelAdded $labelAdded,
         DomainMessage $domainMessage
     ): void {
@@ -117,7 +117,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function applyLabelRemoved(
+    private function applyLabelRemoved(
         LabelRemoved $labelRemoved,
         DomainMessage $domainMessage
     ): void {
@@ -127,7 +127,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function applyTitleTranslated(
+    private function applyTitleTranslated(
         TitleTranslated $titleTranslated,
         DomainMessage $domainMessage
     ): void {
@@ -137,7 +137,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function applyDescriptionTranslated(
+    private function applyDescriptionTranslated(
         DescriptionTranslated $descriptionTranslated,
         DomainMessage $domainMessage
     ): void {
@@ -147,7 +147,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function createGenericLog(DomainMessage $domainMessage, string $description): Log
+    private function createGenericLog(DomainMessage $domainMessage, string $description): Log
     {
         return new Log(
             $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
@@ -159,7 +159,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
+    private function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
     {
         $dateString = $date->toString();
         return DateTime::createFromFormat(
@@ -168,7 +168,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function udb2DateStringToNativeDate($dateString): DateTime
+    private function udb2DateStringToNativeDate($dateString): DateTime
     {
         return DateTime::createFromFormat(
             'Y-m-d?H:i:s',
@@ -177,7 +177,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function loadDocumentFromRepositoryByEventId(string $eventId): JsonDocument
+    private function loadDocumentFromRepositoryByEventId(string $eventId): JsonDocument
     {
         $historyDocument = $this->documentRepository->get($eventId);
 
@@ -188,7 +188,7 @@ class HistoryProjector implements EventListenerInterface
         return $historyDocument;
     }
 
-    protected function writeHistory(string $eventId, Log $log): void
+    private function writeHistory(string $eventId, Log $log): void
     {
         $historyDocument = $this->loadDocumentFromRepositoryByEventId($eventId);
 
@@ -202,7 +202,7 @@ class HistoryProjector implements EventListenerInterface
         );
     }
 
-    protected function getAuthorFromMetadata(Metadata $metadata): ?string
+    private function getAuthorFromMetadata(Metadata $metadata): ?string
     {
         $properties = $metadata->serialize();
 
@@ -213,7 +213,7 @@ class HistoryProjector implements EventListenerInterface
         return null;
     }
 
-    protected function getConsumerFromMetadata(Metadata $metadata): ?string
+    private function getConsumerFromMetadata(Metadata $metadata): ?string
     {
         $properties = $metadata->serialize();
 
@@ -224,7 +224,7 @@ class HistoryProjector implements EventListenerInterface
         return null;
     }
 
-    protected function getApiKeyFromMetadata(Metadata $metadata): ?string
+    private function getApiKeyFromMetadata(Metadata $metadata): ?string
     {
         $properties = $metadata->serialize();
 
@@ -235,7 +235,7 @@ class HistoryProjector implements EventListenerInterface
         return null;
     }
 
-    protected function getApiFromMetadata(Metadata $metadata): ?string
+    private function getApiFromMetadata(Metadata $metadata): ?string
     {
         $properties = $metadata->serialize();
 
