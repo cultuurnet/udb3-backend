@@ -21,7 +21,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
 use DateTimeZone;
 
-class HistoryProjector implements EventListenerInterface
+final class HistoryProjector implements EventListenerInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
