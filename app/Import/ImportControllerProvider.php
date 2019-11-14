@@ -3,11 +3,9 @@
 namespace CultuurNet\UDB3\Silex\Import;
 
 use CultuurNet\UDB3\Http\Import\ImportRestController;
-use CultuurNet\UDB3\Silex\ApiName;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class ImportControllerProvider implements ControllerProviderInterface
 {
