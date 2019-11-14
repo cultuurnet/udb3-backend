@@ -109,6 +109,10 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['amqp.udb2_event_bus_forwarding_consumer'] = $app->share(
             function (Application $app) {
+                // If this service gets instantiated, it's because we're running the AMQP listener for CDBXML imports so
+                // we should set the API name to CDBXML.
+                $app['api_name'] = ApiName::CDBXML;
+
                 $consumerConfig = $app['config']['amqp']['consumers']['udb2'];
                 $exchange = new StringLiteral($consumerConfig['exchange']);
                 $queue = new StringLiteral($consumerConfig['queue']);

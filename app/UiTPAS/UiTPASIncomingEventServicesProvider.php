@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\UiTPAS;
 
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\HttpUiTPASLabelsRepository;
@@ -61,6 +62,10 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['amqp.uitpas_event_bus_forwarding_consumer'] = $app->share(
             function (Application $app) {
+                // If this service gets instantiated, it's because we're running the AMQP listener for UiTPAS messages
+                // so we should set the API name to UiTPAS listener.
+                $app['api_name'] = ApiName::UITPAS_LISTENER;
+
                 $consumerConfig = $app['config']['amqp']['consumers']['uitpas'];
                 $exchange = new StringLiteral($consumerConfig['exchange']);
                 $queue = new StringLiteral($consumerConfig['queue']);

@@ -3,6 +3,7 @@
 
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
@@ -47,9 +48,7 @@ $consoleApp = $app['console'];
 // An udb3 system user is needed for conclude and geocode commands.
 // Because of the changes for geocoding the amqp forwarding for udb2 imports also needs a user.
 // To avoid fixing this locally in the amqp-silex lib, all CLI commands are executed as udb3 system user.
-/** @var Impersonator $impersonator */
-$impersonator = $app['impersonator'];
-$impersonator->impersonate(
+$app['impersonator']->impersonate(
     new Metadata(
         [
             'user_id' => SYSTEM_USER_UUID,

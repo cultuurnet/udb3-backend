@@ -9,6 +9,8 @@ use Silex\ControllerProviderInterface;
 
 class ImportControllerProvider implements ControllerProviderInterface
 {
+    public const PATH = '/imports';
+
     public function connect(Application $app)
     {
         $app['event_import_controller'] = $app->share(
