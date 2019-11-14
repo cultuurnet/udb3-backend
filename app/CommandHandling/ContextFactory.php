@@ -9,7 +9,9 @@ use CultureFeed_User;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use Lcobucci\JWT\Token;
+use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ContextFactory
 {
@@ -52,6 +54,24 @@ final class ContextFactory
         $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
 
         return new Metadata($contextValues);
+    }
+
+    public static function createFromGlobals(Application $application): Metadata
+    {
+        $request = null;
+        $requestStack = $application['request_stack'];
+        if ($requestStack instanceof RequestStack) {
+            $request = $requestStack->getMasterRequest();
+        }
+
+        return self::createContext(
+            $application['current_user'],
+            $application['jwt'],
+            $application['api_key'],
+            $application['api_name'],
+            $application['culturefeed_token_credentials'],
+            $request
+        );
     }
 
     public static function prepareForLogging(Metadata $metadata): Metadata

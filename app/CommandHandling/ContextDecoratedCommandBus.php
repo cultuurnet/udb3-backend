@@ -34,15 +34,7 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
     public function dispatch($command)
     {
         if ($this->decoratee instanceof ContextAwareInterface) {
-            $context = ContextFactory::createContext(
-                $this->application['current_user'],
-                $this->application['jwt'],
-                $this->application['api_key'],
-                $this->application['api_name'],
-                $this->application['culturefeed_token_credentials'],
-                $this->application['request_stack']->getMasterRequest()
-            );
-
+            $context = ContextFactory::createFromGlobals($this->application);
             $this->decoratee->setContext($context);
         }
 

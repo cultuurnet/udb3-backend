@@ -66,13 +66,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 // If this service gets instantiated, it's because we're running the AMQP listener for UiTPAS messages
                 // so we should set the API name to UiTPAS listener.
-                $eventMetadata = ContextFactory::createContext(
-                    $app['udb3_system_user'],
-                    null,
-                    null,
-                    ApiName::UITPAS_LISTENER
-                );
-                MetadataServiceProvider::setEventStreamMetadata($app, $eventMetadata);
+                $app['api_name'] = ApiName::UITPAS_LISTENER;
 
                 $consumerConfig = $app['config']['amqp']['consumers']['uitpas'];
                 $exchange = new StringLiteral($consumerConfig['exchange']);

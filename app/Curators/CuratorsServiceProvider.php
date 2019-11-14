@@ -51,13 +51,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 // If this service gets instantiated, it's because we're running the AMQP listener for Curators messages
                 // so we should set the API name to Curators listener.
-                $eventMetadata = ContextFactory::createContext(
-                    $app['udb3_system_user'],
-                    null,
-                    null,
-                    ApiName::CURATORS_LISTENER
-                );
-                MetadataServiceProvider::setEventStreamMetadata($app, $eventMetadata);
+                $app['api_name'] = ApiName::CURATORS_LISTENER;
 
                 $consumer = new EventBusForwardingConsumer(
                     $app['amqp.connection'],

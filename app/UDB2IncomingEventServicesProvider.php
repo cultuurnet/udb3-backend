@@ -113,13 +113,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 // If this service gets instantiated, it's because we're running the AMQP listener for CDBXML imports so
                 // we should set the API name to CDBXML.
-                $eventMetadata = ContextFactory::createContext(
-                    $app['udb3_system_user'],
-                    null,
-                    null,
-                    ApiName::CDBXML
-                );
-                MetadataServiceProvider::setEventStreamMetadata($app, $eventMetadata);
+                $app['api_name'] = ApiName::CDBXML;
 
                 $consumerConfig = $app['config']['amqp']['consumers']['udb2'];
                 $exchange = new StringLiteral($consumerConfig['exchange']);
