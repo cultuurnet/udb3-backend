@@ -57,9 +57,10 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                     ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
                     function ($context) use ($app) {
                         // Overwrite the context based on the context stored with the resque command being executed.
-                        $app['context'] = $app::share(function () use ($context) {
-                            return $context;
-                        });
+                        $app['context'] = $app::share(
+                            function () use ($context) {
+                                return $context;
+                            });
                     }
                 );
 
