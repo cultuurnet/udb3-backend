@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
@@ -48,7 +49,14 @@ $consoleApp = $app['console'];
 // To avoid fixing this locally in the amqp-silex lib, all CLI commands are executed as udb3 system user.
 /** @var Impersonator $impersonator */
 $impersonator = $app['impersonator'];
-$impersonator->impersonate($app['udb3_system_user_metadata']);
+$impersonator->impersonate(
+    new Metadata(
+        [
+            'user_id' => SYSTEM_USER_UUID,
+            'user_nick' => 'udb3',
+        ]
+    )
+);
 
 $consoleApp->add(
     (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))

@@ -60,6 +60,6 @@ class Impersonator
         $this->user->mbox = $metadata['user_email'] ?? null;
         $this->jwt = $metadata['auth_jwt'] ?? null;
         $this->apiKey = $metadata['auth_api_key'] ?? null;
-        $this->tokenCredentials = $metadata['uitid_token_credentials'];
+        $this->tokenCredentials = $metadata['uitid_token_credentials'] ?? null;
     }
 }
