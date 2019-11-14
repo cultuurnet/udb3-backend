@@ -54,6 +54,7 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                     $app['current_user'],
                     $app['jwt'],
                     $app['api_key'],
+                    $app['api_name'],
                     $app['culturefeed_token_credentials'],
                     $request
                 );

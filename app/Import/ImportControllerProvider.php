@@ -3,12 +3,16 @@
 namespace CultuurNet\UDB3\Silex\Import;
 
 use CultuurNet\UDB3\Http\Import\ImportRestController;
+use CultuurNet\UDB3\Silex\ApiName;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class ImportControllerProvider implements ControllerProviderInterface
 {
+    public const PATH = '/imports';
+
     public function connect(Application $app)
     {
         $app['event_import_controller'] = $app->share(
@@ -45,6 +49,16 @@ class ImportControllerProvider implements ControllerProviderInterface
                     $app['organizer_iri_generator']
                 );
             }
+        );
+
+        $app->before(
+            function (Request $request, Application $application) {
+                $application['api_name'] = ApiName::JSONLD;
+                if (strpos($request->getRequestUri(), self::PATH) === 0) {
+                    $application['api_name'] = ApiName::JSONLD_IMPORTS;
+                }
+            },
+            Application::EARLY_EVENT
         );
 
         /* @var ControllerCollection $controllers */

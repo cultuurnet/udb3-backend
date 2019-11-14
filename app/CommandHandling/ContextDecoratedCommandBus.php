@@ -38,6 +38,7 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
                 $this->application['current_user'],
                 $this->application['jwt'],
                 $this->application['api_key'],
+                $this->application['api_name'],
                 $this->application['culturefeed_token_credentials'],
                 $this->application['request_stack']->getMasterRequest()
             );

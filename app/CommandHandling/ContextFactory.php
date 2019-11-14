@@ -17,6 +17,7 @@ final class ContextFactory
         ?CultureFeed_User $user = null,
         ?Token $jwt = null,
         ?ApiKey $apiKey = null,
+        ?string $apiName = null,
         ?TokenCredentials $cultureFeedTokenCredentials = null,
         ?Request $request = null
     ): Metadata {
@@ -34,6 +35,10 @@ final class ContextFactory
 
         if ($apiKey) {
             $contextValues['auth_api_key'] = $apiKey;
+        }
+
+        if ($apiName) {
+            $contextValues['api'] = $apiName;
         }
 
         if ($cultureFeedTokenCredentials) {
