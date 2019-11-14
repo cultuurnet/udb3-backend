@@ -93,16 +93,7 @@ class HistoryProjector implements EventListenerInterface
     ): void {
         $this->writeHistory(
             $eventCreated->getEventId(),
-            new Log(
-                $this->domainMessageDateToNativeDate(
-                    $domainMessage->getRecordedOn()
-                ),
-                'Aangemaakt in UiTdatabank',
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $this->createGenericLog($domainMessage, 'Aangemaakt in UiTdatabank')
         );
     }
 
@@ -112,16 +103,7 @@ class HistoryProjector implements EventListenerInterface
     ): void {
         $this->writeHistory(
             $eventCopied->getItemId(),
-            new Log(
-                $this->domainMessageDateToNativeDate(
-                    $domainMessage->getRecordedOn()
-                ),
-                'Event gekopieerd van ' . $eventCopied->getOriginalEventId(),
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $this->createGenericLog($domainMessage, 'Event gekopieerd van ' . $eventCopied->getOriginalEventId())
         );
     }
 
@@ -131,14 +113,7 @@ class HistoryProjector implements EventListenerInterface
     ): void {
         $this->writeHistory(
             $labelAdded->getItemId(),
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                "Label '{$labelAdded->getLabel()}' toegepast",
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $this->createGenericLog($domainMessage, "Label '{$labelAdded->getLabel()}' toegepast")
         );
     }
 
@@ -148,14 +123,7 @@ class HistoryProjector implements EventListenerInterface
     ): void {
         $this->writeHistory(
             $labelRemoved->getItemId(),
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                "Label '{$labelRemoved->getLabel()}' verwijderd",
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $this->createGenericLog($domainMessage, "Label '{$labelRemoved->getLabel()}' verwijderd")
         );
     }
 
@@ -165,14 +133,7 @@ class HistoryProjector implements EventListenerInterface
     ): void {
         $this->writeHistory(
             $titleTranslated->getItemId(),
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                "Titel vertaald ({$titleTranslated->getLanguage()})",
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $this->createGenericLog($domainMessage, "Titel vertaald ({$titleTranslated->getLanguage()})")
         );
     }
 
@@ -182,14 +143,19 @@ class HistoryProjector implements EventListenerInterface
     ): void {
         $this->writeHistory(
             $descriptionTranslated->getItemId(),
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                "Beschrijving vertaald ({$descriptionTranslated->getLanguage()})",
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $this->createGenericLog($domainMessage, "Beschrijving vertaald ({$descriptionTranslated->getLanguage()})")
+        );
+    }
+
+    protected function createGenericLog(DomainMessage $domainMessage, string $description): Log
+    {
+        return new Log(
+            $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+            $description,
+            $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+            $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+            $this->getApiFromMetadata($domainMessage->getMetadata()),
+            $this->getConsumerFromMetadata($domainMessage->getMetadata())
         );
     }
 
