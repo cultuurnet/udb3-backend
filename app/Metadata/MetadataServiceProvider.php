@@ -60,7 +60,8 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                         $app['context'] = $app::share(
                             function () use ($context) {
                                 return $context;
-                            });
+                            }
+                        );
                     }
                 );
 
