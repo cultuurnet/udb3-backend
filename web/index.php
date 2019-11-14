@@ -21,19 +21,6 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
 
-$app->before(
-    function (Request $request, Application $application) {
-        // If we're handling requests, the API used is usually the JSON-LD API.
-        $application['api_name'] = ApiName::JSONLD;
-
-        // Except if we're handling requests under the /imports/ path, then we're dealing with the JSON-LD imports API.
-        if (strpos($request->getRequestUri(), ImportControllerProvider::PATH) === 0) {
-            $application['api_name'] = ApiName::JSONLD_IMPORTS;
-        }
-    },
-    Application::EARLY_EVENT
-);
-
 /**
  * Allow to use services as controllers.
  */

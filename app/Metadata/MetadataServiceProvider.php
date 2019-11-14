@@ -9,7 +9,9 @@ use Broadway\EventDispatcher\EventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\EventSourcing\ExecutionContextMetadataEnricher;
+use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
+use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +52,19 @@ final class MetadataServiceProvider implements ServiceProviderInterface
 
         $app->before(
             function (Request $request, Application $app) {
+                // If we're handling requests, the API used is usually the JSON-LD API.
+                $apiName = ApiName::JSONLD;
+
+                // Except if we're handling requests under the /imports/ path, then we're dealing with the JSON-LD imports API.
+                if (strpos($request->getRequestUri(), ImportControllerProvider::PATH) === 0) {
+                    $apiName = ApiName::JSONLD_IMPORTS;
+                }
+
                 $context = ContextFactory::createContext(
                     $app['current_user'],
                     $app['jwt'],
                     $app['api_key'],
-                    $app['api_name'],
+                    $apiName,
                     $app['culturefeed_token_credentials'],
                     $request
                 );
