@@ -33,18 +33,25 @@ class Log implements JsonSerializable
      */
     private $api;
 
+    /**
+     * @var string
+     */
+    private $consumerName;
+
     public function __construct(
         DateTime $date,
         StringLiteral $description,
         StringLiteral $author = null,
         string $apiKey = null,
-        string $api = null
+        string $api = null,
+        string $consumerName = null
     ) {
         $this->date = clone $date;
         $this->description = $description;
         $this->author = $author;
         $this->apiKey = $apiKey;
         $this->api = $api;
+        $this->consumerName = $consumerName;
     }
 
     /**
@@ -67,6 +74,10 @@ class Log implements JsonSerializable
 
         if ($this->api) {
             $log['api'] = $this->api;
+        }
+
+        if ($this->consumerName) {
+            $log['consumerName'] = $this->consumerName;
         }
 
         return $log;
