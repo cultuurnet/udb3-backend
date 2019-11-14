@@ -192,30 +192,26 @@ abstract class OfferHistoryProjector
         );
     }
 
-    /**
-     * @param Metadata $metadata
-     * @return String|null
-     */
-    protected function getAuthorFromMetadata(Metadata $metadata)
+    protected function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral
     {
         $properties = $metadata->serialize();
 
         if (isset($properties['user_nick'])) {
             return new StringLiteral($properties['user_nick']);
         }
+
+        return null;
     }
 
-    /**
-     * @param Metadata $metadata
-     * @return String|null
-     */
-    protected function getConsumerFromMetadata(Metadata $metadata)
+    protected function getConsumerFromMetadata(Metadata $metadata): ?StringLiteral
     {
         $properties = $metadata->serialize();
 
         if (isset($properties['consumer']['name'])) {
             return new StringLiteral($properties['consumer']['name']);
         }
+
+        return null;
     }
 
     /**
