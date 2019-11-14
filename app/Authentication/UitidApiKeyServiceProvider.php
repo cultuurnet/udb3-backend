@@ -103,7 +103,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                         throw new RequestAuthenticationException('Given API key is not authorized to use EntryAPI.');
                     }
                 },
-                Application::LATE_EVENT
+                Application::EARLY_EVENT
             );
         }
     }

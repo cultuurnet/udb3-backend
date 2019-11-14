@@ -2,10 +2,13 @@
 
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\Metadata;
+use Broadway\EventDispatcher\EventDispatcher;
 use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
+use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
@@ -19,12 +22,14 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
@@ -595,41 +600,6 @@ $app['event_repository'] = $app->share(
         );
 
         return $repository;
-    }
-);
-
-$app['execution_context_metadata_enricher'] = $app->share(
-    function () {
-        return new ExecutionContextMetadataEnricher();
-    }
-);
-
-$app['event_stream_metadata_enricher'] = $app->share(
-    function ($app) {
-        $eventStreamDecorator = new \Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator(
-        );
-        $eventStreamDecorator->registerEnricher(
-            $app['execution_context_metadata_enricher']
-        );
-        return $eventStreamDecorator;
-    }
-);
-
-$app['command_bus_event_dispatcher'] = $app->share(
-    function ($app) {
-        $dispatcher = new \Broadway\EventDispatcher\EventDispatcher();
-        $dispatcher->addListener(
-            \CultuurNet\UDB3\CommandHandling\ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
-            function ($context) use ($app) {
-                /** @var ExecutionContextMetadataEnricher $metadataEnricher  */
-                $metadataEnricher = $app['execution_context_metadata_enricher'];
-                $metadataEnricher->setContext(
-                    $context
-                );
-            }
-        );
-
-        return $dispatcher;
     }
 );
 
@@ -1217,6 +1187,8 @@ $app->register(
         'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
     ]
 );
+
+$app->register(new MetadataServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Proxy\ProxyServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Export\ExportServiceProvider());
