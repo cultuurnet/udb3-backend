@@ -9,4 +9,5 @@ final class ApiName
     const JSONLD = 'JSON-LD API';
     const JSONLD_IMPORTS = 'JSON-LD Import API';
     const CDBXML = 'cdbXML API';
+    const UITPAS_LISTENER = 'UiTPAS Listener';
 }
