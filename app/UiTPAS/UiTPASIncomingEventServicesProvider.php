@@ -5,8 +5,6 @@ namespace CultuurNet\UDB3\Silex\UiTPAS;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
-use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\HttpUiTPASLabelsRepository;

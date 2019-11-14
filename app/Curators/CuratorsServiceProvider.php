@@ -10,8 +10,6 @@ use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Curators\LabelFactory;
 use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
-use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;

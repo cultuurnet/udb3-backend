@@ -11,8 +11,6 @@ use CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\Event\Any;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
-use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
-use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\UDB2\Actor\ActorImporter;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3OrganizerFactory;
