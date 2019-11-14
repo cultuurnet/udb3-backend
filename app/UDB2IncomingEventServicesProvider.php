@@ -11,6 +11,8 @@ use CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\Event\Any;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
+use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
+use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\UDB2\Actor\ActorImporter;
 use CultuurNet\UDB3\UDB2\Actor\ActorEventCdbXmlEnricher;
 use CultuurNet\UDB3\UDB2\Actor\ActorToUDB3OrganizerFactory;
@@ -111,7 +113,13 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 // If this service gets instantiated, it's because we're running the AMQP listener for CDBXML imports so
                 // we should set the API name to CDBXML.
-                $app['api_name'] = ApiName::CDBXML;
+                $eventMetadata = ContextFactory::createContext(
+                    $app['udb3_system_user'],
+                    null,
+                    null,
+                    ApiName::CDBXML
+                );
+                MetadataServiceProvider::setEventStreamMetadata($app, $eventMetadata);
 
                 $consumerConfig = $app['config']['amqp']['consumers']['udb2'];
                 $exchange = new StringLiteral($consumerConfig['exchange']);

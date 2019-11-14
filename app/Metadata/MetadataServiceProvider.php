@@ -40,7 +40,7 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                 $dispatcher->addListener(
                     ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
                     function ($context) use ($app) {
-                        $this->setEventStreamMetadata($app['execution_context_metadata_enricher'], $context);
+                        self::setEventStreamMetadata($app, $context);
                     }
                 );
 
@@ -59,7 +59,7 @@ final class MetadataServiceProvider implements ServiceProviderInterface
                     $request
                 );
 
-                $this->setEventStreamMetadata($app['execution_context_metadata_enricher'], $context);
+                self::setEventStreamMetadata($app, $context);
             },
             Application::LATE_EVENT
         );
@@ -69,11 +69,11 @@ final class MetadataServiceProvider implements ServiceProviderInterface
     {
     }
 
-    private function setEventStreamMetadata(
-        ExecutionContextMetadataEnricher $executionContextMetadataEnricher,
+    public static function setEventStreamMetadata(
+        Application $app,
         ?Metadata $metadata
     ): void {
-        $executionContextMetadataEnricher->setContext(
+        $app['execution_context_metadata_enricher']->setContext(
             $metadata ? ContextFactory::prepareForLogging($metadata) : null
         );
     }
