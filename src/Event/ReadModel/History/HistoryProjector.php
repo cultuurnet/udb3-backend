@@ -7,6 +7,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
+use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -16,15 +17,13 @@ use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
 use DateTimeZone;
 
 final class HistoryProjector implements EventListenerInterface
 {
-    use DelegateEventHandlingToSpecificMethodTrait;
-
     /**
      * @var DocumentRepositoryInterface
      */
@@ -33,6 +32,55 @@ final class HistoryProjector implements EventListenerInterface
     public function __construct(DocumentRepositoryInterface $documentRepository)
     {
         $this->documentRepository = $documentRepository;
+    }
+
+    /**
+     * @param DomainMessage $domainMessage
+     * @uses applyEventImportedFromUDB2
+     * @uses applyEventUpdatedFromUDB2
+     */
+    public function handle(DomainMessage $domainMessage)
+    {
+        $eventHandlers = [
+            EventImportedFromUDB2::class => [$this, 'applyEventImportedFromUDB2'],
+            EventUpdatedFromUDB2::class => [$this, 'applyEventUpdatedFromUDB2'],
+            EventCreated::class => $this->createEventEventHandler(
+                function () {
+                    return 'Aangemaakt in UiTdatabank';
+                }
+            ),
+            EventCopied::class => $this->createOfferEventHandler(
+                function (EventCopied $eventCopied) {
+                    return 'Event gekopieerd van ' . $eventCopied->getOriginalEventId();
+                }
+            ),
+            LabelAdded::class => $this->createOfferEventHandler(
+                function (LabelAdded $labelAdded) {
+                    return "Label '{$labelAdded->getLabel()}' toegepast";
+                }
+            ),
+            LabelRemoved::class => $this->createOfferEventHandler(
+                function (LabelRemoved $labelRemoved) {
+                    return "Label '{$labelRemoved->getLabel()}' verwijderd";
+                }
+            ),
+            TitleTranslated::class => $this->createOfferEventHandler(
+                function (TitleTranslated $titleTranslated) {
+                    return "Titel vertaald ({$titleTranslated->getLanguage()})";
+                }
+            ),
+            DescriptionTranslated::class => $this->createOfferEventHandler(
+                function (DescriptionTranslated $descriptionTranslated) {
+                    return "Beschrijving vertaald ({$descriptionTranslated->getLanguage()})";
+                }
+            ),
+        ];
+
+        $event = $domainMessage->getPayload();
+        $eventName = get_class($event);
+        if (isset($eventHandlers[$eventName])) {
+            $eventHandlers[$eventName]($event, $domainMessage);
+        }
     }
 
     private function applyEventImportedFromUDB2(
@@ -87,64 +135,28 @@ final class HistoryProjector implements EventListenerInterface
         );
     }
 
-    private function applyEventCreated(
-        EventCreated $eventCreated,
-        DomainMessage $domainMessage
-    ): void {
-        $this->writeHistory(
-            $eventCreated->getEventId(),
-            $this->createGenericLog($domainMessage, 'Aangemaakt in UiTdatabank')
-        );
+    private function createEventEventHandler(callable $descriptionCallback): callable
+    {
+        return function (EventEvent $event, DomainMessage $domainMessage) use ($descriptionCallback) {
+            $description = $descriptionCallback($event, $domainMessage);
+
+            $this->writeHistory(
+                $event->getEventId(),
+                $this->createGenericLog($domainMessage, $description)
+            );
+        };
     }
 
-    private function applyEventCopied(
-        EventCopied $eventCopied,
-        DomainMessage $domainMessage
-    ): void {
-        $this->writeHistory(
-            $eventCopied->getItemId(),
-            $this->createGenericLog($domainMessage, 'Event gekopieerd van ' . $eventCopied->getOriginalEventId())
-        );
-    }
+    private function createOfferEventHandler(callable $descriptionCallback): callable
+    {
+        return function (AbstractEvent $event, DomainMessage $domainMessage) use ($descriptionCallback) {
+            $description = $descriptionCallback($event, $domainMessage);
 
-    private function applyLabelAdded(
-        LabelAdded $labelAdded,
-        DomainMessage $domainMessage
-    ): void {
-        $this->writeHistory(
-            $labelAdded->getItemId(),
-            $this->createGenericLog($domainMessage, "Label '{$labelAdded->getLabel()}' toegepast")
-        );
-    }
-
-    private function applyLabelRemoved(
-        LabelRemoved $labelRemoved,
-        DomainMessage $domainMessage
-    ): void {
-        $this->writeHistory(
-            $labelRemoved->getItemId(),
-            $this->createGenericLog($domainMessage, "Label '{$labelRemoved->getLabel()}' verwijderd")
-        );
-    }
-
-    private function applyTitleTranslated(
-        TitleTranslated $titleTranslated,
-        DomainMessage $domainMessage
-    ): void {
-        $this->writeHistory(
-            $titleTranslated->getItemId(),
-            $this->createGenericLog($domainMessage, "Titel vertaald ({$titleTranslated->getLanguage()})")
-        );
-    }
-
-    private function applyDescriptionTranslated(
-        DescriptionTranslated $descriptionTranslated,
-        DomainMessage $domainMessage
-    ): void {
-        $this->writeHistory(
-            $descriptionTranslated->getItemId(),
-            $this->createGenericLog($domainMessage, "Beschrijving vertaald ({$descriptionTranslated->getLanguage()})")
-        );
+            $this->writeHistory(
+                $event->getItemId(),
+                $this->createGenericLog($domainMessage, $description)
+            );
+        };
     }
 
     private function createGenericLog(DomainMessage $domainMessage, string $description): Log
