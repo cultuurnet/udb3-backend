@@ -9,6 +9,9 @@ use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Curators\LabelFactory;
 use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
+use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
+use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -46,6 +49,16 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
 
         $app['curators_event_bus_forwarding_consumer'] = $app->share(
             function (Application $app) {
+                // If this service gets instantiated, it's because we're running the AMQP listener for Curators messages
+                // so we should set the API name to Curators listener.
+                $eventMetadata = ContextFactory::createContext(
+                    $app['udb3_system_user'],
+                    null,
+                    null,
+                    ApiName::CURATORS_LISTENER
+                );
+                MetadataServiceProvider::setEventStreamMetadata($app, $eventMetadata);
+
                 $consumer = new EventBusForwardingConsumer(
                     $app['amqp.connection'],
                     $app['event_bus'],
