@@ -51,16 +51,6 @@ class ImportControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app->before(
-            function (Request $request, Application $application) {
-                $application['api_name'] = ApiName::JSONLD;
-                if (strpos($request->getRequestUri(), self::PATH) === 0) {
-                    $application['api_name'] = ApiName::JSONLD_IMPORTS;
-                }
-            },
-            Application::EARLY_EVENT
-        );
-
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
