@@ -68,6 +68,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
         $toggles = $app['toggles'];
 
         $app['consumer'] = null;
+
         if ($toggles->active('uitid-api-key-required', $app['toggles.context'])) {
             $app->before(
                 function (Request $request, Application $app) {
@@ -108,7 +109,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                     $app['consumer'] = $consumer;
                 },
-                Application::EARLY_EVENT
+                Application::LATE_EVENT
             );
         }
     }
