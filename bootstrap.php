@@ -1273,17 +1273,6 @@ $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvid
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
 
-$app['udb3_system_user_metadata'] = $app->share(
-    function () {
-        return new Metadata(
-            [
-                'user_id' => SYSTEM_USER_UUID,
-                'user_nick' => 'udb3',
-            ]
-        );
-    }
-);
-
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerImportServiceProvider());
