@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ea69c4937eb5d00676d3bc28b7b2128",
+    "content-hash": "577bc50932725c6a0041be0ab96ce7cb",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1579,25 +1579,24 @@
         },
         {
             "name": "cultuurnet/udb3-api-guard",
-            "version": "dev-master",
+            "version": "0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "a4f9364c6e4851917f234e716aacefa6ace43180"
+                "reference": "179f67e56d04ccd402b1291dec894ac85b6e6a80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/a4f9364c6e4851917f234e716aacefa6ace43180",
-                "reference": "a4f9364c6e4851917f234e716aacefa6ace43180",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/179f67e56d04ccd402b1291dec894ac85b6e6a80",
+                "reference": "179f67e56d04ccd402b1291dec894ac85b6e6a80",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/valueobjects": "~3.0",
-                "psr/http-message": "^1.0"
+                "symfony/http-foundation": "~2.7"
             },
             "require-dev": {
                 "cultuurnet/culturefeed-php": "~1.8",
-                "doctrine/cache": "~1.8",
                 "phing/phing": "~2.11",
                 "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
@@ -1609,7 +1608,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.x-dev"
+                    "dev-0.x": "0.x-dev"
                 }
             },
             "autoload": {
@@ -1627,7 +1626,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2019-10-30T13:36:21+00:00"
+            "time": "2019-11-14T14:37:24+00:00"
         },
         {
             "name": "cultuurnet/udb3-doctrine",
@@ -9026,6 +9025,12 @@
             "package": "cultuurnet/udb3"
         },
         {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "0.9999999.9999999.9999999-dev",
+            "package": "cultuurnet/udb3-api-guard"
+        },
+        {
             "alias": "1.3.1",
             "alias_normalized": "1.3.1.0",
             "version": "4.0.3.0-alpha",
@@ -9038,6 +9043,7 @@
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
         "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
