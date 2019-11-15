@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
-use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
