@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Authentication;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
@@ -66,6 +67,8 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
         /** @var ToggleManager $toggles */
         $toggles = $app['toggles'];
 
+        $app['consumer'] = null;
+
         if ($toggles->active('uitid-api-key-required', $app['toggles.context'])) {
             $app->before(
                 function (Request $request, Application $app) {
@@ -97,13 +100,16 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                     /* @var ConsumerReadRepositoryInterface $consumerRepository */
                     $consumerRepository = $app['auth.consumer_repository'];
+                    /** @var ConsumerInterface $consumer */
                     $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
 
                     if (!$permissionCheck->satisfiedBy($consumer)) {
                         throw new RequestAuthenticationException('Given API key is not authorized to use EntryAPI.');
                     }
+
+                    $app['consumer'] = $consumer;
                 },
-                Application::EARLY_EVENT
+                Application::LATE_EVENT
             );
         }
     }

@@ -8,6 +8,7 @@ use Broadway\Domain\Metadata;
 use CultureFeed_User;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use Lcobucci\JWT\Token;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,8 @@ final class ContextFactory
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
         ?TokenCredentials $cultureFeedTokenCredentials = null,
-        ?Request $request = null
+        ?Request $request = null,
+        ?ConsumerInterface $consumer = null
     ): Metadata {
         $contextValues = array();
 
@@ -50,6 +52,9 @@ final class ContextFactory
         if ($request) {
             $contextValues['client_ip'] = $request->getClientIp();
         }
+        if ($consumer) {
+            $contextValues['consumer']['name'] = $consumer->getName();
+        }
 
         $contextValues['request_time'] = $_SERVER['REQUEST_TIME'];
 
@@ -70,7 +75,8 @@ final class ContextFactory
             $application['api_key'],
             $application['api_name'],
             $application['culturefeed_token_credentials'],
-            $request
+            $request,
+            $application['consumer']
         );
     }
 
