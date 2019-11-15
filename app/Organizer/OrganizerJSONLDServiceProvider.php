@@ -32,7 +32,7 @@ class OrganizerJSONLDServiceProvider implements ServiceProviderInterface
 
         $app['real_organizer_jsonld_repository'] = $app->share(
             function ($app) {
-                return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+                return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
                     $app['organizer_jsonld_cache']
                 );
             }

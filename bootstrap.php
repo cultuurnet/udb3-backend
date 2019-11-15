@@ -471,7 +471,7 @@ $app['event_history_projector'] = $app->share(
 
 $app['event_history_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
             $app['event_history_cache']
         );
     }
@@ -939,7 +939,7 @@ $app['user_roles_cache'] = $app->share(
 $app['role_read_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator(
-            new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+            new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
                 $app['role_detail_cache']
             ),
             $app['event_bus'],
@@ -950,7 +950,7 @@ $app['role_read_repository'] = $app->share(
 
 $app['user_roles_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
             $app['user_roles_cache']
         );
     }
@@ -1039,7 +1039,7 @@ $app['role_labels_cache'] = $app->share(
 
 $app['role_labels_read_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
             $app['role_labels_cache']
         );
     }
@@ -1063,7 +1063,7 @@ $app['label_roles_cache'] = $app->share(
 
 $app['label_roles_read_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
             $app['label_roles_cache']
         );
     }
@@ -1085,7 +1085,7 @@ $app['role_users_cache'] = $app->share(
 
 $app['role_users_read_repository'] = $app->share(
     function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository(
+        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
             $app['role_users_cache']
         );
     }

@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Silex\Place;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
-use CultuurNet\UDB3\Doctrine\Event\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
