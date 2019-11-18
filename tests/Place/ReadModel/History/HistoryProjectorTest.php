@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
+use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -53,7 +54,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_PlaceCreated_event()
+    public function it_projects_PlaceCreated_event()
     {
         $happenedOn = '2015-03-27T10:17:19.176169+02:00';
         $placeCreatedEvent = $this->aPlaceCreatedEvent();
@@ -78,7 +79,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_LabelAdded_event()
+    public function it_projects_LabelAdded_event()
     {
         $labelAddedEvent = $this->aLabelAddedEvent();
         $happenedOn = '2015-03-27T10:17:19.176169+02:00';
@@ -97,9 +98,31 @@ class HistoryProjectorTest extends TestCase
             '2015-03-27T10:17:19+02:00',
             EventDescription::LABEL_ADDED
         );
-
     }
 
+    /**
+     * @test
+     */
+    public function it_projects_LabelRemoved_event()
+    {
+        $labelAddedEvent = $this->aLabelRemovedEvent();
+        $happenedOn = '2015-03-27T10:17:19.176169+02:00';
+
+        $domainMessage = new DomainMessage(
+            $labelAddedEvent->getItemId(),
+            1,
+            $this->aMetadata(),
+            $labelAddedEvent,
+            DateTime::fromString($happenedOn)
+        );
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistory(
+            $labelAddedEvent->getItemId(),
+            '2015-03-27T10:17:19+02:00',
+            EventDescription::LABEL_REMOVED
+        );
+    }
     protected function assertHistoryOfEvent(string $eventId, array $history)
     {
         /** @var JsonDocument $document */
@@ -147,11 +170,18 @@ class HistoryProjectorTest extends TestCase
     private function aLabelAddedEvent(): LabelAdded
     {
         return new LabelAdded(
-            '',
-            new Label('Label')
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Label('Label-of-adding')
         );
     }
 
+    private function aLabelRemovedEvent(): LabelRemoved
+    {
+        return  new LabelRemoved(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Label('Label-of-removing')
+        );
+    }
 
     public function assertHistory(string $eventId, string $dateFieldValue, string $eventDescription): void
     {
@@ -169,5 +199,7 @@ class HistoryProjectorTest extends TestCase
             ]
         );
     }
+
+
 
 }

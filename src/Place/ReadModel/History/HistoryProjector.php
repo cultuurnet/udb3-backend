@@ -4,17 +4,16 @@ namespace CultuurNet\UDB3\Place\ReadModel\History;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
-
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\ReadModel\History\Log;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
+use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
-use function GuzzleHttp\Promise\inspect;
 
 final class HistoryProjector implements EventListenerInterface
 {
@@ -37,6 +36,9 @@ final class HistoryProjector implements EventListenerInterface
                 break;
             case $event instanceof LabelAdded:
                 $this->handleLabelAdded($event, $domainMessage);
+                break;
+            case $event instanceof LabelRemoved:
+                $this->handleLabelRemoved($event, $domainMessage);
                 break;
         }
     }
@@ -63,6 +65,21 @@ final class HistoryProjector implements EventListenerInterface
             new Log(
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
                 EventDescription::LABEL_ADDED,
+                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
+        );
+    }
+
+    private function handleLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage)
+    {
+        $this->writeHistory(
+            $event->getItemId(),
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                EventDescription::LABEL_REMOVED,
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),

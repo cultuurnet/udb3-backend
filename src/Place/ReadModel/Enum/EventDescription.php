@@ -12,4 +12,5 @@ class EventDescription
 {
     const CREATED = 'Created';
     const LABEL_ADDED = 'label-added';
+    const LABEL_REMOVED = 'label-removed';
 }
