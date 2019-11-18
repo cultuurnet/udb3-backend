@@ -57,7 +57,6 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_PlaceCreated_event()
     {
-        $happenedOn = '2015-03-27T10:17:19.176169+02:00';
         $placeCreatedEvent = $this->aPlaceCreatedEvent();
 
         $domainMessage = new DomainMessage(
@@ -65,7 +64,7 @@ class HistoryProjectorTest extends TestCase
             1,
             $this->aMetadata(),
             $placeCreatedEvent,
-            DateTime::fromString($happenedOn)
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
 
         $this->historyProjector->handle($domainMessage);
@@ -82,7 +81,6 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_PlaceDeleted_event()
     {
-        $happenedOn = '2015-03-27T10:17:19.176169+02:00';
         $placeCreatedEvent = $this->aPlaceDeletedEvent();
 
         $domainMessage = new DomainMessage(
@@ -90,7 +88,7 @@ class HistoryProjectorTest extends TestCase
             1,
             $this->aMetadata(),
             $placeCreatedEvent,
-            DateTime::fromString($happenedOn)
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
 
         $this->historyProjector->handle($domainMessage);
@@ -108,14 +106,13 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_LabelAdded_event()
     {
         $labelAddedEvent = $this->aLabelAddedEvent();
-        $happenedOn = '2015-03-27T10:17:19.176169+02:00';
 
         $domainMessage = new DomainMessage(
             $labelAddedEvent->getItemId(),
             1,
             $this->aMetadata(),
             $labelAddedEvent,
-            DateTime::fromString($happenedOn)
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
 
         $this->historyProjector->handle($domainMessage);
@@ -132,14 +129,12 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_LabelRemoved_event()
     {
         $labelAddedEvent = $this->aLabelRemovedEvent();
-        $happenedOn = '2015-03-27T10:17:19.176169+02:00';
-
         $domainMessage = new DomainMessage(
             $labelAddedEvent->getItemId(),
             1,
             $this->aMetadata(),
             $labelAddedEvent,
-            DateTime::fromString($happenedOn)
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
 
         $this->historyProjector->handle($domainMessage);
