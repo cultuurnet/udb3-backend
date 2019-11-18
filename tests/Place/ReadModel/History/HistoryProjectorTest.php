@@ -33,6 +33,8 @@ class HistoryProjectorTest extends TestCase
     const META_AUTH_API_KEY = 'my-super-duper-key';
     const META_API = 'json-api';
     const META_CONSUMER = 'My super duper name';
+    const OCCURRED_ON = '2015-03-27T10:17:19.176169+02:00';
+    const OCCURRED_ON_FORMATTED = '2015-03-27T10:17:19+02:00';
 
     /**
      * @var InMemoryDocumentRepository
@@ -60,20 +62,12 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_PlaceCreated_event()
     {
         $placeCreatedEvent = $this->aPlaceCreatedEvent();
-
-        $domainMessage = new DomainMessage(
-            $placeCreatedEvent->getPlaceId(),
-            1,
-            $this->aMetadata(),
-            $placeCreatedEvent,
-            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
-        );
+        $domainMessage = $this->aDomainMessageForEvent($placeCreatedEvent->getPlaceId(), $placeCreatedEvent);
 
         $this->historyProjector->handle($domainMessage);
 
         $this->assertHistory(
             $placeCreatedEvent->getPlaceId(),
-            '2015-03-27T10:17:19+02:00',
             EventDescription::CREATED
         );
     }
@@ -83,21 +77,13 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_PlaceDeleted_event()
     {
-        $placeCreatedEvent = $this->aPlaceDeletedEvent();
-
-        $domainMessage = new DomainMessage(
-            $placeCreatedEvent->getItemId(),
-            1,
-            $this->aMetadata(),
-            $placeCreatedEvent,
-            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
-        );
+        $placeDeletedEvent = $this->aPlaceDeletedEvent();
+        $domainMessage = $this->aDomainMessageForEvent($placeDeletedEvent->getItemId(), $placeDeletedEvent);
 
         $this->historyProjector->handle($domainMessage);
 
         $this->assertHistory(
-            $placeCreatedEvent->getItemId(),
-            '2015-03-27T10:17:19+02:00',
+            $placeDeletedEvent->getItemId(),
             EventDescription::DELETED
         );
     }
@@ -108,19 +94,11 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_LabelAdded_event()
     {
         $labelAddedEvent = $this->aLabelAddedEvent();
-
-        $domainMessage = new DomainMessage(
-            $labelAddedEvent->getItemId(),
-            1,
-            $this->aMetadata(),
-            $labelAddedEvent,
-            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
-        );
+        $domainMessage = $this->aDomainMessageForEvent($labelAddedEvent->getItemId(), $labelAddedEvent);
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $labelAddedEvent->getItemId(),
-            '2015-03-27T10:17:19+02:00',
             EventDescription::LABEL_ADDED
         );
     }
@@ -130,19 +108,12 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_LabelRemoved_event()
     {
-        $labelAddedEvent = $this->aLabelRemovedEvent();
-        $domainMessage = new DomainMessage(
-            $labelAddedEvent->getItemId(),
-            1,
-            $this->aMetadata(),
-            $labelAddedEvent,
-            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
-        );
+        $labelRemovedEvent = $this->aLabelRemovedEvent();
+        $domainMessage = $this->aDomainMessageForEvent($labelRemovedEvent->getItemId(), $labelRemovedEvent);
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
-            $labelAddedEvent->getItemId(),
-            '2015-03-27T10:17:19+02:00',
+            $labelRemovedEvent->getItemId(),
             EventDescription::LABEL_REMOVED
         );
     }
@@ -152,19 +123,12 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_DescriptionTranslated_event()
     {
-        $labelAddedEvent = $this->aDescriptionTranslatedEvent();
-        $domainMessage = new DomainMessage(
-            $labelAddedEvent->getItemId(),
-            1,
-            $this->aMetadata(),
-            $labelAddedEvent,
-            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
-        );
+        $descriptionTranslatedEvent = $this->aDescriptionTranslatedEvent();
+        $domainMessage = $this->aDomainMessageForEvent($descriptionTranslatedEvent->getItemId(), $descriptionTranslatedEvent);
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
-            $labelAddedEvent->getItemId(),
-            '2015-03-27T10:17:19+02:00',
+            $descriptionTranslatedEvent->getItemId(),
             EventDescription::DESCRIPTION_TRANSLATED
         );
     }
@@ -199,7 +163,7 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    private function aPlaceDeletedEvent() : PlaceDeleted
+    private function aPlaceDeletedEvent(): PlaceDeleted
     {
         return new PlaceDeleted(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656'
@@ -245,13 +209,13 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    public function assertHistory(string $eventId, string $dateFieldValue, string $eventDescription): void
+    public function assertHistory(string $eventId, string $eventDescription): void
     {
         $this->assertHistoryOfEvent(
             $eventId,
             [
                 (object) [
-                    'date' => $dateFieldValue,
+                    'date' => self::OCCURRED_ON_FORMATTED,
                     'author' => self::META_USER_NICK,
                     'description' => $eventDescription,
                     'apiKey' => self::META_AUTH_API_KEY,
@@ -259,6 +223,17 @@ class HistoryProjectorTest extends TestCase
                     'consumerName' => self::META_CONSUMER,
                 ],
             ]
+        );
+    }
+
+    private function aDomainMessageForEvent(string $eventId, $placeCreatedEvent): DomainMessage
+    {
+        return new DomainMessage(
+            $eventId,
+            1,
+            $this->aMetadata(),
+            $placeCreatedEvent,
+            DateTime::fromString(self::OCCURRED_ON)
         );
     }
 

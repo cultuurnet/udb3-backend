@@ -168,6 +168,4 @@ final class HistoryProjector implements EventListenerInterface
 
         return null;
     }
-
-
 }
