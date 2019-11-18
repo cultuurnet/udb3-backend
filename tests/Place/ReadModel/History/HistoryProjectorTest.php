@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
+use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -157,12 +158,29 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_PlaceImportedFromUDB2_event()
     {
         $placeImportedFromUDB2Event = $this->aPlaceImportedFromUDB2Event();
-        $domainMessage = $this->aDomainMessageForEvent($placeImportedFromUDB2Event->getActorId(), $placeImportedFromUDB2Event);
+        $domainMessage = $this->aDomainMessageForEvent($placeImportedFromUDB2Event->getActorId(),
+            $placeImportedFromUDB2Event);
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $placeImportedFromUDB2Event->getActorId(),
             EventDescription::PLACE_IMPORTED_FROM_UDB2
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_PlaceUpdatedFromUDB2_event()
+    {
+        $placeImportedFromUDB2Event = $this->aPlaceIUpdatedFromUDB2Event();
+        $domainMessage = $this->aDomainMessageForEvent($placeImportedFromUDB2Event->getActorId(),
+            $placeImportedFromUDB2Event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistory(
+            $placeImportedFromUDB2Event->getActorId(),
+            EventDescription::PLACE_UPDATED_FROM_UDB2
         );
     }
 
@@ -254,6 +272,15 @@ class HistoryProjectorTest extends TestCase
     private function aPlaceImportedFromUDB2Event(): PlaceImportedFromUDB2
     {
         return new PlaceImportedFromUDB2(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            'xml',
+            'namespace'
+        );
+    }
+
+    private function aPlaceIUpdatedFromUDB2Event(): PlaceUpdatedFromUDB2
+    {
+        return  new PlaceUpdatedFromUDB2(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             'xml',
             'namespace'

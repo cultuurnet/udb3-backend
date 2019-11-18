@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
+use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -56,6 +57,9 @@ final class HistoryProjector implements EventListenerInterface
             case $event instanceof PlaceImportedFromUDB2:
                 $this->projectPlaceImportedFromUDB2($event, $domainMessage);
                 break;
+            case $event instanceof PlaceUpdatedFromUDB2:
+                $this->projectPlaceUpdatedFromUDB2($event, $domainMessage);
+                break;
         }
     }
 
@@ -92,6 +96,11 @@ final class HistoryProjector implements EventListenerInterface
     private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage)
     {
         $this->write($event->getActorId(), EventDescription::PLACE_IMPORTED_FROM_UDB2, $domainMessage);
+    }
+
+    private function projectPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $event, DomainMessage $domainMessage)
+    {
+        $this->write($event->getActorId(), EventDescription::PLACE_UPDATED_FROM_UDB2, $domainMessage);
     }
 
     private function write(string $eventId, string $description, DomainMessage $domainMessage)

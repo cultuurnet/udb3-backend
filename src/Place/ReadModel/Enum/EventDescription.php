@@ -17,4 +17,5 @@ class EventDescription
     const DESCRIPTION_TRANSLATED = 'description-translated';
     const TITLE_TRANSLATED = 'title-translated';
     const PLACE_IMPORTED_FROM_UDB2 = 'place-imported-from-udb2';
+    const PLACE_UPDATED_FROM_UDB2 = 'place-updated-from-udb2';
 }
