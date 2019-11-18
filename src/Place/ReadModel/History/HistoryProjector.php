@@ -49,56 +49,31 @@ final class HistoryProjector implements EventListenerInterface
 
     private function projectPlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
     {
-        $this->writeHistory(
-            $event->getPlaceId(),
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                EventDescription::CREATED,
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
-        );
+        $this->write($event->getPlaceId(), EventDescription::CREATED, $domainMessage);
     }
 
-    private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage)
+    private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage): void
     {
-        $this->writeHistory(
-            $event->getItemId(),
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                EventDescription::DELETED,
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
-        );
+        $this->write($event->getItemId(), EventDescription::DELETED, $domainMessage);
     }
 
     private function projectLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
     {
-        $this->writeHistory(
-            $event->getItemId(),
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                EventDescription::LABEL_ADDED,
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
-        );
+        $this->write($event->getItemId(), EventDescription::LABEL_ADDED, $domainMessage);
     }
 
-    private function projectLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage)
+    private function projectLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage): void
+    {
+        $this->write($event->getItemId(), EventDescription::LABEL_REMOVED, $domainMessage);
+    }
+
+    private function write(string $eventId, string $description, DomainMessage $domainMessage)
     {
         $this->writeHistory(
-            $event->getItemId(),
+            $eventId,
             new Log(
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                EventDescription::LABEL_REMOVED,
+                $description,
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),
@@ -106,7 +81,7 @@ final class HistoryProjector implements EventListenerInterface
             )
         );
     }
-
+    
     private function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
     {
         $dateString = $date->toString();
