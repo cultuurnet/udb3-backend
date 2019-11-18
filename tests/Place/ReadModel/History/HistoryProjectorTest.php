@@ -14,12 +14,14 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
+use CultuurNet\UDB3\Label;
 
 class HistoryProjectorTest extends TestCase
 {
@@ -33,6 +35,7 @@ class HistoryProjectorTest extends TestCase
      * @var HistoryProjector
      */
     private $historyProjector;
+
 
     public function setUp()
     {
@@ -79,7 +82,42 @@ class HistoryProjectorTest extends TestCase
                 ],
             ]
         );
+    }
 
+    /**
+     * @test
+     */
+    public function it_handles_LabelAdded_event()
+    {
+        $labelAddedEvent = $this->aLabelAddedEvent();
+        $happenedOn = '2015-03-27T10:17:19.176169+02:00';
+        $userNick = 'Jan Janssen';
+        $authApiKey = 'my-super-duper-key';
+        $api = 'json-api';
+        $consumer = 'My super duper name';
+        $domainMessage = new DomainMessage(
+            $labelAddedEvent->getItemId(),
+            1,
+            $this->aMetadata($userNick, $authApiKey, $api, $consumer),
+            $labelAddedEvent,
+            DateTime::fromString($happenedOn)
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryOfEvent(
+            $labelAddedEvent->getItemId(),
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => $userNick,
+                    'description' => EventDescription::LABEL_ADDED,
+                    'apiKey' => $authApiKey,
+                    'api' => $api,
+                    'consumerName' => $consumer,
+                ],
+            ]
+        );
     }
 
     protected function assertHistoryOfEvent(string $eventId, array $history)
@@ -123,6 +161,14 @@ class HistoryProjectorTest extends TestCase
                     'name' => $consumer,
                 ]
             ]
+        );
+    }
+
+    private function aLabelAddedEvent(): LabelAdded
+    {
+        return new LabelAdded(
+            '',
+            new Label('Label')
         );
     }
 

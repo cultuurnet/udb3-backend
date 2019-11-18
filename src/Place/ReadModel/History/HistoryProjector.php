@@ -9,10 +9,12 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\ReadModel\History\Log;
+use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
+use function GuzzleHttp\Promise\inspect;
 
 final class HistoryProjector implements EventListenerInterface
 {
@@ -33,16 +35,34 @@ final class HistoryProjector implements EventListenerInterface
             case $event instanceof PlaceCreated:
                 $this->handlePlaceCreated($event, $domainMessage);
                 break;
+            case $event instanceof LabelAdded:
+                $this->handleLabelAdded($event, $domainMessage);
+                break;
         }
     }
 
-    private function handlePlaceCreated(PlaceCreated $event, DomainMessage $domainMessage)
+    private function handlePlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
     {
         $this->writeHistory(
             $event->getPlaceId(),
             new Log(
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
                 EventDescription::CREATED,
+                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
+        );
+    }
+
+    private function handleLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $event->getItemId(),
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                EventDescription::LABEL_ADDED,
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),

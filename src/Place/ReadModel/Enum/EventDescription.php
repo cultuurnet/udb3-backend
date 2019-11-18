@@ -11,4 +11,5 @@ namespace CultuurNet\UDB3\Place\ReadModel\Enum;
 class EventDescription
 {
     const CREATED = 'Created';
+    const LABEL_ADDED = 'label-added';
 }
