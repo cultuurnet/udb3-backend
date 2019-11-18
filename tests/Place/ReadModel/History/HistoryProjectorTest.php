@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
+use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
@@ -124,12 +125,28 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_DescriptionTranslated_event()
     {
         $descriptionTranslatedEvent = $this->aDescriptionTranslatedEvent();
-        $domainMessage = $this->aDomainMessageForEvent($descriptionTranslatedEvent->getItemId(), $descriptionTranslatedEvent);
+        $domainMessage = $this->aDomainMessageForEvent($descriptionTranslatedEvent->getItemId(),
+            $descriptionTranslatedEvent);
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $descriptionTranslatedEvent->getItemId(),
             EventDescription::DESCRIPTION_TRANSLATED
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_TitleTranslated_event()
+    {
+        $titleTranslatedEvent = $this->aTitleTranslatedEvent();
+        $domainMessage = $this->aDomainMessageForEvent($titleTranslatedEvent->getItemId(), $titleTranslatedEvent);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistory(
+            $titleTranslatedEvent->getItemId(),
+            EventDescription::TITLE_TRANSLATED
         );
     }
 
@@ -209,6 +226,15 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
+    private function aTitleTranslatedEvent(): TitleTranslated
+    {
+        return new TitleTranslated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Language('en'),
+            new Title('Title')
+        );
+    }
+
     public function assertHistory(string $eventId, string $eventDescription): void
     {
         $this->assertHistoryOfEvent(
@@ -236,6 +262,4 @@ class HistoryProjectorTest extends TestCase
             DateTime::fromString(self::OCCURRED_ON)
         );
     }
-
-
 }

@@ -15,4 +15,5 @@ class EventDescription
     const LABEL_ADDED = 'label-added';
     const LABEL_REMOVED = 'label-removed';
     const DESCRIPTION_TRANSLATED = 'description-translated';
+    const TITLE_TRANSLATED = 'title-translated';
 }

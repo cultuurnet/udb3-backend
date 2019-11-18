@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
+use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
@@ -48,6 +49,9 @@ final class HistoryProjector implements EventListenerInterface
             case $event instanceof DescriptionTranslated:
                 $this->projectDescriptionTranslated($event, $domainMessage);
                 break;
+            case $event instanceof TitleTranslated:
+                $this->projectTitleTranslated($event, $domainMessage);
+                break;
         }
     }
 
@@ -74,6 +78,11 @@ final class HistoryProjector implements EventListenerInterface
     private function projectDescriptionTranslated(DescriptionTranslated $event, DomainMessage $domainMessage)
     {
         $this->write($event->getItemId(), EventDescription::DESCRIPTION_TRANSLATED, $domainMessage);
+    }
+
+    private function projectTitleTranslated(TitleTranslated $event, DomainMessage $domainMessage)
+    {
+        $this->write($event->getItemId(), EventDescription::TITLE_TRANSLATED, $domainMessage);
     }
 
     private function write(string $eventId, string $description, DomainMessage $domainMessage)
