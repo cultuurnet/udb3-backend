@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\ReadModel\History\Log;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
@@ -34,6 +35,9 @@ final class HistoryProjector implements EventListenerInterface
             case $event instanceof PlaceCreated:
                 $this->projectPlaceCreated($event, $domainMessage);
                 break;
+            case $event instanceof PlaceDeleted:
+                $this->projectPlaceDeleted($event, $domainMessage);
+                break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($event, $domainMessage);
                 break;
@@ -50,6 +54,21 @@ final class HistoryProjector implements EventListenerInterface
             new Log(
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
                 EventDescription::CREATED,
+                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
+        );
+    }
+
+    private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage)
+    {
+        $this->writeHistory(
+            $event->getItemId(),
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                EventDescription::DELETED,
                 $this->getAuthorFromMetadata($domainMessage->getMetadata()),
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
                 $this->getApiFromMetadata($domainMessage->getMetadata()),

@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
@@ -79,6 +80,31 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_projects_PlaceDeleted_event()
+    {
+        $happenedOn = '2015-03-27T10:17:19.176169+02:00';
+        $placeCreatedEvent = $this->aPlaceDeletedEvent();
+
+        $domainMessage = new DomainMessage(
+            $placeCreatedEvent->getItemId(),
+            1,
+            $this->aMetadata(),
+            $placeCreatedEvent,
+            DateTime::fromString($happenedOn)
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistory(
+            $placeCreatedEvent->getItemId(),
+            '2015-03-27T10:17:19+02:00',
+            EventDescription::DELETED
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_projects_LabelAdded_event()
     {
         $labelAddedEvent = $this->aLabelAddedEvent();
@@ -123,6 +149,7 @@ class HistoryProjectorTest extends TestCase
             EventDescription::LABEL_REMOVED
         );
     }
+
     protected function assertHistoryOfEvent(string $eventId, array $history)
     {
         /** @var JsonDocument $document */
@@ -153,6 +180,13 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
+    private function aPlaceDeletedEvent() : PlaceDeleted
+    {
+        return new PlaceDeleted(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656'
+        );
+    }
+
     public function aMetadata(): Metadata
     {
         return new Metadata(
@@ -177,7 +211,7 @@ class HistoryProjectorTest extends TestCase
 
     private function aLabelRemovedEvent(): LabelRemoved
     {
-        return  new LabelRemoved(
+        return new LabelRemoved(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new Label('Label-of-removing')
         );
@@ -199,7 +233,4 @@ class HistoryProjectorTest extends TestCase
             ]
         );
     }
-
-
-
 }

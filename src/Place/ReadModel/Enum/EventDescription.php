@@ -11,6 +11,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\Enum;
 class EventDescription
 {
     const CREATED = 'Created';
+    const DELETED = 'Deleted';
     const LABEL_ADDED = 'label-added';
     const LABEL_REMOVED = 'label-removed';
 }
