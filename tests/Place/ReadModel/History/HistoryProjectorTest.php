@@ -25,6 +25,10 @@ use CultuurNet\UDB3\Label;
 
 class HistoryProjectorTest extends TestCase
 {
+    const META_USER_NICK = 'Jan Janssen';
+    const META_AUTH_API_KEY = 'my-super-duper-key';
+    const META_API = 'json-api';
+    const META_CONSUMER = 'My super duper name';
 
     /**
      * @var InMemoryDocumentRepository
@@ -52,35 +56,22 @@ class HistoryProjectorTest extends TestCase
     public function it_handles_PlaceCreated_event()
     {
         $happenedOn = '2015-03-27T10:17:19.176169+02:00';
-        $userNick = 'Jan Janssen';
-        $authApiKey = 'my-super-duper-key';
-        $api = 'json-api';
-        $consumer = 'My super duper name';
-
         $placeCreatedEvent = $this->aPlaceCreatedEvent();
 
         $domainMessage = new DomainMessage(
             $placeCreatedEvent->getPlaceId(),
             1,
-            $this->aMetadata($userNick, $authApiKey, $api, $consumer),
+            $this->aMetadata(),
             $placeCreatedEvent,
             DateTime::fromString($happenedOn)
         );
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistory(
             $placeCreatedEvent->getPlaceId(),
-            [
-                (object) [
-                    'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => $userNick,
-                    'description' => EventDescription::CREATED,
-                    'apiKey' => $authApiKey,
-                    'api' => $api,
-                    'consumerName' => $consumer,
-                ],
-            ]
+            '2015-03-27T10:17:19+02:00',
+            EventDescription::CREATED
         );
     }
 
@@ -91,33 +82,22 @@ class HistoryProjectorTest extends TestCase
     {
         $labelAddedEvent = $this->aLabelAddedEvent();
         $happenedOn = '2015-03-27T10:17:19.176169+02:00';
-        $userNick = 'Jan Janssen';
-        $authApiKey = 'my-super-duper-key';
-        $api = 'json-api';
-        $consumer = 'My super duper name';
+
         $domainMessage = new DomainMessage(
             $labelAddedEvent->getItemId(),
             1,
-            $this->aMetadata($userNick, $authApiKey, $api, $consumer),
+            $this->aMetadata(),
             $labelAddedEvent,
             DateTime::fromString($happenedOn)
         );
 
         $this->historyProjector->handle($domainMessage);
-
-        $this->assertHistoryOfEvent(
+        $this->assertHistory(
             $labelAddedEvent->getItemId(),
-            [
-                (object) [
-                    'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => $userNick,
-                    'description' => EventDescription::LABEL_ADDED,
-                    'apiKey' => $authApiKey,
-                    'api' => $api,
-                    'consumerName' => $consumer,
-                ],
-            ]
+            '2015-03-27T10:17:19+02:00',
+            EventDescription::LABEL_ADDED
         );
+
     }
 
     protected function assertHistoryOfEvent(string $eventId, array $history)
@@ -150,15 +130,15 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    public function aMetadata(string $userNick, string $authApiKey, string $api, string $consumer): Metadata
+    public function aMetadata(): Metadata
     {
         return new Metadata(
             [
-                'user_nick' => $userNick,
-                'auth_api_key' => $authApiKey,
-                'api' => $api,
+                'user_nick' => self::META_USER_NICK,
+                'auth_api_key' => self::META_AUTH_API_KEY,
+                'api' => self::META_API,
                 'consumer' => [
-                    'name' => $consumer,
+                    'name' => self::META_CONSUMER,
                 ]
             ]
         );
@@ -169,6 +149,24 @@ class HistoryProjectorTest extends TestCase
         return new LabelAdded(
             '',
             new Label('Label')
+        );
+    }
+
+
+    public function assertHistory(string $eventId, string $dateFieldValue, string $eventDescription): void
+    {
+        $this->assertHistoryOfEvent(
+            $eventId,
+            [
+                (object) [
+                    'date' => $dateFieldValue,
+                    'author' => self::META_USER_NICK,
+                    'description' => $eventDescription,
+                    'apiKey' => self::META_AUTH_API_KEY,
+                    'api' => self::META_API,
+                    'consumerName' => self::META_CONSUMER,
+                ],
+            ]
         );
     }
 
