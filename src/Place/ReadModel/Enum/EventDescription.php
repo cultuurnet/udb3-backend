@@ -16,4 +16,5 @@ class EventDescription
     const LABEL_REMOVED = 'label-removed';
     const DESCRIPTION_TRANSLATED = 'description-translated';
     const TITLE_TRANSLATED = 'title-translated';
+    const PLACE_IMPORTED_FROM_UDB2 = 'place-imported-from-udb2';
 }
