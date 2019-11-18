@@ -32,18 +32,18 @@ final class HistoryProjector implements EventListenerInterface
         $event = $domainMessage->getPayload();
         switch (true) {
             case $event instanceof PlaceCreated:
-                $this->handlePlaceCreated($event, $domainMessage);
+                $this->projectPlaceCreated($event, $domainMessage);
                 break;
             case $event instanceof LabelAdded:
-                $this->handleLabelAdded($event, $domainMessage);
+                $this->projectLabelAdded($event, $domainMessage);
                 break;
             case $event instanceof LabelRemoved:
-                $this->handleLabelRemoved($event, $domainMessage);
+                $this->projectLabelRemoved($event, $domainMessage);
                 break;
         }
     }
 
-    private function handlePlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
+    private function projectPlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
     {
         $this->writeHistory(
             $event->getPlaceId(),
@@ -58,7 +58,7 @@ final class HistoryProjector implements EventListenerInterface
         );
     }
 
-    private function handleLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
+    private function projectLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
     {
         $this->writeHistory(
             $event->getItemId(),
@@ -73,7 +73,7 @@ final class HistoryProjector implements EventListenerInterface
         );
     }
 
-    private function handleLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage)
+    private function projectLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage)
     {
         $this->writeHistory(
             $event->getItemId(),
