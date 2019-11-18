@@ -8,6 +8,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\ReadModel\History\Log;
+use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -44,6 +45,9 @@ final class HistoryProjector implements EventListenerInterface
             case $event instanceof LabelRemoved:
                 $this->projectLabelRemoved($event, $domainMessage);
                 break;
+            case $event instanceof DescriptionTranslated:
+                $this->projectDescriptionTranslated($event, $domainMessage);
+                break;
         }
     }
 
@@ -67,6 +71,11 @@ final class HistoryProjector implements EventListenerInterface
         $this->write($event->getItemId(), EventDescription::LABEL_REMOVED, $domainMessage);
     }
 
+    private function projectDescriptionTranslated(DescriptionTranslated $event, DomainMessage $domainMessage)
+    {
+        $this->write($event->getItemId(), EventDescription::DESCRIPTION_TRANSLATED, $domainMessage);
+    }
+
     private function write(string $eventId, string $description, DomainMessage $domainMessage)
     {
         $this->writeHistory(
@@ -81,7 +90,7 @@ final class HistoryProjector implements EventListenerInterface
             )
         );
     }
-    
+
     private function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
     {
         $dateString = $date->toString();
@@ -159,4 +168,6 @@ final class HistoryProjector implements EventListenerInterface
 
         return null;
     }
+
+
 }

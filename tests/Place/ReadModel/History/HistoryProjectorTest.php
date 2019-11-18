@@ -11,9 +11,11 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -145,6 +147,28 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_projects_DescriptionTranslated_event()
+    {
+        $labelAddedEvent = $this->aDescriptionTranslatedEvent();
+        $domainMessage = new DomainMessage(
+            $labelAddedEvent->getItemId(),
+            1,
+            $this->aMetadata(),
+            $labelAddedEvent,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistory(
+            $labelAddedEvent->getItemId(),
+            '2015-03-27T10:17:19+02:00',
+            EventDescription::DESCRIPTION_TRANSLATED
+        );
+    }
+
     protected function assertHistoryOfEvent(string $eventId, array $history)
     {
         /** @var JsonDocument $document */
@@ -212,6 +236,15 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
+    private function aDescriptionTranslatedEvent(): DescriptionTranslated
+    {
+        return new DescriptionTranslated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Language('en'),
+            new Description('description')
+        );
+    }
+
     public function assertHistory(string $eventId, string $dateFieldValue, string $eventDescription): void
     {
         $this->assertHistoryOfEvent(
@@ -228,4 +261,6 @@ class HistoryProjectorTest extends TestCase
             ]
         );
     }
+
+
 }
