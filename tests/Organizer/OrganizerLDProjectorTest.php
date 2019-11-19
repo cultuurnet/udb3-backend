@@ -105,7 +105,7 @@ class OrganizerLDProjectorTest extends TestCase
     private function organizerImportedFromUDB2($fileName)
     {
         $cdbXml = file_get_contents(
-            __DIR__ . '/' . $fileName
+            __DIR__ . '/Samples/' . $fileName
         );
 
         $event = new OrganizerImportedFromUDB2(
@@ -124,7 +124,7 @@ class OrganizerLDProjectorTest extends TestCase
     private function organizerUpdatedFromUDB2($fileName)
     {
         $cdbXml = file_get_contents(
-            __DIR__ . '/' . $fileName
+            __DIR__ . '/Samples/' . $fileName
         );
 
         $event = new OrganizerUpdatedFromUDB2(
