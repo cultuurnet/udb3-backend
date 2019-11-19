@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "577bc50932725c6a0041be0ab96ce7cb",
+    "content-hash": "0d9b1a7d590ee58619fcab468df20a3d",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -549,6 +549,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -1500,16 +1501,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-3148-remove-organizer-code",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "7700f878ff42cf89ba6d6470ad752b1b1c4b6b4c"
+                "reference": "388da6ed36d9a978e622a8480ed94dcbc3c036e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7700f878ff42cf89ba6d6470ad752b1b1c4b6b4c",
-                "reference": "7700f878ff42cf89ba6d6470ad752b1b1c4b6b4c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/388da6ed36d9a978e622a8480ed94dcbc3c036e6",
+                "reference": "388da6ed36d9a978e622a8480ed94dcbc3c036e6",
                 "shasum": ""
             },
             "require": {
@@ -1575,7 +1576,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-11-14T14:08:57+00:00"
+            "time": "2019-11-19T14:56:53+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7252,8 +7253,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "homepage": "http://frankkleine.de/",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://frankkleine.de/"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
@@ -8041,8 +8042,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -8976,7 +8977,7 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "9999999-dev",
+            "version": "dev-feature/III-3148-remove-organizer-code",
             "package": "cultuurnet/udb3"
         },
         {
