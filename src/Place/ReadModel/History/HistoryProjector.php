@@ -65,7 +65,7 @@ final class HistoryProjector implements EventListenerInterface
 
     private function projectPlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
     {
-        $this->write($event->getPlaceId(), EventDescription::CREATED, $domainMessage);
+        $this->write($event->getPlaceId(), 'Aangemaakt in UiTdatabank', $domainMessage);
     }
 
     private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage): void
@@ -75,32 +75,32 @@ final class HistoryProjector implements EventListenerInterface
 
     private function projectLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
     {
-        $this->write($event->getItemId(), EventDescription::LABEL_ADDED, $domainMessage);
+        $this->write($event->getItemId(), "Label '{$event->getLabel()}' toegepast", $domainMessage);
     }
 
     private function projectLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage): void
     {
-        $this->write($event->getItemId(), EventDescription::LABEL_REMOVED, $domainMessage);
+        $this->write($event->getItemId(), "Label '{$event->getLabel()}' verwijderd", $domainMessage);
     }
 
     private function projectDescriptionTranslated(DescriptionTranslated $event, DomainMessage $domainMessage)
     {
-        $this->write($event->getItemId(), EventDescription::DESCRIPTION_TRANSLATED, $domainMessage);
+        $this->write($event->getItemId(), "Beschrijving vertaald ({$event->getLanguage()})", $domainMessage);
     }
 
     private function projectTitleTranslated(TitleTranslated $event, DomainMessage $domainMessage)
     {
-        $this->write($event->getItemId(), EventDescription::TITLE_TRANSLATED, $domainMessage);
+        $this->write($event->getItemId(), "Titel vertaald ({$event->getLanguage()})", $domainMessage);
     }
 
     private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage)
     {
-        $this->write($event->getActorId(), EventDescription::PLACE_IMPORTED_FROM_UDB2, $domainMessage);
+        $this->write($event->getActorId(), 'Aangemaakt in UDB2', $domainMessage);
     }
 
     private function projectPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $event, DomainMessage $domainMessage)
     {
-        $this->write($event->getActorId(), EventDescription::PLACE_UPDATED_FROM_UDB2, $domainMessage);
+        $this->write($event->getActorId(), 'Aangemaakt in UDB2', $domainMessage);
     }
 
     private function write(string $eventId, string $description, DomainMessage $domainMessage)

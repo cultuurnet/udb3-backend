@@ -71,7 +71,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->assertHistory(
             $placeCreatedEvent->getPlaceId(),
-            EventDescription::CREATED
+            'Aangemaakt in UiTdatabank'
         );
     }
 
@@ -102,7 +102,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $labelAddedEvent->getItemId(),
-            EventDescription::LABEL_ADDED
+            "Label '{$labelAddedEvent->getLabel()}' toegepast"
         );
     }
 
@@ -117,7 +117,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $labelRemovedEvent->getItemId(),
-            EventDescription::LABEL_REMOVED
+            "Label '{$labelRemovedEvent->getLabel()}' verwijderd"
         );
     }
 
@@ -133,7 +133,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $descriptionTranslatedEvent->getItemId(),
-            EventDescription::DESCRIPTION_TRANSLATED
+            "Beschrijving vertaald ({$descriptionTranslatedEvent->getLanguage()})"
         );
     }
 
@@ -148,7 +148,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $titleTranslatedEvent->getItemId(),
-            EventDescription::TITLE_TRANSLATED
+            "Titel vertaald ({$titleTranslatedEvent->getLanguage()})"
         );
     }
 
@@ -164,7 +164,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $placeImportedFromUDB2Event->getActorId(),
-            EventDescription::PLACE_IMPORTED_FROM_UDB2
+            'Aangemaakt in UDB2'
         );
     }
 
@@ -180,7 +180,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistory(
             $placeImportedFromUDB2Event->getActorId(),
-            EventDescription::PLACE_UPDATED_FROM_UDB2
+            'Aangemaakt in UDB2'
         );
     }
 
