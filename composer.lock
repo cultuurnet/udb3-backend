@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "577bc50932725c6a0041be0ab96ce7cb",
+    "content-hash": "26e3db4fdc102dfde511f66bf69e7400",
     "packages": [
         {
             "name": "2dotstwice/collection",

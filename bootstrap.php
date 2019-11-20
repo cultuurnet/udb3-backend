@@ -52,7 +52,7 @@ $app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
 $app['debug'] = true;
 
 if (!isset($udb3ConfigLocation)) {
-    $udb3ConfigLocation =  __DIR__;
+    $udb3ConfigLocation = __DIR__;
 }
 $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
 
@@ -121,7 +121,7 @@ if ($app['config']['swiftmailer.options']) {
 
 $app['timezone'] = $app->share(
     function (Application $app) {
-        $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
+        $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels' : $app['config']['timezone'];
 
         return new DateTimeZone($timezoneName);
     }
@@ -250,7 +250,7 @@ $app['current_user'] = $app->share(
 );
 
 $app['jwt'] = $app->share(
-    function(Application $app) {
+    function (Application $app) {
         // Check first if we're impersonating someone.
         /* @var Impersonator $impersonator */
         $impersonator = $app['impersonator'];
@@ -277,7 +277,7 @@ $app['jwt'] = $app->share(
 );
 
 $app['api_key'] = $app->share(
-    function(Application $app) {
+    function (Application $app) {
         // Check first if we're impersonating someone.
         // This is done when handling commands.
         /* @var Impersonator $impersonator */
@@ -344,7 +344,7 @@ $app['cache'] = $app->share(
     function (Application $app) {
         $activeCacheType = $app['config']['cache']['active'] ?: 'filesystem';
 
-        $cacheServiceName =  'cache-' . $activeCacheType;
+        $cacheServiceName = 'cache-' . $activeCacheType;
         return $app[$cacheServiceName];
     }
 );
@@ -459,6 +459,31 @@ $app['place_relations_projector'] = $app->share(
     }
 );
 
+$app['place_history_projector'] = $app->share(
+    function ($app) {
+        $projector = new \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector(
+            $app['places_history_repository']
+        );
+        return $projector;
+    }
+);
+
+$app['places_history_repository'] = $app->share(
+    function ($app) {
+        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
+            $app['place_history_cache']
+        );
+    }
+);
+
+$app['place_history_cache'] = $app->share(
+    function (Application $app) {
+        return $app['cache']('place_history');
+    }
+);
+
+
+
 $app['event_history_projector'] = $app->share(
     function ($app) {
         $projector = new \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector(
@@ -494,6 +519,7 @@ $app['event_bus'] = function ($app) {
             EventJSONLDServiceProvider::PROJECTOR,
             EventJSONLDServiceProvider::RELATED_PROJECTOR,
             'event_history_projector',
+            'place_history_projector',
             PlaceJSONLDServiceProvider::PROJECTOR,
             PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
             OrganizerJSONLDServiceProvider::PROJECTOR,
@@ -552,7 +578,7 @@ $app['event_bus'] = function ($app) {
         if (
             isset($app['config']['event_bus']) &&
             isset($app['config']['event_bus']['disable_related_offer_subscribers']) &&
-            $app['config']['event_bus']['disable_related_offer_subscribers'] == TRUE
+            $app['config']['event_bus']['disable_related_offer_subscribers'] == true
         ) {
             $subscribersToDisable = [
                 EventJSONLDServiceProvider::RELATED_PROJECTOR,

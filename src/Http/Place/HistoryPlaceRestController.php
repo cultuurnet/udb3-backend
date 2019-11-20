@@ -37,17 +37,17 @@ class HistoryPlaceRestController
         $this->userIdentification = $userIdentification;
     }
 
-    public function get(string $eventId): JsonResponse
+    public function get(string $placeId): JsonResponse
     {
         if (!$this->userIdentification->isGodUser()) {
-            return $this->forbiddenResponse($eventId);
+            return $this->forbiddenResponse($placeId);
         }
 
         try {
-            $document = $this->historyRepository->get($eventId);
+            $document = $this->historyRepository->get($placeId);
 
             if ($document === null) {
-                return $this->notFoundResponse($eventId);
+                return $this->notFoundResponse($placeId);
             }
 
             $response = JsonResponse::create()
@@ -55,7 +55,7 @@ class HistoryPlaceRestController
             $response->headers->set('Vary', 'Origin');
             return $response;
         } catch (DocumentGoneException $documentGoneException) {
-            return $this->documentGoneResponse($eventId);
+            return $this->documentGoneResponse($placeId);
         }
     }
 

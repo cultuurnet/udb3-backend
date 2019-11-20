@@ -5,7 +5,9 @@
 
 namespace CultuurNet\UDB3\Silex\Place;
 
+use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
+use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -41,12 +43,26 @@ class PlaceControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app['place_history_controller'] = $app->share(
+            function (Application $app) {
+                return new HistoryPlaceRestController(
+                    $app['places_history_repository'],
+                    new CultureFeedUserIdentification(
+                        $app['current_user'],
+                        $app['config']['user_permissions']
+                    )
+                );
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/', 'place_editing_controller:createPlace');
         $controllers->get('/{cdbid}', 'place_controller:get');
         $controllers->delete('/{cdbid}', 'place_editing_controller:deletePlace');
+
+        $controllers->get('/{placeId}/history', 'place_history_controller:get');
 
         $controllers->put('/{cdbid}/address/{lang}', 'place_editing_controller:updateAddress');
         $controllers->put('/{cdbid}/bookingInfo', 'place_editing_controller:updateBookingInfo');
