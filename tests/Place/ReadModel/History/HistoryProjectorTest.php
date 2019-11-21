@@ -38,6 +38,7 @@ class HistoryProjectorTest extends TestCase
     const META_CONSUMER = 'My super duper name';
     const OCCURRED_ON = '2015-03-27T10:17:19.176169+02:00';
     const OCCURRED_ON_FORMATTED = '2015-03-27T10:17:19+02:00';
+    const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
     /**
      * @var InMemoryDocumentRepository
@@ -162,10 +163,26 @@ class HistoryProjectorTest extends TestCase
             $placeImportedFromUDB2Event);
 
         $this->historyProjector->handle($domainMessage);
-        $this->assertHistory(
+
+        $this->assertHistoryOfEvent(
             $placeImportedFromUDB2Event->getActorId(),
-            'Aangemaakt in UDB2'
+            [
+                (object) [
+                    'date' => self::OCCURRED_ON_FORMATTED,
+                    'author' => self::META_USER_NICK,
+                    'description' => 'Geïmporteerd vanuit UDB2',
+                    'apiKey' => self::META_AUTH_API_KEY,
+                    'api' => self::META_API,
+                    'consumerName' => self::META_CONSUMER,
+                ],
+                (object) [
+                    'date' => '2014-04-28T11:30:28+02:00',
+                    'description' => 'Aangemaakt in UDB2',
+                    'author' => 'kris.classen@overpelt.be',
+                ],
+            ]
         );
+
     }
 
     /**
@@ -188,7 +205,6 @@ class HistoryProjectorTest extends TestCase
     {
         /** @var JsonDocument $document */
         $document = $this->documentRepository->get($eventId);
-
         $this->assertEquals(
             $history,
             $document->getBody()
@@ -273,14 +289,14 @@ class HistoryProjectorTest extends TestCase
     {
         return new PlaceImportedFromUDB2(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            'xml',
-            'namespace'
+            $this->getEventCdbXml(),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
     }
 
     private function aPlaceIUpdatedFromUDB2Event(): PlaceUpdatedFromUDB2
     {
-        return  new PlaceUpdatedFromUDB2(
+        return new PlaceUpdatedFromUDB2(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             'xml',
             'namespace'
@@ -313,5 +329,10 @@ class HistoryProjectorTest extends TestCase
             $placeCreatedEvent,
             DateTime::fromString(self::OCCURRED_ON)
         );
+    }
+
+    private function getEventCdbXml()
+    {
+        return file_get_contents(__DIR__ . '/event.xml');
     }
 }
