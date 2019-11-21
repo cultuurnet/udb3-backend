@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "577bc50932725c6a0041be0ab96ce7cb",
+    "content-hash": "b23fd86e84b09dffc78ede73d9491f34",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -549,6 +549,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -1504,12 +1505,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "7700f878ff42cf89ba6d6470ad752b1b1c4b6b4c"
+                "reference": "543e678c1f82445531efbbeb301dc41b44cb27a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7700f878ff42cf89ba6d6470ad752b1b1c4b6b4c",
-                "reference": "7700f878ff42cf89ba6d6470ad752b1b1c4b6b4c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/543e678c1f82445531efbbeb301dc41b44cb27a3",
+                "reference": "543e678c1f82445531efbbeb301dc41b44cb27a3",
                 "shasum": ""
             },
             "require": {
@@ -1575,7 +1576,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-11-14T14:08:57+00:00"
+            "time": "2019-11-21T09:45:50+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7252,8 +7253,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "homepage": "http://frankkleine.de/",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://frankkleine.de/"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
@@ -8041,8 +8042,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -8976,12 +8977,6 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "9999999-dev",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
             "version": "0.9999999.9999999.9999999-dev",
             "package": "cultuurnet/udb3-api-guard"
         },
@@ -8997,7 +8992,6 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
-        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
