@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
-use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
 use DateTimeZone;
@@ -72,7 +71,7 @@ final class HistoryProjector implements EventListenerInterface
 
     private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage): void
     {
-        $this->project($event->getItemId(), EventDescription::DELETED, $domainMessage);
+        $this->project($event->getItemId(), 'Aangemaakt verwijderd', $domainMessage);
     }
 
     private function projectLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void

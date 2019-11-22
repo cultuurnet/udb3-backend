@@ -88,7 +88,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->assertHistory(
             $placeDeletedEvent->getItemId(),
-            EventDescription::DELETED
+            'Aangemaakt verwijderd'
         );
     }
 
