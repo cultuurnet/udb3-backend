@@ -11,4 +11,5 @@ final class ApiName
     const CDBXML = 'cdbXML API';
     const UITPAS_LISTENER = 'UiTPAS Listener';
     const CURATORS_LISTENER = 'Curators Listener';
+    public const UNKNOWN = 'Unknown';
 }
