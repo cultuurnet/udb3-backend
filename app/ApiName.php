@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Silex;
 
 final class ApiName
 {
-    const JSONLD = 'JSON-LD API';
-    const JSONLD_IMPORTS = 'JSON-LD Import API';
-    const CDBXML = 'cdbXML API';
-    const UITPAS_LISTENER = 'UiTPAS Listener';
-    const CURATORS_LISTENER = 'Curators Listener';
+    public const JSONLD = 'JSON-LD API';
+    public const JSONLD_IMPORTS = 'JSON-LD Import API';
+    public const CDBXML = 'cdbXML API';
+    public const UITPAS_LISTENER = 'UiTPAS Listener';
+    public const CURATORS_LISTENER = 'Curators Listener';
     public const CLI = 'CLI';
     public const UNKNOWN = 'Unknown';
 }
