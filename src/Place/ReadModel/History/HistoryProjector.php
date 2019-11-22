@@ -2,12 +2,9 @@
 
 namespace CultuurNet\UDB3\Place\ReadModel\History;
 
-use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
-use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
@@ -17,21 +14,11 @@ use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
 use DateTimeZone;
 
-final class HistoryProjector implements EventListenerInterface
+final class HistoryProjector extends BaseHistoryProjector
 {
-    /**
-     * @var DocumentRepositoryInterface
-     */
-    private $documentRepository;
-
-    public function __construct(DocumentRepositoryInterface $documentRepository)
-    {
-        $this->documentRepository = $documentRepository;
-    }
 
     public function handle(DomainMessage $domainMessage)
     {
@@ -66,32 +53,50 @@ final class HistoryProjector implements EventListenerInterface
 
     private function projectPlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
     {
-        $this->project($event->getPlaceId(), 'Aangemaakt in UiTdatabank', $domainMessage);
+        $this->writeHistory(
+            $event->getPlaceId(),
+            $this->createGenericLog($domainMessage, 'Aangemaakt in UiTdatabank')
+        );
     }
 
     private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage): void
     {
-        $this->project($event->getItemId(), 'Aangemaakt verwijderd', $domainMessage);
+        $this->writeHistory(
+            $event->getItemId(),
+            $this->createGenericLog($domainMessage, 'Aangemaakt verwijderd')
+        );
     }
 
     private function projectLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
     {
-        $this->project($event->getItemId(), "Label '{$event->getLabel()}' toegepast", $domainMessage);
+        $this->writeHistory(
+            $event->getItemId(),
+            $this->createGenericLog($domainMessage, "Label '{$event->getLabel()}' toegepast")
+        );
     }
 
     private function projectLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage): void
     {
-        $this->project($event->getItemId(), "Label '{$event->getLabel()}' verwijderd", $domainMessage);
+        $this->writeHistory(
+            $event->getItemId(),
+            $this->createGenericLog($domainMessage, "Label '{$event->getLabel()}' verwijderd")
+        );
     }
 
     private function projectDescriptionTranslated(DescriptionTranslated $event, DomainMessage $domainMessage)
     {
-        $this->project($event->getItemId(), "Beschrijving vertaald ({$event->getLanguage()})", $domainMessage);
+        $this->writeHistory(
+            $event->getItemId(),
+            $this->createGenericLog($domainMessage, "Beschrijving vertaald ({$event->getLanguage()})")
+        );
     }
 
     private function projectTitleTranslated(TitleTranslated $event, DomainMessage $domainMessage)
     {
-        $this->project($event->getItemId(), "Titel vertaald ({$event->getLanguage()})", $domainMessage);
+        $this->writeHistory(
+            $event->getItemId(),
+            $this->createGenericLog($domainMessage, "Titel vertaald ({$event->getLanguage()})")
+        );
     }
 
     private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage)
@@ -101,7 +106,7 @@ final class HistoryProjector implements EventListenerInterface
             $event->getCdbXml()
         );
 
-        $this->projectLog(
+        $this->writeHistory(
             $event->getActorId(),
             new Log(
                 DateTime::createFromFormat(
@@ -114,104 +119,17 @@ final class HistoryProjector implements EventListenerInterface
             )
         );
 
-        $this->project($event->getActorId(), 'Geïmporteerd vanuit UDB2', $domainMessage);
+        $this->writeHistory(
+            $event->getActorId(),
+            $this->createGenericLog($domainMessage, 'Geïmporteerd vanuit UDB2')
+        );
     }
 
     private function projectPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $event, DomainMessage $domainMessage)
     {
-        $this->project($event->getActorId(), 'Aangemaakt in UDB2', $domainMessage);
-    }
-
-    private function project(string $eventId, string $description, DomainMessage $domainMessage)
-    {
-        $this->projectLog(
-            $eventId,
-            new Log(
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                $description,
-                $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+        $this->writeHistory(
+            $event->getActorId(),
+            $this->createGenericLog($domainMessage, 'Aangemaakt in UDB2')
         );
-    }
-
-    private function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
-    {
-        $dateString = $date->toString();
-        return DateTime::createFromFormat(
-            BroadwayDateTime::FORMAT_STRING,
-            $dateString
-        );
-    }
-
-    private function projectLog(string $eventId, Log $log): void
-    {
-        $historyDocument = $this->loadDocumentFromRepositoryByEventId($eventId);
-
-        $history = $historyDocument->getBody();
-
-        // Append most recent one to the top.
-        array_unshift($history, $log);
-
-        $this->documentRepository->save(
-            $historyDocument->withBody($history)
-        );
-    }
-
-    private function loadDocumentFromRepositoryByEventId(string $eventId): JsonDocument
-    {
-        $historyDocument = $this->documentRepository->get($eventId);
-
-        if (!$historyDocument) {
-            $historyDocument = new JsonDocument($eventId, '[]');
-        }
-
-        return $historyDocument;
-    }
-
-    private function getAuthorFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['user_nick'])) {
-            return (string) $properties['user_nick'];
-        }
-
-        return null;
-    }
-
-    private function getConsumerFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['consumer']['name'])) {
-            return (string) $properties['consumer']['name'];
-        }
-
-        return null;
-    }
-
-    private function getApiKeyFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['auth_api_key'])) {
-            return $properties['auth_api_key'];
-        }
-
-        return null;
-    }
-
-    private function getApiFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['api'])) {
-            return $properties['api'];
-        }
-
-        return null;
     }
 }

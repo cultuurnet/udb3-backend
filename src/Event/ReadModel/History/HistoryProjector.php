@@ -2,10 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\ReadModel\History;
 
-use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
-use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\EventEvent;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
@@ -16,24 +13,14 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTime;
 use DateTimeZone;
 
-final class HistoryProjector implements EventListenerInterface
+final class HistoryProjector extends BaseHistoryProjector
 {
-    /**
-     * @var DocumentRepositoryInterface
-     */
-    private $documentRepository;
-
-    public function __construct(DocumentRepositoryInterface $documentRepository)
-    {
-        $this->documentRepository = $documentRepository;
-    }
 
     /**
      * @param DomainMessage $domainMessage
@@ -160,27 +147,6 @@ final class HistoryProjector implements EventListenerInterface
         };
     }
 
-    private function createGenericLog(DomainMessage $domainMessage, string $description): Log
-    {
-        return new Log(
-            $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-            $description,
-            $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-            $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-            $this->getApiFromMetadata($domainMessage->getMetadata()),
-            $this->getConsumerFromMetadata($domainMessage->getMetadata())
-        );
-    }
-
-    private function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
-    {
-        $dateString = $date->toString();
-        return DateTime::createFromFormat(
-            BroadwayDateTime::FORMAT_STRING,
-            $dateString
-        );
-    }
-
     private function udb2DateStringToNativeDate($dateString): DateTime
     {
         return DateTime::createFromFormat(
@@ -188,74 +154,5 @@ final class HistoryProjector implements EventListenerInterface
             $dateString,
             new DateTimeZone('Europe/Brussels')
         );
-    }
-
-    private function loadDocumentFromRepositoryByEventId(string $eventId): JsonDocument
-    {
-        $historyDocument = $this->documentRepository->get($eventId);
-
-        if (!$historyDocument) {
-            $historyDocument = new JsonDocument($eventId, '[]');
-        }
-
-        return $historyDocument;
-    }
-
-    private function writeHistory(string $eventId, Log $log): void
-    {
-        $historyDocument = $this->loadDocumentFromRepositoryByEventId($eventId);
-
-        $history = $historyDocument->getBody();
-
-        // Append most recent one to the top.
-        array_unshift($history, $log);
-
-        $this->documentRepository->save(
-            $historyDocument->withBody($history)
-        );
-    }
-
-    private function getAuthorFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['user_nick'])) {
-            return (string) $properties['user_nick'];
-        }
-
-        return null;
-    }
-
-    private function getConsumerFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['consumer']['name'])) {
-            return (string) $properties['consumer']['name'];
-        }
-
-        return null;
-    }
-
-    private function getApiKeyFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['auth_api_key'])) {
-            return $properties['auth_api_key'];
-        }
-
-        return null;
-    }
-
-    private function getApiFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['api'])) {
-            return $properties['api'];
-        }
-
-        return null;
     }
 }
