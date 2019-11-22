@@ -471,18 +471,10 @@ $app['place_history_projector'] = $app->share(
 $app['places_history_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['place_history_cache']
+            $app['cache']('place_history')
         );
     }
 );
-
-$app['place_history_cache'] = $app->share(
-    function (Application $app) {
-        return $app['cache']('place_history');
-    }
-);
-
-
 
 $app['event_history_projector'] = $app->share(
     function ($app) {
