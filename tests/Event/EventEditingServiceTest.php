@@ -37,7 +37,7 @@ use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use CultuurNet\UDB3\Title;
 
-class DefaultEventEditingServiceTest extends TestCase
+class EventEditingServiceTest extends TestCase
 {
     /**
      * @var EventEditingService
