@@ -63,7 +63,7 @@ final class HistoryProjector extends BaseHistoryProjector
     {
         $this->writeHistory(
             $event->getItemId(),
-            $this->createGenericLog($domainMessage, 'Aangemaakt verwijderd')
+            $this->createGenericLog($domainMessage, 'Place verwijderd')
         );
     }
 
