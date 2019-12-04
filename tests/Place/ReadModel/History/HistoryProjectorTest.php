@@ -169,7 +169,6 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => self::OCCURRED_ON_FORMATTED,
-                    'author' => self::META_USER_NICK,
                     'description' => 'Geïmporteerd vanuit UDB2',
                     'apiKey' => self::META_AUTH_API_KEY,
                     'api' => self::META_API,
@@ -195,9 +194,18 @@ class HistoryProjectorTest extends TestCase
             $placeImportedFromUDB2Event);
 
         $this->historyProjector->handle($domainMessage);
-        $this->assertHistory(
+
+        $this->assertHistoryOfEvent(
             $placeImportedFromUDB2Event->getActorId(),
-            'Aangemaakt in UDB2'
+            [
+                (object) [
+                    'date' => self::OCCURRED_ON_FORMATTED,
+                    'description' => 'Geüpdatet vanuit UDB2',
+                    'apiKey' => self::META_AUTH_API_KEY,
+                    'api' => self::META_API,
+                    'consumerName' => self::META_CONSUMER,
+                ],
+            ]
         );
     }
 

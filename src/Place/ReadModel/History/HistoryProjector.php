@@ -69,7 +69,7 @@ final class HistoryProjector extends BaseHistoryProjector
         );
     }
 
-    private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage)
+    private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage): void
     {
         $udb2Event = EventItemFactory::createEventFromCdbXml(
             $event->getCdbXmlNamespaceUri(),
@@ -91,15 +91,29 @@ final class HistoryProjector extends BaseHistoryProjector
 
         $this->writeHistory(
             $event->getActorId(),
-            $this->createGenericLog($domainMessage, 'Geïmporteerd vanuit UDB2')
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                'Geïmporteerd vanuit UDB2',
+                null,
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
         );
     }
 
-    private function projectPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $event, DomainMessage $domainMessage)
+    private function projectPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $event, DomainMessage $domainMessage): void
     {
         $this->writeHistory(
             $event->getActorId(),
-            $this->createGenericLog($domainMessage, 'Aangemaakt in UDB2')
+            new Log(
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
+                'Geüpdatet vanuit UDB2',
+                null,
+                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
+                $this->getApiFromMetadata($domainMessage->getMetadata()),
+                $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            )
         );
     }
 }
