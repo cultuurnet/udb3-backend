@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL" availablefrom="2014-04-28T00:00:00" availableto="2015-03-05T00:00:00" cdbid="a0ee7b1c-a9c1-4da1-af7e-d15496014656" createdby="kris.classen@overpelt.be" creationdate="2014-04-28T11:30:28" externalid="CDB:3ac166a8-dba8-4290-80b1-36768fd173f1" isparent="false" lastupdated="2014-04-28T11:31:56" lastupdatedby="kris.classen@overpelt.be" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Overpelt Validatoren" wfstatus="approved">
+    <cdb:activities>
+        <cdb:activity count="0" type="like"/>
+        <cdb:activity count="0" type="attend"/>
+        <cdb:activity count="0" type="comment"/>
+        <cdb:activity count="0" type="recommend"/>
+        <cdb:activity count="0" type="facebook_share"/>
+        <cdb:activity count="0" type="review"/>
+    </cdb:activities>
+    <cdb:agefrom>10</cdb:agefrom>
+    <cdb:calendar>
+        <cdb:timestamps>
+            <cdb:timestamp>
+                <cdb:date>2015-03-04</cdb:date>
+                <cdb:timestart>16:00:00</cdb:timestart>
+            </cdb:timestamp>
+        </cdb:timestamps>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal</cdb:category>
+        <cdb:category catid="1.7.14.0.0" type="theme">Meerdere filmgenres</cdb:category>
+        <cdb:category catid="2.2.7.0.0" type="targetaudience">Kinderen vanaf 9 jaar (9+)</cdb:category>
+        <cdb:category catid="reg.362" type="flanderstouristregion">Limburgse Kempen</cdb:category>
+        <cdb:category catid="0.50.6.0.0" type="eventtype">Film</cdb:category>
+        <cdb:category catid="reg.971" type="flandersregion">3900 Overpelt</cdb:category>
+        <cdb:category catid="umv.7" type="umv">Film</cdb:category>
+    </cdb:categories>
+    <cdb:comments/>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Overpelt</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>5.427836</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.211713</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>2</cdb:housenr>
+                <cdb:street>Jeugdlaan</cdb:street>
+                <cdb:zipcode>3900</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:url>http://www.palethe.be</cdb:url>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>woe 04/03/15 om 16:00</cdb:calendarsummary>
+            <cdb:longdescription>
+                In de Cine Pelt-filmvoorstellingen voorzien we ook enkele films voor jonge tieners vanaf 10 jaar.<br /><br />We leggen binnenkort nog vast welke leuke film we gaan tonen. Hou hiervoor zeker www.palethe.be in de gaten!<p class="uiv-source">Bron: <a href="http://www.uitinvlaanderen.be/agenda/e/cine-pelt-4-teens/a0ee7b1c-a9c1-4da1-af7e-d15496014656">UiTinVlaanderen.be</a></p>
+            </cdb:longdescription>
+            <cdb:media>
+                <cdb:file>
+                    <cdb:hlink>http://www.palethe.be</cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="28/04/2014 11:31:09" main="true">
+                    <cdb:copyright>Cine Pelt 4 Teens</cdb:copyright>
+                    <cdb:filename>59165647-4617-43d1-ad4f-592101fe1cd0.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20140428/59165647-4617-43d1-ad4f-592101fe1cd0.jpg
+                    </cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:price>
+                <cdb:pricevalue>3.0</cdb:pricevalue>
+                <cdb:pricedescription>
+                    Vergeet ook je filmpas niet te vragen: elk zesde ticket is gratis. Bij filmvoorstellingen in CC Palethe kan je ook betalen met Knipoogbonnen.
+                </cdb:pricedescription>
+            </cdb:price>
+            <cdb:shortdescription>
+                In de Cine Pelt-filmvoorstellingen voorzien we ook enkele films voor jonge tieners vanaf 10 jaar. We leggen binnenkort nog vast welke leuke film we gaan tonen. Hou hiervoor zeker www.palethe.be in de gaten!
+            </cdb:shortdescription>
+            <cdb:title>Cine Pelt 4 Teens</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Overpelt</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>5.427836</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.211713</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>2</cdb:housenr>
+                <cdb:street>Jeugdlaan</cdb:street>
+                <cdb:zipcode>3900</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label cdbid="318F2ACB-F612-6F75-0037C9C29F44087A">CC Palethe</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label cdbid="318F2ACB-F612-6F75-0037C9C29F44087A">CC Palethe</cdb:label>
+    </cdb:organiser>
+</cdb:event>

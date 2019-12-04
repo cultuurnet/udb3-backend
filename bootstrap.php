@@ -21,12 +21,14 @@ use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
+use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
@@ -54,7 +56,7 @@ $app['debug'] = true;
 $app['api_name'] = ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
-    $udb3ConfigLocation =  __DIR__;
+    $udb3ConfigLocation = __DIR__;
 }
 $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
 
@@ -123,7 +125,7 @@ if ($app['config']['swiftmailer.options']) {
 
 $app['timezone'] = $app->share(
     function (Application $app) {
-        $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels': $app['config']['timezone'];
+        $timezoneName = empty($app['config']['timezone']) ? 'Europe/Brussels' : $app['config']['timezone'];
 
         return new DateTimeZone($timezoneName);
     }
@@ -252,7 +254,7 @@ $app['current_user'] = $app->share(
 );
 
 $app['jwt'] = $app->share(
-    function(Application $app) {
+    function (Application $app) {
         // Check first if we're impersonating someone.
         /* @var Impersonator $impersonator */
         $impersonator = $app['impersonator'];
@@ -279,7 +281,7 @@ $app['jwt'] = $app->share(
 );
 
 $app['api_key'] = $app->share(
-    function(Application $app) {
+    function (Application $app) {
         // Check first if we're impersonating someone.
         // This is done when handling commands.
         /* @var Impersonator $impersonator */
@@ -346,7 +348,7 @@ $app['cache'] = $app->share(
     function (Application $app) {
         $activeCacheType = $app['config']['cache']['active'] ?: 'filesystem';
 
-        $cacheServiceName =  'cache-' . $activeCacheType;
+        $cacheServiceName = 'cache-' . $activeCacheType;
         return $app[$cacheServiceName];
     }
 );
@@ -461,30 +463,6 @@ $app['place_relations_projector'] = $app->share(
     }
 );
 
-$app['event_history_projector'] = $app->share(
-    function ($app) {
-        $projector = new \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector(
-            $app['event_history_repository']
-        );
-
-        return $projector;
-    }
-);
-
-$app['event_history_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['event_history_cache']
-        );
-    }
-);
-
-$app['event_history_cache'] = $app->share(
-    function (Application $app) {
-        return $app['cache']('event_history');
-    }
-);
-
 $app['event_bus'] = function ($app) {
     $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
 
@@ -496,6 +474,7 @@ $app['event_bus'] = function ($app) {
             EventJSONLDServiceProvider::PROJECTOR,
             EventJSONLDServiceProvider::RELATED_PROJECTOR,
             'event_history_projector',
+            'place_history_projector',
             PlaceJSONLDServiceProvider::PROJECTOR,
             PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
             OrganizerJSONLDServiceProvider::PROJECTOR,
@@ -554,7 +533,7 @@ $app['event_bus'] = function ($app) {
         if (
             isset($app['config']['event_bus']) &&
             isset($app['config']['event_bus']['disable_related_offer_subscribers']) &&
-            $app['config']['event_bus']['disable_related_offer_subscribers'] == TRUE
+            $app['config']['event_bus']['disable_related_offer_subscribers'] == true
         ) {
             $subscribersToDisable = [
                 EventJSONLDServiceProvider::RELATED_PROJECTOR,
@@ -1268,6 +1247,9 @@ $app->register(
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
+
+$app->register(new EventHistoryServiceProvider());
+$app->register(new PlaceHistoryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceImportServiceProvider());

@@ -1,20 +1,20 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Event\ReadModel\History;
+namespace CultuurNet\UDB3\Place\ReadModel\History;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
-use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
-use CultuurNet\UDB3\Event\Events\EventCopied;
-use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
-use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
-use CultuurNet\UDB3\Event\Events\LabelAdded;
-use CultuurNet\UDB3\Event\Events\LabelRemoved;
-use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
+use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
+use CultuurNet\UDB3\Place\Events\LabelAdded;
+use CultuurNet\UDB3\Place\Events\LabelRemoved;
+use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\PlaceDeleted;
+use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
+use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
+use CultuurNet\UDB3\Place\Events\TitleTranslated;
 use DateTime;
 use DateTimeZone;
 
@@ -22,22 +22,15 @@ final class HistoryProjector extends BaseHistoryProjector
 {
     use OfferHistoryProjectorTrait;
 
-    public function handle(DomainMessage $domainMessage): void
+    public function handle(DomainMessage $domainMessage)
     {
         $event = $domainMessage->getPayload();
-
         switch (true) {
-            case $event instanceof EventImportedFromUDB2:
-                $this->projectEventImportedFromUDB2($event, $domainMessage);
+            case $event instanceof PlaceCreated:
+                $this->projectPlaceCreated($event, $domainMessage);
                 break;
-            case $event instanceof EventUpdatedFromUDB2:
-                $this->projectEventUpdatedFromUDB2($event, $domainMessage);
-                break;
-            case $event instanceof EventCreated:
-                $this->projectEventCreated($event, $domainMessage);
-                break;
-            case $event instanceof EventCopied:
-                $this->projectEventCopied($event, $domainMessage);
+            case $event instanceof PlaceDeleted:
+                $this->projectPlaceDeleted($event, $domainMessage);
                 break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($event, $domainMessage);
@@ -51,20 +44,40 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($event, $domainMessage);
                 break;
+            case $event instanceof PlaceImportedFromUDB2:
+                $this->projectPlaceImportedFromUDB2($event, $domainMessage);
+                break;
+            case $event instanceof PlaceUpdatedFromUDB2:
+                $this->projectPlaceUpdatedFromUDB2($event, $domainMessage);
+                break;
         }
     }
 
-    private function projectEventImportedFromUDB2(
-        EventImportedFromUDB2 $eventImportedFromUDB2,
-        DomainMessage $domainMessage
-    ): void {
+    private function projectPlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $event->getPlaceId(),
+            $this->createGenericLog($domainMessage, 'Aangemaakt in UiTdatabank')
+        );
+    }
+
+    private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $event->getItemId(),
+            $this->createGenericLog($domainMessage, 'Place verwijderd')
+        );
+    }
+
+    private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage): void
+    {
         $udb2Event = EventItemFactory::createEventFromCdbXml(
-            $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
-            $eventImportedFromUDB2->getCdbXml()
+            $event->getCdbXmlNamespaceUri(),
+            $event->getCdbXml()
         );
 
         $this->writeHistory(
-            $eventImportedFromUDB2->getEventId(),
+            $event->getActorId(),
             new Log(
                 DateTime::createFromFormat(
                     'Y-m-d?H:i:s',
@@ -77,11 +90,9 @@ final class HistoryProjector extends BaseHistoryProjector
         );
 
         $this->writeHistory(
-            $eventImportedFromUDB2->getEventId(),
+            $event->getActorId(),
             new Log(
-                $this->domainMessageDateToNativeDate(
-                    $domainMessage->getRecordedOn()
-                ),
+                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
                 'Geïmporteerd vanuit UDB2',
                 null,
                 $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
@@ -91,12 +102,10 @@ final class HistoryProjector extends BaseHistoryProjector
         );
     }
 
-    private function projectEventUpdatedFromUDB2(
-        EventUpdatedFromUDB2 $eventUpdatedFromUDB2,
-        DomainMessage $domainMessage
-    ): void {
+    private function projectPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $event, DomainMessage $domainMessage): void
+    {
         $this->writeHistory(
-            $eventUpdatedFromUDB2->getEventId(),
+            $event->getActorId(),
             new Log(
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
                 'Geüpdatet vanuit UDB2',
@@ -105,22 +114,6 @@ final class HistoryProjector extends BaseHistoryProjector
                 $this->getApiFromMetadata($domainMessage->getMetadata()),
                 $this->getConsumerFromMetadata($domainMessage->getMetadata())
             )
-        );
-    }
-
-    private function projectEventCreated(EventCreated $eventCreated, DomainMessage $domainMessage): void
-    {
-        $this->writeHistory(
-            $eventCreated->getEventId(),
-            $this->createGenericLog($domainMessage, 'Aangemaakt in UiTdatabank')
-        );
-    }
-
-    private function projectEventCopied(EventCopied $eventCopied, DomainMessage $domainMessage): void
-    {
-        $this->writeHistory(
-            $eventCopied->getItemId(),
-            $this->createGenericLog($domainMessage, 'Event gekopieerd van ' . $eventCopied->getOriginalEventId())
         );
     }
 }

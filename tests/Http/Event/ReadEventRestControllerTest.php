@@ -122,7 +122,8 @@ class ReadEventRestControllerTest extends TestCase
         $jsonResponse = $this->eventRestController->history(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
+        $rawBody = $this->jsonDocument->getRawBody();
+        $this->assertEquals($rawBody, $jsonResponse->getContent());
     }
 
     /**

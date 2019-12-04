@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Event\ReadModel\History;
+namespace CultuurNet\UDB3\History;
 
 use DateTime;
 use JsonSerializable;
