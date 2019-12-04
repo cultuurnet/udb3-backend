@@ -79,6 +79,7 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $event->getActorId(),
             new Log(
+                $domainMessage->getId(),
                 DateTime::createFromFormat(
                     'Y-m-d?H:i:s',
                     $udb2Event->getCreationDate(),
@@ -92,6 +93,7 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $event->getActorId(),
             new Log(
+                $domainMessage->getId(),
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
                 'Geïmporteerd vanuit UDB2',
                 null,
@@ -107,6 +109,7 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $event->getActorId(),
             new Log(
+                $domainMessage->getId(),
                 $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
                 'Geüpdatet vanuit UDB2',
                 null,

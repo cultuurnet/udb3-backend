@@ -103,6 +103,7 @@ abstract class BaseHistoryProjector implements EventListenerInterface
     protected function createGenericLog(DomainMessage $domainMessage, string $description): Log
     {
         return new Log(
+            $domainMessage->getId(),
             $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
             $description,
             $this->getAuthorFromMetadata($domainMessage->getMetadata()),

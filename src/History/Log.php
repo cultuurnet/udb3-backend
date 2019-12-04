@@ -8,6 +8,11 @@ use JsonSerializable;
 class Log implements JsonSerializable
 {
     /**
+     * @var string
+     */
+    private $id;
+
+    /**
      * @var DateTime
      */
     private $date;
@@ -38,6 +43,7 @@ class Log implements JsonSerializable
     private $consumerName;
 
     public function __construct(
+        string $id,
         DateTime $date,
         string $description,
         string $author = null,
@@ -45,12 +51,18 @@ class Log implements JsonSerializable
         string $api = null,
         string $consumerName = null
     ) {
+        $this->id = $id;
         $this->date = clone $date;
         $this->description = $description;
         $this->author = $author;
         $this->apiKey = $apiKey;
         $this->api = $api;
         $this->consumerName = $consumerName;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     /**
