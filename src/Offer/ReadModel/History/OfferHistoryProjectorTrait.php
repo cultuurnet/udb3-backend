@@ -6,17 +6,17 @@ namespace CultuurNet\UDB3\Offer\ReadModel\History;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\History\Log;
-use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
-use CultuurNet\UDB3\Place\Events\LabelAdded;
-use CultuurNet\UDB3\Place\Events\LabelRemoved;
-use CultuurNet\UDB3\Place\Events\TitleTranslated;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
+use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
+use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
+use CultuurNet\UDB3\Offer\Events\AbstractTitleTranslated;
 
 trait OfferHistoryProjectorTrait
 {
     abstract protected function createGenericLog(DomainMessage $domainMessage, string $description);
     abstract protected function writeHistory(string $itemId, Log $log);
 
-    private function projectLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
+    private function projectLabelAdded(AbstractLabelAdded $event, DomainMessage $domainMessage): void
     {
         $this->writeHistory(
             $event->getItemId(),
@@ -24,7 +24,7 @@ trait OfferHistoryProjectorTrait
         );
     }
 
-    private function projectLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage): void
+    private function projectLabelRemoved(AbstractLabelRemoved $event, DomainMessage $domainMessage): void
     {
         $this->writeHistory(
             $event->getItemId(),
@@ -32,7 +32,7 @@ trait OfferHistoryProjectorTrait
         );
     }
 
-    private function projectDescriptionTranslated(DescriptionTranslated $event, DomainMessage $domainMessage)
+    private function projectDescriptionTranslated(AbstractDescriptionTranslated $event, DomainMessage $domainMessage)
     {
         $this->writeHistory(
             $event->getItemId(),
@@ -40,7 +40,7 @@ trait OfferHistoryProjectorTrait
         );
     }
 
-    private function projectTitleTranslated(TitleTranslated $event, DomainMessage $domainMessage)
+    private function projectTitleTranslated(AbstractTitleTranslated $event, DomainMessage $domainMessage)
     {
         $this->writeHistory(
             $event->getItemId(),
