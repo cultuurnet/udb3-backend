@@ -13,8 +13,8 @@ use CultuurNet\UDB3\Offer\Events\AbstractTitleTranslated;
 
 trait OfferHistoryProjectorTrait
 {
-    abstract protected function createGenericLog(DomainMessage $domainMessage, string $description);
-    abstract protected function writeHistory(string $itemId, Log $log);
+    abstract protected function createGenericLog(DomainMessage $domainMessage, string $description): Log;
+    abstract protected function writeHistory(string $itemId, Log $log): void;
 
     private function projectLabelAdded(AbstractLabelAdded $event, DomainMessage $domainMessage): void
     {
