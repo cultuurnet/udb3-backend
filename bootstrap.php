@@ -21,12 +21,14 @@ use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
+use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
@@ -458,47 +460,6 @@ $app['place_relations_projector'] = $app->share(
         return new \CultuurNet\UDB3\Place\ReadModel\Relations\Projector(
             $app['place_relations_repository']
         );
-    }
-);
-
-$app['place_history_projector'] = $app->share(
-    function ($app) {
-        $projector = new \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector(
-            $app['places_history_repository']
-        );
-        return $projector;
-    }
-);
-
-$app['places_history_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['cache']('place_history')
-        );
-    }
-);
-
-$app['event_history_projector'] = $app->share(
-    function ($app) {
-        $projector = new \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector(
-            $app['event_history_repository']
-        );
-
-        return $projector;
-    }
-);
-
-$app['event_history_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository(
-            $app['event_history_cache']
-        );
-    }
-);
-
-$app['event_history_cache'] = $app->share(
-    function (Application $app) {
-        return $app['cache']('event_history');
     }
 );
 
@@ -1286,6 +1247,9 @@ $app->register(
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventGeoCoordinatesServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Organizer\OrganizerGeoCoordinatesServiceProvider());
+
+$app->register(new EventHistoryServiceProvider());
+$app->register(new PlaceHistoryServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\Event\EventImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Place\PlaceImportServiceProvider());
