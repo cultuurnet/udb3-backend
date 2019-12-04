@@ -28,102 +28,84 @@ final class HistoryProjector extends BaseHistoryProjector
 
         switch (true) {
             case $event instanceof EventImportedFromUDB2:
-                $this->projectEventImportedFromUDB2($event, $domainMessage);
+                $this->projectEventImportedFromUDB2($domainMessage);
                 break;
             case $event instanceof EventUpdatedFromUDB2:
-                $this->projectEventUpdatedFromUDB2($event, $domainMessage);
+                $this->projectEventUpdatedFromUDB2($domainMessage);
                 break;
             case $event instanceof EventCreated:
-                $this->projectEventCreated($event, $domainMessage);
+                $this->projectEventCreated($domainMessage);
                 break;
             case $event instanceof EventCopied:
-                $this->projectEventCopied($event, $domainMessage);
+                $this->projectEventCopied($domainMessage);
                 break;
             case $event instanceof LabelAdded:
-                $this->projectLabelAdded($event, $domainMessage);
+                $this->projectLabelAdded($domainMessage);
                 break;
             case $event instanceof LabelRemoved:
-                $this->projectLabelRemoved($event, $domainMessage);
+                $this->projectLabelRemoved($domainMessage);
                 break;
             case $event instanceof DescriptionTranslated:
-                $this->projectDescriptionTranslated($event, $domainMessage);
+                $this->projectDescriptionTranslated($domainMessage);
                 break;
             case $event instanceof TitleTranslated:
-                $this->projectTitleTranslated($event, $domainMessage);
+                $this->projectTitleTranslated($domainMessage);
                 break;
         }
     }
 
-    private function projectEventImportedFromUDB2(
-        EventImportedFromUDB2 $eventImportedFromUDB2,
-        DomainMessage $domainMessage
-    ): void {
+    private function projectEventImportedFromUDB2(DomainMessage $domainMessage): void
+    {
+        $event = $domainMessage->getPayload();
         $udb2Event = EventItemFactory::createEventFromCdbXml(
-            $eventImportedFromUDB2->getCdbXmlNamespaceUri(),
-            $eventImportedFromUDB2->getCdbXml()
+            $event->getCdbXmlNamespaceUri(),
+            $event->getCdbXml()
         );
 
         $this->writeHistory(
-            $eventImportedFromUDB2->getEventId(),
-            new Log(
-                $domainMessage->getId(),
-                DateTime::createFromFormat(
-                    'Y-m-d?H:i:s',
-                    $udb2Event->getCreationDate(),
-                    new DateTimeZone('Europe/Brussels')
-                ),
-                'Aangemaakt in UDB2',
-                $udb2Event->getCreatedBy()
-            )
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UDB2')
+                ->withAuthor($udb2Event->getCreatedBy())
+                ->withDate(
+                    DateTime::createFromFormat(
+                        'Y-m-d?H:i:s',
+                        $udb2Event->getCreationDate(),
+                        new DateTimeZone('Europe/Brussels')
+                    )
+                )
         );
 
         $this->writeHistory(
-            $eventImportedFromUDB2->getEventId(),
-            new Log(
-                $domainMessage->getId(),
-                $this->domainMessageDateToNativeDate(
-                    $domainMessage->getRecordedOn()
-                ),
-                'Geïmporteerd vanuit UDB2',
-                null,
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Geïmporteerd vanuit UDB2')
+                ->withoutAuthor()
         );
     }
 
-    private function projectEventUpdatedFromUDB2(
-        EventUpdatedFromUDB2 $eventUpdatedFromUDB2,
-        DomainMessage $domainMessage
-    ): void {
-        $this->writeHistory(
-            $eventUpdatedFromUDB2->getEventId(),
-            new Log(
-                $domainMessage->getId(),
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                'Geüpdatet vanuit UDB2',
-                null,
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
-        );
-    }
-
-    private function projectEventCreated(EventCreated $eventCreated, DomainMessage $domainMessage): void
+    private function projectEventUpdatedFromUDB2(DomainMessage $domainMessage): void
     {
         $this->writeHistory(
-            $eventCreated->getEventId(),
-            $this->createGenericLog($domainMessage, 'Aangemaakt in UiTdatabank')
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Geüpdatet vanuit UDB2')
+                ->withoutAuthor()
         );
     }
 
-    private function projectEventCopied(EventCopied $eventCopied, DomainMessage $domainMessage): void
+    private function projectEventCreated(DomainMessage $domainMessage): void
     {
         $this->writeHistory(
-            $eventCopied->getItemId(),
-            $this->createGenericLog($domainMessage, 'Event gekopieerd van ' . $eventCopied->getOriginalEventId())
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UiTdatabank')
+        );
+    }
+
+    private function projectEventCopied(DomainMessage $domainMessage): void
+    {
+        $eventCopied = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Event gekopieerd van ' . $eventCopied->getOriginalEventId())
         );
     }
 }

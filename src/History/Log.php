@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\History;
 
+use Broadway\Domain\DateTime as BroadwayDateTime;
+use Broadway\Domain\DomainMessage;
 use DateTime;
 use JsonSerializable;
 
@@ -60,9 +62,30 @@ class Log implements JsonSerializable
         $this->consumerName = $consumerName;
     }
 
-    public function getId(): string
+    public function getUniqueKey(): string
     {
-        return $this->id;
+        return $this->id . '_' . $this->date->format('c');
+    }
+
+    public function withoutAuthor(): Log
+    {
+        $c = clone $this;
+        $c->author = null;
+        return $c;
+    }
+
+    public function withAuthor(string $author): Log
+    {
+        $c = clone $this;
+        $c->author = $author;
+        return $c;
+    }
+
+    public function withDate(DateTime $dateTime): Log
+    {
+        $c = clone $this;
+        $c->date = $dateTime;
+        return $c;
     }
 
     /**
@@ -92,5 +115,24 @@ class Log implements JsonSerializable
         }
 
         return $log;
+    }
+
+    public static function createFromDomainMessage(DomainMessage $domainMessage, $description): Log
+    {
+        $id = $domainMessage->getId() . '_' . $domainMessage->getPlayhead();
+
+        $date = DateTime::createFromFormat(
+            BroadwayDateTime::FORMAT_STRING,
+            $domainMessage->getRecordedOn()->toString()
+        );
+
+        $metadata = $domainMessage->getMetadata()->serialize();
+
+        $author = $metadata['user_nick'] ?? null;
+        $apiKey = $metadata['auth_api_key'] ?? null;
+        $api = $metadata['api'] ?? null;
+        $consumer = $metadata['consumer']['name'] ?? null;
+
+        return new Log($id, $date, $description, $author, $apiKey, $api, $consumer);
     }
 }

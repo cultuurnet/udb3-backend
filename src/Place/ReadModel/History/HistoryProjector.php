@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Place\ReadModel\History;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\Cdb\EventItemFactory;
+use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
@@ -22,101 +22,87 @@ final class HistoryProjector extends BaseHistoryProjector
 {
     use OfferHistoryProjectorTrait;
 
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
         switch (true) {
             case $event instanceof PlaceCreated:
-                $this->projectPlaceCreated($event, $domainMessage);
+                $this->projectPlaceCreated($domainMessage);
                 break;
             case $event instanceof PlaceDeleted:
-                $this->projectPlaceDeleted($event, $domainMessage);
+                $this->projectPlaceDeleted($domainMessage);
                 break;
             case $event instanceof LabelAdded:
-                $this->projectLabelAdded($event, $domainMessage);
+                $this->projectLabelAdded($domainMessage);
                 break;
             case $event instanceof LabelRemoved:
-                $this->projectLabelRemoved($event, $domainMessage);
+                $this->projectLabelRemoved($domainMessage);
                 break;
             case $event instanceof DescriptionTranslated:
-                $this->projectDescriptionTranslated($event, $domainMessage);
+                $this->projectDescriptionTranslated($domainMessage);
                 break;
             case $event instanceof TitleTranslated:
-                $this->projectTitleTranslated($event, $domainMessage);
+                $this->projectTitleTranslated($domainMessage);
                 break;
             case $event instanceof PlaceImportedFromUDB2:
-                $this->projectPlaceImportedFromUDB2($event, $domainMessage);
+                $this->projectPlaceImportedFromUDB2($domainMessage);
                 break;
             case $event instanceof PlaceUpdatedFromUDB2:
-                $this->projectPlaceUpdatedFromUDB2($event, $domainMessage);
+                $this->projectPlaceUpdatedFromUDB2($domainMessage);
                 break;
         }
     }
 
-    private function projectPlaceCreated(PlaceCreated $event, DomainMessage $domainMessage): void
+    private function projectPlaceCreated(DomainMessage $domainMessage): void
     {
         $this->writeHistory(
-            $event->getPlaceId(),
-            $this->createGenericLog($domainMessage, 'Aangemaakt in UiTdatabank')
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UiTdatabank')
         );
     }
 
-    private function projectPlaceDeleted(PlaceDeleted $event, DomainMessage $domainMessage): void
+    private function projectPlaceDeleted(DomainMessage $domainMessage): void
     {
         $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, 'Place verwijderd')
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Place verwijderd')
         );
     }
 
-    private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage): void
+    private function projectPlaceImportedFromUDB2(DomainMessage $domainMessage): void
     {
-        $udb2Event = EventItemFactory::createEventFromCdbXml(
+        $event = $domainMessage->getPayload();
+        $udb2Actor = ActorItemFactory::createActorFromCdbXml(
             $event->getCdbXmlNamespaceUri(),
             $event->getCdbXml()
         );
 
         $this->writeHistory(
-            $event->getActorId(),
-            new Log(
-                $domainMessage->getId(),
-                DateTime::createFromFormat(
-                    'Y-m-d?H:i:s',
-                    $udb2Event->getCreationDate(),
-                    new DateTimeZone('Europe/Brussels')
-                ),
-                'Aangemaakt in UDB2',
-                $udb2Event->getCreatedBy()
-            )
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UDB2')
+                ->withAuthor($udb2Actor->getCreatedBy())
+                ->withDate(
+                    DateTime::createFromFormat(
+                        'Y-m-d?H:i:s',
+                        $udb2Actor->getCreationDate(),
+                        new DateTimeZone('Europe/Brussels')
+                    )
+                )
         );
 
         $this->writeHistory(
-            $event->getActorId(),
-            new Log(
-                $domainMessage->getId(),
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                'Geïmporteerd vanuit UDB2',
-                null,
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Geïmporteerd vanuit UDB2')
+                ->withoutAuthor()
         );
     }
 
-    private function projectPlaceUpdatedFromUDB2(PlaceUpdatedFromUDB2 $event, DomainMessage $domainMessage): void
+    private function projectPlaceUpdatedFromUDB2(DomainMessage $domainMessage): void
     {
         $this->writeHistory(
-            $event->getActorId(),
-            new Log(
-                $domainMessage->getId(),
-                $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-                'Geüpdatet vanuit UDB2',
-                null,
-                $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-                $this->getApiFromMetadata($domainMessage->getMetadata()),
-                $this->getConsumerFromMetadata($domainMessage->getMetadata())
-            )
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Geüpdatet vanuit UDB2')
+                ->withoutAuthor()
         );
     }
 }
