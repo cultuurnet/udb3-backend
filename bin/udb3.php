@@ -3,6 +3,7 @@
 
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
@@ -56,6 +57,8 @@ $app['impersonator']->impersonate(
         ]
     )
 );
+
+$app['api_name'] = ApiName::CLI;
 
 $consoleApp->add(
     (new ConsumeCommand('amqp-listen', 'amqp.udb2_event_bus_forwarding_consumer'))

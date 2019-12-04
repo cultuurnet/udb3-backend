@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
@@ -50,6 +51,7 @@ $adapter = new \League\Flysystem\Adapter\Local(__DIR__);
 $app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
 
 $app['debug'] = true;
+$app['api_name'] = ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
     $udb3ConfigLocation = __DIR__;
