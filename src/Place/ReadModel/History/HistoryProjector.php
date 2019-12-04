@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Place\ReadModel\History;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\Cdb\EventItemFactory;
+use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
@@ -71,7 +71,7 @@ final class HistoryProjector extends BaseHistoryProjector
 
     private function projectPlaceImportedFromUDB2(PlaceImportedFromUDB2 $event, DomainMessage $domainMessage): void
     {
-        $udb2Event = EventItemFactory::createEventFromCdbXml(
+        $udb2Actor = ActorItemFactory::createActorFromCdbXml(
             $event->getCdbXmlNamespaceUri(),
             $event->getCdbXml()
         );
@@ -81,11 +81,11 @@ final class HistoryProjector extends BaseHistoryProjector
             new Log(
                 DateTime::createFromFormat(
                     'Y-m-d?H:i:s',
-                    $udb2Event->getCreationDate(),
+                    $udb2Actor->getCreationDate(),
                     new DateTimeZone('Europe/Brussels')
                 ),
                 'Aangemaakt in UDB2',
-                $udb2Event->getCreatedBy()
+                $udb2Actor->getCreatedBy()
             )
         );
 
