@@ -6,6 +6,7 @@ use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
+use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
@@ -19,6 +20,7 @@ use DateTimeZone;
 
 final class HistoryProjector extends BaseHistoryProjector
 {
+    use OfferHistoryProjectorTrait;
 
     public function handle(DomainMessage $domainMessage)
     {
@@ -64,38 +66,6 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $event->getItemId(),
             $this->createGenericLog($domainMessage, 'Place verwijderd')
-        );
-    }
-
-    private function projectLabelAdded(LabelAdded $event, DomainMessage $domainMessage): void
-    {
-        $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Label '{$event->getLabel()}' toegepast")
-        );
-    }
-
-    private function projectLabelRemoved(LabelRemoved $event, DomainMessage $domainMessage): void
-    {
-        $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Label '{$event->getLabel()}' verwijderd")
-        );
-    }
-
-    private function projectDescriptionTranslated(DescriptionTranslated $event, DomainMessage $domainMessage)
-    {
-        $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Beschrijving vertaald ({$event->getLanguage()})")
-        );
-    }
-
-    private function projectTitleTranslated(TitleTranslated $event, DomainMessage $domainMessage)
-    {
-        $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Titel vertaald ({$event->getLanguage()})")
         );
     }
 
