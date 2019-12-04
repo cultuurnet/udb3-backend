@@ -78,18 +78,22 @@ final class HistoryProjector extends BaseHistoryProjector
             $event->getCdbXml()
         );
 
-        $this->writeHistory(
-            $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UDB2')
-                ->withAuthor($udb2Actor->getCreatedBy())
-                ->withDate(
-                    DateTime::createFromFormat(
-                        'Y-m-d?H:i:s',
-                        $udb2Actor->getCreationDate(),
-                        new DateTimeZone('Europe/Brussels')
-                    )
-                )
+        $udb2Log = Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UDB2');
+
+        if ($udb2Actor->getCreatedBy()) {
+            $udb2Log = $udb2Log->withAuthor($udb2Actor->getCreatedBy());
+        }
+
+        $udb2Date = DateTime::createFromFormat(
+            'Y-m-d?H:i:s',
+            $udb2Actor->getCreationDate(),
+            new DateTimeZone('Europe/Brussels')
         );
+        if ($udb2Date) {
+            $udb2Log = $udb2Log->withDate($udb2Date);
+        }
+
+        $this->writeHistory($domainMessage->getId(), $udb2Log);
 
         $this->writeHistory(
             $domainMessage->getId(),

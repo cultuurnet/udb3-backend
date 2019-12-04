@@ -133,6 +133,12 @@ class Log implements JsonSerializable
         $api = $metadata['api'] ?? null;
         $consumer = $metadata['consumer']['name'] ?? null;
 
+        // In the past the api key was sometimes stored, but incorrectly as an empty array due to a bug.
+        // In those cases we just treat it as null.
+        if (is_array($apiKey)) {
+            $apiKey = null;
+        }
+
         return new Log($id, $date, $description, $author, $apiKey, $api, $consumer);
     }
 }
