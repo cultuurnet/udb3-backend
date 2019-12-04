@@ -37,13 +37,12 @@ abstract class BaseHistoryProjector implements EventListenerInterface
     {
         $historyDocument = $this->loadDocumentFromRepositoryByEventId($eventId);
 
-        $history = $historyDocument->getBody();
+        $history = (array) $historyDocument->getBody();
 
-        // Append most recent one to the top.
-        array_unshift($history, $log);
+        $history[$log->getUniqueKey()] = $log;
 
         $this->documentRepository->save(
-            $historyDocument->withBody($history)
+            $historyDocument->withBody((object) $history)
         );
     }
 }
