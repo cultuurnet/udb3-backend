@@ -15,8 +15,6 @@ class HistoryPlaceRestControllerTest extends TestCase
     const NON_EXISTING_ID = 'nonExistingId';
     const REMOVED_ID = 'removedId';
 
-    private const RAW_HISTORY = 'history';
-
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|UserIdentificationInterface
      */
@@ -27,15 +25,47 @@ class HistoryPlaceRestControllerTest extends TestCase
      */
     private $controller;
 
+    /**
+     * @var string
+     */
+    private $rawHistory;
+
+    /**
+     * @var string
+     */
+    private $expectedProcessedHistory;
+
     public function setUp()
     {
+        $this->rawHistory = json_encode(
+            [
+                'cfaed6fc-296a-427d-8931-c36428f25336_1_2019-04-23T16:00:00+0200' => [
+                    'author' => 'author1',
+                ],
+                'cfaed6fc-296a-427d-8931-c36428f25336_2_2019-04-23T16:15:00+0200' => [
+                    'author' => 'author2',
+                ],
+            ]
+        );
+
+        $this->expectedProcessedHistory = json_encode(
+            [
+                [
+                    'author' => 'author2',
+                ],
+                [
+                    'author' => 'author1',
+                ],
+            ]
+        );
+
         $documentRepositoryInterface = $this->createMock(DocumentRepositoryInterface::class);
         $documentRepositoryInterface->method('get')
             ->willReturnCallback(
                 function ($id) {
                     switch ($id) {
                         case self::EXISTING_ID:
-                            return new JsonDocument('id', self::RAW_HISTORY);
+                            return new JsonDocument('id', $this->rawHistory);
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
@@ -56,13 +86,13 @@ class HistoryPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function returns_a_http_response_with_json_history_for_an_event_2(): void
+    public function returns_a_http_response_with_json_history_for_an_event(): void
     {
         $this->givenGodUser();
         $jsonResponse = $this->controller->get(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals(self::RAW_HISTORY, $jsonResponse->getContent());
+        $this->assertEquals($this->expectedProcessedHistory, $jsonResponse->getContent());
     }
 
     /**

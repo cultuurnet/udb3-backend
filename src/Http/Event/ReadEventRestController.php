@@ -91,8 +91,14 @@ class ReadEventRestController
             $document = $this->historyRepository->get($cdbid);
 
             if ($document) {
+                $history = array_reverse(
+                    array_values(
+                        json_decode($document->getRawBody(), true) ?? []
+                    )
+                );
+
                 $response = JsonResponse::create()
-                    ->setContent($document->getRawBody());
+                    ->setContent(json_encode($history));
 
                 $response->headers->set('Vary', 'Origin');
             } else {

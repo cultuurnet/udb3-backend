@@ -50,8 +50,14 @@ class HistoryPlaceRestController
                 return $this->notFoundResponse($placeId);
             }
 
+            $history = array_reverse(
+                array_values(
+                    json_decode($document->getRawBody(), true) ?? []
+                )
+            );
+
             $response = JsonResponse::create()
-                ->setContent($document->getRawBody());
+                ->setContent(json_encode($history));
             $response->headers->set('Vary', 'Origin');
             return $response;
         } catch (DocumentGoneException $documentGoneException) {
