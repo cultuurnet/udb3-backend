@@ -191,7 +191,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_PlaceUpdatedFromUDB2_event()
     {
-        $placeImportedFromUDB2Event = $this->aPlaceIUpdatedFromUDB2Event();
+        $placeImportedFromUDB2Event = $this->aPlaceUpdatedFromUDB2Event();
         $domainMessage = $this->aDomainMessageForEvent($placeImportedFromUDB2Event->getActorId(),
             $placeImportedFromUDB2Event);
 
@@ -305,16 +305,16 @@ class HistoryProjectorTest extends TestCase
     {
         return new PlaceImportedFromUDB2(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            $this->getPlaceXml(),
+            $this->getActorCdbXml(),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
     }
 
-    private function aPlaceIUpdatedFromUDB2Event(): PlaceUpdatedFromUDB2
+    private function aPlaceUpdatedFromUDB2Event(): PlaceUpdatedFromUDB2
     {
         return new PlaceUpdatedFromUDB2(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            $this->getPlaceXml(),
+            $this->getActorCdbXml(),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
     }
@@ -349,7 +349,7 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    private function getPlaceXml()
+    private function getActorCdbXml()
     {
         return file_get_contents(__DIR__ . '/actor.xml');
     }

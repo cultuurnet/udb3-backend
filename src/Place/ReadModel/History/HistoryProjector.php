@@ -72,6 +72,7 @@ final class HistoryProjector extends BaseHistoryProjector
     private function projectPlaceImportedFromUDB2(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
+
         $udb2Actor = ActorItemFactory::createActorFromCdbXml(
             $event->getCdbXmlNamespaceUri(),
             $event->getCdbXml()
