@@ -15,6 +15,8 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Place\Events\AddressTranslated;
+use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
@@ -211,6 +213,36 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_projects_AddressUpdated_event(): void
+    {
+        $event = $this->anAddressUpdatedEvent();
+        $domainMessage = $this->aDomainMessageForEvent($event->getPlaceId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getPlaceId(),
+            'Adres aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_AddressTranslated_event(): void
+    {
+        $event = $this->anAddressTranslatedEvent();
+        $domainMessage = $this->aDomainMessageForEvent($event->getPlaceId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getPlaceId(),
+            "Adres vertaald ({$event->getLanguage()->getCode()})"
+        );
+    }
+
     protected function assertHistoryContainsLogs(string $eventId, array $history): void
     {
         /** @var JsonDocument $document */
@@ -316,6 +348,33 @@ class HistoryProjectorTest extends TestCase
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             $this->getActorCdbXml(),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
+        );
+    }
+
+    private function anAddressUpdatedEvent(): AddressUpdated
+    {
+        return new AddressUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Address(
+                new Street('Straat 1'),
+                new PostalCode('3000'),
+                new Locality('Leuven'),
+                Country::fromNative('BE')
+            )
+        );
+    }
+
+    private function anAddressTranslatedEvent(): AddressTranslated
+    {
+        return new AddressTranslated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Address(
+                new Street('Street 1'),
+                new PostalCode('3000'),
+                new Locality('Leuven'),
+                Country::fromNative('BE')
+            ),
+            new Language('en')
         );
     }
 

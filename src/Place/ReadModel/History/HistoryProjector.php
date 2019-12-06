@@ -7,6 +7,8 @@ use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
+use CultuurNet\UDB3\Place\Events\AddressTranslated;
+use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
@@ -31,6 +33,12 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof PlaceDeleted:
                 $this->projectPlaceDeleted($domainMessage);
+                break;
+            case $event instanceof AddressUpdated:
+                $this->projectAddressUpdated($domainMessage);
+                break;
+            case $event instanceof AddressTranslated:
+                $this->projectAddressTranslated($domainMessage);
                 break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($domainMessage);
@@ -107,6 +115,28 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Geüpdatet vanuit UDB2')
+                ->withoutAuthor()
+        );
+    }
+
+    private function projectAddressUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Adres aangepast')
+                ->withoutAuthor()
+        );
+    }
+
+    private function projectAddressTranslated(DomainMessage $domainMessage): void
+    {
+        /* @var AddressTranslated $event */
+        $event = $domainMessage->getPayload();
+        $lang = $event->getLanguage()->getCode();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Adres vertaald ({$lang})")
                 ->withoutAuthor()
         );
     }
