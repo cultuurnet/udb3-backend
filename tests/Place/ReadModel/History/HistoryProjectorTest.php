@@ -175,9 +175,9 @@ class HistoryProjectorTest extends TestCase
                     'consumerName' => self::META_CONSUMER,
                 ],
                 (object) [
-                    'date' => '2014-04-28T11:30:28+02:00',
+                    'date' => '2010-01-06T13:33:06+01:00',
                     'description' => 'Aangemaakt in UDB2',
-                    'author' => 'kris.classen@overpelt.be',
+                    'author' => 'cultuurnet001',
                 ],
             ]
         );
@@ -189,7 +189,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_PlaceUpdatedFromUDB2_event()
     {
-        $placeImportedFromUDB2Event = $this->aPlaceIUpdatedFromUDB2Event();
+        $placeImportedFromUDB2Event = $this->aPlaceUpdatedFromUDB2Event();
         $domainMessage = $this->aDomainMessageForEvent($placeImportedFromUDB2Event->getActorId(),
             $placeImportedFromUDB2Event);
 
@@ -297,17 +297,17 @@ class HistoryProjectorTest extends TestCase
     {
         return new PlaceImportedFromUDB2(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            $this->getEventCdbXml(),
+            $this->getActorCdbXml(),
             'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
     }
 
-    private function aPlaceIUpdatedFromUDB2Event(): PlaceUpdatedFromUDB2
+    private function aPlaceUpdatedFromUDB2Event(): PlaceUpdatedFromUDB2
     {
         return new PlaceUpdatedFromUDB2(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            'xml',
-            'namespace'
+            $this->getActorCdbXml(),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL'
         );
     }
 
@@ -339,8 +339,8 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    private function getEventCdbXml()
+    private function getActorCdbXml()
     {
-        return file_get_contents(__DIR__ . '/event.xml');
+        return file_get_contents(__DIR__ . '/actor.xml');
     }
 }
