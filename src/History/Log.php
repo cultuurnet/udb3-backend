@@ -69,23 +69,23 @@ class Log implements JsonSerializable
 
     public function withoutAuthor(): Log
     {
-        $c = clone $this;
-        $c->author = null;
-        return $c;
+        $log = clone $this;
+        $log->author = null;
+        return $log;
     }
 
     public function withAuthor(string $author): Log
     {
-        $c = clone $this;
-        $c->author = $author;
-        return $c;
+        $log = clone $this;
+        $log->author = $author;
+        return $log;
     }
 
     public function withDate(DateTime $dateTime): Log
     {
-        $c = clone $this;
-        $c->date = $dateTime;
-        return $c;
+        $log = clone $this;
+        $log->date = $dateTime;
+        return $log;
     }
 
     /**
