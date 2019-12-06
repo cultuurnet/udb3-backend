@@ -219,10 +219,6 @@ class HistoryProjectorTest extends TestCase
 
         foreach ($history as $log) {
             // Do not use assertContains() here, as it doesn't work the same as in_array for some reason.
-            if (!in_array($log, $body)) {
-                var_dump($log);
-                var_dump($body);
-            }
             $this->assertTrue(in_array($log, $body));
         }
     }
