@@ -168,14 +168,14 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogs(
             $placeImportedFromUDB2Event->getActorId(),
             [
-                (object) [
+                [
                     'date' => self::OCCURRED_ON_FORMATTED,
                     'description' => 'Geïmporteerd vanuit UDB2',
                     'apiKey' => self::META_AUTH_API_KEY,
                     'api' => self::META_API,
                     'consumerName' => self::META_CONSUMER,
                 ],
-                (object) [
+                [
                     'date' => '2010-01-06T13:33:06+01:00',
                     'description' => 'Aangemaakt in UDB2',
                     'author' => 'cultuurnet001',
@@ -202,7 +202,7 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogs(
             $placeImportedFromUDB2Event->getActorId(),
             [
-                (object) [
+                [
                     'date' => self::OCCURRED_ON_FORMATTED,
                     'description' => 'Geüpdatet vanuit UDB2',
                     'apiKey' => self::META_AUTH_API_KEY,
@@ -249,9 +249,12 @@ class HistoryProjectorTest extends TestCase
         $document = $this->documentRepository->get($eventId);
         $body = array_values((array) $document->getBody());
 
+        $body = array_map(function (\stdClass $log) {
+            return (array) $log;
+        }, $body);
+
         foreach ($history as $log) {
-            // Do not use assertContains() here, as it doesn't work the same as in_array for some reason.
-            $this->assertTrue(in_array($log, $body));
+            $this->assertContains((array) $log, $body);
         }
     }
 
@@ -381,7 +384,7 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogs(
             $eventId,
             [
-                (object) [
+                [
                     'date' => self::OCCURRED_ON_FORMATTED,
                     'author' => self::META_USER_NICK,
                     'description' => $eventDescription,
