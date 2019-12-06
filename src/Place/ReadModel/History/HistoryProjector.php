@@ -124,7 +124,6 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Adres aangepast')
-                ->withoutAuthor()
         );
     }
 
@@ -137,7 +136,6 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, "Adres vertaald ({$lang})")
-                ->withoutAuthor()
         );
     }
 }
