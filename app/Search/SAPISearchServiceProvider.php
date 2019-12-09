@@ -104,9 +104,26 @@ class SAPISearchServiceProvider implements ServiceProviderInterface
 
         $app['search_results_generator'] = $app->share(
             function (Application $app) {
-                return new ResultsGenerator(
+                $resultsGenerator = new ResultsGenerator(
                     $app['search_service']
                 );
+                $resultsGenerator->setLogger($app['search_results_generator_logger']);
+                return $resultsGenerator;
+            }
+        );
+
+
+        $app['search_results_generator_log_handler'] = $app->share(
+            function () {
+                return new StreamHandler(__DIR__ . '/../../log/search_results.log');
+            }
+        );
+
+        $app['search_results_generator_logger'] = $app->share(
+            function (Application $app) {
+                $logger = new Logger('search-results-generator');
+                $logger->pushHandler($app['search_results_generator_log_handler']);
+                return $logger;
             }
         );
     }
