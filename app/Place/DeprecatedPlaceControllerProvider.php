@@ -22,7 +22,7 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ReadPlaceRestController(
                     $app['place_service'],
-                    $app['search_v3_serializer']
+                    $app['search_serializer']
                 );
             }
         );

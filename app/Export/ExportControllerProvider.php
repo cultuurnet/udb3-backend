@@ -20,20 +20,10 @@ class ExportControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['export_search_default_version'] = $app->share(
-            function (Application $app) {
-                return new SapiVersion(
-                    $app['config']['export']['search']['default_version']
-                );
-            }
-        );
-
         $app['json_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsJsonLDJSONDeserializer(
-                        $app['export_search_default_version']
-                    ),
+                    new ExportEventsAsJsonLDJSONDeserializer(),
                     $app['event_export_command_bus']
                 );
             }
@@ -42,9 +32,7 @@ class ExportControllerProvider implements ControllerProviderInterface
         $app['csv_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsCSVJSONDeserializer(
-                        $app['export_search_default_version']
-                    ),
+                    new ExportEventsAsCSVJSONDeserializer(),
                     $app['event_export_command_bus']
                 );
             }
@@ -53,9 +41,7 @@ class ExportControllerProvider implements ControllerProviderInterface
         $app['ooxml_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsOOXMLJSONDeserializer(
-                        $app['export_search_default_version']
-                    ),
+                    new ExportEventsAsOOXMLJSONDeserializer(),
                     $app['event_export_command_bus']
                 );
             }
@@ -64,9 +50,7 @@ class ExportControllerProvider implements ControllerProviderInterface
         $app['pdf_export_controller'] = $app->share(
             function (Application $app) {
                 return new CommandDeserializerController(
-                    new ExportEventsAsPDFJSONDeserializer(
-                        $app['export_search_default_version']
-                    ),
+                    new ExportEventsAsPDFJSONDeserializer(),
                     $app['event_export_command_bus']
                 );
             }

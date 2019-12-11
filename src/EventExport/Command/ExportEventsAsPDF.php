@@ -19,11 +19,6 @@ class ExportEventsAsPDF implements ExportEventsInterface
     private $query;
 
     /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
-
-    /**
      * @var null|EmailAddress
      */
     private $address;
@@ -70,7 +65,6 @@ class ExportEventsAsPDF implements ExportEventsInterface
 
     /**
      * @param EventExportQuery   $query
-     * @param SapiVersion        $sapiVersion
      * @param string             $brand
      * @param string             $logo
      * @param Title              $title
@@ -78,14 +72,12 @@ class ExportEventsAsPDF implements ExportEventsInterface
      */
     public function __construct(
         EventExportQuery $query,
-        SapiVersion $sapiVersion,
         string $brand,
         string $logo,
         Title $title,
         WebArchiveTemplate $template
     ) {
         $this->brand = $brand;
-        $this->sapiVersion = $sapiVersion;
         $this->logo = $logo;
         $this->query = $query;
         $this->title = $title;
@@ -254,14 +246,6 @@ class ExportEventsAsPDF implements ExportEventsInterface
     public function getQuery(): EventExportQuery
     {
         return $this->query;
-    }
-
-    /**
-     * @return SapiVersion
-     */
-    public function getSapiVersion(): SapiVersion
-    {
-        return $this->sapiVersion;
     }
 
     /**

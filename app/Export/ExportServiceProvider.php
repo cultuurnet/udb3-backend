@@ -42,27 +42,12 @@ class ExportServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['event_export_service_collection'] = $app->share(
+        $app['event_export_service'] = $app->share(
             function ($app) {
-                $eventExportServiceCollection = new EventExportServiceCollection();
-
-                $eventExportServiceCollection = $eventExportServiceCollection
-                    ->withService(
-                        new SapiVersion(SapiVersion::V2),
-                        $this->createEventExportService(
-                            $app,
-                            $app['search_service']
-                        )
-                    )
-                    ->withService(
-                        new SapiVersion(SapiVersion::V3),
-                        $this->createEventExportService(
-                            $app,
-                            $app['sapi3_search_service']
-                        )
-                    );
-
-                return $eventExportServiceCollection;
+                return $this->createEventExportService(
+                    $app,
+                    $app['sapi3_search_service']
+                );
             }
         );
 
@@ -80,7 +65,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                 $eventInfoService->setLogger($app['logger.uitpas']);
 
                 $eventExportCommandHandler = new EventExportCommandHandler(
-                    $app['event_export_service_collection'],
+                    $app['event_export_service'],
                     $app['config']['prince']['binary'],
                     $eventInfoService,
                     $app['calendar_summary_repository'],

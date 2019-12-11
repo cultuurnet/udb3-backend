@@ -15,29 +15,6 @@ class ModerationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['moderation_search_service'] = $app->share(
-            function (Application $app) {
-                /** @var SapiVersion $sapiVersion */
-                $sapiVersion = $app['role_constraints_mode'];
-
-                return $app['moderation_search_service.' . $sapiVersion->getValue()];
-            }
-        );
-
-        $app['moderation_search_service.v2'] = $app->share(
-            function ($app) {
-                /** @var PullParsingSearchService $search */
-                $search = $app['search_service'];
-
-                $search = $search->doNotIncludePrivateItems();
-
-                return new QueryNarrowingSearchService(
-                    $search,
-                    new Sapi2NeedsModerationNarrower()
-                );
-            }
-        );
-
-        $app['moderation_search_service.v3'] = $app->share(
             function ($app) {
                 /** @var PullParsingSearchService $search */
                 $search = $app['sapi3_search_service'];

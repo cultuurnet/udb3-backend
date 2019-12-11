@@ -2,7 +2,10 @@
 
 namespace CultuurNet\UDB3\Silex\Search;
 
+use CultuurNet\UDB3\Search\ResultsGenerator;
 use Http\Adapter\Guzzle6\Client;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -47,6 +50,30 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
                     new Client(new \GuzzleHttp\Client()),
                     $app['config']['search']['v3']['api_key'] ?? null
                 );
+            }
+        );
+
+        $app['search_results_generator'] = $app->share(
+            function (Application $app) {
+                $resultsGenerator = new ResultsGenerator(
+                    $app['sapi3_search_service']
+                );
+                $resultsGenerator->setLogger($app['search_results_generator_logger']);
+                return $resultsGenerator;
+            }
+        );
+
+        $app['search_results_generator_log_handler'] = $app->share(
+            function () {
+                return new StreamHandler(__DIR__ . '/../../log/search_results.log');
+            }
+        );
+
+        $app['search_results_generator_logger'] = $app->share(
+            function (Application $app) {
+                $logger = new Logger('search-results-generator');
+                $logger->pushHandler($app['search_results_generator_log_handler']);
+                return $logger;
             }
         );
     }

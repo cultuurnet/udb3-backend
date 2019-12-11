@@ -37,34 +37,8 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
 
         $app['user_permission_matcher'] = $app->share(
             function (Application $app) {
-                /** @var SapiVersion $sapiVersion */
-                $sapiVersion = $app['role_constraints_mode'];
-
-                return $app['user_permission_matcher.' . $sapiVersion->getValue()];
-            }
-        );
-
-        $app['user_permission_matcher.v2'] = $app->share(
-            function (Application $app) {
-                $resultSetParser = new ResultSetPullParser(
-                    new \XMLReader(),
-                    $app['event_iri_generator'],
-                    $app['place_iri_generator']
-                );
-
-                return new UserPermissionMatcher(
-                    $app['user_constraints_read_repository.v2'],
-                    new SearchQueryFactory(),
-                    $app['search_api_2'],
-                    $resultSetParser
-                );
-            }
-        );
-
-        $app['user_permission_matcher.v3'] = $app->share(
-            function (Application $app) {
                 return new Sapi3UserPermissionMatcher(
-                    $app['user_constraints_read_repository.v3'],
+                    $app['user_constraints_read_repository'],
                     new Sapi3SearchQueryFactory(),
                     $app[Sapi3SearchServiceProvider::OFFERS_COUNTING_SEARCH_SERVICE]
                 );

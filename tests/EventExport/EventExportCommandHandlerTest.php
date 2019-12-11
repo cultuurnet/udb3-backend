@@ -44,16 +44,10 @@ class EventExportCommandHandlerTest extends TestCase
 
         $this->eventExportService = $this->createMock(EventExportServiceInterface::class);
 
-        $eventExportServiceCollection = new EventExportServiceCollection();
-        $eventExportServiceCollection = $eventExportServiceCollection->withService(
-            new SapiVersion(SapiVersion::V2),
-            $this->eventExportService
-        );
-
         $this->princeXMLBinaryPath = 'PrinceXML path';
 
         $this->eventExportCommandHandler = new EventExportCommandHandler(
-            $eventExportServiceCollection,
+            $this->eventExportService,
             $this->princeXMLBinaryPath
         );
 
@@ -68,7 +62,6 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsJsonLD = new ExportEventsAsJsonLD(
             new EventExportQuery('query'),
-            new SapiVersion(SapiVersion::V2),
             new EmailAddress('jane@anonymous.com'),
             null,
             null
@@ -94,7 +87,6 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsCSV = new ExportEventsAsCSV(
             new EventExportQuery('query'),
-            new SapiVersion(SapiVersion::V2),
             new EmailAddress('jane@anonymous.com'),
             null,
             null
@@ -120,7 +112,6 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsOOXML = new ExportEventsAsOOXML(
             new EventExportQuery('query'),
-            new SapiVersion(SapiVersion::V2),
             new EmailAddress('jane@anonymous.com'),
             null,
             null
@@ -146,7 +137,6 @@ class EventExportCommandHandlerTest extends TestCase
     {
         $exportEventsAsPDF = new ExportEventsAsPDF(
             new EventExportQuery('query'),
-            new SapiVersion(SapiVersion::V2),
             'brand',
             'logo',
             new Title('title'),

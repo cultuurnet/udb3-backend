@@ -99,8 +99,8 @@ class ConcludeCommand extends AbstractConcludeCommand
         $app = $this->getSilexApplication();
 
         return new ResultsGenerator(
-            $app['search_service'],
-            ResultsGenerator::SORT_CREATION_DATE_ASC,
+            $app['sapi3_search_service'],
+            null,
             $pageSize
         );
     }

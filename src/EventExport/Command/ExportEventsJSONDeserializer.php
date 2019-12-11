@@ -15,18 +15,6 @@ use ValueObjects\Web\EmailAddress;
  */
 abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 {
-    private $defaultSapiVersion;
-
-    /**
-     * @param $defaultSapiVersion
-     */
-    public function __construct($defaultSapiVersion)
-    {
-        parent::__construct();
-
-        $this->defaultSapiVersion = $defaultSapiVersion;
-    }
-
     /**
      * @param StringLiteral $data
      * @return ExportEvents
@@ -39,11 +27,6 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
             throw new MissingValueException('query is missing');
         }
         $query = new EventExportQuery($data->query);
-
-        $sapiVersion = $this->defaultSapiVersion;
-        if (isset($data->sapiVersion)) {
-            $sapiVersion = new SapiVersion($data->sapiVersion);
-        }
 
         $email = $selection = $include = null;
         // @todo This throws an exception when the e-mail is invalid. How do we handle this?
@@ -61,7 +44,6 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 
         return $this->createCommand(
             $query,
-            $sapiVersion,
             $email,
             $selection,
             $include
@@ -70,7 +52,6 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 
     /**
      * @param EventExportQuery  $query
-     * @param SapiVersion       $sapiVersion
      * @param EmailAddress|null $address
      * @param string[]|null     $selection
      * @param string[]|null     $include
@@ -78,7 +59,6 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
      */
     abstract protected function createCommand(
         EventExportQuery $query,
-        SapiVersion $sapiVersion,
         EmailAddress $address = null,
         $selection = null,
         $include = null

@@ -18,21 +18,9 @@ class ExportEventsJSONDeserializerTest extends TestCase
      */
     private $deserializer;
 
-    /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
-
     public function setUp()
     {
-        $this->sapiVersion = new SapiVersion(SapiVersion::V2);
-
-        $this->deserializer = $this->getMockForAbstractClass(
-            ExportEventsJSONDeserializer::class,
-            [
-                $this->sapiVersion,
-            ]
-        );
+        $this->deserializer = $this->getMockForAbstractClass(ExportEventsJSONDeserializer::class);
     }
 
     /**
@@ -48,7 +36,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
             ->method('createCommand')
             ->with(
                 new EventExportQuery('city:leuven'),
-                $this->sapiVersion,
                 null,
                 null,
                 null
@@ -71,7 +58,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
             ->method('createCommand')
             ->with(
                 new EventExportQuery('city:leuven'),
-                $this->sapiVersion,
                 new EmailAddress('foo@bar.com'),
                 [
                     "8102d369-47c5-4ded-ad03-e12ef7b246c3",
@@ -118,7 +104,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
 
         $expectedCommand = new $expectedCommandType(
             new EventExportQuery('city:leuven'),
-            $this->sapiVersion,
             new EmailAddress('foo@bar.com'),
             [
                 "8102d369-47c5-4ded-ad03-e12ef7b246c3",
@@ -142,21 +127,15 @@ class ExportEventsJSONDeserializerTest extends TestCase
     {
         return [
             [
-                new ExportEventsAsCSVJSONDeserializer(
-                    new SapiVersion(SapiVersion::V2)
-                ),
+                new ExportEventsAsCSVJSONDeserializer(),
                 ExportEventsAsCSV::class,
             ],
             [
-                new ExportEventsAsJsonLDJSONDeserializer(
-                    new SapiVersion(SapiVersion::V2)
-                ),
+                new ExportEventsAsJsonLDJSONDeserializer(),
                 ExportEventsAsJsonLD::class,
             ],
             [
-                new ExportEventsAsOOXMLJSONDeserializer(
-                    new SapiVersion(SapiVersion::V2)
-                ),
+                new ExportEventsAsOOXMLJSONDeserializer(),
                 ExportEventsAsOOXML::class,
             ],
         ];
