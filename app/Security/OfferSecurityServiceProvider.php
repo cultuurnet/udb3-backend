@@ -8,12 +8,8 @@ use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
 use CultuurNet\UDB3\Offer\Security\Sapi3SearchQueryFactory;
 use CultuurNet\UDB3\Offer\Security\Sapi3UserPermissionMatcher;
-use CultuurNet\UDB3\Offer\Security\SearchQueryFactory;
-use CultuurNet\UDB3\Offer\Security\UserPermissionMatcher;
-use CultuurNet\UDB3\SearchAPI2\ResultSetPullParser;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
