@@ -5,10 +5,12 @@ namespace CultuurNet\UDB3\Event\ReadModel\History;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -449,7 +451,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_approved()
+    public function it_logs_approved(): void
     {
         $event = new Approved(self::EVENT_ID_1);
 
@@ -478,7 +480,7 @@ class HistoryProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_audience_updated()
+    public function it_logs_audience_updated(): void
     {
         $event = new AudienceUpdated(self::EVENT_ID_1, new Audience(AudienceType::EDUCATION()));
 
@@ -499,6 +501,35 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'JaneDoe',
                     'description' => 'Toegang aangepast',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_booking_info_updated(): void
+    {
+        $event = new BookingInfoUpdated(self::EVENT_ID_1, new BookingInfo());
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_nick' => 'JaneDoe']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'Reservatie-info aangepast',
                 ],
             ]
         );

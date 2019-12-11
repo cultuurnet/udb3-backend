@@ -19,6 +19,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectBookingInfoUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Reservatie-info aangepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
