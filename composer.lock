@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb0c1dcc448cd12d1c53421d3cccf246",
+    "content-hash": "a686334a30fcf241d23558d59e95bedb",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1501,16 +1501,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-bugfix/III-3153",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "23f4a7fca7b1d06ac662ba1b5e7b2a6bd9973826"
+                "reference": "8b80c559bf098f041d5868597cb7ce9387684675"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/23f4a7fca7b1d06ac662ba1b5e7b2a6bd9973826",
-                "reference": "23f4a7fca7b1d06ac662ba1b5e7b2a6bd9973826",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/8b80c559bf098f041d5868597cb7ce9387684675",
+                "reference": "8b80c559bf098f041d5868597cb7ce9387684675",
                 "shasum": ""
             },
             "require": {
@@ -1576,7 +1576,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-12-04T15:06:42+00:00"
+            "time": "2019-12-11T20:11:36+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7253,8 +7253,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "homepage": "http://frankkleine.de/",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://frankkleine.de/"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
@@ -8042,8 +8042,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -8973,6 +8973,12 @@
             "alias_normalized": "1.2.0.0",
             "version": "dev-compat-1-2",
             "package": "chrisboulton/php-resque"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-bugfix/III-3153",
+            "package": "cultuurnet/udb3"
         },
         {
             "alias": "0.1",
