@@ -243,13 +243,17 @@ class EventExportService implements EventExportServiceInterface
     {
         $events = $this->resultsGenerator->search((string) $query);
 
+        $count = 0;
         foreach ($events as $eventIdentifier) {
             $event = $this->getEventAsJSONLD((string) $eventIdentifier->getIri(), $logger);
 
             if ($event) {
+                $count++;
                 yield $eventIdentifier->getId() => $event;
             }
         }
+
+        $logger->debug("yielded ${count} actual events.");
     }
 
     private function getFinalFilePath(
