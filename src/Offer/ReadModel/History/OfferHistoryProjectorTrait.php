@@ -27,6 +27,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectCalendarUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Kalender-info aangepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();

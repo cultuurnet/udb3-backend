@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
+use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
@@ -273,6 +274,21 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Reservatie-info aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_CalendarUpdated_event(): void
+    {
+        $event = new CalendarUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Calendar(CalendarType::PERMANENT()));
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Kalender-info aangepast'
         );
     }
 

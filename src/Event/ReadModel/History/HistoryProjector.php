@@ -6,6 +6,7 @@ use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -38,6 +39,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof BookingInfoUpdated:
                 $this->projectBookingInfoUpdated($domainMessage);
+                break;
+            case $event instanceof CalendarUpdated:
+                $this->projectCalendarUpdated($domainMessage);
                 break;
             case $event instanceof EventImportedFromUDB2:
                 $this->projectEventImportedFromUDB2($domainMessage);
