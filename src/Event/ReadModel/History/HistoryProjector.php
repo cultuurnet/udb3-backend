@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
+use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
@@ -27,6 +28,9 @@ final class HistoryProjector extends BaseHistoryProjector
         $event = $domainMessage->getPayload();
 
         switch (true) {
+            case $event instanceof Approved:
+                $this->projectApproved($domainMessage);
+                break;
             case $event instanceof EventImportedFromUDB2:
                 $this->projectEventImportedFromUDB2($domainMessage);
                 break;

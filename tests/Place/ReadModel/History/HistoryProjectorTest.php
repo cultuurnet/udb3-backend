@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
+use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -240,6 +241,21 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getPlaceId(),
             "Adres vertaald ({$event->getLanguage()->getCode()})"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_Approved_event(): void
+    {
+        $event = new Approved('a0ee7b1c-a9c1-4da1-af7e-d15496014656');
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Goedgekeurd'
         );
     }
 

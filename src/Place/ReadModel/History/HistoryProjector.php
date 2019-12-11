@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
+use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -28,17 +29,20 @@ final class HistoryProjector extends BaseHistoryProjector
     {
         $event = $domainMessage->getPayload();
         switch (true) {
+            case $event instanceof AddressTranslated:
+                $this->projectAddressTranslated($domainMessage);
+                break;
+            case $event instanceof AddressUpdated:
+                $this->projectAddressUpdated($domainMessage);
+                break;
+            case $event instanceof Approved:
+                $this->projectApproved($domainMessage);
+                break;
             case $event instanceof PlaceCreated:
                 $this->projectPlaceCreated($domainMessage);
                 break;
             case $event instanceof PlaceDeleted:
                 $this->projectPlaceDeleted($domainMessage);
-                break;
-            case $event instanceof AddressUpdated:
-                $this->projectAddressUpdated($domainMessage);
-                break;
-            case $event instanceof AddressTranslated:
-                $this->projectAddressTranslated($domainMessage);
                 break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($domainMessage);
@@ -59,6 +63,26 @@ final class HistoryProjector extends BaseHistoryProjector
                 $this->projectPlaceUpdatedFromUDB2($domainMessage);
                 break;
         }
+    }
+
+    private function projectAddressTranslated(DomainMessage $domainMessage): void
+    {
+        /* @var AddressTranslated $event */
+        $event = $domainMessage->getPayload();
+        $lang = $event->getLanguage()->getCode();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Adres vertaald ({$lang})")
+        );
+    }
+
+    private function projectAddressUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Adres aangepast')
+        );
     }
 
     private function projectPlaceCreated(DomainMessage $domainMessage): void
@@ -116,26 +140,6 @@ final class HistoryProjector extends BaseHistoryProjector
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Geüpdatet vanuit UDB2')
                 ->withoutAuthor()
-        );
-    }
-
-    private function projectAddressUpdated(DomainMessage $domainMessage): void
-    {
-        $this->writeHistory(
-            $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Adres aangepast')
-        );
-    }
-
-    private function projectAddressTranslated(DomainMessage $domainMessage): void
-    {
-        /* @var AddressTranslated $event */
-        $event = $domainMessage->getPayload();
-        $lang = $event->getLanguage()->getCode();
-
-        $this->writeHistory(
-            $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Adres vertaald ({$lang})")
         );
     }
 }

@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
+use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
@@ -442,15 +443,47 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_logs_approved()
+    {
+        $event = new Approved(self::EVENT_ID_1);
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_nick' => 'JaneDoe']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'Goedgekeurd',
+                ],
+            ]
+        );
+    }
+
     protected function assertHistoryContainsLogs(string $eventId, array $history): void
     {
         /** @var JsonDocument $document */
         $document = $this->documentRepository->get($eventId);
         $body = array_values((array) $document->getBody());
 
+        $body = array_map(function (\stdClass $log) {
+            return (array) $log;
+        }, $body);
+
         foreach ($history as $log) {
-            // Do not use assertContains() here, as it doesn't work the same as in_array for some reason.
-            $this->assertTrue(in_array($log, $body));
+            $this->assertContains((array) $log, $body);
         }
     }
 
