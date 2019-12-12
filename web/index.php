@@ -227,7 +227,6 @@ $app->mount(
 );
 
 $app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
-$app->mount('/', new \CultuurNet\UDB3\Silex\Search\SAPISearchControllerProvider());
 /* @deprecated */
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
 $app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());

@@ -22,9 +22,9 @@ class EventExportCommandHandler extends CommandHandler implements LoggerAwareInt
     use LoggerAwareTrait;
 
     /**
-     * @var EventExportServiceCollection
+     * @var EventExportServiceInterface
      */
-    protected $eventExportServiceCollection;
+    protected $eventExportService;
 
     /**
      * @var string
@@ -47,93 +47,89 @@ class EventExportCommandHandler extends CommandHandler implements LoggerAwareInt
     private $twig;
 
     /**
-     * @param EventExportServiceCollection       $eventExportServiceCollection
+     * @param EventExportServiceInterface        $eventExportService
      * @param string                             $princeXMLBinaryPath
      * @param EventInfoServiceInterface|null     $uitpas
      * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
      * @param Twig_Environment|null              $twig
      */
     public function __construct(
-        EventExportServiceCollection $eventExportServiceCollection,
+        EventExportServiceInterface $eventExportService,
         $princeXMLBinaryPath,
         EventInfoServiceInterface $uitpas = null,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
         Twig_Environment $twig = null
     ) {
-        $this->eventExportServiceCollection = $eventExportServiceCollection;
+        $this->eventExportService = $eventExportService;
         $this->princeXMLBinaryPath = $princeXMLBinaryPath;
         $this->uitpas = $uitpas;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
         $this->twig = $twig;
     }
 
-    /**
-     * @param ExportEventsAsJsonLD $exportCommand
-     */
     public function handleExportEventsAsJsonLD(
         ExportEventsAsJsonLD $exportCommand
     ): void {
-        $this->eventExportServiceCollection->delegateToServiceWithAppropriateSapiVersion(
+        $this->eventExportService->exportEvents(
             new JSONLDFileFormat($exportCommand->getInclude()),
-            $exportCommand,
-            $this->logger
+            $exportCommand->getQuery(),
+            $exportCommand->getAddress(),
+            $this->logger,
+            $exportCommand->getSelection()
         );
     }
 
-    /**
-     * @param ExportEventsAsCSV $exportCommand
-     */
     public function handleExportEventsAsCSV(
         ExportEventsAsCSV $exportCommand
     ): void {
-        $this->eventExportServiceCollection->delegateToServiceWithAppropriateSapiVersion(
-            new CSVFileFormat($exportCommand->getInclude(), $this->uitpas),
-            $exportCommand,
-            $this->logger
+        $this->eventExportService->exportEvents(
+            new CSVFileFormat($exportCommand->getInclude()),
+            $exportCommand->getQuery(),
+            $exportCommand->getAddress(),
+            $this->logger,
+            $exportCommand->getSelection()
         );
     }
 
-    /**
-     * @param ExportEventsAsOOXML $exportCommand
-     */
     public function handleExportEventsAsOOXML(
         ExportEventsAsOOXML $exportCommand
     ): void {
-        $this->eventExportServiceCollection->delegateToServiceWithAppropriateSapiVersion(
+        $this->eventExportService->exportEvents(
             new OOXMLFileFormat(
                 $exportCommand->getInclude(),
                 $this->uitpas,
                 $this->calendarSummaryRepository
             ),
-            $exportCommand,
-            $this->logger
+            $exportCommand->getQuery(),
+            $exportCommand->getAddress(),
+            $this->logger,
+            $exportCommand->getSelection()
         );
     }
 
-    /**
-     * @param ExportEventsAsPDF $exportEvents
-     */
     public function handleExportEventsAsPDF(
-        ExportEventsAsPDF $exportEvents
+        ExportEventsAsPDF $exportCommand
     ): void {
         $fileFormat = new PDFWebArchiveFileFormat(
             $this->princeXMLBinaryPath,
-            $exportEvents->getTemplate(),
-            $exportEvents->getBrand(),
-            $exportEvents->getLogo(),
-            $exportEvents->getTitle(),
-            $exportEvents->getSubtitle(),
-            $exportEvents->getFooter(),
-            $exportEvents->getPublisher(),
+            $exportCommand->getTemplate(),
+            $exportCommand->getBrand(),
+            $exportCommand->getLogo(),
+            $exportCommand->getTitle(),
+            $exportCommand->getSubtitle(),
+            $exportCommand->getFooter(),
+            $exportCommand->getPublisher(),
             $this->uitpas,
             $this->calendarSummaryRepository,
             $this->twig
         );
 
-        $this->eventExportServiceCollection->delegateToServiceWithAppropriateSapiVersion(
+        $this->eventExportService->exportEvents(
             $fileFormat,
-            $exportEvents,
-            $this->logger
+            $exportCommand->getQuery(),
+            $exportCommand->getAddress(),
+            $this->logger,
+            $exportCommand->getSelection()
         );
     }
 }

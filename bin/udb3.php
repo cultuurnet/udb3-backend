@@ -83,8 +83,6 @@ $consoleApp->add(
 $consoleApp->add(new ReplayCommand());
 $consoleApp->add(new EventAncestorsCommand());
 $consoleApp->add(new UpdateCdbXMLCommand());
-$consoleApp->add(new SearchCacheWarmCommand());
-$consoleApp->add(new SearchCacheClearCommand());
 $consoleApp->add(new EventCdbXmlCommand());
 $consoleApp->add(new PurgeModelCommand());
 $consoleApp->add(new ConcludeCommand());
