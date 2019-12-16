@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
+use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
@@ -50,6 +51,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof ContactPointUpdated:
                 $this->projectContactPointUpdated($domainMessage);
+                break;
+            case $event instanceof DescriptionUpdated:
+                $this->projectDescriptionUpdated($domainMessage);
                 break;
             case $event instanceof EventImportedFromUDB2:
                 $this->projectEventImportedFromUDB2($domainMessage);
