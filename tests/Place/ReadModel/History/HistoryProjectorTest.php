@@ -5,6 +5,9 @@ namespace CultuurNet\UDB3\Place\ReadModel\History;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\Geocoding\Coordinate\Latitude;
+use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -25,6 +28,7 @@ use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
@@ -370,6 +374,28 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Afgekeurd als ongepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_GeoCoordinatesUpdated_event(): void
+    {
+        $event = new GeoCoordinatesUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Coordinates(
+                new Latitude(0),
+                new Longitude(0)
+            )
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Geocoördinaten automatisch aangepast'
         );
     }
 

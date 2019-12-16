@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
@@ -68,6 +69,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof FlaggedAsInappropriate:
                 $this->projectFlaggedAsInappropriate($domainMessage);
+                break;
+            case $event instanceof GeoCoordinatesUpdated:
+                $this->projectGeoCoordinatesUpdated($domainMessage);
                 break;
             case $event instanceof PlaceCreated:
                 $this->projectPlaceCreated($domainMessage);

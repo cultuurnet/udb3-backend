@@ -85,6 +85,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectGeoCoordinatesUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Geocoördinaten automatisch aangepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
