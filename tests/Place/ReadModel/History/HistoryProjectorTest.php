@@ -98,7 +98,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->assertHistoryContainsLogWithDescription(
             $placeCreatedEvent->getPlaceId(),
-            'Aangemaakt in UiTdatabank'
+            'Locatie aangemaakt in UiTdatabank'
         );
     }
 
@@ -114,7 +114,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->assertHistoryContainsLogWithDescription(
             $placeDeletedEvent->getItemId(),
-            'Place verwijderd'
+            'Locatie verwijderd uit UiTdatabank'
         );
     }
 
@@ -195,14 +195,14 @@ class HistoryProjectorTest extends TestCase
             [
                 [
                     'date' => self::OCCURRED_ON_FORMATTED,
-                    'description' => 'Geïmporteerd vanuit UDB2',
+                    'description' => 'Locatie geïmporteerd uit UDB2',
                     'apiKey' => self::META_AUTH_API_KEY,
                     'api' => self::META_API,
                     'consumerName' => self::META_CONSUMER,
                 ],
                 [
                     'date' => '2010-01-06T13:33:06+01:00',
-                    'description' => 'Aangemaakt in UDB2',
+                    'description' => 'Locatie aangemaakt in UDB2',
                     'author' => 'cultuurnet001',
                     'apiKey' => self::META_AUTH_API_KEY,
                     'api' => self::META_API,
@@ -229,7 +229,7 @@ class HistoryProjectorTest extends TestCase
             [
                 [
                     'date' => self::OCCURRED_ON_FORMATTED,
-                    'description' => 'Geüpdatet vanuit UDB2',
+                    'description' => 'Locatie aangepast via UDB2',
                     'apiKey' => self::META_AUTH_API_KEY,
                     'api' => self::META_API,
                     'consumerName' => self::META_CONSUMER,

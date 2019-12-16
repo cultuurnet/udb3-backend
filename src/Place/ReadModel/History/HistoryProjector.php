@@ -93,26 +93,26 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof ImagesUpdatedFromUDB2:
                 $this->projectImagesUpdatedFromUDB2($domainMessage);
                 break;
-            case $event instanceof PlaceCreated:
-                $this->projectPlaceCreated($domainMessage);
-                break;
-            case $event instanceof PlaceDeleted:
-                $this->projectPlaceDeleted($domainMessage);
-                break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($domainMessage);
                 break;
             case $event instanceof LabelRemoved:
                 $this->projectLabelRemoved($domainMessage);
                 break;
-            case $event instanceof TitleTranslated:
-                $this->projectTitleTranslated($domainMessage);
+            case $event instanceof PlaceCreated:
+                $this->projectPlaceCreated($domainMessage);
+                break;
+            case $event instanceof PlaceDeleted:
+                $this->projectPlaceDeleted($domainMessage);
                 break;
             case $event instanceof PlaceImportedFromUDB2:
                 $this->projectPlaceImportedFromUDB2($domainMessage);
                 break;
             case $event instanceof PlaceUpdatedFromUDB2:
                 $this->projectPlaceUpdatedFromUDB2($domainMessage);
+                break;
+            case $event instanceof TitleTranslated:
+                $this->projectTitleTranslated($domainMessage);
                 break;
         }
     }
@@ -141,7 +141,7 @@ final class HistoryProjector extends BaseHistoryProjector
     {
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UiTdatabank')
+            Log::createFromDomainMessage($domainMessage, 'Locatie aangemaakt in UiTdatabank')
         );
     }
 
@@ -149,7 +149,7 @@ final class HistoryProjector extends BaseHistoryProjector
     {
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Place verwijderd')
+            Log::createFromDomainMessage($domainMessage, 'Locatie verwijderd uit UiTdatabank')
         );
     }
 
@@ -162,7 +162,7 @@ final class HistoryProjector extends BaseHistoryProjector
             $event->getCdbXml()
         );
 
-        $udb2Log = Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UDB2');
+        $udb2Log = Log::createFromDomainMessage($domainMessage, 'Locatie aangemaakt in UDB2');
 
         if ($udb2Actor->getCreatedBy()) {
             $udb2Log = $udb2Log->withAuthor($udb2Actor->getCreatedBy());
@@ -181,7 +181,7 @@ final class HistoryProjector extends BaseHistoryProjector
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Geïmporteerd vanuit UDB2')
+            Log::createFromDomainMessage($domainMessage, 'Locatie geïmporteerd uit UDB2')
                 ->withoutAuthor()
         );
     }
@@ -190,7 +190,7 @@ final class HistoryProjector extends BaseHistoryProjector
     {
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Geüpdatet vanuit UDB2')
+            Log::createFromDomainMessage($domainMessage, 'Locatie aangepast via UDB2')
                 ->withoutAuthor()
         );
     }

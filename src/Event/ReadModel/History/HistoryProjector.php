@@ -154,7 +154,7 @@ final class HistoryProjector extends BaseHistoryProjector
             $event->getCdbXml()
         );
 
-        $udb2Log = Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UDB2');
+        $udb2Log = Log::createFromDomainMessage($domainMessage, 'Event aangemaakt in UDB2');
 
         if ($udb2Event->getCreatedBy()) {
             $udb2Log = $udb2Log->withAuthor($udb2Event->getCreatedBy());
@@ -173,7 +173,7 @@ final class HistoryProjector extends BaseHistoryProjector
 
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Geïmporteerd vanuit UDB2')
+            Log::createFromDomainMessage($domainMessage, 'Event geïmporteerd uit UDB2')
                 ->withoutAuthor()
         );
     }
@@ -182,7 +182,7 @@ final class HistoryProjector extends BaseHistoryProjector
     {
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Geüpdatet vanuit UDB2')
+            Log::createFromDomainMessage($domainMessage, 'Event aangepast via UDB2')
                 ->withoutAuthor()
         );
     }
@@ -191,7 +191,7 @@ final class HistoryProjector extends BaseHistoryProjector
     {
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Aangemaakt in UiTdatabank')
+            Log::createFromDomainMessage($domainMessage, 'Event aangemaakt in UiTdatabank')
         );
     }
 
