@@ -62,8 +62,20 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof DescriptionUpdated:
                 $this->projectDescriptionUpdated($domainMessage);
                 break;
+            case $event instanceof EventCopied:
+                $this->projectEventCopied($domainMessage);
+                break;
+            case $event instanceof EventCreated:
+                $this->projectEventCreated($domainMessage);
+                break;
             case $event instanceof EventDeleted:
                 $this->projectEventDeleted($domainMessage);
+                break;
+            case $event instanceof EventImportedFromUDB2:
+                $this->projectEventImportedFromUDB2($domainMessage);
+                break;
+            case $event instanceof EventUpdatedFromUDB2:
+                $this->projectEventUpdatedFromUDB2($domainMessage);
                 break;
             case $event instanceof FacilitiesUpdated:
                 $this->projectFacilitiesUpdated($domainMessage);
@@ -73,18 +85,6 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof FlaggedAsInappropriate:
                 $this->projectFlaggedAsInappropriate($domainMessage);
-                break;
-            case $event instanceof EventImportedFromUDB2:
-                $this->projectEventImportedFromUDB2($domainMessage);
-                break;
-            case $event instanceof EventUpdatedFromUDB2:
-                $this->projectEventUpdatedFromUDB2($domainMessage);
-                break;
-            case $event instanceof EventCreated:
-                $this->projectEventCreated($domainMessage);
-                break;
-            case $event instanceof EventCopied:
-                $this->projectEventCopied($domainMessage);
                 break;
             case $event instanceof LabelAdded:
                 $this->projectLabelAdded($domainMessage);
