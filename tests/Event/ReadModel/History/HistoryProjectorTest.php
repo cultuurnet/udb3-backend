@@ -27,6 +27,8 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
+use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\ImageAdded;
 use CultuurNet\UDB3\Event\Events\ImageRemoved;
 use CultuurNet\UDB3\Event\Events\ImageUpdated;
@@ -46,6 +48,7 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -929,6 +932,120 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'JaneDoe',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_images_imported_from_udb2(): void
+    {
+        $image1 = new Image(
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Language('en')
+        );
+
+        $image2 = new Image(
+            new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Language('en')
+        );
+
+        $event = new ImagesImportedFromUDB2(
+            self::EVENT_ID_1,
+            (new ImageCollection())
+                ->with($image1)
+                ->with($image2)
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_nick' => 'JaneDoe']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' geïmporteerd uit UDB2',
+                ],
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' geïmporteerd uit UDB2',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_images_updated_from_udb2(): void
+    {
+        $image1 = new Image(
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Language('en')
+        );
+
+        $image2 = new Image(
+            new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Language('en')
+        );
+
+        $event = new ImagesUpdatedFromUDB2(
+            self::EVENT_ID_1,
+            (new ImageCollection())
+                ->with($image1)
+                ->with($image2)
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_nick' => 'JaneDoe']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast via UDB2',
+                ],
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2',
                 ],
             ]
         );

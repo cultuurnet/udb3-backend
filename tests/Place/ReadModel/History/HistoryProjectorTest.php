@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
@@ -32,6 +33,8 @@ use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Place\Events\Image\ImagesImportedFromUDB2;
+use CultuurNet\UDB3\Place\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\ImageAdded;
 use CultuurNet\UDB3\Place\Events\ImageRemoved;
 use CultuurNet\UDB3\Place\Events\ImageUpdated;
@@ -475,6 +478,96 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             (string) $event->getItemId(),
             'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_ImagesImportedFromUDB2_event(): void
+    {
+        $image1 = new Image(
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Language('en')
+        );
+
+        $image2 = new Image(
+            new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Language('en')
+        );
+
+        $event = new ImagesImportedFromUDB2(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            (new ImageCollection())
+                ->with($image1)
+                ->with($image2)
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogWithDescription(
+            (string) $event->getItemId(),
+            'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' geïmporteerd uit UDB2'
+        );
+
+        $this->assertHistoryContainsLogWithDescription(
+            (string) $event->getItemId(),
+            'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' geïmporteerd uit UDB2'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_ImagesUpdatedFromUDB2_event(): void
+    {
+        $image1 = new Image(
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test1.jpg'),
+            new Language('en')
+        );
+
+        $image2 = new Image(
+            new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test2.jpg'),
+            new Language('en')
+        );
+
+        $event = new ImagesUpdatedFromUDB2(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            (new ImageCollection())
+                ->with($image1)
+                ->with($image2)
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogWithDescription(
+            (string) $event->getItemId(),
+            'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast via UDB2'
+        );
+
+        $this->assertHistoryContainsLogWithDescription(
+            (string) $event->getItemId(),
+            'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2'
         );
     }
 

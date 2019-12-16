@@ -117,9 +117,15 @@ class Log implements JsonSerializable
         return $log;
     }
 
-    public static function createFromDomainMessage(DomainMessage $domainMessage, $description): Log
-    {
+    public static function createFromDomainMessage(
+        DomainMessage $domainMessage,
+        $description,
+        ?string $idSuffix = null
+    ): Log {
         $id = $domainMessage->getId() . '_' . $domainMessage->getPlayhead();
+        if ($idSuffix !== null) {
+            $id .= '_' . $idSuffix;
+        }
 
         $date = DateTime::createFromFormat(
             BroadwayDateTime::FORMAT_STRING,

@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Place\Events\Image\ImagesImportedFromUDB2;
+use CultuurNet\UDB3\Place\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\ImageAdded;
 use CultuurNet\UDB3\Place\Events\ImageRemoved;
 use CultuurNet\UDB3\Place\Events\ImageUpdated;
@@ -84,6 +86,12 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof ImageUpdated:
                 $this->projectImageUpdated($domainMessage);
+                break;
+            case $event instanceof ImagesImportedFromUDB2:
+                $this->projectImagesImportedFromUDB2($domainMessage);
+                break;
+            case $event instanceof ImagesUpdatedFromUDB2:
+                $this->projectImagesUpdatedFromUDB2($domainMessage);
                 break;
             case $event instanceof PlaceCreated:
                 $this->projectPlaceCreated($domainMessage);

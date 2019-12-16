@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
+use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageUpdated;
 
 trait OfferHistoryProjectorTrait
@@ -130,6 +131,44 @@ trait OfferHistoryProjectorTrait
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' aangepast")
         );
+    }
+
+    private function projectImagesImportedFromUDB2(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractImagesImportedFromUDB2 $event */
+        $event = $domainMessage->getPayload();
+
+        /* @var Image $image */
+        foreach (array_values($event->getImages()->toArray()) as $key => $image) {
+            $mediaObjectId = $image->getMediaObjectId();
+            $this->writeHistory(
+                $domainMessage->getId(),
+                Log::createFromDomainMessage(
+                    $domainMessage,
+                    "Afbeelding '{$mediaObjectId}' geïmporteerd uit UDB2",
+                    (string) $key
+                )
+            );
+        }
+    }
+
+    private function projectImagesUpdatedFromUDB2(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractImagesImportedFromUDB2 $event */
+        $event = $domainMessage->getPayload();
+
+        /* @var Image $image */
+        foreach (array_values($event->getImages()->toArray()) as $key => $image) {
+            $mediaObjectId = $image->getMediaObjectId();
+            $this->writeHistory(
+                $domainMessage->getId(),
+                Log::createFromDomainMessage(
+                    $domainMessage,
+                    "Afbeelding '{$mediaObjectId}' aangepast via UDB2",
+                    (string) $key
+                )
+            );
+        }
     }
 
     private function projectLabelAdded(DomainMessage $domainMessage): void
