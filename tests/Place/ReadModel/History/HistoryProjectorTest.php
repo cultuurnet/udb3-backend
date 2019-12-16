@@ -28,6 +28,8 @@ use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -338,6 +340,36 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Voorzieningen aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_FlaggedAsDuplicate_event(): void
+    {
+        $event = new FlaggedAsDuplicate('a0ee7b1c-a9c1-4da1-af7e-d15496014656');
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Afgekeurd als duplicaat'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_FlaggedAsInappropriate_event(): void
+    {
+        $event = new FlaggedAsInappropriate('a0ee7b1c-a9c1-4da1-af7e-d15496014656');
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Afgekeurd als ongepast'
         );
     }
 

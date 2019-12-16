@@ -20,6 +20,8 @@ use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
@@ -65,6 +67,12 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof FacilitiesUpdated:
                 $this->projectFacilitiesUpdated($domainMessage);
+                break;
+            case $event instanceof FlaggedAsDuplicate:
+                $this->projectFlaggedAsDuplicate($domainMessage);
+                break;
+            case $event instanceof FlaggedAsInappropriate:
+                $this->projectFlaggedAsInappropriate($domainMessage);
                 break;
             case $event instanceof EventImportedFromUDB2:
                 $this->projectEventImportedFromUDB2($domainMessage);

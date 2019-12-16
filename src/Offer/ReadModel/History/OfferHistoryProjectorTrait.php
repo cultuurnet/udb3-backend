@@ -69,6 +69,22 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectFlaggedAsDuplicate(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Afgekeurd als duplicaat')
+        );
+    }
+
+    private function projectFlaggedAsInappropriate(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Afgekeurd als ongepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();

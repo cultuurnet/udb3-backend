@@ -18,6 +18,8 @@ use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
+use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -60,6 +62,12 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof FacilitiesUpdated:
                 $this->projectFacilitiesUpdated($domainMessage);
+                break;
+            case $event instanceof FlaggedAsDuplicate:
+                $this->projectFlaggedAsDuplicate($domainMessage);
+                break;
+            case $event instanceof FlaggedAsInappropriate:
+                $this->projectFlaggedAsInappropriate($domainMessage);
                 break;
             case $event instanceof PlaceCreated:
                 $this->projectPlaceCreated($domainMessage);
