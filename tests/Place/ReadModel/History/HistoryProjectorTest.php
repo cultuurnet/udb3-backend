@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\InMemoryDocumentRepository;
@@ -20,6 +21,7 @@ use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
+use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
@@ -289,6 +291,21 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Kalender-info aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_ContactPointUpdated_event(): void
+    {
+        $event = new ContactPointUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new ContactPoint());
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Contact-info aangepast'
         );
     }
 

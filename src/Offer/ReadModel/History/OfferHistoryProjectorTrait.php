@@ -35,6 +35,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectContactPointUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Contact-info aangepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
