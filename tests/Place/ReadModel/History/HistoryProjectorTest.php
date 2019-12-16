@@ -385,8 +385,8 @@ class HistoryProjectorTest extends TestCase
         $event = new GeoCoordinatesUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new Coordinates(
-                new Latitude(0),
-                new Longitude(0)
+                new Latitude(0.0),
+                new Longitude(0.0)
             )
         );
 

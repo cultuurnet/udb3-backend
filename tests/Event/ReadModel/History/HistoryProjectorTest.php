@@ -789,8 +789,8 @@ class HistoryProjectorTest extends TestCase
         $event = new GeoCoordinatesUpdated(
             self::EVENT_ID_1,
             new Coordinates(
-                new Latitude(0),
-                new Longitude(0)
+                new Latitude(0.0),
+                new Longitude(0.0)
             )
         );
 
