@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
@@ -55,6 +56,9 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof DescriptionUpdated:
                 $this->projectDescriptionUpdated($domainMessage);
                 break;
+            case $event instanceof EventDeleted:
+                $this->projectEventDeleted($domainMessage);
+                break;
             case $event instanceof EventImportedFromUDB2:
                 $this->projectEventImportedFromUDB2($domainMessage);
                 break;
@@ -95,6 +99,14 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Event afgelopen')
+        );
+    }
+
+    private function projectEventDeleted(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Event verwijderd uit UiTdatabank')
         );
     }
 
