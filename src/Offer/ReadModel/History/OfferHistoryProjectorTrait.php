@@ -61,6 +61,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectFacilitiesUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Voorzieningen aangepast')
+        );
+    }
+
     private function projectLabelAdded(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();

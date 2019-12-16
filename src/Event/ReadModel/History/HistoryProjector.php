@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
+use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
@@ -61,6 +62,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof EventDeleted:
                 $this->projectEventDeleted($domainMessage);
+                break;
+            case $event instanceof FacilitiesUpdated:
+                $this->projectFacilitiesUpdated($domainMessage);
                 break;
             case $event instanceof EventImportedFromUDB2:
                 $this->projectEventImportedFromUDB2($domainMessage);
