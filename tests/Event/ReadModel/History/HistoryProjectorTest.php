@@ -29,10 +29,10 @@ use PHPUnit\Framework\TestCase;
 
 class HistoryProjectorTest extends TestCase
 {
-    const EVENT_ID_1 = 'a0ee7b1c-a9c1-4da1-af7e-d15496014656';
-    const EVENT_ID_2 = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
+    private const EVENT_ID_1 = 'a0ee7b1c-a9c1-4da1-af7e-d15496014656';
+    private const EVENT_ID_2 = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
 
-    const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+    private const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
     /**
      * @var HistoryProjector
@@ -85,7 +85,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_EventImportedFromUDB2()
     {
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
             [
                 (object) [
@@ -118,7 +118,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             self::EVENT_ID_2,
             [
                 (object) [
@@ -157,7 +157,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
             [
                 (object) [
@@ -215,7 +215,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             $eventId,
             [
                 (object) [
@@ -256,7 +256,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             $eventId,
             [
                 (object) [
@@ -291,7 +291,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
             [
                 (object) [
@@ -335,7 +335,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
             [
                 (object) [
@@ -378,7 +378,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
             [
                 (object) [
@@ -421,7 +421,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             self::EVENT_ID_1,
             [
                 (object) [
@@ -442,19 +442,16 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param string $eventId
-     * @param array $history
-     */
-    protected function assertHistoryOfEvent($eventId, $history)
+    protected function assertHistoryContainsLogs(string $eventId, array $history): void
     {
         /** @var JsonDocument $document */
         $document = $this->documentRepository->get($eventId);
+        $body = array_values((array) $document->getBody());
 
-        $this->assertEquals(
-            $history,
-            $document->getBody()
-        );
+        foreach ($history as $log) {
+            // Do not use assertContains() here, as it doesn't work the same as in_array for some reason.
+            $this->assertTrue(in_array($log, $body));
+        }
     }
 
     /**

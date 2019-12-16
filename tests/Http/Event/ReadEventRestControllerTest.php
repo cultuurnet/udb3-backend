@@ -29,7 +29,12 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @var JsonDocument
      */
-    private $jsonDocument;
+    private $historyJsonDocument;
+
+    /**
+     * @var string
+     */
+    private $historyReponseContent;
 
     /**
      * @var string
@@ -51,7 +56,31 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function setUp()
     {
-        $this->jsonDocument = new JsonDocument('id', 'history');
+        $this->historyJsonDocument = new JsonDocument(
+            'id',
+            json_encode(
+                [
+                    'cfaed6fc-296a-427d-8931-c36428f25336_1_2019-04-23T16:00:00+0200' => [
+                        'author' => 'author1',
+                    ],
+                    'cfaed6fc-296a-427d-8931-c36428f25336_2_2019-04-23T16:15:00+0200' => [
+                        'author' => 'author2',
+                    ],
+                ]
+            )
+        );
+
+        $this->historyReponseContent = json_encode(
+            [
+                [
+                    'author' => 'author2',
+                ],
+                [
+                    'author' => 'author1',
+                ],
+            ]
+        );
+
         $this->calSum = 'zondag 7 oktober 2018 van 12:15 tot 18:00';
 
         $this->event = new Event();
@@ -69,7 +98,7 @@ class ReadEventRestControllerTest extends TestCase
                 function ($id) {
                     switch ($id) {
                         case self::EXISTING_ID:
-                            return $this->jsonDocument;
+                            return $this->historyJsonDocument;
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
@@ -83,7 +112,7 @@ class ReadEventRestControllerTest extends TestCase
                 function ($id) {
                     switch ($id) {
                         case self::EXISTING_ID:
-                            return $this->jsonDocument->getRawBody();
+                            return $this->historyJsonDocument->getRawBody();
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
@@ -122,8 +151,7 @@ class ReadEventRestControllerTest extends TestCase
         $jsonResponse = $this->eventRestController->history(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $rawBody = $this->jsonDocument->getRawBody();
-        $this->assertEquals($rawBody, $jsonResponse->getContent());
+        $this->assertEquals($this->historyReponseContent, $jsonResponse->getContent());
     }
 
     /**
@@ -167,7 +195,7 @@ class ReadEventRestControllerTest extends TestCase
         $jsonResponse = $this->eventRestController->get(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
+        $this->assertEquals($this->historyJsonDocument->getRawBody(), $jsonResponse->getContent());
     }
 
     /**

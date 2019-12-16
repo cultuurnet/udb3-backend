@@ -6,45 +6,48 @@ namespace CultuurNet\UDB3\Offer\ReadModel\History;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\History\Log;
-use CultuurNet\UDB3\Offer\Events\AbstractDescriptionTranslated;
-use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded;
-use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved;
-use CultuurNet\UDB3\Offer\Events\AbstractTitleTranslated;
 
 trait OfferHistoryProjectorTrait
 {
-    abstract protected function createGenericLog(DomainMessage $domainMessage, string $description): Log;
     abstract protected function writeHistory(string $itemId, Log $log): void;
 
-    private function projectLabelAdded(AbstractLabelAdded $event, DomainMessage $domainMessage): void
+    private function projectLabelAdded(DomainMessage $domainMessage): void
     {
+        $event = $domainMessage->getPayload();
+
         $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Label '{$event->getLabel()}' toegepast")
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Label '{$event->getLabel()}' toegepast")
         );
     }
 
-    private function projectLabelRemoved(AbstractLabelRemoved $event, DomainMessage $domainMessage): void
+    private function projectLabelRemoved(DomainMessage $domainMessage): void
     {
+        $event = $domainMessage->getPayload();
+
         $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Label '{$event->getLabel()}' verwijderd")
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Label '{$event->getLabel()}' verwijderd")
         );
     }
 
-    private function projectDescriptionTranslated(AbstractDescriptionTranslated $event, DomainMessage $domainMessage)
+    private function projectDescriptionTranslated(DomainMessage $domainMessage): void
     {
+        $event = $domainMessage->getPayload();
+
         $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Beschrijving vertaald ({$event->getLanguage()})")
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Beschrijving vertaald ({$event->getLanguage()})")
         );
     }
 
-    private function projectTitleTranslated(AbstractTitleTranslated $event, DomainMessage $domainMessage)
+    private function projectTitleTranslated(DomainMessage $domainMessage): void
     {
+        $event = $domainMessage->getPayload();
+
         $this->writeHistory(
-            $event->getItemId(),
-            $this->createGenericLog($domainMessage, "Titel vertaald ({$event->getLanguage()})")
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Titel vertaald ({$event->getLanguage()})")
         );
     }
 }

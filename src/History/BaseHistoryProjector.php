@@ -22,59 +22,6 @@ abstract class BaseHistoryProjector implements EventListenerInterface
         $this->documentRepository = $documentRepository;
     }
 
-    protected function getConsumerFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['consumer']['name'])) {
-            return (string) $properties['consumer']['name'];
-        }
-
-        return null;
-    }
-
-    protected function domainMessageDateToNativeDate(BroadwayDateTime $date): DateTime
-    {
-        $dateString = $date->toString();
-        return DateTime::createFromFormat(
-            BroadwayDateTime::FORMAT_STRING,
-            $dateString
-        );
-    }
-
-    protected function getApiFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['api'])) {
-            return $properties['api'];
-        }
-
-        return null;
-    }
-
-    protected function getApiKeyFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['auth_api_key'])) {
-            return $properties['auth_api_key'];
-        }
-
-        return null;
-    }
-
-    protected function getAuthorFromMetadata(Metadata $metadata): ?string
-    {
-        $properties = $metadata->serialize();
-
-        if (isset($properties['user_nick'])) {
-            return (string) $properties['user_nick'];
-        }
-
-        return null;
-    }
-
     protected function loadDocumentFromRepositoryByEventId(string $eventId): JsonDocument
     {
         $historyDocument = $this->documentRepository->get($eventId);
@@ -90,25 +37,12 @@ abstract class BaseHistoryProjector implements EventListenerInterface
     {
         $historyDocument = $this->loadDocumentFromRepositoryByEventId($eventId);
 
-        $history = $historyDocument->getBody();
+        $history = (array) $historyDocument->getBody();
 
-        // Append most recent one to the top.
-        array_unshift($history, $log);
+        $history[$log->getUniqueKey()] = $log;
 
         $this->documentRepository->save(
-            $historyDocument->withBody($history)
-        );
-    }
-
-    protected function createGenericLog(DomainMessage $domainMessage, string $description): Log
-    {
-        return new Log(
-            $this->domainMessageDateToNativeDate($domainMessage->getRecordedOn()),
-            $description,
-            $this->getAuthorFromMetadata($domainMessage->getMetadata()),
-            $this->getApiKeyFromMetadata($domainMessage->getMetadata()),
-            $this->getApiFromMetadata($domainMessage->getMetadata()),
-            $this->getConsumerFromMetadata($domainMessage->getMetadata())
+            $historyDocument->withBody((object) $history)
         );
     }
 }

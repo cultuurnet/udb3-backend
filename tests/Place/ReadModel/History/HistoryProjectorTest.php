@@ -32,13 +32,12 @@ use CultuurNet\UDB3\Label;
 
 class HistoryProjectorTest extends TestCase
 {
-    const META_USER_NICK = 'Jan Janssen';
-    const META_AUTH_API_KEY = 'my-super-duper-key';
-    const META_API = 'json-api';
-    const META_CONSUMER = 'My super duper name';
-    const OCCURRED_ON = '2015-03-27T10:17:19.176169+02:00';
-    const OCCURRED_ON_FORMATTED = '2015-03-27T10:17:19+02:00';
-    const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+    private const META_USER_NICK = 'Jan Janssen';
+    private const META_AUTH_API_KEY = 'my-super-duper-key';
+    private const META_API = 'json-api';
+    private const META_CONSUMER = 'My super duper name';
+    private const OCCURRED_ON = '2015-03-27T10:17:19.176169+02:00';
+    private const OCCURRED_ON_FORMATTED = '2015-03-27T10:17:19+02:00';
 
     /**
      * @var InMemoryDocumentRepository
@@ -70,7 +69,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistory(
+        $this->assertHistoryContainsLogWithDescription(
             $placeCreatedEvent->getPlaceId(),
             'Aangemaakt in UiTdatabank'
         );
@@ -86,7 +85,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistory(
+        $this->assertHistoryContainsLogWithDescription(
             $placeDeletedEvent->getItemId(),
             'Place verwijderd'
         );
@@ -101,7 +100,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = $this->aDomainMessageForEvent($labelAddedEvent->getItemId(), $labelAddedEvent);
 
         $this->historyProjector->handle($domainMessage);
-        $this->assertHistory(
+        $this->assertHistoryContainsLogWithDescription(
             $labelAddedEvent->getItemId(),
             "Label '{$labelAddedEvent->getLabel()}' toegepast"
         );
@@ -116,7 +115,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = $this->aDomainMessageForEvent($labelRemovedEvent->getItemId(), $labelRemovedEvent);
 
         $this->historyProjector->handle($domainMessage);
-        $this->assertHistory(
+        $this->assertHistoryContainsLogWithDescription(
             $labelRemovedEvent->getItemId(),
             "Label '{$labelRemovedEvent->getLabel()}' verwijderd"
         );
@@ -132,7 +131,7 @@ class HistoryProjectorTest extends TestCase
             $descriptionTranslatedEvent);
 
         $this->historyProjector->handle($domainMessage);
-        $this->assertHistory(
+        $this->assertHistoryContainsLogWithDescription(
             $descriptionTranslatedEvent->getItemId(),
             "Beschrijving vertaald ({$descriptionTranslatedEvent->getLanguage()})"
         );
@@ -147,7 +146,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = $this->aDomainMessageForEvent($titleTranslatedEvent->getItemId(), $titleTranslatedEvent);
 
         $this->historyProjector->handle($domainMessage);
-        $this->assertHistory(
+        $this->assertHistoryContainsLogWithDescription(
             $titleTranslatedEvent->getItemId(),
             "Titel vertaald ({$titleTranslatedEvent->getLanguage()})"
         );
@@ -164,7 +163,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             $placeImportedFromUDB2Event->getActorId(),
             [
                 (object) [
@@ -178,6 +177,9 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2010-01-06T13:33:06+01:00',
                     'description' => 'Aangemaakt in UDB2',
                     'author' => 'cultuurnet001',
+                    'apiKey' => self::META_AUTH_API_KEY,
+                    'api' => self::META_API,
+                    'consumerName' => self::META_CONSUMER,
                 ],
             ]
         );
@@ -195,7 +197,7 @@ class HistoryProjectorTest extends TestCase
 
         $this->historyProjector->handle($domainMessage);
 
-        $this->assertHistoryOfEvent(
+        $this->assertHistoryContainsLogs(
             $placeImportedFromUDB2Event->getActorId(),
             [
                 (object) [
@@ -209,14 +211,16 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    protected function assertHistoryOfEvent(string $eventId, array $history)
+    protected function assertHistoryContainsLogs(string $eventId, array $history): void
     {
         /** @var JsonDocument $document */
         $document = $this->documentRepository->get($eventId);
-        $this->assertEquals(
-            $history,
-            $document->getBody()
-        );
+        $body = array_values((array) $document->getBody());
+
+        foreach ($history as $log) {
+            // Do not use assertContains() here, as it doesn't work the same as in_array for some reason.
+            $this->assertTrue(in_array($log, $body));
+        }
     }
 
     public function aPlaceCreatedEvent(): PlaceCreated
@@ -311,9 +315,11 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
-    public function assertHistory(string $eventId, string $eventDescription): void
-    {
-        $this->assertHistoryOfEvent(
+    public function assertHistoryContainsLogWithDescription(
+        string $eventId,
+        string $eventDescription
+    ): void {
+        $this->assertHistoryContainsLogs(
             $eventId,
             [
                 (object) [
