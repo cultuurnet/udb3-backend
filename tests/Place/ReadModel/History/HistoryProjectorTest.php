@@ -20,6 +20,9 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
@@ -29,6 +32,9 @@ use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Place\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Place\Events\ImageAdded;
+use CultuurNet\UDB3\Place\Events\ImageRemoved;
+use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
@@ -45,6 +51,8 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use CultuurNet\UDB3\Label;
+use ValueObjects\Identity\UUID;
+use ValueObjects\Web\Url;
 
 class HistoryProjectorTest extends TestCase
 {
@@ -396,6 +404,77 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Geocoördinaten automatisch aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_ImageAdded_event(): void
+    {
+        $image = new Image(
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Language('en')
+        );
+
+        $event = new ImageAdded('a0ee7b1c-a9c1-4da1-af7e-d15496014656', $image);
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' toegevoegd'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_ImageRemoved_event(): void
+    {
+        $image = new Image(
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Language('en')
+        );
+
+        $event = new ImageRemoved('a0ee7b1c-a9c1-4da1-af7e-d15496014656', $image);
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' verwijderd'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_ImageUpdated_event(): void
+    {
+        $event = new ImageUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder')
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            (string) $event->getItemId(),
+            'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast'
         );
     }
 

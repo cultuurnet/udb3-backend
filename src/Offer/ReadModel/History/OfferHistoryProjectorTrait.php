@@ -6,6 +6,9 @@ namespace CultuurNet\UDB3\Offer\ReadModel\History;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\History\Log;
+use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
+use CultuurNet\UDB3\Offer\Events\Image\AbstractImageUpdated;
 
 trait OfferHistoryProjectorTrait
 {
@@ -90,6 +93,42 @@ trait OfferHistoryProjectorTrait
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Geocoördinaten automatisch aangepast')
+        );
+    }
+
+    private function projectImageAdded(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractImageEvent $event */
+        $event = $domainMessage->getPayload();
+        $mediaObjectId = $event->getImage()->getMediaObjectId();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' toegevoegd")
+        );
+    }
+
+    private function projectImageRemoved(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractImageEvent $event */
+        $event = $domainMessage->getPayload();
+        $mediaObjectId = $event->getImage()->getMediaObjectId();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' verwijderd")
+        );
+    }
+
+    private function projectImageUpdated(DomainMessage $domainMessage): void
+    {
+        /* @var AbstractImageUpdated $event */
+        $event = $domainMessage->getPayload();
+        $mediaObjectId = $event->getMediaObjectId();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Afbeelding '{$mediaObjectId}' aangepast")
         );
     }
 
