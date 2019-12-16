@@ -43,6 +43,16 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectDescriptionTranslated(DomainMessage $domainMessage): void
+    {
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Beschrijving vertaald ({$event->getLanguage()})")
+        );
+    }
+
     private function projectDescriptionUpdated(DomainMessage $domainMessage): void
     {
         $this->writeHistory(
@@ -68,16 +78,6 @@ trait OfferHistoryProjectorTrait
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, "Label '{$event->getLabel()}' verwijderd")
-        );
-    }
-
-    private function projectDescriptionTranslated(DomainMessage $domainMessage): void
-    {
-        $event = $domainMessage->getPayload();
-
-        $this->writeHistory(
-            $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, "Beschrijving vertaald ({$event->getLanguage()})")
         );
     }
 

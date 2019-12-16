@@ -53,6 +53,9 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof ContactPointUpdated:
                 $this->projectContactPointUpdated($domainMessage);
                 break;
+            case $event instanceof DescriptionTranslated:
+                $this->projectDescriptionTranslated($domainMessage);
+                break;
             case $event instanceof DescriptionUpdated:
                 $this->projectDescriptionUpdated($domainMessage);
                 break;
@@ -76,9 +79,6 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof LabelRemoved:
                 $this->projectLabelRemoved($domainMessage);
-                break;
-            case $event instanceof DescriptionTranslated:
-                $this->projectDescriptionTranslated($domainMessage);
                 break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);
