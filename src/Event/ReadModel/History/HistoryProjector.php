@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -43,6 +44,9 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof CalendarUpdated:
                 $this->projectCalendarUpdated($domainMessage);
                 break;
+            case $event instanceof Concluded:
+                $this->projectConcluded($domainMessage);
+                break;
             case $event instanceof EventImportedFromUDB2:
                 $this->projectEventImportedFromUDB2($domainMessage);
                 break;
@@ -75,6 +79,14 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Toegang aangepast')
+        );
+    }
+
+    private function projectConcluded(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Event afgelopen')
         );
     }
 
