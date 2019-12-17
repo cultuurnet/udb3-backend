@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
-use DateTimeInterface;
 
 trait OfferHistoryProjectorTrait
 {
@@ -260,7 +259,7 @@ trait OfferHistoryProjectorTrait
     {
         /* @var Published $event */
         $event = $domainMessage->getPayload();
-        $date = $event->getPublicationDate()->format(DateTimeInterface::ATOM);
+        $date = $event->getPublicationDate()->format(\DateTime::ATOM);
 
         $this->writeHistory(
             $domainMessage->getId(),
