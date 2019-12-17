@@ -42,6 +42,7 @@ use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
+use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
@@ -586,6 +587,31 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             (string) $event->getItemId(),
             'Labels geïmporteerd uit JSON-LD'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_MainImageSelected_event(): void
+    {
+        $image = new Image(
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            MIMEType::fromSubtype('jpeg'),
+            new \CultuurNet\UDB3\Media\Properties\Description('description'),
+            new CopyrightHolder('copyright holder'),
+            Url::fromNative('https://io.uitdatabank.be/media/test.jpg'),
+            new Language('en')
+        );
+
+        $event = new MainImageSelected('a0ee7b1c-a9c1-4da1-af7e-d15496014656', $image);
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Hoofdafbeelding geselecteerd: \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\''
         );
     }
 

@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
 
 trait OfferHistoryProjectorTrait
 {
@@ -196,6 +197,18 @@ trait OfferHistoryProjectorTrait
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Labels geïmporteerd uit JSON-LD')
+        );
+    }
+
+    private function projectMainImageSelected(DomainMessage $domainMessage): void
+    {
+        /* @var MainImageSelected $event */
+        $event = $domainMessage->getPayload();
+        $mediaObjectId = $event->getImage()->getMediaObjectId()->toNative();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Hoofdafbeelding geselecteerd: '{$mediaObjectId}'")
         );
     }
 
