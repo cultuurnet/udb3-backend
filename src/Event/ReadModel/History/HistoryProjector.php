@@ -32,9 +32,17 @@ use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
+use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
+use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
+use CultuurNet\UDB3\Event\Events\TitleUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
@@ -140,8 +148,32 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof OrganizerUpdated:
                 $this->projectOrganizerUpdated($domainMessage);
                 break;
+            case $event instanceof PriceInfoUpdated:
+                $this->projectPriceInfoUpdated($domainMessage);
+                break;
+            case $event instanceof Published:
+                $this->projectPublished($domainMessage);
+                break;
+            case $event instanceof Rejected:
+                $this->projectRejected($domainMessage);
+                break;
+            case $event instanceof ThemeUpdated:
+                $this->projectThemeUpdated($domainMessage);
+                break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);
+                break;
+            case $event instanceof TitleUpdated:
+                $this->projectTitleUpdated($domainMessage);
+                break;
+            case $event instanceof TypeUpdated:
+                $this->projectTypeUpdated($domainMessage);
+                break;
+            case $event instanceof TypicalAgeRangeDeleted:
+                $this->projectTypicalAgeRangeDeleted($domainMessage);
+                break;
+            case $event instanceof TypicalAgeRangeUpdated:
+                $this->projectTypicalAgeRangeUpdated($domainMessage);
                 break;
         }
     }

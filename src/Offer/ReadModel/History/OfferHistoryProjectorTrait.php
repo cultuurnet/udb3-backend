@@ -11,8 +11,10 @@ use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
+use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
+use DateTimeInterface;
 
 trait OfferHistoryProjectorTrait
 {
@@ -246,6 +248,42 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectPriceInfoUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Prijs-info aangepast')
+        );
+    }
+
+    private function projectPublished(DomainMessage $domainMessage): void
+    {
+        /* @var Published $event */
+        $event = $domainMessage->getPayload();
+        $date = $event->getPublicationDate()->format(DateTimeInterface::ATOM);
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Gepubliceerd (publicatiedatum: '{$date}')")
+        );
+    }
+
+    private function projectRejected(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Afgekeurd')
+        );
+    }
+
+    private function projectThemeUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Thema aangepast')
+        );
+    }
+
     private function projectTitleTranslated(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
@@ -253,6 +291,38 @@ trait OfferHistoryProjectorTrait
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, "Titel vertaald ({$event->getLanguage()})")
+        );
+    }
+
+    private function projectTitleUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Titel aangepast')
+        );
+    }
+
+    private function projectTypeUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Type aangepast')
+        );
+    }
+
+    private function projectTypicalAgeRangeDeleted(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Leeftijds-info verwijderd')
+        );
+    }
+
+    private function projectTypicalAgeRangeUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Leeftijds-info aangepast')
         );
     }
 }

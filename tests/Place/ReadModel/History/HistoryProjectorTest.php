@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
@@ -49,20 +50,36 @@ use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
+use CultuurNet\UDB3\Place\Events\Moderation\Published;
+use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Place\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
+use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Place\Events\ThemeUpdated;
 use CultuurNet\UDB3\Place\Events\TitleTranslated;
+use CultuurNet\UDB3\Place\Events\TitleUpdated;
+use CultuurNet\UDB3\Place\Events\TypeUpdated;
+use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
+use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Place\ReadModel\Enum\EventDescription;
+use CultuurNet\UDB3\PriceInfo\BasePrice;
+use CultuurNet\UDB3\PriceInfo\Price;
+use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Geography\Country;
 use CultuurNet\UDB3\Label;
 use ValueObjects\Identity\UUID;
+use ValueObjects\Money\Currency;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class HistoryProjectorTest extends TestCase
@@ -720,6 +737,160 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Organisatie \'6288f51f-dabe-4423-9e45-35491c5f8395\' toegevoegd'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_PriceInfoUpdated_event(): void
+    {
+        $event = new PriceInfoUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new PriceInfo(
+                new BasePrice(
+                    Price::fromFloat(10.0),
+                    Currency::fromNative('EUR')
+                )
+            )
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Prijs-info aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_Published_event(): void
+    {
+        $event = new Published(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            DateTimeImmutable::createFromFormat(
+                DateTimeInterface::ATOM,
+                '2015-04-30T02:00:00+02:00'
+            )
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Gepubliceerd (publicatiedatum: \'2015-04-30T02:00:00+02:00\')'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_Rejected_event(): void
+    {
+        $event = new Rejected(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new StringLiteral('not good enough')
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Afgekeurd'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_ThemeUpdated_event(): void
+    {
+        $event = new ThemeUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Theme('0.1', 'theme label')
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Thema aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_TitleUpdated_event(): void
+    {
+        $event = new TitleUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Title('new title')
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Titel aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_TypeUpdated_event(): void
+    {
+        $event = new TypeUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new EventType('0.1.1', 'type label')
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Type aangepast'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_TypicalAgeRangeDeleted_event(): void
+    {
+        $event = new TypicalAgeRangeDeleted('a0ee7b1c-a9c1-4da1-af7e-d15496014656');
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Leeftijds-info verwijderd'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_TypicalAgeRangeUpdated_event(): void
+    {
+        $event = new TypicalAgeRangeUpdated('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new AgeRange());
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Leeftijds-info aangepast'
         );
     }
 
