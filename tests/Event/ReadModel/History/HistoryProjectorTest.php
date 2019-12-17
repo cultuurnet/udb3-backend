@@ -73,7 +73,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
