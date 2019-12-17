@@ -43,6 +43,7 @@ use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
+use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
@@ -612,6 +613,33 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Hoofdafbeelding geselecteerd: \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\''
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_MajorInfoUpdated_event(): void
+    {
+        $event = new MajorInfoUpdated(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Title('title'),
+            new EventType('0.0.0.0', 'event type'),
+            new Address(
+                new Street('straat'),
+                new PostalCode('3000'),
+                new Locality('Leuven'),
+                Country::fromNative('BE')
+            ),
+            new Calendar(CalendarType::PERMANENT())
+        );
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getPlaceId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getPlaceId(),
+            'MajorInfo aangepast'
         );
     }
 

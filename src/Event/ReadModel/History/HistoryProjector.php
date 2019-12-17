@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MainImageSelected;
+use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
@@ -127,6 +128,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof MainImageSelected:
                 $this->projectMainImageSelected($domainMessage);
+                break;
+            case $event instanceof MajorInfoUpdated:
+                $this->projectMajorInfoUpdated($domainMessage);
                 break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);

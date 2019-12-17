@@ -212,6 +212,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectMajorInfoUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'MajorInfo aangepast')
+        );
+    }
+
     private function projectTitleTranslated(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();

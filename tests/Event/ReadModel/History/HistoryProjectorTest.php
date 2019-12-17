@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MainImageSelected;
+use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
@@ -1110,6 +1111,41 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'JaneDoe',
                     'description' => 'Hoofdafbeelding geselecteerd: \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\'',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_major_info_updated(): void
+    {
+        $event = new MajorInfoUpdated(
+            self::EVENT_ID_1,
+            new Title('title'),
+            new EventType('0.0.0.0', 'event type'),
+            new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
+            new Calendar(CalendarType::PERMANENT())
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_nick' => 'JaneDoe']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'MajorInfo aangepast',
                 ],
             ]
         );
