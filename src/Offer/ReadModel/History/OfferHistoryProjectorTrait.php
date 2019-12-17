@@ -11,6 +11,8 @@ use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
+use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
+use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
 
 trait OfferHistoryProjectorTrait
 {
@@ -217,6 +219,30 @@ trait OfferHistoryProjectorTrait
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'MajorInfo aangepast')
+        );
+    }
+
+    private function projectOrganizerDeleted(DomainMessage $domainMessage): void
+    {
+        /* @var OrganizerDeleted $event */
+        $event = $domainMessage->getPayload();
+        $organizerId = $event->getOrganizerId();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Organisatie '{$organizerId}' verwijderd")
+        );
+    }
+
+    private function projectOrganizerUpdated(DomainMessage $domainMessage): void
+    {
+        /* @var OrganizerUpdated $event */
+        $event = $domainMessage->getPayload();
+        $organizerId = $event->getOrganizerId();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Organisatie '{$organizerId}' toegevoegd")
         );
     }
 

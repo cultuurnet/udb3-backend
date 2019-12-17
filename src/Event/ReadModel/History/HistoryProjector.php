@@ -32,6 +32,8 @@ use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
+use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
+use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
@@ -131,6 +133,12 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof MajorInfoUpdated:
                 $this->projectMajorInfoUpdated($domainMessage);
+                break;
+            case $event instanceof OrganizerDeleted:
+                $this->projectOrganizerDeleted($domainMessage);
+                break;
+            case $event instanceof OrganizerUpdated:
+                $this->projectOrganizerUpdated($domainMessage);
                 break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);
