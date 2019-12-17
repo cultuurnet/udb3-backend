@@ -772,7 +772,7 @@ class HistoryProjectorTest extends TestCase
         $event = new Published(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             DateTimeImmutable::createFromFormat(
-                DateTimeInterface::ATOM,
+                \DateTime::ATOM,
                 '2015-04-30T02:00:00+02:00'
             )
         );
