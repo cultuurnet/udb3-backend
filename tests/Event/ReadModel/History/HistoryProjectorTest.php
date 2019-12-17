@@ -34,6 +34,7 @@ use CultuurNet\UDB3\Event\Events\ImageRemoved;
 use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
+use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
@@ -51,6 +52,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
@@ -1010,6 +1012,35 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'JaneDoe',
                     'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_labels_imported(): void
+    {
+        $event = new LabelsImported(self::EVENT_ID_1, new Labels());
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_nick' => 'JaneDoe']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => 'Labels geïmporteerd uit JSON-LD',
                 ],
             ]
         );

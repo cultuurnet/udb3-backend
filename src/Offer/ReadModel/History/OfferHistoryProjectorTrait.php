@@ -191,6 +191,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectLabelsImported(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Labels geïmporteerd uit JSON-LD')
+        );
+    }
+
     private function projectTitleTranslated(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();

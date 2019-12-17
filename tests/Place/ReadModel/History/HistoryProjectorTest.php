@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
@@ -40,6 +41,7 @@ use CultuurNet\UDB3\Place\Events\ImageRemoved;
 use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
+use CultuurNet\UDB3\Place\Events\LabelsImported;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Place\Events\Moderation\FlaggedAsInappropriate;
@@ -568,6 +570,22 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             (string) $event->getItemId(),
             'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_LabelsImported_event(): void
+    {
+        $event = new LabelsImported('a0ee7b1c-a9c1-4da1-af7e-d15496014656', new Labels());
+
+        $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            (string) $event->getItemId(),
+            'Labels geïmporteerd uit JSON-LD'
         );
     }
 
