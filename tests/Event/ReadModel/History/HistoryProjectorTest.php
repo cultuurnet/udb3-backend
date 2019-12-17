@@ -35,6 +35,7 @@ use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
+use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
@@ -1041,6 +1042,35 @@ class HistoryProjectorTest extends TestCase
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'JaneDoe',
                     'description' => 'Labels geïmporteerd uit JSON-LD',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_location_updated(): void
+    {
+        $event = new LocationUpdated(self::EVENT_ID_1, new LocationId('827b7d8d-8821-4870-a48b-bea9d44f557c'));
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_nick' => 'JaneDoe']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'author' => 'JaneDoe',
+                    'description' => "Locatie aangepast naar '827b7d8d-8821-4870-a48b-bea9d44f557c'",
                 ],
             ]
         );

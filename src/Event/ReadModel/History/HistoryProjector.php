@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
+use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsDuplicate;
 use CultuurNet\UDB3\Event\Events\Moderation\FlaggedAsInappropriate;
@@ -120,6 +121,9 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof LabelsImported:
                 $this->projectLabelsImported($domainMessage);
                 break;
+            case $event instanceof LocationUpdated:
+                $this->projectLocationUpdated($domainMessage);
+                break;
             case $event instanceof TitleTranslated:
                 $this->projectTitleTranslated($domainMessage);
                 break;
@@ -206,6 +210,20 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Event gekopieerd van ' . $eventCopied->getOriginalEventId())
+        );
+    }
+
+    private function projectLocationUpdated(DomainMessage $domainMessage): void
+    {
+        /* @var LocationUpdated $event */
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage(
+                $domainMessage,
+                "Locatie aangepast naar '{$event->getLocationId()->toNative()}'"
+            )
         );
     }
 }
