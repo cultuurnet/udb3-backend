@@ -1326,7 +1326,7 @@ class HistoryProjectorTest extends TestCase
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
                     'author' => 'JaneDoe',
-                    'description' => 'Afgekeurd',
+                    'description' => "Afgekeurd, reden: 'not good enough'",
                 ],
             ]
         );
