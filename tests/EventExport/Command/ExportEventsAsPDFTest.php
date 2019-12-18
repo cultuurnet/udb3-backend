@@ -23,7 +23,6 @@ class ExportEventsAsPDFTest extends TestCase
     {
         $this->export = new ExportEventsAsPDF(
             new EventExportQuery('*.*'),
-            new SapiVersion(SapiVersion::V2),
             'vlieg',
             'http://foo.bar/logo.svg',
             new Title('title'),

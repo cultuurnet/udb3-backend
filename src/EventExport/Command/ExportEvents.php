@@ -17,11 +17,6 @@ abstract class ExportEvents implements ExportEventsInterface
     private $query;
 
     /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
-
-    /**
      * @var null|EmailAddress
      */
     private $address;
@@ -38,14 +33,12 @@ abstract class ExportEvents implements ExportEventsInterface
 
     /**
      * @param EventExportQuery  $query
-     * @param SapiVersion       $sapiVersion
      * @param EmailAddress|null $address
      * @param string[]          $selection
      * @param string[]          $include
      */
     public function __construct(
         EventExportQuery $query,
-        SapiVersion $sapiVersion,
         EmailAddress $address = null,
         $selection = null,
         $include = null
@@ -55,7 +48,6 @@ abstract class ExportEvents implements ExportEventsInterface
         }
 
         $this->query = $query;
-        $this->sapiVersion = $sapiVersion;
         $this->address = $address;
         $this->selection = $selection;
 
@@ -68,14 +60,6 @@ abstract class ExportEvents implements ExportEventsInterface
     public function getQuery(): EventExportQuery
     {
         return $this->query;
-    }
-
-    /**
-     * @return SapiVersion
-     */
-    public function getSapiVersion(): SapiVersion
-    {
-        return $this->sapiVersion;
     }
 
     /**

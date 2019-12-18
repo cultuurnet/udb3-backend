@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Generator;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ValueObjects\Web\EmailAddress;
@@ -89,6 +90,10 @@ class EventExportService implements EventExportServiceInterface
     ) {
         if (!$logger instanceof LoggerInterface) {
             $logger = new NullLogger();
+        }
+
+        if ($this->resultsGenerator instanceof LoggerAwareInterface) {
+            $this->resultsGenerator->setLogger($logger);
         }
 
         if (is_array($selection) && !empty($selection)) {
@@ -243,13 +248,17 @@ class EventExportService implements EventExportServiceInterface
     {
         $events = $this->resultsGenerator->search((string) $query);
 
+        $count = 0;
         foreach ($events as $eventIdentifier) {
             $event = $this->getEventAsJSONLD((string) $eventIdentifier->getIri(), $logger);
 
             if ($event) {
+                $count++;
                 yield $eventIdentifier->getId() => $event;
             }
         }
+
+        $logger->debug("yielded ${count} actual events.");
     }
 
     private function getFinalFilePath(

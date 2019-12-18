@@ -44,18 +44,7 @@ class GeneralSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['user_constraints_read_repository.v2'] = $app->share(
-            function (Application $app) {
-                return new UserConstraintsReadRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral(UserPermissionsServiceProvider::USER_ROLES_TABLE),
-                    new StringLiteral(UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE),
-                    $app['role_search_repository.table_name']
-                );
-            }
-        );
-
-        $app['user_constraints_read_repository.v3'] = $app->share(
+        $app['user_constraints_read_repository'] = $app->share(
             function (Application $app) {
                 return new UserConstraintsReadRepository(
                     $app['dbal_connection'],

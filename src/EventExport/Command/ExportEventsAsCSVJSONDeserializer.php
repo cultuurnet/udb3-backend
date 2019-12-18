@@ -13,14 +13,12 @@ class ExportEventsAsCSVJSONDeserializer extends ExportEventsJSONDeserializer
      */
     protected function createCommand(
         EventExportQuery $query,
-        SapiVersion $sapiVersion,
         EmailAddress $address = null,
         $selection = null,
         $include = null
     ) {
         return new ExportEventsAsCSV(
             $query,
-            $sapiVersion,
             $address,
             $selection,
             $include

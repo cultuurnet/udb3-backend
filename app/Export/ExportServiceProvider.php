@@ -12,6 +12,8 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromo
 use CultuurNet\UDB3\EventExport\SapiVersion;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -40,27 +42,12 @@ class ExportServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['event_export_service_collection'] = $app->share(
+        $app['event_export_service'] = $app->share(
             function ($app) {
-                $eventExportServiceCollection = new EventExportServiceCollection();
-
-                $eventExportServiceCollection = $eventExportServiceCollection
-                    ->withService(
-                        new SapiVersion(SapiVersion::V2),
-                        $this->createEventExportService(
-                            $app,
-                            $app['search_service']
-                        )
-                    )
-                    ->withService(
-                        new SapiVersion(SapiVersion::V3),
-                        $this->createEventExportService(
-                            $app,
-                            $app['sapi3_search_service']
-                        )
-                    );
-
-                return $eventExportServiceCollection;
+                return $this->createEventExportService(
+                    $app,
+                    $app['sapi3_search_service']
+                );
             }
         );
 
@@ -77,13 +64,15 @@ class ExportServiceProvider implements ServiceProviderInterface
 
                 $eventInfoService->setLogger($app['logger.uitpas']);
 
-                return new EventExportCommandHandler(
-                    $app['event_export_service_collection'],
+                $eventExportCommandHandler = new EventExportCommandHandler(
+                    $app['event_export_service'],
                     $app['config']['prince']['binary'],
                     $eventInfoService,
                     $app['calendar_summary_repository'],
                     $app['event_export_twig_environment']
                 );
+                $eventExportCommandHandler->setLogger($app['event_export_logger']);
+                return $eventExportCommandHandler;
             }
         );
 
@@ -93,6 +82,20 @@ class ExportServiceProvider implements ServiceProviderInterface
             function (CommandBusInterface $commandBus, Application $app) {
                 $commandBus->subscribe($app['event_export_command_handler']);
                 return $commandBus;
+            }
+        );
+
+        $app['event_export_log_handler'] = $app->share(
+            function () {
+                return new StreamHandler(__DIR__ . '/../../log/export.log');
+            }
+        );
+
+        $app['event_export_logger'] = $app->share(
+            function (Application $app) {
+                $logger = new Logger('event-export');
+                $logger->pushHandler($app['event_export_log_handler']);
+                return $logger;
             }
         );
     }

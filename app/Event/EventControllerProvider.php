@@ -21,7 +21,7 @@ class EventControllerProvider implements ControllerProviderInterface
                 return new ReadEventRestController(
                     $app['event_service'],
                     $app['event_history_repository'],
-                    $app['search_v3_serializer'],
+                    $app['search_serializer'],
                     new CultureFeedUserIdentification(
                         $app['current_user'],
                         $app['config']['user_permissions']

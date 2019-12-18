@@ -20,18 +20,6 @@ use ValueObjects\Web\EmailAddress;
  */
 class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 {
-    private $defaultSapiVersion;
-
-    /**
-     * @param $defaultSapiVersion
-     */
-    public function __construct($defaultSapiVersion)
-    {
-        parent::__construct();
-
-        $this->defaultSapiVersion = $defaultSapiVersion;
-    }
-
     /**
      * @param StringLiteral $data
      * @return ExportEventsAsPDF
@@ -45,11 +33,6 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
         }
 
         $query = new EventExportQuery($json->query);
-
-        $sapiVersion = $this->defaultSapiVersion;
-        if (isset($json->sapiVersion)) {
-            $sapiVersion = new SapiVersion($json->sapiVersion);
-        }
 
         if (!isset($json->customizations)) {
             throw new MissingValueException('customizations is missing');
@@ -88,7 +71,6 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 
         $command = new ExportEventsAsPDF(
             $query,
-            $sapiVersion,
             $brand,
             $logo,
             $title,

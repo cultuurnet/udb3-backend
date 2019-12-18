@@ -165,7 +165,7 @@ $app['uitid_consumer_credentials'] = $app->share(
     }
 );
 
-$app['search_v3_serializer'] = $app->share(
+$app['search_serializer'] = $app->share(
     function () {
         $service = new \CultuurNet\SearchV3\Serializer\Serializer();
         return $service;
@@ -468,7 +468,6 @@ $app['event_bus'] = function ($app) {
 
     $eventBus->beforeFirstPublication(function (EventBusInterface $eventBus) use ($app) {
         $subscribers = [
-            'search_cache_manager',
             'event_relations_projector',
             'place_relations_projector',
             EventJSONLDServiceProvider::PROJECTOR,
@@ -1201,7 +1200,6 @@ $app['predis.client'] = $app->share(function ($app) {
     return new Predis\Client($redisURI);
 });
 
-$app->register(new \CultuurNet\UDB3\Silex\Search\SAPISearchServiceProvider());
 $app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 

@@ -17,21 +17,13 @@ use ValueObjects\Web\EmailAddress;
 class ExportEventsAsPDFJSONDeserializerTest extends TestCase
 {
     /**
-     * @var SapiVersion
-     */
-    private $sapiVersion;
-
-    /**
      * @var ExportEventsAsPDFJSONDeserializer
      */
     private $deserializer;
 
     public function setUp()
     {
-        $this->sapiVersion = new SapiVersion(SapiVersion::V2);
-        $this->deserializer = new ExportEventsAsPDFJSONDeserializer(
-            $this->sapiVersion
-        );
+        $this->deserializer = new ExportEventsAsPDFJSONDeserializer();
     }
 
     /**
@@ -47,7 +39,6 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
         $this->assertEquals(
             new ExportEventsAsPDF(
                 new EventExportQuery('city:doetown'),
-                $this->sapiVersion,
                 'vlieg',
                 'http://foo.bar/logo.svg',
                 new Title('a title'),

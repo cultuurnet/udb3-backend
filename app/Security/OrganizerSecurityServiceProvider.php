@@ -23,53 +23,13 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['organizer_search_api_2'] = $app->share(
-            function (Application $app) {
-                $search = new FilteredSearchService($app['search_api_2']);
-                $search->filter(new IsOrganizerActor());
-
-                return $search;
-            }
-        );
-
-        $app['organizer_user_permission_matcher.v2'] = $app->share(
-            function (Application $app) {
-                // Note that the current ResultSetPullParser will not actually
-                // parse organizer actors, as it only supports events and
-                // places. However, it correctly returns the total item count,
-                // which is the only thing that is checked by the
-                // UserPermissionMatcher.
-                $resultSetParser = new ResultSetPullParser(
-                    new \XMLReader(),
-                    $app['event_iri_generator'],
-                    $app['place_iri_generator']
-                );
-
-                return new UserPermissionMatcher(
-                    $app['user_constraints_read_repository.v2'],
-                    new SearchQueryFactory(),
-                    $app['organizer_search_api_2'],
-                    $resultSetParser
-                );
-            }
-        );
-
-        $app['organizer_user_permission_matcher.v3'] = $app->share(
+        $app['organizer_user_permission_matcher'] = $app->share(
             function (Application $app) {
                 return new Sapi3UserPermissionMatcher(
-                    $app['user_constraints_read_repository.v3'],
+                    $app['user_constraints_read_repository'],
                     new Sapi3SearchQueryFactory(),
                     $app[Sapi3SearchServiceProvider::ORGANIZERS_COUNTING_SEARCH_SERVICE]
                 );
-            }
-        );
-
-        $app['organizer_user_permission_matcher'] = $app->share(
-            function (Application $app) {
-                /** @var \CultuurNet\UDB3\ValueObject\SapiVersion $sapiVersion */
-                $sapiVersion = $app['role_constraints_mode'];
-
-                return $app['organizer_user_permission_matcher.' . $sapiVersion->getValue()];
             }
         );
 

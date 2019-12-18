@@ -14,11 +14,6 @@ interface ExportEventsInterface
     public function getQuery(): EventExportQuery;
 
     /**
-     * @return SapiVersion
-     */
-    public function getSapiVersion(): SapiVersion;
-
-    /**
      * @return null|EmailAddress
      */
     public function getAddress(): ?EmailAddress;
