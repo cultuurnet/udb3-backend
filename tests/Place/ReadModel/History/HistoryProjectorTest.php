@@ -799,7 +799,7 @@ class HistoryProjectorTest extends TestCase
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
-            'Afgekeurd'
+            "Afgekeurd, reden: 'not good enough'"
         );
     }
 

@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
+use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
 
@@ -269,9 +270,13 @@ trait OfferHistoryProjectorTrait
 
     private function projectRejected(DomainMessage $domainMessage): void
     {
+        /* @var Rejected $event */
+        $event = $domainMessage->getPayload();
+        $reason = $event->getReason()->toNative();
+
         $this->writeHistory(
             $domainMessage->getId(),
-            Log::createFromDomainMessage($domainMessage, 'Afgekeurd')
+            Log::createFromDomainMessage($domainMessage, "Afgekeurd, reden: '{$reason}'")
         );
     }
 
