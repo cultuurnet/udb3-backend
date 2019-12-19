@@ -260,8 +260,6 @@ $app->get(
  */
 $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
 
-$app->mount('/', new \CultuurNet\UDB3\Silex\Moderation\ModerationControllerProvider());
-
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
 $app->run();
