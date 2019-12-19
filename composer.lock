@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c090e38bfee357438779102c9b909209",
+    "content-hash": "b23fd86e84b09dffc78ede73d9491f34",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1505,12 +1505,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d7084975e26fd8ab829c93748857660a7bdef6c9"
+                "reference": "ba9b08a3c84c030a4531926138053934afbcc570"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d7084975e26fd8ab829c93748857660a7bdef6c9",
-                "reference": "d7084975e26fd8ab829c93748857660a7bdef6c9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ba9b08a3c84c030a4531926138053934afbcc570",
+                "reference": "ba9b08a3c84c030a4531926138053934afbcc570",
                 "shasum": ""
             },
             "require": {
@@ -1576,7 +1576,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-12-12T09:06:51+00:00"
+            "time": "2019-12-13T11:24:57+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7253,8 +7253,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "homepage": "http://frankkleine.de/",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "http://frankkleine.de/"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
@@ -8042,8 +8042,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -8978,12 +8978,6 @@
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
             "version": "0.9999999.9999999.9999999-dev",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "0.9999999.9999999.9999999-dev",
             "package": "cultuurnet/udb3-api-guard"
         },
         {
@@ -8998,7 +8992,6 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
-        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
