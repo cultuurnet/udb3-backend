@@ -11,6 +11,7 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInf
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory;
 use CultuurNet\UDB3\EventExport\SapiVersion;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -136,7 +137,11 @@ class ExportServiceProvider implements ServiceProviderInterface
                 $app['mailer'],
                 $app['event_export_notification_mail_factory']
             ),
-            new \CultuurNet\UDB3\Search\ResultsGenerator($searchService),
+            new ResultsGenerator(
+                $searchService,
+                null,
+                (int) ($app['config']['export']['page_size'] ?? 100)
+            ),
             $app['config']['export']['max_items']
         );
     }
