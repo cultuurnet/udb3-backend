@@ -3,12 +3,15 @@
 namespace CultuurNet\UDB3\Silex\Export;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
+use CultuurNet\UDB3\EventExport\EventExportService;
 use CultuurNet\UDB3\EventExport\EventExportServiceCollection;
 use CultuurNet\UDB3\EventExport\EventExportServiceInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory;
+use CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer;
 use CultuurNet\UDB3\EventExport\SapiVersion;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -123,17 +126,17 @@ class ExportServiceProvider implements ServiceProviderInterface
             $eventService = $app['external_event_service'];
         }
 
-        return new \CultuurNet\UDB3\EventExport\EventExportService(
+        return new EventExportService(
             $eventService,
             $searchService,
-            new \Broadway\UuidGenerator\Rfc4122\Version4Generator(),
+            new Version4Generator(),
             realpath(__DIR__ .  '/../../web/downloads'),
             new CallableIriGenerator(
                 function ($fileName) use ($app) {
                     return $app['config']['url'] . '/downloads/' . $fileName;
                 }
             ),
-            new \CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer(
+            new NotificationMailer(
                 $app['mailer'],
                 $app['event_export_notification_mail_factory']
             ),
