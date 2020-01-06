@@ -1505,12 +1505,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "ba9b08a3c84c030a4531926138053934afbcc570"
+                "reference": "ed682775c876d3e8199b93fcb96e426850ec7bc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ba9b08a3c84c030a4531926138053934afbcc570",
-                "reference": "ba9b08a3c84c030a4531926138053934afbcc570",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ed682775c876d3e8199b93fcb96e426850ec7bc5",
+                "reference": "ed682775c876d3e8199b93fcb96e426850ec7bc5",
                 "shasum": ""
             },
             "require": {
@@ -1576,7 +1576,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-12-13T11:24:57+00:00"
+            "time": "2020-01-06T10:36:44+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -6795,6 +6795,7 @@
                 "code",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-code",
             "time": "2018-08-13T20:36:59+00:00"
         },
         {
@@ -6857,6 +6858,7 @@
                 "psr",
                 "psr-7"
             ],
+            "abandoned": "laminas/laminas-diactoros",
             "time": "2019-08-06T17:53:53+00:00"
         },
         {
@@ -6911,6 +6913,7 @@
                 "events",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-eventmanager",
             "time": "2018-04-25T15:33:34+00:00"
         },
         {
@@ -6957,6 +6960,7 @@
                 "stdlib",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-stdlib",
             "time": "2018-08-28T21:34:05+00:00"
         },
         {
@@ -7030,6 +7034,7 @@
                 "validator",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-validator",
             "time": "2019-01-30T14:26:10+00:00"
         }
     ],
