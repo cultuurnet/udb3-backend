@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d82fdde9c65ed07060ca35fabe3f5f14",
+    "content-hash": "eae08787967c003db3eb2d394af43528",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1587,16 +1587,16 @@
         },
         {
             "name": "cultuurnet/udb3-jwt",
-            "version": "dev-feature/III-3197",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "b2bb9a21bde2533756425f4872a81f6a774e33a5"
+                "reference": "d3c4a967c8e4a8dada1e0a788df61e0a4a627097"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/b2bb9a21bde2533756425f4872a81f6a774e33a5",
-                "reference": "b2bb9a21bde2533756425f4872a81f6a774e33a5",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/d3c4a967c8e4a8dada1e0a788df61e0a4a627097",
+                "reference": "d3c4a967c8e4a8dada1e0a788df61e0a4a627097",
                 "shasum": ""
             },
             "require": {
@@ -1608,13 +1608,7 @@
                 "phing/phing": "~2.11",
                 "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
-                "silex/silex": "^1.3",
-                "squizlabs/php_codesniffer": "~2.3",
-                "symfony/security": "~2.7.3"
-            },
-            "suggest": {
-                "silex/silex": "To use the provided JwtServiceProvider",
-                "symfony/security": "To integrate with Symfony's firewall"
+                "squizlabs/php_codesniffer": "~2.3"
             },
             "type": "library",
             "extra": {
@@ -1638,7 +1632,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2020-01-15T13:56:09+00:00"
+            "time": "2020-01-15T15:06:34+00:00"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -8913,7 +8907,7 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-3197",
+            "version": "0.9999999.9999999.9999999-dev",
             "package": "cultuurnet/udb3-jwt"
         },
         {
