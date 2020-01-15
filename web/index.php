@@ -79,8 +79,7 @@ $app['security.firewalls'] = array(
                 'validation' => $app['config']['jwt']['auth0']['validation'],
                 'required_claims' => [
                     'email',
-                    'nickname',
-                    'sub'
+                    'sub',
                 ],
                 'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['auth0']['keys']['public']['file']
             ],
