@@ -65,13 +65,24 @@ $app['security.firewalls'] = array(
     'secured' => array(
         'pattern' => '^.*$',
         'jwt' => [
-            'validation' => $app['config']['jwt']['validation'],
-            'required_claims' => [
-                'uid',
-                'nick',
-                'email',
+            'uitid' => [
+                'validation' => $app['config']['jwt']['uitid']['validation'],
+                'required_claims' => [
+                    'uid',
+                    'nick',
+                    'email',
+                ],
+                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['uitid']['keys']['public']['file']
             ],
-            'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['keys']['public']['file'],
+            'auth0' => [
+                'validation' => $app['config']['jwt']['auth0']['validation'],
+                'required_claims' => [
+                    'email',
+                    'nickname',
+                    'sub'
+                ],
+                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['auth0']['keys']['public']['file']
+            ],
         ],
         'stateless' => true,
     ),
@@ -263,3 +274,4 @@ $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerP
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
 $app->run();
+
