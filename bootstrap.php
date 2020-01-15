@@ -3,7 +3,7 @@
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
-use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
@@ -218,7 +219,7 @@ $app['personal_variation_decorated_event_service'] = $app->share(
     }
 );
 
-$app['current_user'] = $app->share(
+$app['current_user'] = $app::share(
     function (Application $app) {
         // Check first if we're impersonating someone.
         /* @var Impersonator $impersonator */
@@ -242,9 +243,9 @@ $app['current_user'] = $app->share(
         if ($token instanceof JwtUserToken) {
             $jwt = $token->getCredentials();
 
-            $cfUser->id = $jwt->getClaim('uid');
-            $cfUser->nick = $jwt->getClaim('nick');
-            $cfUser->mbox = $jwt->getClaim('email');
+            $cfUser->id = $jwt->id();
+            $cfUser->nick = $jwt->userName();
+            $cfUser->mbox = $jwt->email();
 
             return $cfUser;
         } else {
@@ -253,7 +254,7 @@ $app['current_user'] = $app->share(
     }
 );
 
-$app['jwt'] = $app->share(
+$app['jwt'] = $app::share(
     function (Application $app) {
         // Check first if we're impersonating someone.
         /* @var Impersonator $impersonator */

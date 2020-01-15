@@ -35,7 +35,7 @@ class HttpServiceProvider implements ServiceProviderInterface
         $app['http.jwt_request_authorizer'] = $app->share(
             function (Application $app) {
                 return new JwtPsr7RequestAuthorizer(
-                    $app['jwt']
+                    (string) $app['jwt']->jwtToken()
                 );
             }
         );
