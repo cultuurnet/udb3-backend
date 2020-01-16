@@ -2,7 +2,8 @@
 
 namespace CultuurNet\UDB3\Http\Management;
 
-use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Claim\Basic as BasicClaim;
 use Lcobucci\JWT\Token as JwtToken;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -27,9 +28,11 @@ trait TokenMockingTrait
             ->disableOriginalConstructor()
             ->getMock();
 
-        $jwtCredentials = new JwtToken(
-            ['alg' => 'none'],
-            ['uid' => new BasicClaim('uid', $userId)]
+        $jwtCredentials = new Udb3Token(
+            new JwtToken(
+                ['alg' => 'none'],
+                ['uid' => new BasicClaim('uid', $userId)]
+            )
         );
 
         $token

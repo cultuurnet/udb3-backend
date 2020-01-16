@@ -9,7 +9,7 @@ use CultureFeed_User;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use Lcobucci\JWT\Token;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,7 +18,7 @@ final class ContextFactory
 {
     public static function createContext(
         ?CultureFeed_User $user = null,
-        ?Token $jwt = null,
+        ?Udb3Token $jwt = null,
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
         ?TokenCredentials $cultureFeedTokenCredentials = null,

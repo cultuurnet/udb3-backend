@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\AuditTrail;
 
-use CultuurNet\SymfonySecurityJwt\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use Monolog\Processor\ProcessorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -25,9 +25,9 @@ class TokenStorageProcessor implements ProcessorInterface
 
         if ($authToken instanceof JwtUserToken && $authToken->isAuthenticated()) {
             $jwt = $authToken->getCredentials();
-            $records['token_storage']['user_id'] = $jwt->getClaim('uid');
-            $records['token_storage']['user_nick'] = $jwt->getClaim('nick');
-            $records['token_storage']['user_email'] = $jwt->getClaim('email');
+            $records['token_storage']['user_id'] = $jwt->id();
+            $records['token_storage']['user_nick'] = $jwt->userName();
+            $records['token_storage']['user_email'] = $jwt->email();
         }
 
         return $records;

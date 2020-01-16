@@ -4,6 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
+use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\FeatureControllerProvider;
@@ -65,13 +66,23 @@ $app['security.firewalls'] = array(
     'secured' => array(
         'pattern' => '^.*$',
         'jwt' => [
-            'validation' => $app['config']['jwt']['validation'],
-            'required_claims' => [
-                'uid',
-                'nick',
-                'email',
+            'uitid' => [
+                'validation' => $app['config']['jwt']['uitid']['validation'],
+                'required_claims' => [
+                    'uid',
+                    'nick',
+                    'email',
+                ],
+                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['uitid']['keys']['public']['file']
             ],
-            'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['keys']['public']['file'],
+            'auth0' => [
+                'validation' => $app['config']['jwt']['auth0']['validation'],
+                'required_claims' => [
+                    'email',
+                    'sub',
+                ],
+                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['auth0']['keys']['public']['file']
+            ],
         ],
         'stateless' => true,
     ),
@@ -81,7 +92,7 @@ $app['security.firewalls'] = array(
  * Security services.
  */
 $app->register(new \Silex\Provider\SecurityServiceProvider());
-$app->register(new \CultuurNet\SilexServiceProviderJwt\JwtServiceProvider());
+$app->register(new JwtServiceProvider());
 
 $app['permissions_voter'] = $app->share(function($app) {
     return new PermissionsVoter($app['config']['user_permissions']);
@@ -263,3 +274,4 @@ $app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerP
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
 $app->run();
+

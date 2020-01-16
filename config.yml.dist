@@ -125,11 +125,18 @@ search_proxy:
   redirect_port: 80
 
 jwt:
-  keys:
-    public:
-      file: public.pem
-  validation:
-    iss: http://culudb-jwt-provider.dev
+  uitid:
+    keys:
+      public:
+        file: public.pem
+    validation:
+      iss: http://culudb-jwt-provider.dev
+  auth0:
+    keys:
+      public:
+        file: public-auth0.pem
+    validation:
+      iss: https://publiq-acc.eu.auth0.com/
 
 api_key:
   group_id: ***

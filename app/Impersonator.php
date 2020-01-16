@@ -6,7 +6,7 @@ use Broadway\Domain\Metadata;
 use CultureFeed_User;
 use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use Lcobucci\JWT\Token as Jwt;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 
 class Impersonator
 {
@@ -21,7 +21,7 @@ class Impersonator
     private $tokenCredentials;
 
     /**
-     * @var Jwt|null
+     * @var Udb3Token|null
      */
     private $jwt;
 
@@ -40,7 +40,7 @@ class Impersonator
         return $this->tokenCredentials;
     }
 
-    public function getJwt(): ?Jwt
+    public function getJwt(): ?Udb3Token
     {
         return $this->jwt;
     }
