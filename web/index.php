@@ -261,6 +261,7 @@ $app->get(
             ->setData((object)[
                 'id' => $app['current_user']->id,
                 'nick' => $app['current_user']->nick,
+                'email' => $app['current_user']->mbox,
             ])
             ->setPrivate();
     }
