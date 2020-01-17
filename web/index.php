@@ -262,6 +262,9 @@ $app->get(
                 'id' => $app['current_user']->id,
                 'username' => $app['current_user']->nick,
                 'email' => $app['current_user']->mbox,
+
+                // Keep nick for backwards compatibility with older API clients
+                'nick' => $app['current_user']->nick,
             ])
             ->setPrivate();
     }
