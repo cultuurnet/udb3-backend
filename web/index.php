@@ -259,11 +259,12 @@ $app->get(
     function (Application $app) {
         return (new JsonResponse())
             ->setData((object)[
-                'id' => $app['current_user']->id,
+                'uuid' => $app['current_user']->id,
                 'username' => $app['current_user']->nick,
                 'email' => $app['current_user']->mbox,
 
-                // Keep nick for backwards compatibility with older API clients
+                // Keep `id` and `nick` for backwards compatibility with older API clients
+                'id' => $app['current_user']->id,
                 'nick' => $app['current_user']->nick,
             ])
             ->setPrivate();
