@@ -259,6 +259,11 @@ $app->get(
     function (Application $app) {
         return (new JsonResponse())
             ->setData((object)[
+                'uuid' => $app['current_user']->id,
+                'username' => $app['current_user']->nick,
+                'email' => $app['current_user']->mbox,
+
+                // Keep `id` and `nick` for backwards compatibility with older API clients
                 'id' => $app['current_user']->id,
                 'nick' => $app['current_user']->nick,
             ])
