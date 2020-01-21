@@ -16,7 +16,8 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
         $app[Management::class] = $app::share(
             function (Application $app) {
                 // @TODO make domain configurable
-                // @TODO the regular JWT has not the required scopes. Can we use a server-to-server token instead?
+                // @TODO the regular JWT is not valid for the management API
+                // @see https://auth0.com/docs/api/management/v2/tokens
                 return new Management(
                     (string) $app['jwt']->jwtToken(),
                     'publiq-acc.eu.auth0.com'
