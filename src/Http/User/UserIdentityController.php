@@ -49,7 +49,8 @@ class UserIdentityController
     private function createUserNotFoundResponse(): ApiProblemJsonResponse
     {
         return new ApiProblemJsonResponse(
-            new ApiProblem('User not found.')
+            (new ApiProblem('User not found.'))
+                ->setStatus(404)
         );
     }
 }
