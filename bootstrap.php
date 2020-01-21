@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
@@ -1258,6 +1259,8 @@ $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\AuditTrailServiceProvider());
 
 $app->register(new CuratorsServiceProvider());
+
+$app->register(new Auth0ServiceProvider());
 
 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
