@@ -37,11 +37,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
 
     public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
     {
-        // @TODO use https://auth0.com/docs/users/search/v3/get-users-endpoint
-        // NOTE! Since we use email as the fallback for username if it's not found in the token claims, we should also
-        // support email here. So do something similar to `email:"$nick" OR <username field>:$nick`
-        // Not sure what the username field is currently, check with Erwin.
-        return null;
+        return $this->fetchUser('email:"' . $nick . '" OR name:"' . $nick . '"');
     }
 
     /**

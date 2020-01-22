@@ -131,4 +131,66 @@ class Auth0UserIdentityResolverTest extends TestCase
         $result = $auth0UserIdentityResolver->getUserByEmail(new EmailAddress($email));
         $this->assertNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function it_gets_user_by_nick_name()
+    {
+        $userId = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
+        $email = 'ivo@hdz.com';
+        $name = 'Caca';
+
+        $user = [
+            'user_id' => $userId,
+            'email' => $email,
+            'name' => $name,
+        ];
+
+        $client = $this->createMock(Management::class);
+        $users = $this->createMock(Users::class);
+
+        $client->expects($this->atLeast(1))
+            ->method('users')
+            ->willReturn($users);
+
+        $users->expects($this->atLeast(1))
+            ->method('getAll')
+            ->with(['q' => 'email:"Caca" OR name:"Caca"'])
+            ->willReturn([$user]);
+
+        $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
+
+        $result = $auth0UserIdentityResolver->getUserByNick(new StringLiteral($name));
+
+        $this->assertEquals($userId, $result->getUserId());
+        $this->assertEquals($name, $result->getUserName());
+        $this->assertEquals($email, $result->getEmailAddress());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_for_no_user_matching_nick_name()
+    {
+        $name = 'Caca';
+
+        $client = $this->createMock(Management::class);
+        $users = $this->createMock(Users::class);
+
+        $client->expects($this->atLeast(1))
+            ->method('users')
+            ->willReturn($users);
+
+        $users->expects($this->atLeast(1))
+            ->method('getAll')
+            ->with(['q' => 'email:"Caca" OR name:"Caca"'])
+            ->willReturn([]);
+
+        $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
+
+        $result = $auth0UserIdentityResolver->getUserByNick(new StringLiteral($name));
+
+        $this->assertNull($result);
+    }
 }
