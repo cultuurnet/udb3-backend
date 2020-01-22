@@ -27,40 +27,12 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
      */
     public function getUserById(StringLiteral $userId): ?UserIdentityDetails
     {
-        $users = $this->auth0->users()->getAll(
-            ['q' => 'user_id:"' . $userId . '" OR app_metadata.uitidv1id:"' . $userId . '"']
-        );
-
-        if (empty($users)) {
-            return null;
-        }
-
-        $user = array_shift($users);
-
-        return new UserIdentityDetails(
-            new StringLiteral($user['user_id']),
-            new StringLiteral($user['name']),
-            new EmailAddress($user['email'])
-        );
+        return $this->fetchUser('user_id:"' . $userId . '" OR app_metadata.uitidv1id:"' . $userId . '"');
     }
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        $users = $this->auth0->users()->getAll(
-            ['q' => 'email:"'.$email .'"']
-        );
-
-        if (empty($users)) {
-            return null;
-        }
-
-        $user = array_shift($users);
-
-        return new UserIdentityDetails(
-            new StringLiteral($user['user_id']),
-            new StringLiteral($user['name']),
-            new EmailAddress($user['email'])
-        );
+        return $this->fetchUser('email:"' . $email . '"');
     }
 
     public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
@@ -70,5 +42,34 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
         // support email here. So do something similar to `email:"$nick" OR <username field>:$nick`
         // Not sure what the username field is currently, check with Erwin.
         return null;
+    }
+
+    /**
+     * @param string $query
+     * @return mixed
+     * @throws \Exception
+     */
+    private function fetchUser(string $query): ?UserIdentityDetails
+    {
+        $users = $this->auth0->users()->getAll(
+            ['q' => $query]
+        );
+
+        return $this->normalizeResult($users);
+    }
+
+    private function normalizeResult(array $users): ?UserIdentityDetails
+    {
+        if (empty($users)) {
+            return null;
+        }
+
+        $user = array_shift($users);
+
+        return new UserIdentityDetails(
+            new StringLiteral($user['user_id']),
+            new StringLiteral($user['name']),
+            new EmailAddress($user['email'])
+        );
     }
 }
