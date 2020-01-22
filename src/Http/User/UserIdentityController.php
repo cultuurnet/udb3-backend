@@ -28,9 +28,28 @@ class UserIdentityController
         $this->userIdentityResolver = $userIdentityResolver;
     }
 
+    /**
+     * @TODO remove after testing!
+     */
     public function getById(string $id): Response
     {
         $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($id));
+
+        if (!($userIdentity instanceof UserIdentityDetails)) {
+            return $this->createUserNotFoundResponse();
+        }
+
+        return (new JsonLdResponse())
+            ->setData($userIdentity)
+            ->setPrivate();
+    }
+
+    /**
+     * @TODO remove after testing!
+     */
+    public function getByNick(string $nick): Response
+    {
+        $userIdentity = $this->userIdentityResolver->getUserByNick(new StringLiteral($nick));
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return $this->createUserNotFoundResponse();
