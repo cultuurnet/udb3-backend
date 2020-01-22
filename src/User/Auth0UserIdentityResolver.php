@@ -24,7 +24,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
     {
         // @TODO use https://auth0.com/docs/users/search/v3/get-users-endpoint
         // @see https://madewithlove.slack.com/archives/CSLQN091S/p1579522101065500
-        // example query: `user_id:"<id>" OR app_metadata.uitidv1id:"<id>"`
+        // example query: `user_id:"$userId" OR app_metadata.uitidv1id:"$userId"`
 
         // NOTE! The code below is just for testing the access token for now, it's NOT the correct API call!
         $user = $this->auth0->users()
@@ -50,7 +50,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
     {
         // @TODO use https://auth0.com/docs/users/search/v3/get-users-endpoint
         // NOTE! Since we use email as the fallback for username if it's not found in the token claims, we should also
-        // support email here. So do something similar to `email:"<username>" OR <username field>:<username>`
+        // support email here. So do something similar to `email:"$nick" OR <username field>:$nick`
         // Not sure what the username field is currently, check with Erwin.
         return null;
     }
