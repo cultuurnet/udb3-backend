@@ -20,20 +20,28 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
         $this->auth0 = $auth0;
     }
 
+    /**
+     * @param StringLiteral $userId
+     * @return UserIdentityDetails|null
+     * @throws \Exception
+     */
     public function getUserById(StringLiteral $userId): ?UserIdentityDetails
     {
-        // @TODO use https://auth0.com/docs/users/search/v3/get-users-endpoint
-        // @see https://madewithlove.slack.com/archives/CSLQN091S/p1579522101065500
-        // example query: `user_id:"$userId" OR app_metadata.uitidv1id:"$userId"`
+        $users = $this->auth0->users()->getAll(
+            ['q' => 'user_id:"' . $userId . '" OR app_metadata.uitidv1id:"' . $userId . '"']
+        );
 
-        // NOTE! The code below is just for testing the access token for now, it's NOT the correct API call!
-        $user = $this->auth0->users()
-            ->get($userId->toNative());
+        if (empty($users)) {
+            return null;
+        }
+        
+        $user = array_shift($users);
 
-        var_dump($user);
-        exit;
-
-        return null;
+        return new UserIdentityDetails(
+            new StringLiteral($user['user_id']),
+            new StringLiteral($user['name']),
+            new EmailAddress($user['email'])
+        );
     }
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
