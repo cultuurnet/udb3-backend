@@ -34,7 +34,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
         if (empty($users)) {
             return null;
         }
-        
+
         $user = array_shift($users);
 
         return new UserIdentityDetails(
@@ -46,12 +46,21 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        // @TODO use https://auth0.com/docs/users/search/v3/get-users-by-email-endpoint
-        // This could return multiple users. Check with Erwin that we link accounts with the same email address so they
-        // are "unique"!
-        // If so, just return the first one.
-        // If not, we have a bigger problem because we assume e-mail addresses to be unique in multiple places.
-        return null;
+        $users = $this->auth0->users()->getAll(
+            ['q' => 'email:"'.$email .'"']
+        );
+
+        if (empty($users)) {
+            return null;
+        }
+
+        $user = array_shift($users);
+
+        return new UserIdentityDetails(
+            new StringLiteral($user['user_id']),
+            new StringLiteral($user['name']),
+            new EmailAddress($user['email'])
+        );
     }
 
     public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
