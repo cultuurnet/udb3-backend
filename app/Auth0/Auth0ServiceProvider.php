@@ -20,7 +20,7 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
                 // @see https://auth0.com/docs/api/management/v2/tokens
                 return new Management(
                     (string) $app['jwt']->jwtToken(),
-                    'publiq-acc.eu.auth0.com'
+                    $app['config']['jwt']['auth0']['domain']
                 );
             }
         );

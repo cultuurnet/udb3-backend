@@ -137,7 +137,8 @@ jwt:
         file: public-auth0.pem
     validation:
       iss: https://publiq-acc.eu.auth0.com/
-
+    domain: publiq-acc.eu.auth0.com
+    
 api_key:
   group_id: ***
 
