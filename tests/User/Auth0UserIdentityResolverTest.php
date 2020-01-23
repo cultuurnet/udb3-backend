@@ -23,7 +23,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $user = [
             'user_id' => $userId,
             'email' => $email,
-            'name' => $name,
+            'nickname' => $name,
         ];
 
         $client = $this->createMock(Management::class);
@@ -83,7 +83,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $user = [
             'user_id' => $userId,
             'email' => $email,
-            'name' => $name,
+            'nickname' => $name,
         ];
 
         $client = $this->createMock(Management::class);
@@ -144,7 +144,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $user = [
             'user_id' => $userId,
             'email' => $email,
-            'name' => $name,
+            'nickname' => $name,
         ];
 
         $client = $this->createMock(Management::class);
@@ -156,7 +156,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->with(['q' => 'email:"Caca" OR name:"Caca"'])
+            ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
             ->willReturn([$user]);
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
@@ -184,7 +184,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->with(['q' => 'email:"Caca" OR name:"Caca"'])
+            ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
             ->willReturn([]);
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);

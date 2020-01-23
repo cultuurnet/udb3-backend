@@ -37,7 +37,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
 
     public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
     {
-        return $this->fetchUser('email:"' . $nick . '" OR name:"' . $nick . '"');
+        return $this->fetchUser('email:"' . $nick . '" OR nickname:"' . $nick . '"');
     }
 
     /**
@@ -64,7 +64,7 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
 
         return new UserIdentityDetails(
             new StringLiteral($user['user_id']),
-            new StringLiteral($user['name']),
+            new StringLiteral($user['nickname']),
             new EmailAddress($user['email'])
         );
     }
