@@ -20,11 +20,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $email = 'ivo@hdz.com';
         $name = 'Caca';
 
-        $user = [
-            'user_id' => $userId,
-            'email' => $email,
-            'nickname' => $name,
-        ];
+        $user = $this->aUser($userId, $email, $name);
 
         $client = $this->createMock(Management::class);
         $users = $this->createMock(Users::class);
@@ -80,11 +76,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $email = 'ivo@hdz.com';
         $name = 'Caca';
 
-        $user = [
-            'user_id' => $userId,
-            'email' => $email,
-            'nickname' => $name,
-        ];
+        $user = $this->aUser($userId, $email, $name);
 
         $client = $this->createMock(Management::class);
         $users = $this->createMock(Users::class);
@@ -141,11 +133,7 @@ class Auth0UserIdentityResolverTest extends TestCase
         $email = 'ivo@hdz.com';
         $name = 'Caca';
 
-        $user = [
-            'user_id' => $userId,
-            'email' => $email,
-            'nickname' => $name,
-        ];
+        $user = $this->aUser($userId, $email, $name);
 
         $client = $this->createMock(Management::class);
         $users = $this->createMock(Users::class);
@@ -192,5 +180,14 @@ class Auth0UserIdentityResolverTest extends TestCase
         $result = $auth0UserIdentityResolver->getUserByNick(new StringLiteral($name));
 
         $this->assertNull($result);
+    }
+
+    private function aUser(string $userId, string $email, string $name): array
+    {
+        return [
+            'user_id' => $userId,
+            'email' => $email,
+            'nickname' => $name,
+        ];
     }
 }
