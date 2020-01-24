@@ -138,7 +138,9 @@ jwt:
     validation:
       iss: https://publiq-acc.eu.auth0.com/
     domain: publiq-acc.eu.auth0.com
-    
+    client_id:
+    client_secret:
+
 api_key:
   group_id: ***
 
