@@ -8,7 +8,7 @@ use Auth0\SDK\API\Management;
 use CultuurNet\UDB3\User\Auth0ManagementTokenGenerator;
 use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use CultuurNet\UDB3\User\InMemoryRepository;
+use CultuurNet\UDB3\User\CacheRepository;
 use GuzzleHttp\Client;
 use Lcobucci\JWT\Parser;
 use Silex\Application;
@@ -27,7 +27,9 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
                         $app['config']['jwt']['auth0']['domain'],
                         $app['config']['jwt']['auth0']['client_secret']
                     ),
-                    new InMemoryRepository(),
+                    new CacheRepository(
+                        $app['cache']('auth0-management-token')
+                    ),
                     new Parser()
                 );
                 return $provider->token();
