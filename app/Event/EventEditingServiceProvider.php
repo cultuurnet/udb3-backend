@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Event;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\EventEditingService;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
@@ -47,9 +48,11 @@ class EventEditingServiceProvider implements ServiceProviderInterface
 
         $app[LocationMarkedAsDuplicateProcessManager::class] = $app->share(
             function ($app) {
-                return new LocationMarkedAsDuplicateProcessManager(
-                    new ResultsGenerator($app[Sapi3SearchServiceProvider::SEARCH_SERVICE]),
-                    $app['event_command_bus']
+                return new ReplayFilteringEventListener(
+                    new LocationMarkedAsDuplicateProcessManager(
+                        new ResultsGenerator($app[Sapi3SearchServiceProvider::SEARCH_SERVICE]),
+                        $app['event_command_bus']
+                    )
                 );
             }
         );
