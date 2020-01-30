@@ -12,6 +12,7 @@
   "require": {
     "php": "^7.1",
     "2dotstwice/silex-feature-toggles-provider": "~0.1",
+    "auth0/auth0-php": "^5.7",
     "broadway/broadway": "~0.10",
     "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",
     "crell/api-problem": "~1.7",
@@ -32,7 +33,7 @@
     "cultuurnet/udb3": "~0.1",
     "cultuurnet/udb3-api-guard": "0.x-dev#179f67e56d04ccd402b1291dec894ac85b6e6a80 as 0.1",
     "cultuurnet/udb3-http-foundation": "~0.1",
-    "cultuurnet/udb3-jwt": "~0.1",
+    "cultuurnet/udb3-jwt": "dev-feature/III-3203 as 0.1",
     "cultuurnet/udb3-models": "~0.1",
     "cultuurnet/uitid-credentials": "~0.1",
     "cultuurnet/valueobjects": "^3.1",

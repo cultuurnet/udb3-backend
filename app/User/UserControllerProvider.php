@@ -2,10 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\User;
 
-use CultuurNet\UDB3\Http\User\SearchQueryFactory;
-use CultuurNet\UDB3\Http\User\SearchUserController;
 use CultuurNet\UDB3\Http\User\UserIdentityController;
-use CultuurNet\UDB3\Http\User\UserLabelMemoryRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -22,23 +19,14 @@ class UserControllerProvider implements ControllerProviderInterface
             }
         );
 
-        $app['user_search_controller'] = $app->share(
-            function (Application $app) {
-                return new SearchUserController(
-                    $app['culturefeed'],
-                    new SearchQueryFactory(),
-                    $app['culturefeed_user_identity_factory']
-                );
-            }
-        );
-
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('users/{userId}', 'user_identity_controller:getByUserId');
         $controllers->get('users/emails/{emailAddress}', 'user_identity_controller:getByEmailAddress');
 
-        $controllers->get('users/', 'user_search_controller:search');
+        // @TODO remove after testing!
+        $controllers->get('users/{id}', 'user_identity_controller:getById');
+        $controllers->get('users/nick/{nick}', 'user_identity_controller:getByNick');
 
         return $controllers;
     }

@@ -35,3 +35,7 @@ toggles:
     name: organizer-geocordinates-replay-filtering-event
     conditions: {}
     status: always-active
+  auth0-user-management:
+    name: auth0-user-management
+    conditions: {}
+    status: always-active

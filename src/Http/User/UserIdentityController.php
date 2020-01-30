@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Http\User;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
-use CultuurNet\UDB3\Http\JsonLdResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolverInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,57 +29,61 @@ class UserIdentityController
     }
 
     /**
-     * @param string $userId
-     * @return Response
+     * @TODO remove after testing!
      */
-    public function getByUserId($userId)
+    public function getById(string $id): Response
     {
-        $userId = new StringLiteral((string) $userId);
+        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($id));
 
-        $userIdentity = $this->userIdentityResolver->getUserById($userId);
+        if (!($userIdentity instanceof UserIdentityDetails)) {
+            return $this->createUserNotFoundResponse();
+        }
 
-        return $this->createUserIdentityResponse($userIdentity);
+        return (new JsonLdResponse())
+            ->setData($userIdentity)
+            ->setPrivate();
     }
 
     /**
-     * @param string $emailAddress
-     * @return Response
+     * @TODO remove after testing!
      */
-    public function getByEmailAddress($emailAddress)
+    public function getByNick(string $nick): Response
+    {
+        $userIdentity = $this->userIdentityResolver->getUserByNick(new StringLiteral($nick));
+
+        if (!($userIdentity instanceof UserIdentityDetails)) {
+            return $this->createUserNotFoundResponse();
+        }
+
+        return (new JsonLdResponse())
+            ->setData($userIdentity)
+            ->setPrivate();
+    }
+
+    public function getByEmailAddress(string $emailAddress): Response
     {
         try {
-            $emailAddress = new EmailAddress((string) $emailAddress);
+            $emailAddress = new EmailAddress($emailAddress);
         } catch (InvalidNativeArgumentException $e) {
             return $this->createUserNotFoundResponse();
         }
 
         $userIdentity = $this->userIdentityResolver->getUserByEmail($emailAddress);
 
-        return $this->createUserIdentityResponse($userIdentity);
-    }
-
-    /**
-     * @param UserIdentityDetails|null $userIdentityDetails
-     * @return Response
-     */
-    private function createUserIdentityResponse(UserIdentityDetails $userIdentityDetails = null)
-    {
-        if (is_null($userIdentityDetails)) {
+        if (!($userIdentity instanceof UserIdentityDetails)) {
             return $this->createUserNotFoundResponse();
         }
 
         return (new JsonLdResponse())
-            ->setData($userIdentityDetails)
+            ->setData($userIdentity)
             ->setPrivate();
     }
 
-    /**
-     * @return ApiProblemJsonResponse
-     */
-    private function createUserNotFoundResponse()
+    private function createUserNotFoundResponse(): ApiProblemJsonResponse
     {
         return new ApiProblemJsonResponse(
-            new ApiProblem('User not found.')
+            (new ApiProblem('User not found.'))
+                ->setStatus(404)
         );
     }
 }

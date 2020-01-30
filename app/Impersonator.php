@@ -16,11 +16,6 @@ class Impersonator
     private $user;
 
     /**
-     * @var TokenCredentials|null
-     */
-    private $tokenCredentials;
-
-    /**
      * @var Udb3Token|null
      */
     private $jwt;
@@ -33,11 +28,6 @@ class Impersonator
     public function getUser(): ?CultureFeed_User
     {
         return $this->user;
-    }
-
-    public function getTokenCredentials(): ?TokenCredentials
-    {
-        return $this->tokenCredentials;
     }
 
     public function getJwt(): ?Udb3Token
@@ -60,6 +50,5 @@ class Impersonator
         $this->user->mbox = $metadata['user_email'] ?? null;
         $this->jwt = $metadata['auth_jwt'] ?? null;
         $this->apiKey = $metadata['auth_api_key'] ?? null;
-        $this->tokenCredentials = $metadata['uitid_token_credentials'] ?? null;
     }
 }

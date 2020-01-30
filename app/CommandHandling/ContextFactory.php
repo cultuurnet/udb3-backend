@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Silex\CommandHandling;
 
 use Broadway\Domain\Metadata;
 use CultureFeed_User;
-use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\Jwt\Udb3Token;
@@ -21,7 +20,6 @@ final class ContextFactory
         ?Udb3Token $jwt = null,
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
-        ?TokenCredentials $cultureFeedTokenCredentials = null,
         ?Request $request = null,
         ?ConsumerInterface $consumer = null
     ): Metadata {
@@ -43,10 +41,6 @@ final class ContextFactory
 
         if ($apiName) {
             $contextValues['api'] = $apiName;
-        }
-
-        if ($cultureFeedTokenCredentials) {
-            $contextValues['uitid_token_credentials'] = $cultureFeedTokenCredentials;
         }
 
         if ($request) {
@@ -74,7 +68,6 @@ final class ContextFactory
             $application['jwt'],
             $application['api_key'],
             $application['api_name'],
-            $application['culturefeed_token_credentials'],
             $request,
             $application['consumer']
         );
@@ -84,8 +77,8 @@ final class ContextFactory
     {
         $metadata = $metadata->serialize();
 
-        // Don't store the JWT or UiTID access token when logging the metadata in the event store.
-        unset($metadata['auth_jwt'], $metadata['uitid_token_credentials']);
+        // Don't store the JWT when logging the metadata in the event store.
+        unset($metadata['auth_jwt']);
 
         // Convert the ApiKey object to a string so it can get JSON-encoded.
         if (isset($metadata['auth_api_key'])) {
