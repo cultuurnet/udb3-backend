@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2536684a883b87bae292d90331bbdcf",
+    "content-hash": "7d8b65f9e845c38b203ee18ed62c121d",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1465,16 +1465,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-3203",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "7084e5f7141ac1da85a48864e8386bbe81a2836b"
+                "reference": "a4dcb7eec373916bc41415f4491a0ad3c93b6e81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7084e5f7141ac1da85a48864e8386bbe81a2836b",
-                "reference": "7084e5f7141ac1da85a48864e8386bbe81a2836b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a4dcb7eec373916bc41415f4491a0ad3c93b6e81",
+                "reference": "a4dcb7eec373916bc41415f4491a0ad3c93b6e81",
                 "shasum": ""
             },
             "require": {
@@ -1539,7 +1539,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-01-21T14:41:55+00:00"
+            "time": "2020-01-30T09:56:23+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -2003,6 +2003,7 @@
             "keywords": [
                 "silex"
             ],
+            "abandoned": true,
             "time": "2014-01-29T15:54:57+00:00"
         },
         {
@@ -8995,12 +8996,6 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-3203",
-            "package": "cultuurnet/udb3"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
             "version": "0.9999999.9999999.9999999-dev",
             "package": "cultuurnet/udb3-api-guard"
         },
@@ -9022,7 +9017,6 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
-        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "cultuurnet/udb3-jwt": 20,
         "doctrine/migrations": 20
