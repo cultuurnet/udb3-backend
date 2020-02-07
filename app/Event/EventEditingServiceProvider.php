@@ -59,9 +59,11 @@ class EventEditingServiceProvider implements ServiceProviderInterface
 
         $app[RelocateEventToCanonicalPlace::class] = $app->share(
             function ($app) {
-                return new RelocateEventToCanonicalPlace(
-                    $app['event_command_bus'],
-                    new CanonicalPlaceRepository($app['place_repository'])
+                return new ReplayFilteringEventListener(
+                    new RelocateEventToCanonicalPlace(
+                        $app['event_command_bus'],
+                        new CanonicalPlaceRepository($app['place_repository'])
+                    )
                 );
             }
         );
