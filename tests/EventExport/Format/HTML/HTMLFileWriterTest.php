@@ -238,7 +238,7 @@ class HTMLFileWriterTest extends TestCase
                 'price' => 'Niet ingevoerd',
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
-                'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
+                'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
             ]
         ];
 
@@ -274,7 +274,7 @@ class HTMLFileWriterTest extends TestCase
                 'price' => 'Niet ingevoerd',
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 4,
-                'taalicoonDescription' => 'Je spreekt en begrijpt vlot Nederlands.',
+                'taalicoonDescription' => 'Je begrijpt veel Nederlands en spreekt het goed.',
             ]
         ];
 
@@ -310,7 +310,7 @@ class HTMLFileWriterTest extends TestCase
                 'price' => 'Niet ingevoerd',
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
-                'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
+                'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
                 'brands' => [
                     'uitpas',
                     'vlieg'
@@ -350,7 +350,7 @@ class HTMLFileWriterTest extends TestCase
                 'price' => 'Niet ingevoerd',
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
-                'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
+                'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
                 'brands' => [
                     'uitpas'
                 ],
@@ -387,7 +387,7 @@ class HTMLFileWriterTest extends TestCase
                 'price' => 'Niet ingevoerd',
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
-                'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
+                'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
                 'brands' => [
                 ],
                 'ageFrom' => '5',
@@ -474,7 +474,7 @@ class HTMLFileWriterTest extends TestCase
                 'price' => 'Niet ingevoerd',
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
-                'taalicoonDescription' => 'Je spreekt nog geen of niet zo veel Nederlands.',
+                'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
             ]
         ];
 

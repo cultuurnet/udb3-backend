@@ -12,8 +12,8 @@ use ValueObjects\Enum\Enum;
  */
 class TaalicoonDescription extends Enum
 {
-    const EEN_TAALICOON = "Je spreekt nog geen of niet zo veel Nederlands.";
-    const TWEE_TAALICONEN = "Je begrijpt al een beetje Nederlands, maar je durft nog niet zo goed praten.";
-    const DRIE_TAALICONEN = "Je begrijpt al veel Nederlands en je kan ook al iets vertellen.";
-    const VIER_TAALICONEN = "Je spreekt en begrijpt vlot Nederlands.";
+    const EEN_TAALICOON = "Je begrijpt of spreekt nog niet veel Nederlands.";
+    const TWEE_TAALICONEN = "Je begrijpt al een beetje Nederlands maar je spreekt het nog niet zo goed.";
+    const DRIE_TAALICONEN = "Je begrijpt vrij veel Nederlands en kan ook iets vertellen.";
+    const VIER_TAALICONEN = "Je begrijpt veel Nederlands en spreekt het goed.";
 }
