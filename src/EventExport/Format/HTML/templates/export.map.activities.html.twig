@@ -109,14 +109,14 @@
 
                     <tr>
                         <td>
-                            <i class="taalicoon taalicoon-face"></i>
+                            <i class="taalicoon language-icon-nl"></i>
                         </td>
                         <td>
                             {% for i in range(1, 4) -%}
                                 {%- if i <= event.taalicoonCount -%}
-                                    {%- set taalicoonBallonClass = 'taalicoon-ballon-filled' -%}
+                                    {%- set taalicoonBallonClass = 'language-icon-balloon-filled' -%}
                                 {%- else -%}
-                                    {%- set taalicoonBallonClass = 'taalicoon-ballon' -%}
+                                    {%- set taalicoonBallonClass = 'language-icon-balloon' -%}
                                 {%- endif -%}
                                 <i class="taalicoon {{ taalicoonBallonClass }}"></i>
                             {% endfor -%}

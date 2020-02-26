@@ -287,18 +287,18 @@ html {
     display: inline-block;
 }
 
-.taalicoon-face {
-    background-image: url(../img/taalicoon-face.svg);
+.language-icon-nl {
+    background-image: url(../img/language-icon-nl.svg);
     display: inline-block;
 }
 
-.taalicoon-ballon-filled {
-    background-image: url(../img/taalicoon-ballon-filled.svg);
+.language-icon-balloon-filled {
+    background-image: url(../img/language-icon-balloon-filled.svg);
     display: inline-block;
 }
 
-.taalicoon-ballon {
-    background-image: url(../img/taalicoon-ballon.svg);
+.language-icon-balloon {
+    background-image: url(../img/language-icon-balloon-empty.svg);
     display: inline-block;
 }
 

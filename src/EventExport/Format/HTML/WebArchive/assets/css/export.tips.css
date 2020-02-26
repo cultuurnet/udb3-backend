@@ -246,17 +246,17 @@ html {
     background-repeat: no-repeat;
     display: inline-block;
 }
-.taalicoon-face
+.language-icon-nl
 {
-    background-image: url(../img/taalicoon-face.svg);
+    background-image: url(../img/language-icon-nl.svg);
 }
-.taalicoon-ballon-filled
+.language-icon-balloon-filled
 {
-    background-image: url(../img/taalicoon-ballon-filled.svg);
+    background-image: url(../img/language-icon-balloon-filled.svg);
 }
-.taalicoon-ballon
+.language-icon-balloon
 {
-    background-image: url(../img/taalicoon-ballon.svg);
+    background-image: url(../img/language-icon-balloon-empty.svg);
 }
 .taalicoon--description
 {
