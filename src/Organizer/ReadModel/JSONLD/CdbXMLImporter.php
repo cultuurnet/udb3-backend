@@ -39,7 +39,10 @@ class CdbXMLImporter
         /** @var \CultureFeed_Cdb_Data_Detail[] $details */
         $details = $actor->getDetails();
 
-        $jsonLD->name = new stdClass();
+        if (empty($jsonLD->name)) {
+            $jsonLD->name = new stdClass();
+        }
+
         foreach ($details as $languageDetail) {
             // The first language detail found will be used to retrieve
             // properties from which in UDB3 are not any longer considered
