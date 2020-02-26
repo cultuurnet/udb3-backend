@@ -348,6 +348,54 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_set_name_when_importing_from_udb2()
+    {
+        $event = $this->organizerImportedFromUDB2('organizer_with_email.cdbxml.xml');
+        $domainMessage = $this->createDomainMessage($event);
+
+        $actualName = null;
+
+        $this->documentRepository->expects($this->once())
+            ->method('save')
+            ->with($this->callback(function (JsonDocument $document) use (&$actualName) {
+                $actualName = $document->getBody()->name;
+                return true;
+            }));
+
+        $this->projector->handle($domainMessage);
+
+        $this->assertEquals((object) ['nl' => 'DE Studio'], $actualName);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_set_name_when_updating_from_udb2()
+    {
+        // First make sure there is an already created organizer.
+        $organizerId = 'someId';
+        $this->mockGet($organizerId, 'organizer_with_main_language.json');
+
+        $event = $this->organizerUpdatedFromUDB2('organizer_with_email.cdbxml.xml');
+        $domainMessage = $this->createDomainMessage($event);
+
+        $actualName = null;
+
+        $this->documentRepository->expects($this->once())
+            ->method('save')
+            ->with($this->callback(function (JsonDocument $document) use (&$actualName) {
+                $actualName = $document->getBody()->name;
+                return true;
+            }));
+
+        $this->projector->handle($domainMessage);
+
+        $this->assertEquals((object) ['nl' => 'DE Studio'], $actualName);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_set_main_language_when_importing_from_udb2()
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_email.cdbxml.xml');
