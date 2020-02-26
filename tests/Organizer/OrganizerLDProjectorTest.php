@@ -370,11 +370,19 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_set_name_when_updating_from_udb2()
+    public function it_should_update_name_when_updating_from_udb2_and_keep_missing_translations()
     {
         // First make sure there is an already created organizer.
         $organizerId = 'someId';
-        $this->mockGet($organizerId, 'organizer_with_main_language.json');
+
+        $organizerJson = file_get_contents(__DIR__ . '/Samples/organizer_with_main_language.json');
+        $organizerJson = json_decode($organizerJson);
+        $organizerJson->name->en = 'English name';
+        $organizerJson = json_encode($organizerJson);
+
+        $this->documentRepository->method('get')
+            ->with($organizerId)
+            ->willReturn(new JsonDocument($organizerId, $organizerJson));
 
         $event = $this->organizerUpdatedFromUDB2('organizer_with_email.cdbxml.xml');
         $domainMessage = $this->createDomainMessage($event);
@@ -390,7 +398,13 @@ class OrganizerLDProjectorTest extends TestCase
 
         $this->projector->handle($domainMessage);
 
-        $this->assertEquals((object) ['nl' => 'DE Studio'], $actualName);
+        $this->assertEquals(
+            (object) [
+                'nl' => 'DE Studio',
+                'en' => 'English name',
+            ],
+            $actualName
+        );
     }
 
     /**
