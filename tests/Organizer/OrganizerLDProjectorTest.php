@@ -348,6 +348,68 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_set_name_when_importing_from_udb2()
+    {
+        $event = $this->organizerImportedFromUDB2('organizer_with_email.cdbxml.xml');
+        $domainMessage = $this->createDomainMessage($event);
+
+        $actualName = null;
+
+        $this->documentRepository->expects($this->once())
+            ->method('save')
+            ->with($this->callback(function (JsonDocument $document) use (&$actualName) {
+                $actualName = $document->getBody()->name;
+                return true;
+            }));
+
+        $this->projector->handle($domainMessage);
+
+        $this->assertEquals((object) ['nl' => 'DE Studio'], $actualName);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_update_name_when_updating_from_udb2_and_keep_missing_translations()
+    {
+        // First make sure there is an already created organizer.
+        $organizerId = 'someId';
+
+        $organizerJson = file_get_contents(__DIR__ . '/Samples/organizer_with_main_language.json');
+        $organizerJson = json_decode($organizerJson);
+        $organizerJson->name->en = 'English name';
+        $organizerJson = json_encode($organizerJson);
+
+        $this->documentRepository->method('get')
+            ->with($organizerId)
+            ->willReturn(new JsonDocument($organizerId, $organizerJson));
+
+        $event = $this->organizerUpdatedFromUDB2('organizer_with_email.cdbxml.xml');
+        $domainMessage = $this->createDomainMessage($event);
+
+        $actualName = null;
+
+        $this->documentRepository->expects($this->once())
+            ->method('save')
+            ->with($this->callback(function (JsonDocument $document) use (&$actualName) {
+                $actualName = $document->getBody()->name;
+                return true;
+            }));
+
+        $this->projector->handle($domainMessage);
+
+        $this->assertEquals(
+            (object) [
+                'nl' => 'DE Studio',
+                'en' => 'English name',
+            ],
+            $actualName
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_set_main_language_when_importing_from_udb2()
     {
         $event = $this->organizerImportedFromUDB2('organizer_with_email.cdbxml.xml');

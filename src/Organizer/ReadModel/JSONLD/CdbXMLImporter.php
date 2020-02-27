@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\LabelImporter;
+use stdClass;
 use ValueObjects\Geography\Country;
 
 /**
@@ -19,12 +20,12 @@ class CdbXMLImporter
     /**
      * Imports a UDB2 organizer actor into a UDB3 JSON-LD document.
      *
-     * @param \stdClass $base
+     * @param stdClass $base
      *   The JSON-LD document object to start from.
      * @param \CultureFeed_Cdb_Item_Actor $actor
      *   The actor data from UDB2 to import.
      *
-     * @return \stdClass
+     * @return stdClass
      *   A new JSON-LD document object with the UDB2 actor data merged in.
      */
     public function documentWithCdbXML(
@@ -38,6 +39,10 @@ class CdbXMLImporter
         /** @var \CultureFeed_Cdb_Data_Detail[] $details */
         $details = $actor->getDetails();
 
+        if (empty($jsonLD->name)) {
+            $jsonLD->name = new stdClass();
+        }
+
         foreach ($details as $languageDetail) {
             // The first language detail found will be used to retrieve
             // properties from which in UDB3 are not any longer considered
@@ -45,11 +50,11 @@ class CdbXMLImporter
             if (!$detail) {
                 $detail = $languageDetail;
             }
+
+            $jsonLD->name->{$detail->getLanguage()} = $detail->getTitle();
         }
 
-        $jsonLD->name = $detail->getTitle();
-
-        $jsonLD->address = new \stdClass();
+        $jsonLD->address = new stdClass();
         $cdbContact = $actor->getContactInfo();
         if ($cdbContact) {
             /** @var \CultureFeed_Cdb_Data_Address[] $addresses * */
