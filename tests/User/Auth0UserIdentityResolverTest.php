@@ -87,7 +87,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->with(['q' => 'email:"'.urlencode("ivo@hdz.com").'"'])
+            ->with(['q' => 'email:"ivo%40hdz.com"'])
             ->willReturn([$user]);
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
@@ -115,7 +115,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->with(['q' => 'email:"'.urlencode("ivo@hdz.com").'"'])
+            ->with(['q' => 'email:"ivo%40hdz.com"'])
             ->willReturn([]);
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
@@ -144,7 +144,7 @@ class Auth0UserIdentityResolverTest extends TestCase
 
         $users->expects($this->atLeast(1))
             ->method('getAll')
-            ->with(['q' => 'email:"'.urlencode($name).'" OR nickname:"'.urlencode($name).'"'])
+                ->with(['q' => 'email:"Caca" OR nickname:"Caca"'])
             ->willReturn([$user]);
 
         $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
