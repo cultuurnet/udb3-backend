@@ -32,12 +32,12 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        return $this->fetchUser('email:"' . $email . '"');
+        return $this->fetchUser('email:"' . urlencode($email->toNative()) . '"');
     }
 
     public function getUserByNick(StringLiteral $nick): ?UserIdentityDetails
     {
-        return $this->fetchUser('email:"' . $nick . '" OR nickname:"' . $nick . '"');
+        return $this->fetchUser('email:"' . urlencode($nick->toNative()) . '" OR nickname:"' . urlencode($nick->toNative()) . '"');
     }
 
     /**
