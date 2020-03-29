@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
@@ -43,7 +44,7 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
         }
     }
 
-    protected function getProcessManager(): LocationMarkedAsDuplicateProcessManager
+    protected function getProcessManager(): EventListenerInterface
     {
         $app = $this->getSilexApplication();
         return $app[LocationMarkedAsDuplicateProcessManager::class];
