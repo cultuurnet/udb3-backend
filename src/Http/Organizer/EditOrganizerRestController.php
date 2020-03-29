@@ -167,6 +167,15 @@ class EditOrganizerRestController
         return new NoContent();
     }
 
+    public function removeAddress(string $organizerId): Response
+    {
+        $this->editingService->removeAddress(
+            $organizerId
+        );
+
+        return new NoContent();
+    }
+
     public function updateContactPoint(string $organizerId, Request $request): Response
     {
         $contactPointJSONDeserializer = new ContactPointJSONDeserializer();

@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
+use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
@@ -235,6 +236,25 @@ class DefaultOrganizerEditingServiceTest extends TestCase
 
         $this->service->updateAddress($organizerId, $address, $language);
     }
+
+    /**
+     * @test
+     */
+    public function it_handles_remove_address()
+    {
+        $organizerId = 'baee2963-e1ba-4777-a803-4c645c6fd31c';
+
+        $expectedUpdateAddress = new RemoveAddress(
+            $organizerId
+        );
+
+        $this->commandBus->expects($this->once())
+            ->method('dispatch')
+            ->with($expectedUpdateAddress);
+
+        $this->service->removeAddress($organizerId);
+    }
+
 
     /**
      * @test

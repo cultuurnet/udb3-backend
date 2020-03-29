@@ -248,6 +248,24 @@ class EditOrganizerRestControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_removes_address_of_an_organizer()
+    {
+        $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
+
+        $this->editService->expects($this->once())
+            ->method('removeAddress')
+            ->with($organizerId);
+
+        $response = $this->controller->removeAddress(
+            $organizerId
+        );
+
+        $this->assertEquals(204, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
     public function it_supports_deprecated_update_address_of_an_organizer()
     {
         $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
