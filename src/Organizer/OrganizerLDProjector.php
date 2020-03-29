@@ -314,9 +314,6 @@ class OrganizerLDProjector implements EventListenerInterface
         $document = $this->repository->get($organizerId);
         $jsonLD = $document->getBody();
 
-        if (!isset($jsonLD->address)) {
-            $jsonLD->address = new \stdClass();
-        }
         unset($jsonLD->address);
         return $document->withBody($jsonLD);
     }
