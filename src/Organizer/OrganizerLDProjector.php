@@ -48,6 +48,7 @@ class OrganizerLDProjector implements EventListenerInterface
      * @uses applyTitleUpdated
      * @uses applyTitleTranslated
      * @uses applyAddressUpdated
+     * @uses applyAddressRemoved
      * @uses applyAddressTranslated
      * @uses applyContactPointUpdated
      * @uses applyOrganizerUpdatedFRomUDB2
