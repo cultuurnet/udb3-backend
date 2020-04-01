@@ -82,6 +82,11 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             'organizer_edit_controller:updateAddress'
         );
 
+        $controllers->delete(
+            '/{organizerId}/address',
+            'organizer_edit_controller:removeAddress'
+        );
+
         $controllers->put(
             '/{organizerId}/contactPoint',
             'organizer_edit_controller:updateContactPoint'

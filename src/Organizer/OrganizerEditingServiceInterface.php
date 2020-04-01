@@ -25,6 +25,8 @@ interface OrganizerEditingServiceInterface
 
     public function updateAddress(string $organizerId, Address $address, Language $language): void;
 
+    public function removeAddress(string $organizerId): void;
+
     public function updateContactPoint(string $organizerId, ContactPoint $contactPoint): void;
 
     public function addLabel(string $organizerId, Label $label): void;

@@ -26,11 +26,13 @@ use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
+use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
+use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
@@ -295,6 +297,45 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                     new AddressUpdated(
                         $organizerId,
                         $address
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_remove_address_commands()
+    {
+        $organizerId = $this->organizerCreated->getOrganizerId();
+
+        $address = new Address(
+            new Street('Martelarenplein 1'),
+            new PostalCode('3000'),
+            new Locality('Leuven'),
+            Country::fromNative('BE')
+        );
+
+        $this->scenario
+            ->withAggregateId($organizerId)
+            ->given(
+                [
+                    $this->organizerCreated,
+                    new AddressUpdated(
+                        $organizerId,
+                        $address
+                    )
+                ]
+            )
+            ->when(
+                new RemoveAddress(
+                    $organizerId
+                )
+            )
+            ->then(
+                [
+                    new AddressRemoved(
+                        $organizerId
                     ),
                 ]
             );

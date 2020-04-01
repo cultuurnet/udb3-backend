@@ -14,6 +14,7 @@ use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
@@ -47,6 +48,7 @@ class OrganizerLDProjector implements EventListenerInterface
      * @uses applyTitleUpdated
      * @uses applyTitleTranslated
      * @uses applyAddressUpdated
+     * @uses applyAddressRemoved
      * @uses applyAddressTranslated
      * @uses applyContactPointUpdated
      * @uses applyOrganizerUpdatedFRomUDB2
@@ -305,6 +307,16 @@ class OrganizerLDProjector implements EventListenerInterface
     private function applyAddressTranslated(AddressTranslated $addressTranslated)
     {
         return $this->applyAddress($addressTranslated, $addressTranslated->getLanguage());
+    }
+
+    public function applyAddressRemoved(AddressRemoved $addressRemoved)
+    {
+        $organizerId = $addressRemoved->getOrganizerId();
+        $document = $this->repository->get($organizerId);
+        $jsonLD = $document->getBody();
+
+        unset($jsonLD->address);
+        return $document->withBody($jsonLD);
     }
 
     /**

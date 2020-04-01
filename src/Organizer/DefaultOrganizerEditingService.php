@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
+use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
@@ -148,6 +149,13 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     {
         $this->commandBus->dispatch(
             new DeleteOrganizer($id)
+        );
+    }
+
+    public function removeAddress(string $organizerId): void
+    {
+        $this->commandBus->dispatch(
+            new RemoveAddress($organizerId)
         );
     }
 }

@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressTranslated;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\GeoCoordinatesUpdated;
@@ -341,6 +342,26 @@ class OrganizerLDProjectorTest extends TestCase
         );
 
         $this->expectSave($organizerId, $expectedJson);
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_address_removed()
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $domainMessage = $this->createDomainMessage(
+            new AddressRemoved(
+                $organizerId
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_deleted_address.json');
 
         $this->projector->handle($domainMessage);
     }
@@ -854,7 +875,6 @@ class OrganizerLDProjectorTest extends TestCase
         // By calling json_encode(json_decode(...)) the newlines are also removed
         // from the expected document.
         $expectedOrganizerJson = json_encode(json_decode($expectedOrganizerJson));
-
         $this->documentRepository->expects($this->once())
             ->method('save')
             ->with(new JsonDocument($organizerId, $expectedOrganizerJson));
