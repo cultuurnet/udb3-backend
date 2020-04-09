@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
+use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -50,7 +51,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         $this->aggregateRepository = $aggregateRepository;
         $this->organizerDenormalizer = $organizerDenormalizer;
         $this->commandBus = $commandBus;
-        $this->lockedLabelRepository= $lockedLabelRepository;
+        $this->lockedLabelRepository = $lockedLabelRepository;
     }
 
     /**
@@ -101,6 +102,8 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
         $address = $adapter->getAddress();
         if ($address) {
             $commands[] = new UpdateAddress($id, $address, $mainLanguage);
+        } else {
+            $commands[] = new RemoveAddress($id);
         }
 
         foreach ($adapter->getAddressTranslations() as $language => $address) {
