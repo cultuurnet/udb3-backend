@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
+use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -104,6 +105,7 @@ class OrganizerDocumentImporterTest extends TestCase
 
         $expectedCommands = [
             new UpdateContactPoint($id, new ContactPoint()),
+            new RemoveAddress($id),
             new UpdateTitle($id, new Title('Nom example'), new Language('fr')),
             new UpdateTitle($id, new Title('Example name'), new Language('en')),
             new ImportLabels($id, new Labels()),
@@ -133,6 +135,7 @@ class OrganizerDocumentImporterTest extends TestCase
             new UpdateTitle($id, new Title('Voorbeeld naam'), new Language('nl')),
             new UpdateWebsite($id, Url::fromNative('https://www.publiq.be')),
             new UpdateContactPoint($id, new ContactPoint()),
+            new RemoveAddress($id),
             new UpdateTitle($id, new Title('Nom example'), new Language('fr')),
             new UpdateTitle($id, new Title('Example name'), new Language('en')),
             new ImportLabels($id, new Labels()),
@@ -170,15 +173,15 @@ class OrganizerDocumentImporterTest extends TestCase
 
         $this->assertContainsObject(
             (
-                new ImportLabels(
-                    $this->getOrganizerId(),
-                    new Labels(
-                        new Label(new LabelName('foo'), true),
-                        new Label(new LabelName('bar'), true),
-                        new Label(new LabelName('lorem'), false),
-                        new Label(new LabelName('ipsum'), false)
-                    )
+            new ImportLabels(
+                $this->getOrganizerId(),
+                new Labels(
+                    new Label(new LabelName('foo'), true),
+                    new Label(new LabelName('bar'), true),
+                    new Label(new LabelName('lorem'), false),
+                    new Label(new LabelName('ipsum'), false)
                 )
+            )
             )->withLabelsToKeepIfAlreadyOnOrganizer($lockedLabels),
             $recordedCommands
         );
@@ -240,6 +243,34 @@ class OrganizerDocumentImporterTest extends TestCase
                     Country::fromNative('BE')
                 ),
                 new Language('fr')
+            ),
+            $recordedCommands
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_remove_address()
+    {
+        $document = $this->getOrganizerDocument();
+        $body = $document->getBody();
+
+        $document = $document->withBody($body);
+        $id = $document->getId();
+
+        $this->expectOrganizerExists($id);
+        $this->expectNoLockedLabels();
+
+        $this->commandBus->record();
+
+        $this->importer->import($document);
+
+        $recordedCommands = $this->commandBus->getRecordedCommands();
+
+        $this->assertContainsObject(
+            new RemoveAddress(
+                $id
             ),
             $recordedCommands
         );
