@@ -353,7 +353,7 @@ class OrganizerLDProjectorTest extends TestCase
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
 
-        $this->mockGet($organizerId, 'organizer.json');
+        $this->mockGet($organizerId, 'organizer_w_address.json');
 
         $domainMessage = $this->createDomainMessage(
             new AddressRemoved(

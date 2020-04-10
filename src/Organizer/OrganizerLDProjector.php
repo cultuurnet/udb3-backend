@@ -316,6 +316,7 @@ class OrganizerLDProjector implements EventListenerInterface
         $jsonLD = $document->getBody();
 
         unset($jsonLD->address);
+        unset($jsonLD->geo);
         return $document->withBody($jsonLD);
     }
 
