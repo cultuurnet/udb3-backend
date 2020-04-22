@@ -63,9 +63,17 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
         $user = array_shift($users);
 
         return new UserIdentityDetails(
-            new StringLiteral($user['user_id']),
+            new StringLiteral($this->extractUserId($user)),
             new StringLiteral($user['nickname']),
             new EmailAddress($user['email'])
         );
+    }
+
+    private function extractUserId(array $user): string
+    {
+        if (isset($user['app_metadata']['uitidv1id'])) {
+            return $user['app_metadata']['uitidv1id'];
+        }
+        return $user['user_id'];
     }
 }

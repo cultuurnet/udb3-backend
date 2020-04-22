@@ -182,6 +182,34 @@ class Auth0UserIdentityResolverTest extends TestCase
         $this->assertNull($result);
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_old_uuid_if_it_is_present()
+    {
+        $user = $this->aUser('auth0|9f3e9228-4eca-40ad-982f-4420bf4bbf09', 'ivo@hdz.com', 'Caca');
+        // only migrated users will have this "old" uuid
+        $oldUuid = '9f3e9228-4eca-40ad-982f-4420bf4bbf09';
+        $user['app_metadata']['uitidv1id'] = $oldUuid;
+
+        $client = $this->createMock(Management::class);
+        $users = $this->createMock(Users::class);
+
+        $client->expects($this->atLeast(1))
+            ->method('users')
+            ->willReturn($users);
+
+        $users->expects($this->atLeast(1))
+            ->method('getAll')
+            ->willReturn([$user]);
+
+        $auth0UserIdentityResolver = new Auth0UserIdentityResolver($client);
+
+        $result = $auth0UserIdentityResolver->getUserByNick(new StringLiteral('Caca'));
+
+        $this->assertEquals($oldUuid, $result->getUserId());
+    }
+
     private function aUser(string $userId, string $email, string $name): array
     {
         return [
