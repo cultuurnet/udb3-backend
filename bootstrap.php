@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
@@ -40,7 +39,6 @@ use CultuurNet\UDB3\ValueObject\SapiVersion;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
-use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -677,14 +675,6 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
         );
 
         $commandBus->subscribe($app['saved_searches_command_handler']);
-
-        /** @var ToggleManager $toggles */
-        $toggles = $app['toggles'];
-        if (false) {
-            $commandBus->subscribe(
-                $app['variations.command_handler']
-            );
-        }
 
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Place\CommandHandler(
