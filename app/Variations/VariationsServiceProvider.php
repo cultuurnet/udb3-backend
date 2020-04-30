@@ -24,49 +24,8 @@ class VariationsServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['variations.search.projector'] = $app->share(
-            function (Application $app) {
-                return new Projector(
-                    $app['variations.search']
-                );
-            }
-        );
 
-        $app['variations.search'] = $app->share(
-            function (Application $app) {
-                return new DBALRepository(
-                    $app['dbal_connection'],
-                    new ExpressionFactory()
-                );
-            }
-        );
-
-        $app['variations.jsonld_repository'] = $app->share(
-            function (Application $app) {
-                return new CacheDocumentRepository(
-                    $app['cache']('variation_jsonld')
-                );
-            }
-        );
-
-        $app['variations.jsonld.projector'] = $app->share(
-            function (Application $app) {
-                $iriGenerator = new CallableIriGenerator(
-                    function ($id) use ($app) {
-                        return $app['config']['url'] . '/variations/' . $id;
-                    }
-                );
-
-                return new \CultuurNet\UDB3\Variations\ReadModel\JSONLD\Projector(
-                    $app['variations.jsonld_repository'],
-                    $app['offer_reading_service'],
-                    $app['variations.search'],
-                    $iriGenerator
-                );
-            }
-        );
     }
-
     /**
      * @inheritdoc
      */
