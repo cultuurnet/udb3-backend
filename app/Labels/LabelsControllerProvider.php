@@ -80,9 +80,6 @@ class LabelsControllerProvider implements ControllerProviderInterface
         /** @var \Qandidate\Toggle\ToggleManager $toggles */
         $toggles = $app['toggles'];
 
-        return $toggles->active(
-            'label-management',
-            $app['toggles.context']
-        );
+        return true;
     }
 }
