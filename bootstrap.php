@@ -451,8 +451,6 @@ $app['event_bus'] = function ($app) {
             PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
             OrganizerJSONLDServiceProvider::PROJECTOR,
             'event_calendar_projector',
-            'variations.search.projector',
-            'variations.jsonld.projector',
             'event_permission.projector',
             'place_permission.projector',
             OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
