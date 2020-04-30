@@ -67,14 +67,15 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                 $security = new MediaSecurity($security);
 
                 $filterCommands = [];
-                $filterCommands[] = new StringLiteral(PlaceUpdateFacilities::class);
-                $filterCommands[] = new StringLiteral(EventUpdateFacilities::class);
 
                 $security = new SecurityWithUserPermission(
                     $security,
                     $app['current_user_identification'],
                     $app['facility_permission_voter'],
-                    new ClassNameCommandFilter(...$filterCommands)
+                    new ClassNameCommandFilter(
+                        new StringLiteral(PlaceUpdateFacilities::class),
+                        new StringLiteral(EventUpdateFacilities::class)
+                    )
                 );
 
                 return $security;
