@@ -52,8 +52,6 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             $app['toggles.context']
         );
 
-        $importValidateXml = true;
-
         $app['udb2_log_handler'] = $app->share(
             function () {
                 return new StreamHandler(__DIR__ . '/../log/udb2.log');
