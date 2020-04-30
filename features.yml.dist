@@ -19,10 +19,6 @@ toggles:
     name: import-validate-xml
     conditions: {}
     status: always-active
-  variations:
-    name: variations
-    conditions: {}
-    status: inactive
   uitid-api-key-required:
     name: uitid-api-key-required
     conditions: {}

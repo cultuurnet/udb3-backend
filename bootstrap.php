@@ -680,7 +680,7 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
 
         /** @var ToggleManager $toggles */
         $toggles = $app['toggles'];
-        if ($toggles->active('variations', $app['toggles.context'])) {
+        if (false) {
             $commandBus->subscribe(
                 $app['variations.command_handler']
             );

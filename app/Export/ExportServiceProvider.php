@@ -120,7 +120,7 @@ class ExportServiceProvider implements ServiceProviderInterface
         /** @var ToggleManager $toggles */
         $toggles = $app['toggles'];
 
-        if ($toggles->active('variations', $app['toggles.context'])) {
+        if (false) {
             $eventService =  $app['personal_variation_decorated_event_service'];
         } else {
             $eventService = $app['external_event_service'];
