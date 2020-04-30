@@ -45,8 +45,6 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $replayFiltering = true;
-
         $app['organizer_geocoordinates_process_manager'] = $app->share(
             function (Application $app) {
                 $processManager = new GeoCoordinatesProcessManager(
