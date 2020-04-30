@@ -6,19 +6,16 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
-use CultuurNet\UDB3\EventExport\EventExportServiceCollection;
 use CultuurNet\UDB3\EventExport\EventExportServiceInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory;
 use CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer;
-use CultuurNet\UDB3\EventExport\SapiVersion;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Twig_Environment;
@@ -117,17 +114,8 @@ class ExportServiceProvider implements ServiceProviderInterface
         Application $app,
         SearchServiceInterface $searchService
     ): EventExportServiceInterface {
-        /** @var ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
-        if (false) {
-            $eventService =  $app['personal_variation_decorated_event_service'];
-        } else {
-            $eventService = $app['external_event_service'];
-        }
-
         return new EventExportService(
-            $eventService,
+            $app['external_event_service'],
             $searchService,
             new Version4Generator(),
             realpath(__DIR__ .  '/../../web/downloads'),
