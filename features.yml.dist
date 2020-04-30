@@ -27,10 +27,6 @@ toggles:
     name: uitid-api-key-required
     conditions: {}
     status: inactive
-  facility-permission:
-    name: facility-permission
-    conditions: {}
-    status: inactive
   organizer-geocordinates-replay-filtering-event:
     name: organizer-geocordinates-replay-filtering-event
     conditions: {}

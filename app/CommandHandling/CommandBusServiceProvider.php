@@ -70,7 +70,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 
                 /** @var ToggleManager $toggles */
                 $toggles = $app['toggles'];
-                if ($toggles->active('facility-permission', $app['toggles.context'])) {
+                if (true) {
                     $filterCommands[] = new StringLiteral(PlaceUpdateFacilities::class);
                     $filterCommands[] = new StringLiteral(EventUpdateFacilities::class);
                 }
