@@ -69,49 +69,47 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
         $app['consumer'] = null;
 
-        if (true) {
-            $app->before(
-                function (Request $request, Application $app) {
-                    /** @var AuthorizationChecker $security */
-                    $security = $app['security.authorization_checker'];
-                    /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
-                    $apiKeyAuthenticator = $app['auth.request_authenticator'];
+        $app->before(
+            function (Request $request, Application $app) {
+                /** @var AuthorizationChecker $security */
+                $security = $app['security.authorization_checker'];
+                /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
+                $apiKeyAuthenticator = $app['auth.request_authenticator'];
 
-                    // Also store the ApiKey for later use in the impersonator.
-                    $app['auth.api_key'] = $app['auth.api_key_reader']->read($request);
+                // Also store the ApiKey for later use in the impersonator.
+                $app['auth.api_key'] = $app['auth.api_key_reader']->read($request);
 
-                    try {
-                        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
-                            // The request is not authenticated so we don't need to do additional checks since the
-                            // firewall will return an unauthorized error response.
-                            return;
-                        }
-                    } catch (AuthenticationCredentialsNotFoundException $exception) {
-                        // The request is for a public URL so we can skip any checks.
+                try {
+                    if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+                        // The request is not authenticated so we don't need to do additional checks since the
+                        // firewall will return an unauthorized error response.
                         return;
                     }
+                } catch (AuthenticationCredentialsNotFoundException $exception) {
+                    // The request is for a public URL so we can skip any checks.
+                    return;
+                }
 
-                    $apiKeyAuthenticator->authenticate($request);
+                $apiKeyAuthenticator->authenticate($request);
 
-                    // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
-                    $permissionCheck = new ConsumerIsInPermissionGroup(
-                        new StringLiteral((string) $app['auth.api_key.group_id'])
-                    );
+                // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
+                $permissionCheck = new ConsumerIsInPermissionGroup(
+                    new StringLiteral((string) $app['auth.api_key.group_id'])
+                );
 
-                    /* @var ConsumerReadRepositoryInterface $consumerRepository */
-                    $consumerRepository = $app['auth.consumer_repository'];
-                    /** @var ConsumerInterface $consumer */
-                    $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
+                /* @var ConsumerReadRepositoryInterface $consumerRepository */
+                $consumerRepository = $app['auth.consumer_repository'];
+                /** @var ConsumerInterface $consumer */
+                $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
 
-                    if (!$permissionCheck->satisfiedBy($consumer)) {
-                        throw new RequestAuthenticationException('Given API key is not authorized to use EntryAPI.');
-                    }
+                if (!$permissionCheck->satisfiedBy($consumer)) {
+                    throw new RequestAuthenticationException('Given API key is not authorized to use EntryAPI.');
+                }
 
-                    $app['consumer'] = $consumer;
-                },
-                Application::LATE_EVENT
-            );
-        }
+                $app['consumer'] = $consumer;
+            },
+            Application::LATE_EVENT
+        );
     }
 
     /**
