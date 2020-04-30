@@ -18,14 +18,10 @@ class LabelsControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        if ($this->isLabelManagementEnabled($app)) {
-            $this->setUpReadRestController($app);
-            $this->setUpEditRestController($app);
+        $this->setUpReadRestController($app);
+        $this->setUpEditRestController($app);
 
-            return $this->setControllerPaths($app['controllers_factory']);
-        } else {
-            return $app['controllers_factory'];
-        }
+        return $this->setControllerPaths($app['controllers_factory']);
     }
 
     /**
