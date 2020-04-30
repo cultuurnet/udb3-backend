@@ -48,10 +48,7 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
         /** @var \Qandidate\Toggle\ToggleManager $toggles */
         $toggles = $app['toggles'];
 
-        $replayFiltering = $toggles->active(
-            'organizer-geocordinates-replay-filtering-event',
-            $app['toggles.context']
-        );
+        $replayFiltering = true;
 
         $app['organizer_geocoordinates_process_manager'] = $app->share(
             function (Application $app) use ($replayFiltering) {
