@@ -47,13 +47,13 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
 
         $app['organizer_geocoordinates_process_manager'] = $app->share(
             function (Application $app) {
-                $processManager = new GeoCoordinatesProcessManager(
-                    $app['event_command_bus'],
-                    new CultureFeedAddressFactory(),
-                    $app['organizer_geocoordinates_logger']
+                return new ReplayFilteringEventListener(
+                    new GeoCoordinatesProcessManager(
+                        $app['event_command_bus'],
+                        new CultureFeedAddressFactory(),
+                        $app['organizer_geocoordinates_logger']
+                    )
                 );
-
-                return new ReplayFilteringEventListener($processManager);
             }
         );
     }
