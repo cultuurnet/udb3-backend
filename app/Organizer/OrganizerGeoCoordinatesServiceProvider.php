@@ -45,9 +45,6 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
             }
         );
 
-        /** @var \Qandidate\Toggle\ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
         $replayFiltering = true;
 
         $app['organizer_geocoordinates_process_manager'] = $app->share(
