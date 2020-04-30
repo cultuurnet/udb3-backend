@@ -24,47 +24,6 @@ class VariationsServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['variations'] = $app->share(
-            function (Application $app) {
-                return new DefaultOfferVariationService(
-                    $app['variations.repository'],
-                    new Version4Generator()
-                );
-            }
-        );
-
-        $app['variations.repository'] = $app->share(
-            function (Application $app) {
-                return new OfferVariationRepository(
-                    $app['variations.event_store'],
-                    $app['event_bus'],
-                    [
-                        $app['event_stream_metadata_enricher'],
-                    ]
-                );
-            }
-        );
-
-        $app['variations.command_handler'] = $app->share(
-            function (Application $app) {
-                return new OfferVariationCommandHandler(
-                    $app['variations']
-                );
-            }
-        );
-
-        $app['variations.event_store'] = $app->share(
-            function ($app) {
-                return new AggregateAwareDBALEventStore(
-                    $app['dbal_connection'],
-                    $app['eventstore_payload_serializer'],
-                    new SimpleInterfaceSerializer(),
-                    'event_store',
-                    AggregateType::VARIATION()
-                );
-            }
-        );
-
         $app['variations.search.projector'] = $app->share(
             function (Application $app) {
                 return new Projector(

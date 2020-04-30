@@ -191,33 +191,6 @@ $app['external_event_service'] = $app->share(
     }
 );
 
-$app['personal_variation_decorated_event_service'] = $app->share(
-    function (Application $app) {
-        $decoratedService = $app['external_event_service'];
-
-        /* @var \CultureFeed_User $user */
-        $user = $app['current_user'];
-
-        $criteria = (new \CultuurNet\UDB3\Variations\ReadModel\Search\Criteria())
-            ->withPurpose(
-                new \CultuurNet\UDB3\Variations\Model\Properties\Purpose('personal')
-            )
-            ->withOwnerId(
-                new \CultuurNet\UDB3\Variations\Model\Properties\OwnerId(
-                    $user->id
-                )
-            );
-
-        return new \CultuurNet\UDB3\Variations\VariationDecoratedEventService(
-            $decoratedService,
-            $app['variations.search'],
-            $criteria,
-            $app['variations.jsonld_repository'],
-            $app['event_iri_generator']
-        );
-    }
-);
-
 $app['current_user'] = $app::share(
     function (Application $app) {
         // Check first if we're impersonating someone.
