@@ -87,7 +87,6 @@ class PurgeServiceProvider implements ServiceProviderInterface
             'media_objects',
             'organizers',
             'places',
-            'variations',
         ];
 
         foreach ($dbalWriteModels as $dbalWriteModel) {
