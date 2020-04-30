@@ -66,16 +66,4 @@ class LabelsControllerProvider implements ControllerProviderInterface
 
         return $controllers;
     }
-
-    /**
-     * @param Application $app
-     * @return bool
-     */
-    private function isLabelManagementEnabled(Application $app)
-    {
-        /** @var \Qandidate\Toggle\ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
-        return true;
-    }
 }
