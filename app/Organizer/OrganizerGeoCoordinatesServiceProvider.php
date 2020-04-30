@@ -48,16 +48,12 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
         $replayFiltering = true;
 
         $app['organizer_geocoordinates_process_manager'] = $app->share(
-            function (Application $app) use ($replayFiltering) {
+            function (Application $app) {
                 $processManager = new GeoCoordinatesProcessManager(
                     $app['event_command_bus'],
                     new CultureFeedAddressFactory(),
                     $app['organizer_geocoordinates_logger']
                 );
-
-                if (!$replayFiltering) {
-                    return $processManager;
-                }
 
                 return new ReplayFilteringEventListener($processManager);
             }
