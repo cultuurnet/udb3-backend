@@ -186,16 +186,11 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_events_cdbxml_enricher'] = $app->share(
-            function (Application $app) use ($importFromSapi, $importValidateXml) {
-                $xmlValidationService = null;
-                if ($importValidateXml) {
-                    $xmlValidationService = $app['event_cdbxml_enricher_xml_validation_service'];
-                }
-
+            function (Application $app) use ($importFromSapi) {
                 $enricher = new EventCdbXmlEnricher(
                     $app['event_bus'],
                     $app['cdbxml_enricher_http_client_adapter'],
-                    $xmlValidationService
+                    $app['event_cdbxml_enricher_xml_validation_service']
                 );
 
                 $enricher->setLogger($app['cdbxml_enricher_logger']);
@@ -214,16 +209,11 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         );
 
         $app['udb2_actor_events_cdbxml_enricher'] = $app->share(
-            function (Application $app) use ($importFromSapi, $importValidateXml) {
-                $xmlValidationService = null;
-                if ($importValidateXml) {
-                    $xmlValidationService = $app['actor_cdbxml_enricher_xml_validation_service'];
-                }
-
+            function (Application $app) use ($importFromSapi) {
                 $enricher = new ActorEventCdbXmlEnricher(
                     $app['event_bus'],
                     $app['cdbxml_enricher_http_client_adapter'],
-                    $xmlValidationService
+                    $app['actor_cdbxml_enricher_xml_validation_service']
                 );
 
                 $enricher->setLogger($app['cdbxml_enricher_logger']);
