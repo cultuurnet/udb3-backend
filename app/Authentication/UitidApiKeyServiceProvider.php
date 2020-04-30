@@ -64,9 +64,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             }
         );
 
-        /** @var ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
         $app['consumer'] = null;
 
         $app->before(
