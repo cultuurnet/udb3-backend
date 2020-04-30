@@ -67,13 +67,8 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                 $security = new MediaSecurity($security);
 
                 $filterCommands = [];
-
-                /** @var ToggleManager $toggles */
-                $toggles = $app['toggles'];
-                if (true) {
-                    $filterCommands[] = new StringLiteral(PlaceUpdateFacilities::class);
-                    $filterCommands[] = new StringLiteral(EventUpdateFacilities::class);
-                }
+                $filterCommands[] = new StringLiteral(PlaceUpdateFacilities::class);
+                $filterCommands[] = new StringLiteral(EventUpdateFacilities::class);
 
                 $security = new SecurityWithUserPermission(
                     $security,
