@@ -66,8 +66,6 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 
                 $security = new MediaSecurity($security);
 
-                $filterCommands = [];
-
                 $security = new SecurityWithUserPermission(
                     $security,
                     $app['current_user_identification'],
