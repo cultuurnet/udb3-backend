@@ -69,7 +69,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
         $app['consumer'] = null;
 
-        if ($toggles->active('uitid-api-key-required', $app['toggles.context'])) {
+        if (true) {
             $app->before(
                 function (Request $request, Application $app) {
                     /** @var AuthorizationChecker $security */
