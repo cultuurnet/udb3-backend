@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Security\ClassNameCommandFilter;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Security\SecurityWithUserPermission;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
