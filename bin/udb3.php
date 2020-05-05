@@ -80,24 +80,24 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new ReplayCommand());
-$consoleApp->add(new EventAncestorsCommand());
+$consoleApp->add(new ReplayCommand($app['event_command_bus']));
+$consoleApp->add(new EventAncestorsCommand($app['event_command_bus']));
 $consoleApp->add(new UpdateCdbXMLCommand());
 $consoleApp->add(new EventCdbXmlCommand());
 $consoleApp->add(new PurgeModelCommand());
-$consoleApp->add(new ConcludeCommand());
-$consoleApp->add(new ConcludeByCdbidCommand());
-$consoleApp->add(new GeocodePlaceCommand());
-$consoleApp->add(new GeocodeEventCommand());
+$consoleApp->add(new ConcludeCommand($app['event_command_bus']));
+$consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
+$consoleApp->add(new GeocodePlaceCommand($app['event_command_bus']));
+$consoleApp->add(new GeocodeEventCommand($app['event_command_bus']));
 $consoleApp->add(new PermissionCommand());
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand());
 $consoleApp->add(new FireProjectedToJSONLDCommand());
-$consoleApp->add(new ImportSavedSearchesCommand());
-$consoleApp->add(new ImportRoleConstraintsCommand());
-$consoleApp->add(new ImportEventCdbXmlCommand());
-$consoleApp->add(new ImportPlaceCdbXmlCommand());
-$consoleApp->add(new ValidatePlaceJsonLdCommand());
-$consoleApp->add(new MarkPlaceAsDuplicateCommand());
-$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand());
+$consoleApp->add(new ImportSavedSearchesCommand($app['event_command_bus']));
+$consoleApp->add(new ImportRoleConstraintsCommand($app['event_command_bus']));
+$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus']));
+$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus']));
+$consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
+$consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus']));
+$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus']));
 
 $consoleApp->run();
