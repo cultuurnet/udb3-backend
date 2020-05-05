@@ -19,10 +19,6 @@ toggles:
     name: uitid-api-key-required
     conditions: {}
     status: inactive
-  organizer-geocordinates-replay-filtering-event:
-    name: organizer-geocordinates-replay-filtering-event
-    conditions: {}
-    status: always-active
   auth0-user-management:
     name: auth0-user-management
     conditions: {}
