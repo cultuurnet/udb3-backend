@@ -180,3 +180,6 @@ curator_labels:
 bookable_event:
   dummy_place_ids:
     - c3f9278e-228b-4199-8f9a-b9716a17e58f
+
+# For development only
+bypass_api_key_check: false

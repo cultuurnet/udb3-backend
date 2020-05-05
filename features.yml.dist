@@ -11,10 +11,6 @@ toggles:
     name: import-from-sapi
     conditions: {}
     status: inactive
-  uitid-api-key-required:
-    name: uitid-api-key-required
-    conditions: {}
-    status: inactive
   auth0-user-management:
     name: auth0-user-management
     conditions: {}
