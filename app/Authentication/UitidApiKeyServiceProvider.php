@@ -68,6 +68,10 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
         $app->before(
             function (Request $request, Application $app) {
+                if ($this->canBypassAuthentication()) {
+                    return;
+                }
+
                 /** @var AuthorizationChecker $security */
                 $security = $app['security.authorization_checker'];
                 /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
@@ -107,6 +111,15 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
             },
             Application::LATE_EVENT
         );
+    }
+
+    private function canBypassAuthentication(): bool
+    {
+        if (!isset($app['config']['bypass_authentication'])) {
+            return false;
+        }
+
+        return $app['config']['bypass_authentication'];
     }
 
     /**
