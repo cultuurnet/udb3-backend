@@ -11,10 +11,6 @@ toggles:
     name: import-from-sapi
     conditions: {}
     status: inactive
-  variations:
-    name: variations
-    conditions: {}
-    status: inactive
   uitid-api-key-required:
     name: uitid-api-key-required
     conditions: {}

@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
@@ -40,7 +39,6 @@ use CultuurNet\UDB3\ValueObject\SapiVersion;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
-use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -89,7 +87,6 @@ $app['event_store_factory'] = $app->protect(
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 $app->register(new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesServiceProvider());
-$app->register(new \CultuurNet\UDB3\Silex\Variations\VariationsServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Http\HttpServiceProvider());
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
@@ -190,33 +187,6 @@ $app['event_service'] = $app->share(
 $app['external_event_service'] = $app->share(
     function ($app) {
         return new ExternalEventService($app['http.guzzle']);
-    }
-);
-
-$app['personal_variation_decorated_event_service'] = $app->share(
-    function (Application $app) {
-        $decoratedService = $app['external_event_service'];
-
-        /* @var \CultureFeed_User $user */
-        $user = $app['current_user'];
-
-        $criteria = (new \CultuurNet\UDB3\Variations\ReadModel\Search\Criteria())
-            ->withPurpose(
-                new \CultuurNet\UDB3\Variations\Model\Properties\Purpose('personal')
-            )
-            ->withOwnerId(
-                new \CultuurNet\UDB3\Variations\Model\Properties\OwnerId(
-                    $user->id
-                )
-            );
-
-        return new \CultuurNet\UDB3\Variations\VariationDecoratedEventService(
-            $decoratedService,
-            $app['variations.search'],
-            $criteria,
-            $app['variations.jsonld_repository'],
-            $app['event_iri_generator']
-        );
     }
 );
 
@@ -480,8 +450,6 @@ $app['event_bus'] = function ($app) {
             PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
             OrganizerJSONLDServiceProvider::PROJECTOR,
             'event_calendar_projector',
-            'variations.search.projector',
-            'variations.jsonld.projector',
             'event_permission.projector',
             'place_permission.projector',
             OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
@@ -677,14 +645,6 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
         );
 
         $commandBus->subscribe($app['saved_searches_command_handler']);
-
-        /** @var ToggleManager $toggles */
-        $toggles = $app['toggles'];
-        if ($toggles->active('variations', $app['toggles.context'])) {
-            $commandBus->subscribe(
-                $app['variations.command_handler']
-            );
-        }
 
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Place\CommandHandler(
