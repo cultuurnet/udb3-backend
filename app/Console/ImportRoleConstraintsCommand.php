@@ -91,8 +91,7 @@ class ImportRoleConstraintsCommand extends AbstractCsvImportCommand
         string $sapiVersion,
         string $query
     ): void {
-        $commandBus = $this->getCommandBus();
-        $commandBus->dispatch(
+        $this->commandBus->dispatch(
             new AddConstraint(
                 new UUID($roleId),
                 SapiVersion::fromNative($sapiVersion),
@@ -111,8 +110,7 @@ class ImportRoleConstraintsCommand extends AbstractCsvImportCommand
         string $sapiVersion,
         string $query
     ): void {
-        $commandBus = $this->getCommandBus();
-        $commandBus->dispatch(
+        $this->commandBus->dispatch(
             new UpdateConstraint(
                 new UUID($roleId),
                 SapiVersion::fromNative($sapiVersion),

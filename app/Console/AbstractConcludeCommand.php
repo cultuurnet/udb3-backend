@@ -11,7 +11,6 @@ abstract class AbstractConcludeCommand extends AbstractCommand
      */
     protected function dispatchConclude($cdbid)
     {
-        $commandBus = $this->getCommandBus();
-        $commandBus->dispatch(new Conclude($cdbid));
+        $this->commandBus->dispatch(new Conclude($cdbid));
     }
 }

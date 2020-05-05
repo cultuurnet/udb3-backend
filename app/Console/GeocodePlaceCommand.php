@@ -88,7 +88,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
             return;
         }
 
-        $this->getCommandBus()->dispatch(
+        $this->commandBus->dispatch(
             new UpdateGeoCoordinatesFromAddress($placeId, $address)
         );
 

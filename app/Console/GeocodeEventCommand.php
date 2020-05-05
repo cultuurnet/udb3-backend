@@ -100,7 +100,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             }
         }
 
-        $this->getCommandBus()->dispatch(
+        $this->commandBus->dispatch(
             new UpdateGeoCoordinatesFromAddress($eventId, $address)
         );
 

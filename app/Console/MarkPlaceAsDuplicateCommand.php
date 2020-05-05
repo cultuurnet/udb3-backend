@@ -32,7 +32,7 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
         $this->getProcessManager()->setLogger($logger);
 
         try {
-            $this->getCommandBus()->dispatch(
+            $this->commandBus->dispatch(
                 new MarkAsDuplicate(
                     $input->getArgument(self::DUPLICATE_PLACE_ID_ARGUMENT),
                     $input->getArgument(self::CANONICAL_PLACE_ID_ARGUMENT)
