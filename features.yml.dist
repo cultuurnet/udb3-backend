@@ -3,10 +3,6 @@ toggles:
     name: search-include-places
     conditions: {}
     status: inactive
-  label-management:
-    name: label-management
-    conditions: {}
-    status: inactive
   jobs-endpoint:
     name: jobs-endpoint
     conditions: {}
@@ -15,22 +11,6 @@ toggles:
     name: import-from-sapi
     conditions: {}
     status: inactive
-  import-validate-xml:
-    name: import-validate-xml
-    conditions: {}
-    status: always-active
-  variations:
-    name: variations
-    conditions: {}
-    status: inactive
-  facility-permission:
-    name: facility-permission
-    conditions: {}
-    status: inactive
-  organizer-geocordinates-replay-filtering-event:
-    name: organizer-geocordinates-replay-filtering-event
-    conditions: {}
-    status: always-active
   auth0-user-management:
     name: auth0-user-management
     conditions: {}

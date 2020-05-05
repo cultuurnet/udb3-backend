@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Security\ClassNameCommandFilter;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Security\SecurityWithUserPermission;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -66,20 +65,14 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 
                 $security = new MediaSecurity($security);
 
-                $filterCommands = [];
-
-                /** @var ToggleManager $toggles */
-                $toggles = $app['toggles'];
-                if ($toggles->active('facility-permission', $app['toggles.context'])) {
-                    $filterCommands[] = new StringLiteral(PlaceUpdateFacilities::class);
-                    $filterCommands[] = new StringLiteral(EventUpdateFacilities::class);
-                }
-
                 $security = new SecurityWithUserPermission(
                     $security,
                     $app['current_user_identification'],
                     $app['facility_permission_voter'],
-                    new ClassNameCommandFilter(...$filterCommands)
+                    new ClassNameCommandFilter(
+                        new StringLiteral(PlaceUpdateFacilities::class),
+                        new StringLiteral(EventUpdateFacilities::class)
+                    )
                 );
 
                 return $security;
