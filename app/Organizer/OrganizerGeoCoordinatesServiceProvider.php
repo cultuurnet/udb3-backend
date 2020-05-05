@@ -45,27 +45,15 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
             }
         );
 
-        /** @var \Qandidate\Toggle\ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
-        $replayFiltering = $toggles->active(
-            'organizer-geocordinates-replay-filtering-event',
-            $app['toggles.context']
-        );
-
         $app['organizer_geocoordinates_process_manager'] = $app->share(
-            function (Application $app) use ($replayFiltering) {
-                $processManager = new GeoCoordinatesProcessManager(
-                    $app['event_command_bus'],
-                    new CultureFeedAddressFactory(),
-                    $app['organizer_geocoordinates_logger']
+            function (Application $app) {
+                return new ReplayFilteringEventListener(
+                    new GeoCoordinatesProcessManager(
+                        $app['event_command_bus'],
+                        new CultureFeedAddressFactory(),
+                        $app['organizer_geocoordinates_logger']
+                    )
                 );
-
-                if (!$replayFiltering) {
-                    return $processManager;
-                }
-
-                return new ReplayFilteringEventListener($processManager);
             }
         );
     }
