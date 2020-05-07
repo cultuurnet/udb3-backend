@@ -83,7 +83,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
         );
 
         $this->offerRepository->save($event);
-
     }
 
     /**
