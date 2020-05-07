@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL" availablefrom="2016-04-13T13:21:55" availableto="2016-04-14T00:00:00" cdbid="e3604613-af01-4d2b-8cee-13ab61b89651" createdby="nick@2dotstwice.be" creationdate="2016-04-13T13:21:55" externalid="CDB:e3604613-af01-4d2b-8cee-13ab61b89651" lastupdated="2016-04-14T17:33:31" lastupdatedby="nick@2dotstwice.be" owner="Invoerders Algemeen " pctcomplete="40" private="false" published="true" publisher="469781698cdbbd84d5c9c60822a5a8ff" validator="Leuven Validatoren" wfstatus="readyforvalidation" isparent="false">
+    <cdb:calendar>
+        <cdb:timestamps>
+            <cdb:timestamp>
+                <cdb:date>2016-04-13</cdb:date>
+            </cdb:timestamp>
+        </cdb:timestamps>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category type="theme" catid="1.25.0.0.0">Wetenschap</cdb:category>
+        <cdb:category type="flanderstouristregion" catid="reg.367">Kunststad Leuven</cdb:category>
+        <cdb:category type="eventtype" catid="0.3.1.0.0">Cursus of workshop</cdb:category>
+        <cdb:category type="flandersregion" catid="reg.638">3000 Leuven</cdb:category>
+    </cdb:categories>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Leuven</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.748294</cdb:xcoordinate>
+                    <cdb:ycoordinate>50.894600</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>44</cdb:housenr>
+                <cdb:street>teststraat</cdb:street>
+                <cdb:zipcode>3000</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>woe 13/04/16, woe 13/04/16, om 08:00, van 08:00 tot 12:00</cdb:calendarsummary>
+            <cdb:title>Blubblub</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:keywords />
+    <cdb:location>
+        <cdb:address>
+        </cdb:address>
+        <cdb:label>Dummy locatie</cdb:label>
+    </cdb:location>
+</cdb:event>
