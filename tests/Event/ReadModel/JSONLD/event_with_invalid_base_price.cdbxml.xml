@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL"
+           availablefrom="2014-08-12T00:00:00" availableto="2016-12-17T00:00:00"
+           cdbid="7614f22c-e4ec-445b-9f8d-9cae60c262a2"
+           createdby="kgielens@kanker.be" creationdate="2014-08-12T14:37:58"
+           externalid="CDB:85fbe2b6-024f-4e5c-b61a-339b02a064a6"
+           isparent="false" lastupdated="2014-10-21T16:47:23"
+           lastupdatedby="karen.vaneynde@mechelen.be" pctcomplete="90"
+           published="true" owner="Invoerders Algemeen " private="false"
+           validator="Mechelen Validatoren" wfstatus="approved">
+    <cdb:activities>
+        <cdb:activity count="0" type="like"/>
+        <cdb:activity count="0" type="attend"/>
+        <cdb:activity count="0" type="comment"/>
+        <cdb:activity count="0" type="recommend"/>
+        <cdb:activity count="0" type="facebook_share"/>
+        <cdb:activity count="0" type="review"/>
+    </cdb:activities>
+    <cdb:agefrom>18</cdb:agefrom>
+    <cdb:calendar>
+        <cdb:periods>
+            <cdb:period>
+                <cdb:datefrom>2014-08-22</cdb:datefrom>
+                <cdb:dateto>2016-12-16</cdb:dateto>
+            </cdb:period>
+        </cdb:periods>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category catid="1.51.12.0.0" type="theme">Omnisport en andere
+        </cdb:category>
+        <cdb:category catid="reg.368" type="flanderstouristregion">Kunststad
+            Mechelen
+        </cdb:category>
+        <cdb:category catid="0.59.0.0.0" type="eventtype">Sportactiviteit
+        </cdb:category>
+        <cdb:category catid="reg.592" type="flandersregion">2800 Mechelen
+        </cdb:category>
+    </cdb:categories>
+    <cdb:comments/>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Mechelen</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.485984</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.015051</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>57</cdb:housenr>
+                <cdb:street>Bautersemstraat</cdb:street>
+                <cdb:zipcode>2800</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail>john@doe.be</cdb:mail>
+        <cdb:phone type="phone">1234 82 21 36</cdb:phone>
+        <cdb:mail reservation="true">kgielens@stichtingtegenkanker.be</cdb:mail>
+        <cdb:phone reservation="true" type="phone">0475 82 21 36</cdb:phone>
+        <cdb:url>http://www.rekanto.be</cdb:url>
+        <cdb:url reservation="true">http://www.reservatiesite.be</cdb:url>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>van 22/08/14 tot 16/12/16</cdb:calendarsummary>
+            <cdb:longdescription>
+                Stichting tegen Kanker helpt patiënten hun energie terug te
+                vinden
+                <br/>
+                <br/>Het Rekanto-programma van de Stichting tegen Kanker biedt
+                (ex-) kankerpatiënten gratis fysieke activiteiten aan tot één
+                jaar na hun behandeling. Vandaag genieten meer dan 1000 mensen
+                in heel België van de voordelen van het programma, waarvan het
+                doel is de vermoeidheid tegen te gaan, de levenskwaliteit te
+                verhogen en mensen te helpen opnieuw een zo normaal mogelijk
+                dagelijks leven te kunnen hernemen. Deelnemers hebben de keuze
+                uit een waaier aan activiteiten om hun fysieke en psychisch
+                evenwicht terug te vinden: omnisport, aquagym en nordic walking
+                om zich fitter te voelen, taï chi en yoga om te ontspannen….
+                <br/>
+                <br/>Opnieuw op krachten komen voor een betere levenskwaliteit
+                <br/>
+                <br/>Na een behandeling met chemo- of radiotherapie kampen
+                mensen vaak met bijwerkingen, waarvan zware fysieke vermoeidheid
+                de meest voorkomende is. 60 à 90% van de patiënten ondervindt
+                deze hinder. De minste activiteit veroorzaakt een gevoel van
+                totale uitputting, waarbij rusten niet veel soelaas biedt. Deze
+                vermoeidheid heeft een enorme impact op de levenskwaliteit van
+                de patiënten, met gevolgen op fysiek, psychisch en sociaal vlak.
+                <br/>
+                <br/>Met het bewegingsprogramma Rekanto wil Stichting tegen
+                Kanker geleidelijk aan de fysieke conditie van (ex-) patiënten
+                verbeteren opdat ze opnieuw de krachten terugwinnen die ze nodig
+                hebben voor hun dagelijkse bezigheden, hun sociale en
+                professioneel leven. Talrijke wetenschappelijke studies tonen de
+                positieve impact aan van fysieke activiteiten op mensen met
+                kanker. Zo neemt hun spierkracht toe en neemt de vermoeidheid af
+                doordat ze hun uithoudingsvermogen progressief trainen. Dat
+                heeft op zijn beurt positieve effecten op het psychisch
+                evenwicht: de patiënt gaat zich beter in zijn vel voelen, terug
+                vertrouwen krijgen in zijn eigen fysieke kunnen, terug een
+                regelmatige sociale activiteit uitoefenen en zich minder
+                depressief en angstig voelen. Zo vertelt Brenda (41): “Tijdens
+                de yoga voel ik mijn lichaam heel sterk. Sinds de kanker ben ik
+                snel ongerust als ik plots ergens pijn voel bijvoorbeeld. Door
+                de yoga verdwijnt die ongerustheid wat. Ik weet dan: dat is
+                normaal, dat komt door de sport.” Karin (42) vindt: “De groep en
+                de saamhorigheid zijn voor mij ook heel belangrijk. Ja, het feit
+                dat we allemaal hetzelfde meegemaakt hebben, terwijl het daar
+                niet altijd over hoeft te gaan, hé. Ik wilde niet in het
+                ziekzijn blijven zitten!”
+                <br/>
+                <br/>Een professioneel omkaderd overgangsprogramma
+                <br/>
+                <br/>Patiënten kunnen bij Rekanto starten tijdens en tot één
+                jaar na het einde van hun behandeling. De activiteiten zijn op
+                maat ontwikkeld door specialisten in de oncologie en
+                revalidatie. Zo worden ze als een ‘overgangsprogramma’
+                aangeboden, dat de patiënt in staat stelt om geleidelijk aan de
+                energie terug te vinden die hij nodig heeft om dagelijkse
+                bezigheden opnieuw aan te kunnen:<br/>Anne (49) “Ik kan terug
+                iets! Ik recupereer ook sneller. In het begin voelde ik me echt
+                een vod en kwam ik zeer onregelmatig. Nu kom ik veel
+                regelmatiger. Ik voel me ook mentaal sterker. In het begin lag
+                ik na een sessie twee dagen in bed. Nu kan ik de volgende dag al
+                dingen doen … En ik ben er ook mondiger door geworden!”<br/>Het
+                doel van Rekanto is, dat deelnemers na enkele maanden of een
+                jaar uit het programma kunnen stappen en in staat zijn om een zo
+                normaal mogelijk leven te leiden.
+                <br/>
+                <br/>Een waaier aan activiteiten op maat
+                <br/>
+                <br/>Om aan de behoeften van zoveel mogelijk patiënten te
+                voldoen, biedt Rekanto een waaier aan activiteiten aan,
+                aangepast aan de situatie en de fysieke beperkingen van
+                eenieder: omnisport, aquagym en nordic walking om de fysieke
+                conditie te verhogen; taï chi en yoga om te ontspannen en op een
+                zachte manier terug in vorm te komen.
+                <br/>
+                <br/>Paul, yoga-instructeur in Aartselaar, legt uit hoe
+                belangrijk het is om het programma aan elke deelnemer aan te
+                passen: “Ze willen zo veel: ze willen genezen, ze willen terug
+                een normaal leven, ze willen snel een hoog niveau bereiken. Ze
+                ‘overwillen’ zich wel eens. En zo verliezen ze energie. Ik daag
+                hen wel uit, maar het is belangrijk dat iedereen de oefeningen
+                doet volgens wat hij zelf aankan. En dat is voor iedereen
+                anders. Tegelijk werk ik opbouwend. Ik wissel veel af, maar laat
+                ook vaak dezelfde oefeningen terugkomen. Zo zie ik en zien zij
+                zelf hoe ze vooruitgaan.”
+                <br/>
+                <p class="uiv-source">Bron:
+                    <a href="http://www.uitinvlaanderen.be/agenda/e/rekanto-taiqi/7614f22c-e4ec-445b-9f8d-9cae60c262a2">
+                        UiTinVlaanderen.be
+                    </a>
+                </p>
+            </cdb:longdescription>
+            <cdb:media>
+                <cdb:file>
+                    <cdb:hlink>http://www.rekanto.be</cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="14/08/2014 16:29:28" main="true">
+                    <cdb:copyright>StK</cdb:copyright>
+                    <cdb:filename>d9cd0795-2e68-40cb-acc1-7900945f5d0d.jpg
+                    </cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20140812/d9cd0795-2e68-40cb-acc1-7900945f5d0d.jpg
+                    </cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:price>
+                <cdb:pricevalue>TOTALLY_NOT_A_FLOAT</cdb:pricevalue>
+            </cdb:price>
+            <cdb:shortdescription>
+                • fysieke activiteiten, speciaal ontworpen voor volwassenen die
+                af te rekenen hebben of onlangs af te rekenen hadden met een
+                kanker.• Rekanto helpt om een betere lichamelijke conditie te
+                herwinnen en op die manier de vermoeidheid te overwinnen,
+                dankzij activiteiten in groep• Patiënten in behandeling of tot
+                een jaar na het einde daarvan kunnen gedurende één jaar gratis
+                deelnemen.
+            </cdb:shortdescription>
+            <cdb:title>Rekanto - TaiQi</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:languages>
+        <cdb:language type="spoken">Nederlands</cdb:language>
+        <cdb:language type="spoken">Frans</cdb:language>
+        <cdb:language type="spoken">Engels</cdb:language>
+    </cdb:languages>
+    <cdb:keywords>
+        beweging;kanker;vermoeidheid;herstel;Rekanto;TaiQi;wijk__arsenaal
+    </cdb:keywords>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Mechelen</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.485984</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.015051</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>57</cdb:housenr>
+                <cdb:street>Bautersemstraat</cdb:street>
+                <cdb:zipcode>2800</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label>Sporthal IHAM</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label>stichting tegen Kanker</cdb:label>
+    </cdb:organiser>
+</cdb:event>

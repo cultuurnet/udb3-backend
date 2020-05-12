@@ -1,0 +1,93 @@
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL" availablefrom="2014-10-22T00:00:00"
+           availableto="2015-03-19T00:00:00" cdbid="7914ed2d-9f28-4946-b9bd-ae8f7a4aea11"
+           createdby="manu.roegiers@luca-arts.be" creationdate="2014-10-22T11:52:48"
+           externalid="CDB:95b30501-6a70-4cb3-a5c9-4a2eb7003214" isparent="false" lastupdated="2014-10-22T15:55:52"
+           lastupdatedby="manu.roegiers@luca-arts.be" pctcomplete="80" published="true" owner="Invoerders Algemeen "
+           private="false" validator="UiTdatabank Validatoren" wfstatus="readyforvalidation">
+    <cdb:activities>
+        <cdb:activity count="0" type="like"/>
+        <cdb:activity count="0" type="attend"/>
+        <cdb:activity count="0" type="comment"/>
+        <cdb:activity count="0" type="recommend"/>
+        <cdb:activity count="0" type="facebook_share"/>
+        <cdb:activity count="0" type="review"/>
+    </cdb:activities>
+    <cdb:calendar>
+        <cdb:timestamps>
+            <cdb:timestamp>
+                <cdb:date>2015-03-18</cdb:date>
+                <cdb:timestart>14:00:00</cdb:timestart>
+                <cdb:timeend>17:00:00</cdb:timeend>
+            </cdb:timestamp>
+        </cdb:timestamps>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category catid="reg.357" type="flanderstouristregion">Kunststad Brussel</cdb:category>
+        <cdb:category catid="0.12.0.0.0" type="eventtype">Opendeurdag</cdb:category>
+        <cdb:category catid="reg.1567" type="flandersregion">1030 Schaarbeek (Brussel)</cdb:category>
+    </cdb:categories>
+    <cdb:comments/>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Schaarbeek</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.367323</cdb:xcoordinate>
+                    <cdb:ycoordinate>50.861241</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>70</cdb:housenr>
+                <cdb:street>Paleizenstraat</cdb:street>
+                <cdb:zipcode>1030</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:url>http://www.luca-arts.be/agenda</cdb:url>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>woe 18/03/15 van 14:00 tot 17:00</cdb:calendarsummary>
+            <cdb:media>
+                <cdb:file>
+                    <cdb:hlink>http://www.luca-arts.be/agenda</cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="22/10/2014 15:55:49" main="true">
+                    <cdb:copyright>Renzo De Ceuster</cdb:copyright>
+                    <cdb:filename>a9072559-5c42-4942-b45e-b34ad1f1d706.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20141022/a9072559-5c42-4942-b45e-b34ad1f1d706.jpg
+                    </cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:shortdescription>
+                LUCA School of Arts organiseert bachelor- en masteropleidingen in Audiovisuele en Beeldende Kunsten,
+                Bouw en Interieurvormgeving op de campus Sint-Lukas Brussel. Waar staan onze bacheloropleiding precies
+                voor? Welke zijn de toekomstperspectieven na het behalen van een diploma? Hoe is het om te studeren in
+                hartje Brussel? Kom het te weten van onze studenten en docenten op onze infodag.
+            </cdb:shortdescription>
+            <cdb:title>Infodag Sint-Lukas Brussel</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:keywords>LUCA School of Arts</cdb:keywords>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Schaarbeek</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.367323</cdb:xcoordinate>
+                    <cdb:ycoordinate>50.861241</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>70</cdb:housenr>
+                <cdb:street>Paleizenstraat</cdb:street>
+                <cdb:zipcode>1030</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label>Sint-Lukas Brussel</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label>LUCA School of Arts</cdb:label>
+    </cdb:organiser>
+</cdb:event>

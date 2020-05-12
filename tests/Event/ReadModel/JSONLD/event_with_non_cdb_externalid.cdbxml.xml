@@ -1,0 +1,193 @@
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL" availablefrom="2014-07-25T05:18:22"
+           availableto="2015-03-29T00:00:00" cdbid="92f53b24-ea38-46f3-9541-e93958a03f3c" createdby="encimaimport"
+           creationdate="2014-06-17T05:27:00" externalid="CC_De_Grote_Post:degrotepost_Evenement_453" isparent="false"
+           lastupdated="2014-10-22T14:35:35" lastupdatedby="koorenstem" pctcomplete="90" published="true"
+           owner="Encima Import" private="false" validator="Encima Import" wfstatus="approved">
+    <cdb:activities>
+        <cdb:activity count="0" type="like"/>
+        <cdb:activity count="0" type="attend"/>
+        <cdb:activity count="0" type="comment"/>
+        <cdb:activity count="0" type="recommend"/>
+        <cdb:activity count="0" type="facebook_share"/>
+        <cdb:activity count="0" type="review"/>
+    </cdb:activities>
+    <cdb:agefrom>15</cdb:agefrom>
+    <cdb:calendar>
+        <cdb:timestamps>
+            <cdb:timestamp>
+                <cdb:date>2015-03-28</cdb:date>
+                <cdb:timestart>20:00:00</cdb:timestart>
+            </cdb:timestamp>
+        </cdb:timestamps>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category catid="1.58.0.0.0" type="theme">Thema onbepaald</cdb:category>
+        <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal</cdb:category>
+        <cdb:category catid="2.2.5.0.0" type="targetaudience">Volwassenen (18+)</cdb:category>
+        <cdb:category catid="reg.356" type="flanderstouristregion">Kust</cdb:category>
+        <cdb:category catid="0.50.4.0.0" type="eventtype">Concert</cdb:category>
+        <cdb:category catid="reg.1034" type="flandersregion">8400 Oostende</cdb:category>
+    </cdb:categories>
+    <cdb:comments/>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Oostende</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>2.915696</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.229877</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:street>Hendrik Serruyslaan 18A</cdb:street>
+                <cdb:zipcode>8400</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail>uit@oostende.be</cdb:mail>
+        <cdb:url reservation="true">
+            http://brugge.iticketsro.com/grotepost/nl-NL/events/14%20tales%20and%2018%20tunes/2015-3-28_20.00/cc%20de%20grote%20post%20-%20grote%20post
+        </cdb:url>
+        <cdb:url>http://www.degrotepost.be/e453/14-tales-18-tunes</cdb:url>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>za 28/03/15 om 20:00</cdb:calendarsummary>
+            <cdb:longdescription>
+                De geweldige folkgroep The Swigshift uit Wervik herdenkt WO I samen met het 20-koppige Westhoek Consort
+                strijkorkest én een Oostends koor.
+                <br/>
+                <br/>
+                <p></p>
+                <br/>
+                <br/>
+                <strong>Het verhaal</strong>
+                <br/>
+                <br/>
+                <p>Voor de gelegenheid brengt The Swigshift 14 tales – 18 tunes, een programma over twee kunstenaars in
+                    WO I. Twee identieke zielen, uit twee verschillende werelden … samengebracht door één oorlog … ,
+                    Raphael Ghellynck, inwoner van Wervik, en Max Beckmann, een trotse Duits ingelijfd bij het
+                    verplegend korps van de Duitse legermacht delen dezelfde passie: kunst. Ze ervaren de
+                    oorlogsomstandigheden elk op hun manier, vertellen hun wedervaren vanuit hun eigen leefwereld.
+                    Veertien verhalen, over hun wel en wee, ondersteund door achttien aanstekelijke melodieën, muziek
+                    die de verhalen nog aan kracht laat bijwinnen. Raphael en Max: …gepassioneerd door hun kunst,
+                    getekend door de oorlog.
+                </p>
+                <br/>
+                <br/>
+                <p>Tussen de songs door zie je filmpjes waarin twee acteurs (in de rollen van Max Beckmann en Raphael
+                    Gellynck) getuigen.
+                </p>
+                <br/>
+                <br/>De Muziek
+                <br/>
+                <br/>
+                <p>De muziek van
+                    <strong>
+                        <u>The Swigshift</u>
+                    </strong>
+                    is een prachtige aaneenschakeling van opzwepende jigs, ontroerende ballades en vrolijke melodieën.
+                    Heerlijke riddles op de viool, sublieme fluitsolo’s, knappe loopjes op het accordeon, ondersteund
+                    door een gedreven percussie en tintelend gitaarspel. Elke muzikant speelt met zichtbaar genot. Stuk
+                    voor stuk koppelen ze een hoog doorleefd ‘bruinekroeggehalte’ aan uitstekende muzikale vertolkingen.
+                </p>
+                <br/>
+                <br/>
+                <p>
+                    <u>
+                        <strong>Het Westhoek Consort Strijkorkest</strong>
+                    </u>
+                    is een ensemble van circa 20 jonge strijkers dat bestaat sinds 2001. Naast klassiek werk speelt het
+                    ook en­thousiast muzikale stukken die ‘buiten de lijntjes kleuren’. Dirigent is Nico Logghe, die ook
+                    de leider is van de gevierde harmonie ‘Ypriana’, dat o.m. Willem Vermandere begeleidde op Folk
+                    Dranouter en op Nekka 2012.
+                </p>
+                <br/>
+                <br/>
+                <p>In ’14 Tales – 18 Tunes’ duiken een aantal fraaie koorpartijen op. Hiervoor nodigt The Swigshift een
+                    <u>
+                        <strong>Oostends koor</strong>
+                    </u>
+                    uit op het podium!
+                </p>
+                <p class="uiv-source">Bron:
+                    <a href="http://www.uitinvlaanderen.be/agenda/e/14-tales-18-tunes/92f53b24-ea38-46f3-9541-e93958a03f3c">
+                        UiTinVlaanderen.be
+                    </a>
+                </p>
+            </cdb:longdescription>
+            <cdb:media>
+                <cdb:file>
+                    <cdb:hlink>
+                        http://brugge.iticketsro.com/grotepost/nl-NL/events/14%20tales%20and%2018%20tunes/2015-3-28_20.00/cc%20de%20grote%20post%20-%20grote%20post
+                    </cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file>
+                    <cdb:hlink>http://www.degrotepost.be/e453/14-tales-18-tunes</cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="17/06/2014 5:27:00" main="true">
+                    <cdb:copyright>Westhoekconsort_-_DEF.JPG</cdb:copyright>
+                    <cdb:filename>
+                        CC_De_Grote_Post_2180_0_196_598_637_FSImage_banner_542_350_Westhoekconsort_-_DEF.jpg
+                    </cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20140617/CC_De_Grote_Post_2180_0_196_598_637_FSImage_banner_542_350_Westhoekconsort_-_DEF.jpg
+                    </cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="17/06/2014 5:27:00">
+                    <cdb:copyright>Max_Beckmann_zelfportret_-_DEF.jpg</cdb:copyright>
+                    <cdb:filename>
+                        CC_De_Grote_Post_1924_0_26_734_568_FSImage_banner_542_350_Max_Beckmann_zelfportret_-_DEF.jpg
+                    </cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20140617/CC_De_Grote_Post_1924_0_26_734_568_FSImage_banner_542_350_Max_Beckmann_zelfportret_-_DEF.jpg
+                    </cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="17/06/2014 5:27:00">
+                    <cdb:copyright>IMG_1711_-_DEF.jpg</cdb:copyright>
+                    <cdb:filename>
+                        CC_De_Grote_Post_1923_41_0_853_599_FSImage_banner_542_350_IMG_1711_-_DEF.jpg
+                    </cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20140617/CC_De_Grote_Post_1923_41_0_853_599_FSImage_banner_542_350_IMG_1711_-_DEF.jpg
+                    </cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:price>
+                <cdb:pricevalue>16.0</cdb:pricevalue>
+                <cdb:pricedescription>-26/+65/cultuurkaart € 14</cdb:pricedescription>
+            </cdb:price>
+            <cdb:shortdescription>
+                De geweldige folkgroep The Swigshift uit Wervik herdenkt WO I samen met het 20-koppige Westhoek Consort
+                strijkorkest én een Oostends koor. Het verhaal Voor de gelegenheid brengt The Swigshift 14 tales – 18
+                tunes, een programma over twee kunstenaars in WO I...
+            </cdb:shortdescription>
+            <cdb:title>14 Tales – 18 Tunes</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:keywords>kespro</cdb:keywords>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Oostende</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>2.915696</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.229877</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:street>Hendrik Serruyslaan 18A</cdb:street>
+                <cdb:zipcode>8400</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label cdbid="1d36a305-1e89-4cd2-97eb-bb8644bcc6af">CC de Grote Post</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label>Cultuurcentrum De Grote Post Oostende</cdb:label>
+    </cdb:organiser>
+</cdb:event>

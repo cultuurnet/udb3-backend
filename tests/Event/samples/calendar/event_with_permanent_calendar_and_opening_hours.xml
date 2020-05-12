@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-16T00:00:00" availableto="2100-01-01T00:00:00" cdbid="493292c9-d67b-48db-9a42-66916016de4e" createdby="info@beautybox.be" creationdate="2016-11-16T12:45:11" externalid="CDB:f5b6f276-fccb-417a-b9cf-966c64865c09" externalurl="https://io.uitdatabank.be/event/493292c9-d67b-48db-9a42-66916016de4e" lastupdated="2016-11-18T16:02:56" lastupdatedby="sandra.vandenbroucke@oostende.be" owner="Invoerders Algemeen " private="false" wfstatus="approved" isparent="false" pctcomplete="60" published="true" validator="Oostende Validatoren">
+    <categories>
+      <category catid="1.37.1.0.0" type="theme">Gezondheid en zorg</category>
+      <category catid="reg.356" type="flanderstouristregion">Kust</category>
+      <category catid="11.5.0.0.0" type="misc">Tijdstippen in overleg</category>
+      <category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</category>
+      <category catid="reg.1034" type="flandersregion">8400 Oostende</category>
+    </categories>
+    <calendar>
+      <permanentopeningtimes>
+        <permanent>
+          <weekscheme>
+            <monday opentype="closed"/>
+            <tuesday opentype="closed"/>
+            <wednesday opentype="open">
+              <openingtime from="09:30:00" to="11:30:00"/>
+            </wednesday>
+            <thursday opentype="open">
+              <openingtime from="09:00:00" to="17:00:00"/>
+            </thursday>
+            <friday opentype="closed"/>
+            <saturday opentype="open">
+              <openingtime from="09:30:00" to="11:30:00"/>
+            </saturday>
+            <sunday opentype="closed"/>
+          </weekscheme>
+        </permanent>
+      </permanentopeningtimes>
+    </calendar>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Oostende</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>2.917430</xcoordinate>
+            <ycoordinate>51.217456</ycoordinate>
+          </gis>
+          <housenr>159</housenr>
+          <street>Frère-Orbanstraat</street>
+          <zipcode>8400</zipcode>
+        </physical>
+      </address>
+      <mail reservation="true">info@nagelstudiovanderbeken.be</mail>
+      <phone type="phone" reservation="true">059 510225</phone>
+      <phone type="phone" reservation="true">059 274711</phone>
+      <url>http://www.beautyisanattitude.be</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>
+open  op afspraak woe, za van 09:30 tot 11:30, do van 09:00 tot 17:00</calendarsummary>
+        <media>
+          <file>
+            <hlink>http://www.beautyisanattitude.be</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+        </media>
+        <shortdescription>In een gemoedelijke sfeer leer je makkelijk en snel kunstnagels plaatsen bij jezelf of bij een vriendin met een nieuw 'revolutionair' systeem: de 'nailliner' van 'Beauty is an attitude'.</shortdescription>
+        <title>Werken met de 'nailliner'</title>
+      </eventdetail>
+    </eventdetails>
+    <location>
+      <address>
+        <physical>
+          <city>Oostende</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>2.917430</xcoordinate>
+            <ycoordinate>51.217456</ycoordinate>
+          </gis>
+          <housenr>159</housenr>
+          <street>Frère-Orbanstraat</street>
+          <zipcode>8400</zipcode>
+        </physical>
+      </address>
+      <label>Nagelstudio Vanderbeken</label>
+    </location>
+    <maxparticipants>8</maxparticipants>
+  </event>
+</cdbxml>

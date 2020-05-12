@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL"
+       availablefrom="2015-04-11T00:00:00"
+       availableto="2016-07-01T00:00:00"
+       cdbid="c78dbb60-72d2-4f07-94dd-38b1625e59c3"
+       createdby="ghislaine@groupedemoulin.be"
+       creationdate="2015-04-11T10:53:11"
+       externalid="CDB:91d2bb60-7e6d-4ce6-b718-89cccaa5fb19"
+       lastupdated="2015-11-20T15:08:39"
+       lastupdatedby="ghislaine@groupedemoulin.be"
+       owner="Invoerders Algemeen "
+       pctcomplete="90"
+       private="false"
+       published="true"
+       validator="De Haan Validatoren"
+       wfstatus="approved"
+       isparent="false">
+    <cdb:agefrom>18</cdb:agefrom>
+    <cdb:calendar>
+        <cdb:periods>
+            <cdb:period>
+                <cdb:datefrom>2016-01-04</cdb:datefrom>
+                <cdb:dateto>2016-06-30</cdb:dateto>
+            </cdb:period>
+        </cdb:periods>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category type="theme" catid="1.43.0.0.0">Interculturele vorming</cdb:category>
+        <cdb:category type="flanderstouristregion" catid="reg.356">Kust</cdb:category>
+        <cdb:category type="eventtype" catid="0.3.1.0.0">Cursus of workshop</cdb:category>
+        <cdb:category type="flandersregion" catid="reg.1040">8421 Vlissegem (De Haan)</cdb:category>
+    </cdb:categories>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Vlissegem</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>3.059852</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.252856</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>13</cdb:housenr>
+                <cdb:street>Keydorpstraat</cdb:street>
+                <cdb:zipcode>8421</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail>info@damis.be</cdb:mail>
+        <cdb:phone type="phone">059 80 16 55</cdb:phone>
+        <cdb:url>http://www.damis.be</cdb:url>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>van 04/01/16 tot 30/06/16
+            </cdb:calendarsummary>
+            <cdb:longdescription>Individuele  lessen door franstalige leraren in een ontspannende en gezellige sfeer.&lt;br /&gt;Voor alle niveaus en alle leeftijden!&lt;br /&gt;Afspraak tussen 10 u en 17u elke dag, ook tijdens het weekend!&lt;br /&gt;Lessen op maat: Thema's en woordenschat volgens uw persoonlijke situatie!&lt;br /&gt;Tarief (inclusief BTW): 35 &#x20AC; per uur of 300 &#x20AC; voor een abonnement van 10 uren.&lt;br /&gt;Info en inschrijving: Surf naar www.damis.be, mail ons op info@damis.be of bel ons op 059 80 16 55&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/frans-leren/c78dbb60-72d2-4f07-94dd-38b1625e59c3"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+            <cdb:media>
+                <cdb:file>
+                    <cdb:hlink>http://www.damis.be</cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="6/5/2015 6:20:07 PM" main="true">
+                    <cdb:copyright>Frans leren</cdb:copyright>
+                    <cdb:filename>7c0bc7b4-9a90-4602-9e9b-1502221493ac.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>//media.uitdatabank.be/20150411/7c0bc7b4-9a90-4602-9e9b-1502221493ac.jpg</cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:price>
+                <cdb:pricevalue>35.00</cdb:pricevalue>
+                <cdb:pricedescription>Tarief (inclusief BTW):    35 &#x20AC; per uur
+                    300 &#x20AC; voor een abonnement van 10 uren
+                </cdb:pricedescription>
+            </cdb:price>
+            <cdb:shortdescription>Individuele lessen door franstalige leraren in een ontspannende en gezellige sfeer.  Voor alle niveaus en alle leeftijden!  Afspraak tussen 10u en 17u elke dag, ook tijdens het weekend!  Lessen op maat: Thema's en woordenschat volgens uw persoonlijke situatie!  Tarief (inclusief BTW): 35 &#x20AC; per uur of 300 &#x20AC; voor een abonnement van 10 uren.</cdb:shortdescription>
+            <cdb:title>Frans leren</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:keywords>
+        leren Frans ; cursus Frans
+    </cdb:keywords>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Vlissegem</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>3.059852</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.252856</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>13</cdb:housenr>
+                <cdb:street>Keydorpstraat</cdb:street>
+                <cdb:zipcode>8421</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label>DAMIS</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label>DAMIS</cdb:label>
+    </cdb:organiser>
+</cdb:event>

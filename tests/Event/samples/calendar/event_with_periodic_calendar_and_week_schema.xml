@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-18T13:01:08" availableto="2017-02-20T00:00:00" cdbid="4549634e-3b21-42c4-bdbd-d0a5784b3933" createdby="webmaster@agenda.be" creationdate="2016-11-18T13:01:08" externalid="SKB Import:SKB00001_403938" externalurl="https://io.uitdatabank.be/event/4549634e-3b21-42c4-bdbd-d0a5784b3933" lastupdated="2016-11-18T07:44:11" lastupdatedby="imports@cultuurnet.be" owner="SKB import" private="false" wfstatus="readyforvalidation" publisher="8364e660b627bd441ed95b667f8246ae" isparent="false" pctcomplete="75" published="true" validator="SKB Validatoren">
+    <categories>
+      <category catid="2.2.5.0.0" type="targetaudience">Volwassenen (18+)</category>
+      <category catid="2.1.5.0.0" type="targetaudience">Senioren</category>
+      <category catid="2.1.6.0.0" type="targetaudience">Singles</category>
+      <category catid="2.1.12.0.0" type="targetaudience">Groepen (verenigingen)</category>
+      <category catid="2.2.6.0.0" type="targetaudience">Vanaf peuterleeftijd (0+)</category>
+      <category catid="reg.357" type="flanderstouristregion">Kunststad Brussel</category>
+      <category catid="0.55.0.0.0" type="eventtype">Theatervoorstelling</category>
+      <category catid="reg.1569" type="flandersregion">1050 Elsene (Brussel)</category>
+    </categories>
+    <calendar>
+      <periods>
+        <period>
+          <datefrom>2017-06-13</datefrom>
+          <dateto>2018-01-08</dateto>
+          <weekscheme>
+            <monday opentype="open">
+              <openingtime from="10:00:00" to="18:00:00"/>
+            </monday>
+            <tuesday opentype="open">
+              <openingtime from="10:00:00" to="18:00:00"/>
+            </tuesday>
+            <wednesday opentype="open">
+              <openingtime from="10:00:00" to="18:00:00"/>
+            </wednesday>
+            <thursday opentype="open">
+              <openingtime from="10:00:00" to="18:00:00"/>
+            </thursday>
+            <friday opentype="open">
+              <openingtime from="10:00:00" to="18:00:00"/>
+            </friday>
+            <saturday opentype="open">
+              <openingtime from="10:00:00" to="18:00:00"/>
+            </saturday>
+            <sunday opentype="open">
+              <openingtime from="08:00:00" to="12:00:00"/>
+            </sunday>
+          </weekscheme>
+        </period>
+      </periods>
+    </calendar>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Elsene</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.387090</xcoordinate>
+            <ycoordinate>50.819923</ycoordinate>
+          </gis>
+          <housenr>18</housenr>
+          <street>rue du Printemps</street>
+          <zipcode>1050</zipcode>
+        </physical>
+      </address>
+      <mail>la.flute.enchantee@skynet.be</mail>
+      <phone type="phone">0474/28.82.69</phone>
+      <phone type="phone">0474/28.82.69</phone>
+      <url>http://www.lafluteenchantee.be</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>van 09/02/17 tot 19/02/17
+open ma, do, vrij, za van 20:30 tot 00:00, zo van 16:00 tot 00:00</calendarsummary>
+        <media>
+          <file>
+            <hlink>http://www.lafluteenchantee.be</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+          <file creationdate="11/18/2016 1:01:08 PM" main="true">
+            <filename>273773cc2c24c1d0f52da97a081367b6a33e093f.jpg</filename>
+            <filetype>jpeg</filetype>
+            <hlink>//media.uitdatabank.be/20161118/273773cc2c24c1d0f52da97a081367b6a33e093f.jpg</hlink>
+            <mediatype>photo</mediatype>
+          </file>
+          <file creationdate="11/18/2016 1:01:08 PM">
+            <filename>273773cc2c24c1d0f52da97a081367b6a33e093f.jpg</filename>
+            <filetype>jpeg</filetype>
+            <hlink>//media.uitdatabank.be/20161118/273773cc2c24c1d0f52da97a081367b6a33e093f.jpg</hlink>
+            <mediatype>photo</mediatype>
+          </file>
+          <file creationdate="11/18/2016 1:01:08 PM">
+            <filename>273773cc2c24c1d0f52da97a081367b6a33e093f.jpg</filename>
+            <filetype>jpeg</filetype>
+            <hlink>//media.uitdatabank.be/20161118/273773cc2c24c1d0f52da97a081367b6a33e093f.jpg</hlink>
+            <mediatype>photo</mediatype>
+          </file>
+        </media>
+        <price>
+          <pricevalue>16.00</pricevalue>
+          <pricedescription>Normaal</pricedescription>
+        </price>
+        <title>Oscar et la Dame Rose </title>
+      </eventdetail>
+      <eventdetail lang="fr">
+        <calendarsummary>de 09/02/17 à 19/02/17
+ouvert lun, jeu, ven, sam de 20:30 à 00:00, dim de 16:00 à 00:00</calendarsummary>
+        <longdescription>D'Eric-Emmanuel Schmitt. &lt;br /&gt;
+Mise en scène de Jean-Luc Duray.&lt;br /&gt;
+Avec Jacqueline Préseau. &lt;br /&gt;
+&lt;br /&gt;
+Une amitié singulière naît entre Oscar et Rose.&lt;br /&gt;
+Tous les deux sont loin d'imaginer à quel point cette complicité va bouleverser leur destin.&lt;br /&gt;
+Une pièce Drôle et Emouvante. &lt;br /&gt;
+</longdescription>
+        <shortdescription>Une amitié singulière naît entre Oscar et Rose.
+Tous les deux sont loin d'imaginer à quel point cette complicité va bouleverser leur destin.
+Une pièce Drôle et Emouvante.
+</shortdescription>
+        <title>Oscar et la Dame Rose </title>
+      </eventdetail>
+      <eventdetail lang="en">
+        <calendarsummary>from 09/02/17 to 19/02/17
+open Mon, Thu, Fri, Sat from 20:30 to 00:00, Sun from 16:00 to 00:00</calendarsummary>
+        <title>Oscar et la Dame Rose </title>
+      </eventdetail>
+    </eventdetails>
+    <languages>
+      <language type="spoken">Frans</language>
+    </languages>
+    <location>
+      <address>
+        <physical>
+          <city>Elsene</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.387090</xcoordinate>
+            <ycoordinate>50.819923</ycoordinate>
+          </gis>
+          <housenr>18</housenr>
+          <street>rue du Printemps</street>
+          <zipcode>1050</zipcode>
+        </physical>
+      </address>
+      <label>La Flûte Enchantée</label>
+    </location>
+    <organiser>
+      <label>La Flûte Enchantée</label>
+    </organiser>
+  </event>
+</cdbxml>

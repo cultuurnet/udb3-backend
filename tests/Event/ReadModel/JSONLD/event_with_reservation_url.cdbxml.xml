@@ -1,0 +1,140 @@
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL"
+           availablefrom="2014-07-09T00:00:00" availableto="2015-04-24T00:00:00"
+           cdbid="1c596446-d425-4236-bcab-4e595c875192" createdby="mchriste" creationdate="2014-07-09T14:27:28"
+           externalid="CDB:b807877a-9332-424d-9da8-3153ba539661" isparent="false" lastupdated="2014-10-21T18:13:52"
+           lastupdatedby="mchriste" pctcomplete="95" published="true" owner="Mechelen Cultuurcentrum Validatoren"
+           private="false" validator="Mechelen Validatoren" wfstatus="approved">
+    <cdb:activities>
+        <cdb:activity count="0" type="like"/>
+        <cdb:activity count="0" type="attend"/>
+        <cdb:activity count="0" type="comment"/>
+        <cdb:activity count="0" type="recommend"/>
+        <cdb:activity count="0" type="facebook_share"/>
+        <cdb:activity count="0" type="review"/>
+    </cdb:activities>
+    <cdb:calendar>
+        <cdb:timestamps>
+            <cdb:timestamp>
+                <cdb:date>2015-04-23</cdb:date>
+                <cdb:timestart>20:15:00</cdb:timestart>
+            </cdb:timestamp>
+        </cdb:timestamps>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category catid="1.3.10.0.0" type="theme">Humor comedy</cdb:category>
+        <cdb:category catid="6.3.0.0.0" type="publicscope">Nationaal</cdb:category>
+        <cdb:category catid="reg.368" type="flanderstouristregion">Kunststad Mechelen</cdb:category>
+        <cdb:category catid="0.55.0.0.0" type="eventtype">Theatervoorstelling</cdb:category>
+        <cdb:category catid="reg.592" type="flandersregion">2800 Mechelen</cdb:category>
+    </cdb:categories>
+    <cdb:comments/>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Mechelen</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.485602</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.028946</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>3</cdb:housenr>
+                <cdb:street>Keizerstraat</cdb:street>
+                <cdb:zipcode>2800</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:url>
+            http://www.cultuurcentrummechelen.be/podium/2014-2015/florissant
+        </cdb:url>
+        <cdb:url reservation="true">http://brugge.iticketsro.com/ccmechelen/</cdb:url>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>do 23/04/15 om 20:15</cdb:calendarsummary>
+            <cdb:performers>
+                <cdb:performer>
+                    <cdb:label>Marc-Marie Huijbregts</cdb:label>
+                </cdb:performer>
+            </cdb:performers>
+            <cdb:longdescription>
+                Prachtig. Bloeiend. Fleurig. Gezond. Welvarend. Kortom: florissant. Eén woord, zes betekenissen. Of
+                zeven eigenlijk. Want Florissant is ook de titel van de nieuwe voorstelling van Marc-Marie Huijbregts.
+                Hoewel het er vroeger bij hem thuis allerminst florissant aan toe ging. Wat intense verhalen oplevert.
+                Verhalen die hij zó kwetsbaar durft te brengen, maar die toch altijd weer grappig worden. Het is geen
+                act. Geen pose.
+                <br/>
+                <br/>Florissant is een zelfportret waarbij Marc-Marie zichzelf wederom onder een vergrootglas en op de
+                snijtafel legt. Hij legt zichzelf de wereld uit. De wereld die doordraait. Die wonderlijk mooi is. Die
+                voor hem opengaat. Een wereld die vaak pijnlijk florissant kan zijn. Schrijnend fleurig. Dramatisch
+                bloeiend. Vreselijk prachtig.
+                <br/>
+                <br/>Marc-Marie Huijbregts staat voor uitverkochte zalen in Nederland en is goed op weg om ook
+                <br/>
+                <br/>Vlaanderen voor zich te winnen met zijn aanstekelijke en hartveroverende show.
+                <br/>
+                <br/>
+                <br/>
+                Een organisatie van LiveComedy.be i.s.m. Cultuurcentrum Mechelen
+                <br/>
+                <p class="uiv-source">Bron:
+                    <a href="http://www.uitinvlaanderen.be/agenda/e/florissant/1c596446-d425-4236-bcab-4e595c875192">
+                        UiTinVlaanderen.be
+                    </a>
+                </p>
+            </cdb:longdescription>
+            <cdb:media>
+                <cdb:file>
+                    <cdb:hlink>
+                        http://www.cultuurcentrummechelen.be/podium/2014-2015/florissant
+                    </cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file>
+                    <cdb:hlink>http://brugge.iticketsro.com/ccmechelen/</cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="9/07/2014 14:29:30" main="true">
+                    <cdb:copyright>Marc-Marie Huijbregts</cdb:copyright>
+                    <cdb:filename>2e38dc69-737c-41b5-9462-249b6c4b0607.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20140709/2e38dc69-737c-41b5-9462-249b6c4b0607.jpg
+                    </cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+                <cdb:file>
+                    <cdb:hlink>http://brugge.iticketsro.com/ccmechelen/</cdb:hlink>
+                    <cdb:mediatype>reservations</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:price>
+                <cdb:pricevalue>20.0</cdb:pricevalue>
+            </cdb:price>
+            <cdb:shortdescription>
+                Prachtig. Bloeiend. Fleurig. Gezond. Welvarend. Kortom: florissant. Eén woord, zes betekenissen. Of
+                zeven eigenlijk. Want Florissant is ook de titel van de nieuwe voorstelling van Marc-Marie Huijbregts.
+                Hoewel het er vroeger bij hem thuis allerminst florissant aan toe ging. Wat intense verhalen oplevert.
+                Verhalen die hij zó kwetsbaar durft te brengen, maar die toch altijd weer grappig worden.
+            </cdb:shortdescription>
+            <cdb:title>Florissant</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Mechelen</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.485602</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.028946</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>3</cdb:housenr>
+                <cdb:street>Keizerstraat</cdb:street>
+                <cdb:zipcode>2800</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label cdbid="5F26FF42-AD7C-8795-3775F5E7C1E6B324">Stadsschouwburg Mechelen</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label cdbid="68B4A16C-FE0C-6BA3-08C0486B434F3D9E">Cultuurcentrum Mechelen</cdb:label>
+    </cdb:organiser>
+</cdb:event>

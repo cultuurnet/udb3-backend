@@ -1,0 +1,97 @@
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL" availablefrom="2015-05-13T14:32:06"
+           availableto="2015-09-14T00:00:00" cdbid="f0b0f6de-6a86-4162-9cf6-2fa53b1b72d1"
+           createdby="marleen@notelaer.be" creationdate="2015-05-13T14:32:06"
+           externalid="CDB:f0b0f6de-6a86-4162-9cf6-2fa53b1b72d1" isparent="false" lastupdated="2015-05-13T15:16:01"
+           lastupdatedby="marleen@notelaer.be" pctcomplete="75" published="true" owner="Invoerders Algemeen "
+           private="false" validator="Bornem Validatoren" wfstatus="readyforvalidation">
+    <cdb:activities>
+        <cdb:activity count="0" type="like"/>
+        <cdb:activity count="0" type="attend"/>
+        <cdb:activity count="0" type="comment"/>
+        <cdb:activity count="0" type="recommend"/>
+        <cdb:activity count="0" type="facebook_share"/>
+        <cdb:activity count="0" type="review"/>
+    </cdb:activities>
+    <cdb:bookingperiod>
+        <cdb:datefrom>1969-01-01</cdb:datefrom>
+        <cdb:dateto>1969-01-01</cdb:dateto>
+    </cdb:bookingperiod>
+    <cdb:calendar>
+        <cdb:periods>
+            <cdb:period>
+                <cdb:datefrom>2015-09-13</cdb:datefrom>
+                <cdb:dateto>2015-09-13</cdb:dateto>
+            </cdb:period>
+        </cdb:periods>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category catid="reg.366" type="flanderstouristregion">Scheldeland</cdb:category>
+        <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+        <cdb:category catid="reg.616" type="flandersregion">2880 Hingene (Bornem)</cdb:category>
+    </cdb:categories>
+    <cdb:comments/>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Hingene</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.270963</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.107466</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>2</cdb:housenr>
+                <cdb:street>Notelaersdreef</cdb:street>
+                <cdb:zipcode>2880</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>zo 13/09/15
+            </cdb:calendarsummary>
+            <cdb:performers>
+                <cdb:performer>
+                    <cdb:label>vzw De Notelaer</cdb:label>
+                </cdb:performer>
+            </cdb:performers>
+            <cdb:longdescription>Architect Willem Hulstaert bij Onroerend Erfgoed, vertelt je meer over de huidige restauratiewerken in en rond De Notelaer. Om een soepele rondleiding te verzekeren, graag vooraf inschrijven.&lt;br /&gt;De rondleidingen gaan door om :&lt;br /&gt;-10u30&lt;br /&gt;-13u&lt;br /&gt;-15u30&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/begeleide-rondleiding/f0b0f6de-6a86-4162-9cf6-2fa53b1b72d1"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+            <cdb:media>
+                <cdb:file creationdate="13/05/2015 15:14:46" main="true">
+                    <cdb:copyright>Begeleide rondleiding</cdb:copyright>
+                    <cdb:filename>2367b43d-7e65-4b6b-8c83-f484735d0f9e.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>//media.uitdatabank.be/20150513/2367b43d-7e65-4b6b-8c83-f484735d0f9e.jpg</cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+                <cdb:file>
+                    <cdb:hlink>//media.uitdatabank.be/20150513/11049656_764843660281130_3273061659927863145_n.jpg</cdb:hlink>
+                    <cdb:mediatype>imageweb</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:price>
+                <cdb:pricevalue>0.0</cdb:pricevalue>
+            </cdb:price>
+            <cdb:title>Begeleide rondleiding</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:keywords>klassieker;Open Monumentendag 2015</cdb:keywords>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Hingene</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.270963</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.107466</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>2</cdb:housenr>
+                <cdb:street>Notelaersdreef</cdb:street>
+                <cdb:zipcode>2880</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label>De Notelaer</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label>vzw De Notelaer</cdb:label>
+    </cdb:organiser>
+</cdb:event>

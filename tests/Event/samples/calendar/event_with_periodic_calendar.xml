@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-18T12:01:53" availableto="2016-12-12T00:00:00" cdbid="9f43eedc-ceed-41d5-a057-e6cf1be1b0bf" createdby="zapapimport" creationdate="2016-11-18T12:01:53" externalid="CC_De_Meent :2611" externalurl="https://io.uitdatabank.be/event/9f43eedc-ceed-41d5-a057-e6cf1be1b0bf" lastupdated="2016-11-18T07:44:11" lastupdatedby="imports@cultuurnet.be" owner="System Manager" private="false" wfstatus="approved" isparent="false" pctcomplete="80" published="true" validator="Beersel Validatoren">
+    <categories>
+      <category catid="1.58.0.0.0" type="theme">Thema onbepaald</category>
+      <category catid="6.2.0.0.0" type="publicscope">Regionaal</category>
+      <category catid="2.2.5.0.0" type="targetaudience">Volwassenen (18+)</category>
+      <category catid="reg.364" type="flanderstouristregion">Groene Gordel</category>
+      <category catid="0.28.0.0.0" type="eventtype">Kermis of feestelijkheid</category>
+      <category catid="reg.393" type="flandersregion">1652 Alsemberg (Beersel)</category>
+    </categories>
+    <calendar>
+      <periods>
+        <period>
+          <datefrom>2016-12-09</datefrom>
+          <dateto>2016-12-11</dateto>
+        </period>
+      </periods>
+    </calendar>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Alsemberg</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.332165</xcoordinate>
+            <ycoordinate>50.741290</ycoordinate>
+          </gis>
+          <housenr>34</housenr>
+          <street>Gemeenveldstraat</street>
+          <zipcode>1652</zipcode>
+        </physical>
+      </address>
+      <url>http://www.demeent.be/nl/event/2611/lions-club</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>van 09/12/16 tot 11/12/16 
+</calendarsummary>
+        <performers>
+          <performer>
+            <label>Lions  club</label>
+          </performer>
+        </performers>
+        <longdescription>De leden van de Lions Club kijken er naar uit om u op een gezellige manier te ontvangen tijdens de kerstmarkt. Een dertigtal standen binnen en buiten de Meent, een oester &amp; champagnebar buiten, bar en kleine restauratie binnen, zes dansoptredens en muzikale animatie door ‘Si Bemol’ in de foyer.
+&lt;br /&gt;
+&lt;br /&gt;Programma:
+&lt;br /&gt;
+&lt;br /&gt;Vrijdag 9 december
+&lt;br /&gt;
+&lt;br /&gt;Avondvullende dansshow (20u) verzorgd door Pirouette. Tickets via onze website. 
+&lt;br /&gt;De bar is open voor de voorstelling, in de pauze en na afloop.
+&lt;br /&gt;
+&lt;br /&gt;Zaterdag 10 december
+&lt;br /&gt;
+&lt;br /&gt;12u: Opening kerstmarkt
+&lt;br /&gt;13u: Dansgroep Pirouette
+&lt;br /&gt;15u: Dance O Mania
+&lt;br /&gt;17u: K-Creation
+&lt;br /&gt;19u: sluiting
+&lt;br /&gt;
+&lt;br /&gt;Zondag 11 december
+&lt;br /&gt;
+&lt;br /&gt;12.30u: Giants
+&lt;br /&gt;14.30u: Ballerino
+&lt;br /&gt;16.30u: Dansstudio E. Cremers
+&lt;br /&gt;17.30u: Trekking tombola
+&lt;br /&gt;18u: sluiting.
+&lt;br /&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/kersthappening-2016/9f43eedc-ceed-41d5-a057-e6cf1be1b0bf"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</longdescription>
+        <media>
+          <file>
+            <hlink>http://www.demeent.be/nl/event/2611/lions-club</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+          <file creationdate="11/18/2016 12:01:53 PM" main="true">
+            <filename>CC_De_Meent__affiche_kersthappening.png</filename>
+            <filetype>jpeg</filetype>
+            <hlink>//media.uitdatabank.be/20161118/CC_De_Meent__affiche_kersthappening.png</hlink>
+            <mediatype>photo</mediatype>
+          </file>
+        </media>
+        <shortdescription>De leden van de Lions Club kijken er naar uit om u op een gezellige manier te ontvangen tijdens de kerstmarkt. Een dertigtal standen binnen en buiten de Meent, een oester &amp; champagnebar buiten, bar en kleine restauratie binnen, zes dansoptredens en muzikale animatie door ‘Si Bemol’ in de foyer.</shortdescription>
+        <title>KERSTHAPPENING 2016</title>
+      </eventdetail>
+    </eventdetails>
+    <location>
+      <address>
+        <physical>
+          <city>Alsemberg</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.332165</xcoordinate>
+            <ycoordinate>50.741290</ycoordinate>
+          </gis>
+          <housenr>34</housenr>
+          <street>Gemeenveldstraat</street>
+          <zipcode>1652</zipcode>
+        </physical>
+      </address>
+      <label>CC de Meent Schouwburg</label>
+    </location>
+    <organiser>
+      <label>Lions  club</label>
+    </organiser>
+  </event>
+</cdbxml>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-18T00:00:00" availableto="2017-04-28T00:00:00" cdbid="bad192f9-0bd8-4fd4-9705-5f8fdb5b5516" createdby="reservaties@oud-turnhout.be" creationdate="2016-11-18T13:03:51" externalid="CDB:d3e58f04-e1cc-4126-bf71-e4dc2ebc19bc" externalurl="https://io.uitdatabank.be/event/bad192f9-0bd8-4fd4-9705-5f8fdb5b5516" lastupdated="2016-11-18T07:44:11" lastupdatedby="imports@cultuurnet.be" owner="Oud-Turnhout Validatoren" private="false" wfstatus="readyforvalidation" publisher="469781698cdbbd84d5c9c60822a5a8ff" isparent="false" pctcomplete="60" published="true" validator="UiTdatabank Validatoren">
+    <keywords>
+      <keyword visible="false">UiTPAS Kempen</keyword>
+    </keywords>
+    <categories>
+      <category catid="1.3.10.0.0" type="theme">Humor comedy</category>
+      <category catid="6.1.0.0.0" type="publicscope">Lokaal</category>
+      <category catid="reg.354" type="flanderstouristregion">Antwerpse Kempen</category>
+      <category catid="0.55.0.0.0" type="eventtype">Theatervoorstelling</category>
+      <category catid="reg.543" type="flandersregion">2360 Oud-Turnhout</category>
+    </categories>
+    <calendar>
+      <timestamps>
+        <timestamp>
+          <date>2017-04-27</date>
+          <timestart>20:15:00</timestart>
+        </timestamp>
+      </timestamps>
+    </calendar>
+    <contactinfo/>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>do 27/04/17 om 20:15 </calendarsummary>
+        <media>
+          <file>
+            <hlink>http://www.djoelen.be</hlink>
+            <mediatype>website</mediatype>
+            <title>webresource</title>
+          </file>
+        </media>
+        <shortdescription>Eco-comedy show in kader van de campagne 2020pesticiedenvrij
+Pesticiden, RoundUp, glyfosaat… Het lijken niet meteen begrippen die je tegenkomt in een comedyshow. Toch vormen pesticiden de rode draad in de nieuwe show van Steven Vromman, die hij speciaal voor de nieuwe Veltcampagne 2020pesticidevrij gemaakt heeft.</shortdescription>
+        <title>De Smoestuinier | Low Impact man</title>
+      </eventdetail>
+    </eventdetails>
+    <location>
+      <address>
+        <virtual>
+          <title>OC De Djoelen</title>
+        </virtual>
+      </address>
+      <label>OC De Djoelen</label>
+    </location>
+    <maxparticipants>310</maxparticipants>
+  </event>
+</cdbxml>
