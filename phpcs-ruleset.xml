@@ -8,4 +8,6 @@
     <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
         <exclude-pattern>*/test/*</exclude-pattern>
     </rule>
+
+    <rule ref="Symfony2.Arrays.MultiLineArrayComma" />
 </ruleset>
