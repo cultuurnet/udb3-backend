@@ -1,0 +1,79 @@
+{
+  "@id": "http:\/\/culudb-silex.dev:8080\/event\/e3604613-af01-4d2b-8cee-13ab61b89651",
+  "@context": "\/api\/1.0\/event.jsonld",
+  "name": {
+    "nl": "Blubblub"
+  },
+  "description": {
+    "nl": ""
+  },
+  "available": "2016-04-13T13:21:55+02:00",
+  "calendarSummary": "woe 13\/04\/16, woe 13\/04\/16, om 08:00, van 08:00 tot 12:00",
+  "location": {
+    "@type": "Place",
+    "@id": "http:\/\/culudb-silex.dev:8080\/place\/f31033c4-96b1-4012-99ac-4439c614f701",
+    "@context": "\/api\/1.0\/place.jsonld",
+    "description": {},
+    "name": {
+      "nl": "urgh"
+    },
+    "creator": "nick@2dotstwice.be",
+    "created": "2016-04-13T10:41:57+02:00",
+    "modified": "2016-04-13T10:41:57+02:00",
+    "publisher": "Invoerders Algemeen ",
+    "available": "2016-04-13T10:41:57+02:00",
+    "sameAs": [],
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Leuven",
+      "postalCode": "3000",
+      "streetAddress": "teststraat 44"
+    },
+    "bookingInfo": {
+      "description": "",
+      "name": "standard price",
+      "price": 0,
+      "priceCurrency": "EUR"
+    },
+    "terms": [
+      {
+        "label": "Kunststad Leuven",
+        "domain": "flanderstouristregion",
+        "id": "reg.367"
+      },
+      {
+        "label": "Natuurgebied of park",
+        "domain": "eventtype",
+        "id": "0.15.0.0.0"
+      },
+      {
+        "label": "3000 Leuven",
+        "domain": "flandersregion",
+        "id": "reg.638"
+      }
+    ]
+  },
+  "terms": [
+    {
+      "id": "0.3.1.0.0",
+      "label": "Cursus of workshop",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.25.0.0.0",
+      "label": "Wetenschap",
+      "domain": "theme"
+    }
+  ],
+  "creator": "nick@2dotstwice.be",
+  "created": "2016-04-13T13:21:55+02:00",
+  "modified": "2016-04-13T13:48:53+02:00",
+  "publisher": "Invoerders Algemeen ",
+  "sameAs": [
+    "http:\/\/www.uitinvlaanderen.be\/agenda\/e\/blubblub\/e3604613-af01-4d2b-8cee-13ab61b89651"
+  ],
+  "seeAlso": [],
+  "calendarType": "single",
+  "startDate": "2016-04-13T00:00:00",
+  "endDate": "2016-04-13T00:00:00"
+}
