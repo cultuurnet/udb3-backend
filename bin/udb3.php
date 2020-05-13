@@ -4,6 +4,7 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
+use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
@@ -83,7 +84,14 @@ $consoleApp->add(
 
 $consoleApp->add(new ReplayCommand($app['event_command_bus']));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
-$consoleApp->add(new UpdateCdbXMLCommand());
+$consoleApp->add(new UpdateCdbXMLCommand(
+    new EventStream(
+        $app['dbal_connection'],
+        $app['eventstore_payload_serializer'],
+        new \Broadway\Serializer\SimpleInterfaceSerializer(),
+        'events'
+    )
+));
 $consoleApp->add(new EventCdbXmlCommand());
 $consoleApp->add(new PurgeModelCommand($app[PurgeServiceProvider::PURGE_SERVICE_MANAGER]));
 $consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app['sapi3_search_service']));

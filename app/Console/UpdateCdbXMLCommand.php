@@ -18,6 +18,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateCdbXMLCommand extends Command
 {
     /**
+     * @var EventStream
+     */
+    private $eventStream;
+
+    public function __construct(EventStream $eventStream)
+    {
+        parent::__construct();
+        $this->eventStream = $eventStream;
+    }
+
+    /**
      * @inheritdoc
      */
     protected function configure()
@@ -33,7 +44,7 @@ class UpdateCdbXMLCommand extends Command
     {
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
 
-        $stream = $this->getEventStream();
+        $stream = $this->eventStream;
         $eventImporter = $this->getEventImporter();
 
         /** @var DomainEventStream $eventStream */
@@ -59,21 +70,6 @@ class UpdateCdbXMLCommand extends Command
                 }
             }
         }
-    }
-
-    /**
-     * @return EventStream
-     */
-    private function getEventStream()
-    {
-        $app = $this->getSilexApplication();
-
-        return new EventStream(
-            $app['dbal_connection'],
-            $app['eventstore_payload_serializer'],
-            new \Broadway\Serializer\SimpleInterfaceSerializer(),
-            'events'
-        );
     }
 
     /**
