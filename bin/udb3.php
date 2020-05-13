@@ -3,6 +3,7 @@
 
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
@@ -95,7 +96,7 @@ $consoleApp->add(new ImportRoleConstraintsCommand($app['event_command_bus']));
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus']));
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
-$consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus']));
+$consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus']));
 
 $consoleApp->run();

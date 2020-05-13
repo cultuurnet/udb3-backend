@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
@@ -17,6 +17,18 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     private const DUPLICATE_PLACE_ID_ARGUMENT = 'duplicate_place_id';
     private const CANONICAL_PLACE_ID_ARGUMENT = 'canonical_place_id';
 
+    /**
+     * @var EventListenerInterface
+     */
+    private $locationMarkedAsDuplicateProcessManager;
+
+    public function __construct(CommandBusInterface $commandBus, EventListenerInterface $locationMarkedAsDuplicateProcessManager)
+    {
+        parent::__construct($commandBus);
+        $this->locationMarkedAsDuplicateProcessManager = $locationMarkedAsDuplicateProcessManager;
+    }
+
+
     public function configure()
     {
         $this->setName('place:mark-as-duplicate');
@@ -29,7 +41,7 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $this->getProcessManager()->setLogger($logger);
+        $this->locationMarkedAsDuplicateProcessManager->setLogger($logger);
 
         try {
             $this->commandBus->dispatch(
@@ -42,11 +54,5 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
         } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
             $logger->error($e->getMessage());
         }
-    }
-
-    protected function getProcessManager(): EventListenerInterface
-    {
-        $app = $this->getSilexApplication();
-        return $app[LocationMarkedAsDuplicateProcessManager::class];
     }
 }
