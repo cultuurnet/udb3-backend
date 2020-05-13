@@ -10,4 +10,8 @@
     </rule>
 
     <rule ref="Symfony2.Arrays.MultiLineArrayComma" />
+
+    <rule ref="Zend">
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
 </ruleset>
