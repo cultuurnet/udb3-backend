@@ -22,6 +22,18 @@ class PurgeModelCommand extends Command
     const WRITE_MODEL = 'mysql-write';
     const READ_MODEL = 'mysql-read';
 
+    /**
+     * @var PurgeServiceManager
+     */
+    private $purgeServiceManager;
+
+    public function __construct(PurgeServiceManager $purgeServiceManager)
+    {
+        parent::__construct();
+        $this->purgeServiceManager = $purgeServiceManager;
+    }
+
+
     protected function configure()
     {
         $this
@@ -61,25 +73,13 @@ class PurgeModelCommand extends Command
     {
         $purgeServices = array();
 
-        $purgeServiceManager = $this->getPurgeServiceManager();
-
         if (self::READ_MODEL === $model) {
-            $purgeServices = $purgeServiceManager->getReadModelPurgeServices();
+            $purgeServices = $this->purgeServiceManager->getReadModelPurgeServices();
         } elseif (self::WRITE_MODEL === $model) {
-            $purgeServices = $purgeServiceManager->getWriteModelPurgeServices();
+            $purgeServices = $this->purgeServiceManager->getWriteModelPurgeServices();
         }
 
         return $purgeServices;
-    }
-
-    /**
-     * @return PurgeServiceManager
-     */
-    private function getPurgeServiceManager()
-    {
-        $application = $this->getSilexApplication();
-
-        return $application[PurgeServiceProvider::PURGE_SERVICE_MANAGER];
     }
 
     /**

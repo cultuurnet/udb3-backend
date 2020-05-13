@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand;
 use CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Silex\SavedSearches\SearchRepositoryFactory;
 use Knp\Provider\ConsoleServiceProvider;
 
@@ -84,7 +85,7 @@ $consoleApp->add(new ReplayCommand($app['event_command_bus']));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
 $consoleApp->add(new UpdateCdbXMLCommand());
 $consoleApp->add(new EventCdbXmlCommand());
-$consoleApp->add(new PurgeModelCommand());
+$consoleApp->add(new PurgeModelCommand($app[PurgeServiceProvider::PURGE_SERVICE_MANAGER]));
 $consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app['sapi3_search_service']));
 $consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app['dbal_connection'], $app['place_jsonld_repository']));
