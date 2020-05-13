@@ -2,15 +2,28 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodeEventCommand extends AbstractGeocodeCommand
 {
+    /**
+     * @var DocumentRepositoryInterface
+     */
+    private $documentRepository;
+
+    public function __construct(CommandBusInterface $commandBus, Connection $connection, DocumentRepositoryInterface $documentRepository)
+    {
+        parent::__construct($commandBus, $connection);
+        $this->documentRepository = $documentRepository;
+    }
+
     /**
      * @inheritdoc
      */
@@ -54,10 +67,9 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
      */
     protected function dispatchGeocodingCommand($eventId, OutputInterface $output)
     {
-        $jsonLdRepository = $this->getJsonLDRepository();
 
         try {
-            $document = $jsonLdRepository->get($eventId);
+            $document = $this->documentRepository->get($eventId);
         } catch (DocumentGoneException $e) {
             $document = null;
         }
@@ -105,14 +117,5 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
         );
 
         $output->writeln("Dispatched geocode command for event {$eventId}.");
-    }
-
-    /**
-     * @return DocumentRepositoryInterface
-     */
-    private function getJsonLDRepository()
-    {
-        $app = $this->getSilexApplication();
-        return $app['event_jsonld_repository'];
     }
 }
