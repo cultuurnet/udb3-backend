@@ -2,13 +2,26 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class AbstractGeocodeCommand extends AbstractCommand
 {
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
+    public function __construct(CommandBusInterface $commandBus, Connection $connection)
+    {
+        parent::__construct($commandBus);
+        $this->connection = $connection;
+    }
+
     /**
      * @inheritdoc
      */
@@ -61,31 +74,24 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
     abstract protected function getOutdatedItemsSQLFile();
 
     /**
-     * @return string[]
+     * @return mixed[]
+     * @throws DBALException
      */
     private function getAllCdbIds()
     {
         $sql = file_get_contents($this->getAllItemsSQLFile());
-        $results = $this->getDBALConnection()->query($sql);
+        $results = $this->connection->query($sql);
         return $results->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     /**
-     * @return string[]
+     * @return mixed[]
+     * @throws DBALException
      */
     private function getOutdatedCdbIds()
     {
         $sql = file_get_contents($this->getOutdatedItemsSQLFile());
-        $results = $this->getDBALConnection()->query($sql);
+        $results = $this->connection->query($sql);
         return $results->fetchAll(\PDO::FETCH_COLUMN);
-    }
-
-    /**
-     * @return Connection
-     */
-    private function getDBALConnection()
-    {
-        $app = $this->getSilexApplication();
-        return $app['dbal_connection'];
     }
 }
