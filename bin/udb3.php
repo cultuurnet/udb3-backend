@@ -94,7 +94,7 @@ $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus']));
 $consoleApp->add(new ImportSavedSearchesCommand($app['event_command_bus']));
 $consoleApp->add(new ImportRoleConstraintsCommand($app['event_command_bus']));
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
-$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus']));
+$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
