@@ -84,7 +84,7 @@ $consoleApp->add(new EventAncestorsCommand($app['event_command_bus']));
 $consoleApp->add(new UpdateCdbXMLCommand());
 $consoleApp->add(new EventCdbXmlCommand());
 $consoleApp->add(new PurgeModelCommand());
-$consoleApp->add(new ConcludeCommand($app['event_command_bus']));
+$consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app['sapi3_search_service']));
 $consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app['dbal_connection']));
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app['dbal_connection'], $app['event_jsonld_repository']));
