@@ -97,6 +97,6 @@ $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['e
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus']));
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
-$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus']));
+$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 
 $consoleApp->run();

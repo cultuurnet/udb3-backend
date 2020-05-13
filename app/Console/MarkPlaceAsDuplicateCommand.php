@@ -20,12 +20,12 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     /**
      * @var EventListenerInterface
      */
-    private $locationMarkedAsDuplicateProcessManager;
+    private $processManager;
 
-    public function __construct(CommandBusInterface $commandBus, EventListenerInterface $locationMarkedAsDuplicateProcessManager)
+    public function __construct(CommandBusInterface $commandBus, EventListenerInterface $processManager)
     {
         parent::__construct($commandBus);
-        $this->locationMarkedAsDuplicateProcessManager = $locationMarkedAsDuplicateProcessManager;
+        $this->processManager = $processManager;
     }
 
 
@@ -41,7 +41,7 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $this->locationMarkedAsDuplicateProcessManager->setLogger($logger);
+        $this->processManager->setLogger($logger);
 
         try {
             $this->commandBus->dispatch(
