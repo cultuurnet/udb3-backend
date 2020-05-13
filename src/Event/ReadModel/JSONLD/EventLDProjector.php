@@ -432,9 +432,12 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->availableTo = (string) $availableTo;
 
         // Remove old theme and event type.
-        $jsonLD->terms = array_filter($jsonLD->terms, function ($term) {
-            return $term->domain !== EventType::DOMAIN &&  $term->domain !== Theme::DOMAIN;
-        });
+        $jsonLD->terms = array_filter(
+            $jsonLD->terms,
+            function ($term) {
+                return $term->domain !== EventType::DOMAIN &&  $term->domain !== Theme::DOMAIN;
+            }
+        );
         $jsonLD->terms = array_values($jsonLD->terms);
 
         $eventType = $majorInfoUpdated->getEventType();

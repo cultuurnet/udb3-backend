@@ -177,15 +177,15 @@ class CdbXMLImporter
         $location = array();
         $location['@type'] = 'Place';
 
-        $location_id = $this->cdbIdExtractor->getRelatedPlaceCdbId($event);
+        $locationId = $this->cdbIdExtractor->getRelatedPlaceCdbId($event);
 
-        if ($location_id) {
-            $location += (array)$placeManager->placeJSONLD($location_id);
+        if ($locationId) {
+            $location += (array)$placeManager->placeJSONLD($locationId);
         } else {
-            $location_cdb = $event->getLocation();
+            $locationCdb = $event->getLocation();
             $location['mainLanguage'] = 'nl';
-            $location['name']['nl'] = $location_cdb->getLabel();
-            $address = $location_cdb->getAddress()->getPhysicalAddress();
+            $location['name']['nl'] = $locationCdb->getLabel();
+            $address = $locationCdb->getAddress()->getPhysicalAddress();
             if ($address) {
                 $location['address']['nl'] = array(
                     'addressCountry' => $address->getCountry(),
@@ -209,29 +209,29 @@ class CdbXMLImporter
         $jsonLD
     ) {
         $organizer = null;
-        $organizer_id = $this->cdbIdExtractor->getRelatedOrganizerCdbId($event);
-        $organizer_cdb = $event->getOrganiser();
-        $contact_info_cdb = $event->getContactInfo();
+        $organizerId = $this->cdbIdExtractor->getRelatedOrganizerCdbId($event);
+        $organizerCdb = $event->getOrganiser();
+        $contactInfoCdb = $event->getContactInfo();
 
-        if ($organizer_id) {
-            $organizer = (array)$organizerManager->organizerJSONLD($organizer_id);
-        } elseif ($organizer_cdb && $contact_info_cdb) {
+        if ($organizerId) {
+            $organizer = (array)$organizerManager->organizerJSONLD($organizerId);
+        } elseif ($organizerCdb && $contactInfoCdb) {
             $organizer = array();
-            $organizer['name'] = $organizer_cdb->getLabel();
+            $organizer['name'] = $organizerCdb->getLabel();
 
-            $emails_cdb = $contact_info_cdb->getMails();
-            if (count($emails_cdb) > 0) {
+            $emailsCdb = $contactInfoCdb->getMails();
+            if (count($emailsCdb) > 0) {
                 $organizer['email'] = array();
-                foreach ($emails_cdb as $email) {
+                foreach ($emailsCdb as $email) {
                     $organizer['email'][] = $email->getMailAddress();
                 }
             }
 
-            /** @var \CultureFeed_Cdb_Data_Phone[] $phones_cdb */
-            $phones_cdb = $contact_info_cdb->getPhones();
-            if (count($phones_cdb) > 0) {
+            /** @var \CultureFeed_Cdb_Data_Phone[] $phonesCdb */
+            $phonesCdb = $contactInfoCdb->getPhones();
+            if (count($phonesCdb) > 0) {
                 $organizer['phone'] = array();
-                foreach ($phones_cdb as $phone) {
+                foreach ($phonesCdb as $phone) {
                     $organizer['phone'][] = $phone->getNumber();
                 }
             }

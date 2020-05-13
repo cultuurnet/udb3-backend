@@ -364,10 +364,12 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
 
         if (is_null($this->audience) || !$this->audience->equals($audience)) {
-            $this->apply(new AudienceUpdated(
-                $this->eventId,
-                $audience
-            ));
+            $this->apply(
+                new AudienceUpdated(
+                    $this->eventId,
+                    $audience
+                )
+            );
         }
     }
 

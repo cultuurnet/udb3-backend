@@ -93,10 +93,12 @@ class DBALRepository implements RepositoryInterface
         $q = $connection
             ->createQueryBuilder()
             ->insert($this->tableName)
-            ->values([
-                'event' => ':event_id',
-                $relationType => ':item_id',
-            ])
+            ->values(
+                [
+                    'event' => ':event_id',
+                    $relationType => ':item_id',
+                ]
+            )
             ->setParameter('event_id', $eventId)
             ->setParameter('item_id', $itemId);
 
