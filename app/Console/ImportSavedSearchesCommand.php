@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
+use CultuurNet\UDB3\Silex\SavedSearches\SearchRepositoryFactory;
 use League\Csv\Reader;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +20,17 @@ class ImportSavedSearchesCommand extends AbstractCommand
     private const USER_OPT = 'user';
 
     private const SAPI_VERSION = 'sapi_version';
+
+    /**
+     * @var SearchRepositoryFactory
+     */
+    private $repositoryFactory;
+
+    public function __construct(CommandBusInterface $commandBus, SearchRepositoryFactory $repositoryFactory)
+    {
+        parent::__construct($commandBus);
+        $this->repositoryFactory = $repositoryFactory;
+    }
 
     /**
      * @inheritdoc
@@ -86,7 +97,7 @@ class ImportSavedSearchesCommand extends AbstractCommand
 
             $output->writeln('Importing query with name: ' . $record['NAME']);
 
-            $this->getUDB3SavedSearchesRepository($input)->write(
+            $this->repositoryFactory->createForVersion($input->getOption(self::SAPI_VERSION))->write(
                 new StringLiteral($record['USER_UUID']),
                 new StringLiteral($record['NAME']),
                 $this->getQueryString($record)
@@ -94,20 +105,6 @@ class ImportSavedSearchesCommand extends AbstractCommand
         }
 
         $output->writeln('Finished import.');
-    }
-
-    /**
-     * @return UDB3SavedSearchRepository
-     */
-    private function getUDB3SavedSearchesRepository(InputInterface $input)
-    {
-        $app = $this->getSilexApplication();
-
-        if ($input->getOption(self::SAPI_VERSION) === SapiVersion::V3) {
-            return $app['udb3_saved_searches_repo_sapi3'];
-        } else {
-            return $app['udb3_saved_searches_repo_sapi2'];
-        }
     }
 
     /**

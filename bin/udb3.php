@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand;
 use CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\SavedSearches\SearchRepositoryFactory;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -91,7 +92,7 @@ $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app['dbal_c
 $consoleApp->add(new PermissionCommand());
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection']));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus']));
-$consoleApp->add(new ImportSavedSearchesCommand($app['event_command_bus']));
+$consoleApp->add(new ImportSavedSearchesCommand($app['event_command_bus'], $app[SearchRepositoryFactory::class]));
 $consoleApp->add(new ImportRoleConstraintsCommand($app['event_command_bus']));
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
