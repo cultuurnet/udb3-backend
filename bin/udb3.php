@@ -80,7 +80,7 @@ $consoleApp->add(
 );
 
 $consoleApp->add(new ReplayCommand($app['event_command_bus']));
-$consoleApp->add(new EventAncestorsCommand($app['event_command_bus']));
+$consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
 $consoleApp->add(new UpdateCdbXMLCommand());
 $consoleApp->add(new EventCdbXmlCommand());
 $consoleApp->add(new PurgeModelCommand());
