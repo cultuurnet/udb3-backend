@@ -89,7 +89,7 @@ $consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app['dbal_connection']));
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app['dbal_connection'], $app['event_jsonld_repository']));
 $consoleApp->add(new PermissionCommand());
-$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus']));
+$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection']));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus']));
 $consoleApp->add(new ImportSavedSearchesCommand($app['event_command_bus']));
 $consoleApp->add(new ImportRoleConstraintsCommand($app['event_command_bus']));
