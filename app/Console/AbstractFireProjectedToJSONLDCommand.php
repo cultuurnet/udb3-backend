@@ -17,6 +17,17 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class AbstractFireProjectedToJSONLDCommand extends Command
 {
+    /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
+
+    public function __construct(EventBusInterface $eventBus)
+    {
+        parent::__construct();
+        $this->eventBus = $eventBus;
+    }
+
     protected function getEventFactory(string $type): DocumentEventFactory
     {
         $app = $this->getSilexApplication();
@@ -30,21 +41,13 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
         }
     }
 
-    protected function getEventBus(): EventBusInterface
-    {
-        $app = $this->getSilexApplication();
-        return $app['event_bus'];
-    }
-
     protected function inReplayMode(
         callable $callback,
         InputInterface $input,
         OutputInterface $output
     ) {
-        $eventBus = $this->getEventBus();
-
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->startReplayMode();
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->startReplayMode();
         } else {
             $helper = $this->getHelper('question');
             $question = new ConfirmationQuestion(
@@ -58,10 +61,10 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
             }
         }
 
-        $callback($eventBus, $input, $output);
+        $callback($this->eventBus, $input, $output);
 
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->stopReplayMode();
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->stopReplayMode();
         }
     }
 
