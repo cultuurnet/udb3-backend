@@ -13,5 +13,14 @@
 
     <rule ref="Zend">
         <exclude name="Generic.Files.LineLength"/>
+        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman" />
+
+        <exclude name="PEAR.Functions.FunctionDeclaration" />
+        <exclude name="PEAR.ControlStructures.ControlSignature" />
+        <exclude name="PEAR.Commenting.FunctionComment.SpacingBeforeTags" />
+
+        <exclude name="Zend.Debug.CodeAnalyzer" />
+        <exclude name="Zend.NamingConventions.ValidVariableName.PrivateNoUnderscore" />
+        <exclude name="Zend.NamingConventions.ValidVariableName.ContainsNumbers" />
     </rule>
 </ruleset>
