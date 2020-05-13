@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB2DomainEvents\EventCreated;
@@ -17,6 +18,17 @@ class ImportEventCdbXmlCommand extends AbstractCommand
 {
     private const ID = 'id';
     private const URL = 'url';
+
+    /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
+
+    public function __construct(CommandBusInterface $commandBus, EventBusInterface $eventBus)
+    {
+        parent::__construct($commandBus);
+        $this->eventBus = $eventBus;
+    }
 
     /**
      * @inheritdoc
@@ -54,10 +66,6 @@ class ImportEventCdbXmlCommand extends AbstractCommand
             ->setUserId(SYSTEM_USER_UUID)
             ->create($incomingUdb2Event);
 
-        /* @var EventBusInterface $eventBus */
-        $app = $this->getSilexApplication();
-        $eventBus = $app['event_bus'];
-
-        $eventBus->publish(new DomainEventStream([$domainMessage]));
+        $this->eventBus->publish(new DomainEventStream([$domainMessage]));
     }
 }

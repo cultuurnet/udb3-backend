@@ -4,7 +4,6 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
@@ -26,7 +25,6 @@ use CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand;
 use CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
-use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -94,7 +92,7 @@ $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'])
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus']));
 $consoleApp->add(new ImportSavedSearchesCommand($app['event_command_bus']));
 $consoleApp->add(new ImportRoleConstraintsCommand($app['event_command_bus']));
-$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus']));
+$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
 $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus']));
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus']));
