@@ -293,15 +293,15 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->name[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $jsonLD->location = array(
                 '@type' => 'Place',
-            ) + (array)$this->placeJSONLD(
+            ) + (array) $this->placeJSONLD(
                 $eventCreated->getLocation()->toNative()
             );
 
         $calendarJsonLD = $eventCreated->getCalendar()->toJsonLd();
-        $jsonLD = (object)array_merge((array)$jsonLD, $calendarJsonLD);
+        $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
         $availableTo = AvailableTo::createFromCalendar($eventCreated->getCalendar());
-        $jsonLD->availableTo = (string)$availableTo;
+        $jsonLD->availableTo = (string) $availableTo;
 
         // Same as.
         $jsonLD->sameAs = $this->generateSameAs(
@@ -426,10 +426,10 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->location = array(
           '@type' => 'Place',
-        ) + (array)$this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
+        ) + (array) $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
 
         $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar());
-        $jsonLD->availableTo = (string)$availableTo;
+        $jsonLD->availableTo = (string) $availableTo;
 
         // Remove old theme and event type.
         $jsonLD->terms = array_filter($jsonLD->terms, function ($term) {

@@ -19,6 +19,6 @@ trait Labelable
 
         return property_exists($eventLd, 'labels') &&
                 is_array($eventLd->labels) &&
-                in_array((string)$label, $eventLd->labels);
+                in_array((string) $label, $eventLd->labels);
     }
 }

@@ -89,7 +89,6 @@ class Projector implements EventListenerInterface
             $organizer = null;
             $this->storeRelations($eventId, $cdbid, $organizer);
         }
-
     }
 
     /**
@@ -136,7 +135,6 @@ class Projector implements EventListenerInterface
     {
         $eventId = $event->getItemId();
         $this->repository->removeRelations($eventId);
-
     }
 
     /**
