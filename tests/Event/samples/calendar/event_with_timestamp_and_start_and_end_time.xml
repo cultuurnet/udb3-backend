@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-18T00:00:00" availableto="2017-02-27T00:00:00" cdbid="d28cbd78-44c3-4043-a612-57980edd6d2e" createdby="rvandamm" creationdate="2016-11-18T13:10:40" externalid="CDB:dece09aa-3608-41de-9308-2150beeac94e" externalurl="https://io.uitdatabank.be/event/d28cbd78-44c3-4043-a612-57980edd6d2e" lastupdated="2016-11-18T15:55:01" lastupdatedby="sandra.vandenbroucke@oostende.be" owner="Invoerders Algemeen " private="false" wfstatus="approved" publisher="469781698cdbbd84d5c9c60822a5a8ff" isparent="false" pctcomplete="95" published="true" validator="Oostende Validatoren">
+    <keywords>
+      <keyword visible="false">FPR</keyword>
+    </keywords>
+    <categories>
+      <category catid="1.41.0.0.0" type="theme">Kunst en kunsteducatie</category>
+      <category catid="6.0.0.0.0" type="publicscope">Wijk of buurt</category>
+      <category catid="reg.356" type="flanderstouristregion">Kust</category>
+      <category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</category>
+      <category catid="reg.1034" type="flandersregion">8400 Oostende</category>
+    </categories>
+    <calendar>
+      <timestamps>
+        <timestamp>
+          <date>2017-02-26</date>
+          <timestart>11:00:00</timestart>
+          <timeend>12:30:00</timeend>
+        </timestamp>
+      </timestamps>
+    </calendar>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Oostende</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>2.914647</xcoordinate>
+            <ycoordinate>51.225686</ycoordinate>
+          </gis>
+          <housenr>11</housenr>
+          <street>Romestraat</street>
+          <zipcode>8400</zipcode>
+        </physical>
+      </address>
+      <mail reservation="true">ronduit@amarant.be</mail>
+      <url reservation="true">http://www.amarant.be</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>zo 26/02/17 van 11:00 tot 12:30 </calendarsummary>
+        <performers>
+          <performer>
+            <role>Docent</role>
+            <label>Damien Deceuninck </label>
+          </performer>
+        </performers>
+        <longdescription>Jules Schmalzigaug en het kookboek van het futurisme' wil een eerbetoon brengen aan het korte maar intense leven van deze Belgische futurist. In 2017 zal het honderd jaar geleden zijn dat Schmalzigaug het leven liet in Den Haag. Hij was de allereerste Belgische schilder die zich kon manifesteren in de kern van een internationale avant-gardestroming: het Italiaanse futurisme.&lt;br /&gt;&lt;br /&gt;De tentoonstelling brengt het futurisme van Schmalzigaug in dialoog met dat van zijn Italiaanse deelgenoten én met werk van andere Belgische avant-gardekunstenaars, zoals Paul Joostens, Pierre-Louis Flouquet, Prosper De Troyer, Edmond Van Dooren en enkele anderen die na 1917 kortstondig de invloed van het futurisme ondergingen. Uw gids is Damien Deceuninck.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/rondleiding-jules-schmalzigaug-en-het-kookboek-van/d28cbd78-44c3-4043-a612-57980edd6d2e"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</longdescription>
+        <media>
+          <file>
+            <hlink>http://www.amarant.be</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+          <file creationdate="11/18/2016 1:11:06 PM" main="true">
+            <copyright>Rondleiding Jules Schmalzigaug en het kookboek van het futurisme - Oostende</copyright>
+            <filename>cb84e823-531a-4fae-8656-13358a1fac8f.png</filename>
+            <filetype>jpeg</filetype>
+            <hlink>//media.uitdatabank.be/20161118/cb84e823-531a-4fae-8656-13358a1fac8f.png</hlink>
+            <mediatype>photo</mediatype>
+          </file>
+          <file>
+            <hlink>https://amarant.ticketmatic.com/production.php?a=lEQDYGrLhhk&amp;p=KIJxhQ158bk&amp;s=80cswBbInpo&amp;l=nl</hlink>
+            <mediatype>reservations</mediatype>
+            <title>Bestel tickets</title>
+          </file>
+        </media>
+        <price>
+          <pricevalue>18.50</pricevalue>
+          <pricedescription>Basisprijs: € 18.50</pricedescription>
+        </price>
+        <shortdescription>Jules Schmalzigaug en het kookboek van het futurisme' wil een eerbetoon brengen aan het korte maar intense leven van deze Belgische futurist. In 2017 zal het honderd jaar geleden zijn dat Schmalzigaug het leven liet in Den Haag. Hij was de allereerste Belgische schilder die zich kon manifesteren in de kern van een internationale avant-gardestroming: het Italiaanse futurisme.</shortdescription>
+        <title>Rondleiding Jules Schmalzigaug en het kookboek van het futurisme - Oostende</title>
+      </eventdetail>
+    </eventdetails>
+    <location>
+      <address>
+        <physical>
+          <city>Oostende</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>2.914647</xcoordinate>
+            <ycoordinate>51.225686</ycoordinate>
+          </gis>
+          <housenr>11</housenr>
+          <street>Romestraat</street>
+          <zipcode>8400</zipcode>
+        </physical>
+      </address>
+      <label cdbid="68bffbfe-f4d9-4959-a23d-1c45b4c12e74">Mu.ZEE - Kunstmuseum aan Zee</label>
+    </location>
+    <organiser>
+      <label>,</label>
+    </organiser>
+  </event>
+</cdbxml>

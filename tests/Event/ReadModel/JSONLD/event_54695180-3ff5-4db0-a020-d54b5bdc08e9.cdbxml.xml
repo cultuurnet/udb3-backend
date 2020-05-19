@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <event availablefrom="2016-12-07T10:53:17" availableto="2017-01-08T00:00:00" cdbid="54695180-3ff5-4db0-a020-d54b5bdc08e9" createdby="stan@cultuurnet.be" creationdate="2016-12-07T10:53:18" externalid="CDB:54695180-3ff5-4db0-a020-d54b5bdc08e9" lastupdated="2016-12-07T10:53:27" lastupdatedby="stan@cultuurnet.be" owner="Cultuurkuur Validatoren" pctcomplete="80" private="false" published="true" publisher="48fe254ceba710aec4609017d2e34d91" validator="Leuven Validatoren" wfstatus="readyforvalidation" isparent="false">
+    <agefrom>18</agefrom>
+    <calendar>
+      <timestamps>
+        <timestamp>
+          <date>2017-01-07</date>
+          <timestart>10:00:00</timestart>
+          <timeend>12:30:00</timeend>
+        </timestamp>
+      </timestamps>
+    </calendar>
+    <categories>
+      <category type="theme" catid="1.42.0.0.0">Creativiteit</category>
+      <category type="publicscope" catid="6.0.0.0.0">Wijk of buurt</category>
+      <category type="targetaudience" catid="2.2.5.0.0">Volwassenen (18+)</category>
+      <category type="flanderstouristregion" catid="reg.367">Kunststad Leuven</category>
+      <category type="eventtype" catid="0.3.1.0.0">Cursus of workshop</category>
+      <category type="flandersregion" catid="reg.638">3000 Leuven</category>
+    </categories>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Leuven</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.707800</xcoordinate>
+            <ycoordinate>50.881715</ycoordinate>
+          </gis>
+          <housenr>29</housenr>
+          <street>Jan-pieter Minckelersstraat</street>
+          <zipcode>3000</zipcode>
+        </physical>
+      </address>
+      <mail>ateljeebanjee@debanier.be</mail>
+      <url reservation="true">http://www.debanier.be/workshop-foto-s-op-hout.html</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>za 07/01/17 van 10:00 tot 12:30 </calendarsummary>
+        <longdescription>Lange Beschrijving - Donec porta molestie arcu, ut tempor odio. Cras mauris nisl,
+    rhoncus et tortor id, lobortis ornare libero. Vivamus tellus eros,
+    semper sit amet gravida ac, pellentesque a tortor. Etiam
+    sollicitudin mauris vitae purus pellentesque, sit amet elementum
+    lacus suscipit. Duis id felis sed justo placerat facilisis
+    convallis id purus. Praesent fermentum, odio vel varius
+    scelerisque, arcu tortor sagittis nisi, et egestas turpis sem vitae
+    orci. Maecenas hendrerit nulla ultrices nulla porttitor, nec
+    tincidunt odio cursus.&lt;br /&gt;&lt;br /&gt;
+    Curabitur et diam nisi. In hac habitasse platea dictumst. Aliquam
+    suscipit, arcu nec lobortis ultricies, arcu nibh varius tortor, sit
+    amet rhoncus mauris ante id augue. Nullam est justo, sodales vitae
+    nunc eget, mattis laoreet arcu. Curabitur pharetra hendrerit
+    turpis, in placerat elit accumsan eu. Curabitur vulputate lacus in
+    leo scelerisque condimentum. Sed sodales justo sit amet porta
+    scelerisque. Sed metus urna, tempor ut pellentesque ut, fermentum
+    in ligula. Pellentesque ullamcorper, nisi non tempus congue, massa
+    ligula vestibulum nulla, sit amet cursus ligula felis et purus.
+    Suspendisse eleifend ante nibh, eget aliquam neque suscipit ac. In
+    hac habitasse platea dictumst. Praesent tempus faucibus enim nec
+    hendrerit. Nullam non purus vel lacus dignissim cursus eu ac est.
+    Nulla tellus mauris, maximus sed faucibus non, egestas quis eros.
+    Ut massa purus, luctus non ex tempor, suscipit efficitur mi.&lt;br /&gt;
+    &lt;br /&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/workshop-foto-s-op-hout/54695180-3ff5-4db0-a020-d54b5bdc08e9"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</longdescription>
+        <media>
+          <file>
+            <hlink>http://www.debanier.be/workshop-foto-s-op-hout.html</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+          <file>
+            <hlink>http://www.debanier.be/workshop-foto-s-op-hout.html</hlink>
+            <mediatype>website</mediatype>
+            <title>webresource</title>
+          </file>
+        </media>
+        <price>
+          <pricevalue>45.00</pricevalue>
+          <pricedescription>Materiaal inbegrepen</pricedescription>
+        </price>
+        <shortdescription>Korte beschrijving - Lorem ipsum dolor sit amet, consectetur
+    adipiscing elit. Donec non velit eu eros eleifend mattis. Mauris
+    tristique scelerisque consectetur. Morbi a congue purus, quis
+    tempor arcu. Nam bibendum risus vel nulla feugiat finibus. Aenean
+    vestibulum nisi vel nisl elementum, quis faucibus ex dictum
+    nullam.</shortdescription>
+        <title>Workshop Foto's op hout</title>
+      </eventdetail>
+    </eventdetails>
+    <keywords>
+      <keyword>creatief</keyword>
+      <keyword>workshop</keyword>
+      <keyword>foto</keyword>
+      <keyword>UiTinMijnRegio</keyword>
+      <keyword>wijk__binnenstad</keyword>
+      <keyword>De Banier</keyword>
+    </keywords>
+    <location>
+      <address>
+        <physical>
+          <city>Leuven</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.707800</xcoordinate>
+            <ycoordinate>50.881715</ycoordinate>
+          </gis>
+          <housenr>29</housenr>
+          <street>Jan-pieter Minckelersstraat</street>
+          <zipcode>3000</zipcode>
+        </physical>
+      </address>
+      <label cdbid="3256ce1f-b8dd-4291-9cfe-037ebacb3184">De Banier Leuven</label>
+    </location>
+    <organiser>
+      <label>De Banier</label>
+    </organiser>
+  </event>
+</cdbxml>

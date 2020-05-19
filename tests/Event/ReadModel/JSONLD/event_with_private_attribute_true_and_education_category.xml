@@ -1,0 +1,145 @@
+<cdbxml xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <event availablefrom="2014-08-14T00:00:00" availableto="2024-11-06T00:00:00" cdbid="5441f25f-a9d4-47c3-906b-7e78ae1c34ce" createdby="stefan@hetgevolg.be" creationdate="2014-08-14T11:46:13" externalid="CDB:b3af07e0-a411-4095-8e73-f1fa33c8d7ed" lastupdated="2014-08-14T23:58:53" lastupdatedby="stefan@hetgevolg.be" owner="Invoerders Algemeen " pctcomplete="75" private="true" validator="Cultuurkuur Validatoren" wfstatus="readyforvalidation" isparent="false">
+        <agefrom>13</agefrom>
+        <calendar>
+            <timestamps>
+                <timestamp>
+                    <date>2014-10-07</date>
+                    <timestart>13:45:00</timestart>
+                </timestamp>
+                <timestamp>
+                    <date>2024-10-08</date>
+                    <timestart>10:30:00</timestart>
+                </timestamp>
+                <timestamp>
+                    <date>2024-10-09</date>
+                    <timestart>13:45:00</timestart>
+                </timestamp>
+                <timestamp>
+                    <date>2024-10-09</date>
+                    <timestart>10:30:00</timestart>
+                </timestamp>
+                <timestamp>
+                    <date>2024-10-16</date>
+                    <timestart>13:45:00</timestart>
+                </timestamp>
+                <timestamp>
+                    <date>2024-10-24</date>
+                    <timestart>13:45:00</timestart>
+                </timestamp>
+                <timestamp>
+                    <date>2024-10-24</date>
+                    <timestart>10:30:00</timestart>
+                </timestamp>
+                <timestamp>
+                    <date>2024-11-05</date>
+                    <timestart>10:30:00</timestart>
+                </timestamp>
+            </timestamps>
+        </calendar>
+        <categories>
+            <category type="theme" catid="1.3.1.0.0">Tekst en muziektheater</category>
+            <category type="publicscope" catid="6.1.0.0.0">Lokaal</category>
+            <category type="targetaudience" catid="2.2.3.0.0">Jongeren vanaf 12 jaar (12+)</category>
+            <category type="targetaudience" catid="2.1.3.0.0">Scholen</category>
+            <category type="flanderstouristregion" catid="reg.354">Antwerpse Kempen</category>
+            <category type="educationlevel" catid="12.4.1.0.0">ASO - eerste graad</category>
+            <category type="educationlevel" catid="12.5.1.0.0">TSO - eerste graad</category>
+            <category type="educationlevel" catid="12.6.1.0.0">BSO - eerste graad</category>
+            <category type="educationlevel" catid="12.7.1.0.0">KSO - eerste graad</category>
+            <category type="eventtype" catid="0.55.0.0.0">Theatervoorstelling</category>
+            <category type="flandersregion" catid="reg.532">2300 Turnhout</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Turnhout</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.951401</xcoordinate>
+                        <ycoordinate>51.322350</ycoordinate>
+                    </gis>
+                    <housenr>31-33</housenr>
+                    <street>Otterstraat</street>
+                    <zipcode>2300</zipcode>
+                </physical>
+            </address>
+            <url>http://www.hetgevolg.be</url>
+        </contactinfo>
+        <eventdetails>
+            <eventdetail lang="nl">
+                <calendarsummary>di 07/10/14 om 13:45  di 08/10/24 om 10:30  woe 09/10/24 om 13:45  woe 09/10/24 om 10:30  woe 16/10/24 om 13:45  do 24/10/24 om 13:45  do 24/10/24 om 10:30  di 05/11/24 om 10:30 </calendarsummary>
+                <performers>
+                    <performer>
+                        <role>auteur</role>
+                        <label>Bart Van Nuffelen</label>
+                    </performer>
+                    <performer>
+                        <role>regisseur</role>
+                        <label>Nathalie Roymans</label>
+                    </performer>
+                    <performer>
+                        <role>actrice</role>
+                        <label>Sofie Palmers</label>
+                    </performer>
+                    <performer>
+                        <role>actrice</role>
+                        <label>Alejandra Theus</label>
+                    </performer>
+                    <performer>
+                        <role>acteur</role>
+                        <label>Jurgen Delnaet</label>
+                    </performer>
+                    <performer>
+                        <role>scenografe</role>
+                        <label>Lien Wauters</label>
+                    </performer>
+                </performers>
+                <media>
+                    <file>
+                        <hlink>http://www.hetgevolg.be</hlink>
+                        <mediatype>webresource</mediatype>
+                    </file>
+                    <file creationdate="8/14/2014 12:25:19 PM" main="true">
+                        <copyright>Kris De Witte</copyright>
+                        <filename>770c4926-b8b2-4b1e-9633-931192a883e4.jpg</filename>
+                        <filetype>jpeg</filetype>
+                        <hlink>//media.uitdatabank.be/20140814/770c4926-b8b2-4b1e-9633-931192a883e4.jpg</hlink>
+                        <mediatype>photo</mediatype>
+                    </file>
+                    <file>
+                        <hlink>https://www.uitid.be/uitid/rest/page/28f27ed1-2199-473c-8413-b54fbf12f241</hlink>
+                        <mediatype>culturefeed-page</mediatype>
+                        <reltype>organiser</reltype>
+                        <title>organiser</title>
+                    </file>
+                </media>
+                <shortdescription>‘De Barbaren’, de derde samenwerking tussen Bart Van Nuffelen en Nathalie Roymans, is het verhaal van drie jongeren die elkaar normaal gezien nooit hadden kunnen, moeten of zelfs willen tegenkomen. Maar de situatie is niet normaal. En een reeks ongelooflijke gebeurtenissen brengt hen samen. Voor even. Maar nadien is niets nog hetzelfde. En ooit, ooit op een dag zullen ze vertellen waarom. </shortdescription>
+                <title>De Barbaren (schoolvoorstellingen)</title>
+            </eventdetail>
+        </eventdetails>
+        <eventrelations>
+            <relatedproduction cdbid="98567550-0126-427a-b9ea-8c35e4b58d8a" externalid="CDB:8b090dc5-2c8f-4073-afce-83779b9e1564">De barbaren</relatedproduction>
+        </eventrelations>
+        <keywords/>
+        <location>
+            <address>
+                <physical>
+                    <city>Turnhout</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.951401</xcoordinate>
+                        <ycoordinate>51.322350</ycoordinate>
+                    </gis>
+                    <housenr>31-33</housenr>
+                    <street>Otterstraat</street>
+                    <zipcode>2300</zipcode>
+                </physical>
+            </address>
+            <label cdbid="5c3c27e5-7fc0-4ec7-aa98-ef5a59c286cb">HETGEVOLG</label>
+        </location>
+        <organiser>
+            <label>de Warande</label>
+        </organiser>
+    </event>
+</cdbxml>

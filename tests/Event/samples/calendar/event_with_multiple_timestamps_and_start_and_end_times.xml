@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-18T12:21:14" availableto="2017-06-27T00:00:00" cdbid="b0ef6db3-5c0f-4439-955b-9ea522c84f0f" createdby="receptie.sintjozef@ocmwkortrijk.be" creationdate="2016-11-18T12:21:14" externalid="d22bed8a-7dad-e611-882f-0050569a0009" externalurl="https://io.uitdatabank.be/event/b0ef6db3-5c0f-4439-955b-9ea522c84f0f" lastupdated="2016-11-18T07:44:11" lastupdatedby="imports@cultuurnet.be" owner="Invoerders Algemeen " private="false" wfstatus="readyforvalidation" publisher="46bc5056a671ff523158e8de7f1dda18" isparent="false" pctcomplete="65" published="true" validator="Kortrijk Validatoren">
+    <categories>
+      <category catid="1.42.0.0.0" type="theme">Creativiteit</category>
+      <category catid="2.2.5.0.0" type="targetaudience">Volwassenen (18+)</category>
+      <category catid="reg.355" type="flanderstouristregion">Leiestreek</category>
+      <category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</category>
+      <category catid="reg.1068" type="flandersregion">8500 Kortrijk</category>
+    </categories>
+    <calendar>
+      <timestamps>
+        <timestamp>
+          <date>2017-02-06</date>
+          <timestart>13:00:00</timestart>
+          <timeend>16:45:00</timeend>
+        </timestamp>
+        <timestamp>
+          <date>2017-02-20</date>
+          <timestart>13:00:00</timestart>
+          <timeend>16:45:00</timeend>
+        </timestamp>
+        <timestamp>
+          <date>2017-03-06</date>
+          <timestart>13:00:00</timestart>
+          <timeend>16:45:00</timeend>
+        </timestamp>
+        <timestamp>
+          <date>2017-03-20</date>
+          <timestart>13:00:00</timestart>
+          <timeend>16:45:00</timeend>
+        </timestamp>
+      </timestamps>
+    </calendar>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Kortrijk</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>3.276535</xcoordinate>
+            <ycoordinate>50.819464</ycoordinate>
+          </gis>
+          <housenr>16</housenr>
+          <street>Condédreef(Kor)</street>
+          <zipcode>8500</zipcode>
+        </physical>
+      </address>
+      <mail>conde@ocmwkortrijk.be</mail>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>ma 06/02/17 van 13:00 tot 16:55  ma 20/02/17 van 13:00 tot 16:55  ma 06/03/17 van 13:00 tot 16:55  ma 20/03/17 van 13:00 tot 16:55  ma 15/05/17 van 13:00 tot 16:55  ma 29/05/17 van 13:00 tot 16:55  ma 12/06/17 van 13:00 tot 16:55  ma 19/06/17 van 13:00 tot 16:55  ma 26/06/17 van 13:00 tot 16:55 </calendarsummary>
+        <longdescription>Juwelen maken voorjaar 2017 : halskettingen, ringen, armbanden, oorringen enz.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/juwelen-maken-voorjaar-2017/b0ef6db3-5c0f-4439-955b-9ea522c84f0f"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</longdescription>
+        <price>
+          <pricevalue>65.00</pricevalue>
+          <pricedescription>OCMW0Inschrijvingen: € 0,00</pricedescription>
+        </price>
+        <shortdescription>Juwelen maken voorjaar 2017</shortdescription>
+        <title>Juwelen maken VOORJAAR 2017</title>
+      </eventdetail>
+    </eventdetails>
+    <location>
+      <address>
+        <physical>
+          <city>Kortrijk</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>3.276535</xcoordinate>
+            <ycoordinate>50.819464</ycoordinate>
+          </gis>
+          <housenr>16</housenr>
+          <street>Condédreef(Kor)</street>
+          <zipcode>8500</zipcode>
+        </physical>
+      </address>
+      <label>Wijkcentrum Condé</label>
+    </location>
+    <organiser>
+      <label>Wijkcentrum Condé</label>
+    </organiser>
+  </event>
+</cdbxml>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<event xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" availablefrom="2016-11-16T20:14:42" availableto="2017-02-05T00:00:00" cdbid="1c93d78f-93f2-47b7-806e-c7c305aa4d44" createdby="koen.ribus@gmail.com" creationdate="2016-11-16T20:14:43" externalid="CDB:1c93d78f-93f2-47b7-806e-c7c305aa4d44" lastupdated="2016-11-16T20:14:45" lastupdatedby="koen.ribus@gmail.com" owner="Invoerders Algemeen " pctcomplete="85" private="false" published="true" publisher="b0e55910c0cac64306b34f6d0e635265" validator="Stedelijk Aanbod Genk Validator" wfstatus="readyforvalidation" isparent="false">
+    <calendar>
+        <timestamps>
+            <timestamp>
+                <date>2017-02-04</date>
+                <timestart>19:30:00</timestart>
+                <timeend>22:30:00</timeend>
+            </timestamp>
+        </timestamps>
+    </calendar>
+    <categories>
+        <category type="flanderstouristregion" catid="reg.362">Limburgse Kempen</category>
+        <category type="eventtype" catid="0.3.2.0.0">Lezing of congres</category>
+        <category type="flandersregion" catid="reg.805">3600 Genk</category>
+    </categories>
+    <contactinfo>
+        <address>
+            <physical>
+                <city>Genk</city>
+                <country>BE</country>
+                <gis>
+                    <xcoordinate>5.521415</xcoordinate>
+                    <ycoordinate>50.963925</ycoordinate>
+                </gis>
+                <housenr>7</housenr>
+                <street>Hoogzij</street>
+                <zipcode>3600</zipcode>
+            </physical>
+        </address>
+        <phone type="phone">089 36 11 08</phone>
+        <url>https://www.natuurpunt.be/agenda/vertelavond-met-jan-gabri%C3%ABls-belevenissen-van-vroeger-en-nu</url>
+    </contactinfo>
+    <eventdetails>
+        <eventdetail lang="nl">
+            <calendarsummary>za 04/02/17 van 19:30 tot 22:30 </calendarsummary>
+            <longdescription>&lt;p&gt;Vertelavond met Jan Gabriëls, voorzitter van de Likona vogelwerkgroep: Belevenissen van vroeger en nu.&lt;/p&gt;&lt;p&gt;Wil je meeluisteren, geef een seintje aan &lt;a href="mailto:natuurpunt.genk@hotmail.com" target="_self"&gt;natuurpunt.genk@hotmail.com&lt;/a&gt; en we reserveren alvast een plaatsje en drankje voor u.&lt;/p&gt;&lt;p&gt;Bijdrage aan deze avond: leden Natuurpunt 3 € – niet leden 5 €&lt;/p&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/vertelavond-met-jan-gabriels-belevenissen-van-vroe/1c93d78f-93f2-47b7-806e-c7c305aa4d44"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</longdescription>
+            <media>
+                <file>
+                    <hlink>https://www.natuurpunt.be/agenda/vertelavond-met-jan-gabri%C3%ABls-belevenissen-van-vroeger-en-nu</hlink>
+                    <mediatype>webresource</mediatype>
+                </file>
+                <file creationdate="11/16/2016 8:14:43 PM" main="true">
+                    <filename>logo_npgenk_color_new_1_v2_200x200px.png</filename>
+                    <filetype>png</filetype>
+                    <hlink>//media.uitdatabank.be/20161116/logo_npgenk_color_new_1_v2_200x200px.png</hlink>
+                    <mediatype>photo</mediatype>
+                </file>
+            </media>
+            <shortdescription>Vertelavond met Jan Gabriëls, voorzitter van de Likona vogelwerkgroep: Belevenissen van vroeger en nu.Wil je meeluisteren, geef een seintje aan natuurpunt.genk@hotmail.com en we reserveren alvast een plaatsje en drankje voor u.Bijdrage aan deze avond: leden Natuurpunt 3 € – niet leden 5 €</shortdescription>
+            <title>Vertelavond met Jan Gabriëls: Belevenissen van vroeger en nu.</title>
+        </eventdetail>
+    </eventdetails>
+    <keywords>
+        <keyword>erkend SCVW</keyword>
+        <keyword>Natuurpunt</keyword>
+        <keyword>vogels</keyword>
+        <keyword>natuurlijklimburg</keyword>
+    </keywords>
+    <location>
+        <address>
+            <physical>
+                <city>Genk</city>
+                <country>BE</country>
+                <gis>
+                    <xcoordinate>5.521415</xcoordinate>
+                    <ycoordinate>50.963925</ycoordinate>
+                </gis>
+                <housenr>7</housenr>
+                <street>Hoogzij</street>
+                <zipcode>3600</zipcode>
+            </physical>
+        </address>
+        <label>Heempark</label>
+    </location>
+    <organiser>
+        <label>Natuurpunt Genk</label>
+    </organiser>
+</event>

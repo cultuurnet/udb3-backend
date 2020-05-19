@@ -1,0 +1,87 @@
+{
+  "@id": "http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58",
+  "@context": "\/api\/1.0\/event.jsonld",
+  "name": {"nl": "Koran, kaliefen en kruistochten - De fundamenten van de islam"},
+  "description": {"nl": "De islam is niet meer weg te denken uit onze maatschappij. Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis van de godsdienst uit de doeken. Hij verklaart hoe de islam zich verhoudt tot de andere wereldgodsdiensten en legt de oorsprong van de fundamentalistische strekkingen bloot. Dit historische perspectief helpt u om actuele ontwikkelingen beter te begrijpen."},
+  "image": "\/\/media.uitdatabank.be\/20141211\/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg",
+  "calendarSummary": "ma 02\/03\/15 van 13:30 tot 16:30  ma 09\/03\/15 van 13:30 tot 16:30  ma 16\/03\/15 van 13:30 tot 16:30  ma 23\/03\/15 van 13:30 tot 16:30  ma 30\/03\/15 van 13:30 tot 16:30 ",
+  "location": {
+    "@type": "Place",
+    "@id": "http:\/\/culudb-silex.dev:8080\/place\/A871DB85-01DB-DBD3-DAF62CDB2DD7B871",
+    "@context": "\/api\/1.0\/place.jsonld",
+    "description": "Voor een boeiend avondje cultuur, is er in Tienen cultuurcentrum De Kruisboog. Het centrum heeft een eigen programmatie, maar staat ook open voor activiteiten van plaatselijke verenigingen.",
+    "name": "Cultuurcentrum De Kruisboog",
+    "address": {
+      "addressCountry": "BE",
+      "addressLocality": "Tienen",
+      "postalCode": "3300",
+      "streetAddress": "Sint-Jorisplein 20 "
+    },
+    "bookingInfo": {
+      "description": "",
+      "name": "standard price",
+      "price": 0,
+      "priceCurrency": "EUR"
+    }
+  },
+  "organizer": {
+    "@id": "http:\/\/culudb-silex.dev:8080\/organizer\/7481A1F9-D5CB-3BC9-D3C308240015B44D",
+    "@context": "\/api\/1.0\/organizer.jsonld",
+    "name": "Davidsfonds Academie",
+    "addresses": [
+      {
+        "addressCountry": "BE",
+        "addressLocality": "Leuven",
+        "postalCode": "3000",
+        "streetAddress": "Blijde-Inkomststraat 77"
+      }
+    ],
+    "email": ["academie@davidsfonds.be"],
+    "phone": [
+      "+32 16 310670",
+      "+32 16 310608"
+    ]
+  },
+  "terms": [
+    {
+      "label": "Geschiedenis",
+      "domain": "theme",
+      "id": "1.11.0.0.0"
+    },
+    {
+      "label": "Regionaal",
+      "domain": "publicscope",
+      "id": "6.2.0.0.0"
+    },
+    {
+      "label": "Hageland",
+      "domain": "flanderstouristregion",
+      "id": "reg.360"
+    },
+    {
+      "label": "Cursus of workshop",
+      "domain": "eventtype",
+      "id": "0.3.1.0.0"
+    },
+    {
+      "label": "3300 Tienen",
+      "domain": "flandersregion",
+      "id": "reg.704"
+    }
+  ],
+  "creator": "mieke.gielis@davidsfonds.be",
+  "created": "2014-12-11T17:30:54+01:00",
+  "publisher": "Invoerders Algemeen ",
+  "endDate": "2015-03-30T16:30:00+02:00",
+  "startDate": "2015-03-02T13:30:00+01:00",
+  "calendarType": "multiple",
+  "sameAs": ["http:\/\/www.uitinvlaanderen.be\/agenda\/e\/koran-kaliefen-en-kruistochten-de-fundamenten-van\/d1f0e71d-a9a8-4069-81fb-530134502c58"],
+  "typicalAgeRange": "0-",
+  "labels": [
+    "UiTPAS",
+    "één taalicoon",
+    "twee taaliconen",
+    "drie taaliconen",
+    "vier taaliconen"
+  ]
+}
