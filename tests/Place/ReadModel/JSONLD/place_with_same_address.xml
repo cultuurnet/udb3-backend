@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+    <actor availableto="2100-01-01T01:00:00" cdbid="f2155f37-6dcf-483e-b736-506f5d6841e1" createdby="LucW" creationdate="2018-02-12T12:35:11" externalurl="https://io-test.uitdatabank.be/place/f2155f37-6dcf-483e-b736-506f5d6841e1" lastupdated="2018-02-12T12:35:11" lastupdatedby="luc@2dotstwice.be" wfstatus="draft" asset="true">
+        <actordetails>
+            <actordetail lang="nl">
+                <title>Test Place</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+            <category catid="GnPFp9uvOUyqhOckIFMKmg" type="eventtype">Museum of galerij</category>
+            <category catid="reg.640" type="flandersregion">3010 Kessel-Lo (Leuven)</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Kessel-Lo (Leuven)</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.7181166</xcoordinate>
+                        <ycoordinate>50.8920351</ycoordinate>
+                    </gis>
+                    <street>Eenmeilaan</street>
+                    <zipcode>3010</zipcode>
+                </physical>
+            </address>
+        </contactinfo>
+    </actor>
+</cdbxml>
