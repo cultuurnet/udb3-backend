@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <actor asset="true" availablefrom="2011-01-07T15:34:41" availableto="2100-01-01T00:00:00" createdby="ctournicourt" creationdate="2010-01-06T13:43:55" cdbid="3B35168B-90E8-8369-7BE1B14319CC3462" externalid="3B35168B-90E8-8369-7BE1B14319CC3462" lastupdated="2011-01-07T15:34:41" lastupdatedby="Soetkin.vanassche@cultuurnet.be" owner="Invoerders Algemeen ">
+        <actordetails>
+            <actordetail lang="nl">
+                <calendarsummary>za
+                    (ma, di, woe, do, vrij, zo gesloten)</calendarsummary>
+                <shortdescription>In Boccaccio lifestyle gaat de muziek van trance tot retro, over disco, en van dance tot R&amp;B.
+
+                </shortdescription>
+                <title>Boccaccio Life</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+            <category catid="6.2.0.0.0" type="publicscope">Regionaal</category>
+            <category catid="reg.790" type="flandersregion">3545 Halen</category>
+            <category catid="8.32.0.0.0" type="actortype">Discotheek</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Halen</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>5.107509</xcoordinate>
+                        <ycoordinate>50.947304</ycoordinate>
+                    </gis>
+                    <housenr>16</housenr>
+                    <street>Singellaan</street>
+                    <zipcode>3545</zipcode>
+                </physical>
+            </address>
+            <url main="true">http://www.boccaccio.be</url>
+        </contactinfo>
+        <weekscheme>
+            <monday opentype="closed" />
+            <tuesday opentype="closed" />
+            <wednesday opentype="closed" />
+            <thursday opentype="closed" />
+            <friday opentype="closed" />
+            <saturday opentype="open" />
+            <sunday opentype="closed" />
+        </weekscheme>
+    </actor>
+</cdbxml>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <actor asset="true" availablefrom="2016-07-19T16:16:08" availableto="2016-07-19T16:16:08" createdby="bleslie5" creationdate="2010-01-06T13:16:56" cdbid="6ecbe6c4-3a3c-4ec7-98a6-6923856e785e" externalid="ORG:15BABC8B-DBC3-F437-19D3B7CCD1C46D7B" lastupdated="2016-07-19T16:16:08" lastupdatedby="bleslie5" owner="Invoerders Algemeen ">
+        <actordetails>
+            <actordetail lang="nl">
+                <calendarsummary>woe tot zo van 14:00 tot 17:00
+                    (ma, di gesloten)</calendarsummary>
+                <media>
+                    <file>
+                        <hlink>http://www.hoogstraten.be/museum</hlink>
+                        <mediatype>webresource</mediatype>
+                    </file>
+                    <file creationdate="9/4/2012 4:26:01 PM" main="true">
+                        <copyright>Stedelijk Museum Hoogstraten</copyright>
+                        <filename>d6d4bb40-9031-46fa-b537-e5740a97920e.jpg</filename>
+                        <filetype>jpeg</filetype>
+                        <hlink>http://media.uitdatabank.be/20100106/d6d4bb40-9031-46fa-b537-e5740a97920e.jpg</hlink>
+                        <mediatype>photo</mediatype>
+                    </file>
+                </media>
+                <shortdescription>Het Stedelijk Museum Hoogstraten, gelegen op het prachtige begijnhof van Hoogstraten, presenteert het erfgoed van Hoogstraten met permanente aandacht voor de stadsgeschiedenis en de prehistorie. Hiernaast worden elk jaar nog vier tijdelijke tentoonstellingen georganiseerd rond diverse onderwerpen.
+
+                </shortdescription>
+                <title>Stedelijk Museum Hoogstraten</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+            <category catid="3.0.0.0.0" type="facility">Giftshop</category>
+            <category catid="3.1.0.0.0" type="facility">Bibliotheek, archief of documentatiecentrum</category>
+            <category catid="3.14.0.0.0" type="facility">Educatieve dienstverlening</category>
+            <category catid="3.23.1.0.0" type="facility">Voorzieningen voor rolstoelgebruikers</category>
+            <category catid="6.0.0.0.0" type="publicscope">Wijk of buurt</category>
+            <category catid="reg.534" type="flandersregion">2320 Hoogstraten</category>
+            <category catid="8.3.0.0.0" type="actortype">Museum</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Hoogstraten</city>
+                    <country>BE</country>
+                    <housenr>9</housenr>
+                    <street>Begijnhof</street>
+                    <zipcode>2320</zipcode>
+                </physical>
+            </address>
+            <mail>museum@hoogstraten.be</mail>
+            <phone type="phone">+32 3 3401980</phone>
+            <url>http://www.hoogstraten.be/museum</url>
+            <url main="true">http://www.hoogstraten.be/museum</url>
+        </contactinfo>
+        <weekscheme>
+            <monday opentype="closed" />
+            <tuesday opentype="closed" />
+            <wednesday opentype="open">
+                <openingtime from="14:00:00" to="17:00:00" />
+            </wednesday>
+            <thursday opentype="open">
+                <openingtime from="14:00:00" to="17:00:00" />
+            </thursday>
+            <friday opentype="open">
+                <openingtime from="14:00:00" to="17:00:00" />
+            </friday>
+            <saturday opentype="open">
+                <openingtime from="14:00:00" to="17:00:00" />
+            </saturday>
+            <sunday opentype="open">
+                <openingtime from="14:00:00" to="17:00:00" />
+            </sunday>
+        </weekscheme>
+    </actor>
+</cdbxml>

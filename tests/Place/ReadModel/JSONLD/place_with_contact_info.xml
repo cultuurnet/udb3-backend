@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+    <actor availablefrom="2016-12-23T14:04:21" availableto="2100-01-01T00:00:00" cdbid="fb9cc406-5255-4a7a-b0e5-3699396150aa" createdby="stan@cultuurnet.be" creationdate="2016-12-23T14:04:23" externalid="1234_abcde" externalurl="http://udb-silex.dev/place/fb9cc406-5255-4a7a-b0e5-3699396150aa" lastupdated="2016-12-23T14:04:23" lastupdatedby="" owner="Cultuurkuur Validatoren" publisher="48fe254ceba710aec4609017d2e34d91">
+        <actordetails>
+            <actordetail lang="nl">
+                <media>
+                    <file creationdate="12/23/2016 2:04:23 PM">
+                        <copyright>Stefan Dewickere/ Provincie West-Vlaanderen</copyright>
+                        <filename>40845956-5169-441d-a30d-5be473137dc8.jpg</filename>
+                        <filetype>jpeg</filetype>
+                        <hlink>http://testfilm.uitdatabank.be/images/20161223/40845956-5169-441d-a30d-5be473137dc8.jpg</hlink>
+                        <mediatype>photo</mediatype>
+                    </file>
+                </media>
+                <shortdescription>Oud Dommelhof is gelegen in Neerpelt, nagenoeg in het centrum maar op een rustige en sfeervolle locatie met tuin en bos. Het herenhuis is meer dan 150 jaar oud, destijds werd het gebouwd in opdracht van een ingenieur die de ontginning van de heidegronden leidde. Sedert 2011 is Oud Dommelhof voorzien van een moderne aanbouw. Een mooi contrast: oud en nieuw gaan hand in hand.</shortdescription>
+                <title>Oud Dommelhof</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+            <category catid="reg.972" type="flandersregion">3910 Neerpelt</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Neerpelt</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>51.231649</xcoordinate>
+                        <ycoordinate>5.424926</ycoordinate>
+                    </gis>
+                    <housenr>7</housenr>
+                    <street>Toekomstlaan</street>
+                    <zipcode>3910</zipcode>
+                </physical>
+            </address>
+            <mail reservation="true">info@ouddommelhof.be</mail>
+            <phone type="phone">+32 11 63 23 40</phone>
+            <url main="true">http://www.ouddommelhof.be</url>
+        </contactinfo>
+        <keywords>
+            <keyword>Dommelhof</keyword>
+        </keywords>
+        <weekscheme>
+            <monday opentype="closed"/>
+            <tuesday opentype="closed"/>
+            <wednesday opentype="open">
+                <openingtime from="09:30:00" to="11:30:00"/>
+            </wednesday>
+            <thursday opentype="open">
+                <openingtime from="09:00:00" to="17:00:00"/>
+            </thursday>
+            <friday opentype="closed"/>
+            <saturday opentype="open">
+                <openingtime from="09:30:00" to="11:30:00"/>
+            </saturday>
+            <sunday opentype="closed"/>
+        </weekscheme>
+    </actor>
+</cdbxml>

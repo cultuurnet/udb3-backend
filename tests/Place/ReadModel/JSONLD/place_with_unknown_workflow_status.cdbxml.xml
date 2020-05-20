@@ -1,0 +1,54 @@
+<cdb:actor xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL"
+           asset="true" availablefrom="2013-07-18T09:04:07"
+           availableto="2100-01-01T00:00:00" createdby="cultuurnet001"
+           creationdate="2010-01-06T13:33:06"
+           cdbid="318F2ACB-F612-6F75-0037C9C29F44087A"
+           externalid="Cultuurnet:organisation_1565"
+           lastupdated="2013-07-18T09:04:37" lastupdatedby="lotte@cultuurnet.be"
+           owner="Invoerders Algemeen " wfstatus="wtfstatus">
+    <cdb:actordetails>
+        <cdb:actordetail lang="nl">
+            <cdb:calendarsummary>
+                Bij voorstellingen is de balie van CC Palethe één uur voor
+                aanvang geopend.
+            </cdb:calendarsummary>
+            <cdb:longdescription>Lange beschrijving.</cdb:longdescription>
+            <cdb:title>CC Palethe</cdb:title>
+        </cdb:actordetail>
+    </cdb:actordetails>
+    <cdb:categories>
+        <cdb:category catid="8.15.0.0.0" type="actortype">Locatie</cdb:category>
+        <cdb:category catid="8.11.0.0.0" type="actortype">Organisator(en)
+        </cdb:category>
+        <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal
+        </cdb:category>
+        <cdb:category catid="8.6.0.0.0" type="actortype">Cultuur, gemeenschaps
+            of ontmoetingscentrum
+        </cdb:category>
+    </cdb:categories>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Overpelt</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>5.427752</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.211603</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>2</cdb:housenr>
+                <cdb:street>Jeugdlaan</cdb:street>
+                <cdb:zipcode>3900</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail reservation="true">reservaties@palethe.be</cdb:mail>
+        <cdb:phone reservation="true" type="phone">+32 11 645952</cdb:phone>
+        <cdb:phone type="fax">+32 11 644504</cdb:phone>
+        <cdb:url>
+            http://toevla.vlaanderen.be/publiek/nl/register/detail/19
+        </cdb:url>
+        <cdb:url main="true">http://www.palethe.be/</cdb:url>
+    </cdb:contactinfo>
+    <cdb:keywords>
+        Aanvaarden van SABAM-cultuurchèques;Toevlalocatie;toevlalocatie
+    </cdb:keywords>
+</cdb:actor>
