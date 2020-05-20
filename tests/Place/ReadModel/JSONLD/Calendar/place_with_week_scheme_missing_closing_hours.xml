@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <actor asset="true" availablefrom="2011-10-04T14:54:47" availableto="2100-01-01T00:00:00" createdby="swap.heist@skynet.be" creationdate="2011-09-23T10:23:24" cdbid="bb50638d-5008-4638-a00f-3650b29586cc" externalid="CDB:6cb61efd-8cd2-4c1f-bd58-0c75d838a96e" lastupdated="2011-10-04T14:54:47" lastupdatedby="Toonbeullens" owner="Invoerders Algemeen ">
+        <actordetails>
+            <actordetail lang="nl">
+                <shortdescription>Jeugdhuis voor jongeren. Zij hebben ook een lokaal ter beschikking voor feestjes.</shortdescription>
+                <title>Jeugdclub Joki</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+            <category catid="6.0.0.0.0" type="publicscope">Wijk of buurt</category>
+            <category catid="reg.503" type="flandersregion">2222 Itegem (Heist-Op-Den-Berg)</category>
+            <category catid="8.21.1.0.0" type="actortype">Jeugdhuis of jeugdcentrum</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Itegem</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.730662</xcoordinate>
+                        <ycoordinate>51.100759</ycoordinate>
+                    </gis>
+                    <housenr>40</housenr>
+                    <street>Hallaarstraat</street>
+                    <zipcode>2222</zipcode>
+                </physical>
+            </address>
+            <mail>maarten@jeugdclubjoki.be</mail>
+            <phone type="phone">0496526667</phone>
+        </contactinfo>
+        <weekscheme>
+            <monday opentype="closed" />
+            <tuesday opentype="closed" />
+            <wednesday opentype="open">
+                <openingtime from="19:00:00" to="23:00:00" />
+            </wednesday>
+            <thursday opentype="closed" />
+            <friday opentype="open">
+                <openingtime from="19:00:00" to="01:00:00" />
+            </friday>
+            <saturday opentype="open">
+                <openingtime from="19:00:00" to="" />
+            </saturday>
+            <sunday opentype="open">
+                <openingtime from="19:00:00" to="23:00:00" />
+            </sunday>
+        </weekscheme>
+    </actor>
+</cdbxml>

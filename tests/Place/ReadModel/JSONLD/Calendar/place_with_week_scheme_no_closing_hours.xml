@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <actor asset="true" availablefrom="2011-11-15T15:56:17" availableto="2100-01-01T00:00:00" createdby="emj391007" creationdate="2010-01-06T14:33:34" cdbid="9048FFFF-CF31-D127-C4DD881336EC2474" externalid="9048FFFF-CF31-D127-C4DD881336EC2474" lastupdated="2011-11-15T15:56:17" lastupdatedby="bart.luyckx@cultuurnet.be" owner="Invoerders Algemeen ">
+        <actordetails>
+            <actordetail lang="nl">
+                <calendarsummary>ma, di, do, vrij, zo  om 11:00
+                    za  om 12:00
+                    zo  om 11:00
+                    (woe gesloten)</calendarsummary>
+                <shortdescription>Oud Dommelhof is gelegen in Neerpelt, nagenoeg in het centrum maar op een rustige en sfeervolle locatie met tuin en bos. Het herenhuis is meer dan 150 jaar oud, destijds werd het gebouwd in opdracht van een ingenieur die de ontginning van de heidegronden leidde. Sedert 2011 is Oud Dommelhof voorzien van een moderne aanbouw. Een mooi contrast: oud en nieuw gaan hand in hand.</shortdescription>
+                <title>Oud Dommelhof</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+            <category catid="6.0.0.0.0" type="publicscope">Wijk of buurt</category>
+            <category catid="reg.972" type="flandersregion">3910 Neerpelt</category>
+            <category catid="8.44.0.0.0" type="actortype">Restaurant</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Neerpelt</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>5.424926</xcoordinate>
+                        <ycoordinate>51.231649</ycoordinate>
+                    </gis>
+                    <housenr>7 </housenr>
+                    <street>Toekomstlaan</street>
+                    <zipcode>3910</zipcode>
+                </physical>
+            </address>
+            <mail>info@ouddommelhof.be</mail>
+            <phone type="phone">+32 11 63 23 40</phone>
+            <url main="true">http://www.ouddommelhof.be</url>
+        </contactinfo>
+        <weekscheme>
+            <monday opentype="open">
+                <openingtime from="11:00:00" to="" />
+            </monday>
+            <tuesday opentype="open">
+                <openingtime from="11:00:00" to="" />
+            </tuesday>
+            <wednesday opentype="open">
+                <openingtime from="11:00:00" to="" />
+            </wednesday>
+            <thursday opentype="open">
+                <openingtime from="11:00:00" to="" />
+            </thursday>
+            <friday opentype="open">
+                <openingtime from="11:00:00" to="" />
+            </friday>
+            <saturday opentype="open">
+                <openingtime from="11:00:00" to="" />
+            </saturday>
+            <sunday opentype="open">
+                <openingtime from="11:00:00" to="" />
+            </sunday>
+        </weekscheme>
+    </actor>
+</cdbxml>

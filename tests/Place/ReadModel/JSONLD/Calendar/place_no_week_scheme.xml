@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <actor availablefrom="2012-09-20T10:59:42" availableto="2100-01-01T00:00:00" createdby="hans.verbruggen@herentals.be" creationdate="2011-09-05T11:19:16" cdbid="5b999d0a-3500-4af0-a45f-0c2c6929c452" externalid="CDB:bc7a5179-47ce-41e8-b25f-bf020ebd6151" lastupdated="2012-09-20T10:59:42" lastupdatedby="Toonbeullens" owner="Invoerders Algemeen " wfstatus="deleted">
+        <actordetails>
+            <actordetail lang="nl">
+                <media>
+                    <file creationdate="9/20/2012 10:58:51 AM" main="true">
+                        <copyright>de nieuwe viaduct</copyright>
+                        <filename>e1a09c20-b013-49e7-b403-308ed38f0004.jpg</filename>
+                        <filetype>jpeg</filetype>
+                        <hlink>http://media.uitdatabank.be/20110905/e1a09c20-b013-49e7-b403-308ed38f0004.jpg</hlink>
+                        <mediatype>photo</mediatype>
+                    </file>
+                </media>
+                <shortdescription>Deze sfeervolle bar is geïnspireerd door westerns. De Witte en Annick verwelkomen u graag in hun animatiecafé waar hun voorliefde voor Texas en westerns ervoor zorgt dat u zich even in een andere wereld waant. </shortdescription>
+                <title>In De Nieuwe Viaduct</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.15.0.0.0" type="actortype">Locatie</category>
+            <category catid="3.4.0.0.0" type="facility">Drankgelegenheid</category>
+            <category catid="6.1.0.0.0" type="publicscope">Lokaal</category>
+            <category catid="reg.497" type="flandersregion">2200 Herentals</category>
+            <category catid="8.49.0.0.0" type="actortype">Cafe</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Herentals</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.819098</xcoordinate>
+                        <ycoordinate>51.160035</ycoordinate>
+                    </gis>
+                    <housenr>188</housenr>
+                    <street>Herenthoutseweg</street>
+                    <zipcode>2200</zipcode>
+                </physical>
+            </address>
+            <url main="true">http://www.indenieuweviaduct.be/</url>
+        </contactinfo>
+    </actor>
+</cdbxml>
