@@ -278,7 +278,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         );
 
         $this->offerRepository->save($place);
-
     }
 
     protected function getUpdateTypeClassName()

@@ -41,7 +41,6 @@ class Projector implements EventListenerInterface
     {
         $placeId = $place->getItemId();
         $this->repository->removeRelations($placeId);
-
     }
 
     /**
