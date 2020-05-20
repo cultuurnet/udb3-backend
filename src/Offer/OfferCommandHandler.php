@@ -432,7 +432,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         );
 
         $this->offerRepository->save($offer);
-
     }
 
     /**
@@ -460,7 +459,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         );
 
         $this->offerRepository->save($offer);
-
     }
 
     /**
@@ -474,7 +472,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer->deleteTypicalAgeRange();
 
         $this->offerRepository->save($offer);
-
     }
 
     /**
@@ -533,7 +530,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         );
 
         $this->offerRepository->save($offer);
-
     }
 
     /**
@@ -645,6 +641,5 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     private function loadOrganizer($id)
     {
         return $this->organizerRepository->load($id);
-
     }
 }

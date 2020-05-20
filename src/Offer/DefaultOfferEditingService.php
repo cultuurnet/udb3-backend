@@ -335,7 +335,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         return $this->commandBus->dispatch(
             $this->commandFactory->createDeleteTypicalAgeRangeCommand($id)
         );
-
     }
 
     /**
@@ -378,7 +377,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         return $this->commandBus->dispatch(
             $this->commandFactory->createUpdateContactPointCommand($id, $contactPoint)
         );
-
     }
 
     /**
