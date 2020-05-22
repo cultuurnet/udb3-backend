@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Silex\Console\PermissionCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Silex\SavedSearches\SearchRepositoryFactory;
 use Knp\Provider\ConsoleServiceProvider;
@@ -78,7 +79,7 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new ReplayCommand($app['event_command_bus']));
+$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app[EventStreamBuilder::class]));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
 $consoleApp->add(new EventCdbXmlCommand());
 $consoleApp->add(new PurgeModelCommand($app[PurgeServiceProvider::PURGE_SERVICE_MANAGER]));

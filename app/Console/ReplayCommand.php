@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
@@ -9,6 +10,7 @@ use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,6 +30,18 @@ class ReplayCommand extends AbstractCommand
     const OPTION_START_ID = 'start-id';
     const OPTION_DELAY = 'delay';
     const OPTION_CDBID = 'cdbid';
+
+    /**
+     * @var EventStreamBuilder
+     */
+    private $eventStreamBuilder;
+
+    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder)
+    {
+        parent::__construct($commandBus);
+        $this->eventStreamBuilder = $eventStreamBuilder;
+    }
+
 
     /**
      * @inheritdoc
@@ -257,29 +271,23 @@ class ReplayCommand extends AbstractCommand
         AggregateType $aggregateType = null,
         $cdbids = null
     ) {
-        $app = $this->getSilexApplication();
         $startId = $startId !== null ? (int) $startId : 0;
 
-        $eventStream = new EventStream(
-            $app['dbal_connection'],
-            $app['eventstore_payload_serializer'],
-            new SimpleInterfaceSerializer(),
-            'event_store'
-        );
+        $this->eventStreamBuilder->build();
 
         if ($startId > 0) {
-            $eventStream = $eventStream->withStartId($startId);
+            $this->eventStreamBuilder->withStartId($startId);
         }
 
         if ($aggregateType) {
-            $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
+            $this->eventStreamBuilder->withAggregateType($aggregateType);
         }
 
         if ($cdbids) {
-            $eventStream = $eventStream->withCdbids($cdbids);
+            $this->eventStreamBuilder->withCdbids($cdbids);
         }
 
-        return $eventStream;
+        return $this->eventStreamBuilder->stream();
     }
 
     /**
