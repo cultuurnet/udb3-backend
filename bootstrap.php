@@ -1141,6 +1141,7 @@ $app->register(new LabelServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleReadingServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\ReplayServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
