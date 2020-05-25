@@ -8,8 +8,6 @@ use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,23 +20,31 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
      */
     private $eventBus;
 
-    public function __construct(EventBusInterface $eventBus)
+    /**
+     * @var DocumentEventFactory
+     */
+    private $organizerEventFactory;
+
+    /**
+     * @var DocumentEventFactory
+     */
+    private $placeEventFactory;
+
+    public function __construct(EventBusInterface $eventBus, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
     {
         parent::__construct();
         $this->eventBus = $eventBus;
+        $this->organizerEventFactory = $organizerEventFactory;
+        $this->placeEventFactory = $placeEventFactory;
     }
 
     protected function getEventFactory(string $type): DocumentEventFactory
     {
-        $app = $this->getSilexApplication();
-
-        switch ($type) {
-            case 'organizer':
-                return $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY];
-            case 'place':
-            default:
-                return $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY];
+        if ($type === 'organizer') {
+            return $this->organizerEventFactory;
         }
+
+        return $this->placeEventFactory;
     }
 
     protected function inReplayMode(

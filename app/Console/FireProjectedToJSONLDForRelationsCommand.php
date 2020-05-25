@@ -17,9 +17,9 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
      */
     private $connection;
 
-    public function __construct(EventBusInterface $eventBus, Connection $connection)
+    public function __construct(EventBusInterface $eventBus, Connection $connection, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
     {
-        parent::__construct($eventBus);
+        parent::__construct($eventBus, $organizerEventFactory, $placeEventFactory);
         $this->connection = $connection;
     }
 

@@ -150,10 +150,8 @@ class ReplayCommand extends AbstractCommand
 
         $stream = $this->getEventStream($startId, $aggregateType, $cdbids);
 
-        $eventBus = $this->getEventBus();
-
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->startReplayMode();
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->startReplayMode();
         } else {
             $helper = $this->getHelper('question');
             $question = new ConfirmationQuestion(
@@ -180,14 +178,14 @@ class ReplayCommand extends AbstractCommand
             $this->logStream($eventStream, $output, $stream, 'before_publish');
 
             if (!$this->isPublishDisabled($input)) {
-                $eventBus->publish($eventStream);
+                $this->eventBus->publish($eventStream);
             }
 
             $this->logStream($eventStream, $output, $stream, 'after_publish');
         }
 
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->stopReplayMode();
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->stopReplayMode();
         }
     }
 
@@ -227,17 +225,6 @@ class ReplayCommand extends AbstractCommand
             $message->getType() .
             ' (' . $message->getId() . ') ' . $marker
         );
-    }
-
-    /**
-     * @return EventBusInterface
-     */
-    private function getEventBus()
-    {
-        $app = $this->getSilexApplication();
-
-        // @todo Limit the event bus to read projections.
-        return $app['event_bus'];
     }
 
     /**
