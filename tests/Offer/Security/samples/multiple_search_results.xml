@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdb:cdbxml xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <cdb:nofrecords xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:long">3</cdb:nofrecords>
+    <cdb:event availablefrom="2014-10-14T00:00:00" availableto="2015-09-27T00:00:00" cdbid="590174eb-5577-4b49-8bc2-4b619a948c56" createdby="d.bol@parkstadlimburgtheaters.nl" creationdate="2014-10-14T13:57:31" externalid="CDB:98e8e409-6609-45fa-9903-f8a858db11ee" isparent="false" lastupdated="2014-10-14T13:58:57" lastupdatedby="d.bol@parkstadlimburgtheaters.nl" pctcomplete="75" published="true" owner="Invoerders Algemeen " private="false" validator="UiTdatabank Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2015-09-26</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                    <cdb:timeend>22:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.8.3.1.0" type="theme">Pop en rock</cdb:category>
+            <cdb:category catid="0.50.4.0.0" type="eventtype">Concert</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Heerlen</cdb:city>
+                    <cdb:country>NL</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>5.974006</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.886453</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>145</cdb:housenr>
+                    <cdb:street>Burgemeester van Grunsvenplein</cdb:street>
+                    <cdb:zipcode>6411 AS</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url reservation="true">http://www.parkstadlimburgtheaters.nl/voorstellingen/detail/1881/nederlandse-tournee-herman-van-veen/2856/2856</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 26/09/15 van 20:00 tot 22:30 </cdb:calendarsummary>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.parkstadlimburgtheaters.nl/voorstellingen/detail/1881/nederlandse-tournee-herman-van-veen/2856/2856</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file>
+                        <cdb:hlink>http://www.parkstadlimburgtheaters.nl/voorstellingen/detail/1881/nederlandse-tournee-herman-van-veen/2856/2856</cdb:hlink>
+                        <cdb:mediatype>reservations</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>18.0</cdb:pricevalue>
+                    <cdb:pricedescription>€ 34,50 Rang 1
+                        € 31,00 Rang 2
+                        € 28,00 Rang 3
+                        € 18,00 Rang 4
+                        € 37,50 Sterrang</cdb:pricedescription>
+                </cdb:price>
+                <cdb:shortdescription>Herman van Veen is na 3 jaar weer terug in Heerlen met zijn nieuwe album 'Kersvers'.</cdb:shortdescription>
+                <cdb:title>Herman van Veen</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>
+            <cdb:keyword>Herman Van Veen</cdb:keyword>
+            <cdb:keyword>van Veen</cdb:keyword>
+            <cdb:keyword>not an udb3 place</cdb:keyword>
+        </cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Heerlen</cdb:city>
+                    <cdb:country>NL</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>5.974006</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.886453</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>145</cdb:housenr>
+                    <cdb:street>Burgemeester van Grunsvenplein</cdb:street>
+                    <cdb:zipcode>6411 AS</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Parkstad Limburg Theaters</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Parkstad Limburg Theaters</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-10-31T06:27:42" availableto="2014-11-10T00:00:00" cdbid="9b60002a-9671-4b91-a2ad-5ccf8fbf7e5c" createdby="fpauwelyn@kinepolis.com" creationdate="2014-10-08T06:41:14" externalid="kinepolis_event_59816_KBRAI" isparent="false" lastupdated="2014-10-31T06:27:46" lastupdatedby="fpauwelyn@kinepolis.com" pctcomplete="70" published="true" owner="Kinepolis" private="false" validator="Kinepolis" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-09</cdb:date>
+                    <cdb:timestart>19:45:00</cdb:timestart>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.8.3.1.0" type="theme">Pop en rock</cdb:category>
+            <cdb:category catid="0.50.4.0.0" type="eventtype">Concert</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Braine l'Alleud</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.382963</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.668311</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:street>Boulevard de France</cdb:street>
+                    <cdb:zipcode>1420</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url reservation="true">http://kinepolis.be/nl/movie/38581</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>zo 09/11/14 om 19:45 </cdb:calendarsummary>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://kinepolis.be/nl/movie/38581</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="8/10/2014 6:41:14" main="true">
+                        <cdb:copyright>Concert: Les Vieilles Canailles en direct</cdb:copyright>
+                        <cdb:filename>VIEILLESCANAILLES_visuel_web_PL_resize.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20141008/VIEILLESCANAILLES_visuel_web_PL_resize.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file>
+                        <cdb:hlink>http://kinepolis.be/nl/movie/38581</cdb:hlink>
+                        <cdb:mediatype>reservations</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:shortdescription>Concert: Les Vieilles Canailles en direct</cdb:shortdescription>
+                <cdb:title>Concert: Les Vieilles Canailles en direct (FR versie)</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:eventrelations>
+            <cdb:relatedproduction cdbid="ecb9969b-c12c-4bcc-826a-f53f674acc5a" externalid="kinepolis_38581">Concert: Les Vieilles Canailles en direct</cdb:relatedproduction>
+        </cdb:eventrelations>
+        <cdb:languages>
+            <cdb:language type="spoken">Frans</cdb:language>
+        </cdb:languages>
+        <cdb:keywords>
+            <cdb:keyword>udb3 place</cdb:keyword>
+        </cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Braine l'Alleud</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.382963</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.668311</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:street>Boulevard de France</cdb:street>
+                    <cdb:zipcode>1420</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Kinepolis Imagibraine</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-10-31T06:27:41" availableto="2014-11-10T00:00:00" cdbid="d9725327-cbec-4bb8-bc56-9f3f7761b716" createdby="fpauwelyn@kinepolis.com" creationdate="2014-10-08T06:41:11" externalid="kinepolis_event_59816_KLUIK" isparent="false" lastupdated="2014-10-31T06:27:45" lastupdatedby="fpauwelyn@kinepolis.com" pctcomplete="70" published="true" owner="Kinepolis" private="false" validator="Kinepolis" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-09</cdb:date>
+                    <cdb:timestart>19:45:00</cdb:timestart>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-09</cdb:date>
+                    <cdb:timestart>19:45:00</cdb:timestart>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.8.3.1.0" type="theme">Pop en rock</cdb:category>
+            <cdb:category catid="0.50.4.0.0" type="eventtype">Concert</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Liège</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>5.552739</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.668747</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>200</cdb:housenr>
+                    <cdb:street>Chaussée de Tongres</cdb:street>
+                    <cdb:zipcode>4000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url reservation="true">http://kinepolis.be/nl/movie/38581</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>zo 09/11/14, om 19:45</cdb:calendarsummary>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://kinepolis.be/nl/movie/38581</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="8/10/2014 6:41:11" main="true">
+                        <cdb:copyright>Concert: Les Vieilles Canailles en direct</cdb:copyright>
+                        <cdb:filename>VIEILLESCANAILLES_visuel_web_PL_resize.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20141008/VIEILLESCANAILLES_visuel_web_PL_resize.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file>
+                        <cdb:hlink>http://kinepolis.be/nl/movie/38581</cdb:hlink>
+                        <cdb:mediatype>reservations</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:shortdescription>Concert: Les Vieilles Canailles en direct</cdb:shortdescription>
+                <cdb:title>Concert: Les Vieilles Canailles en direct (FR versie)</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:eventrelations>
+            <cdb:relatedproduction cdbid="ecb9969b-c12c-4bcc-826a-f53f674acc5a" externalid="kinepolis_38581">Concert: Les Vieilles Canailles en direct</cdb:relatedproduction>
+        </cdb:eventrelations>
+        <cdb:languages>
+            <cdb:language type="spoken">Frans</cdb:language>
+        </cdb:languages>
+        <cdb:keywords>
+            <cdb:keyword>UDB3 place</cdb:keyword>
+            <cdb:keyword>some other keyword that might reset the UDB3 place state</cdb:keyword>
+        </cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Liège</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>5.552739</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.668747</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>200</cdb:housenr>
+                    <cdb:street>Chaussée de Tongres</cdb:street>
+                    <cdb:zipcode>4000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Kinepolis Liège</cdb:label>
+        </cdb:location>
+    </cdb:event>
+</cdb:cdbxml>
