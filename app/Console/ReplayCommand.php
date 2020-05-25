@@ -6,7 +6,6 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
-use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
@@ -35,11 +34,16 @@ class ReplayCommand extends AbstractCommand
      * @var EventStreamBuilder
      */
     private $eventStreamBuilder;
+    /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
 
-    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder)
+    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus)
     {
         parent::__construct($commandBus);
         $this->eventStreamBuilder = $eventStreamBuilder;
+        $this->eventBus = $eventBus;
     }
 
 
