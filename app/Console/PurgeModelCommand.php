@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Storage\PurgeServiceInterface;
 use CultuurNet\UDB3\Storage\PurgeServiceManager;
 use Knp\Command\Command;
