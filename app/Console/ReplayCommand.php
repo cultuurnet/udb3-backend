@@ -38,12 +38,17 @@ class ReplayCommand extends AbstractCommand
      * @var EventBusInterface
      */
     private $eventBus;
+    /**
+     * @var array
+     */
+    private $config;
 
-    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus)
+    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array $config)
     {
         parent::__construct($commandBus);
         $this->eventStreamBuilder = $eventStreamBuilder;
         $this->eventBus = $eventBus;
+        $this->config = $config;
     }
 
 
@@ -236,19 +241,12 @@ class ReplayCommand extends AbstractCommand
         $msg = 'Registering the following subscribers with the event bus: %s';
         $output->writeln(sprintf($msg, $subscribersString));
 
-        $app = $this->getSilexApplication();
-
-        $config = $app['config'];
-        $config['event_bus']['subscribers'] = $subscribers;
-        $app['config'] = $config;
+        $this->config['event_bus']['subscribers'] = $subscribers;
     }
 
     private function disableRelatedOfferSubscribers()
     {
-        $app = $this->getSilexApplication();
-        $config = $app['config'];
-        $config['event_bus']['disable_related_offer_subscribers'] = true;
-        $app['config'] = $config;
+        $this->config['event_bus']['disable_related_offer_subscribers'] = true;
     }
 
     /**
