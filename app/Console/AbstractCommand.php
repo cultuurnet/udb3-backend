@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use Knp\Command\Command;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 
-abstract class AbstractCommand extends Command
+abstract class AbstractCommand extends BaseCommand
 {
     /**
      * @var CommandBusInterface
