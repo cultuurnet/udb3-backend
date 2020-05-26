@@ -33,7 +33,6 @@ abstract class Udb3CommandHandler extends CommandHandler
         if ($expectedClass->getName() == get_class($command)) {
             $this->$method($command);
         }
-
     }
 
     private function getHandleMethod($command)

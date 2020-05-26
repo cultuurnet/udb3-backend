@@ -49,7 +49,6 @@ class BackwardsCompatiblePayloadSerializerFactory
 {
     private function __construct()
     {
-
     }
 
     /**
