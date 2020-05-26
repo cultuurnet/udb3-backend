@@ -1,0 +1,2749 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdb:cdbxml xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL">
+    <cdb:nofrecords xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:long">9043</cdb:nofrecords>
+    <cdb:event availablefrom="2014-10-21T13:26:51" availableto="2014-10-25T00:00:00" cdbid="ee40146e-f526-4daf-a265-28486e22298e" createdby="scarabeeimport" creationdate="2014-09-11T04:02:21" externalid="Vormingplus_Oostbrabant:v+leuven_4749" isparent="false" lastupdated="2014-10-21T13:27:11" lastupdatedby="scarabeeimport" pctcomplete="95" published="true" owner="scarabeeimport" private="false" validator="scarabeeimport" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-24</cdb:date>
+                    <cdb:timestart>11:00:00</cdb:timestart>
+                    <cdb:timeend>16:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.52.0.0.0" type="theme">Politiek en maatschappij</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.704994</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878334</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>28</cdb:housenr>
+                    <cdb:street>Leopold Vanderkelenstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>info@vormingplusoostbrabant.be</cdb:mail>
+            <cdb:phone type="phone">016/525 900</cdb:phone>
+            <cdb:url>http://www.vormingplusob.be/scarabee/4749</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>vrij 24/10/14 van 11:00 tot 16:00 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>begeleider</cdb:role>
+                        <cdb:label>Jos Vandeven, voorzitter van de Leuvense Gidsenbond</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>Op zijn 28ste publiceerde Vesalius een monumentaal en baanbrekend werk waarmee hij de geneeskunde én het lichaamsbeeld van de mens onomkeerbaar veranderde. Dit ontdek je tijdens de tentoonstelling 'Lijf en leden' in Museum M. De stadswandeling brengt op zijn beurt een eerbetoon aan de wereldberoemde alumnus van de Leuvense universiteit. Stap mee in Vesalius' voetsporen!  Andreas Vesalius, 500 jaar oud en nog steeds brandend actueel. Ontdek snel ons aanbod 'Grenzeloze geneeskunde'.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/vesalius-stadswandeling-en-bezoek-aan-museum-m/ee40146e-f526-4daf-a265-28486e22298e"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.vormingplusob.be/scarabee/4749</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="11/09/2014 4:02:21" main="true">
+                        <cdb:copyright>Beschrijving niet beschikbaar</cdb:copyright>
+                        <cdb:filename>15027744937_e43316ecdb.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140911/15027744937_e43316ecdb.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>17.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Op zijn 28ste publiceerde Vesalius een monumentaal en baanbrekend werk waarmee hij de geneeskunde én het lichaamsbeeld van de mens onomkeerbaar veranderde. Dit ontdek je tijdens de tentoonstelling 'Lijf en leden' in Museum M. De stadswandeling brengt op zijn beurt een eerbetoon aan de wereldberoemde alumnus van de Leuvense universiteit. Stap mee in Vesalius' voetsporen!  Andreas Vesalius...</cdb:shortdescription>
+                <cdb:title>Vesalius: stadswandeling en bezoek aan museum M</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>kunst; Vesalius</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.704994</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878334</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>28</cdb:housenr>
+                    <cdb:street>Leopold Vanderkelenstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Museum M</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Vormingplus Oost-Brabant</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-10-21T13:22:19" availableto="2014-10-22T00:00:00" cdbid="62a2bdf0-a9f1-4586-bc95-147682244e94" createdby="scarabeeimport" creationdate="2014-09-11T03:57:41" externalid="Vormingplus_Oostbrabant:v+leuven_4727" isparent="false" lastupdated="2014-10-21T13:22:39" lastupdatedby="scarabeeimport" pctcomplete="95" published="true" owner="scarabeeimport" private="false" validator="scarabeeimport" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-21</cdb:date>
+                    <cdb:timestart>19:30:00</cdb:timestart>
+                    <cdb:timeend>21:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.52.0.0.0" type="theme">Politiek en maatschappij</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.689932</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.890403</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>14</cdb:housenr>
+                    <cdb:street>Wingerdstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>info@vormingplusoostbrabant.be</cdb:mail>
+            <cdb:phone type="phone">016/525 900</cdb:phone>
+            <cdb:url>http://www.vormingplusob.be/scarabee/4727</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>di 21/10/14 van 19:30 tot 21:30 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>begeleider</cdb:role>
+                        <cdb:label>Johan De Vriendt, spreker van Fairfin</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>samenwerking</cdb:role>
+                        <cdb:label>LDC Wijnveld</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>Sinds de financiele crisis staan banken volop in de spotlights. Maar zijn ze zich ook verantwoordelijker gaan gedragen? Welke banken gebruiken ons geld om maatschappelijk nuttige dingen te financieren en welke investeren nog steeds in bedrijven die systematisch mensen uitbuiten of het milieu vervuilen? En wat kan je zelf doen? Welke alternatieven zijn er? Een spreker van Fairfin beantwoordt deze vragen en meer, zodat je een bewuste keuze kan maken aan welke bank jij jouw geld toevertrouwt.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/wat-doet-de-bank-met-ons-geld-geannuleerd/62a2bdf0-a9f1-4586-bc95-147682244e94"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.vormingplusob.be/scarabee/4727</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="11/09/2014 3:57:41" main="true">
+                        <cdb:copyright>Beschrijving niet beschikbaar</cdb:copyright>
+                        <cdb:filename>15183992326_0ef5224dac.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140911/15183992326_0ef5224dac.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>5.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Sinds de financiele crisis staan banken volop in de spotlights. Maar zijn ze zich ook verantwoordelijker gaan gedragen? Welke banken gebruiken ons geld om maatschappelijk nuttige dingen te financieren en welke investeren nog steeds in bedrijven die systematisch mensen uitbuiten of het milieu vervuilen? En wat kan je zelf doen? Welke alternatieven zijn er? Een spreker van Fairfin beantwoo...</cdb:shortdescription>
+                <cdb:title>Wat doet de bank met ons geld? - GEANNULEERD</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>samenleving;prettiggeleerd; economie
+        </cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.689932</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.890403</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>14</cdb:housenr>
+                    <cdb:street>Wingerdstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>LDC Wijnveld</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>LDC Wijnveld</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-10-21T13:19:39" availableto="2014-10-23T00:00:00" cdbid="99c5a73c-b862-4133-a65f-2c878c8f3b70" createdby="scarabeeimport" creationdate="2014-07-23T04:24:20" externalid="Vormingplus_Oostbrabant:v+leuven_4583" isparent="false" lastupdated="2014-10-21T13:19:59" lastupdatedby="scarabeeimport" pctcomplete="95" published="true" owner="scarabeeimport" private="false" validator="scarabeeimport" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-22</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.41.0.0.0" type="theme">Kunst en kunsteducatie</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.703027</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.881058</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Rijschoolstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>info@vormingplusoostbrabant.be</cdb:mail>
+            <cdb:phone type="phone">016/525 900</cdb:phone>
+            <cdb:url>http://www.vormingplusob.be/scarabee/4583</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>woe 22/10/14 van 20:00 tot 22:00 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>begeleider</cdb:role>
+                        <cdb:label>Yanou Vanermen, violist, muziekpedagoog</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>samenwerking</cdb:role>
+                        <cdb:label>Bib Leuven</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>org partner SPIN</cdb:role>
+                        <cdb:label>Bib Leuven</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>In Buenos Aires dansen ze de tango in de straten. Tango is er verweven met het leven. Laat je meenemen doorheen de geschiedenis van deze muziek, van de beginjaren tot de moderne formaties. Je maakt kennis met spilfiguren als Carlos Gardel, Osvaldo Pugliese en Astor Piazzolla en krijgt een inleiding in de wereld van de orquesta típicas. Ervaar live de ritmische kracht van typische effecten als de yumba en chicarra en laat je meeslepen door de melancholische klanken van een tango canción. Nadien wil je ongetwijfeld meer! &lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/de-tango-en-zijn-geschiedenis/99c5a73c-b862-4133-a65f-2c878c8f3b70"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.vormingplusob.be/scarabee/4583</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="23/07/2014 4:24:20" main="true">
+                        <cdb:copyright>Beschrijving niet beschikbaar</cdb:copyright>
+                        <cdb:filename>13625353725_c1214649c4_m.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140723/13625353725_c1214649c4_m.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>9.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>In Buenos Aires dansen ze de tango in de straten. Tango is er verweven met het leven. Laat je meenemen doorheen de geschiedenis van deze muziek, van de beginjaren tot de moderne formaties. Je maakt kennis met spilfiguren als Carlos Gardel, Osvaldo Pugliese en Astor Piazzolla en krijgt een inleiding in de wereld van de orquesta típicas. Ervaar live de ritmische kracht van typische effecte...</cdb:shortdescription>
+                <cdb:title>De tango en zijn geschiedenis</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>kunst; muziek; dans; latijns amerika</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.703027</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.881058</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Rijschoolstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Bib Leuven</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Bib Leuven</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-10-21T13:38:19" availableto="2014-12-18T00:00:00" cdbid="cd017556-11e2-4f43-a025-41e9ff01ea0a" createdby="scarabeeimport" creationdate="2014-09-11T04:14:41" externalid="Vormingplus_Oostbrabant:v+leuven_4803" isparent="false" lastupdated="2014-10-21T13:38:40" lastupdatedby="scarabeeimport" pctcomplete="95" published="true" owner="scarabeeimport" private="false" validator="scarabeeimport" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-21</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-28</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-04</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-11</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-18</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-12-02</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-12-09</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-12-17</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.61.0.0.0" type="theme">Persoon en relaties</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.689932</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.890403</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>14</cdb:housenr>
+                    <cdb:street>Wingerdstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>info@vormingplusoostbrabant.be</cdb:mail>
+            <cdb:phone type="phone">016/525 900</cdb:phone>
+            <cdb:url>http://www.vormingplusob.be/scarabee/4803</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>di 21/10/14 van 19:00 tot 22:00  di 28/10/14 van 19:00 tot 22:00  di 04/11/14 van 19:00 tot 22:00  di 11/11/14 van 19:00 tot 22:00  di 18/11/14 van 19:00 tot 22:00  di 02/12/14 van 19:00 tot 22:00  di 09/12/14 van 19:00 tot 22:00  woe 17/12/14 van 19:00 tot 22:00 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>begeleider</cdb:role>
+                        <cdb:label>Bart Moens, agoog</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>samenwerking</cdb:role>
+                        <cdb:label>LDC Wijnveld</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>Assertiviteit is het opkomen voor je eigen belangen. Het is op een acceptabele manier uitdrukking geven aan je gevoelens, gedachten en wensen. Een gezonde dosis zelfvertrouwen is nodig om een evenwichtig leven te kunnen leiden en om op te komen voor jezelf. Zelfvertrouwen verbeteren we door te leren omgaan met negatieve gedachten. Je brengt je zelfbeeld in kaart door oefeningen. Je spoort je negatieve denken op en je wordt je bewust van je 'innerlijke criticus'. Zo kom je tot het gezond geven van feedback aan anderen.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/assertiviteit-en-zelfvertrouwen-geannuleerd/cd017556-11e2-4f43-a025-41e9ff01ea0a"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.vormingplusob.be/scarabee/4803</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="11/09/2014 4:14:41" main="true">
+                        <cdb:copyright>Beschrijving niet beschikbaar</cdb:copyright>
+                        <cdb:filename>4833782995_0a5898f8b4_o.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140911/4833782995_0a5898f8b4_o.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>129.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Assertiviteit is het opkomen voor je eigen belangen. Het is op een acceptabele manier uitdrukking geven aan je gevoelens, gedachten en wensen. Een gezonde dosis zelfvertrouwen is nodig om een evenwichtig leven te kunnen leiden en om op te komen voor jezelf. Zelfvertrouwen verbeteren we door te leren omgaan met negatieve gedachten. Je brengt je zelfbeeld in kaart door oefeningen. Je spoor...</cdb:shortdescription>
+                <cdb:title>Assertiviteit en zelfvertrouwen - GEANNULEERD</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords> relaties; zelfvertrouwen; assertiviteit; sociale competenties;zelfkennis</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.689932</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.890403</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>14</cdb:housenr>
+                    <cdb:street>Wingerdstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>LDC Wijnveld</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>LDC Wijnveld</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-10-21T13:37:31" availableto="2014-10-26T00:00:00" cdbid="b7a0a43a-a539-4efe-9cfd-b4fda8b07c89" createdby="scarabeeimport" creationdate="2014-09-11T04:13:32" externalid="Vormingplus_Oostbrabant:v+leuven_4798" isparent="false" lastupdated="2014-10-21T13:37:52" lastupdatedby="scarabeeimport" pctcomplete="95" published="true" owner="scarabeeimport" private="false" validator="scarabeeimport" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-25</cdb:date>
+                    <cdb:timestart>15:00:00</cdb:timestart>
+                    <cdb:timeend>17:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.58.0.0.0" type="theme">Thema onbepaald</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700880</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.879253</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:street>Grote Markt</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>info@vormingplusoostbrabant.be</cdb:mail>
+            <cdb:phone type="phone">016/525 900</cdb:phone>
+            <cdb:url>http://www.vormingplusob.be/scarabee/4798</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 25/10/14 van 15:00 tot 17:00 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>begeleider</cdb:role>
+                        <cdb:label>een gids van de Leuvense gidsenbond</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>samenwerking</cdb:role>
+                        <cdb:label>LDC De Blankaart</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>org partner SP</cdb:role>
+                        <cdb:label>LDC De Blankaart</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>Leuven heeft als oude centrum van het hertogdom Brabant met haar universiteit altijd al een bijzondere aantrekkingskracht gehad op de uitoefenaars van het mystieke leven. Er waren naast de abdijen ook talrijke kloosters, die vandaag bijna allemaal verdwenen zijn. Toch dwalen er nog een paar interessante verhalen rond die vergeten plaatsen. Soms staat er nog een restant van een gebouw, of verwijst een straatnaam naar hun vroeger bestaan, maar meestal heeft de tijd hun herinnering helemaal weggevaagd. We wandelen binnen de oude stadswallen en brengen sommige van die verhalen weer tot leven.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/stadswandeling-leuven-vergeten-verhalen-in-de-scha/b7a0a43a-a539-4efe-9cfd-b4fda8b07c89"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.vormingplusob.be/scarabee/4798</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="11/09/2014 4:13:32" main="true">
+                        <cdb:copyright>Beschrijving niet beschikbaar</cdb:copyright>
+                        <cdb:filename>6324705379_4688786cf4.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140911/6324705379_4688786cf4.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>5.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Leuven heeft als oude centrum van het hertogdom Brabant met haar universiteit altijd al een bijzondere aantrekkingskracht gehad op de uitoefenaars van het mystieke leven. Er waren naast de abdijen ook talrijke kloosters, die vandaag bijna allemaal verdwenen zijn. Toch dwalen er nog een paar interessante verhalen rond die vergeten plaatsen. Soms staat er nog een restant van een gebouw, of...</cdb:shortdescription>
+                <cdb:title>Stadswandeling Leuven: vergeten verhalen in de schaduw van vergane kloosters</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords> toerisme;Godsdienst; levensvisies; samenleving</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700880</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.879253</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:street>Grote Markt</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Stadhuis Leuven</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>LDC De Blankaart</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-24T00:00:00" cdbid="fa9e5325-2632-471b-8676-b1c34d212394" createdby="betty001" creationdate="2014-09-18T08:42:00" externalid="CDB:3417830b-2220-41ba-b55c-b10571524bdc" isparent="false" lastupdated="2014-09-18T08:56:38" lastupdatedby="betty001" pctcomplete="75" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>50</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-23</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.8.1.0.0" type="theme">Klassieke muziek</cdb:category>
+            <cdb:category catid="6.0.0.0.0" type="publicscope">Wijk of buurt</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.50.4.0.0" type="eventtype">Concert</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.682052</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.881327</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>53</cdb:housenr>
+                    <cdb:street>Herestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>betty@bettydepret.be</cdb:mail>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>do 23/10/14 om 20:00 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:label>de Filharmonie Novecento</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>Feestelijk avondconcert. &lt;br /&gt;Maurice Ravel met Weense walsen uit La Valse en  de Bolero. &lt;br /&gt;De vijfde symfonie van Shostakovich.&lt;br /&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/festival-van-vlaanderen/fa9e5325-2632-471b-8676-b1c34d212394"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file creationdate="18/09/2014 8:56:23" main="true">
+                        <cdb:copyright>Festival van Vlaanderen</cdb:copyright>
+                        <cdb:filename>8f0295a5-5bdd-4f9e-9f8c-79f2a525e183.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/8f0295a5-5bdd-4f9e-9f8c-79f2a525e183.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:shortdescription>feestelijk avondconcert</cdb:shortdescription>
+                <cdb:title>Festival van Vlaanderen</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.682052</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.881327</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>53</cdb:housenr>
+                    <cdb:street>Herestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="d4ef0eb6-f241-465d-9d2e-f4dc555d58e3">Lemmensinstituut</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label cdbid="75407F14-BBF1-4B21-02BC87BE8FB717D8">Neos - Netwerk van Ondernemende Senioren</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-06T00:00:00" cdbid="0c23b301-a681-473f-89ed-8935eee7b387" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T13:30:02" externalid="CDB:d91347aa-0ad6-49cd-bada-b5e9671a8250" isparent="false" lastupdated="2014-09-18T13:31:45" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-02</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                    <cdb:timeend>03:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-03</cdb:date>
+                    <cdb:timestart>10:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-04</cdb:date>
+                    <cdb:timestart>10:00:00</cdb:timestart>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-05</cdb:date>
+                    <cdb:timestart>12:00:00</cdb:timestart>
+                    <cdb:timeend>18:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.0.0.0.0" type="eventtype">Tentoonstelling</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>do 02/10/14 van 20:00 tot 03:00  vrij 03/10/14 van 10:00 tot 22:00  za 04/10/14 om 10:00  zo 05/10/14 van 12:00 tot 18:00 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en instaliaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn preformance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Walonie. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-expositie/0c23b301-a681-473f-89ed-8935eee7b387"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 13:31:06" main="true">
+                        <cdb:copyright>UAMO Art Festival - expositie </cdb:copyright>
+                        <cdb:filename>1ab576e2-2268-4386-b687-7ef4d34fe838.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/1ab576e2-2268-4386-b687-7ef4d34fe838.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Van donderdag 2 tot zondag 5 oktober palmt UAMO het Leuvense Openbaar Entrepot voor de Kunsten (OPEK) in met een internationaal kunstenfestival. Deze eerste editie van UAMO art festival draait helemaal rond het onderwerp PRETTY/UGLY, met aan het hart van het programma een expositie.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - expositie </cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-03T00:00:00" cdbid="73edef75-2ca1-4461-b8c7-8ec776b66333" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T13:23:36" externalid="CDB:381fd8af-91be-4a25-aa6f-468d95e0be1e" isparent="false" lastupdated="2014-09-18T13:25:23" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-02</cdb:date>
+                    <cdb:timestart>21:00:00</cdb:timestart>
+                    <cdb:timeend>03:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.49.0.0.0" type="eventtype">Party of fuif</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.ocm</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>do 02/10/14 van 21:00 tot 03:00 </cdb:calendarsummary>
+                <cdb:longdescription>Van donderdag 2 tot zondag 5 oktober palmt UAMO het Leuvense Openbaar Entrepot voor de Kunsten (OPEK) in met een internationaal kunstenfestival. Deze eerste editie van UAMO art festival draait helemaal rond het onderwerp PRETTY/UGLY, met aan het hart van het programma een expositie met fotografie, video, performance, visuele kunst en instaliaties. Met concerten, workshops, demonstraties, kinderprogramma en een kunstsymposium is er voor ieder wel wat bij UAMO.&lt;br /&gt;&lt;br /&gt;WIE Urban Art and Media Organisation&lt;br /&gt;WAT UAMO Art Festival&lt;br /&gt;WAAR Openbaar Entrepot voor de Kunsten (OPEK), Vaartkom 4, 3000 Leuven&lt;br /&gt;WANNEER donderdag 2 tot zondag 5 oktober&lt;br /&gt;INKOM Gratis&lt;br /&gt;&lt;br /&gt;Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en instaliaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn preformance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Walonie. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden. &lt;br /&gt;&lt;br /&gt;Op de receptie op 2 oktober wordt de tentoonstelling geopend met een speech van schepen van cultuur Denise Vandevoort. Het openingsfeest wordt aangevuld met een programma van gratis concerten, workshops en demonstraties. Men kan genieten van sets van OAKTREE (sferische en betoverende electronica, aldus Focus Knack), Hiele (deep acid house, gestoorde exotica en uptempo 808 workouts), en Jonas Lion (house gecombineerd met een variateit van muzieksoorten). Ondertussen kun je met de ontwerpers van AHAHA meedoen met de zeefdruk workshop en je eigen object maken met de 3D printers van Cyaan &amp; co.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-party/73edef75-2ca1-4461-b8c7-8ec776b66333"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.ocm</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 13:23:53" main="true">
+                        <cdb:copyright>UAMO Art Festival PARTY</cdb:copyright>
+                        <cdb:filename>457e8cd5-ebd9-4de8-b3eb-6f0c0b3206c1.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/457e8cd5-ebd9-4de8-b3eb-6f0c0b3206c1.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Concerten van Oaktree,  Hiele, Jonas Lion en Renaat Vanderpapeliere aangevuld met een programma van workshops, demonstraties, performances en een grote tentoonstelling.
+
+                    Check www.uamoartfestival.com of www.facebook.com/uamoartfestival</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival PARTY</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-08T00:00:00" cdbid="67afa251-8648-4919-9262-0357807f721c" createdby="pieterjandepauw@gmail.com" creationdate="2014-09-18T15:01:14" externalid="CDB:ee4d4d25-0cbe-47bc-9cad-845da9a77e27" isparent="false" lastupdated="2014-09-18T15:07:15" lastupdatedby="pieterjandepauw@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-07</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.50.21.0.0" type="eventtype">Spel of quiz</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.699219</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.869560</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>1</cdb:housenr>
+                    <cdb:street>Verkortingsstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>pieterjan@vriendtjestegenkanker.be</cdb:mail>
+            <cdb:url>https://www.facebook.com/events/1515717901978657/</cdb:url>
+            <cdb:url>http://www.vriendtjestegenkanker.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>di 07/10/14 van 20:00 tot 22:00 </cdb:calendarsummary>
+                <cdb:longdescription>Drie bekende kokers, één geniale presentator en prikkelende vragen. Dat zijn de ingrediënten van één van de meest populaire quizzen ooit!&lt;br /&gt;&lt;br /&gt;Ingrediënten die Vriendtjes Tegen Kanker vzw samen met het Leuvens Universiteitsfonds (LUF) op dinsdag 7 oktober gebruikt voor een quiz t.v.v. het gelijknamige onderzoeksfonds Vriendtjes Tegen Kanker!&lt;br /&gt;&lt;br /&gt;Drie panels met telkens een praeses van een Leuvense studentenkring, een professor en een BV nemen het die avond tegen elkaar op voor het goede doel en eeuwige roem (en 2 vaten Stella). De presentatie wordt verzorgd door niemand minder dan Tom Lenaerts, raspresentator én peter van het Fonds Vriendtjes Tegen Kanker!&lt;br /&gt;&lt;br /&gt;Maar ook jullie, als publiek, doen mee! Zet in op je favoriete panel, quiz mee en maak kans op mooie prijzen!&lt;br /&gt;&lt;br /&gt;De volgende duo’s zullen zich in de arena begeven:&lt;br /&gt;-- prof. dr. Luk Draye en Babylonpreses Michael Bauwens (voor de faculteit Letteren)&lt;br /&gt;-- prof. dr. Ignace Vergote en de preses van Medica, Victor Mazereel (voor de faculteit Geneeskunde)&lt;br /&gt;-- prof. dr. Luc Sels en de preses van Ekonomika, Koen Spliet (voor de faculteit Economie en Bedrijfswetenschappen)&lt;br /&gt;&lt;br /&gt;Met Bart Cannaerts, Els De Schepper, Klaas Delrue en Rik Torfs hebben we alvast een mooie verzameling bekende koppen in huis.&lt;br /&gt;&lt;br /&gt;Na de quiz sluiten we de avond feestelijk af met een fuif in de (appel)Blauw(zeegroen)e Kater! De opbrengst van de avond gaat integraal naar het onderzoeksfonds Vriendtjes Tegen Kanker onder leiding van prof. dr. Ignace Vergote, dat onderzoek uitvoert naar de behandeling van eierstokkanker.&lt;br /&gt;---------------------------------------------------------------------------------&lt;br /&gt;INFO EN PRIJZEN&lt;br /&gt;&lt;br /&gt;Quizzers/toeschouwers zijn welkom vanaf 19u30 in Aula Pieter De Somer, de strijd barst los om 20u. De Blauwe Kater warmen we op vanaf 22u.&lt;br /&gt;&lt;br /&gt;Zin om deze show bij te wonen en tegelijk ook een deel zelf mee te quizzen? Dan betaal je 5 euro in voorverkoop en 6 euro aan de kassa. Met een ticket voor de quiz heb je ook automatisch toegang tot de fuif in de Blauwe Kater.&lt;br /&gt;&lt;br /&gt;Niet zo’n quizbeest, maar wel een dansbeest? Voor de fuif betaal je 4 euro in voorverkoop en 5 euro aan de kassa.&lt;br /&gt;&lt;br /&gt;Inschrijven kan online en via de cursusdiensten van de deelnemende kringen (Babylon, Medica en Ekonomika).&lt;br /&gt;&lt;br /&gt;Meer weten over Vriendtjes Tegen Kanker en onze activiteiten? Neem een kijkje op onze Facebookpagina of klik verder naar onze website www.vriendtjestegenkanker.be!&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/quiz-show-tvvv-fonds-vriendtjes-tegen-kanker/67afa251-8648-4919-9262-0357807f721c"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>https://www.facebook.com/events/1515717901978657/</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file>
+                        <cdb:hlink>http://www.vriendtjestegenkanker.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 15:05:26" main="true">
+                        <cdb:copyright>Vriendtjes Tegen Kanker vzw</cdb:copyright>
+                        <cdb:filename>b839f5e1-97b1-4fe0-b244-f0772c7293b5.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/b839f5e1-97b1-4fe0-b244-f0772c7293b5.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file>
+                        <cdb:hlink>https://www.facebook.com/events/1515717901978657/</cdb:hlink>
+                        <cdb:mediatype>facebook</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>4.0</cdb:pricevalue>
+                    <cdb:pricedescription>Voro 1 euro extra: toegang tot afterparty in Blauwe Kater!</cdb:pricedescription>
+                </cdb:price>
+                <cdb:shortdescription>Drie bekende kokers, één geniale presentator en prikkelende vragen. Dat zijn de ingrediënten van één van de meest populaire quizzen ooit!
+
+                    Drie panels met onder andere Bart Cannaerts, Klaas Delrue en Els Deschepper nemen het die avond tegen elkaar op voor het goede doel en eeuwige roem (en 2 vaten Stella). De presentatie wordt verzorgd door niemand minder dan Tom Lenaerts. Jury= Rik Torfs.</cdb:shortdescription>
+                <cdb:title>Quiz/show tvvv Fonds Vriendtjes Tegen Kanker</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.699219</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.869560</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>1</cdb:housenr>
+                    <cdb:street>Verkortingsstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Pieter De Somer Aula</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Vriendt</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-04T00:00:00" cdbid="5bb61842-4241-46aa-94e7-3baedc9aa7ea" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T15:57:12" externalid="CDB:2d2bf116-8ad2-413b-a729-6e34b438ac97" isparent="false" lastupdated="2014-09-24T17:40:25" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-03</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>19:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>vrij 03/10/14 van 19:00 tot 19:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en installaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn performance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Wallonië. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-rondleiding/5bb61842-4241-46aa-94e7-3baedc9aa7ea"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 15:59:24" main="true">
+                        <cdb:copyright>UAMO Art Festival</cdb:copyright>
+                        <cdb:filename>81c8321e-49e0-488e-916c-ea152720ce28.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/81c8321e-49e0-488e-916c-ea152720ce28.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Gratis rondleiding door de tentoonstelling van UAMO Art Festival, waar 13 kunstenaars hun werk exposeren rondt het onderwerp PRETTY/UGLY. Hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis rondleiding</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-05T00:00:00" cdbid="32ea3ac3-5545-4b0b-8824-b80f03bf71c1" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T17:38:06" externalid="CDB:b1192e2c-58a4-4a54-9a1f-8ebcc6c0c5d0" isparent="false" lastupdated="2014-09-24T17:37:33" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="1" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="1" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>5</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-04</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                    <cdb:timeend>14:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="2.2.1.0.0" type="targetaudience">Vanaf kleuterleeftijd (3+)</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 04/10/14 van 14:00 tot 14:30 </cdb:calendarsummary>
+                <cdb:longdescription>Van donderdag 2 tot zondag 5 oktober palmt UAMO het Leuvense Openbaar Entrepot voor de Kunsten (OPEK) in met een internationaal kunstenfestival. Deze eerste editie van UAMO art festival draait helemaal rond het onderwerp PRETTY/UGLY, met aan het hart van het programma een expositie met fotografie, video, performance, visuele kunst en instaliaties. Met concerten, workshops, demonstraties, kinderprogramma en een kunstsymposium is er voor ieder wel wat bij UAMO.&lt;br /&gt;&lt;br /&gt;WIE Urban Art and Media Organisation&lt;br /&gt;WAT UAMO Art Festival&lt;br /&gt;WAAR Openbaar Entrepot voor de Kunsten (OPEK), Vaartkom 4, 3000 Leuven&lt;br /&gt;WANNEER donderdag 2 tot zondag 5 oktober&lt;br /&gt;INKOM Gratis&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-kinderrondleiding/32ea3ac3-5545-4b0b-8824-b80f03bf71c1"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 17:48:08" main="true">
+                        <cdb:copyright>UAMO Art Festival - gratis kinderrondleiding </cdb:copyright>
+                        <cdb:filename>0ac860b1-dc16-44df-bb93-6fa281ca335a.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/0ac860b1-dc16-44df-bb93-6fa281ca335a.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Door de tentoonstelling van UAMO Art Festival zijn er dagelijks gratis rondleidingen voor kinderen! Laat je verrassen door een levensechte opa, een ademend huis en een kunst die reageert op wat jij zelf doet! Verder mag je zelf de handen uit de mouwen steken en jouw eigen PRETTY/UGLY tekening maken. </cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis kinderrondleiding </cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-04T00:00:00" cdbid="b0a628c5-802e-43a6-ae17-f1d988cc40ef" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T17:10:14" externalid="CDB:daeb4a92-7cba-4323-92fe-c15e1c14b986" isparent="false" lastupdated="2014-09-18T18:38:15" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-03</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                    <cdb:timeend>21:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.2.0.0" type="eventtype">Lezing of congres</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>vrij 03/10/14 van 20:00 tot 21:00 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en installaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn performance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Wallonië. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-kunst-symposium/b0a628c5-802e-43a6-ae17-f1d988cc40ef"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 17:10:42" main="true">
+                        <cdb:copyright>UAMO Art Festival - kunst symposium </cdb:copyright>
+                        <cdb:filename>1c19d157-cb43-4e6b-ba6e-0eddf9f0911c.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/1c19d157-cb43-4e6b-ba6e-0eddf9f0911c.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Op vrijdagavond vindt er in het hart van OPEK een kunst symposium plaats.  Hoogleraren van de KU Leuven en kunstenaars discussiëren over het thema PRETTY/UGLY. O.a. Lisa de Boeck van Memymom, Daan Versele, Katelijne de Corte en Anneleen Maschelein (hoogleraar Semiotiek) discussiëren mee. </cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - kunst symposium </cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-04T00:00:00" cdbid="9abed1c2-143d-434c-b426-b052add6edea" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T17:27:36" externalid="CDB:143eea56-aa31-4b5d-8704-d0f8a197b0fa" isparent="false" lastupdated="2014-09-18T18:30:58" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-03</cdb:date>
+                    <cdb:timestart>22:00:00</cdb:timestart>
+                    <cdb:timeend>22:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>vrij 03/10/14 van 22:00 tot 22:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en installaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn performance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Wallonië. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-rondleiding/9abed1c2-143d-434c-b426-b052add6edea"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 17:28:33" main="true">
+                        <cdb:copyright>UAMO Art Festival - gratis rondleiding</cdb:copyright>
+                        <cdb:filename>c12c8806-ada5-4c57-bfdd-5829b98a08ab.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/c12c8806-ada5-4c57-bfdd-5829b98a08ab.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Gratis rondleiding door de tentoonstelling van UAMO Art Festival, waar 13 kunstenaars hun werk exposeren rondt het onderwerp PRETTY/UGLY. Hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen.
+                </cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis rondleiding</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-05T00:00:00" cdbid="2cf7fd07-c208-4730-bda4-2f9a3270b9a1" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T18:01:01" externalid="CDB:6c9e5748-5335-47c8-827d-493e7e97bc0f" isparent="false" lastupdated="2014-09-18T18:03:15" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-04</cdb:date>
+                    <cdb:timestart>19:00:00</cdb:timestart>
+                    <cdb:timeend>19:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 04/10/14 van 19:00 tot 19:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en instaliaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn preformance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Walonie. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden. &lt;br /&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-rondleiding/2cf7fd07-c208-4730-bda4-2f9a3270b9a1"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 18:02:00" main="true">
+                        <cdb:copyright>UAMO Art Festival - gratis rondleiding </cdb:copyright>
+                        <cdb:filename>78c67a82-cab8-434d-9c51-c9a26f7a9f26.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/78c67a82-cab8-434d-9c51-c9a26f7a9f26.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Gratis rondleiding door de tentoonstelling van UAMO Art Festival, waar 13 kunstenaars hun werk exposeren rondt het onderwerp PRETTY/UGLY. Hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis rondleiding </cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-09-21T00:00:00" cdbid="825c3b19-27c8-4f81-8886-7c2fa0999b59" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T17:54:29" externalid="CDB:8a59cc68-6b75-4b18-ab16-46e700d47848" isparent="false" lastupdated="2014-09-24T17:44:41" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-09-20</cdb:date>
+                    <cdb:timestart>17:00:00</cdb:timestart>
+                    <cdb:timeend>17:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 20/09/14 van 17:00 tot 17:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en installaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn performance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Wallonië. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-rondleiding/825c3b19-27c8-4f81-8886-7c2fa0999b59"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 17:55:55" main="true">
+                        <cdb:copyright>UAMO Art Festival</cdb:copyright>
+                        <cdb:filename>14efacbf-a0fb-48cf-b1c0-70beec9697bb.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/14efacbf-a0fb-48cf-b1c0-70beec9697bb.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Gratis rondleiding door de tentoonstelling van UAMO Art Festival, waar 13 kunstenaars hun werk exposeren rondt het onderwerp PRETTY/UGLY. Hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis rondleiding</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-19T00:00:00" availableto="2014-09-26T00:00:00" cdbid="a5e5d010-e450-4ddb-b899-cce91b455b1c" createdby="merle@clustermusic.be" creationdate="2014-09-19T10:56:29" externalid="CDB:a5fcb35b-7c90-4b45-9efb-c126a8d141dd" isparent="false" lastupdated="2014-09-19T11:02:48" lastupdatedby="merle@clustermusic.be" pctcomplete="85" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>18</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-09-25</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.8.1.0.0" type="theme">Klassieke muziek</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.50.4.0.0" type="eventtype">Concert</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.701732</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878841</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>2</cdb:housenr>
+                    <cdb:street>Boekhandelstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail reservation="true">merle@clustermusic.be</cdb:mail>
+            <cdb:phone reservation="true" type="phone">0479218642</cdb:phone>
+            <cdb:url>http://www.clustermusic.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>do 25/09/14 van 20:00 tot 22:00 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>ensemble</cdb:role>
+                        <cdb:label>Aranis</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>band</cdb:role>
+                        <cdb:label>Cro Magnon</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>ensemble</cdb:role>
+                        <cdb:label>arneTRIO</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>ensemble</cdb:role>
+                        <cdb:label>Wouter Vandenabeele, Sara Salvérius, Erno Nossent</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>Wouter Vandenabeele geeft met zijn trio al een inkijk op zijn nieuwe CD: Chansons ... het vervolg: Naast de muziek die hij met Olla Vogala maakt liggen zijn kleinere, intieme Chansons-projecten hem ook nauw aan het hart. Na Chansons sans paroles en Chansons pour la fin d'un jour vervolgt Wouter ditmaal met een sober en nog indringender concertprogramma in zijn typische stijl van alle werelden. Samen met Erno Nossent op de piano en Sara Salvérius op de accordeon neemt hij u mee op reis. &lt;br /&gt;&lt;br /&gt;Joris Vanvinckenroye stelt met Aranis hun nieuwe programma Made in Belgium II voor: Aranis brengt, na Made in Belgium I, weer een programma met muziek voor hen geschreven door hedendaagse Belgische componisten zoals Peter Vermeersch (FES), Koen van Roy (Cro Magnon), Walter Hus (Maximalist!), Ananta Roosens (La sieste du dromadaire) . Aanstekelijk en intrigerend, mooie klanken voortgestuwd door een melodieus ritme. Weer iets anders, maar toch helemaal Aranis!&lt;br /&gt;&lt;br /&gt;Geert Waegeman treed met Cro Magnon opnieuw in de schijnwerpers met nieuwe muziek: Na een paar jaar druk bezig geweest te zijn met allerlei andere projecten, kriebelde het bij Geert toch weer heel erg om iets met zijn Cro Magnon te doen. Nieuwe muziek met een energiegevende 'goesting', een knipoog en plaats voor improvisatie.&lt;br /&gt;&lt;br /&gt;Arne Van Dongen stelt zijn arneTrio voor met Treasures from the Trash&lt;br /&gt;Componeren voor film en TV spreekt tot de verbeelding. Maar wat de meeste mensen niet weten is dat er heel veel meer wordt afgekeurd dan goedgekeurd.  Prachtige muziek die letterlijk in een donkere schuif is blijven liggen. Nu kan u een selectie van deze verborgen parels ontdekken in intieme interpretaties door een akoestisch toptrio. Zij nodigen u uit om mee te stappen in een weldadig klankbad, uitgepuurde instrumentale muziek met eenvoudige melodieën, subtiele ritmes en rijke harmonieën. Om zachtjes bij weg te dromen en te wiegen.&lt;br /&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/another-world-music-festival-aranis-cro-magnon-oll/a5e5d010-e450-4ddb-b899-cce91b455b1c"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.clustermusic.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="19/09/2014 10:59:54" main="true">
+                        <cdb:copyright>ANOTHER WORLD MUSIC FESTIVAL: Aranis, Cro Magnon, Olla Vogala, arneTRIO</cdb:copyright>
+                        <cdb:filename>939a7738-8dd3-4173-b2ea-21b8e49aec57.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140919/939a7738-8dd3-4173-b2ea-21b8e49aec57.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>12.0</cdb:pricevalue>
+                    <cdb:pricedescription>VVK € 10</cdb:pricedescription>
+                </cdb:price>
+                <cdb:shortdescription>Nieuwe muziek van: Wouter Vandenabeele &amp; co: Chansons... het vervolg / Aranis (o.l.v. Joris Vanvinckenroye) met Made in Belgium II / arneTRIO (o.l.v. Arne Van Dongen) met Treasures from the Trash / Cro Magnon (o.l.v. Geert Waegeman) ... the revival.</cdb:shortdescription>
+                <cdb:title>ANOTHER WORLD MUSIC FESTIVAL: Aranis, Cro Magnon, Olla Vogala, arneTRIO</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.701732</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878841</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>2</cdb:housenr>
+                    <cdb:street>Boekhandelstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Radiohuis (Stadhuis)</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Cluster</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-19T00:00:00" availableto="2014-10-26T00:00:00" cdbid="eabc5a0b-aec4-4d0e-b790-e3973eeb0f60" createdby="30cc@leuven.be" creationdate="2014-09-19T11:46:10" externalid="CDB:af4faf51-14e4-40a6-94fa-93ccf99de8a6" isparent="false" lastupdated="2014-09-19T11:52:14" lastupdatedby="30cc@leuven.be" pctcomplete="80" published="true" owner="Leuven 30CC Validatoren" private="false" validator="Leuven Validatoren" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>4</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-25</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.42.0.0.0" type="theme">Creativiteit</cdb:category>
+            <cdb:category catid="2.2.1.0.0" type="targetaudience">Vanaf kleuterleeftijd (3+)</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+            <cdb:category catid="umv.1" type="umv">Museum</cdb:category>
+            <cdb:category catid="umv.2" type="umv">Zelf doen</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.704994</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878334</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>28</cdb:housenr>
+                    <cdb:street>Leopold Vanderkelenstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.rodehond.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 25/10/14 om 14:00 </cdb:calendarsummary>
+                <cdb:longdescription>De expo 'Magnus is ziek' wordt feestelijk geopend op kindermaat. Neem deel aan verschillende creatieve workshops en laat je onderdompelen in de wereld van de 16de-eeuwse wetenschapper Andreas Vesalius en kunstenaar Markus Schinwald. Geniet tussendoor van een lekker drankje en hapje.&lt;br /&gt;&lt;br /&gt;• Reserveren is noodzakelijk vóór vrijdag 17 oktober 2014. &lt;br /&gt;• Duur: 180 min.&lt;br /&gt;• 4 tot 10 jaar en ouders &lt;br /&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/rode-hond-magnus-is-ziek-kindervernissage/eabc5a0b-aec4-4d0e-b790-e3973eeb0f60"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.rodehond.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="19/09/2014 11:50:18" main="true">
+                        <cdb:copyright>Marc Van Langendonck</cdb:copyright>
+                        <cdb:filename>c4cb5865-a690-40a9-a515-39ac51896ba1.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140919/c4cb5865-a690-40a9-a515-39ac51896ba1.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>3.0</cdb:pricevalue>
+                    <cdb:pricedescription>€ 3 voor kinderen - € 5 voor ouders (excl. audiotour)</cdb:pricedescription>
+                </cdb:price>
+                <cdb:shortdescription>De expo 'Magnus is ziek' wordt feestelijk geopend op kindermaat. Neem deel aan verschillende creatieve workshops en laat je onderdompelen in de wereld van de 16de-eeuwse wetenschapper Andreas Vesalius en kunstenaar Markus Schinwald. Geniet tussendoor van een lekker drankje en hapje.</cdb:shortdescription>
+                <cdb:title>Rode Hond - Magnus is ziek - Kindervernissage</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.704994</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878334</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>28</cdb:housenr>
+                    <cdb:street>Leopold Vanderkelenstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>M-museum Leuven</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label cdbid="AA785E84-0E30-452A-5AD27D7E2D3A4824">30CC</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-04T00:00:00" cdbid="b34c362d-fdbc-4855-822c-4dcb82b0a7b3" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T13:36:47" externalid="CDB:86b50247-9c65-4f7f-9ccb-f2be3233ab64" isparent="false" lastupdated="2014-09-18T18:41:27" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-03</cdb:date>
+                    <cdb:timestart>17:00:00</cdb:timestart>
+                    <cdb:timeend>17:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>vrij 03/10/14 van 17:00 tot 17:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en installaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn performance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Wallonië. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-rondleiding/b34c362d-fdbc-4855-822c-4dcb82b0a7b3"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 13:37:05" main="true">
+                        <cdb:copyright>UAMO Art Festival - gratis rondleiding</cdb:copyright>
+                        <cdb:filename>6a9b3748-1aca-40f6-ad9b-3d36537e1241.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/6a9b3748-1aca-40f6-ad9b-3d36537e1241.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Gratis rondleiding door de tentoonstelling van UAMO Art Festival, waar 13 kunstenaars hun werk exposeren rondt het onderwerp PRETTY/UGLY. Hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis rondleiding</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-11-20T00:00:00" cdbid="89ab0498-00c0-4558-8b8c-d8ec10a11499" createdby="lindsey.pinnock@donbosco.be" creationdate="2014-09-18T13:48:36" externalid="CDB:1678012a-b3c5-4a14-9c33-ba85b7099bfc" isparent="false" lastupdated="2014-09-18T16:12:05" lastupdatedby="lindsey.pinnock@donbosco.be" pctcomplete="90" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>18</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-19</cdb:date>
+                    <cdb:timestart>18:00:00</cdb:timestart>
+                    <cdb:timeend>21:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.12.0.0.0" type="eventtype">Opendeurdag</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.697312</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.880082</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>61a</cdb:housenr>
+                    <cdb:street>Brusselsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.jeugddienstdonbosco.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>woe 19/11/14 van 18:00 tot 21:00 </cdb:calendarsummary>
+                <cdb:longdescription>Ben je tussen 17 en 30 jaar en heb je zin om vrijwilligerswerk te doen in het buitenland?&lt;br /&gt;&lt;br /&gt;Jeugddienst Don Bosco en Vides bieden jou de kans om deel te nemen aan speelplein- en animatorprojecten, jongerenuitwisselingen of vormingsprojecten,... in Europa, Afrika, Latijns- en Zuid-Amerika. Interesse?&lt;br /&gt;&lt;br /&gt;Infomarkt woensdag 19 november 2014 18u. tot 21u. Vleugel F, Leuven&lt;br /&gt;&lt;br /&gt;Voor alle informatie over internationaal vrijwilligerswerk, stuur een mailtje naar internationaal@donbosco.be of contacteer Fonny Grootjans telefonisch via 016 24 16 23.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/infomarkt-internationaal-vrijwilligerswerk/89ab0498-00c0-4558-8b8c-d8ec10a11499"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.jeugddienstdonbosco.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 13:49:39" main="true">
+                        <cdb:copyright>Infomarkt internationaal vrijwilligerswerk</cdb:copyright>
+                        <cdb:filename>544921ab-a043-4b37-8c8b-2e5e6a6a5122.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/544921ab-a043-4b37-8c8b-2e5e6a6a5122.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Ben je tussen 17 en 30 jaar en heb je zin om vrijwilligerswerk te doen in het buitenland?
+
+                    Jeugddienst Don Bosco en Vides bieden jou de kans om deel te nemen aan speelplein- en animatorprojecten, jongerenuitwisselingen of vormingsprojecten,... in Europa, Afrika, Latijns- en Zuid-Amerika. Interesse? </cdb:shortdescription>
+                <cdb:title>Infomarkt internationaal vrijwilligerswerk</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>allesoverjeugd;specifiek voor scholen</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.697312</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.880082</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>61a</cdb:housenr>
+                    <cdb:street>Brusselsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="49AE23C7-FB3C-C90E-EF18055D602D57E0">Jeugdcentrum Vleugel F</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Jeugddienst Don Bosco</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-11-07T00:00:00" cdbid="4eee2267-872c-42cf-bdd4-8da4cd718a03" createdby="isabelle.rombauts@uvv.be" creationdate="2014-09-18T16:43:17" externalid="CDB:3f93ac4a-d90c-4f01-bf2e-da71ee40057a" isparent="false" lastupdated="2014-09-18T16:47:07" lastupdatedby="isabelle.rombauts@uvv.be" pctcomplete="90" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>18</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-28</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                    <cdb:timeend>20:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-06</cdb:date>
+                    <cdb:timestart>09:00:00</cdb:timestart>
+                    <cdb:timeend>16:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.12.0.0.0" type="eventtype">Opendeurdag</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.715287</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.879696</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>40</cdb:housenr>
+                    <cdb:street>Tiensevest</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>leuven@demens.nu</cdb:mail>
+            <cdb:phone type="phone">016/23 56 35</cdb:phone>
+            <cdb:url>http://www.desokkenvandeolifant.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>di 28/10/14 van 14:00 tot 20:00  do 06/11/14 van 09:00 tot 16:30 </cdb:calendarsummary>
+                <cdb:longdescription>De sokken van de olifant is een vrijzinnig humanistisch begeleidingspakket voor kinderen en jongeren in rouw. Ook zij worden geconfronteerd met verlieservaringen in hun leven en we weten als volwassenen niet altijd hoe we daarmee moeten omgaan. Met de sokken van de olifant bieden we gratis begeleiding op maat, zowel voor kinderen en jongeren als voor volwassenen die hen willen helpen vorm te geven aan hun gemis en verdriet. Na een verkennend gesprek stellen we een troostkoffer (informatie) en koestertas (doe-materiaal) samen. De troostkoffer wordt uitgeleend, de koestertas is om te houden… en te koesteren.&lt;br /&gt; &lt;br /&gt;Interesse, voor jezelf of om door te verwijzen? Kom dan langs op een van onze openhuisdagen en maak kennis met onze werkwijze en het materiaal. Wie langskomt, krijgt ook een gratis exemplaar van het vakblad Antenne, boordevol informatie over verlies en verdriet bij kinderen en jongeren.&lt;br /&gt;&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/de-sokken-van-de-olifant-openhuisdagen/4eee2267-872c-42cf-bdd4-8da4cd718a03"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.desokkenvandeolifant.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 16:44:55" main="true">
+                        <cdb:copyright>De sokken van de olifant: openhuisdagen</cdb:copyright>
+                        <cdb:filename>375e6518-848d-4a79-9612-4f33afb11fbd.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/375e6518-848d-4a79-9612-4f33afb11fbd.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Ook kinderen en jongeren worden geconfronteerd met verlieservaringen in hun leven. Om hen daarbij te ondersteunen, werkten de huizenvandeMens Vlaams-Brabant het vrijzinnig humanistische begeleidingspakket de sokken van de olifant uit. Tijdens de openhuisdagen kan je kennismaken met het project en het materiaal bekijken.</cdb:shortdescription>
+                <cdb:title>De sokken van de olifant: openhuisdagen</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>rouw;verdriet;verlies;sokken van de olifant</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.715287</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.879696</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>40</cdb:housenr>
+                    <cdb:street>Tiensevest</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>huisvandeMens Leuven</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>huisvandeMens Leuven</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-06T00:00:00" cdbid="c18cf7d6-f355-4f5a-ae24-1dc2f70538a1" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T18:15:08" externalid="CDB:ec6b54c6-3efe-4fcc-857e-19d743130879" isparent="false" lastupdated="2014-09-24T17:35:52" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>5</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-05</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                    <cdb:timeend>14:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="2.2.1.0.0" type="targetaudience">Vanaf kleuterleeftijd (3+)</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>zo 05/10/14 van 14:00 tot 14:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en instaliaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn preformance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Walonie. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-kinderrondleiding/c18cf7d6-f355-4f5a-ae24-1dc2f70538a1"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 18:15:33" main="true">
+                        <cdb:copyright>UAMO Art Festival - kinderrondleiding</cdb:copyright>
+                        <cdb:filename>33108058-4bf0-47e3-87db-59ccc23c4a11.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/33108058-4bf0-47e3-87db-59ccc23c4a11.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Door de tentoonstelling van UAMO Art Festival zijn er dagelijks gratis rondleidingen voor kinderen! Laat je verrassen door een levensechte opa, een ademend huis en een kunst die reageert op wat jij zelf doet! Verder mag je zelf de handen uit de mouwen steken en jouw eigen PRETTY/UGLY tekening maken.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - kinderrondleiding</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-03T00:00:00" cdbid="5ef093f8-a5fc-468b-bc1b-f28c16203c2e" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T18:05:57" externalid="CDB:8c69df00-0d95-4d72-a0bf-a8f248f018e1" isparent="false" lastupdated="2014-09-18T18:33:58" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-02</cdb:date>
+                    <cdb:timestart>22:00:00</cdb:timestart>
+                    <cdb:timeend>22:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>do 02/10/14 van 22:00 tot 22:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en installaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn performance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Wallonië. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-rondleiding/5ef093f8-a5fc-468b-bc1b-f28c16203c2e"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 18:06:52" main="true">
+                        <cdb:copyright>UAMO Art Festival - gratis rondleiding</cdb:copyright>
+                        <cdb:filename>95110933-71c6-4549-b4a2-2fc5a4b5818b.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/95110933-71c6-4549-b4a2-2fc5a4b5818b.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Gratis rondleiding door de tentoonstelling van UAMO Art Festival, waar 13 kunstenaars hun werk exposeren rondt het onderwerp PRETTY/UGLY. Hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis rondleiding</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-06T00:00:00" cdbid="48d23b65-7e53-4e12-ac7b-c6d0d976ca54" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T18:19:24" externalid="CDB:dd883a48-fc47-4dc1-823b-ddc01850fe7a" isparent="false" lastupdated="2014-09-18T18:33:38" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-05</cdb:date>
+                    <cdb:timestart>17:00:00</cdb:timestart>
+                    <cdb:timeend>17:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="1.0.9.0.0" type="theme">Meerdere kunstvormen</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.7.0.0.0" type="eventtype">Begeleide uitstap of rondleiding</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>zo 05/10/14 van 17:00 tot 17:30 </cdb:calendarsummary>
+                <cdb:longdescription>Op deze eerste editie van UAMO Leuven exposeren 13 kunstenaars o.a. fotografie, video, performance, visuele kunst en installaties en alles daartussen. De rode draad door de tentoonstelling is het thema PRETTY/UGLY. Bij Cindy bakker zie je dat heel concreet met de transformatie van alledaagse gebruiksvoorwerpen, die normaal zonder karakter of betekenis enkel praktisch gebruikt worden, tot esthetisch beeld. Freddy K laat ondertussen met zijn performance zien dat bij elke uitbarsting van geluk ook een periode van frustratie hoort. De spanning tussen leven en dood wordt aangeraakt in het werk van Juan Paparella, Alexander Stragier, Daan Verzele en Han de Corte. Ondertussen exploreert Franky de Schampeleer op een lichte, humoristische wijze de spanning tussen Vlaanderen en Wallonië. En hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen die elke dag plaatsvinden.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-gratis-rondleiding/48d23b65-7e53-4e12-ac7b-c6d0d976ca54"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 18:19:50" main="true">
+                        <cdb:copyright>UAMO Art Festival - gratis rondleiding</cdb:copyright>
+                        <cdb:filename>3ebb3abc-f449-4ba3-a314-7bd3d224bd8c.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/3ebb3abc-f449-4ba3-a314-7bd3d224bd8c.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Gratis rondleiding door de tentoonstelling van UAMO Art Festival, waar 13 kunstenaars hun werk exposeren rondt het onderwerp PRETTY/UGLY. Hoe vindt je het thema terug in het werk van Eveline Lambrechts, Kathelijne de Corte, Ronald Ceuppens, Evelyne van Hecke en Natalie Chambart? Vindt het uit in een van de gratis rondleidingen.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - gratis rondleiding</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-06T00:00:00" cdbid="a6128ae8-1af2-4100-898c-73362cba9021" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T18:11:51" externalid="CDB:50ee0e01-a697-4cfa-9e64-d181dddd275e" isparent="false" lastupdated="2014-09-18T18:13:28" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="80" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-05</cdb:date>
+                    <cdb:timestart>13:00:00</cdb:timestart>
+                    <cdb:timeend>15:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.42.0.0.0" type="theme">Creativiteit</cdb:category>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>zo 05/10/14 van 13:00 tot 15:00 </cdb:calendarsummary>
+                <cdb:longdescription>Van wegwerp koffieroersstaafjes  en kippengaas maken we unieke designer lampen! Elke lamp komt er anders uit te zien, is stevig en geeft prachtig warm licht. Ga na de cursus naar huis met je eigen designer lamp. &lt;br /&gt;&lt;br /&gt;Geen inschrijving nodig.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/uamo-art-festival-lamp-making-workshop/a6128ae8-1af2-4100-898c-73362cba9021"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 18:12:52" main="true">
+                        <cdb:copyright>UAMO Art Festival - lamp making workshop</cdb:copyright>
+                        <cdb:filename>61ae6745-c920-414d-b7ad-2721b0dc1d73.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/61ae6745-c920-414d-b7ad-2721b0dc1d73.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>8.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Van wegwerp koffieroersstaafjes  en kippengaas maken we unieke designer lampen! Elke lamp komt er anders uit te zien, is stevig en geeft prachtig warm licht. Ga na de cursus naar huis met je eigen designer lamp.
+
+                    Deel van UAMO Art Festival.</cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - lamp making workshop</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-18T00:00:00" availableto="2014-10-03T00:00:00" cdbid="46e9c658-9492-4870-9437-29cc1e64783e" createdby="uamoartfestival@gmail.com" creationdate="2014-09-18T18:28:13" externalid="CDB:850ad7f4-7db9-42a3-a21c-9ee09a552146" isparent="false" lastupdated="2014-09-18T18:29:17" lastupdatedby="uamoartfestival@gmail.com" pctcomplete="70" published="true" owner="Invoerders Algemeen " private="false" validator="Leuven Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-02</cdb:date>
+                    <cdb:timestart>20:00:00</cdb:timestart>
+                    <cdb:timeend>22:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.42.0.0.0" type="theme">Creativiteit</cdb:category>
+            <cdb:category catid="6.1.0.0.0" type="publicscope">Lokaal</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.uamoartfestival.com</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>do 02/10/14 van 20:00 tot 22:00 </cdb:calendarsummary>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.uamoartfestival.com</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="18/09/2014 18:29:11" main="true">
+                        <cdb:copyright>UAMO Art Festival - zeefdruk workshop </cdb:copyright>
+                        <cdb:filename>c3a0b58c-def6-4e2c-a3da-b8a2a01a4ec2.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140918/c3a0b58c-def6-4e2c-a3da-b8a2a01a4ec2.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:shortdescription>Onder leiding van kunstenaarsduo AHAHA girls kun je leren zeefdrukken. Voor de workshop mag je eigen textiel meenemen, maar er is ook textiel aanwezig om op te drukken. De dames hebben hun zeven bij, en u mag hier zelf mee aan de slag. De workshop gaat door in de rotonde. Inschrijving niet nodig. </cdb:shortdescription>
+                <cdb:title>UAMO Art Festival - zeefdruk workshop </cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.700506</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.887423</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Vaartkom</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="2c06e21e-8716-442e-ad68-1476b5d17792">OPEK - Openbaar Entrepot voor de Kunsten</cdb:label>
+        </cdb:location>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-19T00:00:00" availableto="2014-10-29T00:00:00" cdbid="ba9c50b3-e0d6-45cf-868b-389292aa7bbf" createdby="30cc@leuven.be" creationdate="2014-09-19T12:04:03" externalid="CDB:590cee5b-83cc-4e7d-915d-3de2e9f897ee" isparent="false" lastupdated="2014-09-19T12:06:32" lastupdatedby="30cc@leuven.be" pctcomplete="80" published="true" owner="Leuven 30CC Validatoren" private="false" validator="Leuven Validatoren" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>9</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-25</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-27</cdb:date>
+                    <cdb:timestart>16:00:00</cdb:timestart>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-28</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.7.12.0.0" type="theme">Animatie en kinderfilms</cdb:category>
+            <cdb:category catid="6.0.0.0.0" type="publicscope">Wijk of buurt</cdb:category>
+            <cdb:category catid="2.2.7.0.0" type="targetaudience">Kinderen vanaf 9 jaar (9+)</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.50.6.0.0" type="eventtype">Film</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+            <cdb:category catid="umv.7" type="umv">Film</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.699715</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.873667</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>96</cdb:housenr>
+                    <cdb:street>Naamsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.rodehond.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 25/10/14 om 14:00  ma 27/10/14 om 16:00  di 28/10/14 om 14:00 </cdb:calendarsummary>
+                <cdb:longdescription>Victor en zijn vader delen een grote passie: het spotten van vogels. Elk jaar doet Victor mee aan een wedstrijd voor jonge vogelaars, maar tot nu toe was zijn concurrent Daniël steeds de winnaar. Dit jaar maakt hij misschien alsnog een kans, want Daniël heeft zijn been gebroken. Wanneer blijkt dat Daniël toch meedoet, wordt de druk op Victor steeds groter. Hij zet alles op alles om te winnen en dat blijkt verregaande gevolgen te hebben, zelfs op internationaal niveau …&lt;br /&gt;&lt;br /&gt;Een mooie jeugdfilm, over een klein leugentje dat uitgroeit tot enorme proporties, gemaakt in de Scandinavische traditie. Knap geacteerd en uit het leven gegrepen.&lt;br /&gt;Deens gesproken met Nederlandstalige ondertiteling&lt;br /&gt;Denemarken 2012 regie Christian Dyekjær&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/rode-hond-vogeljacht/ba9c50b3-e0d6-45cf-868b-389292aa7bbf"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.rodehond.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="19/09/2014 12:05:37" main="true">
+                        <cdb:copyright>Rode Hond - Vogeljacht</cdb:copyright>
+                        <cdb:filename>a7dda32f-7cf4-4b0a-858a-8b90c22833c0.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140919/a7dda32f-7cf4-4b0a-858a-8b90c22833c0.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>6.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Victor en zijn vader delen een grote passie: het spotten van vogels. Elk jaar doet Victor mee aan een wedstrijd voor jonge vogelaars, maar tot nu toe was zijn concurrent Daniël steeds de winnaar. Dit jaar maakt hij misschien alsnog een kans, want Daniël heeft zijn been gebroken. Wanneer blijkt dat Daniël toch meedoet, wordt de druk op Victor steeds groter. </cdb:shortdescription>
+                <cdb:title>Rode Hond - Vogeljacht</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.699715</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.873667</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>96</cdb:housenr>
+                    <cdb:street>Naamsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="83390582-bdfc-4523-8967-13de23727ded">cinema Zed</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label cdbid="AA785E84-0E30-452A-5AD27D7E2D3A4824">30CC</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-06-16T00:00:00" availableto="2014-11-03T00:00:00" cdbid="3f1614f8-2cf7-420f-bbb1-1f773720bd4e" createdby="annikaltruy" creationdate="2014-06-16T10:54:46" externalid="CDB:cde21fc8-92d0-408b-814d-3f995c843765" isparent="false" lastupdated="2014-08-18T11:21:38" lastupdatedby="laureline@bamart.be" pctcomplete="90" published="true" owner="Leuven Validatoren" private="false" validator="Leuven Validatoren" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="4" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:periods>
+                <cdb:period>
+                    <cdb:datefrom>2014-08-29</cdb:datefrom>
+                    <cdb:dateto>2014-11-02</cdb:dateto>
+                    <cdb:weekscheme>
+                        <cdb:monday opentype="open"/>
+                        <cdb:tuesday opentype="open"/>
+                        <cdb:wednesday opentype="closed"/>
+                        <cdb:thursday opentype="open"/>
+                        <cdb:friday opentype="open"/>
+                        <cdb:saturday opentype="open"/>
+                        <cdb:sunday opentype="open"/>
+                    </cdb:weekscheme>
+                </cdb:period>
+            </cdb:periods>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.0.3.0.0" type="theme">Installatiekunst</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.0.0.0.0" type="eventtype">Tentoonstelling</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.704994</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878334</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>28</cdb:housenr>
+                    <cdb:street>Leopold Vanderkelenstraat </cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url reservation="true">http://www.mleuven.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>van 29/08/14 tot 02/11/14
+                    open zo, ma, di, vrij, za van 11:00 tot 18:00, do van 11:00 tot 22:00</cdb:calendarsummary>
+                <cdb:longdescription>De sculpturen en installaties van Adriaan Verwée (°1975, Gent) balanceren vaak op de grens van restant en afgewerkt beeld. Eerder dan naar het eindresultaat, gaat zijn interesse uit naar het creatieproces van een werk. Wat kan een kunstwerk zijn? Op welk moment wordt een werk leesbaar als beeld? Deze vragen staan hierbij centraal. Geometrische structuren in hout, gips en glas combineert Verwée met alledaagse objecten of meubels in steeds variërende composities. De tentoonstellingsruimte neemt hier een fundamentele rol bij in. Op maat van de museumzalen van M zal hij een totaal-installatie maken die zowel nieuw als bestaand sculpturaal werk bevat.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/adriaan-verwee/3f1614f8-2cf7-420f-bbb1-1f773720bd4e"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.mleuven.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="16/06/2014 10:57:16" main="true">
+                        <cdb:copyright>Adriaan Verwée</cdb:copyright>
+                        <cdb:filename>512b2141-5324-4e75-a26a-151c1183514a.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140616/512b2141-5324-4e75-a26a-151c1183514a.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>12.0</cdb:pricevalue>
+                    <cdb:pricedescription>Kortinghouder € 10 | 13-25 jaar - € 5 | 0-12 jaar, ICOM, IKT, begeleider andersvalide - gratis</cdb:pricedescription>
+                </cdb:price>
+                <cdb:shortdescription>De sculpturen en installaties van Adriaan Verwée balanceren vaak op de grens van restant en afgewerkte beeld. Eerder dan naar het eindresultaat, gaat zijn interesse uit naar het creatieproces van een werk. Op maat van de museumzalen van M bouwt hij een totaal-installatie die zowel nieuw als bestaand sculpturaal werk bevat.</cdb:shortdescription>
+                <cdb:title>Adriaan Verwée</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>VisualArts;FP</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.704994</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.878334</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>28</cdb:housenr>
+                    <cdb:street>Leopold Vanderkelenstraat </cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>M museum Leuven</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>M museum Leuven</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-10-08T03:45:42" availableto="2014-10-15T00:00:00" cdbid="0c4bcaaf-2873-49c4-a9a9-4d0d454b8e71" createdby="scarabeeimport" creationdate="2014-06-19T04:06:17" externalid="Vormingplus_Oostbrabant:v+leuven_4582" isparent="false" lastupdated="2014-10-08T03:45:59" lastupdatedby="scarabeeimport" pctcomplete="95" published="true" owner="scarabeeimport" private="false" validator="scarabeeimport" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-08</cdb:date>
+                    <cdb:timestart>19:30:00</cdb:timestart>
+                    <cdb:timeend>22:30:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-14</cdb:date>
+                    <cdb:timestart>20:30:00</cdb:timestart>
+                    <cdb:timeend>22:30:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.41.0.0.0" type="theme">Kunst en kunsteducatie</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.703027</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.881058</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Rijschoolstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail>info@vormingplusoostbrabant.be</cdb:mail>
+            <cdb:phone type="phone">016/525 900</cdb:phone>
+            <cdb:url>http://www.vormingplusob.be/scarabee/4582</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>woe 08/10/14 van 19:30 tot 22:30  di 14/10/14 van 20:30 tot 22:30 </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>begeleider</cdb:role>
+                        <cdb:label>David Lodewyckx, master in de musicologie</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>samenwerking</cdb:role>
+                        <cdb:label>Bib Leuven</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>org partner SPIN</cdb:role>
+                        <cdb:label>Bib Leuven</cdb:label>
+                    </cdb:performer>
+                    <cdb:performer>
+                        <cdb:role>org partner zonder contract</cdb:role>
+                        <cdb:label>Festival van Vlaanderen Vlaams-Brabant</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>Virtuoze zanglijnen, parelende pianopassages, ingetogen passie en expressieve uitbarstingen. Daarenboven romantische gestes, impressionistische sferen en bevreemdende verten. In een liedrecital met composities uit ca. 1900 passeren ze allen de revue. Met Debussy, Berg en Mahler komen bovendien de grootste meesters uit het toenmalige Wenen en Parijs aan bod. Intens genieten van liederen kan maar als je de muzikale uitwerking ervan in al haar subtiliteit kent en beheerst. In deze inleidende luisterlezing richten we ons dan ook vooral op de vaak geniale verstrengeling van poëzie en muziek.&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/concert-en-voorbeschouwing-liederen-van-debussy-ma/0c4bcaaf-2873-49c4-a9a9-4d0d454b8e71"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.vormingplusob.be/scarabee/4582</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="19/06/2014 4:06:17" main="true">
+                        <cdb:copyright>Beschrijving niet beschikbaar</cdb:copyright>
+                        <cdb:filename>14362929300_f6d6733b1c_m.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140619/14362929300_f6d6733b1c_m.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>23.5</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Virtuoze zanglijnen, parelende pianopassages, ingetogen passie en expressieve uitbarstingen. Daarenboven romantische gestes, impressionistische sferen en bevreemdende verten. In een liedrecital met composities uit ca. 1900 passeren ze allen de revue. Met Debussy, Berg en Mahler komen bovendien de grootste meesters uit het toenmalige Wenen en Parijs aan bod. Intens genieten van liederen k...</cdb:shortdescription>
+                <cdb:title>Concert en voorbeschouwing: Liederen van Debussy, Mahler en Berg - GEANNULEERD</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>klassiek; kunst; muziek; cultuur</cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.703027</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.881058</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>4</cdb:housenr>
+                    <cdb:street>Rijschoolstraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>Bib Leuven</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Bib Leuven</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-19T00:00:00" availableto="2014-10-26T00:00:00" cdbid="9d22ce4c-022e-499d-9702-3d7908cba046" createdby="30cc@leuven.be" creationdate="2014-09-19T12:13:51" externalid="CDB:3aedbd1f-af85-4453-954f-4a4ef1cf4afd" isparent="false" lastupdated="2014-09-19T12:15:50" lastupdatedby="30cc@leuven.be" pctcomplete="80" published="true" owner="Leuven 30CC Validatoren" private="false" validator="Leuven Validatoren" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>5</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-25</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.42.0.0.0" type="theme">Creativiteit</cdb:category>
+            <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal</cdb:category>
+            <cdb:category catid="2.2.1.0.0" type="targetaudience">Vanaf kleuterleeftijd (3+)</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+            <cdb:category catid="umv.2" type="umv">Zelf doen</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.697312</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.880082</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>61a</cdb:housenr>
+                    <cdb:street>Brusselsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.rodehond.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 25/10/14 om 14:00 </cdb:calendarsummary>
+                <cdb:longdescription>5 tot 8 jaar en ouders&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/rode-hond-pinatas-maken/9d22ce4c-022e-499d-9702-3d7908cba046"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.rodehond.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="19/09/2014 12:15:15" main="true">
+                        <cdb:copyright>Rode Hond - Piñatas maken</cdb:copyright>
+                        <cdb:filename>eb1c0b34-8170-44be-8e8d-20e496cae19d.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140919/eb1c0b34-8170-44be-8e8d-20e496cae19d.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>6.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Een piñata is een felgekleurde figuur, meestal van papier-maché en traditioneel gevuld met zoetigheden, fruit, vruchten en “cadeaus”. Je leert de basisknepen van het werken met papier-maché en maakt je eigen piñata. Ideaal voor op een verjaardag of een winterbarbecue!</cdb:shortdescription>
+                <cdb:title>Rode Hond - Piñatas maken</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.697312</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.880082</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>61a</cdb:housenr>
+                    <cdb:street>Brusselsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="49AE23C7-FB3C-C90E-EF18055D602D57E0">Jeugdcentrum Vleugel F</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label cdbid="AA785E84-0E30-452A-5AD27D7E2D3A4824">30CC</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+    <cdb:event availablefrom="2014-09-19T00:00:00" availableto="2014-10-26T00:00:00" cdbid="b065b1fb-a57c-48ac-9109-e7153a1d5c21" createdby="30cc@leuven.be" creationdate="2014-09-19T12:10:46" externalid="CDB:ed0aa3a5-8df8-4ebb-bf34-ce1606ebfc78" isparent="false" lastupdated="2014-09-19T12:12:19" lastupdatedby="30cc@leuven.be" pctcomplete="75" published="true" owner="Leuven 30CC Validatoren" private="false" validator="Leuven Validatoren" wfstatus="approved">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:agefrom>6</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-10-25</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.42.0.0.0" type="theme">Creativiteit</cdb:category>
+            <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal</cdb:category>
+            <cdb:category catid="2.2.2.0.0" type="targetaudience">Kinderen vanaf 6 jaar (6+)</cdb:category>
+            <cdb:category catid="reg.367" type="flanderstouristregion">Kunststad Leuven</cdb:category>
+            <cdb:category catid="0.3.1.0.0" type="eventtype">Cursus of workshop</cdb:category>
+            <cdb:category catid="reg.638" type="flandersregion">3000 Leuven</cdb:category>
+            <cdb:category catid="umv.2" type="umv">Zelf doen</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.697312</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.880082</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>61a</cdb:housenr>
+                    <cdb:street>Brusselsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.rodehond.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>za 25/10/14 om 14:00 </cdb:calendarsummary>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.rodehond.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="19/09/2014 12:11:55" main="true">
+                        <cdb:copyright>Rode Hond - Geluksbrengers maken</cdb:copyright>
+                        <cdb:filename>3f385a88-e6b0-4203-99d5-269855251c8c.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140919/3f385a88-e6b0-4203-99d5-269855251c8c.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>6.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>Geluksbrengers zijn een fraai stukje uit het Bulgaarse cultureel erfgoed. Leer deze oeroude traditie kennen en creëer je eigen geluksbrenger. Daarna maken we zelf een verhaal over geluk.</cdb:shortdescription>
+                <cdb:title>Rode Hond - Geluksbrengers maken</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Leuven</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>4.697312</cdb:xcoordinate>
+                        <cdb:ycoordinate>50.880082</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>61a</cdb:housenr>
+                    <cdb:street>Brusselsestraat</cdb:street>
+                    <cdb:zipcode>3000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="49AE23C7-FB3C-C90E-EF18055D602D57E0">Jeugdcentrum Vleugel F</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label cdbid="AA785E84-0E30-452A-5AD27D7E2D3A4824">30CC</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+</cdb:cdbxml>
