@@ -1447,12 +1447,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "4290cd99064c05a4b61f083f957df72c4e40629f"
+                "reference": "77e1412bc0037060a4963fe4888f9895ba62f2eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/4290cd99064c05a4b61f083f957df72c4e40629f",
-                "reference": "4290cd99064c05a4b61f083f957df72c4e40629f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/77e1412bc0037060a4963fe4888f9895ba62f2eb",
+                "reference": "77e1412bc0037060a4963fe4888f9895ba62f2eb",
                 "shasum": ""
             },
             "require": {
@@ -1517,7 +1517,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-05-25T08:22:25+00:00"
+            "time": "2020-05-26T08:20:14+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -7491,8 +7491,8 @@
             "authors": [
                 {
                     "name": "Frank Kleine",
-                    "role": "Developer",
-                    "homepage": "http://frankkleine.de/"
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
                 }
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
