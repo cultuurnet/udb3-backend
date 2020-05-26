@@ -31,7 +31,7 @@ class Projector extends AbstractProjector
      * @var WriteRepositoryInterface
      */
     private $writeRepository;
-    
+
     /**
      * @var ReadRepositoryInterface
      */
@@ -56,7 +56,6 @@ class Projector extends AbstractProjector
         $this->writeRepository = $writeRepository;
         $this->readRepository = $readRepository;
         $this->offerTypeResolver = $labelEventOfferTypeResolver;
-
     }
 
     /**

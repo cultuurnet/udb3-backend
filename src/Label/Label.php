@@ -121,7 +121,6 @@ class Label extends EventSourcedAggregateRoot
         if ($this->privacy !== Privacy::PRIVACY_PUBLIC()) {
             $this->apply(new MadePublic($this->uuid, $this->name));
         }
-
     }
 
     public function makePrivate()

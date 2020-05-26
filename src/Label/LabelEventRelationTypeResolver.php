@@ -65,9 +65,9 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
     {
         if ($labelsImported instanceof EventLabelsImported) {
             return RelationType::EVENT();
-        } else if ($labelsImported instanceof PlaceLabelsImported) {
+        } elseif ($labelsImported instanceof PlaceLabelsImported) {
             return RelationType::PLACE();
-        } else if ($labelsImported instanceof OrganizerLabelsImported) {
+        } elseif ($labelsImported instanceof OrganizerLabelsImported) {
             return RelationType::ORGANIZER();
         } else {
             $message = $this->createIllegalArgumentMessage($labelsImported);
