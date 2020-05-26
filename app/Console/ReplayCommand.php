@@ -9,6 +9,7 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\Cache;
 use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,21 +35,29 @@ class ReplayCommand extends AbstractCommand
      * @var EventStreamBuilder
      */
     private $eventStreamBuilder;
+
     /**
      * @var EventBusInterface
      */
     private $eventBus;
+
     /**
      * @var array
      */
     private $config;
 
-    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array $config)
+    /**
+     * @var Cache
+     */
+    private $cache;
+
+    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array $config, Cache $cache)
     {
         parent::__construct($commandBus);
         $this->eventStreamBuilder = $eventStreamBuilder;
         $this->eventBus = $eventBus;
         $this->config = $config;
+        $this->cache = $cache;
     }
 
 
@@ -126,15 +135,7 @@ class ReplayCommand extends AbstractCommand
 
         $cache = $input->getOption('cache');
         if ($cache) {
-            $cacheServiceName = 'cache-' . $cache;
-            /** @var Application $app */
-            $app = $this->getSilexApplication();
-
-            $app['cache'] = $app->share(
-                function (Application $app) use ($cacheServiceName) {
-                    return $app[$cacheServiceName];
-                }
-            );
+            $this->cache->useCache($cache);
         }
 
         $subscribers = $input->getOption('subscriber');
