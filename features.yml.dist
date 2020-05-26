@@ -11,7 +11,3 @@ toggles:
     name: import-from-sapi
     conditions: {}
     status: inactive
-  auth0-user-management:
-    name: auth0-user-management
-    conditions: {}
-    status: always-active
