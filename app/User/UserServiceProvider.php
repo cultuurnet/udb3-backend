@@ -4,8 +4,6 @@ namespace CultuurNet\UDB3\Silex\User;
 
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use CultuurNet\UDB3\User\CultureFeedUserIdentityDetailsFactory;
-use CultuurNet\UDB3\User\CultureFeedUserIdentityResolver;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -17,21 +15,7 @@ class UserServiceProvider implements ServiceProviderInterface
     {
         $app['user_identity_resolver'] = $app->share(
             function (Application $app) {
-                $toggles = $app['toggles'];
-                if ($toggles->active('auth0-user-management', $app['toggles.context'])) {
-                    return $app[Auth0UserIdentityResolver::class];
-                }
-
-                return new CultureFeedUserIdentityResolver(
-                    $app['culturefeed'],
-                    $app['culturefeed_user_identity_factory']
-                );
-            }
-        );
-
-        $app['culturefeed_user_identity_factory'] = $app->share(
-            function (Application $app) {
-                return new CultureFeedUserIdentityDetailsFactory();
+                return $app[Auth0UserIdentityResolver::class];
             }
         );
 
