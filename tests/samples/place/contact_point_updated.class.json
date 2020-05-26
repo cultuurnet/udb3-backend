@@ -1,0 +1,15 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\ContactPointUpdated",
+  "payload": {
+    "place_id": "bb173932-09a1-4762-ac85-09798367adf7",
+    "contactPoint": {
+      "phone": [
+        "1029379812749612",
+        "7895439785432539784"
+      ],
+      "email": [],
+      "url": [],
+      "type": ""
+    }
+  }
+}

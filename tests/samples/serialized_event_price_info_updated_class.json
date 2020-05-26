@@ -1,0 +1,26 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\PriceInfoUpdated",
+  "payload": {
+    "item_id": "99e8d5d6-29cb-4667-9dd2-1f4f484783e8",
+    "price_info": {
+      "base": {
+        "price": 1500,
+        "currency": "EUR"
+      },
+      "tariffs": [
+        {
+          "name": "Senioren",
+          "price": 1000,
+          "currency": "EUR"
+        },
+        {
+          "name": {
+            "nl": "Studenten"
+          },
+          "price": 750,
+          "currency": "EUR"
+        }
+      ]
+    }
+  }
+}

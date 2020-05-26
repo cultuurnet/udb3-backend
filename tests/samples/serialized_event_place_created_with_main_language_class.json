@@ -1,0 +1,24 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\PlaceCreated",
+  "payload": {
+    "place_id": "4b735422-2bf3-4241-aabb-d70609d2d1d3",
+    "main_language": "es",
+    "title": "Het depot",
+    "event_type": {
+      "id": "mock.1",
+      "label": "Mock",
+      "domain": "eventtype"
+    },
+    "theme": null,
+    "address": {
+      "streetAddress": "Teststraat 1",
+      "postalCode": "1000",
+      "addressLocality": "Bxl",
+      "addressCountry": "BE"
+    },
+    "calendar": {
+      "type": "permanent"
+    },
+    "publication_date": null
+  }
+}

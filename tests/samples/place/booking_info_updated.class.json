@@ -1,0 +1,16 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\BookingInfoUpdated",
+  "payload": {
+    "place_id": "bb173932-09a1-4762-ac85-09798367adf7",
+    "bookingInfo": {
+      "phone": "",
+      "email": "",
+      "url": "http:\/\/https:\/\/github.com\/cultuurnet\/broadway-amqp\/pull\/5",
+      "urlLabel": "Reserveer plaatsen",
+      "name": "",
+      "description": "",
+      "availabilityStarts": "",
+      "availabilityEnds": ""
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "class": "CultuurNet\\UDB3\\Organizer\\Events\\LabelAdded",
+  "payload": {
+    "organizer_id": "95048bb9-52bc-4c33-9cab-e01a40e3ea76",
+    "labelId": "86c5b0f4-a5da-4a81-815f-3839634c212c",
+    "label": "2dotstwice"
+  }
+}
