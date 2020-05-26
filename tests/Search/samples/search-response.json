@@ -1,0 +1,16 @@
+{
+  "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+  "@type": "PagedCollection",
+  "itemsPerPage": 30,
+  "totalItems": 2,
+  "member": [
+    {
+      "@id": "http://udb-silex.dev/place/c90bc8d5-11c5-4ae3-9bf9-cce0969fdc56",
+      "@type": "Place"
+    },
+    {
+      "@id": "http://udb-silex.dev/event/c54b1323-0928-402f-9419-16d7acd44d36",
+      "@type": "Event"
+    }
+  ]
+}
