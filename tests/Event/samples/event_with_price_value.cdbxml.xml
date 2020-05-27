@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL" availablefrom="2014-09-08T00:00:00" availableto="2014-11-10T00:00:00" cdbid="a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3" createdby="info@traeghe.be" creationdate="2014-09-08T09:10:16" externalid="CDB:90147070-0af7-4b27-add0-e7d3c0f3bbc7" isparent="false" lastupdated="2014-09-08T09:11:59" lastupdatedby="info@traeghe.be" pctcomplete="95" published="true" owner="Invoerders Algemeen " private="false" validator="Brugge Validatoren" wfstatus="readyforvalidation">
+        <cdb:activities>
+            <cdb:activity count="0" type="like"/>
+            <cdb:activity count="0" type="attend"/>
+            <cdb:activity count="0" type="comment"/>
+            <cdb:activity count="0" type="recommend"/>
+            <cdb:activity count="0" type="facebook_share"/>
+            <cdb:activity count="0" type="review"/>
+        </cdb:activities>
+        <cdb:calendar>
+            <cdb:periods>
+                <cdb:period>
+                    <cdb:datefrom>2014-11-01</cdb:datefrom>
+                    <cdb:dateto>2014-11-09</cdb:dateto>
+                    <cdb:weekscheme>
+                        <cdb:monday opentype="closed"/>
+                        <cdb:tuesday opentype="closed"/>
+                        <cdb:wednesday opentype="closed"/>
+                        <cdb:thursday opentype="open">
+                            <cdb:openingtime from="13:30:00" to="18:00:00"/>
+                        </cdb:thursday>
+                        <cdb:friday opentype="open">
+                            <cdb:openingtime from="13:30:00" to="18:00:00"/>
+                        </cdb:friday>
+                        <cdb:saturday opentype="open">
+                            <cdb:openingtime from="13:30:00" to="18:00:00"/>
+                        </cdb:saturday>
+                        <cdb:sunday opentype="open">
+                            <cdb:openingtime from="13:30:00" to="18:00:00"/>
+                        </cdb:sunday>
+                    </cdb:weekscheme>
+                </cdb:period>
+            </cdb:periods>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.0.4.0.0" type="theme">Grafiek</cdb:category>
+            <cdb:category catid="reg.363" type="flanderstouristregion">Kunststad Brugge</cdb:category>
+            <cdb:category catid="0.0.0.0.0" type="eventtype">Tentoonstelling</cdb:category>
+            <cdb:category catid="reg.999" type="flandersregion">8000 Brugge</cdb:category>
+        </cdb:categories>
+        <cdb:comments/>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Brugge</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>3.223553</cdb:xcoordinate>
+                        <cdb:ycoordinate>51.204641</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>38</cdb:housenr>
+                    <cdb:street>Mariastraat</cdb:street>
+                    <cdb:zipcode>8000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:url>http://www.traeghe.be</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>
+                    van 01/11/14 tot 09/11/14 zo, do, vrij, za van 13:30 tot 18:00 (ma, di, woe gesloten)
+                </cdb:calendarsummary>
+                <cdb:performers>
+                    <cdb:performer>
+                        <cdb:role>kunstenares</cdb:role>
+                        <cdb:label>Janine de Coninck</cdb:label>
+                    </cdb:performer>
+                </cdb:performers>
+                <cdb:longdescription>
+                    Dirk Vanderveken en Galerij TRAEGHE GENUINE ARTS brengen de tentoonstelling door de Brugse kunstenares <br />JANINE DE CONINCK ‘licht en schaduw’<br />zaterdag 1 November tot en met 9 November 2014.<br /><p class="uiv-source">Bron: <a href="http://www.uitinvlaanderen.be/agenda/e/gallery-traeghe-exhibition-janine-de-coninck-black/a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3">UiTinVlaanderen.be</a></p>
+                </cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.traeghe.be</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="8/09/2014 9:13:37" main="true">
+                        <cdb:copyright>
+                            GALLERY TRAEGHE exhibition Janine de Conink 'BLACK AND WHITE' 1 - 9 November 2014
+                        </cdb:copyright>
+                        <cdb:filename>de94b1ec-e77c-495e-980d-2ccd183d1daa.png</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>
+                            //media.uitdatabank.be/20140908/de94b1ec-e77c-495e-980d-2ccd183d1daa.png
+                        </cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>0.0</cdb:pricevalue>
+                </cdb:price>
+                <cdb:shortdescription>
+                    Dirk Vanderveken en Galerij TRAEGHE GENUINE ARTS brengen de tentoonstelling door de Brugse kunstenares JANINE DE CONINCK '‘licht en schaduw’van Zaterdag1 November tot en met 9 November 2014.
+                </cdb:shortdescription>
+                <cdb:title>
+                    GALLERY TRAEGHE exhibition Janine de Coninck 'BLACK AND WHITE' 1 - 9 November 2014
+                </cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>
+            kunst;tentoonstelling;brugge;grafiek;oud sint jan;TRAEGHE GENUINE ARTS;janine de conink;brugge oktober
+        </cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Brugge</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>3.223553</cdb:xcoordinate>
+                        <cdb:ycoordinate>51.204641</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>38</cdb:housenr>
+                    <cdb:street>Mariastraat</cdb:street>
+                    <cdb:zipcode>8000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label>TRAEGHE GENUINE ARTS - oud sint Jan Brugge</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>TRAEGHE GEN</cdb:label>
+        </cdb:organiser>
+    </cdb:event>

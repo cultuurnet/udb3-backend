@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cdb:cdbxml xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <cdb:event availablefrom="2014-04-18T00:00:00" availableto="2014-11-19T00:00:00" cdbid="004aea08-e13d-48c9-b9eb-a18f20e6d44e" createdby="elinedelanghe" creationdate="2014-04-18T15:46:13" externalid="CDB:2bcdedee-625b-4344-86c4-3f21ac301404" isparent="false" lastupdated="2014-11-07T14:26:19" lastupdatedby="elinedelanghe" pctcomplete="90" published="true" owner="Invoerders Algemeen " private="false" validator="Cultuurkuur Validatoren" wfstatus="approved">
+        <cdb:agefrom>7</cdb:agefrom>
+        <cdb:calendar>
+            <cdb:timestamps>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-17</cdb:date>
+                    <cdb:timestart>11:00:00</cdb:timestart>
+                    <cdb:timeend>12:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-17</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                    <cdb:timeend>15:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-18</cdb:date>
+                    <cdb:timestart>11:00:00</cdb:timestart>
+                    <cdb:timeend>12:00:00</cdb:timeend>
+                </cdb:timestamp>
+                <cdb:timestamp>
+                    <cdb:date>2014-11-18</cdb:date>
+                    <cdb:timestart>14:00:00</cdb:timestart>
+                    <cdb:timeend>15:00:00</cdb:timeend>
+                </cdb:timestamp>
+            </cdb:timestamps>
+        </cdb:calendar>
+        <cdb:categories>
+            <cdb:category catid="1.8.1.0.0" type="theme">Klassieke muziek</cdb:category>
+            <cdb:category catid="6.3.0.0.0" type="publicscope">Nationaal</cdb:category>
+            <cdb:category catid="reg.359" type="flanderstouristregion">Kunststad Gent</cdb:category>
+            <cdb:category catid="0.50.4.0.0" type="eventtype">Concert</cdb:category>
+            <cdb:category catid="reg.1258" type="flandersregion">9000 Gent</cdb:category>
+            <cdb:category catid="umv.6" type="umv">Toneel, muziek en dans</cdb:category>
+        </cdb:categories>
+        <cdb:contactinfo>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Gent</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>3.720736</cdb:xcoordinate>
+                        <cdb:ycoordinate>51.046165</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>2</cdb:housenr>
+                    <cdb:street>Jozef Kluyskensstraat</cdb:street>
+                    <cdb:zipcode>9000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:mail reservation="true">educatie@debijloke.be</cdb:mail>
+            <cdb:phone reservation="true" type="phone">09 269 92 92</cdb:phone>
+            <cdb:url>http://www.debijloke.be/concerts/karbido-ensemble</cdb:url>
+        </cdb:contactinfo>
+        <cdb:eventdetails>
+            <cdb:eventdetail lang="nl">
+                <cdb:calendarsummary>ma 17/11/14 van 11:00 tot 12:00  ma 17/11/14 van 14:00 tot 15:00  di 18/11/14 van 11:00 tot 12:00  di 18/11/14 van 14:00 tot 15:00 </cdb:calendarsummary>
+                <cdb:longdescription>Dit concert is een schoolvoorstelling (5de leerjaar t.e.m. 6de middelbaar). Het Poolse ensemble Karbido brengt ieders fantasie op hol met een stuk huisraad – een eigengemaakte houten tafel die ze hebben getransformeerd tot een muzikaal instrument, waarop omzeggens alles gespeeld kan worden, van etherische percussieklanken, etnische klanken, tot jazz en heavy metal. Met behulp van handen, vuisten, vingers, maar ook snaren, bogen, muntstukken tot wijnglazen creëren ze een collage van klanken die refereren aan culturen uit de vier windstreken. Het project is een indrukwekkend opwindende, originele, innovatieve performance voor jong en oud. U gelooft uw ogen en oren niet.</cdb:longdescription>
+                <cdb:media>
+                    <cdb:file>
+                        <cdb:hlink>http://www.debijloke.be/concerts/karbido-ensemble</cdb:hlink>
+                        <cdb:mediatype>webresource</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file creationdate="7/11/2014 13:55:26" main="true">
+                        <cdb:copyright>Karbido Ensemble</cdb:copyright>
+                        <cdb:filename>edb05b66-611b-4829-b8f6-bb31c285ec89.jpg</cdb:filename>
+                        <cdb:filetype>jpeg</cdb:filetype>
+                        <cdb:hlink>//media.uitdatabank.be/20140418/edb05b66-611b-4829-b8f6-bb31c285ec89.jpg</cdb:hlink>
+                        <cdb:mediatype>photo</cdb:mediatype>
+                    </cdb:file>
+                    <cdb:file>
+                        <cdb:hlink>https://www.uitid.be/uitid/rest/page/02f895d6-a898-4cb2-85ae-12e3453eadea</cdb:hlink>
+                        <cdb:mediatype>culturefeed-page</cdb:mediatype>
+                        <cdb:reltype>organiser</cdb:reltype>
+                    </cdb:file>
+                    <cdb:file>
+                        <cdb:hlink>http://debijloke.be/concerts/karbido-ensemble</cdb:hlink>
+                        <cdb:mediatype>website</cdb:mediatype>
+                    </cdb:file>
+                </cdb:media>
+                <cdb:price>
+                    <cdb:pricevalue>5.0</cdb:pricevalue>
+                    <cdb:pricedescription>begeleider gratis (vanaf 10 leerlingen)</cdb:pricedescription>
+                </cdb:price>
+                <cdb:shortdescription>Dit concert is een schoolvoorstelling (5de leerjaar t.e.m. 6de middelbaar).Het Poolse ensemble Karbido brengt ieders fantasie op hol met een stuk huisraad – een eigengemaakte houten tafel die ze hebben getransformeerd tot een muzikaal instrument, waarop omzeggens alles gespeeld kan worden, van etherische percussieklanken, etnische klanken, tot jazz en heavy metal. </cdb:shortdescription>
+                <cdb:title>KARBIDO ENSEMBLE - The Table (7+)</cdb:title>
+            </cdb:eventdetail>
+        </cdb:eventdetails>
+        <cdb:keywords>
+            <cdb:keyword>polen</cdb:keyword>
+            <cdb:keyword>slagwerk</cdb:keyword>
+        </cdb:keywords>
+        <cdb:location>
+            <cdb:address>
+                <cdb:physical>
+                    <cdb:city>Gent</cdb:city>
+                    <cdb:country>BE</cdb:country>
+                    <cdb:gis>
+                        <cdb:xcoordinate>3.720736</cdb:xcoordinate>
+                        <cdb:ycoordinate>51.046165</cdb:ycoordinate>
+                    </cdb:gis>
+                    <cdb:housenr>2</cdb:housenr>
+                    <cdb:street>Jozef Kluyskensstraat</cdb:street>
+                    <cdb:zipcode>9000</cdb:zipcode>
+                </cdb:physical>
+            </cdb:address>
+            <cdb:label cdbid="bcb983d2-ffba-457d-a023-a821aa841fba">Muziekcentrum De Bijloke Gent</cdb:label>
+        </cdb:location>
+        <cdb:organiser>
+            <cdb:label>Muziekcentrum De Bijloke</cdb:label>
+        </cdb:organiser>
+    </cdb:event>
+</cdb:cdbxml>

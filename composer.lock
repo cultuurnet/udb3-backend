@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d532f9f25dd5bead230ada894e64587f",
+    "content-hash": "a7ab93cfc0561237cdef6b8af678c520",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1447,12 +1447,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "7dfd4ddfc199eb3f65e9e95f6e2feb4040ce50c7"
+                "reference": "ac0db0f0482ce138ab6ebbfa72215453244233b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7dfd4ddfc199eb3f65e9e95f6e2feb4040ce50c7",
-                "reference": "7dfd4ddfc199eb3f65e9e95f6e2feb4040ce50c7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ac0db0f0482ce138ab6ebbfa72215453244233b8",
+                "reference": "ac0db0f0482ce138ab6ebbfa72215453244233b8",
                 "shasum": ""
             },
             "require": {
@@ -1517,7 +1517,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-05-05T08:05:25+00:00"
+            "time": "2020-05-26T17:40:49+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1613,16 +1613,16 @@
         },
         {
             "name": "cultuurnet/udb3-jwt",
-            "version": "dev-feature/III-3203",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "b15990e13742812f64a3dbd262b099a934c46f46"
+                "reference": "7d9e151a586791d4f672575d377bec0d35965a51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/b15990e13742812f64a3dbd262b099a934c46f46",
-                "reference": "b15990e13742812f64a3dbd262b099a934c46f46",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/7d9e151a586791d4f672575d377bec0d35965a51",
+                "reference": "7d9e151a586791d4f672575d377bec0d35965a51",
                 "shasum": ""
             },
             "require": {
@@ -1664,7 +1664,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2020-01-21T10:28:27+00:00"
+            "time": "2020-01-21T16:55:27+00:00"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -1713,62 +1713,6 @@
                 "Apache-2.0"
             ],
             "time": "2019-11-20T10:31:39+00:00"
-        },
-        {
-            "name": "cultuurnet/uitid-credentials",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/uitid-credentials.git",
-                "reference": "32812acfe3e9422dba1a928e41fa5654b4dafa4d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/uitid-credentials/zipball/32812acfe3e9422dba1a928e41fa5654b4dafa4d",
-                "reference": "32812acfe3e9422dba1a928e41fa5654b4dafa4d",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/auth": "~1.2"
-            },
-            "require-dev": {
-                "guzzle/plugin-mock": "dev-master",
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UitidCredentials\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Nicolas Leroy",
-                    "email": "nicolas.leroy@gmail.com"
-                },
-                {
-                    "name": "Jonas Verhaeghe",
-                    "email": "Jonas@cultuurnet.be"
-                }
-            ],
-            "description": "Brief description of this PHP library",
-            "time": "2018-11-08T09:40:00+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -9275,12 +9219,6 @@
             "package": "cultuurnet/udb3-api-guard"
         },
         {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-3203",
-            "package": "cultuurnet/udb3-jwt"
-        },
-        {
             "alias": "1.3.1",
             "alias_normalized": "1.3.1.0",
             "version": "4.0.3.0-alpha",
@@ -9293,7 +9231,6 @@
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
         "cultuurnet/udb3-api-guard": 20,
-        "cultuurnet/udb3-jwt": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,

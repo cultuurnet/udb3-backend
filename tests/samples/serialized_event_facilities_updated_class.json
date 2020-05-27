@@ -1,0 +1,23 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\FacilitiesUpdated",
+  "payload": {
+    "place_id": "0ce61646-f13d-46a9-851b-d2fabaa23db8",
+    "facilities": [
+      {
+        "id": "3.23.2.0.0",
+        "label": "Assistentie",
+        "domain": "facility"
+      },
+      {
+        "id": "3.13.3.0.0",
+        "label": "Brochure beschikbaar in braille",
+        "domain": "facility"
+      },
+      {
+        "id": "3.17.3.0.0",
+        "label": "Ondertiteling",
+        "domain": "facility"
+      }
+    ]
+  }
+}

@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<cdb:event xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL" availablefrom="2014-11-05T00:00:00" availableto="2014-11-22T00:00:00" cdbid="dcd1ef37-0608-4824-afe3-99124feda64b" createdby="gentonfiles@gmail.com" creationdate="2014-11-05T13:23:36" externalid="CDB:a0a2120e-34f9-4653-a504-09550475bc84" isparent="false" lastupdated="2014-11-08T15:36:06" lastupdatedby="sdebuck1" pctcomplete="85" published="true" owner="Invoerders Algemeen " private="false" validator="Gent Validatoren" wfstatus="approved">
+    <cdb:activities>
+        <cdb:activity count="0" type="like"/>
+        <cdb:activity count="0" type="attend"/>
+        <cdb:activity count="0" type="comment"/>
+        <cdb:activity count="0" type="recommend"/>
+        <cdb:activity count="0" type="facebook_share"/>
+        <cdb:activity count="0" type="review"/>
+    </cdb:activities>
+    <cdb:calendar>
+        <cdb:timestamps>
+            <cdb:timestamp>
+                <cdb:date>2014-11-21</cdb:date>
+                <cdb:timestart>20:00:00</cdb:timestart>
+            </cdb:timestamp>
+        </cdb:timestamps>
+    </cdb:calendar>
+    <cdb:categories>
+        <cdb:category catid="reg.359" type="flanderstouristregion">Kunststad Gent</cdb:category>
+        <cdb:category catid="0.50.21.0.0" type="eventtype">Spel of quiz</cdb:category>
+        <cdb:category catid="reg.1258" type="flandersregion">9000 Gent</cdb:category>
+    </cdb:categories>
+    <cdb:comments/>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Gent</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>3.725970</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.040984</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>23</cdb:housenr>
+                <cdb:street>Kramersplein</cdb:street>
+                <cdb:zipcode>9000</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail>gentonfiles@gmail.com</cdb:mail>
+        <cdb:url>http://gentonfiles.be/</cdb:url>
+    </cdb:contactinfo>
+    <cdb:eventdetails>
+        <cdb:eventdetail lang="nl">
+            <cdb:calendarsummary>vrij 21/11/14 om 20:00 </cdb:calendarsummary>
+            <cdb:media>
+                <cdb:file>
+                    <cdb:hlink>http://gentonfiles.be/</cdb:hlink>
+                    <cdb:mediatype>webresource</cdb:mediatype>
+                </cdb:file>
+                <cdb:file creationdate="5/11/2014 13:26:54" main="true">
+                    <cdb:copyright>'Bekend met Gent' - quiz</cdb:copyright>
+                    <cdb:filename>ed466c72-451f-4079-94d3-4ab2e0be7b15.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>//media.uitdatabank.be/20141105/ed466c72-451f-4079-94d3-4ab2e0be7b15.jpg</cdb:hlink>
+                    <cdb:mediatype>photo</cdb:mediatype>
+                </cdb:file>
+            </cdb:media>
+            <cdb:price>
+                <cdb:pricevalue>10.0</cdb:pricevalue>
+            </cdb:price>
+            <cdb:shortdescription>Test uw kennis over Gent tijdens de eerste quiz van de vriendenkring van het Gentse Stadsarchief!
+
+                Wie is de grootste Gent-kenner en wint een mooie Gentse prijs?
+                Iedereen kan deelnemen per ploeg van 4 of 5 personen.
+                Deelnamebijdrage: &#x20AC;10 per team (ter plaatse te betalen).
+                Inschrijven of meer informatie: gentonfiles@gmail.com.
+                Bij inschrijving graag ook uw ploegnaam doorgeven!
+
+                Tot 21/11?</cdb:shortdescription>
+            <cdb:title>'Bekend met Gent' - quiz</cdb:title>
+        </cdb:eventdetail>
+    </cdb:eventdetails>
+    <cdb:location>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Gent</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>3.725970</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.040984</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>23</cdb:housenr>
+                <cdb:street>Kramersplein</cdb:street>
+                <cdb:zipcode>9000</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:label>Liberaal Archief</cdb:label>
+    </cdb:location>
+    <cdb:organiser>
+        <cdb:label>Gent on Files</cdb:label>
+    </cdb:organiser>
+</cdb:event>

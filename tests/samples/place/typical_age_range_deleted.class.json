@@ -1,0 +1,6 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\TypicalAgeRangeDeleted",
+  "payload": {
+    "place_id": "bb173932-09a1-4762-ac85-09798367adf7"
+  }
+}

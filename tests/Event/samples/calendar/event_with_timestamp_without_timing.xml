@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-18T00:00:00" availableto="2017-01-01T00:00:00" cdbid="ce02411c-ea9a-44e9-a7c6-7822009b8a15" createdby="nathalie.phlippo@koksijde.be" creationdate="2016-11-18T12:10:31" externalid="CDB:e1178a0b-576e-45ff-aaf5-42e45f998214" externalurl="https://io.uitdatabank.be/event/ce02411c-ea9a-44e9-a7c6-7822009b8a15" lastupdated="2016-11-18T07:44:11" lastupdatedby="imports@cultuurnet.be" owner="Invoerders Algemeen " private="false" wfstatus="readyforvalidation" isparent="false" pctcomplete="70" published="true" validator="Koksijde Validatoren">
+    <categories>
+      <category catid="reg.356" type="flanderstouristregion">Kust</category>
+      <category catid="0.28.0.0.0" type="eventtype">Kermis of feestelijkheid</category>
+      <category catid="reg.1154" type="flandersregion">8670 Koksijde</category>
+    </categories>
+    <calendar>
+      <timestamps>
+        <timestamp>
+          <date>2016-12-31</date>
+        </timestamp>
+      </timestamps>
+    </calendar>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Koksijde</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>2.612465</xcoordinate>
+            <ycoordinate>51.112060</ycoordinate>
+          </gis>
+          <housenr>x</housenr>
+          <street>G.Grardplein</street>
+          <zipcode>8670</zipcode>
+        </physical>
+      </address>
+      <url>http://www.visitkoksijde.be</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary>za 31/12/16 </calendarsummary>
+        <media>
+          <file>
+            <hlink>http://www.visitkoksijde.be</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+          <file creationdate="11/18/2016 12:12:01 PM" main="true">
+            <copyright>Vuurwerk in Sint-Idesbald</copyright>
+            <filename>4a3bc7b1-f839-410e-a8cf-d45fad178cc9.jpg</filename>
+            <filetype>jpeg</filetype>
+            <hlink>//media.uitdatabank.be/20161118/4a3bc7b1-f839-410e-a8cf-d45fad178cc9.jpg</hlink>
+            <mediatype>photo</mediatype>
+          </file>
+        </media>
+        <shortdescription>Het jaar wordt afgesloten met een spetterend vuurwerk.</shortdescription>
+        <title>Vuurwerk in Sint-Idesbald</title>
+      </eventdetail>
+      <eventdetail lang="fr">
+        <calendarsummary>sam 31/12/16 </calendarsummary>
+        <title>Feu d'artifice</title>
+      </eventdetail>
+      <eventdetail lang="en">
+        <calendarsummary>Sat 31/12/16 </calendarsummary>
+        <title>Fireworks</title>
+      </eventdetail>
+      <eventdetail lang="de">
+        <calendarsummary>Sa 31/12/16 </calendarsummary>
+        <title>Feuerwerk</title>
+      </eventdetail>
+    </eventdetails>
+    <location>
+      <address>
+        <physical>
+          <city>Koksijde</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>2.612465</xcoordinate>
+            <ycoordinate>51.112060</ycoordinate>
+          </gis>
+          <housenr>x</housenr>
+          <street>G.Grardplein</street>
+          <zipcode>8670</zipcode>
+        </physical>
+      </address>
+      <label>strand Sint-Idesbald t.h.v. G. Grardplein</label>
+    </location>
+  </event>
+</cdbxml>

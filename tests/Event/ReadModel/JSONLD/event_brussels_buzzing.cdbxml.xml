@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <event availablefrom="2015-08-01T09:01:24" availableto="2015-08-02T00:00:00" cdbid="bb69e2b1-c70f-4dd2-b1c3-4d5b1eb17b98" createdby="webmaster@agenda.be" creationdate="2015-07-29T18:01:55" externalid="SKB Import:SKB00001_364582" lastupdated="2015-08-01T09:01:28" lastupdatedby="webmaster@agenda.be" owner="SKB import" pctcomplete="65" private="false" publisher="8364e660b627bd441ed95b667f8246ae" validator="SKB Validatoren" wfstatus="readyforvalidation" isparent="false">
+        <calendar>
+            <timestamps>
+                <timestamp>
+                    <date>2015-08-01</date>
+                    <timestart>22:00:00</timestart>
+                </timestamp>
+            </timestamps>
+        </calendar>
+        <categories>
+            <category type="theme" catid="1.8.3.3.0">Dance</category>
+            <category type="flanderstouristregion" catid="reg.357">Kunststad Brussel</category>
+            <category type="eventtype" catid="0.50.4.0.0">Concert</category>
+            <category type="flandersregion" catid="reg.1565">1000 Brussel</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Brussel</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.349523</xcoordinate>
+                        <ycoordinate>50.847391</ycoordinate>
+                    </gis>
+                    <housenr>8</housenr>
+                    <street>Steenstr.</street>
+                    <zipcode>1000</zipcode>
+                </physical>
+            </address>
+            <mail>info@bonnefooi.be</mail>
+            <url>http://www.bonnefooi.be</url>
+        </contactinfo>
+        <eventdetails>
+            <eventdetail lang="nl">
+                <calendarsummary>za 01/08/15 om 22:00 </calendarsummary>
+                <longdescription>Brussels Buzzing&lt;br /&gt;
+                    &lt;br /&gt;
+                    On Saturday nights, as from 10 PM, we hand the decks to Brussels’ finest DJ’s to provide you with the perfect Saturday night out. Many Brussels’ DJ’s started out making their name and fame at Bonnefooi, and many more will follow!&lt;br /&gt;
+                    &lt;br /&gt;
+                    &lt;br /&gt;
+                    &lt;br /&gt;
+                    DJ Lee Beration&lt;br /&gt;
+                    &lt;br /&gt;
+                    Leeberation remixes the world of music under an audible microscope; reuniting grooves like long lost amigos its the bongos, bass synths, soul singers and well aged funk that together carry a big city sound. Afro rhthyms, Soul, Asian, and Brazilian beats stripped of their DNA and reconstructed to sound like today!&lt;p class="uiv-source"&gt;Bron: &lt;a href="http://www.uitinvlaanderen.be/agenda/e/sat-brussels-buzzing-dj-leeberation-soul-funk-hip/bb69e2b1-c70f-4dd2-b1c3-4d5b1eb17b98"&gt;UiTinVlaanderen.be&lt;/a&gt;&lt;/p&gt;</longdescription>
+                <media>
+                    <file>
+                        <hlink>http://www.bonnefooi.be</hlink>
+                        <mediatype>webresource</mediatype>
+                    </file>
+                    <file creationdate="7/29/2015 6:01:55 PM" main="true">
+                        <filename>facebook-fca2c2805eda87602990ad20a4443faa5cbd819b.jpg</filename>
+                        <filetype>jpeg</filetype>
+                        <hlink>//media.uitdatabank.be/20150729/facebook-fca2c2805eda87602990ad20a4443faa5cbd819b.jpg</hlink>
+                        <mediatype>photo</mediatype>
+                    </file>
+                </media>
+                <title>SAT: Brussels Buzzing / DJ Leeberation (Soul/Funk/Hip Hop)</title>
+            </eventdetail>
+        </eventdetails>
+        <keywords />
+        <location>
+            <address>
+                <physical>
+                    <city>Brussel</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>4.349523</xcoordinate>
+                        <ycoordinate>50.847391</ycoordinate>
+                    </gis>
+                    <housenr>8</housenr>
+                    <street>Steenstr.</street>
+                    <zipcode>1000</zipcode>
+                </physical>
+            </address>
+            <label>Café Bonnefooi</label>
+        </location>
+        <organiser>
+            <label>Café Bonnefooi</label>
+        </organiser>
+    </event>
+</cdbxml>

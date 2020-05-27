@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <event availablefrom="2014-11-23T00:00:00" availableto="2016-01-02T00:00:00" cdbid="0001da4c-abef-4450-b37a-5a4bfb9d35f4" createdby="brookwaters@hotmail.com" creationdate="2014-11-23T13:34:34" externalurl="https://io.uitdatabank.be/event/0001da4c-abef-4450-b37a-5a4bfb9d35f4" externalid="CDB:0cc01aa0-7f9d-476b-bcc3-4ac17c009b69" lastupdated="2016-12-19T15:04:32" lastupdatedby="karen.schilders@cultuurnet.be" owner="Invoerders Algemeen " pctcomplete="80" private="false" published="true" publisher="469781698cdbbd84d5c9c60822a5a8ff" validator="Antwerpen District Antwerpen Validatoren" wfstatus="readyforvalidation" isparent="false">
+    <calendar>
+      <periods>
+        <period>
+          <datefrom>2015-01-01</datefrom>
+          <dateto>2016-01-01</dateto>
+        </period>
+      </periods>
+    </calendar>
+    <categories>
+      <category type="flanderstouristregion" catid="reg.350">Kunststad Antwerpen</category>
+      <category type="eventtype" catid="0.50.21.0.0">Spel of quiz</category>
+      <category type="flandersregion" catid="reg.475">2000 Antwerpen</category>
+    </categories>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Antwerpen</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.405544</xcoordinate>
+            <ycoordinate>51.227955</ycoordinate>
+          </gis>
+          <housenr>28</housenr>
+          <street>Godefriduskaai</street>
+          <zipcode>2000</zipcode>
+        </physical>
+      </address>
+      <mail>info@antwerpclue.be</mail>
+      <phone type="phone">032335812</phone>
+      <url reservation="true">http://www.antwerpclue.be</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <calendarsummary />
+        <media>
+          <file>
+            <hlink>http://www.antwerpclue.be</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+          <file creationdate="11/23/2014 1:34:34 PM" main="true">
+            <copyright>Antwerp Clue - First real life escape game in Antwerp</copyright>
+            <filename>48fd317c-826b-419f-b356-fa79da84036d.jpg</filename>
+            <filetype>jpeg</filetype>
+            <hlink>//media.uitdatabank.be/20141123/48fd317c-826b-419f-b356-fa79da84036d.jpg</hlink>
+            <mediatype>photo</mediatype>
+          </file>
+          <file>
+            <hlink>http://www.antwerpclue.be</hlink>
+            <mediatype>website</mediatype>
+            <title>webresource</title>
+          </file>
+        </media>
+        <shortdescription>Antwerp Clue is een nieuwe en vooral leuke activiteit voor iedereen die van avontuur houdt.In een levensecht ontsnappingspel worden jij en je team uitgedaagd om binnen de 60 minuten te ontsnappen uit een kamer.  Samenwerking,communicatie en raadsels oplossen zijn de sleutelwoorden tot dit succes! Kan je niet wachten? Neem dan snel een kijk op onze website en boek één van de kamers. Tot binnenkort!</shortdescription>
+        <title>Antwerp Clue - First real life escape game in Antwerp</title>
+      </eventdetail>
+    </eventdetails>
+    <keywords>
+      <keyword>antwerp</keyword>
+      <keyword>vrije tijd</keyword>
+      <keyword>Antwerpen</keyword>
+      <keyword>mas</keyword>
+      <keyword>Game</keyword>
+      <keyword>sherlock</keyword>
+      <keyword>escape</keyword>
+      <keyword>out of the box</keyword>
+      <keyword>ontsnappen</keyword>
+      <keyword>clue</keyword>
+    </keywords>
+    <location>
+      <address>
+        <physical>
+          <city>Antwerpen</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>4.405544</xcoordinate>
+            <ycoordinate>51.227955</ycoordinate>
+          </gis>
+          <housenr>28</housenr>
+          <street>Godefriduskaai</street>
+          <zipcode>2000</zipcode>
+        </physical>
+      </address>
+      <label>Antwerp Clue</label>
+    </location>
+  </event>
+</cdbxml>

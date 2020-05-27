@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdbxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL">
+    <actor asset="true" availablefrom="2014-06-30T11:48:26" availableto="2100-01-01T00:00:00" createdby="centruminbalans" creationdate="2014-03-18T12:30:04" cdbid="d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1" externalid="ORG:7bb77d24-9f61-4cfb-be06-488d73114d3b" lastupdated="2014-06-30T11:49:28" lastupdatedby="Els.Demeyer@cultuurnet.be" owner="Invoerders Algemeen ">
+        <actordetails>
+            <actordetail lang="nl">
+                <title>Centrum in Balans</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.11.0.0.0" type="actortype">Organisator(en)</category>
+            <category catid="reg.1349" type="flandersregion">9340 Lede</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Lede</city>
+                    <country>BE</country>
+                    <housenr>2</housenr>
+                    <street>Molenbergstraat</street>
+                    <zipcode>9340</zipcode>
+                </physical>
+            </address>
+        </contactinfo>
+        <keywords>
+            <keyword>2dotstwice</keyword>
+            <keyword>2DOTStwice</keyword>
+            <keyword visible="false">cultuurnet</keyword>
+        </keywords>
+    </actor>
+</cdbxml>

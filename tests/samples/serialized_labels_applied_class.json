@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\LabelsApplied",
+  "payload": {
+    "event_id": "24b1e348-f27d-4f70-ae1a-871074267c2e",
+    "keywords_string": "keywords=keyword+1;keyword+2&visibles=true;false"
+  }
+}

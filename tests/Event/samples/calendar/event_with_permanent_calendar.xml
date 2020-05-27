@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+  <event availablefrom="2016-11-18T00:00:00" availableto="2100-01-01T00:00:00" cdbid="1a657744-d83e-4f75-8b84-170b8eadd6bc" createdby="ilseae1" creationdate="2016-11-18T11:06:12" externalid="CDB:9a8259b3-c226-447e-a49f-f380d5193684" externalurl="https://io.uitdatabank.be/event/1a657744-d83e-4f75-8b84-170b8eadd6bc" lastupdated="2016-11-18T07:44:11" lastupdatedby="imports@cultuurnet.be" owner="Bulk aanpasser" private="false" wfstatus="readyforvalidation" publisher="469781698cdbbd84d5c9c60822a5a8ff" isparent="false" pctcomplete="70" published="true" validator="Gent Validatoren">
+    <keywords>
+      <keyword visible="false">UiTPAS Gent</keyword>
+    </keywords>
+    <categories>
+      <category catid="1.40.0.0.0" type="theme">Erfgoed</category>
+      <category catid="6.3.0.0.0" type="publicscope">Nationaal</category>
+      <category catid="reg.359" type="flanderstouristregion">Kunststad Gent</category>
+      <category catid="0.0.0.0.0" type="eventtype">Tentoonstelling</category>
+      <category catid="reg.1258" type="flandersregion">9000 Gent</category>
+    </categories>
+    <calendar>
+      <permanentopeningtimes>
+        <permanent/>
+      </permanentopeningtimes>
+    </calendar>
+    <contactinfo>
+      <address>
+        <physical>
+          <city>Gent</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>3.723338</xcoordinate>
+            <ycoordinate>51.057338</ycoordinate>
+          </gis>
+          <housenr>65</housenr>
+          <street>Kraanlei</street>
+          <zipcode>9000</zipcode>
+        </physical>
+      </address>
+      <url>http://www.huisvanalijn.be</url>
+    </contactinfo>
+    <eventdetails>
+      <eventdetail lang="nl">
+        <media>
+          <file>
+            <hlink>http://www.huisvanalijn.be</hlink>
+            <mediatype>webresource</mediatype>
+          </file>
+          <file>
+            <hlink>http://www.huisvanalijn.be</hlink>
+            <mediatype>website</mediatype>
+            <title>webresource</title>
+          </file>
+        </media>
+        <shortdescription>puntje sparen</shortdescription>
+        <title>Punt sparen</title>
+      </eventdetail>
+    </eventdetails>
+    <location>
+      <address>
+        <physical>
+          <city>Gent</city>
+          <country>BE</country>
+          <gis>
+            <xcoordinate>3.723338</xcoordinate>
+            <ycoordinate>51.057338</ycoordinate>
+          </gis>
+          <housenr>65</housenr>
+          <street>Kraanlei</street>
+          <zipcode>9000</zipcode>
+        </physical>
+      </address>
+      <label cdbid="66b69120-45d2-4b3d-a34c-aca115ebc2f0">Het Huis van Alijn</label>
+    </location>
+  </event>
+</cdbxml>

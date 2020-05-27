@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\OrganizerUpdated",
+  "payload": {
+    "place_id": "bb173932-09a1-4762-ac85-09798367adf7",
+    "organizerId": "b0b89536-e8d2-4b1c-aa10-2189c3a97916"
+  }
+}

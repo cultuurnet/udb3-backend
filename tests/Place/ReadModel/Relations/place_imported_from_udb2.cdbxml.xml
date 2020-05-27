@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<cdb:actor xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL"
+           asset="true" availablefrom="2013-07-24T11:11:09"
+           availableto="2100-01-01T00:00:00" createdby="dduwijn4"
+           creationdate="2010-01-06T15:04:08"
+           cdbid="B6C774A6-BB6F-6D5C-EF6ED31459972557"
+           externalid="B6C774A6-BB6F-6D5C-EF6ED31459972557"
+           lastupdated="2013-07-24T11:11:32" lastupdatedby="lotte@cultuurnet.be"
+           owner="Invoerders Algemeen ">
+    <cdb:actordetails>
+        <cdb:actordetail lang="nl">
+            <cdb:calendarsummary>ma tot vrij van 10:00 tot 19:00za van 10:00 tot
+                16:00 (zo gesloten)
+            </cdb:calendarsummary>
+            <cdb:shortdescription>De intrede van nieuwe media, internet... en
+                een grondig onderzoek naar de behoeftes van de
+                bibliotheekgebruiker hebben aanleiding gegeven tot een grondige
+                herinrichting van de bibliotheekafdelingen en een aantal nieuwe
+                voorzieningen zoals een internethoek en een leescaf&#xE9;.
+            </cdb:shortdescription>
+            <cdb:title>Provinciale Bibliotheek Limburg</cdb:title>
+        </cdb:actordetail>
+    </cdb:actordetails>
+    <cdb:categories>
+        <cdb:category catid="8.15.0.0.0" type="actortype">Locatie</cdb:category>
+        <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal
+        </cdb:category>
+        <cdb:category catid="8.1.0.0.0" type="actortype">Bibliotheek
+        </cdb:category>
+    </cdb:categories>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Hasselt</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>5.341865</cdb:xcoordinate>
+                    <cdb:ycoordinate>50.933427</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>17</cdb:housenr>
+                <cdb:street>Martelarenlaan</cdb:street>
+                <cdb:zipcode>3500</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail>pbl@limburg.be</cdb:mail>
+        <cdb:phone type="phone">+32 11 295900</cdb:phone>
+        <cdb:phone type="fax">+32 11 295901</cdb:phone>
+        <cdb:url>http://toevla.vlaanderen.be/publiek/nl/register/detail/1661
+        </cdb:url>
+        <cdb:url main="true">http://www.limburg.be/pbl</cdb:url>
+    </cdb:contactinfo>
+    <cdb:keywords>Toevlalocatie;toevlalocatie</cdb:keywords>
+</cdb:actor>

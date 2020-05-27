@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
 use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
-use CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodeEventCommand;

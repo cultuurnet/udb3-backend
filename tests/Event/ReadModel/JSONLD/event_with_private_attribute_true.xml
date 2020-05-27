@@ -1,0 +1,63 @@
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+    <event availablefrom="2016-07-11T00:00:00" availableto="2016-12-29T00:00:00" cdbid="f4616257-5186-43e0-9cd2-2837334768bc" createdby="kvlv.galmaarden@gmail.com" creationdate="2016-07-11T20:09:03" externalid="CDB:77be2ae9-0776-4c9c-8a2d-5e104c8231d1" lastupdated="2016-07-11T20:09:16" lastupdatedby="kvlv.galmaarden@gmail.com" owner="Invoerders Algemeen " pctcomplete="55" private="true" published="true" validator="Galmaarden Validatoren" wfstatus="readyforvalidation" isparent="false">
+        <agefrom>4</agefrom>
+        <calendar>
+            <timestamps>
+                <timestamp>
+                    <date>2016-12-28</date>
+                    <timestart>14:00:00</timestart>
+                    <timeend>16:00:00</timeend>
+                </timestamp>
+            </timestamps>
+        </calendar>
+        <categories>
+            <category type="theme" catid="1.42.0.0.0">Creativiteit</category>
+            <category type="targetaudience" catid="2.2.1.0.0">Vanaf kleuterleeftijd (3+)</category>
+            <category type="flanderstouristregion" catid="reg.364">Groene Gordel</category>
+            <category type="eventtype" catid="0.3.1.0.0">Cursus of workshop</category>
+            <category type="flandersregion" catid="reg.380">1570 Galmaarden</category>
+            <category type="umv" catid="umv.2">Zelf doen</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Galmaarden</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>3.967197</xcoordinate>
+                        <ycoordinate>50.752194</ycoordinate>
+                    </gis>
+                    <housenr>38</housenr>
+                    <street>Bergstraat</street>
+                    <zipcode>1570</zipcode>
+                </physical>
+            </address>
+            <mail>kvlv.galmaarden@gmail.com</mail>
+            <phone reservation="true" type="phone">054588018</phone>
+        </contactinfo>
+        <eventdetails>
+            <eventdetail lang="nl">
+                <calendarsummary>woe 28/12/16 van 14:00 tot 16:00</calendarsummary>
+                <shortdescription>bloemschikken voor kinderen tussen 4 en 12 jaar</shortdescription>
+                <title>Bloemenplezier voor kinderen</title>
+            </eventdetail>
+        </eventdetails>
+        <keywords/>
+        <location>
+            <address>
+                <physical>
+                    <city>Galmaarden</city>
+                    <country>BE</country>
+                    <gis>
+                        <xcoordinate>3.967197</xcoordinate>
+                        <ycoordinate>50.752194</ycoordinate>
+                    </gis>
+                    <housenr>38</housenr>
+                    <street>Bergstraat</street>
+                    <zipcode>1570</zipcode>
+                </physical>
+            </address>
+            <label>parochiezaal</label>
+        </location>
+    </event>
+</cdbxml>

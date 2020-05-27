@@ -1,0 +1,31 @@
+{
+  "@id": "http://example.com/entity/2",
+  "@context": "/contexts/event",
+  "mainLanguage": "en",
+  "name": {
+    "en": "some representative title"
+  },
+  "location": {
+    "@type": "Place"
+  },
+  "calendarType": "periodic",
+  "startDate": "2015-01-26T13:25:21+01:00",
+  "availableTo": "2015-01-29T13:25:21+01:00",
+  "sameAs": [
+    "http://www.uitinvlaanderen.be/agenda/e/some-representative-title/1"
+  ],
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "concert",
+      "domain": "eventtype"
+    }
+  ],
+  "workflowStatus": "DRAFT",
+  "audience": {
+    "audienceType": "everyone"
+  },
+  "endDate": "2015-01-29T13:25:21+01:00",
+  "languages": ["en"],
+  "completedLanguages": ["en"]
+}

@@ -6,7 +6,6 @@ use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSVJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXMLJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
-use CultuurNet\UDB3\EventExport\SapiVersion;
 use CultuurNet\UDB3\Http\CommandDeserializerController;
 use Silex\Application;
 use Silex\ControllerCollection;

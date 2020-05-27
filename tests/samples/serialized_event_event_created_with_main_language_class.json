@@ -1,0 +1,28 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\EventCreated",
+  "payload": {
+    "event_id": "06d58935-73e8-4626-b138-4a17c6e87845",
+    "main_language": "es",
+    "title": "Faith no More",
+    "event_type": {
+      "id": "0.50.4.0.0",
+      "label": "concert",
+      "domain": "eventtype"
+    },
+    "theme": null,
+    "location": {
+      "cdbid": "54131948-ffb9-4973-b528-800590265be5",
+      "name": "P-P-Partyzone",
+      "address": {
+        "streetAddress": "Kerkstraat 69",
+        "postalCode": "3000",
+        "addressLocality": "Leuven",
+        "addressCountry": "BE"
+      }
+    },
+    "calendar": {
+      "type": "permanent"
+    },
+    "publication_date": null
+  }
+}

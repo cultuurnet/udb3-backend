@@ -2,11 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex\User;
 
-use Auth0\SDK\Auth0;
 use CultuurNet\UDB3\User\Auth0ManagementTokenGenerator;
 use CultuurNet\UDB3\User\Auth0ManagementTokenProvider;
 use CultuurNet\UDB3\User\Auth0ManagementTokenRepository;
-use GuzzleHttp\Client;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
