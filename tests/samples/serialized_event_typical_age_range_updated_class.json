@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\TypicalAgeRangeUpdated",
+  "payload": {
+    "event_id": "9ee97636-e5bf-4421-b2c1-9f785a1b4d4c",
+    "typicalAgeRange": "13-18"
+  }
+}

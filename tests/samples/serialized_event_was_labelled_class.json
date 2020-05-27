@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\EventWasLabelled",
+  "payload": {
+    "event_id": "ee83a628-d1f1-4f52-8f44-abea70c82052",
+    "label": "ook voor kinderen"
+  }
+}

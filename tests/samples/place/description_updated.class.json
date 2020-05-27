@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\DescriptionUpdated",
+  "payload": {
+    "place_id": "82fc3065-5436-4eec-833b-c001d0b14b1b",
+    "description": "test vooruit"
+  }
+}

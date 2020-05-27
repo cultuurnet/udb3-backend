@@ -1,0 +1,18 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\ContactPointUpdated",
+  "payload": {
+    "event_id": "9ee97636-e5bf-4421-b2c1-9f785a1b4d4c",
+    "contactPoint": {
+      "phone": [
+        "0474888888"
+      ],
+      "email": [
+        "willem@willem.com"
+      ],
+      "url": [
+        "http:\/\/test.com"
+      ],
+      "type": ""
+    }
+  }
+}

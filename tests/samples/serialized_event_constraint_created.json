@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Role\\Events\\ConstraintCreated",
+  "payload": {
+    "uuid": "6f9ad898-9977-4194-add7-973bee71c563",
+    "query": "city:3000"
+  }
+}

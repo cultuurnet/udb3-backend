@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\TypicalAgeRangeUpdated",
+  "payload": {
+    "place_id": "bb173932-09a1-4762-ac85-09798367adf7",
+    "typicalAgeRange": "1-12"
+  }
+}

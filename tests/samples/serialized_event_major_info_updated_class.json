@@ -1,0 +1,34 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\MajorInfoUpdated",
+  "payload": {
+    "event_id": "5b23b60a-54d8-47d2-bd23-9b7c929097be",
+    "title": "test26101554",
+    "event_type": {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    },
+    "theme": {
+      "id": "1.8.2.0.0",
+      "label": "Jazz en blues",
+      "domain": "theme"
+    },
+    "location": {
+      "cdbid": "061C13AC-A15F-F419-D8993D68C9E94548",
+      "name": "Muziekcentrum Het Depot",
+      "address": {
+        "addressCountry": "BE",
+        "addressLocality": "Leuven",
+        "postalCode": "3000",
+        "streetAddress": "Kerkstraat 69"
+      }
+    },
+    "calendar": {
+      "type": "single",
+      "startDate": "2015-10-30T12:00:00+01:00",
+      "endDate": "2015-10-30T10:00:00+01:00",
+      "timestamps": [],
+      "openingHours": []
+    }
+  }
+}

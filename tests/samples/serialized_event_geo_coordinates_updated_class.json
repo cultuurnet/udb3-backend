@@ -1,0 +1,10 @@
+{
+  "class": "CultuurNet\\UDB3\\Place\\Events\\GeoCoordinatesUpdated",
+  "payload": {
+    "place_id": "39d45c01-b5f4-46f3-9f65-28e124c85da8",
+    "coordinates": {
+      "lat": 50.8809052,
+      "long": 4.7154007
+    }
+  }
+}

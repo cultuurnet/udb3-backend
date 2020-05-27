@@ -1,0 +1,7 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\OrganizerDeleted",
+  "payload": {
+    "event_id": "40c49e5a-bafd-47d7-8846-3e7a34e37a7d",
+    "organizerId": "097974d2-2891-4b90-96f8-e287fc9b9812"
+  }
+}
