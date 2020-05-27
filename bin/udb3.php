@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand;
 use CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
-use CultuurNet\UDB3\Silex\Console\PermissionCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
@@ -87,7 +86,6 @@ $consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app['sapi3_sear
 $consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app['dbal_connection'], $app['place_jsonld_repository']));
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app['dbal_connection'], $app['event_jsonld_repository']));
-$consoleApp->add(new PermissionCommand());
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new ImportSavedSearchesCommand($app['event_command_bus'], $app[SearchRepositoryFactory::class]));
