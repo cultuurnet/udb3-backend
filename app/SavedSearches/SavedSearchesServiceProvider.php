@@ -21,18 +21,6 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app[SearchRepositoryFactory::class] = $app->share(
-            function (Application $app) {
-                $user = $app['current_user'];
-
-                return new SearchRepositoryFactory(
-                    $app['dbal_connection'],
-                    $app['uuid_generator'],
-                    new StringLiteral($user->id)
-                );
-            }
-        );
-
         $app['udb3_saved_searches_repo_sapi2'] = $app->share(
             function (Application $app) {
                 $user = $app['current_user'];
