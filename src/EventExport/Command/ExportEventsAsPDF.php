@@ -8,7 +8,6 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
-use CultuurNet\UDB3\EventExport\SapiVersion;
 use ValueObjects\Web\EmailAddress;
 
 class ExportEventsAsPDF implements ExportEventsInterface

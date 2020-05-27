@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleUpdated;
-use CultuurNet\UDB3\Offer\Item\Commands\UpdateImage;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;

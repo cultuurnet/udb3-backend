@@ -4,7 +4,6 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\CommandHandling\ContextFactory;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
@@ -22,11 +21,8 @@ use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\PermissionCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
-use CultuurNet\UDB3\Silex\Console\SearchCacheClearCommand;
-use CultuurNet\UDB3\Silex\Console\SearchCacheWarmCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
-use CultuurNet\UDB3\Silex\Impersonator;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';

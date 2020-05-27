@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Role\Commands\AddLabel;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 

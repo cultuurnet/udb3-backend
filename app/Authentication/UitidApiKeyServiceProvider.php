@@ -13,7 +13,6 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
-use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;

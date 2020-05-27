@@ -2,13 +2,9 @@
 
 namespace CultuurNet\UDB3\History;
 
-use Broadway\Domain\DateTime as BroadwayDateTime;
-use Broadway\Domain\DomainMessage;
-use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use DateTime;
 
 abstract class BaseHistoryProjector implements EventListenerInterface
 {

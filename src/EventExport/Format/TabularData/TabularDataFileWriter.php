@@ -9,11 +9,6 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInt
 class TabularDataFileWriter implements FileWriterInterface
 {
     /**
-     * @var string[]
-     */
-    protected $includedProperties;
-
-    /**
      * @var TabularDataEventFormatter
      */
     protected $eventFormatter;
