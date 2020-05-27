@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Silex;
 
 use Broadway\Domain\Metadata;
 use CultureFeed_User;
-use CultuurNet\Auth\TokenCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 
