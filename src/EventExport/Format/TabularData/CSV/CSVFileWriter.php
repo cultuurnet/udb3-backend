@@ -10,8 +10,6 @@ class CSVFileWriter implements TabularDataFileWriterInterface
 
     protected $delimiter;
 
-    protected $includedProperties;
-
     public function __construct($filePath)
     {
         $this->f = fopen($filePath, 'w');
