@@ -9,7 +9,9 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
+use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,19 +42,19 @@ class ReplayCommand extends AbstractCommand
     private $eventBus;
 
     /**
-     * @var array
+     * @var ConfigWriter
      */
-    private $config;
+    private $configWriter;
 
     /**
      * Note that we pass $config by reference here. We need this because the replay command overrides configuration properties for active subscribers.
      */
-    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array &$config)
+    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, ConfigWriter $configWriter)
     {
         parent::__construct($commandBus);
         $this->eventStreamBuilder = $eventStreamBuilder;
         $this->eventBus = $eventBus;
-        $this->config = $config;
+        $this->configWriter = $configWriter;
     }
 
 
@@ -225,12 +227,24 @@ class ReplayCommand extends AbstractCommand
         $msg = 'Registering the following subscribers with the event bus: %s';
         $output->writeln(sprintf($msg, $subscribersString));
 
-        $this->config['event_bus']['subscribers'] = $subscribers;
+        $this->configWriter->merge(
+            [
+                'event_bus' => [
+                    'subscribers' => $subscribers,
+                ],
+            ]
+        );
     }
 
     private function disableRelatedOfferSubscribers()
     {
-        $this->config['event_bus']['disable_related_offer_subscribers'] = true;
+        $this->configWriter->merge(
+            [
+                'event_bus' => [
+                    'disable_related_offer_subscribers' => true,
+                ],
+            ]
+        );
     }
 
     /**
