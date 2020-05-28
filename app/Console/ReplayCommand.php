@@ -44,7 +44,10 @@ class ReplayCommand extends AbstractCommand
      */
     private $config;
 
-    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array $config)
+    /**
+     * Note that we pass $config by reference here. We need this because the replay command overrides configuration properties for active subscribers.
+     */
+    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array &$config)
     {
         parent::__construct($commandBus);
         $this->eventStreamBuilder = $eventStreamBuilder;
