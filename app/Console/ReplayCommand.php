@@ -9,7 +9,6 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
-use CultuurNet\UDB3\Silex\Cache;
 use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,18 +44,12 @@ class ReplayCommand extends AbstractCommand
      */
     private $config;
 
-    /**
-     * @var Cache
-     */
-    private $cache;
-
-    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array $config, Cache $cache)
+    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, array $config)
     {
         parent::__construct($commandBus);
         $this->eventStreamBuilder = $eventStreamBuilder;
         $this->eventBus = $eventBus;
         $this->config = $config;
-        $this->cache = $cache;
     }
 
 
@@ -78,12 +71,6 @@ class ReplayCommand extends AbstractCommand
                 InputArgument::OPTIONAL,
                 'Aggregate type to replay events from. One of: ' . $aggregateTypeEnumeration . '.',
                 null
-            )
-            ->addOption(
-                'cache',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Alternative cache factory method to use, specify the service suffix, for example "redis".'
             )
             ->addOption(
                 'subscriber',
@@ -132,16 +119,10 @@ class ReplayCommand extends AbstractCommand
     {
         $delay = (int) $input->getOption(self::OPTION_DELAY);
 
-        $cache = $input->getOption('cache');
-        if ($cache) {
-            $this->cache->useCache($cache);
-        }
-
         $subscribers = $input->getOption('subscriber');
         if (!empty($subscribers)) {
             $this->setSubscribers($subscribers, $output);
         }
-
 
         $aggregateType = $this->getAggregateType($input, $output);
 
