@@ -90,7 +90,6 @@ prince:
   binary: /usr/bin/prince
 
 cache:
-  # Currently supported: "filesystem" or "redis"
   active: redis
   redis:
     host: 127.0.0.1
