@@ -3,17 +3,18 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use Knp\Command\Command;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 
-abstract class AbstractCommand extends Command
+abstract class AbstractCommand extends BaseCommand
 {
     /**
-     * @return CommandBusInterface
+     * @var CommandBusInterface
      */
-    protected function getCommandBus()
-    {
-        $app = $this->getSilexApplication();
+    protected $commandBus;
 
-        return $app['event_command_bus'];
+    public function __construct(CommandBusInterface $commandBus)
+    {
+        parent::__construct();
+        $this->commandBus = $commandBus;
     }
 }

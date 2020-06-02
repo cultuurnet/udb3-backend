@@ -2,11 +2,12 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
+use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +19,24 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
 {
     private const DUPLICATE_PLACE_ID_ARGUMENT = 'duplicate_place_id';
     private const CANONICAL_PLACE_ID_ARGUMENT = 'canonical_place_id';
+
+    /**
+     * @var EventListenerInterface
+     */
+    private $processManager;
+
+    /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
+
+    public function __construct(CommandBusInterface $commandBus, EventListenerInterface $processManager, EventBusInterface $eventBus)
+    {
+        parent::__construct($commandBus);
+        $this->processManager = $processManager;
+        $this->eventBus = $eventBus;
+    }
+
 
     public function configure()
     {
@@ -31,9 +50,9 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $this->getProcessManager()->setLogger($logger);
+        $this->processManager->setLogger($logger);
 
-        $this->getEventBus()->publish(
+        $this->eventBus->publish(
             new DomainEventStream(
                 [
                     DomainMessage::recordNow(
@@ -49,17 +68,5 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
             )
         );
         $logger->info('Successfully re-dispatched MarkedAsDuplicate event');
-    }
-
-    protected function getEventBus(): EventBusInterface
-    {
-        $app = $this->getSilexApplication();
-        return $app['event_bus'];
-    }
-
-    protected function getProcessManager(): LocationMarkedAsDuplicateProcessManager
-    {
-        $app = $this->getSilexApplication();
-        return $app[LocationMarkedAsDuplicateProcessManager::class];
     }
 }

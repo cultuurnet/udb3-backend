@@ -5,12 +5,24 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
+use Doctrine\DBAL\Connection;
 use PDO;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJSONLDCommand
 {
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    public function __construct(EventBusInterface $eventBus, Connection $connection, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
+    {
+        parent::__construct($eventBus, $organizerEventFactory, $placeEventFactory);
+        $this->connection = $connection;
+    }
+
     protected function configure()
     {
         $this
@@ -20,10 +32,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $app = $this->getSilexApplication();
-
-        /** @var \Doctrine\DBAL\Connection $connection */
-        $connection = $app['dbal_connection'];
+        $connection = $this->connection;
 
         $this->inReplayMode(
             function (
@@ -33,7 +42,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
             ) use ($connection) {
                 $domainMessageBuilder = new DomainMessageBuilder();
 
-                $queryBuilder = $connection->createQueryBuilder();
+                $queryBuilder = $this->connection->createQueryBuilder();
 
                 $eventOrganizers = $queryBuilder->select('DISTINCT organizer')
                     ->from('event_relations')

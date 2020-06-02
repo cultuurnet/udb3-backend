@@ -3,26 +3,27 @@
 
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
 use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
-use CultuurNet\UDB3\Silex\Console\EventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodeEventCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
-use CultuurNet\UDB3\Silex\Console\ImportRoleConstraintsCommand;
-use CultuurNet\UDB3\Silex\Console\ImportSavedSearchesCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
-use CultuurNet\UDB3\Silex\Console\PermissionCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
-use CultuurNet\UDB3\Silex\Console\UpdateCdbXMLCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
+use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
+use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -76,24 +77,19 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new ReplayCommand());
-$consoleApp->add(new EventAncestorsCommand());
-$consoleApp->add(new UpdateCdbXMLCommand());
-$consoleApp->add(new EventCdbXmlCommand());
-$consoleApp->add(new PurgeModelCommand());
-$consoleApp->add(new ConcludeCommand());
-$consoleApp->add(new ConcludeByCdbidCommand());
-$consoleApp->add(new GeocodePlaceCommand());
-$consoleApp->add(new GeocodeEventCommand());
-$consoleApp->add(new PermissionCommand());
-$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand());
-$consoleApp->add(new FireProjectedToJSONLDCommand());
-$consoleApp->add(new ImportSavedSearchesCommand());
-$consoleApp->add(new ImportRoleConstraintsCommand());
-$consoleApp->add(new ImportEventCdbXmlCommand());
-$consoleApp->add(new ImportPlaceCdbXmlCommand());
-$consoleApp->add(new ValidatePlaceJsonLdCommand());
-$consoleApp->add(new MarkPlaceAsDuplicateCommand());
-$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand());
+$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app[EventStreamBuilder::class], $app['event_bus'], new ConfigWriter($app)));
+$consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
+$consoleApp->add(new PurgeModelCommand($app[PurgeServiceProvider::PURGE_SERVICE_MANAGER]));
+$consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app['sapi3_search_service']));
+$consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
+$consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app['dbal_connection'], $app['place_jsonld_repository']));
+$consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app['dbal_connection'], $app['event_jsonld_repository']));
+$consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
+$consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
+$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
+$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
+$consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
+$consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
+$consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
 
 $consoleApp->run();

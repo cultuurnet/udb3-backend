@@ -284,7 +284,7 @@ $app->register(new GeneralSecurityServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
 $app->register(new OrganizerSecurityServiceProvider());
 
-$app['cache-redis'] = $app->share(
+$app['cache'] = $app->share(
     function (Application $app) {
         $parameters = $app['config']['cache']['redis'];
 
@@ -295,33 +295,9 @@ $app['cache-redis'] = $app->share(
                     'prefix' => $cacheType . '_',
                 ]
             );
-            $cache = new Doctrine\Common\Cache\PredisCache($redisClient);
 
-            return $cache;
+            return new Doctrine\Common\Cache\PredisCache($redisClient);
         };
-    }
-);
-
-$app['cache-filesystem'] = $app->share(
-    function () {
-        $baseCacheDirectory = __DIR__ . '/cache';
-
-        return function ($cacheType) use ($baseCacheDirectory) {
-            $cacheDirectory = $baseCacheDirectory . '/' . $cacheType;
-
-            $cache = new \Doctrine\Common\Cache\FilesystemCache($cacheDirectory);
-
-            return $cache;
-        };
-    }
-);
-
-$app['cache'] = $app->share(
-    function (Application $app) {
-        $activeCacheType = $app['config']['cache']['active'] ?: 'filesystem';
-
-        $cacheServiceName = 'cache-' . $activeCacheType;
-        return $app[$cacheServiceName];
     }
 );
 
@@ -1141,6 +1117,7 @@ $app->register(new LabelServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleReadingServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\ReplayServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),

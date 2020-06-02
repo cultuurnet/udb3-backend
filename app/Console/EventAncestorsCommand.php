@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventStore\EventStoreInterface;
 use CultuurNet\UDB3\EventSourcing\AggregateCopiedEventInterface;
@@ -11,6 +12,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class EventAncestorsCommand extends AbstractCommand
 {
+    /**
+     * @var EventStoreInterface
+     */
+    private $eventStore;
+
+    public function __construct(CommandBusInterface $commandBus, EventStoreInterface $eventStore)
+    {
+        parent::__construct($commandBus);
+        $this->eventStore = $eventStore;
+    }
+
     public function configure()
     {
         $this
@@ -27,10 +39,9 @@ class EventAncestorsCommand extends AbstractCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $cdbid = $input->getArgument('cdbid');
-        $eventStore = $this->getEventStore();
 
         $ancestors = [];
-        $eventStream = $eventStore->load($cdbid);
+        $eventStream = $this->eventStore->load($cdbid);
         foreach ($eventStream->getIterator() as $event) {
             /** @var DomainMessage $event */
             $domainEvent = $event->getPayload();
@@ -43,14 +54,5 @@ class EventAncestorsCommand extends AbstractCommand
             $output->writeln($ancestor);
         }
         $output->writeln($cdbid);
-    }
-
-    /**
-     * @return EventStoreInterface
-     */
-    private function getEventStore()
-    {
-        $app = $this->getSilexApplication();
-        return $app['event_store'];
     }
 }

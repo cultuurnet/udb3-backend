@@ -2,9 +2,11 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\CommandHandling\CommandBusInterface;
 use Carbon\Carbon;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Search\ResultsGenerator;
+use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,6 +16,18 @@ class ConcludeCommand extends AbstractConcludeCommand
 {
     const TIMEZONE = 'Europe/Brussels';
     const SOLR_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
+
+    /**
+     * @var SearchServiceInterface
+     */
+    private $searchService;
+
+    public function __construct(CommandBusInterface $commandBus, SearchServiceInterface $searchService)
+    {
+        parent::__construct($commandBus);
+        $this->searchService = $searchService;
+    }
+
 
     public function configure()
     {
@@ -48,7 +62,7 @@ class ConcludeCommand extends AbstractConcludeCommand
 
         $output->writeln('Executing search query: ' . $query);
 
-        $finder = $this->getFinder(intval($input->getOption('page-size')));
+        $finder = $this->createFinder(intval($input->getOption('page-size')));
 
         /** @var IriOfferIdentifier[] $results */
         $results = $finder->search($query);
@@ -90,16 +104,10 @@ class ConcludeCommand extends AbstractConcludeCommand
         return $date->tz('UTC')->format(self::SOLR_DATE_TIME_FORMAT);
     }
 
-    /**
-     * @int $pageSize
-     * @return ResultsGenerator
-     */
-    private function getFinder($pageSize)
+    private function createFinder(int $pageSize) : ResultsGenerator
     {
-        $app = $this->getSilexApplication();
-
         return new ResultsGenerator(
-            $app['sapi3_search_service'],
+            $this->searchService,
             null,
             $pageSize
         );

@@ -8,8 +8,6 @@ use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
-use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,23 +15,36 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class AbstractFireProjectedToJSONLDCommand extends Command
 {
-    protected function getEventFactory(string $type): DocumentEventFactory
-    {
-        $app = $this->getSilexApplication();
+    /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
 
-        switch ($type) {
-            case 'organizer':
-                return $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY];
-            case 'place':
-            default:
-                return $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY];
-        }
+    /**
+     * @var DocumentEventFactory
+     */
+    private $organizerEventFactory;
+
+    /**
+     * @var DocumentEventFactory
+     */
+    private $placeEventFactory;
+
+    public function __construct(EventBusInterface $eventBus, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
+    {
+        parent::__construct();
+        $this->eventBus = $eventBus;
+        $this->organizerEventFactory = $organizerEventFactory;
+        $this->placeEventFactory = $placeEventFactory;
     }
 
-    protected function getEventBus(): EventBusInterface
+    protected function getEventFactory(string $type): DocumentEventFactory
     {
-        $app = $this->getSilexApplication();
-        return $app['event_bus'];
+        if ($type === 'organizer') {
+            return $this->organizerEventFactory;
+        }
+
+        return $this->placeEventFactory;
     }
 
     protected function inReplayMode(
@@ -41,10 +52,8 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
         InputInterface $input,
         OutputInterface $output
     ) {
-        $eventBus = $this->getEventBus();
-
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->startReplayMode();
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->startReplayMode();
         } else {
             $helper = $this->getHelper('question');
             $question = new ConfirmationQuestion(
@@ -58,10 +67,10 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
             }
         }
 
-        $callback($eventBus, $input, $output);
+        $callback($this->eventBus, $input, $output);
 
-        if ($eventBus instanceof ReplayModeEventBusInterface) {
-            $eventBus->stopReplayMode();
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->stopReplayMode();
         }
     }
 
