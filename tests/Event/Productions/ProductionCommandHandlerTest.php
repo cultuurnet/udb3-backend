@@ -49,4 +49,32 @@ class ProductionCommandHandlerTest extends TestCase
         $this->assertEquals($name, $createdProduction->getName());
         $this->assertEquals($events, $createdProduction->getEventIds());
     }
+
+    /**
+     * @test
+     */
+    public function itCanAddEventToProduction(): void
+    {
+        $name = "A Midsummer Night's Scream 2";
+        $eventToAdd = Uuid::uuid4()->toString();
+        $events = [
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+        ];
+
+        $command = new GroupEventsAsProduction($events, $name);
+        $this->commandHandler->handle($command);
+
+
+        $this->commandHandler->handle(
+            new AddEventToProduction($eventToAdd, $command->getProductionId())
+        );
+
+        $production = $this->productionRepository->find($command->getProductionId());
+        foreach ($events as $event) {
+            $this->assertTrue($production->containsEvent($event));
+        }
+        $this->assertTrue($production->containsEvent($eventToAdd));
+    }
 }
