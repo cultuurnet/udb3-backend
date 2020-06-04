@@ -2,14 +2,17 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
 
 class ProductionCommandHandlerTest extends TestCase
 {
+    use DBALTestConnectionTrait;
+
     /**
-     * @var ProductionRepository | MockObject
+     * @var ProductionRepository
      */
     private $productionRepository;
 
@@ -20,7 +23,9 @@ class ProductionCommandHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->productionRepository = $this->createMock(ProductionRepository::class);
+        $schema = new SchemaConfigurator();
+        $schema->configure($this->getConnection()->getSchemaManager());
+        $this->productionRepository = new ProductionRepository($this->getConnection());
         $this->commandHandler = new ProductionCommandHandler($this->productionRepository);
     }
 
@@ -37,14 +42,11 @@ class ProductionCommandHandlerTest extends TestCase
         ];
 
         $command = new GroupEventsAsProduction($events, $name);
-
-        $this->productionRepository->expects($this->once())->method('add')->willReturnCallback(
-            function (Production $production) use ($name, $events) {
-                $this->assertEquals($name, $production->getName());
-                $this->assertEquals($events, $production->getEventIds());
-            }
-        );
-
         $this->commandHandler->handle($command);
+
+        $createdProduction = $this->productionRepository->find($command->getProductionId());
+        $this->assertEquals($command->getProductionId(), $createdProduction->getProductionId());
+        $this->assertEquals($name, $createdProduction->getName());
+        $this->assertEquals($events, $createdProduction->getEventIds());
     }
 }
