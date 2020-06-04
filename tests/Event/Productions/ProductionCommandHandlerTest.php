@@ -97,4 +97,30 @@ class ProductionCommandHandlerTest extends TestCase
             new AddEventToProduction($eventBelongingToFirstProduction, $secondProductionCommand->getProductionId())
         );
     }
+
+    /**
+     * @test
+     */
+    public function itCanRemoveAnEventFromAProduction(): void
+    {
+        $name = "A Midsummer Night's Scream 2";
+        $eventToRemove = Uuid::uuid4()->toString();
+        $events = [
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+            $eventToRemove,
+        ];
+
+        $command = new GroupEventsAsProduction($events, $name);
+        $this->commandHandler->handle($command);
+
+
+        $this->commandHandler->handle(
+            new RemoveEventFromProduction($eventToRemove, $command->getProductionId())
+        );
+
+        $production = $this->productionRepository->find($command->getProductionId());
+        $this->assertFalse($production->containsEvent($eventToRemove));
+        $this->assertCount(2, $production->getEventIds());
+    }
 }
