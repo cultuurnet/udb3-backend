@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
 use PHPUnit\Framework\TestCase;
+use Rhumsaa\Uuid\Uuid;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProductionRepositoryTest extends TestCase
@@ -35,9 +36,9 @@ class ProductionRepositoryTest extends TestCase
 
     private function givenThereIsAProduction(): Production
     {
-        $production = Production::createEmpty('foo');
-        $production = $production->addEvent('bar');
-        $production = $production->addEvent('baz');
+        $production = Production::createEmpty($name);
+        $production = $production->addEvent(Uuid::uuid4()->toString());
+        $production = $production->addEvent(Uuid::uuid4()->toString());
 
         $this->repository->add($production);
 
