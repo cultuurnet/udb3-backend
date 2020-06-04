@@ -37,6 +37,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
 
         $table->setPrimaryKey(['event_id']);
         $table->addIndex(['production_id']);
+        $table->addIndex(['name']);
 
         return $table;
     }

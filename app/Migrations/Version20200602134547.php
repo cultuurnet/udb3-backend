@@ -44,6 +44,7 @@ class Version20200602134547 extends AbstractMigration
 
         $table->setPrimaryKey(['event_id']);
         $table->addIndex(['production_id']);
+        $table->addIndex(['name']);
     }
 
     public function down(Schema $schema)
