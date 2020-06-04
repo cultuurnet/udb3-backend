@@ -13,7 +13,7 @@ class ProductionTest extends TestCase
     public function production_name_cannot_be_empty(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Production::create('   ');
+        Production::createEmpty('   ');
     }
 
     /**
@@ -24,7 +24,7 @@ class ProductionTest extends TestCase
         $productionId = ProductionId::generate();
         $name = 'The Ghost of Shamlet - To Pee or no to Pee';
 
-        $production = new Production($productionId, $name);
+        $production = new Production($productionId, $name, []);
 
         $this->assertEquals($productionId, $production->getProductionId());
         $this->assertEquals($name, $production->getName());
@@ -36,7 +36,7 @@ class ProductionTest extends TestCase
     public function it_removes_excessive_spaces_from_the_name(): void
     {
         $name = 'The Scottish Play';
-        $production = Production::create(' ' . $name . '   ');
+        $production = Production::createEmpty(' ' . $name . '   ');
 
         $this->assertEquals($name,  $production->getName());
     }

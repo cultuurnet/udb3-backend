@@ -16,9 +16,15 @@ final class Production
      */
     private $name;
 
+    /**
+     * @var string[]
+     */
+    private $events;
+
     public function __construct(
         ProductionId $productionId,
-        string $name
+        string $name,
+        $events
     ) {
         if (empty(trim($name))) {
             throw new InvalidArgumentException('Production name cannot be empty');
@@ -26,13 +32,15 @@ final class Production
 
         $this->productionId = $productionId;
         $this->name = trim($name);
+        $this->events = $events;
     }
 
-    public static function create(string $name): self
+    public static function createEmpty(string $name): self
     {
         return new self(
             ProductionId::generate(),
-            $name
+            $name,
+            []
         );
     }
 
@@ -44,5 +52,26 @@ final class Production
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function addEvents(array $events): self
+    {
+        $clone = clone($this);
+        $clone->events = array_unique(array_merge($this->events, $events));
+
+        return $clone;
+    }
+
+    public function addEvent(string $eventId): self
+    {
+        return $this->addEvents([$eventId]);
+    }
+
+    /**
+     * string[]
+     */
+    public function getEventIds()
+    {
+        return $this->events;
     }
 }
