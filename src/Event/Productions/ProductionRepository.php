@@ -61,4 +61,15 @@ class ProductionRepository extends AbstractDBALRepository
             ]
         );
     }
+
+    public function removeEvent(string $eventId, ProductionId $productionId)
+    {
+        $this->getConnection()->delete(
+            $this->getTableName()->toNative(),
+            [
+                'event_id' => $eventId,
+                'production_id' => $productionId->toNative(),
+            ]
+        );
+    }
 }

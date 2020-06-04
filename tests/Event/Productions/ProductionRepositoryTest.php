@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
@@ -59,6 +60,36 @@ class ProductionRepositoryTest extends TestCase
 
         $this->expectException(DBALException::class);
         $this->repository->addEvent($eventToAdd, $production);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_remove_event_from_production(): void
+    {
+        $production = $this->givenThereIsAProduction();
+        $eventToKeep = $production->getEventIds()[0];
+        $eventToRemove = $production->getEventIds()[1];
+
+        $this->repository->removeEvent($eventToRemove, $production->getProductionId());
+
+        $persistedProduction = $this->repository->find($production->getProductionId());
+        $this->assertTrue($persistedProduction->containsEvent($eventToKeep));
+        $this->assertFalse($persistedProduction->containsEvent($eventToRemove));
+    }
+
+    /**
+     * @test
+     */
+    public function a_production_without_events_no_longer_exists(): void
+    {
+        $production = $this->givenThereIsAProduction();
+        foreach ($production->getEventIds() as $eventId) {
+            $this->repository->removeEvent($eventId, $production->getProductionId());
+        }
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->find($production->getProductionId());
     }
 
     private function givenThereIsAProduction(string $name = 'foo'): Production
