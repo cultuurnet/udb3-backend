@@ -77,4 +77,24 @@ class ProductionCommandHandlerTest extends TestCase
         }
         $this->assertTrue($production->containsEvent($eventToAdd));
     }
+
+    /**
+     * @test
+     */
+    public function itCannotAddAnEventThatAlreadyBelongsToAnotherProduction():void
+    {
+        $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
+        $name = "A Midsummer Night's Scream 2";
+        $firstProductionCommand = new GroupEventsAsProduction([$eventBelongingToFirstProduction], $name);
+        $this->commandHandler->handle($firstProductionCommand);
+
+        $name = "A Midsummer Night's Scream 3";
+        $secondProductionCommand = new GroupEventsAsProduction([Uuid::uuid4()->toString()], $name);
+        $this->commandHandler->handle($secondProductionCommand);
+
+        $this->expectException(EventCannotBeAddedToProduction::class);
+        $this->commandHandler->handle(
+            new AddEventToProduction($eventBelongingToFirstProduction, $secondProductionCommand->getProductionId())
+        );
+    }
 }
