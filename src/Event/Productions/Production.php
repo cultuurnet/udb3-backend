@@ -74,4 +74,9 @@ final class Production
     {
         return $this->events;
     }
+
+    public function containsEvent(string $eventId): bool
+    {
+        return array_search($eventId, $this->events) !== false;
+    }
 }
