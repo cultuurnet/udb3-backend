@@ -3,6 +3,8 @@
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
+use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
@@ -650,6 +652,7 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
         $commandBus->subscribe($app['place_geocoordinates_command_handler']);
         $commandBus->subscribe($app['event_geocoordinates_command_handler']);
         $commandBus->subscribe($app['organizer_geocoordinates_command_handler']);
+        $commandBus->subscribe($app[ProductionCommandHandler::class]);
     };
 
     if ($commandBus instanceof LazyLoadingCommandBus) {
@@ -662,6 +665,20 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
 };
 
 $app->extend('event_command_bus', $subscribeCoreCommandHandlers);
+
+/** Production */
+
+$app[ProductionRepository::class] = $app->share(
+    function ($app) {
+        return new ProductionRepository($app['dbal_connection']);
+    }
+);
+
+$app[ProductionCommandHandler::class] = $app->share(
+    function ($app) {
+        return new ProductionCommandHandler($app[ProductionRepository::class]);
+    }
+);
 
 /** Place **/
 
