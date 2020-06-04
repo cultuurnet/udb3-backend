@@ -43,4 +43,9 @@ class ProductionCommandHandler extends Udb3CommandHandler
             );
         }
     }
+
+    public function handleRemoveEventFromProduction(RemoveEventFromProduction $command): void
+    {
+        $this->productionRepository->removeEvent($command->getEventId(), $command->getProductionId());
+    }
 }
