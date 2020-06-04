@@ -26,7 +26,7 @@ class ProductionRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function foo(): void
+    public function it_can_persist_productions(): void
     {
         $production = Production::createEmpty('foo');
         $production = $production->addEvent('bar');
