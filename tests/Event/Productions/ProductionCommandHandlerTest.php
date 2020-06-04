@@ -123,4 +123,30 @@ class ProductionCommandHandlerTest extends TestCase
         $this->assertFalse($production->containsEvent($eventToRemove));
         $this->assertCount(2, $production->getEventIds());
     }
+
+    /**
+     * @test
+     */
+    public function itWillNotRemoveEventsFromAnotherProduction()
+    {
+        $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
+        $name = "A Midsummer Night's Scream 2";
+        $firstProductionCommand = new GroupEventsAsProduction([$eventBelongingToFirstProduction], $name);
+        $this->commandHandler->handle($firstProductionCommand);
+
+        $eventBelongingToSecondProduction = Uuid::uuid4()->toString();
+        $name = "A Midsummer Night's Scream 3";
+        $secondProductionCommand = new GroupEventsAsProduction([$eventBelongingToSecondProduction], $name);
+        $this->commandHandler->handle($secondProductionCommand);
+
+        $this->commandHandler->handle(
+            new RemoveEventFromProduction($eventBelongingToFirstProduction, $secondProductionCommand->getProductionId())
+        );
+
+        $firstProduction = $this->productionRepository->find($firstProductionCommand->getProductionId());
+        $this->assertTrue($firstProduction->containsEvent($eventBelongingToFirstProduction));
+
+        $secondProduction = $this->productionRepository->find($secondProductionCommand->getProductionId());
+        $this->assertTrue($secondProduction->containsEvent($eventBelongingToSecondProduction));
+    }
 }
