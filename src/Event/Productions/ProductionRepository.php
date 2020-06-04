@@ -18,15 +18,7 @@ class ProductionRepository extends AbstractDBALRepository
     public function add(Production $production)
     {
         foreach ($production->getEventIds() as $eventId) {
-            $this->getConnection()->insert(
-                $this->getTableName()->toNative(),
-                [
-                    'event_id' => $eventId,
-                    'production_id' => $production->getProductionId()->toNative(),
-                    'name' => $production->getName(),
-                    'added_at' => Chronos::now()->format(DATE_ATOM),
-                ]
-            );
+            $this->addEvent($eventId, $production);
         }
     }
 
@@ -54,5 +46,19 @@ class ProductionRepository extends AbstractDBALRepository
         }
 
         return $production;
+    }
+
+    public function addEvent(string $eventId, Production $production)
+    {
+        $addedAt = Chronos::now();
+        $this->getConnection()->insert(
+            $this->getTableName()->toNative(),
+            [
+                'event_id' => $eventId,
+                'production_id' => $production->getProductionId()->toNative(),
+                'name' => $production->getName(),
+                'added_at' => $addedAt->format(DATE_ATOM),
+            ]
+        );
     }
 }
