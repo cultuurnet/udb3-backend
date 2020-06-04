@@ -8,18 +8,30 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 class GroupEventsAsProduction implements AuthorizableCommandInterface
 {
     /**
-     * @var Production
+     * @var string[]
      */
-    private $production;
+    private $eventIds;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var ProductionId
+     */
+    private $productionId;
 
     public function __construct(array $eventIds, string $name)
     {
-        $this->production = Production::createEmpty($name)->addEvents($eventIds);
+        $this->eventIds = $eventIds;
+        $this->name = $name;
+        $this->productionId = ProductionId::generate();
     }
 
     public function getItemId()
     {
-        return $this->production->getProductionId()->toNative();
+        return $this->getProductionId()->toNative();
     }
 
     public function getPermission()
@@ -27,8 +39,21 @@ class GroupEventsAsProduction implements AuthorizableCommandInterface
         Permission::PRODUCTIES_AANMAKEN();
     }
 
-    public function getProduction(): Production
+    /**
+     * @return string[]
+     */
+    public function getEventIds(): array
     {
-        return $this->production;
+        return $this->eventIds;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getProductionId(): ProductionId
+    {
+        return $this->productionId;
     }
 }

@@ -16,8 +16,13 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->productionRepository = $productionRepository;
     }
 
-    public function handleGroupEventsAsProduction(GroupEventsAsProduction $groupEventsAsProduction): void
+    public function handleGroupEventsAsProduction(GroupEventsAsProduction $command): void
     {
-        $this->productionRepository->add($groupEventsAsProduction->getProduction());
+        $production = new Production(
+            $command->getProductionId(),
+            $command->getName(),
+            $command->getEventIds()
+        );
+        $this->productionRepository->add($production);
     }
 }
