@@ -28,13 +28,19 @@ class ProductionRepositoryTest extends TestCase
      */
     public function it_can_persist_productions(): void
     {
+        $production = $this->givenThereIsAProduction();
+        $result = $this->repository->find($production->getProductionId());
+        $this->assertEquals($production, $result);
+    }
+
+    private function givenThereIsAProduction(): Production
+    {
         $production = Production::createEmpty('foo');
         $production = $production->addEvent('bar');
         $production = $production->addEvent('baz');
 
         $this->repository->add($production);
-        $result = $this->repository->find($production->getProductionId());
 
-        $this->assertEquals($production, $result);
+        return $production;
     }
 }
