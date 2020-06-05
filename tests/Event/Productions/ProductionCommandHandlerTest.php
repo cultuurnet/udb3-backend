@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
@@ -32,7 +33,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCanGroupEventsAsProduction(): void
+    public function it_can_group_events_as_production(): void
     {
         $name = "A Midsummer Night's Scream";
         $events = [
@@ -53,7 +54,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCanAddEventToProduction(): void
+    public function it_can_add_event_to_production(): void
     {
         $name = "A Midsummer Night's Scream 2";
         $eventToAdd = Uuid::uuid4()->toString();
@@ -81,7 +82,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCannotAddAnEventThatAlreadyBelongsToAnotherProduction():void
+    public function it_cannot_add_an_event_that_already_belongs_to_another_production():void
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
@@ -101,7 +102,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCanRemoveAnEventFromAProduction(): void
+    public function it_can_remove_an_event_from_aproduction(): void
     {
         $name = "A Midsummer Night's Scream 2";
         $eventToRemove = Uuid::uuid4()->toString();
@@ -127,7 +128,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itWillNotRemoveEventsFromAnotherProduction()
+    public function it_will_not_remove_events_from_another_production()
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
@@ -148,5 +149,50 @@ class ProductionCommandHandlerTest extends TestCase
 
         $secondProduction = $this->productionRepository->find($secondProductionCommand->getProductionId());
         $this->assertTrue($secondProduction->containsEvent($eventBelongingToSecondProduction));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_merge_productions()
+    {
+        $event1 = Uuid::uuid4()->toString();
+        $name = "I know what you did last Midsummer Night";
+        $fromProductionCommand = new GroupEventsAsProduction([$event1], $name);
+        $this->commandHandler->handle($fromProductionCommand);
+
+        $event2 = Uuid::uuid4()->toString();
+        $name = "I know what you did last Midsummer Night's Dream";
+        $toProductionCommand = new GroupEventsAsProduction([$event2], $name);
+        $this->commandHandler->handle($toProductionCommand);
+
+        $this->commandHandler->handle(
+            new MergeProductions($fromProductionCommand->getProductionId(), $toProductionCommand->getProductionId())
+        );
+
+        $resultingProduction = $this->productionRepository->find($toProductionCommand->getProductionId());
+        $this->assertTrue($resultingProduction->containsEvent($event1));
+        $this->assertTrue($resultingProduction->containsEvent($event2));
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->productionRepository->find($fromProductionCommand->getProductionId());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_merge_to_unknown_production()
+    {
+        $event1 = Uuid::uuid4()->toString();
+        $name = "I know what you did last Midsummer Night";
+        $fromProductionCommand = new GroupEventsAsProduction([$event1], $name);
+        $this->commandHandler->handle($fromProductionCommand);
+
+        $toProductionId = ProductionId::generate();
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->commandHandler->handle(
+            new MergeProductions($fromProductionCommand->getProductionId(), $toProductionId)
+        );
     }
 }

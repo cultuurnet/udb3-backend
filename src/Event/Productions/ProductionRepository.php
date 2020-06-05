@@ -72,4 +72,20 @@ class ProductionRepository extends AbstractDBALRepository
             ]
         );
     }
+
+    public function moveEvents(ProductionId $from, Production $to)
+    {
+        $addedAt = Chronos::now();
+        $this->getConnection()->update(
+            $this->getTableName()->toNative(),
+            [
+                'production_id' => $to->getProductionId()->toNative(),
+                'name' => $to->getName(),
+                'added_at' => $addedAt->format(DATE_ATOM),
+            ],
+            [
+                'production_id' => $from->toNative(),
+            ]
+        );
+    }
 }

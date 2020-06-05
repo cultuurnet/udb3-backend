@@ -92,6 +92,26 @@ class ProductionRepositoryTest extends TestCase
         $this->repository->find($production->getProductionId());
     }
 
+    /**
+     * @test
+     */
+    public function it_can_move_events_to_other_production(): void
+    {
+        $fromProduction = $this->givenThereIsAProduction('foo');
+        $toProduction = $this->givenThereIsAProduction('bar');
+        $eventsToMove = $fromProduction->getEventIds();
+
+        $this->repository->moveEvents($fromProduction->getProductionId(), $toProduction);
+
+        $resultingProduction = $this->repository->find($toProduction->getProductionId());
+        foreach($eventsToMove as $eventToMove) {
+            $this->assertTrue($resultingProduction->containsEvent($eventToMove));
+        }
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->find($fromProduction->getProductionId());
+    }
+
     private function givenThereIsAProduction(string $name = 'foo'): Production
     {
         $production = Production::createEmpty($name);
