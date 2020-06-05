@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Rhumsaa\Uuid\Uuid;
 
 class ProductionTest extends TestCase
 {
@@ -39,5 +40,19 @@ class ProductionTest extends TestCase
         $production = Production::createEmpty(' ' . $name . '   ');
 
         $this->assertEquals($name,  $production->getName());
+    }
+
+    /**
+     * @Test
+     */
+    public function it_knows_if_it_contains_a_certain_event(): void
+    {
+        $name = 'A Hose By Any Other Name - Gardening with Romeo & Juliet';
+        $eventInProduction = Uuid::uuid4()->toString();
+        $eventNotInProduction = Uuid::uuid4()->toString();
+        $production = Production::createEmpty($name)->addEvent($eventInProduction);
+
+        $this->assertTrue($production->containsEvent($eventInProduction));
+        $this->assertFalse($production->containsEvent($eventNotInProduction));
     }
 }
