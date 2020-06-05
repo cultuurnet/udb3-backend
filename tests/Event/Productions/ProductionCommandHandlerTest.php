@@ -177,4 +177,22 @@ class ProductionCommandHandlerTest extends TestCase
         $this->expectException(EntityNotFoundException::class);
         $this->productionRepository->find($fromProductionCommand->getProductionId());
     }
+
+    /**
+     * @test
+     */
+    public function itWillNotMergeToUnknownProduction()
+    {
+        $event1 = Uuid::uuid4()->toString();
+        $name = "I know what you did last Midsummer Night";
+        $fromProductionCommand = new GroupEventsAsProduction([$event1], $name);
+        $this->commandHandler->handle($fromProductionCommand);
+
+        $toProductionId = ProductionId::generate();
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->commandHandler->handle(
+            new MergeProductions($fromProductionCommand->getProductionId(), $toProductionId)
+        );
+    }
 }
