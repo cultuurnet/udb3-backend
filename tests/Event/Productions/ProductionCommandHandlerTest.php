@@ -33,7 +33,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCanGroupEventsAsProduction(): void
+    public function it_can_group_events_as_production(): void
     {
         $name = "A Midsummer Night's Scream";
         $events = [
@@ -54,7 +54,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCanAddEventToProduction(): void
+    public function it_can_add_event_to_production(): void
     {
         $name = "A Midsummer Night's Scream 2";
         $eventToAdd = Uuid::uuid4()->toString();
@@ -82,7 +82,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCannotAddAnEventThatAlreadyBelongsToAnotherProduction():void
+    public function it_cannot_add_an_event_that_already_belongs_to_another_production():void
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
@@ -102,7 +102,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCanRemoveAnEventFromAProduction(): void
+    public function it_can_remove_an_event_from_aproduction(): void
     {
         $name = "A Midsummer Night's Scream 2";
         $eventToRemove = Uuid::uuid4()->toString();
@@ -128,7 +128,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itWillNotRemoveEventsFromAnotherProduction()
+    public function it_will_not_remove_events_from_another_production()
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
@@ -154,7 +154,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itCanMergeProductions()
+    public function it_can_merge_productions()
     {
         $event1 = Uuid::uuid4()->toString();
         $name = "I know what you did last Midsummer Night";
@@ -181,7 +181,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function itWillNotMergeToUnknownProduction()
+    public function it_will_not_merge_to_unknown_production()
     {
         $event1 = Uuid::uuid4()->toString();
         $name = "I know what you did last Midsummer Night";
