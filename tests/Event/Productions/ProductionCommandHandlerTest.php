@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
@@ -148,5 +149,32 @@ class ProductionCommandHandlerTest extends TestCase
 
         $secondProduction = $this->productionRepository->find($secondProductionCommand->getProductionId());
         $this->assertTrue($secondProduction->containsEvent($eventBelongingToSecondProduction));
+    }
+
+    /**
+     * @test
+     */
+    public function itCanMergeProductions()
+    {
+        $event1 = Uuid::uuid4()->toString();
+        $name = "I know what you did last Midsummer Night";
+        $fromProductionCommand = new GroupEventsAsProduction([$event1], $name);
+        $this->commandHandler->handle($fromProductionCommand);
+
+        $event2 = Uuid::uuid4()->toString();
+        $name = "I know what you did last Midsummer Night's Dream";
+        $toProductionCommand = new GroupEventsAsProduction([$event2], $name);
+        $this->commandHandler->handle($toProductionCommand);
+
+        $this->commandHandler->handle(
+            new MergeProductions($fromProductionCommand->getProductionId(), $toProductionCommand->getProductionId())
+        );
+
+        $resultingProduction = $this->productionRepository->find($toProductionCommand->getProductionId());
+        $this->assertTrue($resultingProduction->containsEvent($event1));
+        $this->assertTrue($resultingProduction->containsEvent($event2));
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->productionRepository->find($fromProductionCommand->getProductionId());
     }
 }

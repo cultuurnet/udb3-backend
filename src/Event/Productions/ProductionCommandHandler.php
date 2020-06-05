@@ -48,4 +48,10 @@ class ProductionCommandHandler extends Udb3CommandHandler
     {
         $this->productionRepository->removeEvent($command->getEventId(), $command->getProductionId());
     }
+
+    public function handleMergeProductions(MergeProductions $command): void
+    {
+        $toProduction = $this->productionRepository->find($command->getTo());
+        $this->productionRepository->moveEvents($command->getFrom(), $toProduction);
+    }
 }
