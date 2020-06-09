@@ -23,11 +23,15 @@ class CreateProductionValidator implements DataValidatorInterface
     private function validateName(array $data): array
     {
         if (!isset($data['name'])) {
-            return ["Property 'name' is required"];
+            return [
+                ['name' => 'Required but could not be found'],
+            ];
         }
 
         if (empty(trim($data['name']))) {
-            return ["Property 'name' cannot be empty"];
+            return [
+                ['name' => 'Cannot be empty'],
+            ];
         }
 
         return [];
@@ -36,11 +40,15 @@ class CreateProductionValidator implements DataValidatorInterface
     private function validateEvents(array $data): array
     {
         if (!isset($data['eventIds'])) {
-            return ["Property 'eventIds' is required"];
+            return [
+                ['eventIds' => 'Required but could not be found'],
+            ];
         }
 
         if (count($data['eventIds']) < 2) {
-            return ["At least two event ids should be provided"];
+            return [
+                ['eventIds' => 'At least two events should be provided'],
+            ];
         }
 
         return [];
