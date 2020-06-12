@@ -21,10 +21,19 @@ class ProductionsWriteControllerTest extends TestCase
      */
     private $controller;
 
+    /**
+     * @var CreateProductionValidator
+     */
+    private $validator;
+
     protected function setUp(): void
     {
         $this->commandBus = $this->createMock(CommandBusInterface::class);
-        $this->controller = new ProductionsWriteController($this->commandBus);
+        $this->validator = new CreateProductionValidator();
+        $this->controller = new ProductionsWriteController(
+            $this->commandBus,
+            $this->validator
+        );
     }
 
     /**

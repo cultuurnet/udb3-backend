@@ -14,14 +14,24 @@ class ProductionsWriteController
      */
     private $commandBus;
 
-    public function __construct(CommandBusInterface $commandBus)
-    {
+    /**
+     * @var CreateProductionValidator
+     */
+    private $validator;
+
+    public function __construct(
+        CommandBusInterface $commandBus,
+        CreateProductionValidator $validator
+    ) {
         $this->commandBus = $commandBus;
+        $this->validator = $validator;
     }
 
     public function create(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
+
+        $this->validator->validate($data);
 
         $command = new GroupEventsAsProduction(
             $data['eventIds'],

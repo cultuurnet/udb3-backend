@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -13,7 +14,10 @@ class ProductionControllerProvider implements ControllerProviderInterface
     {
         $app[ProductionsWriteController::class] = $app->share(
             function (Application $app) {
-                return new ProductionsWriteController($app['event_command_bus']);
+                return new ProductionsWriteController(
+                    $app['event_command_bus'],
+                    new CreateProductionValidator()
+                );
             }
         );
 
