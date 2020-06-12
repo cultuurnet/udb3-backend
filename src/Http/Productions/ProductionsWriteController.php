@@ -3,7 +3,9 @@
 namespace CultuurNet\UDB3\Http\Productions;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
+use CultuurNet\UDB3\Event\Productions\ProductionId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,6 +38,20 @@ class ProductionsWriteController
         $command = new GroupEventsAsProduction(
             $data['eventIds'],
             $data['name']
+        );
+
+        $this->commandBus->dispatch($command);
+
+        return new Response('', 201);
+    }
+
+    public function addEventToProduction(
+        string $productionId,
+        string $eventId
+    ): Response {
+        $command = new AddEventToProduction(
+            $eventId,
+            ProductionId::fromNative($productionId)
         );
 
         $this->commandBus->dispatch($command);
