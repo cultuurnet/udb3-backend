@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Http\Productions;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -62,6 +63,23 @@ class ProductionsWriteControllerTest extends TestCase
                 $this->assertEquals($expectedEvents, $command->getEventIds());
             }
         );
+        $this->controller->create($request);
+    }
+
+    /**
+     * @test
+     */
+    public function it_validates_incoming_data(): void
+    {
+        $request = $this->buildRequestWithBody(
+            [
+                'name' => '',
+                'eventIds' => []
+            ]
+        );
+
+        $this->commandBus->expects($this->never())->method('dispatch');
+        $this->expectException(DataValidationException::class);
         $this->controller->create($request);
     }
 
