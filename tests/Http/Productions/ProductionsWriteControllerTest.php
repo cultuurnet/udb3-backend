@@ -69,7 +69,7 @@ class ProductionsWriteControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_validates_incoming_data(): void
+    public function it_validates_incoming_data_to_create_a_production(): void
     {
         $request = $this->buildRequestWithBody(
             [

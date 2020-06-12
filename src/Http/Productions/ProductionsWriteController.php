@@ -17,21 +17,21 @@ class ProductionsWriteController
     /**
      * @var CreateProductionValidator
      */
-    private $validator;
+    private $createProductionValidator;
 
     public function __construct(
         CommandBusInterface $commandBus,
-        CreateProductionValidator $validator
+        CreateProductionValidator $createProductionValidator
     ) {
         $this->commandBus = $commandBus;
-        $this->validator = $validator;
+        $this->createProductionValidator = $createProductionValidator;
     }
 
     public function create(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
 
-        $this->validator->validate($data);
+        $this->createProductionValidator->validate($data);
 
         $command = new GroupEventsAsProduction(
             $data['eventIds'],
