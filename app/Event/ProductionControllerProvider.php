@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
 use Silex\Application;
@@ -25,5 +26,6 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
         $controllers->post('/', ProductionsWriteController::class . ':create');
         $controllers->put('/{productionId}/events/{eventId}', ProductionsWriteController::class . ':addEventToProduction');
+        $controllers->delete('/{productionId}/events/{eventId}', RemoveEventFromProduction::class . ':removeEventFromProduction');
     }
 }
