@@ -243,6 +243,7 @@ $app->mount('/', new \CultuurNet\UDB3\Silex\Role\RoleControllerProvider());
 $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvider());
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
 $app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProvider());
+$app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControllerProvider());
 
 $app->get(
     '/user',
