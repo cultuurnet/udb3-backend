@@ -4,7 +4,9 @@ namespace CultuurNet\UDB3\Http\Productions;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
+use CultuurNet\UDB3\Event\Productions\ProductionId;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
@@ -69,7 +71,7 @@ class ProductionsWriteControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_validates_incoming_data(): void
+    public function it_validates_incoming_data_to_create_a_production(): void
     {
         $request = $this->buildRequestWithBody(
             [
@@ -81,6 +83,22 @@ class ProductionsWriteControllerTest extends TestCase
         $this->commandBus->expects($this->never())->method('dispatch');
         $this->expectException(DataValidationException::class);
         $this->controller->create($request);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_add_an_event_to_an_existing_production(): void
+    {
+        $productionId = ProductionId::generate();
+        $eventId = Uuid::uuid4();
+        $this->commandBus->expects($this->once())->method('dispatch')->willReturnCallback(
+            function (AddEventToProduction $command) use ($productionId, $eventId) {
+                $this->assertEquals($productionId, $command->getProductionId());
+                $this->assertEquals($eventId, $command->getEventId());
+            }
+        );
+        $this->controller->addEventToProduction($productionId->toNative(), $eventId);
     }
 
     private function buildRequestWithBody(array $body): Request
