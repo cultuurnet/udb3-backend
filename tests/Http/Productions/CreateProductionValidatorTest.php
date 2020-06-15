@@ -39,25 +39,48 @@ class CreateProductionValidatorTest extends TestCase
      * @test
      * @dataProvider invalidData
      */
-    public function it_fails_on_invalid_data(array $data): void
+    public function it_fails_on_invalid_data(array $data, array $expectedMessages): void
     {
-        $this->expectException(DataValidationException::class);
-        $this->validator->validate($data);
+        $validationMessages = [];
+
+        try {
+            $this->validator->validate($data);
+        } catch (DataValidationException $e) {
+            $validationMessages = $e->getValidationMessages();
+        }
+
+        $this->assertEquals(
+            $expectedMessages,
+            $validationMessages
+        );
     }
 
     public function invalidData(): array
     {
         return [
+            'empty payload' => [
+                [],
+                [
+                    'name' => 'Required but could not be found',
+                    'eventIds' => 'Required but could not be found',
+                ],
+            ],
             'Without events' => [
                 [
                     'name' => 'foo',
                 ],
+                [
+                    'eventIds' => 'Required but could not be found',
+                ]
             ],
             'With empty events' => [
                 [
                     'name' => 'foo',
                     'eventIds' => [],
                 ],
+                [
+                    'eventIds' => 'At least two events should be provided',
+                ]
             ],
             'With one event' => [
                 [
@@ -66,6 +89,9 @@ class CreateProductionValidatorTest extends TestCase
                         Uuid::uuid4()->toString(),
                     ],
                 ],
+                [
+                    'eventIds' => 'At least two events should be provided',
+                ]
             ],
             'Without name' => [
                 [
@@ -74,6 +100,9 @@ class CreateProductionValidatorTest extends TestCase
                         Uuid::uuid4()->toString(),
                     ],
                 ],
+                [
+                    'name' => 'Required but could not be found',
+                ]
             ],
             'With empty name' => [
                 [
@@ -83,6 +112,9 @@ class CreateProductionValidatorTest extends TestCase
                         Uuid::uuid4()->toString(),
                     ],
                 ],
+                [
+                    'name' => 'Cannot be empty',
+                ]
             ],
         ];
     }
