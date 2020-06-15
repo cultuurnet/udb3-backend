@@ -24,13 +24,13 @@ class CreateProductionValidator implements DataValidatorInterface
     {
         if (!isset($data['name'])) {
             return [
-                ['name' => 'Required but could not be found'],
+                'name' => 'Required but could not be found',
             ];
         }
 
         if (empty(trim($data['name']))) {
             return [
-                ['name' => 'Cannot be empty'],
+                'name' => 'Cannot be empty',
             ];
         }
 
@@ -41,13 +41,13 @@ class CreateProductionValidator implements DataValidatorInterface
     {
         if (!isset($data['eventIds'])) {
             return [
-                ['eventIds' => 'Required but could not be found'],
+                'eventIds' => 'Required but could not be found',
             ];
         }
 
         if (count($data['eventIds']) < 2) {
             return [
-                ['eventIds' => 'At least two events should be provided'],
+                'eventIds' => 'At least two events should be provided',
             ];
         }
 
