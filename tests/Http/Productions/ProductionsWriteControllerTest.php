@@ -62,6 +62,7 @@ class ProductionsWriteControllerTest extends TestCase
         $this->commandBus->record();
         $this->controller->create($request);
 
+        $this->assertCount(1, $this->commandBus->getRecordedCommands());
         $recordedCommand = $this->commandBus->getRecordedCommands()[0];
         $this->assertInstanceOf(GroupEventsAsProduction::class, $recordedCommand);
         $this->assertEquals($name, $recordedCommand->getName());
