@@ -42,7 +42,7 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ];
 
-        $command = new GroupEventsAsProduction($events, $name);
+        $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
 
         $createdProduction = $this->productionRepository->find($command->getProductionId());
@@ -64,7 +64,7 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ];
 
-        $command = new GroupEventsAsProduction($events, $name);
+        $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
 
 
@@ -86,11 +86,11 @@ class ProductionCommandHandlerTest extends TestCase
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
-        $firstProductionCommand = new GroupEventsAsProduction([$eventBelongingToFirstProduction], $name);
+        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction], $name);
         $this->commandHandler->handle($firstProductionCommand);
 
         $name = "A Midsummer Night's Scream 3";
-        $secondProductionCommand = new GroupEventsAsProduction([Uuid::uuid4()->toString()], $name);
+        $secondProductionCommand = GroupEventsAsProduction::withProductionName([Uuid::uuid4()->toString()], $name);
         $this->commandHandler->handle($secondProductionCommand);
 
         $this->expectException(EventCannotBeAddedToProduction::class);
@@ -112,7 +112,7 @@ class ProductionCommandHandlerTest extends TestCase
             $eventToRemove,
         ];
 
-        $command = new GroupEventsAsProduction($events, $name);
+        $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
 
 
@@ -132,12 +132,12 @@ class ProductionCommandHandlerTest extends TestCase
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
-        $firstProductionCommand = new GroupEventsAsProduction([$eventBelongingToFirstProduction], $name);
+        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction], $name);
         $this->commandHandler->handle($firstProductionCommand);
 
         $eventBelongingToSecondProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 3";
-        $secondProductionCommand = new GroupEventsAsProduction([$eventBelongingToSecondProduction], $name);
+        $secondProductionCommand = GroupEventsAsProduction::withProductionName(h[$eventBelongingToSecondProduction], $name);
         $this->commandHandler->handle($secondProductionCommand);
 
         $this->commandHandler->handle(
@@ -158,12 +158,12 @@ class ProductionCommandHandlerTest extends TestCase
     {
         $event1 = Uuid::uuid4()->toString();
         $name = "I know what you did last Midsummer Night";
-        $fromProductionCommand = new GroupEventsAsProduction([$event1], $name);
+        $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);
         $this->commandHandler->handle($fromProductionCommand);
 
         $event2 = Uuid::uuid4()->toString();
         $name = "I know what you did last Midsummer Night's Dream";
-        $toProductionCommand = new GroupEventsAsProduction([$event2], $name);
+        $toProductionCommand = GroupEventsAsProduction::withProductionName([$event2], $name);
         $this->commandHandler->handle($toProductionCommand);
 
         $this->commandHandler->handle(
@@ -185,7 +185,7 @@ class ProductionCommandHandlerTest extends TestCase
     {
         $event1 = Uuid::uuid4()->toString();
         $name = "I know what you did last Midsummer Night";
-        $fromProductionCommand = new GroupEventsAsProduction([$event1], $name);
+        $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);
         $this->commandHandler->handle($fromProductionCommand);
 
         $toProductionId = ProductionId::generate();

@@ -37,7 +37,7 @@ class ProductionsWriteController
 
         $this->createProductionValidator->validate($data);
 
-        $command = new GroupEventsAsProduction(
+        $command = GroupEventsAsProduction::withProductionName(
             $data['eventIds'],
             $data['name']
         );
