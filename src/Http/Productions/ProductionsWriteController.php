@@ -57,7 +57,7 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 201);
+        return new Response('', 200);
     }
 
     public function removeEventFromProduction(
@@ -71,6 +71,6 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 201);
+        return new Response('', 200);
     }
 }
