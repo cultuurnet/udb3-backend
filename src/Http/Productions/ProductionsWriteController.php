@@ -6,6 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
+use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,6 +57,20 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 201);
+        return new Response('', 200);
+    }
+
+    public function removeEventFromProduction(
+        string $productionId,
+        string $eventId
+    ): Response {
+        $command = new RemoveEventFromProduction(
+            $eventId,
+            ProductionId::fromNative($productionId)
+        );
+
+        $this->commandBus->dispatch($command);
+
+        return new Response('', 200);
     }
 }

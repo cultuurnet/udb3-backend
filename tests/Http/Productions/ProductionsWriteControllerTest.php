@@ -7,6 +7,7 @@ use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
+use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
@@ -99,6 +100,22 @@ class ProductionsWriteControllerTest extends TestCase
             }
         );
         $this->controller->addEventToProduction($productionId->toNative(), $eventId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_remove_an_event_from_an_existing_production(): void
+    {
+        $productionId = ProductionId::generate();
+        $eventId = Uuid::uuid4();
+        $this->commandBus->expects($this->once())->method('dispatch')->willReturnCallback(
+            function (RemoveEventFromProduction $command) use ($productionId, $eventId) {
+                $this->assertEquals($productionId, $command->getProductionId());
+                $this->assertEquals($eventId, $command->getEventId());
+            }
+        );
+        $this->controller->removeEventFromProduction($productionId->toNative(), $eventId);
     }
 
     private function buildRequestWithBody(array $body): Request
