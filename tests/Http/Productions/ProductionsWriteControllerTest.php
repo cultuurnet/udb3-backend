@@ -95,10 +95,10 @@ class ProductionsWriteControllerTest extends TestCase
         $this->commandBus->record();
         $this->controller->addEventToProduction($productionId->toNative(), $eventId);
 
-        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
-        $this->assertInstanceOf(AddEventToProduction::class, $recordedCommand);
-        $this->assertEquals($productionId, $recordedCommand->getProductionId());
-        $this->assertEquals($eventId, $recordedCommand->getEventId());
+        $this->assertEquals(
+            [new AddEventToProduction($eventId, $productionId)],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
@@ -112,10 +112,10 @@ class ProductionsWriteControllerTest extends TestCase
         $this->commandBus->record();
         $this->controller->removeEventFromProduction($productionId->toNative(), $eventId);
 
-        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
-        $this->assertInstanceOf(RemoveEventFromProduction::class, $recordedCommand);
-        $this->assertEquals($productionId, $recordedCommand->getProductionId());
-        $this->assertEquals($eventId, $recordedCommand->getEventId());
+        $this->assertEquals(
+            [new RemoveEventFromProduction($eventId, $productionId)],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
@@ -129,10 +129,10 @@ class ProductionsWriteControllerTest extends TestCase
         $this->commandBus->record();
         $this->controller->mergeProductions($toProductionId->toNative(), $fromProductionId->toNative());
 
-        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
-        $this->assertInstanceOf(MergeProductions::class, $recordedCommand);
-        $this->assertEquals($fromProductionId, $recordedCommand->getFrom());
-        $this->assertEquals($toProductionId, $recordedCommand->getTo());
+        $this->assertEquals(
+            [new MergeProductions($fromProductionId, $toProductionId)],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     private function buildRequestWithBody(array $body): Request
