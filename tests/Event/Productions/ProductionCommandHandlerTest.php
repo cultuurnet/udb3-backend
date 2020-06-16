@@ -137,7 +137,7 @@ class ProductionCommandHandlerTest extends TestCase
 
         $eventBelongingToSecondProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 3";
-        $secondProductionCommand = GroupEventsAsProduction::withProductionName(h[$eventBelongingToSecondProduction], $name);
+        $secondProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToSecondProduction], $name);
         $this->commandHandler->handle($secondProductionCommand);
 
         $this->commandHandler->handle(
