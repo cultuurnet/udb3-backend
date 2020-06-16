@@ -27,5 +27,6 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers->post('/', ProductionsWriteController::class . ':create');
         $controllers->put('/{productionId}/events/{eventId}', ProductionsWriteController::class . ':addEventToProduction');
         $controllers->delete('/{productionId}/events/{eventId}', ProductionsWriteController::class . ':removeEventFromProduction');
+        $controllers->post('/{productionId}/merge/{fromProductionId}', ProductionsWriteController::class . ':mergeProductions');
     }
 }

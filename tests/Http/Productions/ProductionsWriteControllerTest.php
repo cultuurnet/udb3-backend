@@ -6,6 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
+use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -116,6 +117,22 @@ class ProductionsWriteControllerTest extends TestCase
             }
         );
         $this->controller->removeEventFromProduction($productionId->toNative(), $eventId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_merge_productions(): void
+    {
+        $fromProductionId = ProductionId::generate();
+        $toProductionId = ProductionId::generate();
+        $this->commandBus->expects($this->once())->method('dispatch')->willReturnCallback(
+            function (MergeProductions $command) use ($fromProductionId, $toProductionId) {
+                $this->assertEquals($fromProductionId, $command->getFrom());
+                $this->assertEquals($toProductionId, $command->getTo());
+            }
+        );
+        $this->controller->mergeProductions($toProductionId->toNative(), $fromProductionId->toNative());
     }
 
     private function buildRequestWithBody(array $body): Request
