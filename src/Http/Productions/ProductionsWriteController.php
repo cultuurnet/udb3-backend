@@ -58,7 +58,7 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 200);
+        return new Response('', 204);
     }
 
     public function removeEventFromProduction(
@@ -72,7 +72,7 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 200);
+        return new Response('', 204);
     }
 
     public function mergeProductions(
@@ -86,6 +86,6 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 200);
+        return new Response('', 204);
     }
 }
