@@ -22,11 +22,20 @@ class GroupEventsAsProduction implements AuthorizableCommandInterface
      */
     private $productionId;
 
-    public function __construct(array $eventIds, string $name)
+    public function __construct(ProductionId $productionId, array $eventIds, string $name)
     {
         $this->eventIds = $eventIds;
         $this->name = $name;
-        $this->productionId = ProductionId::generate();
+        $this->productionId = $productionId;
+    }
+
+    public static function withProductionName(array $eventIds, string $name): self
+    {
+        return new self(
+            ProductionId::generate(),
+            $eventIds,
+            $name
+        );
     }
 
     public function getItemId()

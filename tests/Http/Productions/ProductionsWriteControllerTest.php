@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
+use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ProductionsWriteControllerTest extends TestCase
 {
     /**
-     * @var CommandBusInterface | MockObject
+     * @var TraceableCommandBus
      */
     private $commandBus;
 
@@ -32,7 +32,7 @@ class ProductionsWriteControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = new TraceableCommandBus();
         $this->validator = new CreateProductionValidator();
         $this->controller = new ProductionsWriteController(
             $this->commandBus,
@@ -59,14 +59,14 @@ class ProductionsWriteControllerTest extends TestCase
             ]
         );
 
-        $expectedEvents = [$eventId1, $eventId2];
-        $this->commandBus->expects($this->once())->method('dispatch')->willReturnCallback(
-            function (GroupEventsAsProduction $command) use ($name, $expectedEvents) {
-                $this->assertEquals($name, $command->getName());
-                $this->assertEquals($expectedEvents, $command->getEventIds());
-            }
-        );
+        $this->commandBus->record();
         $this->controller->create($request);
+
+        $this->assertCount(1, $this->commandBus->getRecordedCommands());
+        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
+        $this->assertInstanceOf(GroupEventsAsProduction::class, $recordedCommand);
+        $this->assertEquals($name, $recordedCommand->getName());
+        $this->assertEquals([$eventId1, $eventId2], $recordedCommand->getEventIds());
     }
 
     /**
@@ -81,7 +81,6 @@ class ProductionsWriteControllerTest extends TestCase
             ]
         );
 
-        $this->commandBus->expects($this->never())->method('dispatch');
         $this->expectException(DataValidationException::class);
         $this->controller->create($request);
     }
@@ -93,13 +92,14 @@ class ProductionsWriteControllerTest extends TestCase
     {
         $productionId = ProductionId::generate();
         $eventId = Uuid::uuid4();
-        $this->commandBus->expects($this->once())->method('dispatch')->willReturnCallback(
-            function (AddEventToProduction $command) use ($productionId, $eventId) {
-                $this->assertEquals($productionId, $command->getProductionId());
-                $this->assertEquals($eventId, $command->getEventId());
-            }
-        );
+
+        $this->commandBus->record();
         $this->controller->addEventToProduction($productionId->toNative(), $eventId);
+
+        $this->assertEquals(
+            [new AddEventToProduction($eventId, $productionId)],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
@@ -109,13 +109,31 @@ class ProductionsWriteControllerTest extends TestCase
     {
         $productionId = ProductionId::generate();
         $eventId = Uuid::uuid4();
-        $this->commandBus->expects($this->once())->method('dispatch')->willReturnCallback(
-            function (RemoveEventFromProduction $command) use ($productionId, $eventId) {
-                $this->assertEquals($productionId, $command->getProductionId());
-                $this->assertEquals($eventId, $command->getEventId());
-            }
-        );
+
+        $this->commandBus->record();
         $this->controller->removeEventFromProduction($productionId->toNative(), $eventId);
+
+        $this->assertEquals(
+            [new RemoveEventFromProduction($eventId, $productionId)],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_merge_productions(): void
+    {
+        $fromProductionId = ProductionId::generate();
+        $toProductionId = ProductionId::generate();
+
+        $this->commandBus->record();
+        $this->controller->mergeProductions($toProductionId->toNative(), $fromProductionId->toNative());
+
+        $this->assertEquals(
+            [new MergeProductions($fromProductionId, $toProductionId)],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     private function buildRequestWithBody(array $body): Request

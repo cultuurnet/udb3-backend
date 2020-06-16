@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Http\Productions;
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
+use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,7 @@ class ProductionsWriteController
 
         $this->createProductionValidator->validate($data);
 
-        $command = new GroupEventsAsProduction(
+        $command = GroupEventsAsProduction::withProductionName(
             $data['eventIds'],
             $data['name']
         );
@@ -57,7 +58,7 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 200);
+        return new Response('', 204);
     }
 
     public function removeEventFromProduction(
@@ -71,6 +72,20 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 200);
+        return new Response('', 204);
+    }
+
+    public function mergeProductions(
+        string $productionId,
+        string $fromProductionId
+    ): Response {
+        $command = new MergeProductions(
+            ProductionId::fromNative($fromProductionId),
+            ProductionId::fromNative($productionId)
+        );
+
+        $this->commandBus->dispatch($command);
+
+        return new Response('', 204);
     }
 }
