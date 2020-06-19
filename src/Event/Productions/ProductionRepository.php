@@ -88,4 +88,38 @@ class ProductionRepository extends AbstractDBALRepository
             ]
         );
     }
+
+    /**
+     * @param string $keyword
+     * @return Production[]
+     */
+    public function search(string $keyword): array
+    {
+        $sql = 'SELECT production_id, name, GROUP_CONCAT(event_id) as events
+                FROM ' . $this->getTableName()->toNative() . ' 
+                
+                GROUP BY production_id';
+
+        $results = $this->getConnection()->executeQuery(
+            $sql,
+            [
+                'keyword' => $keyword,
+            ]
+        )->fetchAll();
+
+        if (empty($results)) {
+            return [];
+        }
+
+        return array_map(
+            function (array $data) {
+                return new Production(
+                    ProductionId::fromNative($data['production_id']),
+                    $data['name'],
+                    explode(',', $data['events'])
+                );
+            },
+            $results
+        );
+    }
 }
