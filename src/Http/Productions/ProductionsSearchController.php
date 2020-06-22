@@ -22,7 +22,7 @@ class ProductionsSearchController
 
     public function search(Request $request): Response
     {
-        $keyword = $request->get('keyword');
+        $keyword = $request->get('name');
 
         return JsonResponse::create(
             array_map(

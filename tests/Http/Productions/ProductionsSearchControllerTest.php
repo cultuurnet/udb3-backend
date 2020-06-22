@@ -34,7 +34,7 @@ class ProductionsSearchControllerTest extends TestCase
     public function it_returns_an_empty_result_(): void
     {
         $this->repository->expects($this->once())->method('search')->with('foo')->willReturn([]);
-        $response = $this->controller->search(new Request(['keyword' => 'foo']));
+        $response = $this->controller->search(new Request(['name' => 'foo']));
 
         $this->assertEquals([], json_decode($response->getContent(), true));
     }
@@ -54,7 +54,7 @@ class ProductionsSearchControllerTest extends TestCase
         $productions = [new Production($productionId, $name, $events),];
         $this->repository->expects($this->once())->method('search')->with('foo')->willReturn($productions);
 
-        $response = $this->controller->search(new Request(['keyword' => 'foo']));
+        $response = $this->controller->search(new Request(['name' => 'foo']));
 
         $this->assertEquals(
             [
