@@ -97,7 +97,7 @@ class ProductionRepository extends AbstractDBALRepository
     {
         $sql = 'SELECT production_id, name, GROUP_CONCAT(event_id) as events
                 FROM ' . $this->getTableName()->toNative() . ' 
-                
+                WHERE MATCH (name) AGAINST (:keyword)
                 GROUP BY production_id';
 
         $results = $this->getConnection()->executeQuery(
