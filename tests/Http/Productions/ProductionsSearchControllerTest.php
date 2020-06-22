@@ -52,9 +52,9 @@ class ProductionsSearchControllerTest extends TestCase
         ];
 
         $productions = [new Production($productionId, $name, $events),];
-        $this->repository->expects($this->once())->method('search')->with('foo')->willReturn($productions);
+        $this->repository->expects($this->once())->method('search')->with('foo', 15)->willReturn($productions);
 
-        $response = $this->controller->search(new Request(['name' => 'foo']));
+        $response = $this->controller->search(new Request(['name' => 'foo', 'limit' => 15]));
 
         $this->assertEquals(
             [
