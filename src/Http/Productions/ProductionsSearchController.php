@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductionsSearchController
 {
+    private const DEFAULT_SEARCH_RESULTS = 25;
+
     /**
      * @var ProductionRepository
      */
@@ -24,14 +26,15 @@ class ProductionsSearchController
     {
         $keyword = $request->get('name');
 
-        return JsonResponse::create(
-            array_map(
-                function (Production $production) {
-                    return $this->transformProduction($production);
-                },
-                $this->repository->search($keyword)
-            )
+        $serializedProductions = array_map(
+            function (Production $production) {
+                return $this->transformProduction($production);
+            },
+            $this->repository->search($keyword, $request->get('limit', self::DEFAULT_SEARCH_RESULTS))
         );
+
+
+        return JsonResponse::create($serializedProductions);
     }
 
     private function transformProduction(Production $production): array
