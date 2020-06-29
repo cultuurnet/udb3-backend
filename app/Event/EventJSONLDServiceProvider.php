@@ -30,8 +30,10 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     $app['event_jsonld_cache']
                 );
 
+                $productionEnrichedEventRepository = new ProductionEnrichedEventRepository($cachedRepository);
+
                 $broadcastingRepository = new BroadcastingDocumentRepositoryDecorator(
-                    $cachedRepository,
+                    $productionEnrichedEventRepository,
                     $app['event_bus'],
                     new EventFactory(
                         $app['event_iri_generator']
