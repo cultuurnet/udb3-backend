@@ -31,7 +31,7 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
 
             $jsonObject->production = (object) [
                 'id' => $production->getProductionId()->toNative(),
-                'title' => $production->getName()
+                'title' => $production->getName(),
             ];
 
             $jsonObject->production->otherEvents = array_values(array_filter(
@@ -40,12 +40,10 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
                     return $eventId != $id;
                 }
             ));
-
         } catch (EntityNotFoundException $e) {
             $jsonObject->production = null;
         }
 
         return $document->withBody($jsonObject);
     }
-
 }
