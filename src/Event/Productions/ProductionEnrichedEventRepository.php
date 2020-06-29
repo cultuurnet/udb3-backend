@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 
 class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
 {
@@ -13,12 +14,19 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
      */
     private $productionRepository;
 
+    /**
+     * @var IriGeneratorInterface
+     */
+    private $iriGenerator;
+
     public function __construct(
         DocumentRepositoryInterface $repository,
-        ProductionRepository $productionRepository
+        ProductionRepository $productionRepository,
+        IriGeneratorInterface $iriGenerator
     ) {
         parent::__construct($repository);
         $this->productionRepository = $productionRepository;
+        $this->iriGenerator = $iriGenerator;
     }
 
     public function get($id)
@@ -34,12 +42,13 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
                 'title' => $production->getName(),
             ];
 
-            $jsonObject->production->otherEvents = array_values(array_filter(
-                $production->getEventIds(),
-                function (string $eventId) use ($id) {
-                    return $eventId != $id;
+            $otherEvents = [];
+            foreach($production->getEventIds() as $eventId) {
+                if ($eventId !== $id) {
+                    $otherEvents[] = $this->iriGenerator->iri($eventId);
                 }
-            ));
+            }
+            $jsonObject->production->otherEvents = $otherEvents;
         } catch (EntityNotFoundException $e) {
             $jsonObject->production = null;
         }
