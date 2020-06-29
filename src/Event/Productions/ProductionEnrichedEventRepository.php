@@ -24,14 +24,25 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
     public function get($id)
     {
         $document = parent::get($id);
-
         $jsonObject = $document->getBody();
-        $jsonObject->production = null;
 
         try {
             $production = $this->productionRepository->findProductionForEventId($id);
+
+            $jsonObject->production = (object) [
+                'id' => $production->getProductionId()->toNative(),
+                'title' => $production->getName()
+            ];
+
+            $jsonObject->production->otherEvents = array_values(array_filter(
+                $production->getEventIds(),
+                function (string $eventId) use ($id) {
+                    return $eventId != $id;
+                }
+            ));
+
         } catch (EntityNotFoundException $e) {
-            return $document->withBody($jsonObject);
+            $jsonObject->production = null;
         }
 
         return $document->withBody($jsonObject);
