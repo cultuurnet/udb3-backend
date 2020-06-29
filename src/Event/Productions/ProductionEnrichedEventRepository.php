@@ -43,7 +43,7 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
             ];
 
             $otherEvents = [];
-            foreach($production->getEventIds() as $eventId) {
+            foreach ($production->getEventIds() as $eventId) {
                 if ($eventId !== $id) {
                     $otherEvents[] = $this->iriGenerator->iri($eventId);
                 }
