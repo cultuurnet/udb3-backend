@@ -125,4 +125,30 @@ class ProductionRepository extends AbstractDBALRepository
             $results
         );
     }
+
+    public function findProductionForEventId(string $eventId): Production
+    {
+        $results = $this->getConnection()->fetchAll(
+            'SELECT * FROM productions WHERE production_id = (SELECT production_id FROM productions WHERE event_id = :eventId)',
+            [
+                'eventId' => $eventId,
+            ]
+        );
+
+        if (!$results) {
+            throw new EntityNotFoundException('No production found for event with id ' . $eventId);
+        }
+
+        $production = new Production(
+            ProductionId::FromNative($results[0]['production_id']),
+            $results[0]['name'],
+            []
+        );
+
+        foreach ($results as $result) {
+            $production = $production->addEvent($result['event_id']);
+        }
+
+        return $production;
+    }
 }

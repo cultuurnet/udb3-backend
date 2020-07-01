@@ -6,6 +6,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
 use Doctrine\DBAL\DBALException;
+use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -110,6 +111,38 @@ class ProductionRepositoryTest extends TestCase
 
         $this->expectException(EntityNotFoundException::class);
         $this->repository->find($fromProduction->getProductionId());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_find_production_for_event(): void
+    {
+        $event = Uuid::uuid4()->toString();
+        $otherEvent = Uuid::uuid4()->toString();
+        $name = 'FooBar';
+
+        $production = Production::createEmpty($name);
+        $production = $production->addEvent($event);
+        $production = $production->addEvent($otherEvent);
+        $this->repository->add($production);
+
+        $this->givenThereIsAProduction('OtherProduction');
+
+        $production = $this->repository->findProductionForEventId($event);
+        $this->assertEquals($name, $production->getName());
+        $this->assertEquals([$event, $otherEvent], $production->getEventIds());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_if_it_cannot_find_production_for_event(): void
+    {
+        $randomEventId = Uuid::uuid4()->toString();
+
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->findProductionForEventId($randomEventId);
     }
 
     private function givenThereIsAProduction(string $name = 'foo'): Production

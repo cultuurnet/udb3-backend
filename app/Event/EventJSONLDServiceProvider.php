@@ -6,6 +6,8 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Event\Productions\ProductionEnrichedEventRepository;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\EventJsonDocumentLanguageAnalyzer;
@@ -30,8 +32,14 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     $app['event_jsonld_cache']
                 );
 
-                $broadcastingRepository = new BroadcastingDocumentRepositoryDecorator(
+                $productionEnrichedEventRepository = new ProductionEnrichedEventRepository(
                     $cachedRepository,
+                    $app[ProductionRepository::class],
+                    $app['event_iri_generator']
+                );
+
+                $broadcastingRepository = new BroadcastingDocumentRepositoryDecorator(
+                    $productionEnrichedEventRepository,
                     $app['event_bus'],
                     new EventFactory(
                         $app['event_iri_generator']
