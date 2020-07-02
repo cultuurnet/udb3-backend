@@ -22,12 +22,18 @@ class ProductionCommandHandlerTest extends TestCase
      */
     private $commandHandler;
 
+    /**
+     * @var SimilaritiesClient|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $similaritiesClient;
+
     protected function setUp(): void
     {
         $schema = new SchemaConfigurator();
         $schema->configure($this->getConnection()->getSchemaManager());
         $this->productionRepository = new ProductionRepository($this->getConnection());
-        $this->commandHandler = new ProductionCommandHandler($this->productionRepository);
+        $this->similaritiesClient = $this->createMock(SimilaritiesClient::class);
+        $this->commandHandler = new ProductionCommandHandler($this->productionRepository,$this->similaritiesClient);
     }
 
     /**
