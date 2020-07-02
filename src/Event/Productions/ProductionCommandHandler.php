@@ -64,6 +64,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->productionRepository->moveEvents($command->getFrom(), $toProduction);
     }
 
+    public function handleSkipEvents(SkipEvents $command): void
+    {
+        $this->similaritiesClient->skipped(Tuple::fromArray($command->getEventIds()));
+    }
+
     /** @param string $eventId
      * @param ProductionId $productionId
      * @throws \GuzzleHttp\Exception\GuzzleException

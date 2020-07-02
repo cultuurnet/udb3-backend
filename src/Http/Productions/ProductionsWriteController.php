@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
+use CultuurNet\UDB3\Event\Productions\SkipEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -87,5 +88,18 @@ class ProductionsWriteController
         $this->commandBus->dispatch($command);
 
         return new Response('', 204);
+    }
+
+    public function skipEvents(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $this->commandBus->dispatch(
+            new SkipEvents(
+                $data['eventIds']
+            )
+        );
+
+        return new Response('', 200);
     }
 }

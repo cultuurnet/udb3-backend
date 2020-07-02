@@ -40,6 +40,8 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers->delete('/{productionId}/events/{eventId}', ProductionsWriteController::class . ':removeEventFromProduction');
         $controllers->post('/{productionId}/merge/{fromProductionId}', ProductionsWriteController::class . ':mergeProductions');
 
+        $controllers->post('/skipp', ProductionsWriteController::class . ':skipEvents');
+
         return $controllers;
     }
 }

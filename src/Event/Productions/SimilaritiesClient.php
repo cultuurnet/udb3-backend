@@ -43,6 +43,15 @@ class SimilaritiesClient
         );
     }
 
+    public function skipped(Tuple $tuple)
+    {
+        $data['pairs'] = [
+            $tuple->asArray()
+        ];
+
+        $response = $this->client->request(
+            'PATCH',
+            $this->uri . '/blacklist?key=' . $this->key,
             ['json' => $data]
         );
     }

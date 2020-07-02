@@ -20,6 +20,15 @@ class Tuple
         $this->eventTwo = $eventTwo;
     }
 
+    public static function fromArray(array $eventIds) : Tuple
+    {
+        if (!array_key_exists(0, $eventIds) || !array_key_exists(1, $eventIds)) {
+            throw new \InvalidArgumentException();
+        }
+
+        return new self($eventIds[0], $eventIds[1]);
+    }
+
     public function asArray(): array
     {
         return [
