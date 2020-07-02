@@ -46,7 +46,7 @@ class SimilaritiesClient
     public function skipped(Tuple $tuple)
     {
         $data['pairs'] = [
-            $tuple->asArray()
+            $tuple->asArray(),
         ];
 
         $response = $this->client->request(

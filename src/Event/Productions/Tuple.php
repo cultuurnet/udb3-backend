@@ -33,7 +33,7 @@ class Tuple
     {
         return [
             'event1' => $this->eventOne,
-            'event2' => $this->eventTwo
+            'event2' => $this->eventTwo,
         ];
     }
 }
