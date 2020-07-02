@@ -44,6 +44,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         try {
             $this->productionRepository->addEvent($command->getEventId(), $production);
+            $this->grayList($command->getEventId(), $command->getProductionId());
         } catch (DBALException $e) {
             throw EventCannotBeAddedToProduction::becauseItAlreadyBelongsToAnotherProduction(
                 $command->getEventId(),
