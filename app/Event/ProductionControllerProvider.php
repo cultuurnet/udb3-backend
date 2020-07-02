@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
@@ -19,6 +20,14 @@ class ProductionControllerProvider implements ControllerProviderInterface
                 return new ProductionsWriteController(
                     $app['event_command_bus'],
                     new CreateProductionValidator()
+                );
+            }
+        );
+
+        $app[ProductionsSearchController::class] = $app->share(
+            function (Application $app) {
+                return new ProductionsSearchController(
+                    $app[ProductionRepository::class]
                 );
             }
         );
