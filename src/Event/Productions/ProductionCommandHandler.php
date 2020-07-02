@@ -32,7 +32,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
             $command->getEventIds()
         );
         $this->productionRepository->add($production);
-        $this->grayList($command->getEventIds()[0], $command->getProductionId());
+        $this->markAsLinked($command->getEventIds()[0], $command->getProductionId());
     }
 
     public function handleAddEventToProduction(AddEventToProduction $command): void
@@ -44,7 +44,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         try {
             $this->productionRepository->addEvent($command->getEventId(), $production);
-            $this->grayList($command->getEventId(), $command->getProductionId());
+            $this->markAsLinked($command->getEventId(), $command->getProductionId());
         } catch (DBALException $e) {
             throw EventCannotBeAddedToProduction::becauseItAlreadyBelongsToAnotherProduction(
                 $command->getEventId(),
@@ -74,11 +74,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @todo: move logic to event/event handler
      */
-    private function grayList(string $eventId, ProductionId $productionId): void
+    private function markAsLinked(string $eventId, ProductionId $productionId): void
     {
         try {
             $tuples = $this->productionRepository->findTuples($eventId, $productionId);
-            $this->similaritiesClient->grayList($tuples);
+            $this->similaritiesClient->markAsLinked($tuples);
         } catch (EntityNotFoundException $e) {
         }
     }

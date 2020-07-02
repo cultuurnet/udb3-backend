@@ -28,7 +28,7 @@ class SimilaritiesClient
         $this->key = $key;
     }
 
-    public function grayList(array $tuples): void
+    public function markAsLinked(array $tuples): void
     {
         $data['pairs'] = [];
         /** @var Tuple $tuple */
