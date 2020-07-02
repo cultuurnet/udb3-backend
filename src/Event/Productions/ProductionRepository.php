@@ -57,7 +57,7 @@ class ProductionRepository extends AbstractDBALRepository
                 'event_id' => $eventId,
                 'production_id' => $production->getProductionId()->toNative(),
                 'name' => $production->getName(),
-                'added_at' => $addedAt->format(DATE_ATOM),
+                'added_at' => $addedAt->format('Y-m-d'),
             ]
         );
     }
@@ -81,7 +81,7 @@ class ProductionRepository extends AbstractDBALRepository
             [
                 'production_id' => $to->getProductionId()->toNative(),
                 'name' => $to->getName(),
-                'added_at' => $addedAt->format(DATE_ATOM),
+                'added_at' => $addedAt->format('Y-m-d'),
             ],
             [
                 'production_id' => $from->toNative(),
