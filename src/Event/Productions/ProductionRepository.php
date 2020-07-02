@@ -151,4 +151,33 @@ class ProductionRepository extends AbstractDBALRepository
 
         return $production;
     }
+
+    /**
+     * @param string $forEventId
+     * @param ProductionId $inProductionId
+     *
+     * @return Tuple[]
+     * @throws EntityNotFoundException
+     */
+    public function findTuples(string $forEventId, ProductionId $inProductionId): array
+    {
+        $results = $this->getConnection()->fetchAll(
+            'SELECT * FROM productions WHERE production_id = :productionId AND event_id <> :eventId',
+            [
+                'productionId' => $inProductionId->toNative(),
+                'eventId' => $forEventId,
+            ]
+        );
+
+        if (!$results) {
+            throw new EntityNotFoundException('No Tuples found');
+        }
+
+        return array_map(
+            function (array $data) use ($forEventId) {
+                return new Tuple($forEventId, $data['event_id']);
+            },
+            $results
+        );
+    }
 }

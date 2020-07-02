@@ -5,6 +5,7 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
+use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
@@ -673,10 +674,19 @@ $app[ProductionRepository::class] = $app->share(
         return new ProductionRepository($app['dbal_connection']);
     }
 );
+$app[SimilaritiesClient::class] = $app->share(
+    function ($app) {
+        return new SimilaritiesClient(
+            new \GuzzleHttp\Client(),
+            'https://udb-similarities-proxy-test-nu5eme4wwa-ew.a.run.app/v1/events',
+            $app['config']['productions']['key']
+        );
+    }
+);
 
 $app[ProductionCommandHandler::class] = $app->share(
     function ($app) {
-        return new ProductionCommandHandler($app[ProductionRepository::class]);
+        return new ProductionCommandHandler($app[ProductionRepository::class], $app[SimilaritiesClient::class]);
     }
 );
 
