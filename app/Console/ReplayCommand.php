@@ -6,11 +6,14 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventBusInterface;
+use Broadway\Serializer\SerializerInterface;
+use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
+use Doctrine\DBAL\Connection;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,9 +35,14 @@ class ReplayCommand extends AbstractCommand
     const OPTION_CDBID = 'cdbid';
 
     /**
-     * @var EventStreamBuilder
+     * @var Connection
      */
-    private $eventStreamBuilder;
+    private $connection;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $payloadSerializer;
 
     /**
      * @var EventBusInterface
@@ -49,10 +57,11 @@ class ReplayCommand extends AbstractCommand
     /**
      * Note that we pass $config by reference here. We need this because the replay command overrides configuration properties for active subscribers.
      */
-    public function __construct(CommandBusInterface $commandBus, EventStreamBuilder $eventStreamBuilder, EventBusInterface $eventBus, ConfigWriter $configWriter)
+    public function __construct(CommandBusInterface $commandBus, Connection $connection, SerializerInterface $payloadSerializer, EventBusInterface $eventBus, ConfigWriter $configWriter)
     {
         parent::__construct($commandBus);
-        $this->eventStreamBuilder = $eventStreamBuilder;
+        $this->connection = $connection;
+        $this->payloadSerializer = $payloadSerializer;
         $this->eventBus = $eventBus;
         $this->configWriter = $configWriter;
     }
@@ -260,21 +269,26 @@ class ReplayCommand extends AbstractCommand
     ) {
         $startId = $startId !== null ? (int) $startId : 0;
 
-        $this->eventStreamBuilder->build();
+        $eventStream = new EventStream(
+            $this->connection,
+            $this->payloadSerializer,
+            new SimpleInterfaceSerializer(),
+            'event_store'
+        );
 
         if ($startId > 0) {
-            $this->eventStreamBuilder->withStartId($startId);
+            $eventStream = $eventStream->withStartId($startId);
         }
 
         if ($aggregateType) {
-            $this->eventStreamBuilder->withAggregateType($aggregateType);
+            $eventStream = $eventStream->withAggregateType($aggregateType);
         }
 
         if ($cdbids) {
-            $this->eventStreamBuilder->withCdbids($cdbids);
+            $eventStream = $eventStream->withCdbids($cdbids);
         }
 
-        return $this->eventStreamBuilder->stream();
+        return $eventStream;
     }
 
     /**

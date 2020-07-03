@@ -77,7 +77,7 @@ $consoleApp->add(
         ->withHeartBeat('dbal_connection:keepalive')
 );
 
-$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app[EventStreamBuilder::class], $app['event_bus'], new ConfigWriter($app)));
+$consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app['event_bus'], new ConfigWriter($app)));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
 $consoleApp->add(new PurgeModelCommand($app[PurgeServiceProvider::PURGE_SERVICE_MANAGER]));
 $consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app['sapi3_search_service']));
