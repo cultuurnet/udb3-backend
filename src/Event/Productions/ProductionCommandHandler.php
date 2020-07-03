@@ -61,10 +61,12 @@ class ProductionCommandHandler extends Udb3CommandHandler
     public function handleMergeProductions(MergeProductions $command): void
     {
         $toProduction = $this->productionRepository->find($command->getTo());
+        $fromProduction = $this->productionRepository->find($command->getFrom());
+
         $this->productionRepository->moveEvents($command->getFrom(), $toProduction);
 
         $this->markNewMergedPairsAsLinked(
-            $this->productionRepository->find($command->getFrom()),
+            $fromProduction,
             $toProduction
         );
     }

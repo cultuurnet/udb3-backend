@@ -182,6 +182,9 @@ class ProductionCommandHandlerTest extends TestCase
         $toProductionCommand = GroupEventsAsProduction::withProductionName([$event2], $name);
         $this->commandHandler->handle($toProductionCommand);
 
+        $this->similaritiesClient->expects(self::any())
+            ->method('excludeTemporarily');
+
         $this->commandHandler->handle(
             new MergeProductions($fromProductionCommand->getProductionId(), $toProductionCommand->getProductionId())
         );
