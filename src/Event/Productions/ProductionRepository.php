@@ -162,7 +162,7 @@ class ProductionRepository extends AbstractDBALRepository
     public function findEventPairs(string $forEventId, ProductionId $inProductionId): array
     {
         $results = $this->getConnection()->fetchAll(
-            'SELECT * FROM productions WHERE production_id = :productionId AND event_id <> :eventId',
+            'SELECT * FROM productions WHERE production_id = :productionId AND event_id != :eventId',
             [
                 'productionId' => $inProductionId->toNative(),
                 'eventId' => $forEventId,
