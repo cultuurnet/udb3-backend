@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
+use CultuurNet\UDB3\Event\Productions\SkipEvents;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -141,6 +142,33 @@ class ProductionsWriteControllerTest extends TestCase
             [new MergeProductions($fromProductionId, $toProductionId)],
             $this->commandBus->getRecordedCommands()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_skip_events(): void
+    {
+        $eventId1 = Uuid::uuid4()->toString();
+        $eventId2 = Uuid::uuid4()->toString();
+
+        $request = $this->buildRequestWithBody(
+            [
+                'eventIds' => [
+                    $eventId1,
+                    $eventId2,
+                ]
+            ]
+        );
+
+        $this->commandBus->record();
+        $this->controller->skipEvents($request);
+
+        $this->assertCount(1, $this->commandBus->getRecordedCommands());
+        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
+
+        $this->assertInstanceOf(SkipEvents::class, $recordedCommand);
+        $this->assertEquals([$eventId1, $eventId2], $recordedCommand->getEventIds());
     }
 
     private function buildRequestWithBody(array $body): Request
