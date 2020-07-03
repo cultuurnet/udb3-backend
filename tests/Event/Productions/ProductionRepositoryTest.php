@@ -190,9 +190,4 @@ class ProductionRepositoryTest extends TestCase
         return $production;
     }
 
-
-    private function givenThereAreEventPairs(string $eventId, string $eventid)
-    {
-        Uuid::uuid4()->toString();
-    }
 }
