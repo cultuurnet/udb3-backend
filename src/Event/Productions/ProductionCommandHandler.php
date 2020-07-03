@@ -62,6 +62,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
     {
         $toProduction = $this->productionRepository->find($command->getTo());
         $this->productionRepository->moveEvents($command->getFrom(), $toProduction);
+
+        $this->markNewMergedPairsAsLinked(
+            $this->productionRepository->find($command->getFrom()),
+            $toProduction
+        );
     }
 
     public function handleSkipEvents(SkipEvents $command): void
@@ -81,5 +86,18 @@ class ProductionCommandHandler extends Udb3CommandHandler
             $this->similaritiesClient->excludeTemporarily($pairs);
         } catch (EntityNotFoundException $e) {
         }
+    }
+
+    private function markNewMergedPairsAsLinked(
+        Production $from,
+        Production $to
+    ) {
+        $eventPairs = [];
+        foreach ($from->getEventIds() as $eventIdFrom) {
+            foreach ($to->getEventIds() as $eventIdTo) {
+                $eventPairs[] = new EventPair($eventIdFrom, $eventIdTo);
+            }
+        }
+        $this->similaritiesClient->excludeTemporarily($eventPairs);
     }
 }
