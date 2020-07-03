@@ -28,12 +28,12 @@ class SimilaritiesClient
         $this->key = $key;
     }
 
-    public function markAsLinked(array $tuples): void
+    public function markAsLinked(array $eventPairs): void
     {
         $data['pairs'] = [];
-        /** @var Tuple $tuple */
-        foreach ($tuples as $tuple) {
-            $data['pairs'][] = $tuple->asArray();
+        /** @var EventPair $pair */
+        foreach ($eventPairs as $pair) {
+            $data['pairs'][] = $pair->asArray();
         }
 
         $response = $this->client->request(
@@ -43,10 +43,10 @@ class SimilaritiesClient
         );
     }
 
-    public function skipped(Tuple $tuple)
+    public function skipped(EventPair $eventPair)
     {
         $data['pairs'] = [
-            $tuple->asArray(),
+            $eventPair->asArray(),
         ];
 
         $response = $this->client->request(

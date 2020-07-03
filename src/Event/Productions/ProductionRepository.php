@@ -156,10 +156,10 @@ class ProductionRepository extends AbstractDBALRepository
      * @param string $forEventId
      * @param ProductionId $inProductionId
      *
-     * @return Tuple[]
+     * @return EventPair[]
      * @throws EntityNotFoundException
      */
-    public function findTuples(string $forEventId, ProductionId $inProductionId): array
+    public function findEventPairs(string $forEventId, ProductionId $inProductionId): array
     {
         $results = $this->getConnection()->fetchAll(
             'SELECT * FROM productions WHERE production_id = :productionId AND event_id <> :eventId',
@@ -175,7 +175,7 @@ class ProductionRepository extends AbstractDBALRepository
 
         return array_map(
             function (array $data) use ($forEventId) {
-                return new Tuple($forEventId, $data['event_id']);
+                return new EventPair($forEventId, $data['event_id']);
             },
             $results
         );

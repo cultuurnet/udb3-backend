@@ -224,7 +224,7 @@ class ProductionCommandHandlerTest extends TestCase
 
         $this->similaritiesClient->expects(self::atLeastOnce())
             ->method('skipped')
-            ->with(Tuple::fromArray($events));
+            ->with(EventPair::fromArray($events));
 
         $command = new SkipEvents($events);
         $this->commandHandler->handle($command);

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-class Tuple
+class EventPair
 {
     /**
      * @var string
@@ -20,7 +20,7 @@ class Tuple
         $this->eventTwo = $eventTwo;
     }
 
-    public static function fromArray(array $eventIds) : Tuple
+    public static function fromArray(array $eventIds) : EventPair
     {
         if (!array_key_exists(0, $eventIds) || !array_key_exists(1, $eventIds)) {
             throw new \InvalidArgumentException();
