@@ -23,13 +23,19 @@ class ProductionsWriteController
      * @var CreateProductionValidator
      */
     private $createProductionValidator;
+    /**
+     * @var SkipEventsValidator
+     */
+    private $skipEventsValidator;
 
     public function __construct(
         CommandBusInterface $commandBus,
-        CreateProductionValidator $createProductionValidator
+        CreateProductionValidator $createProductionValidator,
+        SkipEventsValidator $skipEventsValidator
     ) {
         $this->commandBus = $commandBus;
         $this->createProductionValidator = $createProductionValidator;
+        $this->skipEventsValidator = $skipEventsValidator;
     }
 
     public function create(Request $request): Response
@@ -92,13 +98,16 @@ class ProductionsWriteController
 
     public function skipEvents(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
+        $data = (array)json_decode($request->getContent(), true);
+
+        $this->skipEventsValidator->validate($data);
 
         $this->commandBus->dispatch(
             new SkipEvents(
                 $data['eventIds']
             )
         );
+
 
         return new Response('', 200);
     }

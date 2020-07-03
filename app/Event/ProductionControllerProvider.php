@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
 use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
+use CultuurNet\UDB3\Http\Productions\SkipEventsValidator;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -19,7 +20,8 @@ class ProductionControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ProductionsWriteController(
                     $app['event_command_bus'],
-                    new CreateProductionValidator()
+                    new CreateProductionValidator(),
+                    new SkipEventsValidator()
                 );
             }
         );

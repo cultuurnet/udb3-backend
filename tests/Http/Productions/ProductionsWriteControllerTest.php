@@ -30,13 +30,20 @@ class ProductionsWriteControllerTest extends TestCase
      */
     private $validator;
 
+    /**
+     * @var SkipEventsValidator
+     */
+    private $skipValidator;
+
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
         $this->validator = new CreateProductionValidator();
+        $this->skipValidator = new SkipEventsValidator();
         $this->controller = new ProductionsWriteController(
             $this->commandBus,
-            $this->validator
+            $this->validator,
+            $this->skipValidator
         );
     }
 
