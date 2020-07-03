@@ -66,7 +66,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleSkipEvents(SkipEvents $command): void
     {
-        $this->similaritiesClient->skipped(EventPair::fromArray($command->getEventIds()));
+        $this->similaritiesClient->excludePermanently(EventPair::fromArray($command->getEventIds()));
     }
 
     /** @param string $eventId
@@ -78,7 +78,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
     {
         try {
             $pairs = $this->productionRepository->findEventPairs($eventId, $productionId);
-            $this->similaritiesClient->markAsLinked($pairs);
+            $this->similaritiesClient->excludeTemporarily($pairs);
         } catch (EntityNotFoundException $e) {
         }
     }

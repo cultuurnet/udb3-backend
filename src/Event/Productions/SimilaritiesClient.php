@@ -28,7 +28,7 @@ class SimilaritiesClient
         $this->key = $key;
     }
 
-    public function markAsLinked(array $eventPairs): void
+    public function excludeTemporarily(array $eventPairs): void
     {
         $data['pairs'] = [];
         /** @var EventPair $pair */
@@ -43,7 +43,7 @@ class SimilaritiesClient
         );
     }
 
-    public function skipped(EventPair $eventPair)
+    public function excludePermanently(EventPair $eventPair)
     {
         $data['pairs'] = [
             $eventPair->asArray(),

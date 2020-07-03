@@ -49,7 +49,7 @@ class ProductionCommandHandlerTest extends TestCase
         ];
 
         $this->similaritiesClient->expects(self::any())
-            ->method('markAsLinked');
+            ->method('excludeTemporarily');
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
@@ -75,7 +75,7 @@ class ProductionCommandHandlerTest extends TestCase
         ];
 
         $this->similaritiesClient->expects(self::any())
-            ->method('markAsLinked');
+            ->method('excludeTemporarily');
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
@@ -223,7 +223,7 @@ class ProductionCommandHandlerTest extends TestCase
         ];
 
         $this->similaritiesClient->expects(self::atLeastOnce())
-            ->method('skipped')
+            ->method('excludePermanently')
             ->with(EventPair::fromArray($events));
 
         $command = new SkipEvents($events);
