@@ -270,22 +270,22 @@ class ReplayCommand extends AbstractCommand
         $startId = $startId !== null ? (int) $startId : 0;
 
         $eventStream = new EventStream(
-          $this->connection,
-          $this->payloadSerializer,
-          new SimpleInterfaceSerializer(),
-          'event_store'
+            $this->connection,
+            $this->payloadSerializer,
+            new SimpleInterfaceSerializer(),
+            'event_store'
         );
 
         if ($startId > 0) {
-          $eventStream = $eventStream->withStartId($startId);
+            $eventStream = $eventStream->withStartId($startId);
         }
 
         if ($aggregateType) {
-          $eventStream = $eventStream->withAggregateType($aggregateType);
+            $eventStream = $eventStream->withAggregateType($aggregateType);
         }
 
         if ($cdbids) {
-          $eventStream = $eventStream->withCdbids($cdbids);
+            $eventStream = $eventStream->withCdbids($cdbids);
         }
 
         return $eventStream;
