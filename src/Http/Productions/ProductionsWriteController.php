@@ -23,6 +23,7 @@ class ProductionsWriteController
      * @var CreateProductionValidator
      */
     private $createProductionValidator;
+
     /**
      * @var SkipEventsValidator
      */
@@ -107,7 +108,6 @@ class ProductionsWriteController
                 $data['eventIds']
             )
         );
-
 
         return new Response('', 200);
     }

@@ -165,8 +165,7 @@ class ProductionRepositoryTest extends TestCase
 
         $this->repository->findEventPairs(Uuid::uuid4()->toString(), $production->getProductionId());
     }
-
-
+    
     /**
      * @test
      */
@@ -178,7 +177,6 @@ class ProductionRepositoryTest extends TestCase
         $this->repository->findProductionForEventId($randomEventId);
     }
 
-
     private function givenThereIsAProduction(string $name = 'foo'): Production
     {
         $production = Production::createEmpty($name);
@@ -189,5 +187,4 @@ class ProductionRepositoryTest extends TestCase
 
         return $production;
     }
-
 }
