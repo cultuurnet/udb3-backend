@@ -28,10 +28,13 @@ class SimilaritiesClient
         $this->key = $key;
     }
 
+    /**
+     * @param SimilarEventPair[] $eventPairs
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function excludeTemporarily(array $eventPairs): void
     {
         $data['pairs'] = [];
-        /** @var SimilarEventPair $pair */
         foreach ($eventPairs as $pair) {
             $data['pairs'][] = [
                 'event1' => $pair->getEventOne(),
