@@ -184,4 +184,5 @@ bookable_event:
 bypass_api_key_check: false
 
 productions:
-  key: 
+  key:
+  url:

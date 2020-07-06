@@ -678,7 +678,7 @@ $app[SimilaritiesClient::class] = $app->share(
     function ($app) {
         return new SimilaritiesClient(
             new \GuzzleHttp\Client(),
-            'https://udb-similarities-proxy-test-nu5eme4wwa-ew.a.run.app/v1/events',
+            $app['config']['productions']['url'],
             $app['config']['productions']['key']
         );
     }
