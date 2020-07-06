@@ -29,14 +29,6 @@ class SimilarEventPair
         return new self($eventIds[0], $eventIds[1]);
     }
 
-    public function asArray(): array
-    {
-        return [
-            $this->eventOne,
-            $this->eventTwo,
-        ];
-    }
-
     public function getEventOne(): string
     {
         return $this->eventOne;
