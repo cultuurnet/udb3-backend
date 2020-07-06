@@ -220,16 +220,16 @@ class ProductionCommandHandlerTest extends TestCase
      */
     public function it_can_mark_events_as_skipped()
     {
-        $events = [
+        $eventPair = SimilarEventPair::fromArray([
             Uuid::uuid4()->toString(),
             Uuid::uuid4()->toString(),
-        ];
+        ]);
 
         $this->similaritiesClient->expects(self::atLeastOnce())
             ->method('excludePermanently')
-            ->with(SimilarEventPair::fromArray($events));
+            ->with($eventPair);
 
-        $command = new RejectSuggestedEventPair($events);
+        $command = new RejectSuggestedEventPair($eventPair);
         $this->commandHandler->handle($command);
     }
 }

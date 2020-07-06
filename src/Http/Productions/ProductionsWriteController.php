@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
+use CultuurNet\UDB3\Event\Productions\SimilarEventPair;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -105,7 +106,7 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch(
             new RejectSuggestedEventPair(
-                $data['eventIds']
+                SimilarEventPair::fromArray($data['eventIds'])
             )
         );
 
