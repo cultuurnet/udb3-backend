@@ -31,7 +31,7 @@ class SimilaritiesClient
     public function excludeTemporarily(array $eventPairs): void
     {
         $data['pairs'] = [];
-        /** @var EventPair $pair */
+        /** @var SimilarEventPair $pair */
         foreach ($eventPairs as $pair) {
             $data['pairs'][] = [
                 'event1' => $pair->getEventOne(),
@@ -46,7 +46,7 @@ class SimilaritiesClient
         );
     }
 
-    public function excludePermanently(EventPair $pair)
+    public function excludePermanently(SimilarEventPair $pair)
     {
         $data['pairs'] = [
             'event1' => $pair->getEventOne(),

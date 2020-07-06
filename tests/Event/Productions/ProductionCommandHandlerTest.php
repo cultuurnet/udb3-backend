@@ -227,7 +227,7 @@ class ProductionCommandHandlerTest extends TestCase
 
         $this->similaritiesClient->expects(self::atLeastOnce())
             ->method('excludePermanently')
-            ->with(EventPair::fromArray($events));
+            ->with(SimilarEventPair::fromArray($events));
 
         $command = new SkipEvents($events);
         $this->commandHandler->handle($command);

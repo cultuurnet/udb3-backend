@@ -156,7 +156,7 @@ class ProductionRepository extends AbstractDBALRepository
      * @param string $forEventId
      * @param ProductionId $inProductionId
      *
-     * @return EventPair[]
+     * @return SimilarEventPair[]
      * @throws EntityNotFoundException
      */
     public function findEventPairs(string $forEventId, ProductionId $inProductionId): array
@@ -173,12 +173,12 @@ class ProductionRepository extends AbstractDBALRepository
         );
 
         if (!$results) {
-            throw new EntityNotFoundException('No Tuples found');
+            throw new EntityNotFoundException('No event pairs found');
         }
 
         return array_map(
             function (array $data) use ($forEventId) {
-                return new EventPair($forEventId, $data['event_id']);
+                return new SimilarEventPair($forEventId, $data['event_id']);
             },
             $results
         );

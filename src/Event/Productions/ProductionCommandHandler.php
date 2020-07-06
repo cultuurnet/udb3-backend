@@ -73,7 +73,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleSkipEvents(SkipEvents $command): void
     {
-        $this->similaritiesClient->excludePermanently(EventPair::fromArray($command->getEventIds()));
+        $this->similaritiesClient->excludePermanently(SimilarEventPair::fromArray($command->getEventIds()));
     }
 
     /** @param string $eventId
@@ -97,7 +97,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $eventPairs = [];
         foreach ($from->getEventIds() as $eventIdFrom) {
             foreach ($to->getEventIds() as $eventIdTo) {
-                $eventPairs[] = new EventPair($eventIdFrom, $eventIdTo);
+                $eventPairs[] = new SimilarEventPair($eventIdFrom, $eventIdTo);
             }
         }
         $this->similaritiesClient->excludeTemporarily($eventPairs);

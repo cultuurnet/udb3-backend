@@ -14,11 +14,11 @@ class EventPairTest extends TestCase
     {
         $eventOne = Uuid::uuid4()->toString();
         $eventTwo = Uuid::uuid4()->toString();
-        $eventPair = new EventPair($eventOne, $eventTwo);
+        $eventPair = new SimilarEventPair($eventOne, $eventTwo);
 
         $eventAsArray = $eventPair->asArray();
 
-        $deserializedEventPair = EventPair::fromArray($eventAsArray);
+        $deserializedEventPair = SimilarEventPair::fromArray($eventAsArray);
 
         $this->assertEquals($eventPair, $deserializedEventPair);
     }

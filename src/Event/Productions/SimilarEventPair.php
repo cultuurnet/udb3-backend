@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-class EventPair
+class SimilarEventPair
 {
     /**
      * @var string
@@ -20,7 +20,7 @@ class EventPair
         $this->eventTwo = $eventTwo;
     }
 
-    public static function fromArray(array $eventIds) : EventPair
+    public static function fromArray(array $eventIds) : SimilarEventPair
     {
         if (!array_key_exists(0, $eventIds) || !array_key_exists(1, $eventIds)) {
             throw new \InvalidArgumentException();
@@ -46,5 +46,4 @@ class EventPair
     {
         return $this->eventTwo;
     }
-
 }
