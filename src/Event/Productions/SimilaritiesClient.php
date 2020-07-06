@@ -33,7 +33,10 @@ class SimilaritiesClient
         $data['pairs'] = [];
         /** @var EventPair $pair */
         foreach ($eventPairs as $pair) {
-            $data['pairs'][] = $pair->asArray();
+            $data['pairs'][] = [
+                'event1' => $pair->getEventOne(),
+                'event2' => $pair->getEventTwo(),
+            ];
         }
 
         $response = $this->client->request(
@@ -43,10 +46,11 @@ class SimilaritiesClient
         );
     }
 
-    public function excludePermanently(EventPair $eventPair)
+    public function excludePermanently(EventPair $pair)
     {
         $data['pairs'] = [
-            $eventPair->asArray(),
+            'event1' => $pair->getEventOne(),
+            'event2' => $pair->getEventTwo(),
         ];
 
         $response = $this->client->request(

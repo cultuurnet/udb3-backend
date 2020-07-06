@@ -32,8 +32,19 @@ class EventPair
     public function asArray(): array
     {
         return [
-            'event1' => $this->eventOne,
-            'event2' => $this->eventTwo,
+            $this->eventOne,
+            $this->eventTwo,
         ];
     }
+
+    public function getEventOne(): string
+    {
+        return $this->eventOne;
+    }
+
+    public function getEventTwo(): string
+    {
+        return $this->eventTwo;
+    }
+
 }
