@@ -678,8 +678,8 @@ $app[SimilaritiesClient::class] = $app->share(
     function ($app) {
         return new SimilaritiesClient(
             new \GuzzleHttp\Client(),
-            $app['config']['productions']['url'],
-            $app['config']['productions']['key']
+            $app['config']['event_similarities_api']['base_url'],
+            $app['config']['event_similarities_api']['api_key']
         );
     }
 );
