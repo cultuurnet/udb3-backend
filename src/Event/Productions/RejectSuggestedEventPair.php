@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-final class SkipEvents
+final class RejectSuggestedEventPair
 {
     /**
      * @var string

@@ -229,7 +229,7 @@ class ProductionCommandHandlerTest extends TestCase
             ->method('excludePermanently')
             ->with(SimilarEventPair::fromArray($events));
 
-        $command = new SkipEvents($events);
+        $command = new RejectSuggestedEventPair($events);
         $this->commandHandler->handle($command);
     }
 }

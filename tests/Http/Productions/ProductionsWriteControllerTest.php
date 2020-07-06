@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
-use CultuurNet\UDB3\Event\Productions\SkipEvents;
+use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -167,7 +167,7 @@ class ProductionsWriteControllerTest extends TestCase
         $this->assertCount(1, $this->commandBus->getRecordedCommands());
         $recordedCommand = $this->commandBus->getRecordedCommands()[0];
 
-        $this->assertInstanceOf(SkipEvents::class, $recordedCommand);
+        $this->assertInstanceOf(RejectSuggestedEventPair::class, $recordedCommand);
         $this->assertEquals([$eventId1, $eventId2], $recordedCommand->getEventIds());
     }
 
