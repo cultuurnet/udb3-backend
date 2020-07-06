@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
+use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,12 +24,19 @@ class ProductionsWriteController
      */
     private $createProductionValidator;
 
+    /**
+     * @var SkipEventsValidator
+     */
+    private $skipEventsValidator;
+
     public function __construct(
         CommandBusInterface $commandBus,
-        CreateProductionValidator $createProductionValidator
+        CreateProductionValidator $createProductionValidator,
+        SkipEventsValidator $skipEventsValidator
     ) {
         $this->commandBus = $commandBus;
         $this->createProductionValidator = $createProductionValidator;
+        $this->skipEventsValidator = $skipEventsValidator;
     }
 
     public function create(Request $request): Response
@@ -87,5 +95,20 @@ class ProductionsWriteController
         $this->commandBus->dispatch($command);
 
         return new Response('', 204);
+    }
+
+    public function skipEvents(Request $request)
+    {
+        $data = (array)json_decode($request->getContent(), true);
+
+        $this->skipEventsValidator->validate($data);
+
+        $this->commandBus->dispatch(
+            new RejectSuggestedEventPair(
+                $data['eventIds']
+            )
+        );
+
+        return new Response('', 200);
     }
 }

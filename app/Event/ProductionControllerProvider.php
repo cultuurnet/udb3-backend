@@ -2,10 +2,12 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
 use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
+use CultuurNet\UDB3\Http\Productions\SkipEventsValidator;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -18,7 +20,16 @@ class ProductionControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ProductionsWriteController(
                     $app['event_command_bus'],
-                    new CreateProductionValidator()
+                    new CreateProductionValidator(),
+                    new SkipEventsValidator()
+                );
+            }
+        );
+
+        $app[ProductionsSearchController::class] = $app->share(
+            function (Application $app) {
+                return new ProductionsSearchController(
+                    $app[ProductionRepository::class]
                 );
             }
         );
@@ -30,6 +41,8 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers->put('/{productionId}/events/{eventId}', ProductionsWriteController::class . ':addEventToProduction');
         $controllers->delete('/{productionId}/events/{eventId}', ProductionsWriteController::class . ':removeEventFromProduction');
         $controllers->post('/{productionId}/merge/{fromProductionId}', ProductionsWriteController::class . ':mergeProductions');
+
+        $controllers->post('/skip', ProductionsWriteController::class . ':skipEvents');
 
         return $controllers;
     }

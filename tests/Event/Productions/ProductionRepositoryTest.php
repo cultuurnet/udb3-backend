@@ -105,7 +105,7 @@ class ProductionRepositoryTest extends TestCase
         $this->repository->moveEvents($fromProduction->getProductionId(), $toProduction);
 
         $resultingProduction = $this->repository->find($toProduction->getProductionId());
-        foreach($eventsToMove as $eventToMove) {
+        foreach ($eventsToMove as $eventToMove) {
             $this->assertTrue($resultingProduction->containsEvent($eventToMove));
         }
 
@@ -134,6 +134,38 @@ class ProductionRepositoryTest extends TestCase
         $this->assertEquals([$event, $otherEvent], $production->getEventIds());
     }
 
+    /**
+     * @test
+     */
+    public function it_can_find_event_pairs_for_event_in_production()
+    {
+        $production = $this->givenThereIsAProduction();
+        $pairs = $this->repository->findEventPairs($production->getEventIds()[0], $production->getProductionId());
+        $this->assertCount(1, $pairs);
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_if_when_finding_pairs_if_production_does_not_exists()
+    {
+        $this->expectException(EntityNotFoundException::class);
+
+        $this->repository->findEventPairs(Uuid::uuid4()->toString(), Production::createEmpty('Some')->getProductionId());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_if_when_finding_pairs_if_event_is_not_in_production()
+    {
+        $production = $this->givenThereIsAProduction();
+
+        $this->expectException(EntityNotFoundException::class);
+
+        $this->repository->findEventPairs(Uuid::uuid4()->toString(), $production->getProductionId());
+    }
+    
     /**
      * @test
      */

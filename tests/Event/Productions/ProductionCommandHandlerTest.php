@@ -22,12 +22,18 @@ class ProductionCommandHandlerTest extends TestCase
      */
     private $commandHandler;
 
+    /**
+     * @var SimilaritiesClient|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $similaritiesClient;
+
     protected function setUp(): void
     {
         $schema = new SchemaConfigurator();
         $schema->configure($this->getConnection()->getSchemaManager());
         $this->productionRepository = new ProductionRepository($this->getConnection());
-        $this->commandHandler = new ProductionCommandHandler($this->productionRepository);
+        $this->similaritiesClient = $this->createMock(SimilaritiesClient::class);
+        $this->commandHandler = new ProductionCommandHandler($this->productionRepository, $this->similaritiesClient);
     }
 
     /**
@@ -42,6 +48,9 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ];
 
+        $this->similaritiesClient->expects(self::any())
+            ->method('excludeTemporarily');
+
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
 
@@ -49,6 +58,7 @@ class ProductionCommandHandlerTest extends TestCase
         $this->assertEquals($command->getProductionId(), $createdProduction->getProductionId());
         $this->assertEquals($name, $createdProduction->getName());
         $this->assertEquals($events, $createdProduction->getEventIds());
+
     }
 
     /**
@@ -63,6 +73,9 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
             Uuid::uuid4()->toString(),
         ];
+
+        $this->similaritiesClient->expects(self::any())
+            ->method('excludeTemporarily');
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
@@ -82,11 +95,12 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_cannot_add_an_event_that_already_belongs_to_another_production():void
+    public function it_cannot_add_an_event_that_already_belongs_to_another_production(): void
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
-        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction], $name);
+        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction],
+            $name);
         $this->commandHandler->handle($firstProductionCommand);
 
         $name = "A Midsummer Night's Scream 3";
@@ -132,12 +146,14 @@ class ProductionCommandHandlerTest extends TestCase
     {
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
-        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction], $name);
+        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction],
+            $name);
         $this->commandHandler->handle($firstProductionCommand);
 
         $eventBelongingToSecondProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 3";
-        $secondProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToSecondProduction], $name);
+        $secondProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToSecondProduction],
+            $name);
         $this->commandHandler->handle($secondProductionCommand);
 
         $this->commandHandler->handle(
@@ -165,6 +181,9 @@ class ProductionCommandHandlerTest extends TestCase
         $name = "I know what you did last Midsummer Night's Dream";
         $toProductionCommand = GroupEventsAsProduction::withProductionName([$event2], $name);
         $this->commandHandler->handle($toProductionCommand);
+
+        $this->similaritiesClient->expects(self::any())
+            ->method('excludeTemporarily');
 
         $this->commandHandler->handle(
             new MergeProductions($fromProductionCommand->getProductionId(), $toProductionCommand->getProductionId())
@@ -194,5 +213,23 @@ class ProductionCommandHandlerTest extends TestCase
         $this->commandHandler->handle(
             new MergeProductions($fromProductionCommand->getProductionId(), $toProductionId)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_mark_events_as_skipped()
+    {
+        $events = [
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+        ];
+
+        $this->similaritiesClient->expects(self::atLeastOnce())
+            ->method('excludePermanently')
+            ->with(SimilarEventPair::fromArray($events));
+
+        $command = new RejectSuggestedEventPair($events);
+        $this->commandHandler->handle($command);
     }
 }
