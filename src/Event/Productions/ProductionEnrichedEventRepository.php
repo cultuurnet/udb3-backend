@@ -32,6 +32,11 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
     public function get($id)
     {
         $document = parent::get($id);
+
+        if (is_null($document)) {
+            return null;
+        }
+
         $jsonObject = $document->getBody();
 
         try {
