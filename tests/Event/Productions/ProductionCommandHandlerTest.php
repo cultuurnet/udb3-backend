@@ -58,7 +58,37 @@ class ProductionCommandHandlerTest extends TestCase
         $this->assertEquals($command->getProductionId(), $createdProduction->getProductionId());
         $this->assertEquals($name, $createdProduction->getName());
         $this->assertEquals($events, $createdProduction->getEventIds());
+    }
 
+    /**
+     * @test
+     */
+    public function it_will_not_group_events_as_production_when_event_already_belongs_to_production(): void
+    {
+        $event = Uuid::uuid4()->toString();
+
+        $name = "A Midsummer Night's Scream";
+        $events = [
+            $event,
+            Uuid::uuid4()->toString(),
+        ];
+
+        $this->similaritiesClient->expects($this->once())->method('excludeTemporarily');
+
+        $command = GroupEventsAsProduction::withProductionName($events, $name);
+        $this->commandHandler->handle($command);
+
+
+        $this->expectException(EventCannotBeAddedToProduction::class);
+        $this->commandHandler->handle(
+            GroupEventsAsProduction::withProductionName(
+                [
+                    $event,
+                    Uuid::uuid4()->toString(),
+                ],
+                'Some other production'
+            )
+        );
     }
 
     /**
