@@ -4,8 +4,10 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
+use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
+use CultuurNet\UDB3\Http\Productions\ProductionSuggestionController;
 use CultuurNet\UDB3\Http\Productions\ProductionsWriteController;
 use CultuurNet\UDB3\Http\Productions\SkipEventsValidator;
 use Silex\Application;
@@ -34,6 +36,14 @@ class ProductionControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[ProductionSuggestionController::class] = $app->share(
+            function (Application $app) {
+                return new ProductionSuggestionController(
+                    $app[SimilaritiesClient::class]
+                );
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
         $controllers->get('/', ProductionsSearchController::class . ':search');
@@ -43,6 +53,8 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $controllers->post('/{productionId}/merge/{fromProductionId}', ProductionsWriteController::class . ':mergeProductions');
 
         $controllers->post('/skip', ProductionsWriteController::class . ':skipEvents');
+
+        $controllers->get('/suggestion', ProductionSuggestionController::class . ':nextSuggestion');
 
         return $controllers;
     }
