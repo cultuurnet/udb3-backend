@@ -31,8 +31,15 @@ class ProductionCommandHandler extends Udb3CommandHandler
             $command->getName(),
             $command->getEventIds()
         );
-        $this->productionRepository->add($production);
-        $this->eventsWereAddedToProduction($command->getEventIds()[0], $command->getProductionId());
+        try {
+            $this->productionRepository->add($production);
+            $this->eventsWereAddedToProduction($command->getEventIds()[0], $command->getProductionId());
+        } catch (DBALException $e) {
+            throw EventCannotBeAddedToProduction::becauseTheyAlreadyBelongToAnotherProduction(
+                $command->getEventIds(),
+                $command->getProductionId()
+            );
+        }
     }
 
     public function handleAddEventToProduction(AddEventToProduction $command): void
