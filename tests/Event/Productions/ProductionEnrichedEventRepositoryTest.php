@@ -102,4 +102,15 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
         $this->assertEquals($productionName, $actual->getBody()->production->title);
         $this->assertEquals(['foo/' . $otherEventId], $actual->getBody()->production->otherEvents);
     }
+
+    /**
+     * @test
+     */
+    public function it_will_return_null_for_a_non_existing_document(): void
+    {
+        $eventId = Uuid::uuid4()->toString();
+        $this->eventRepository->method('get')->willReturn(null);
+        $actual = $this->productionEnrichedEventRepository->get($eventId);
+        $this->assertNull($actual);
+    }
 }
