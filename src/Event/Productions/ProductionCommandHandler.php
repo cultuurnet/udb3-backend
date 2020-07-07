@@ -31,8 +31,15 @@ class ProductionCommandHandler extends Udb3CommandHandler
             $command->getName(),
             $command->getEventIds()
         );
-        $this->productionRepository->add($production);
-        $this->markAsLinked($command->getEventIds()[0], $command->getProductionId());
+        try {
+            $this->productionRepository->add($production);
+            $this->eventsWereAddedToProduction($command->getEventIds()[0], $command->getProductionId());
+        } catch (DBALException $e) {
+            throw EventCannotBeAddedToProduction::becauseSomeEventsBelongToAnotherProduction(
+                $command->getEventIds(),
+                $command->getProductionId()
+            );
+        }
     }
 
     public function handleAddEventToProduction(AddEventToProduction $command): void
@@ -44,7 +51,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         try {
             $this->productionRepository->addEvent($command->getEventId(), $production);
-            $this->markAsLinked($command->getEventId(), $command->getProductionId());
+            $this->eventsWereAddedToProduction($command->getEventId(), $command->getProductionId());
         } catch (DBALException $e) {
             throw EventCannotBeAddedToProduction::becauseItAlreadyBelongsToAnotherProduction(
                 $command->getEventId(),
@@ -65,7 +72,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         $this->productionRepository->moveEvents($command->getFrom(), $toProduction);
 
-        $this->markNewMergedPairsAsLinked(
+        $this->productionsWereMerged(
             $fromProduction,
             $toProduction
         );
@@ -76,12 +83,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->similaritiesClient->excludePermanently(SimilarEventPair::fromArray($command->getEventIds()));
     }
 
-    /** @param string $eventId
-     * @param ProductionId $productionId
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @todo: move logic to event/event handler
-     */
-    private function markAsLinked(string $eventId, ProductionId $productionId): void
+    private function eventsWereAddedToProduction(string $eventId, ProductionId $productionId): void
     {
         try {
             $pairs = $this->productionRepository->findEventPairs($eventId, $productionId);
@@ -90,7 +92,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         }
     }
 
-    private function markNewMergedPairsAsLinked(
+    private function productionsWereMerged(
         Production $from,
         Production $to
     ) {

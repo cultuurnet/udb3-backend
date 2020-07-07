@@ -5,18 +5,20 @@ namespace CultuurNet\UDB3\Event\Productions;
 final class RejectSuggestedEventPair
 {
     /**
-     * @var string
+     * @var SimilarEventPair
      */
-    private $eventIds;
+    private $eventPair;
 
-
-    public function __construct(array $eventIds)
+    public function __construct(SimilarEventPair $eventPair)
     {
-        $this->eventIds = $eventIds;
+        $this->eventPair = $eventPair;
     }
 
     public function getEventIds(): array
     {
-        return $this->eventIds;
+        return [
+            $this->eventPair->getEventOne(),
+            $this->eventPair->getEventTwo(),
+        ];
     }
 }
