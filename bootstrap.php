@@ -669,26 +669,6 @@ $app->extend('event_command_bus', $subscribeCoreCommandHandlers);
 
 /** Production */
 
-$app[ProductionRepository::class] = $app->share(
-    function ($app) {
-        return new ProductionRepository($app['dbal_connection']);
-    }
-);
-$app[SimilaritiesClient::class] = $app->share(
-    function ($app) {
-        return new SimilaritiesClient(
-            new \GuzzleHttp\Client(),
-            $app['config']['event_similarities_api']['base_url'],
-            $app['config']['event_similarities_api']['api_key']
-        );
-    }
-);
-
-$app[ProductionCommandHandler::class] = $app->share(
-    function ($app) {
-        return new ProductionCommandHandler($app[ProductionRepository::class], $app[SimilaritiesClient::class]);
-    }
-);
 
 /** Place **/
 
@@ -1144,6 +1124,7 @@ $app->register(new LabelServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleEditingServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Role\RoleReadingServiceProvider());
 $app->register(new UserPermissionsServiceProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Event\ProductionServiceProvider());
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Media\MediaServiceProvider(),
