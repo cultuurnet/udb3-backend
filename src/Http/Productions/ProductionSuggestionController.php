@@ -37,12 +37,14 @@ class ProductionSuggestionController
             $suggestion = $this->similaritiesClient->nextSuggestion($date);
             $eventTwo = $this->enrichedEventRepository->get($suggestion->getEventOne());
             $eventOne = $this->enrichedEventRepository->get($suggestion->getEventTwo());
-            return new JsonResponse([
-                'events' => [
-                    $eventTwo->getBody(),
-                    $eventOne->getBody()
+            return new JsonResponse(
+                [
+                    'events' => [
+                        $eventTwo->getBody(),
+                        $eventOne->getBody(),
+                    ],
                 ]
-            ]);
+            );
         } catch (SuggestionsNotFound $exception) {
             return new Response(null, Response::HTTP_NOT_FOUND);
         }
