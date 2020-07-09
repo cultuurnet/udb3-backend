@@ -9,7 +9,14 @@ final class EventCannotBeAddedToProduction extends Exception
     public static function becauseItAlreadyBelongsToAnotherProduction(string $eventId, ProductionId $productionId)
     {
         return new self(
-            'Event with id ' . $eventId . ' can not be added to production with id ' . $productionId->toNative()
+            'Event with id ' . $eventId . ' cannot be added to production with id ' . $productionId->toNative() . ' because it already belongs to another production.'
+        );
+    }
+
+    public static function becauseSomeEventsBelongToAnotherProduction(array $eventIds, ProductionId $productionId)
+    {
+        return new self(
+            'Events with ids ' . join(',', $eventIds) . ' cannot be added to production with id ' . $productionId->toNative() . ' because some events already belong to another production.'
         );
     }
 }

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
+use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,13 +31,20 @@ class ProductionsWriteControllerTest extends TestCase
      */
     private $validator;
 
+    /**
+     * @var SkipEventsValidator
+     */
+    private $skipValidator;
+
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
         $this->validator = new CreateProductionValidator();
+        $this->skipValidator = new SkipEventsValidator();
         $this->controller = new ProductionsWriteController(
             $this->commandBus,
-            $this->validator
+            $this->validator,
+            $this->skipValidator
         );
     }
 
@@ -134,6 +142,33 @@ class ProductionsWriteControllerTest extends TestCase
             [new MergeProductions($fromProductionId, $toProductionId)],
             $this->commandBus->getRecordedCommands()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_skip_events(): void
+    {
+        $eventId1 = Uuid::uuid4()->toString();
+        $eventId2 = Uuid::uuid4()->toString();
+
+        $request = $this->buildRequestWithBody(
+            [
+                'eventIds' => [
+                    $eventId1,
+                    $eventId2,
+                ]
+            ]
+        );
+
+        $this->commandBus->record();
+        $this->controller->skipEvents($request);
+
+        $this->assertCount(1, $this->commandBus->getRecordedCommands());
+        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
+
+        $this->assertInstanceOf(RejectSuggestedEventPair::class, $recordedCommand);
+        $this->assertEquals([$eventId1, $eventId2], $recordedCommand->getEventIds());
     }
 
     private function buildRequestWithBody(array $body): Request

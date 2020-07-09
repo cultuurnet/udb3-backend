@@ -57,7 +57,7 @@ class ProductionRepository extends AbstractDBALRepository
                 'event_id' => $eventId,
                 'production_id' => $production->getProductionId()->toNative(),
                 'name' => $production->getName(),
-                'added_at' => $addedAt->format(DATE_ATOM),
+                'added_at' => $addedAt->format('Y-m-d'),
             ]
         );
     }
@@ -81,7 +81,7 @@ class ProductionRepository extends AbstractDBALRepository
             [
                 'production_id' => $to->getProductionId()->toNative(),
                 'name' => $to->getName(),
-                'added_at' => $addedAt->format(DATE_ATOM),
+                'added_at' => $addedAt->format('Y-m-d'),
             ],
             [
                 'production_id' => $from->toNative(),
@@ -150,5 +150,37 @@ class ProductionRepository extends AbstractDBALRepository
         }
 
         return $production;
+    }
+
+    /**
+     * @param string $forEventId
+     * @param ProductionId $inProductionId
+     *
+     * @return SimilarEventPair[]
+     * @throws EntityNotFoundException
+     */
+    public function findEventPairs(string $forEventId, ProductionId $inProductionId): array
+    {
+        $results = $this->getConnection()->fetchAll(
+            'SELECT * FROM productions WHERE production_id = :productionId AND event_id != :eventId
+                    AND 1 = (SELECT COUNT(*) FROM productions 
+                            WHERE production_id = :productionId 
+                            AND event_id = :eventId)',
+            [
+                'productionId' => $inProductionId->toNative(),
+                'eventId' => $forEventId,
+            ]
+        );
+
+        if (!$results) {
+            throw new EntityNotFoundException('No event pairs found');
+        }
+
+        return array_map(
+            function (array $data) use ($forEventId) {
+                return new SimilarEventPair($forEventId, $data['event_id']);
+            },
+            $results
+        );
     }
 }
