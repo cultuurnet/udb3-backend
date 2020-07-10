@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
-use CultuurNet\UDB3\Event\Productions\ProductionEnrichedEventRepository;
 use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
+use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,13 +16,13 @@ class ProductionSuggestionController
      */
     private $similaritiesClient;
     /**
-     * @var ProductionEnrichedEventRepository
+     * @var DocumentRepositoryInterface
      */
     private $enrichedEventRepository;
 
     public function __construct(
         SimilaritiesClient $similaritiesClient,
-        ProductionEnrichedEventRepository $enrichedEventRepository
+        DocumentRepositoryInterface $enrichedEventRepository
     ) {
         $this->similaritiesClient = $similaritiesClient;
         $this->enrichedEventRepository = $enrichedEventRepository;
