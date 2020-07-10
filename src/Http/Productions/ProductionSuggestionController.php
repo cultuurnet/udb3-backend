@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Http\Productions;
 use CultuurNet\UDB3\Event\Productions\ProductionEnrichedEventRepository;
 use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
-use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
