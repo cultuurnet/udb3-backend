@@ -10,7 +10,6 @@ use Silex\ServiceProviderInterface;
 
 class ProductionServiceProvider implements ServiceProviderInterface
 {
-
     public function register(Application $app)
     {
         $app[ProductionRepository::class] = $app->share(
