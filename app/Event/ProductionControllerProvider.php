@@ -40,7 +40,7 @@ class ProductionControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new ProductionSuggestionController(
                     $app[SimilaritiesClient::class],
-                    $app[ProductionEnrichedEventRepository::class]
+                    $app['event_jsonld_repository']
                 );
             }
         );
