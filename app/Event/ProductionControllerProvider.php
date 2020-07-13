@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
-use CultuurNet\UDB3\Event\Productions\ProductionEnrichedEventRepository;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
