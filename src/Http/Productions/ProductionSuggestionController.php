@@ -32,7 +32,6 @@ class ProductionSuggestionController
     {
         try {
             $date = new \DateTime();
-            $date->setTime(0, 0, 1);
             $suggestion = $this->similaritiesClient->nextSuggestion($date);
             $eventOne = $this->enrichedEventRepository->get($suggestion->getEventOne());
             $eventTwo = $this->enrichedEventRepository->get($suggestion->getEventTwo());
