@@ -28,25 +28,19 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
     {
         $app['event_jsonld_repository'] = $app->share(
             function ($app) {
-                $cachedRepository =  new CacheDocumentRepository(
-                    $app['event_jsonld_cache']
-                );
-
-                $productionEnrichedEventRepository = new ProductionEnrichedEventRepository(
-                    $cachedRepository,
-                    $app[ProductionRepository::class],
-                    $app['event_iri_generator']
-                );
-
-                $broadcastingRepository = new BroadcastingDocumentRepositoryDecorator(
-                    $productionEnrichedEventRepository,
+                return new BroadcastingDocumentRepositoryDecorator(
+                    new ProductionEnrichedEventRepository(
+                        new CacheDocumentRepository(
+                            $app['event_jsonld_cache']
+                        ),
+                        $app[ProductionRepository::class],
+                        $app['event_iri_generator']
+                    ),
                     $app['event_bus'],
                     new EventFactory(
                         $app['event_iri_generator']
                     )
                 );
-
-                return $broadcastingRepository;
             }
         );
 

@@ -2,7 +2,10 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
+use Cake\Chronos\Date;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 
 class SimilaritiesClient
 {
@@ -30,7 +33,7 @@ class SimilaritiesClient
 
     /**
      * @param SimilarEventPair[] $eventPairs
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function excludeTemporarily(array $eventPairs): void
     {
@@ -42,7 +45,7 @@ class SimilaritiesClient
             ];
         }
 
-        $response = $this->client->request(
+        $this->client->request(
             'PATCH',
             $this->uri . '/greylist?key=' . $this->key,
             ['json' => $data]
@@ -56,10 +59,25 @@ class SimilaritiesClient
             'event2' => $pair->getEventTwo(),
         ];
 
-        $response = $this->client->request(
+        $this->client->request(
             'PATCH',
             $this->uri . '/blacklist?key=' . $this->key,
             ['json' => $data]
         );
+    }
+
+    public function nextSuggestion(Date $dateFrom, int $size = 1, int $offset = 0): Suggestion
+    {
+        try {
+            $response = $this->client->request(
+                'GET',
+                $this->uri . '?size=' . $size . '&minDate=' .
+                $dateFrom->format('Y-m-d') . '&offset' . $offset . '&key=' . $this->key
+            );
+        } catch (ClientException $throwable) {
+            throw new SuggestionsNotFound();
+        }
+        $contents = json_decode($response->getBody()->getContents(), true);
+        return new Suggestion($contents[0]['event1'], $contents[0]['event2']);
     }
 }
