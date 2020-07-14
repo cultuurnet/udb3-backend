@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
+use Cake\Chronos\Date;
 use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
@@ -31,7 +32,7 @@ class ProductionSuggestionController
     public function nextSuggestion(): Response
     {
         try {
-            $date = new \DateTime();
+            $date = Date::now();
             $suggestion = $this->similaritiesClient->nextSuggestion($date);
             $eventOne = $this->enrichedEventRepository->get($suggestion->getEventOne());
             $eventTwo = $this->enrichedEventRepository->get($suggestion->getEventTwo());

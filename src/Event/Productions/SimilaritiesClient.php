@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
+use Cake\Chronos\Date;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
@@ -64,7 +65,7 @@ class SimilaritiesClient
         );
     }
 
-    public function nextSuggestion(\DateTime $dateFrom, int $size = 1, int $offset = 0): Suggestion
+    public function nextSuggestion(Date $dateFrom, int $size = 1, int $offset = 0): Suggestion
     {
         try {
             $response = $this->client->request(
