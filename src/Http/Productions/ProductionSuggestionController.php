@@ -11,11 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductionSuggestionController
 {
-
     /**
      * @var SimilaritiesClient
      */
     private $similaritiesClient;
+
     /**
      * @var DocumentRepositoryInterface
      */

@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use Cake\Chronos\Date;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 
 class SimilaritiesClient
 {
@@ -32,7 +33,7 @@ class SimilaritiesClient
 
     /**
      * @param SimilarEventPair[] $eventPairs
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function excludeTemporarily(array $eventPairs): void
     {
@@ -44,7 +45,7 @@ class SimilaritiesClient
             ];
         }
 
-        $response = $this->client->request(
+        $this->client->request(
             'PATCH',
             $this->uri . '/greylist?key=' . $this->key,
             ['json' => $data]
@@ -58,7 +59,7 @@ class SimilaritiesClient
             'event2' => $pair->getEventTwo(),
         ];
 
-        $response = $this->client->request(
+        $this->client->request(
             'PATCH',
             $this->uri . '/blacklist?key=' . $this->key,
             ['json' => $data]
