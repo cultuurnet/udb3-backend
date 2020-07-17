@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
+use Cake\Chronos\Chronos;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -11,73 +12,62 @@ use ValueObjects\Identity\UUID;
 class AbstractPublishTest extends TestCase
 {
     /**
-     * @var UUID
+     * @test
      */
-    private $uuid;
-
-    /**
-     * @var \DateTimeInterface
-     */
-    private $publicationDate;
-
-    /**
-     * @var AbstractPublish|MockObject
-     */
-    private $abstractPublish;
-
-    public function setUp()
+    public function it_can_store_a_future_publication_date(): void
     {
-        $this->uuid = new UUID();
+        $futurePublicationDate = Chronos::now()->addWeek();
 
-        $this->publicationDate = new DateTime();
-
-        $this->abstractPublish = $this->getMockForAbstractClass(
+        $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
-            [$this->uuid->toNative(), $this->publicationDate]
+            [(new UUID())->toNative(), $futurePublicationDate]
         );
-    }
 
-    /**
-     * @test
-     */
-    public function it_is_an_abstract_moderation_command()
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->abstractPublish,
-            AbstractModerationCommand::class
-        ));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_store_an_publication_date()
-    {
         $this->assertEquals(
-            $this->publicationDate,
-            $this->abstractPublish->getPublicationDate()
+            $futurePublicationDate,
+            $publishCommand->getPublicationDate()
         );
     }
 
     /**
      * @test
      */
-    public function it_has_a_default_publication_date_of_now()
+    public function it_has_a_default_publication_date_of_now(): void
     {
-        $before = new DateTime();
+        $now = Chronos::now();
+        Chronos::setTestNow($now);
+
+        $publishCommand = $this->getMockForAbstractClass(
+            AbstractPublish::class,
+            [(new UUID())->toNative()]
+        );
+
+        $publicationDate = $publishCommand->getPublicationDate();
+
+        $this->assertEquals($now, $publicationDate);
+
+        // Clear fixed time
+        Chronos::setTestNow();
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_default_to_now_if_publication_date_is_in_the_past(): void
+    {
+        $now = Chronos::now();
+        $lastMonth = $now->subMonth();
+        Chronos::setTestNow($now);
 
         /** @var AbstractPublish $abstractPublish */
-        $abstractPublish = $this->getMockForAbstractClass(
+        $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
-            [$this->uuid->toNative()]
+            [(new UUID())->toNative(), $lastMonth]
         );
 
-        $after = new DateTime();
+        $this->assertEquals($now, $publishCommand->getPublicationDate());
 
-        $publicationDate = $abstractPublish->getPublicationDate();
-
-        $this->assertInstanceOf(DateTimeInterface::class, $publicationDate);
-        $this->assertGreaterThanOrEqual($before, $publicationDate);
-        $this->assertLessThanOrEqual($after, $publicationDate);
+        // Clear fixed time
+        Chronos::setTestNow();
     }
 }
