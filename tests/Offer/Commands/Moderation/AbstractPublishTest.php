@@ -13,7 +13,10 @@ class AbstractPublishTest extends TestCase
      */
     public function it_can_store_a_future_publication_date(): void
     {
-        $futurePublicationDate = Chronos::now()->addWeek();
+        $futurePublicationDate = \DateTimeImmutable::createFromFormat(
+            DATE_ATOM,
+            Chronos::now()->addWeek()->format(DATE_ATOM)
+        );
 
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
