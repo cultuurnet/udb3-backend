@@ -3,9 +3,6 @@
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
 use Cake\Chronos\Chronos;
-use DateTime;
-use DateTimeInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
