@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
+use Cake\Chronos\Chronos;
+
 abstract class AbstractPublish extends AbstractModerationCommand
 {
     /** @var  \DateTimeInterface */
@@ -16,8 +18,10 @@ abstract class AbstractPublish extends AbstractModerationCommand
     {
         parent::__construct($itemId);
 
-        if (is_null($publicationDate)) {
-            $publicationDate = new \DateTime();
+        $now = Chronos::now();
+
+        if (is_null($publicationDate) || $publicationDate < $now) {
+            $publicationDate = $now;
         }
         $this->publicationDate = $publicationDate;
     }

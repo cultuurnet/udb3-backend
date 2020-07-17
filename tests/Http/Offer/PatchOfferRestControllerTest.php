@@ -115,13 +115,13 @@ class PatchOfferRestControllerTest extends TestCase
                 'offerType' => OfferType::EVENT(),
                 'request' => $this->generatePatchRequest(
                     'application/ld+json;domain-model=Publish',
-                    json_encode(['publicationDate' => '2017-02-01T12:00:00+00:00'])
+                    json_encode(['publicationDate' => '2030-02-01T12:00:00+00:00'])
                 ),
                 'expectedCommand' => new Publish(
                     $this->itemId,
                     \DateTime::createFromFormat(
                         \DateTime::ISO8601,
-                        '2017-02-01T12:00:00+00:00'
+                        '2030-02-01T12:00:00+00:00'
                     )
                 )
             ],
