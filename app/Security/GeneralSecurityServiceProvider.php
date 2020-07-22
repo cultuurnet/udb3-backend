@@ -38,12 +38,6 @@ class GeneralSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['role_constraints_mode'] = $app->share(
-            function (Application $app) {
-                return SapiVersion::fromNative($app['config']['role_constraints_mode']);
-            }
-        );
-
         $app['user_constraints_read_repository'] = $app->share(
             function (Application $app) {
                 return new UserConstraintsReadRepository(
