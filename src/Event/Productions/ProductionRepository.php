@@ -6,6 +6,7 @@ use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProductionRepository extends AbstractDBALRepository
@@ -109,6 +110,11 @@ class ProductionRepository extends AbstractDBALRepository
                 'keyword' => $keyword,
                 'start' => $start,
                 'limit' => $limit,
+            ],
+            [
+                'keyword' => ParameterType::STRING,
+                'start' => ParameterType::INTEGER,
+                'limit' => ParameterType::INTEGER,
             ]
         )->fetchAll();
 
@@ -139,6 +145,9 @@ class ProductionRepository extends AbstractDBALRepository
             $sql,
             [
                 'keyword' => $keyword,
+            ],
+            [
+                'keyword' => ParameterType::STRING,
             ]
         )->fetchColumn(0);
     }
