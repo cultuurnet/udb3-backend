@@ -91,21 +91,23 @@ class ProductionRepository extends AbstractDBALRepository
 
     /**
      * @param string $keyword
+     * @param int $start
      * @param int $limit
      * @return Production[]
      */
-    public function search(string $keyword, int $limit): array
+    public function search(string $keyword, int $start, int $limit): array
     {
         $sql = 'SELECT production_id, name, GROUP_CONCAT(event_id) as events
                 FROM ' . $this->getTableName()->toNative() . ' 
                 WHERE MATCH (name) AGAINST (:keyword)
                 GROUP BY production_id
-                LIMIT :limit';
+                LIMIT :start,:limit';
 
         $results = $this->getConnection()->executeQuery(
             $sql,
             [
                 'keyword' => $keyword,
+                'start' => $start,
                 'limit' => $limit,
             ]
         )->fetchAll();
@@ -124,6 +126,20 @@ class ProductionRepository extends AbstractDBALRepository
             },
             $results
         );
+    }
+
+    public function count(string $keyword): int {
+        $sql = 'SELECT COUNT(*)
+                FROM ' . $this->getTableName()->toNative() . ' 
+                WHERE MATCH (name) AGAINST (:keyword)
+                GROUP BY production_id';
+
+        return (int) $this->getConnection()->executeQuery(
+            $sql,
+            [
+                'keyword' => $keyword,
+            ]
+        )->fetchColumn(0);
     }
 
     public function findProductionForEventId(string $eventId): Production
