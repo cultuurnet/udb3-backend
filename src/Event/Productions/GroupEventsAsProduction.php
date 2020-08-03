@@ -45,7 +45,7 @@ class GroupEventsAsProduction implements AuthorizableCommandInterface
 
     public function getPermission()
     {
-        Permission::PRODUCTIES_AANMAKEN();
+        return Permission::PRODUCTIES_AANMAKEN();
     }
 
     /**
