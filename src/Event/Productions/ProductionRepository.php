@@ -136,7 +136,7 @@ class ProductionRepository extends AbstractDBALRepository
 
     public function count(string $keyword): int
     {
-        $sql = 'SELECT COUNT(*)
+        $sql = 'SELECT production_id
                 FROM ' . $this->getTableName()->toNative() . ' 
                 WHERE MATCH (name) AGAINST (:keyword)
                 GROUP BY production_id';
@@ -149,7 +149,7 @@ class ProductionRepository extends AbstractDBALRepository
             [
                 'keyword' => ParameterType::STRING,
             ]
-        )->fetchColumn(0);
+        )->rowCount();
     }
 
     public function findProductionForEventId(string $eventId): Production
