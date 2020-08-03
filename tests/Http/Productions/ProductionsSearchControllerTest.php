@@ -31,7 +31,7 @@ class ProductionsSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_result_(): void
+    public function it_returns_an_empty_result_if_the_total_count_is_zero(): void
     {
         $this->repository->expects($this->once())->method('count')->with('foo')->willReturn(0);
         $this->repository->expects($this->never())->method('search');
@@ -43,6 +43,27 @@ class ProductionsSearchControllerTest extends TestCase
                 '@type' => 'PagedCollection',
                 'itemsPerPage' => 30,
                 'totalItems' => 0,
+                'member' => [],
+            ],
+            json_decode($response->getContent(), true)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_result_if_the_total_count_is_less_than_the_start(): void
+    {
+        $this->repository->expects($this->once())->method('count')->with('foo')->willReturn(100);
+        $this->repository->expects($this->never())->method('search');
+        $response = $this->controller->search(new Request(['name' => 'foo', 'start' => 101]));
+
+        $this->assertEquals(
+            [
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 30,
+                'totalItems' => 100,
                 'member' => [],
             ],
             json_decode($response->getContent(), true)

@@ -29,7 +29,7 @@ class ProductionsSearchController
         $keyword = $request->get('name');
         $start = $request->get('start', self::DEFAULT_START);
         $limit = $request->get('limit', self::DEFAULT_LIMIT);
-        $pageNumber = (int) $start / $limit;
+        $pageNumber = (int) ($start / $limit);
 
         $count = $this->repository->count($keyword);
 
