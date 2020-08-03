@@ -27,8 +27,8 @@ class ProductionsSearchController
     public function search(Request $request): Response
     {
         $keyword = $request->get('name', '');
-        $start = $request->get('start', self::DEFAULT_START);
-        $limit = $request->get('limit', self::DEFAULT_LIMIT);
+        $start = (int) $request->get('start', self::DEFAULT_START);
+        $limit = (int) $request->get('limit', self::DEFAULT_LIMIT);
         $pageNumber = (int) ($start / $limit);
 
         $count = $this->repository->count($keyword);

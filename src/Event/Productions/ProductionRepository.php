@@ -7,6 +7,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Query\QueryBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ProductionRepository extends AbstractDBALRepository
@@ -98,25 +99,11 @@ class ProductionRepository extends AbstractDBALRepository
      */
     public function search(string $keyword, int $start, int $limit): array
     {
-        $sql = 'SELECT production_id, name, GROUP_CONCAT(event_id) as events
-                FROM ' . $this->getTableName()->toNative() . ' 
-                WHERE MATCH (name) AGAINST (:keyword)
-                GROUP BY production_id
-                LIMIT :start,:limit';
+        $query = $this->createSearchQuery($keyword)
+            ->setFirstResult($start)
+            ->setMaxResults($limit);
 
-        $results = $this->getConnection()->executeQuery(
-            $sql,
-            [
-                'keyword' => $keyword,
-                'start' => $start,
-                'limit' => $limit,
-            ],
-            [
-                'keyword' => ParameterType::STRING,
-                'start' => ParameterType::INTEGER,
-                'limit' => ParameterType::INTEGER,
-            ]
-        )->fetchAll();
+        $results = $query->execute()->fetchAll();
 
         if (empty($results)) {
             return [];
@@ -136,20 +123,21 @@ class ProductionRepository extends AbstractDBALRepository
 
     public function count(string $keyword): int
     {
-        $sql = 'SELECT production_id
-                FROM ' . $this->getTableName()->toNative() . ' 
-                WHERE MATCH (name) AGAINST (:keyword)
-                GROUP BY production_id';
+        return (int) $this->createSearchQuery($keyword)->execute()->rowCount();
+    }
 
-        return (int) $this->getConnection()->executeQuery(
-            $sql,
-            [
-                'keyword' => $keyword,
-            ],
-            [
-                'keyword' => ParameterType::STRING,
-            ]
-        )->rowCount();
+    private function createSearchQuery(string $keyword): QueryBuilder
+    {
+        $query = $this->getConnection()->createQueryBuilder()
+            ->select('production_id, name, GROUP_CONCAT(event_id) as events')
+            ->from($this->getTableName()->toNative());
+
+        if (!empty($keyword)) {
+            $query = $query->where('MATCH (name) AGAINST (:keyword)')
+                ->setParameter(':keyword', $keyword);
+        }
+
+        return $query->groupBy('production_id');
     }
 
     public function findProductionForEventId(string $eventId): Production
