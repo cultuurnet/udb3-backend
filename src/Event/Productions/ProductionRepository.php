@@ -128,7 +128,8 @@ class ProductionRepository extends AbstractDBALRepository
         );
     }
 
-    public function count(string $keyword): int {
+    public function count(string $keyword): int
+    {
         $sql = 'SELECT COUNT(*)
                 FROM ' . $this->getTableName()->toNative() . ' 
                 WHERE MATCH (name) AGAINST (:keyword)
