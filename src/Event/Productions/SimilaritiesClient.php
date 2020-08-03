@@ -47,7 +47,7 @@ class SimilaritiesClient
 
         $this->client->request(
             'PATCH',
-            $this->uri . '/greylist?key=' . $this->key,
+            $this->uri . '/temporarilyexcluded?key=' . $this->key,
             ['json' => $data]
         );
     }
@@ -61,7 +61,7 @@ class SimilaritiesClient
 
         $this->client->request(
             'PATCH',
-            $this->uri . '/blacklist?key=' . $this->key,
+            $this->uri . '/permanentlyexcluded?key=' . $this->key,
             ['json' => $data]
         );
     }
