@@ -2,10 +2,9 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
-use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\Event\Productions\Production;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use CultuurNet\UDB3\Http\Response\PagedCollectionResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,18 +28,14 @@ class ProductionsSearchController
         $keyword = $request->get('name', '');
         $start = (int) $request->get('start', self::DEFAULT_START);
         $limit = (int) $request->get('limit', self::DEFAULT_LIMIT);
-        $pageNumber = (int) ($start / $limit);
 
         $count = $this->repository->count($keyword);
 
         if ($count === 0 || $start > $count) {
-            return new JsonResponse(
-                new PagedCollection(
-                    $pageNumber,
-                    $limit,
-                    [],
-                    $count
-                )
+            return new PagedCollectionResponse(
+                $limit,
+                $count,
+                []
             );
         }
 
@@ -51,13 +46,10 @@ class ProductionsSearchController
             $this->repository->search($keyword, $start, $limit)
         );
 
-        return new JsonResponse(
-            new PagedCollection(
-                $pageNumber,
-                $limit,
-                $serializedProductions,
-                $count
-            )
+        return new PagedCollectionResponse(
+            $limit,
+            $count,
+            $serializedProductions
         );
     }
 
