@@ -113,5 +113,8 @@
       "type": "vcs",
       "url": "https://github.com/cultuurnet/php-resque.git"
     }
-  ]
+  ],
+  "scripts": {
+    "phing": "./vendor/bin/phing test"
+  }
 }
