@@ -31,12 +31,43 @@ class ProductionsSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_result_(): void
+    public function it_returns_an_empty_result_if_the_total_count_is_zero(): void
     {
-        $this->repository->expects($this->once())->method('search')->with('foo')->willReturn([]);
+        $this->repository->expects($this->once())->method('count')->with('foo')->willReturn(0);
+        $this->repository->expects($this->never())->method('search');
         $response = $this->controller->search(new Request(['name' => 'foo']));
 
-        $this->assertEquals([], json_decode($response->getContent(), true));
+        $this->assertEquals(
+            [
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 30,
+                'totalItems' => 0,
+                'member' => [],
+            ],
+            json_decode($response->getContent(), true)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_result_if_the_total_count_is_less_than_the_start(): void
+    {
+        $this->repository->expects($this->once())->method('count')->with('foo')->willReturn(100);
+        $this->repository->expects($this->never())->method('search');
+        $response = $this->controller->search(new Request(['name' => 'foo', 'start' => 101]));
+
+        $this->assertEquals(
+            [
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 30,
+                'totalItems' => 100,
+                'member' => [],
+            ],
+            json_decode($response->getContent(), true)
+        );
     }
 
     /**
@@ -52,16 +83,23 @@ class ProductionsSearchControllerTest extends TestCase
         ];
 
         $productions = [new Production($productionId, $name, $events),];
-        $this->repository->expects($this->once())->method('search')->with('foo', 15)->willReturn($productions);
+        $this->repository->expects($this->once())->method('count')->with('foo')->willReturn(43);
+        $this->repository->expects($this->once())->method('search')->with('foo', 30, 15)->willReturn($productions);
 
-        $response = $this->controller->search(new Request(['name' => 'foo', 'limit' => 15]));
+        $response = $this->controller->search(new Request(['name' => 'foo', 'start' => 30, 'limit' => 15]));
 
         $this->assertEquals(
             [
-                [
-                    'production_id' => $productionId->toNative(),
-                    'name' => $name,
-                    'events' => $events,
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 15,
+                'totalItems' => 43,
+                'member' => [
+                    [
+                        'production_id' => $productionId->toNative(),
+                        'name' => $name,
+                        'events' => $events,
+                    ],
                 ],
             ],
             json_decode($response->getContent(), true)

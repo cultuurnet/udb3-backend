@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Http\Label;
 
-use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
@@ -140,17 +139,18 @@ class ReadRestControllerTest extends TestCase
     {
         $jsonResponse = $this->readRestController->search($this->request);
 
-        $expectedJsonResponse = new JsonResponse(new PagedCollection(
-            (int)(5/2),
-            2,
-            [
+        $expectedJson = [
+            '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+            '@type' => 'PagedCollection',
+            'itemsPerPage' => 2,
+            'totalItems' => 2,
+            'member' => [
                 $this->entityToArray($this->entity),
                 $this->entityToArray($this->entity)
             ],
-            2
-        ));
+        ];
 
-        $this->assertEquals($expectedJsonResponse, $jsonResponse);
+        $this->assertEquals($expectedJson, json_decode($jsonResponse->getContent(), true));
     }
 
     private function mockGetByUuid()

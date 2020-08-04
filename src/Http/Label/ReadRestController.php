@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Http\Label;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\Hydra\PagedCollection;
+use CultuurNet\UDB3\Http\Response\PagedCollectionResponse;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
@@ -78,12 +78,11 @@ class ReadRestController
         if ($totalEntities) {
             $entities = $this->readService->search($query);
 
-            $pagedCollection = $this->createPagedCollection(
+            return $this->createPagedCollectionResponse(
                 $query,
                 $entities !== null ? $entities : [],
                 $totalEntities
             );
-            return new JsonResponse($pagedCollection);
         } else {
             $apiProblem = new ApiProblem('No label found for search query.');
             $apiProblem->setStatus(Response::HTTP_NOT_FOUND);
@@ -96,30 +95,23 @@ class ReadRestController
      * @param Query $query
      * @param Entity[] $entities
      * @param Natural $totalEntities
-     * @return PagedCollection
+     * @return PagedCollectionResponse
      */
-    private function createPagedCollection(
+    private function createPagedCollectionResponse(
         Query $query,
         array $entities,
         Natural $totalEntities
-    ) {
-        $pageNumber = 0;
+    ): PagedCollectionResponse {
         $limit = 0;
-
-        if ($query->getOffset() && $query->getLimit()) {
-            $pageNumber = (int) ($query->getOffset()->toNative() /
-                $query->getLimit()->toNative());
-        }
 
         if ($query->getLimit()) {
             $limit = $query->getLimit()->toNative();
         }
 
-        return new PagedCollection(
-            $pageNumber,
+        return new PagedCollectionResponse(
             $limit,
-            $entities,
-            $totalEntities->toNative()
+            $totalEntities->toNative(),
+            $entities
         );
     }
 }
