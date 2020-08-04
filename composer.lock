@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7ab93cfc0561237cdef6b8af678c520",
+    "content-hash": "af8812f35e6b32794a8f937eb888aae7",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1157,54 +1157,6 @@
                 }
             ],
             "time": "2018-06-29T14:21:16+00:00"
-        },
-        {
-            "name": "cultuurnet/hydra",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/Hydra.git",
-                "reference": "1309afe7583632ac12d3bd2ab567fcf1c7d21b62"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/1309afe7583632ac12d3bd2ab567fcf1c7d21b62",
-                "reference": "1309afe7583632ac12d3bd2ab567fcf1c7d21b62",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\Hydra\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Bram Cordie",
-                    "email": "bram@2dotstwice.be"
-                }
-            ],
-            "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2018-06-29T14:26:23+00:00"
         },
         {
             "name": "cultuurnet/monolog-socketio",

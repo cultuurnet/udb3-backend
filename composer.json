@@ -25,7 +25,6 @@
     "cultuurnet/culturefeed-php": "~1.9.2",
     "cultuurnet/deserializer": "~0.1",
     "cultuurnet/entry": "~0.1",
-    "cultuurnet/hydra": "~0.1",
     "cultuurnet/monolog-socketio": "~0.1",
     "cultuurnet/search-v3": "dev-master",
     "cultuurnet/silex-amqp": "~0.1",
