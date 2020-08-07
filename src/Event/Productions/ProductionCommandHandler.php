@@ -28,8 +28,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         ProductionRepository $productionRepository,
         SimilaritiesClient $similaritiesClient,
         DocumentRepositoryInterface $eventRepository
-    )
-    {
+    ) {
         $this->productionRepository = $productionRepository;
         $this->similaritiesClient = $similaritiesClient;
         $this->eventRepository = $eventRepository;
