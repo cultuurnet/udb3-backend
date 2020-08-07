@@ -5,6 +5,8 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
 
@@ -23,9 +25,14 @@ class ProductionCommandHandlerTest extends TestCase
     private $commandHandler;
 
     /**
-     * @var SimilaritiesClient|\PHPUnit\Framework\MockObject\MockObject
+     * @var SimilaritiesClient|MockObject
      */
     private $similaritiesClient;
+
+    /**
+     * @var DocumentRepositoryInterface|MockObject
+     */
+    private $eventRepository;
 
     protected function setUp(): void
     {
@@ -33,7 +40,12 @@ class ProductionCommandHandlerTest extends TestCase
         $schema->configure($this->getConnection()->getSchemaManager());
         $this->productionRepository = new ProductionRepository($this->getConnection());
         $this->similaritiesClient = $this->createMock(SimilaritiesClient::class);
-        $this->commandHandler = new ProductionCommandHandler($this->productionRepository, $this->similaritiesClient);
+        $this->eventRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->commandHandler = new ProductionCommandHandler(
+            $this->productionRepository,
+            $this->similaritiesClient,
+            $this->eventRepository
+        );
     }
 
     /**

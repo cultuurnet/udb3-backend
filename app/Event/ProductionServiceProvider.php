@@ -30,7 +30,11 @@ class ProductionServiceProvider implements ServiceProviderInterface
 
         $app[ProductionCommandHandler::class] = $app->share(
             function ($app) {
-                return new ProductionCommandHandler($app[ProductionRepository::class], $app[SimilaritiesClient::class]);
+                return new ProductionCommandHandler(
+                    $app[ProductionRepository::class],
+                    $app[SimilaritiesClient::class],
+                    $app{'event_jsonld_repository'}
+                );
             }
         );
     }

@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use Doctrine\DBAL\DBALException;
 
 class ProductionCommandHandler extends Udb3CommandHandler
@@ -18,10 +19,20 @@ class ProductionCommandHandler extends Udb3CommandHandler
      */
     private $similaritiesClient;
 
-    public function __construct(ProductionRepository $productionRepository, SimilaritiesClient $similaritiesClient)
+    /**
+     * @var DocumentRepositoryInterface
+     */
+    private $eventRepository;
+
+    public function __construct(
+        ProductionRepository $productionRepository,
+        SimilaritiesClient $similaritiesClient,
+        DocumentRepositoryInterface $eventRepository
+    )
     {
         $this->productionRepository = $productionRepository;
         $this->similaritiesClient = $similaritiesClient;
+        $this->eventRepository = $eventRepository;
     }
 
     public function handleGroupEventsAsProduction(GroupEventsAsProduction $command): void
