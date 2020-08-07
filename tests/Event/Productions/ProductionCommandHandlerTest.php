@@ -109,6 +109,26 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_will_not_group_events_as_production_when_event_does_not_exist(): void
+    {
+        $event = Uuid::uuid4()->toString();
+
+        $this->eventRepository->method('get')->willReturn(null);
+        $this->expectException(EventCannotBeAddedToProduction::class);
+        $this->commandHandler->handle(
+            GroupEventsAsProduction::withProductionName(
+                [
+                    $event,
+                    Uuid::uuid4()->toString(),
+                ],
+                'Some production'
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_add_event_to_production(): void
     {
         $name = "A Midsummer Night's Scream 2";
