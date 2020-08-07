@@ -2,7 +2,10 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-final class RejectSuggestedEventPair
+use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+
+final class RejectSuggestedEventPair implements AuthorizableCommandInterface
 {
     /**
      * @var SimilarEventPair
@@ -20,5 +23,15 @@ final class RejectSuggestedEventPair
             $this->eventPair->getEventOne(),
             $this->eventPair->getEventTwo(),
         ];
+    }
+
+    public function getItemId()
+    {
+        return  $this->eventPair->getEventOne();
+    }
+
+    public function getPermission()
+    {
+        return Permission::PRODUCTIES_AANMAKEN();
     }
 }
