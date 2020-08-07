@@ -6,6 +6,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Rhumsaa\Uuid\Uuid;
@@ -60,6 +61,8 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ];
 
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
         $this->similaritiesClient->expects(self::any())
             ->method('excludeTemporarily');
 
@@ -85,7 +88,7 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ];
 
-        $this->similaritiesClient->expects($this->once())->method('excludeTemporarily');
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
@@ -116,6 +119,8 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ];
 
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
         $this->similaritiesClient->expects(self::any())
             ->method('excludeTemporarily');
 
@@ -139,6 +144,8 @@ class ProductionCommandHandlerTest extends TestCase
      */
     public function it_cannot_add_an_event_that_already_belongs_to_another_production(): void
     {
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
         $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction],
@@ -158,8 +165,10 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_remove_an_event_from_aproduction(): void
+    public function it_can_remove_an_event_from_a_production(): void
     {
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
         $name = "A Midsummer Night's Scream 2";
         $eventToRemove = Uuid::uuid4()->toString();
         $events = [
@@ -186,6 +195,8 @@ class ProductionCommandHandlerTest extends TestCase
      */
     public function it_will_not_remove_events_from_another_production()
     {
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
         $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction],
@@ -214,6 +225,8 @@ class ProductionCommandHandlerTest extends TestCase
      */
     public function it_can_merge_productions()
     {
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
         $event1 = Uuid::uuid4()->toString();
         $name = "I know what you did last Midsummer Night";
         $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);
@@ -244,6 +257,8 @@ class ProductionCommandHandlerTest extends TestCase
      */
     public function it_will_not_merge_to_unknown_production()
     {
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
         $event1 = Uuid::uuid4()->toString();
         $name = "I know what you did last Midsummer Night";
         $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);

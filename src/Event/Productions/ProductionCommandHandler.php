@@ -42,6 +42,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
             $command->getName(),
             $command->getEventIds()
         );
+
+        foreach ($command->getEventIds() as $eventId) {
+            $this->assertEventExists($eventId);
+        }
+
         try {
             $this->productionRepository->add($production);
             $this->eventsWereAddedToProduction($command->getEventIds()[0], $command->getProductionId());
@@ -114,5 +119,13 @@ class ProductionCommandHandler extends Udb3CommandHandler
             }
         }
         $this->similaritiesClient->excludeTemporarily($eventPairs);
+    }
+
+    private function assertEventExists(string $eventId)
+    {
+        $event = $this->eventRepository->get($eventId);
+        if (!$event) {
+            throw EventCannotBeAddedToProduction::becauseItDoesNotExist($eventId);
+        }
     }
 }
