@@ -60,6 +60,8 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleAddEventToProduction(AddEventToProduction $command): void
     {
+        $this->assertEventExists($command->getEventId());
+
         $production = $this->productionRepository->find($command->getProductionId());
         if ($production->containsEvent($command->getEventId())) {
             return;

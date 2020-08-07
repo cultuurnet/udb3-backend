@@ -185,6 +185,20 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_cannot_add_a_non_existing_event_to_a_production(): void
+    {
+        $eventId = Uuid::uuid4()->toString();
+        $this->eventRepository->method('get')->with(...[$eventId])->willReturn(null);
+
+        $this->expectException(EventCannotBeAddedToProduction::class);
+        $this->commandHandler->handle(
+            new AddEventToProduction($eventId, ProductionId::generate())
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_remove_an_event_from_a_production(): void
     {
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
