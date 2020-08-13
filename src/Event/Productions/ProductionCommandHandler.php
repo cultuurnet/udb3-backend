@@ -4,6 +4,8 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use Doctrine\DBAL\DBALException;
 
 class ProductionCommandHandler extends Udb3CommandHandler
@@ -18,10 +20,19 @@ class ProductionCommandHandler extends Udb3CommandHandler
      */
     private $similaritiesClient;
 
-    public function __construct(ProductionRepository $productionRepository, SimilaritiesClient $similaritiesClient)
-    {
+    /**
+     * @var DocumentRepositoryInterface
+     */
+    private $eventRepository;
+
+    public function __construct(
+        ProductionRepository $productionRepository,
+        SimilaritiesClient $similaritiesClient,
+        DocumentRepositoryInterface $eventRepository
+    ) {
         $this->productionRepository = $productionRepository;
         $this->similaritiesClient = $similaritiesClient;
+        $this->eventRepository = $eventRepository;
     }
 
     public function handleGroupEventsAsProduction(GroupEventsAsProduction $command): void
@@ -31,6 +42,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
             $command->getName(),
             $command->getEventIds()
         );
+
+        foreach ($command->getEventIds() as $eventId) {
+            $this->assertEventExists($eventId);
+        }
+
         try {
             $this->productionRepository->add($production);
             $this->eventsWereAddedToProduction($command->getEventIds()[0], $command->getProductionId());
@@ -44,6 +60,8 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleAddEventToProduction(AddEventToProduction $command): void
     {
+        $this->assertEventExists($command->getEventId());
+
         $production = $this->productionRepository->find($command->getProductionId());
         if ($production->containsEvent($command->getEventId())) {
             return;
@@ -80,7 +98,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleRejectSuggestedEventPair(RejectSuggestedEventPair $command): void
     {
-        $this->similaritiesClient->excludePermanently(SimilarEventPair::fromArray($command->getEventIds()));
+        $this->similaritiesClient->excludePermanently([SimilarEventPair::fromArray($command->getEventIds())]);
     }
 
     private function eventsWereAddedToProduction(string $eventId, ProductionId $productionId): void
@@ -103,5 +121,18 @@ class ProductionCommandHandler extends Udb3CommandHandler
             }
         }
         $this->similaritiesClient->excludeTemporarily($eventPairs);
+    }
+
+    private function assertEventExists(string $eventId)
+    {
+        try {
+            $event = $this->eventRepository->get($eventId);
+        } catch (DocumentGoneException $e) {
+            $event = null;
+        }
+
+        if (!$event) {
+            throw EventCannotBeAddedToProduction::becauseItDoesNotExist($eventId);
+        }
     }
 }

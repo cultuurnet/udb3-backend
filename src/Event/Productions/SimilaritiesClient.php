@@ -52,12 +52,18 @@ class SimilaritiesClient
         );
     }
 
-    public function excludePermanently(SimilarEventPair $pair)
+    /**
+     * @param SimilarEventPair[] $eventPairs
+     */
+    public function excludePermanently(array $eventPairs): void
     {
-        $data['pairs'] = [
-            'event1' => $pair->getEventOne(),
-            'event2' => $pair->getEventTwo(),
-        ];
+        $data['pairs'] = [];
+        foreach ($eventPairs as $pair) {
+            $data['pairs'][] = [
+                'event1' => $pair->getEventOne(),
+                'event2' => $pair->getEventTwo(),
+            ];
+        }
 
         $this->client->request(
             'PATCH',
