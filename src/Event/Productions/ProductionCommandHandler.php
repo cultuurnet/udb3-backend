@@ -98,7 +98,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleRejectSuggestedEventPair(RejectSuggestedEventPair $command): void
     {
-        $this->similaritiesClient->excludePermanently(SimilarEventPair::fromArray($command->getEventIds()));
+        $this->similaritiesClient->excludePermanently([SimilarEventPair::fromArray($command->getEventIds())]);
     }
 
     private function eventsWereAddedToProduction(string $eventId, ProductionId $productionId): void
