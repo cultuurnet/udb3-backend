@@ -188,7 +188,7 @@ class ProductionCommandHandlerTest extends TestCase
     public function it_cannot_add_a_non_existing_event_to_a_production(): void
     {
         $eventId = Uuid::uuid4()->toString();
-        $this->eventRepository->method('get')->with(...[$eventId])->willReturn(null);
+        $this->eventRepository->method('get')->with($eventId)->willReturn(null);
 
         $this->expectException(EventCannotBeAddedToProduction::class);
         $this->commandHandler->handle(
