@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use Doctrine\DBAL\DBALException;
 
@@ -124,7 +125,12 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     private function assertEventExists(string $eventId)
     {
-        $event = $this->eventRepository->get($eventId);
+        try {
+            $event = $this->eventRepository->get($eventId);
+        } catch (DocumentGoneException $e) {
+            $event = null;
+        }
+
         if (!$event) {
             throw EventCannotBeAddedToProduction::becauseItDoesNotExist($eventId);
         }
