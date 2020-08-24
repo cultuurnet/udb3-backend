@@ -80,6 +80,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleRemoveEventFromProduction(RemoveEventFromProduction $command): void
     {
+        $this->assertEventCanBeRemovedFromProduction($command->getEventId(), $command->getProductionId());
         $this->productionRepository->removeEvent($command->getEventId(), $command->getProductionId());
     }
 
@@ -133,6 +134,20 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         if (!$event) {
             throw EventCannotBeAddedToProduction::becauseItDoesNotExist($eventId);
+        }
+    }
+
+    private function assertEventCanBeRemovedFromProduction(string $eventId, ProductionId $productionId)
+    {
+        try {
+            $this->eventRepository->get($eventId);
+            $production = $this->productionRepository->find($productionId);
+            if (!$production->containsEvent($eventId)) {
+                throw EventCannotBeRemovedFromProduction::becauseItDoesNotBelongToIt($eventId, $productionId);
+            }
+
+        } catch (DocumentGoneException $e) {
+            throw EventCannotBeRemovedFromProduction::becauseItDoesNotExist($eventId);
         }
     }
 }

@@ -243,15 +243,10 @@ class ProductionCommandHandlerTest extends TestCase
             $name);
         $this->commandHandler->handle($secondProductionCommand);
 
+        $this->expectException(EventCannotBeRemovedFromProduction::class);
         $this->commandHandler->handle(
             new RemoveEventFromProduction($eventBelongingToFirstProduction, $secondProductionCommand->getProductionId())
         );
-
-        $firstProduction = $this->productionRepository->find($firstProductionCommand->getProductionId());
-        $this->assertTrue($firstProduction->containsEvent($eventBelongingToFirstProduction));
-
-        $secondProduction = $this->productionRepository->find($secondProductionCommand->getProductionId());
-        $this->assertTrue($secondProduction->containsEvent($eventBelongingToSecondProduction));
     }
 
     /**
