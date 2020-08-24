@@ -44,7 +44,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         );
 
         foreach ($command->getEventIds() as $eventId) {
-            $this->assertEventExists($eventId);
+            $this->assertEventCanBeAddedToProduction($eventId);
         }
 
         try {
@@ -60,7 +60,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleAddEventToProduction(AddEventToProduction $command): void
     {
-        $this->assertEventExists($command->getEventId());
+        $this->assertEventCanBeAddedToProduction($command->getEventId());
 
         $production = $this->productionRepository->find($command->getProductionId());
         if ($production->containsEvent($command->getEventId())) {
@@ -80,6 +80,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleRemoveEventFromProduction(RemoveEventFromProduction $command): void
     {
+        $this->assertEventCanBeRemovedFromProduction($command->getEventId(), $command->getProductionId());
         $this->productionRepository->removeEvent($command->getEventId(), $command->getProductionId());
     }
 
@@ -123,7 +124,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->similaritiesClient->excludeTemporarily($eventPairs);
     }
 
-    private function assertEventExists(string $eventId)
+    private function assertEventCanBeAddedToProduction(string $eventId)
     {
         try {
             $event = $this->eventRepository->get($eventId);
@@ -133,6 +134,18 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         if (!$event) {
             throw EventCannotBeAddedToProduction::becauseItDoesNotExist($eventId);
+        }
+    }
+
+    private function assertEventCanBeRemovedFromProduction(string $eventId, ProductionId $productionId)
+    {
+        try {
+            $this->eventRepository->get($eventId);
+            $this->productionRepository->find($productionId);
+        } catch (DocumentGoneException $e) {
+            throw EventCannotBeRemovedFromProduction::becauseItDoesNotExist($eventId);
+        } catch (EntityNotFoundException $e) {
+            throw EventCannotBeRemovedFromProduction::becauseProductionDoesNotExist($eventId, $productionId);
         }
     }
 }
