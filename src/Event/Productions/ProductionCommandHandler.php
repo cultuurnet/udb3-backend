@@ -44,7 +44,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         );
 
         foreach ($command->getEventIds() as $eventId) {
-            $this->assertEventExists($eventId);
+            $this->assertEventCanBeAddedToProduction($eventId);
         }
 
         try {
@@ -60,7 +60,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleAddEventToProduction(AddEventToProduction $command): void
     {
-        $this->assertEventExists($command->getEventId());
+        $this->assertEventCanBeAddedToProduction($command->getEventId());
 
         $production = $this->productionRepository->find($command->getProductionId());
         if ($production->containsEvent($command->getEventId())) {
@@ -124,7 +124,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->similaritiesClient->excludeTemporarily($eventPairs);
     }
 
-    private function assertEventExists(string $eventId)
+    private function assertEventCanBeAddedToProduction(string $eventId)
     {
         try {
             $event = $this->eventRepository->get($eventId);
