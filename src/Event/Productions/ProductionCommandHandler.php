@@ -145,7 +145,6 @@ class ProductionCommandHandler extends Udb3CommandHandler
             if (!$production->containsEvent($eventId)) {
                 throw EventCannotBeRemovedFromProduction::becauseItDoesNotBelongToIt($eventId, $productionId);
             }
-
         } catch (DocumentGoneException $e) {
             throw EventCannotBeRemovedFromProduction::becauseItDoesNotExist($eventId);
         }
