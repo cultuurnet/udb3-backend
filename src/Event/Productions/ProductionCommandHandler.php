@@ -141,12 +141,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
     {
         try {
             $this->eventRepository->get($eventId);
-            $production = $this->productionRepository->find($productionId);
-            if (!$production->containsEvent($eventId)) {
-                throw EventCannotBeRemovedFromProduction::becauseItDoesNotBelongToIt($eventId, $productionId);
-            }
+            $this->productionRepository->find($productionId);
         } catch (DocumentGoneException $e) {
             throw EventCannotBeRemovedFromProduction::becauseItDoesNotExist($eventId);
+        } catch (EntityNotFoundException $e) {
+            throw EventCannotBeRemovedFromProduction::becauseProductionDoesNotExist($eventId, $productionId);
         }
     }
 }

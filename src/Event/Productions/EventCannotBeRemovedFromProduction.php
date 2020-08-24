@@ -6,10 +6,10 @@ use Exception;
 
 final class EventCannotBeRemovedFromProduction extends Exception
 {
-    public static function becauseItDoesNotBelongToIt(string $eventId, ProductionId $productionId): self
+    public static function becauseProductionDoesNotExist(string $eventId, ProductionId $productionId): self
     {
         return new self(
-            'Event with id ' . $eventId . ' cannot be removed from production with id ' . $productionId->toNative() . ' because it does not belong to it.'
+            'Event with id ' . $eventId . ' cannot be removed from production with id ' . $productionId->toNative() . ' because that production does not exist.'
         );
     }
 
