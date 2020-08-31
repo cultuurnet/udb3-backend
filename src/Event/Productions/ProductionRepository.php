@@ -133,7 +133,8 @@ class ProductionRepository extends AbstractDBALRepository
             ->from($this->getTableName()->toNative());
 
         if (!empty($keyword)) {
-            $query = $query->where('MATCH(name) AGAINST(CONCAT(:keyword, \'*\') IN BOOLEAN MODE)')
+            $keyword .= '*';
+            $query = $query->where('MATCH(name) AGAINST(:keyword IN BOOLEAN MODE)')
                 ->setParameter(':keyword', $keyword);
         }
 
