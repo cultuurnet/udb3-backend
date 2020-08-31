@@ -14,10 +14,11 @@ class Suggestion
      */
     private $eventTwo;
 
-    public function __construct(string $eventOne, string $eventTwo)
+    public function __construct(string $eventOne, string $eventTwo, float $similarity)
     {
         $this->eventOne = $eventOne;
         $this->eventTwo = $eventTwo;
+        $this->similarity = $similarity;
     }
 
     public function getEventOne(): string
@@ -28,5 +29,10 @@ class Suggestion
     public function getEventTwo(): string
     {
         return $this->eventTwo;
+    }
+
+    public function getSimilarity(): float
+    {
+        return $this->similarity;
     }
 }

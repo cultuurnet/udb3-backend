@@ -83,7 +83,13 @@ class SimilaritiesClient
         } catch (ClientException $throwable) {
             throw new SuggestionsNotFound();
         }
+
         $contents = json_decode($response->getBody()->getContents(), true);
-        return new Suggestion($contents[0]['event1'], $contents[0]['event2']);
+
+        return new Suggestion(
+            $contents[0]['event1'],
+            $contents[0]['event2'],
+            (float) $contents[0]['similarity']
+        );
     }
 }
