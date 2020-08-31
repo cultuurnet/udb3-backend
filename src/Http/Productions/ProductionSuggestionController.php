@@ -42,6 +42,7 @@ class ProductionSuggestionController
                         $eventOne->getBody(),
                         $eventTwo->getBody(),
                     ],
+                    'similarity' => $suggestion->getSimilarity(),
                 ]
             );
         } catch (SuggestionsNotFound $exception) {
