@@ -133,7 +133,7 @@ class ProductionRepository extends AbstractDBALRepository
             ->from($this->getTableName()->toNative());
 
         if (!empty($keyword)) {
-            $query = $query->where('MATCH (name) AGAINST (:keyword)')
+            $query = $query->where('name LIKE CONCAT(\'%\', :keyword, \'%\')')
                 ->setParameter(':keyword', $keyword);
         }
 
