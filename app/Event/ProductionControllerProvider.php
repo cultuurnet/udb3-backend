@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
+use Cake\Chronos\Date;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
@@ -37,9 +38,15 @@ class ProductionControllerProvider implements ControllerProviderInterface
 
         $app[ProductionSuggestionController::class] = $app->share(
             function (Application $app) {
+                $minDate = Date::now();
+                if (isset($app['config']['event_similarities_api']['suggestions']['min_date'])) {
+                    $minDate = Date::createFromFormat('Y-m-d', $app['config']['event_similarities_api']['suggestions']['min_date']);
+                }
+
                 return new ProductionSuggestionController(
                     $app[SimilaritiesClient::class],
-                    $app['event_jsonld_repository']
+                    $app['event_jsonld_repository'],
+                    $minDate
                 );
             }
         );
