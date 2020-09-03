@@ -5,7 +5,9 @@ namespace CultuurNet\UDB3\Http\Productions;
 use Cake\Chronos\Date;
 use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,22 +40,37 @@ class ProductionSuggestionController
 
     public function nextSuggestion(): Response
     {
+        $date = $this->minDate ?: Date::now();
+
         try {
-            $date = $this->minDate ?: Date::now();
             $suggestion = $this->similaritiesClient->nextSuggestion($date);
-            $eventOne = $this->enrichedEventRepository->get($suggestion->getEventOne());
-            $eventTwo = $this->enrichedEventRepository->get($suggestion->getEventTwo());
-            return new JsonResponse(
-                [
-                    'events' => [
-                        $eventOne->getBody(),
-                        $eventTwo->getBody(),
-                    ],
-                    'similarity' => $suggestion->getSimilarity(),
-                ]
-            );
-        } catch (SuggestionsNotFound $exception) {
-            return new Response(null, Response::HTTP_NOT_FOUND);
+        } catch (SuggestionsNotFound $e) {
+            return new NoContent();
         }
+
+        return new JsonResponse(
+            [
+                'events' => [
+                    $this->getEventBody($suggestion->getEventOne()),
+                    $this->getEventBody($suggestion->getEventTwo()),
+                ],
+                'similarity' => $suggestion->getSimilarity(),
+            ]
+        );
+    }
+
+    private function getEventBody(string $eventId): array
+    {
+        try {
+            $event = $this->enrichedEventRepository->get($eventId);
+        } catch (DocumentGoneException $e) {
+            throw new SuggestedEventRemovedException($eventId);
+        }
+
+        if ($event === null) {
+            throw new SuggestedEventNotFoundException($eventId);
+        }
+
+        return json_decode($event->getRawBody(), true);
     }
 }
