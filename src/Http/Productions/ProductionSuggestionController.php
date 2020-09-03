@@ -24,14 +24,14 @@ class ProductionSuggestionController
     private $enrichedEventRepository;
 
     /**
-     * @var Date|null
+     * @var Date
      */
     private $minDate;
 
     public function __construct(
         SimilaritiesClient $similaritiesClient,
         DocumentRepositoryInterface $enrichedEventRepository,
-        ?Date $minDate = null
+        Date $minDate
     ) {
         $this->similaritiesClient = $similaritiesClient;
         $this->enrichedEventRepository = $enrichedEventRepository;
@@ -40,10 +40,8 @@ class ProductionSuggestionController
 
     public function nextSuggestion(): Response
     {
-        $date = $this->minDate ?: Date::now();
-
         try {
-            $suggestion = $this->similaritiesClient->nextSuggestion($date);
+            $suggestion = $this->similaritiesClient->nextSuggestion($this->minDate);
         } catch (SuggestionsNotFound $e) {
             return new NoContent();
         }

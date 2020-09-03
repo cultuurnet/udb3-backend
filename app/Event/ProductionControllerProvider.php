@@ -38,7 +38,7 @@ class ProductionControllerProvider implements ControllerProviderInterface
 
         $app[ProductionSuggestionController::class] = $app->share(
             function (Application $app) {
-                $minDate = null;
+                $minDate = Date::now();
                 if (isset($app['config']['event_similarities_api']['suggestions']['min_date'])) {
                     $minDate = Date::createFromFormat('Y-m-d', $app['config']['event_similarities_api']['suggestions']['min_date']);
                 }
