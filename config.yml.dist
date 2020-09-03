@@ -186,3 +186,5 @@ bypass_api_key_check: false
 event_similarities_api:
   api_key:
   base_url:
+  suggestions:
+    min_date: '2020-01-01'
