@@ -164,26 +164,6 @@ class CalendarForEventDataValidatorTest extends TestCase
                     'opening_hours' => 'When opening hours are given no time spans are allowed.',
                 ],
             ],
-            'it_throws_when_dates_different_from_time_spans' => [
-                'data' => [
-                    'timeSpans' => [
-                        [
-                            'start' => '2020-01-26T09:00:00+01:00',
-                            'end' => '2020-02-01T16:00:00+01:00',
-                        ],
-                        [
-                            'start' => '2020-02-03T09:00:00+01:00',
-                            'end' => '2020-02-10T16:00:00+01:00',
-                        ],
-                    ],
-                    'startDate' => '2020-01-27T09:00:00+01:00',
-                    'endDate' => '2020-02-11T09:00:00+01:00',
-                ],
-                'messages' => [
-                    'start_time_span' => 'The start date is different from the start of the first time span.',
-                    'end_time_span' => 'The end date is different from the end of the last time span.'
-                ],
-            ],
         ];
     }
 }
