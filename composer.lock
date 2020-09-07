@@ -99,53 +99,6 @@
             "time": "2017-07-03T14:15:24+00:00"
         },
         {
-            "name": "2dotstwice/value-objects",
-            "version": "v1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2dotstwice/value-objects.git",
-                "reference": "3e881256a988465a383efdb4a7a7856c6bc76a11"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2dotstwice/value-objects/zipball/3e881256a988465a383efdb4a7a7856c6bc76a11",
-                "reference": "3e881256a988465a383efdb4a7a7856c6bc76a11",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.3",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "TwoDotsTwice\\ValueObject\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be"
-                }
-            ],
-            "description": "Classes, traits, interfaces, ... to work with value objects.",
-            "time": "2018-03-06T11:57:41+00:00"
-        },
-        {
             "name": "auth0/auth0-php",
             "version": "5.7.0",
             "source": {
@@ -1399,12 +1352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "4ecbc13064bf28c406ae6800766995f9998efec7"
+                "reference": "e22388409b1227aaa9dd2a602d4fc8db6ac1262c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/4ecbc13064bf28c406ae6800766995f9998efec7",
-                "reference": "4ecbc13064bf28c406ae6800766995f9998efec7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/e22388409b1227aaa9dd2a602d4fc8db6ac1262c",
+                "reference": "e22388409b1227aaa9dd2a602d4fc8db6ac1262c",
                 "shasum": ""
             },
             "require": {
@@ -1469,7 +1422,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-06-03T17:20:12+00:00"
+            "time": "2020-09-07T07:42:44+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1624,16 +1577,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "150409a9b8a855107e81899449caf07d29df622f"
+                "reference": "1c43511aea2803f33ca7501475c4420a2d6ef229"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/150409a9b8a855107e81899449caf07d29df622f",
-                "reference": "150409a9b8a855107e81899449caf07d29df622f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/1c43511aea2803f33ca7501475c4420a2d6ef229",
+                "reference": "1c43511aea2803f33ca7501475c4420a2d6ef229",
                 "shasum": ""
             },
             "require": {
-                "2dotstwice/value-objects": "~1.0",
                 "cultuurnet/geocoding": "~0.1",
                 "moneyphp/money": "~1.3",
                 "php": "~5.6 || >=7.0",
@@ -1664,7 +1616,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2019-11-20T10:31:39+00:00"
+            "time": "2020-09-07T09:01:31+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -4692,12 +4644,12 @@
             "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nrk/predis.git",
+                "url": "https://github.com/predis/predis.git",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "url": "https://api.github.com/repos/predis/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
                 "shasum": ""
             },
@@ -8159,6 +8111,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-07-08T05:24:54+00:00"
         },
         {
