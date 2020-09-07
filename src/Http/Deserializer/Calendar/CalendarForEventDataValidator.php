@@ -31,15 +31,21 @@ class CalendarForEventDataValidator implements DataValidatorInterface
 
         $messages = array_merge(
             $messages,
-            (new StartDateEndDateValidator())->validate($data)
-        );
-
-        $messages = array_merge(
-            $messages,
             (new TimeSpanValidator())->validate($data)
         );
 
         $timeSpans = $calendarJSONParser->getTimeSpans($data);
+
+        // Single and multiple calendar types always have `timeSpans` from which the start and end date are dynamically
+        // determined. If there are no timespans though, and a start and end date are given (ie. periodic calendar), the
+        // start and end date SHOULD be validated.
+        if (count($timeSpans) === 0) {
+            $messages = array_merge(
+                $messages,
+                (new StartDateEndDateValidator())->validate($data)
+            );
+        }
+
         if (count($timeSpans) > 0 && count($calendarJSONParser->getOpeningHours($data)) > 0) {
             $messages['opening_hours'] = 'When opening hours are given no time spans are allowed.';
         }
