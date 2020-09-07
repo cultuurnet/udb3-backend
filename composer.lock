@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af8812f35e6b32794a8f937eb888aae7",
+    "content-hash": "58094c4d738393c834bc5bee7110627f",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1348,16 +1348,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-3433",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "e22388409b1227aaa9dd2a602d4fc8db6ac1262c"
+                "reference": "7ed4b785ee515f32d4bfb3f2d337550fd778aa8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/e22388409b1227aaa9dd2a602d4fc8db6ac1262c",
-                "reference": "e22388409b1227aaa9dd2a602d4fc8db6ac1262c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7ed4b785ee515f32d4bfb3f2d337550fd778aa8b",
+                "reference": "7ed4b785ee515f32d4bfb3f2d337550fd778aa8b",
                 "shasum": ""
             },
             "require": {
@@ -1422,7 +1422,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-09-07T07:42:44+00:00"
+            "time": "2020-09-07T15:06:58+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -9120,6 +9120,12 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-3433",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
             "version": "0.9999999.9999999.9999999-dev",
             "package": "cultuurnet/udb3-api-guard"
         },
@@ -9135,6 +9141,7 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
+        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
