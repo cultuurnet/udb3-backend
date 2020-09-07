@@ -349,7 +349,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $this->documentRepository->save($initialDocument);
 
         $expectedBody = (object)[
-            'typicalAgeRange' => '-18',
+            'typicalAgeRange' => '0-18',
             'modified' => $this->recordedOn->toString(),
         ];
 
