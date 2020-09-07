@@ -164,8 +164,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
-            new \DateTime()
+            CalendarType::PERMANENT()
         );
 
         $event = $this->event;
@@ -272,7 +271,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
         );
@@ -1028,8 +1027,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $event->copy(
             'e49430ca-5729-4768-8364-02ddb385517a',
             new Calendar(
-                CalendarType::SINGLE(),
-                new \DateTime()
+                CalendarType::PERMANENT()
             )
         );
     }
@@ -1042,8 +1040,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
-            new \DateTime()
+            CalendarType::PERMANENT()
         );
         $label = new Label('ABC');
 
@@ -1086,8 +1083,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
-            new \DateTime()
+            CalendarType::PERMANENT()
         );
         $audience = new Audience(AudienceType::EDUCATION());
 
@@ -1126,8 +1122,7 @@ class EventTest extends AggregateRootScenarioTestCase
     {
         $newEventId = 'e49430ca-5729-4768-8364-02ddb385517a';
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
-            new \DateTime()
+            CalendarType::PERMANENT()
         );
 
         $publicationDate = new \DateTimeImmutable();
