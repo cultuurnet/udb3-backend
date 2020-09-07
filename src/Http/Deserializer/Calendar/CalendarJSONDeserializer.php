@@ -117,13 +117,13 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getStartDate(array $data)
     {
-        if ($this->calendarJSONParser->getStartDate($data)) {
-            return $this->calendarJSONParser->getStartDate($data);
-        }
-
         $timeSpans = $this->calendarJSONParser->getTimeSpans($data);
         if (count($timeSpans)) {
-            return $timeSpans[0]->getStart();
+            return null;
+        }
+
+        if ($this->calendarJSONParser->getStartDate($data)) {
+            return $this->calendarJSONParser->getStartDate($data);
         }
 
         return null;
@@ -136,13 +136,13 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getEndDate(array $data)
     {
-        if ($this->calendarJSONParser->getEndDate($data)) {
-            return $this->calendarJSONParser->getEndDate($data);
-        }
-
         $timeSpans = $this->calendarJSONParser->getTimeSpans($data);
         if (count($timeSpans)) {
-            return $timeSpans[count($timeSpans) - 1]->getEnd();
+            return null;
+        }
+
+        if ($this->calendarJSONParser->getEndDate($data)) {
+            return $this->calendarJSONParser->getEndDate($data);
         }
 
         return null;
