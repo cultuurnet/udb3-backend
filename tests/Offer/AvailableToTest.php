@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Offer;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarInterface;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
 
 class AvailableToTest extends TestCase
@@ -45,11 +46,11 @@ class AvailableToTest extends TestCase
                 new \DateTime('2100-01-01T00:00:00Z'),
             ],
             [
-                new Calendar(CalendarType::SINGLE(), $startDate),
+                new Calendar(CalendarType::SINGLE(), null, null, [new Timestamp($startDate, $startDate)]),
                 $startDate,
             ],
             [
-                new Calendar(CalendarType::SINGLE(), $startDate, $endDate),
+                new Calendar(CalendarType::SINGLE(), null, null, [new Timestamp($startDate, $endDate)]),
                 $endDate,
             ],
             [
@@ -57,15 +58,15 @@ class AvailableToTest extends TestCase
                 $endDate,
             ],
             [
-                new Calendar(CalendarType::MULTIPLE(), $startDate, $endDate),
+                new Calendar(CalendarType::MULTIPLE(), $startDate, $endDate, [new Timestamp($startDate, $endDate)]),
                 $endDate,
             ],
             [
-                new Calendar(CalendarType::SINGLE(), $startDateNoHours),
+                new Calendar(CalendarType::SINGLE(), null, null, [new Timestamp($startDateNoHours, $startDateNoHours)]),
                 $startDateAlmostMidnight,
             ],
             [
-                new Calendar(CalendarType::SINGLE(), $startDateNoHours, $endDateNoHours),
+                new Calendar(CalendarType::SINGLE(), null, null, [new Timestamp($startDateNoHours, $endDateNoHours)]),
                 $endDateAlmostMidnight,
             ],
             [
@@ -73,7 +74,7 @@ class AvailableToTest extends TestCase
                 $endDateAlmostMidnight,
             ],
             [
-                new Calendar(CalendarType::MULTIPLE(), $startDate, $endDateNoHours),
+                new Calendar(CalendarType::MULTIPLE(), null, null, [new Timestamp($startDate, $endDateNoHours)]),
                 $endDateAlmostMidnight,
             ],
         ];

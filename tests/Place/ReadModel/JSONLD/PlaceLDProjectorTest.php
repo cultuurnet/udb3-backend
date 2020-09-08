@@ -712,7 +712,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $title = new Title('new title');
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-02-26T13:25:21+01:00')
         );
@@ -759,7 +759,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 'streetAddress' => 'Kerkstraat 69',
             ],
         ];
-        $expectedJsonLD->calendarType = 'single';
+        $expectedJsonLD->calendarType = 'periodic';
         $expectedJsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.1',

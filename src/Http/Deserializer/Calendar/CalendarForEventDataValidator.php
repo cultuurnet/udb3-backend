@@ -31,29 +31,23 @@ class CalendarForEventDataValidator implements DataValidatorInterface
 
         $messages = array_merge(
             $messages,
-            (new StartDateEndDateValidator())->validate($data)
-        );
-
-        $messages = array_merge(
-            $messages,
             (new TimeSpanValidator())->validate($data)
         );
 
         $timeSpans = $calendarJSONParser->getTimeSpans($data);
-        if (count($timeSpans) > 0 && count($calendarJSONParser->getOpeningHours($data)) > 0) {
-            $messages['opening_hours'] = 'When opening hours are given no time spans are allowed.';
+
+        // Single and multiple calendar types always have `timeSpans` from which the start and end date are dynamically
+        // determined. If there are no timespans though, and a start and end date are given (ie. periodic calendar), the
+        // start and end date SHOULD be validated.
+        if (count($timeSpans) === 0) {
+            $messages = array_merge(
+                $messages,
+                (new StartDateEndDateValidator())->validate($data)
+            );
         }
 
-        if (count($timeSpans) > 0 &&
-            $calendarJSONParser->getStartDate($data) &&
-            $calendarJSONParser->getEndDate($data)) {
-            if ($calendarJSONParser->getStartDate($data) != $timeSpans[0]->getStart()) {
-                $messages['start_time_span'] = 'The start date is different from the start of the first time span.';
-            }
-
-            if ($calendarJSONParser->getEndDate($data) != $timeSpans[count($timeSpans) - 1]->getEnd()) {
-                $messages['end_time_span'] = 'The end date is different from the end of the last time span.';
-            }
+        if (count($timeSpans) > 0 && count($calendarJSONParser->getOpeningHours($data)) > 0) {
+            $messages['opening_hours'] = 'When opening hours are given no time spans are allowed.';
         }
 
         if (!empty($messages)) {

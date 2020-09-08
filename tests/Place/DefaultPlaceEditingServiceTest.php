@@ -275,7 +275,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
         $placeId = 'ad93103d-1395-4af7-a52a-2829d466c232';
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
         );

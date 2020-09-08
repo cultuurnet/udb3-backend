@@ -145,7 +145,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
         );

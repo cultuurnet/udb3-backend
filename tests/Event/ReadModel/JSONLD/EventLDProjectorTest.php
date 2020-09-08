@@ -175,7 +175,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = '1';
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00')
         );
 
@@ -209,7 +210,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '1';
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00')
         );
         $theme = new Theme('123', 'theme label');
@@ -256,7 +258,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '1';
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00')
         );
         $theme = new Theme('123', 'theme label');
@@ -333,8 +336,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $originalEventId = '1';
         $originalCalendar = new Calendar(
-            CalendarType::SINGLE(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00')
+            CalendarType::PERIODIC(),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2017-01-26T13:25:21+01:00')
         );
         $eventCreated = $this->createEventCreated($originalEventId, $originalCalendar, null);
 
@@ -522,8 +526,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         // First make sure there is already an event, so it is a real update.
         $eventId = 'a2d50a8d-5b83-4c8b-84e6-e9c0bacbb1a3';
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
-            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00')
+            CalendarType::PERIODIC(),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2017-01-26T13:25:21+01:00')
         );
         $eventCreated = $this->createEventCreated($eventId, $calendar, null);
         $this->mockPlaceService();
@@ -825,7 +830,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-02-26T13:25:21+01:00')
         );
@@ -866,7 +871,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '@type' => 'Place',
             '@id' => 'http://example.com/entity/395fe7eb-9bac-4647-acae-316b6446a85e',
         ];
-        $expectedJsonLD->calendarType = 'single';
+        $expectedJsonLD->calendarType = 'periodic';
         $expectedJsonLD->terms = [
             (object)[
                 'id' => '0.50.4.0.1',
@@ -899,7 +904,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
         );
@@ -917,7 +922,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '@id' => 'http://example.com/entity/' . $eventId,
             '@context' => '/contexts/event',
         ];
-        $expectedJsonLD->calendarType = 'single';
+        $expectedJsonLD->calendarType = 'periodic';
         $expectedJsonLD->startDate = '2020-01-26T11:11:11+01:00';
         $expectedJsonLD->endDate = '2020-01-27T12:12:12+01:00';
         $expectedJsonLD->availableTo = '2020-01-27T12:12:12+01:00';
@@ -1038,7 +1043,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $eventType = new EventType('0.50.4.0.1', 'concertnew');
         $location = new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e');
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2015-02-26T13:25:21+01:00')
         );
@@ -1247,8 +1252,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             '@type' => 'Place',
             '@id' => 'http://example.com/entity/395fe7eb-9bac-4647-acae-316b6446a85e',
         ];
-        $jsonLD->calendarType = 'single';
+        $jsonLD->calendarType = 'periodic';
         $jsonLD->startDate = '2015-01-26T13:25:21+01:00';
+        $jsonLD->endDate = '2015-01-26T13:25:21+01:00';
         $jsonLD->availableTo = $jsonLD->startDate;
         $jsonLD->sameAs = [
             'http://www.uitinvlaanderen.be/agenda/e/some-representative-title/1',

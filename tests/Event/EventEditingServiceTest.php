@@ -493,7 +493,7 @@ class EventEditingServiceTest extends TestCase
         $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
         $calendar = new Calendar(
-            CalendarType::SINGLE(),
+            CalendarType::PERIODIC(),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T11:11:11+01:00'),
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-27T12:12:12+01:00')
         );
