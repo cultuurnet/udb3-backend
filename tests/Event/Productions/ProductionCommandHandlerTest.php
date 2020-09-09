@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -37,8 +37,11 @@ class ProductionCommandHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = new SchemaConfigurator();
-        $schema->configure($this->getConnection()->getSchemaManager());
+        $schema = $this->createSchema();
+        $this->createTable(
+            ProductionSchemaConfigurator::getTableDefinition($schema)
+        );
+
         $this->productionRepository = new ProductionRepository($this->getConnection());
         $this->similaritiesClient = $this->createMock(SimilaritiesClient::class);
         $this->eventRepository = $this->createMock(DocumentRepositoryInterface::class);
