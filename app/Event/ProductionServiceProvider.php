@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
+use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -25,6 +26,12 @@ class ProductionServiceProvider implements ServiceProviderInterface
                     $app['config']['event_similarities_api']['base_url'],
                     $app['config']['event_similarities_api']['api_key']
                 );
+            }
+        );
+
+        $app[SimilarEventsRepository::class] = $app->share(
+            function ($app) {
+                return new SimilarEventsRepository($app['dbal_connection']);
             }
         );
 

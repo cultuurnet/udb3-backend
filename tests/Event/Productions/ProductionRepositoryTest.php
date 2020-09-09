@@ -26,7 +26,7 @@ class ProductionRepositoryTest extends TestCase
         $this->createTable(
             ProductionSchemaConfigurator::getTableDefinition($schema)
         );
-        
+
         $this->repository = new ProductionRepository($this->getConnection());
     }
 
