@@ -66,9 +66,6 @@ class ProductionCommandHandlerTest extends TestCase
 
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
 
-        $this->similaritiesClient->expects(self::any())
-            ->method('excludeTemporarily');
-
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
 
@@ -143,9 +140,6 @@ class ProductionCommandHandlerTest extends TestCase
         ];
 
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
-
-        $this->similaritiesClient->expects(self::any())
-            ->method('excludeTemporarily');
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
@@ -273,9 +267,6 @@ class ProductionCommandHandlerTest extends TestCase
         $name = "I know what you did last Midsummer Night's Dream";
         $toProductionCommand = GroupEventsAsProduction::withProductionName([$event2], $name);
         $this->commandHandler->handle($toProductionCommand);
-
-        $this->similaritiesClient->expects(self::any())
-            ->method('excludeTemporarily');
 
         $this->commandHandler->handle(
             new MergeProductions($fromProductionCommand->getProductionId(), $toProductionCommand->getProductionId())
