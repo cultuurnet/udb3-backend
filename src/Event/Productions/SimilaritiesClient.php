@@ -33,27 +33,6 @@ class SimilaritiesClient
 
     /**
      * @param SimilarEventPair[] $eventPairs
-     * @throws GuzzleException
-     */
-    public function excludeTemporarily(array $eventPairs): void
-    {
-        $data['pairs'] = [];
-        foreach ($eventPairs as $pair) {
-            $data['pairs'][] = [
-                'event1' => $pair->getEventOne(),
-                'event2' => $pair->getEventTwo(),
-            ];
-        }
-
-        $this->client->request(
-            'PATCH',
-            $this->uri . '/temporarilyexcluded?key=' . $this->key,
-            ['json' => $data]
-        );
-    }
-
-    /**
-     * @param SimilarEventPair[] $eventPairs
      */
     public function excludePermanently(array $eventPairs): void
     {
