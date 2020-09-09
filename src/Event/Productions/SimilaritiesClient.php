@@ -2,10 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use Cake\Chronos\Date;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
 
 class SimilaritiesClient
 {
