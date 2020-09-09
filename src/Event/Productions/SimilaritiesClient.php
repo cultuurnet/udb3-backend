@@ -50,25 +50,4 @@ class SimilaritiesClient
             ['json' => $data]
         );
     }
-
-    public function nextSuggestion(Date $dateFrom, int $size = 1, int $offset = 0): Suggestion
-    {
-        try {
-            $response = $this->client->request(
-                'GET',
-                $this->uri . '?size=' . $size . '&minDate=' .
-                $dateFrom->format('Y-m-d') . '&offset' . $offset . '&key=' . $this->key
-            );
-        } catch (ClientException $throwable) {
-            throw new SuggestionsNotFound();
-        }
-
-        $contents = json_decode($response->getBody()->getContents(), true);
-
-        return new Suggestion(
-            $contents[0]['event1'],
-            $contents[0]['event2'],
-            (float) $contents[0]['similarity']
-        );
-    }
 }
