@@ -63,7 +63,10 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         $production = $this->productionRepository->find($command->getProductionId());
         if ($production->containsEvent($command->getEventId())) {
-            return;
+            throw EventCannotBeAddedToProduction::becauseItAlreadyBelongsToThatProduction(
+                $command->getEventId(),
+                $command->getProductionId()
+            );
         }
 
         try {
