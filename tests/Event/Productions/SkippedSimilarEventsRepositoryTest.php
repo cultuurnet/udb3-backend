@@ -45,7 +45,10 @@ class SkippedSimilarEventsRepositoryTest extends TestCase
     {
         $table = $this->repository->getTableName()->toNative();
         $sql = "SELECT * FROM $table WHERE event1 = :event1 AND event2 = :event2";
-        $result = $this->getConnection()->executeQuery($sql, ['event1' => $event1, 'event2' => $event2])->fetch(PDO::FETCH_ASSOC);
+        $result = $this->getConnection()->executeQuery(
+            $sql,
+            ['event1' => $event1, 'event2' => $event2]
+        )->fetch(PDO::FETCH_ASSOC);
         $this->assertEquals(['event1' => $event1, 'event2' => $event2], $result);
     }
 }
