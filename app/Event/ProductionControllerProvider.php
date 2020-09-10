@@ -2,10 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
-use Cake\Chronos\Date;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
-use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
 use CultuurNet\UDB3\Http\Productions\ProductionSuggestionController;

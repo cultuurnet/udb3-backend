@@ -2,9 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
-use Cake\Chronos\Date;
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
-use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
