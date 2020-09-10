@@ -28,23 +28,4 @@ class SimilaritiesClient
         $this->key = $key;
     }
 
-    /**
-     * @param SimilarEventPair[] $eventPairs
-     */
-    public function excludePermanently(array $eventPairs): void
-    {
-        $data['pairs'] = [];
-        foreach ($eventPairs as $pair) {
-            $data['pairs'][] = [
-                'event1' => $pair->getEventOne(),
-                'event2' => $pair->getEventTwo(),
-            ];
-        }
-
-        $this->client->request(
-            'PATCH',
-            $this->uri . '/permanentlyexcluded?key=' . $this->key,
-            ['json' => $data]
-        );
-    }
 }
