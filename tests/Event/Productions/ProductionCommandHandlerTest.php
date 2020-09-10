@@ -26,9 +26,9 @@ class ProductionCommandHandlerTest extends TestCase
     private $commandHandler;
 
     /**
-     * @var SimilaritiesClient|MockObject
+     * @var SkippedSimilarEventsRepository|MockObject
      */
-    private $similaritiesClient;
+    private $skippedSimilarEventsRepository;
 
     /**
      * @var DocumentRepositoryInterface|MockObject
@@ -43,11 +43,11 @@ class ProductionCommandHandlerTest extends TestCase
         );
 
         $this->productionRepository = new ProductionRepository($this->getConnection());
-        $this->similaritiesClient = $this->createMock(SimilaritiesClient::class);
+        $this->skippedSimilarEventsRepository = $this->createMock(SkippedSimilarEventsRepository::class);
         $this->eventRepository = $this->createMock(DocumentRepositoryInterface::class);
         $this->commandHandler = new ProductionCommandHandler(
             $this->productionRepository,
-            $this->similaritiesClient,
+            $this->skippedSimilarEventsRepository,
             $this->eventRepository
         );
     }
@@ -310,9 +310,9 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ]);
 
-        $this->similaritiesClient->expects(self::atLeastOnce())
-            ->method('excludePermanently')
-            ->with([$eventPair]);
+        $this->skippedSimilarEventsRepository->expects(self::once())
+            ->method('add')
+            ->with($eventPair);
 
         $command = new RejectSuggestedEventPair($eventPair);
         $this->commandHandler->handle($command);

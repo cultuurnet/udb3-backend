@@ -16,9 +16,9 @@ class ProductionCommandHandler extends Udb3CommandHandler
     private $productionRepository;
 
     /**
-     * @var SimilaritiesClient
+     * @var SkippedSimilarEventsRepository
      */
-    private $similaritiesClient;
+    private $skippedSimilarEventsRepository;
 
     /**
      * @var DocumentRepositoryInterface
@@ -27,11 +27,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function __construct(
         ProductionRepository $productionRepository,
-        SimilaritiesClient $similaritiesClient,
+        SkippedSimilarEventsRepository $skippedSimilarEventsRepository,
         DocumentRepositoryInterface $eventRepository
     ) {
         $this->productionRepository = $productionRepository;
-        $this->similaritiesClient = $similaritiesClient;
+        $this->skippedSimilarEventsRepository = $skippedSimilarEventsRepository;
         $this->eventRepository = $eventRepository;
     }
 
@@ -91,7 +91,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function handleRejectSuggestedEventPair(RejectSuggestedEventPair $command): void
     {
-        $this->similaritiesClient->excludePermanently([SimilarEventPair::fromArray($command->getEventIds())]);
+        $this->skippedSimilarEventsRepository->add($command->getEventPair());
     }
 
     private function assertEventCanBeAddedToProduction(string $eventId)
