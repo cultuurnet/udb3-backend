@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Type;
 
 class SkippedSimilarEventsSchemaConfigurator
 {
-    private const TABLE = 'skipped_similar_events';
+    private const TABLE = 'similar_events_skipped';
 
     /**
      * @param Schema $schema

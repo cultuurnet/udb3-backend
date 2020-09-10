@@ -12,7 +12,7 @@ class SkippedSimilarEventsRepository extends AbstractDBALRepository
 {
     public function __construct(Connection $connection)
     {
-        parent::__construct($connection, new StringLiteral('skipped_similar_events'));
+        parent::__construct($connection, new StringLiteral('similar_events_skipped'));
     }
 
     public function add(SimilarEventPair $eventPair): void
