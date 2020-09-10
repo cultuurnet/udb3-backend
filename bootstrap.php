@@ -4,8 +4,6 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
-use CultuurNet\UDB3\Event\Productions\ProductionRepository;
-use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;

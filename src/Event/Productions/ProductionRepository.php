@@ -12,9 +12,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ProductionRepository extends AbstractDBALRepository
 {
+    public const TABLE_NAME = 'productions';
+
     public function __construct(Connection $connection)
     {
-        parent::__construct($connection, new StringLiteral('productions'));
+        parent::__construct($connection, new StringLiteral(self::TABLE_NAME));
     }
 
     public function add(Production $production)

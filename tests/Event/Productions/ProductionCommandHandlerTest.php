@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\Productions\Doctrine\SchemaConfigurator;
+use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -26,9 +26,9 @@ class ProductionCommandHandlerTest extends TestCase
     private $commandHandler;
 
     /**
-     * @var SimilaritiesClient|MockObject
+     * @var SkippedSimilarEventsRepository|MockObject
      */
-    private $similaritiesClient;
+    private $skippedSimilarEventsRepository;
 
     /**
      * @var DocumentRepositoryInterface|MockObject
@@ -37,14 +37,17 @@ class ProductionCommandHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $schema = new SchemaConfigurator();
-        $schema->configure($this->getConnection()->getSchemaManager());
+        $schema = $this->createSchema();
+        $this->createTable(
+            ProductionSchemaConfigurator::getTableDefinition($schema)
+        );
+
         $this->productionRepository = new ProductionRepository($this->getConnection());
-        $this->similaritiesClient = $this->createMock(SimilaritiesClient::class);
+        $this->skippedSimilarEventsRepository = $this->createMock(SkippedSimilarEventsRepository::class);
         $this->eventRepository = $this->createMock(DocumentRepositoryInterface::class);
         $this->commandHandler = new ProductionCommandHandler(
             $this->productionRepository,
-            $this->similaritiesClient,
+            $this->skippedSimilarEventsRepository,
             $this->eventRepository
         );
     }
@@ -62,9 +65,6 @@ class ProductionCommandHandlerTest extends TestCase
         ];
 
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
-
-        $this->similaritiesClient->expects(self::any())
-            ->method('excludeTemporarily');
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
@@ -140,9 +140,6 @@ class ProductionCommandHandlerTest extends TestCase
         ];
 
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
-
-        $this->similaritiesClient->expects(self::any())
-            ->method('excludeTemporarily');
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
         $this->commandHandler->handle($command);
@@ -271,9 +268,6 @@ class ProductionCommandHandlerTest extends TestCase
         $toProductionCommand = GroupEventsAsProduction::withProductionName([$event2], $name);
         $this->commandHandler->handle($toProductionCommand);
 
-        $this->similaritiesClient->expects(self::any())
-            ->method('excludeTemporarily');
-
         $this->commandHandler->handle(
             new MergeProductions($fromProductionCommand->getProductionId(), $toProductionCommand->getProductionId())
         );
@@ -316,9 +310,9 @@ class ProductionCommandHandlerTest extends TestCase
             Uuid::uuid4()->toString(),
         ]);
 
-        $this->similaritiesClient->expects(self::atLeastOnce())
-            ->method('excludePermanently')
-            ->with([$eventPair]);
+        $this->skippedSimilarEventsRepository->expects(self::once())
+            ->method('add')
+            ->with($eventPair);
 
         $command = new RejectSuggestedEventPair($eventPair);
         $this->commandHandler->handle($command);

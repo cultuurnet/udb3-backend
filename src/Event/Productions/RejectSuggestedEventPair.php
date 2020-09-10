@@ -30,6 +30,11 @@ final class RejectSuggestedEventPair implements AuthorizableCommandInterface
         return  $this->eventPair->getEventOne();
     }
 
+    public function getEventPair(): SimilarEventPair
+    {
+        return $this->eventPair;
+    }
+
     public function getPermission()
     {
         return Permission::PRODUCTIES_AANMAKEN();

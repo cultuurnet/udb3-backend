@@ -2,8 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
-use Cake\Chronos\Date;
-use CultuurNet\UDB3\Event\Productions\SimilaritiesClient;
+use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
@@ -14,34 +13,27 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductionSuggestionController
 {
     /**
-     * @var SimilaritiesClient
+     * @var SimilarEventsRepository
      */
-    private $similaritiesClient;
+    private $similarEventsRepository;
 
     /**
      * @var DocumentRepositoryInterface
      */
     private $enrichedEventRepository;
 
-    /**
-     * @var Date
-     */
-    private $minDate;
-
     public function __construct(
-        SimilaritiesClient $similaritiesClient,
-        DocumentRepositoryInterface $enrichedEventRepository,
-        Date $minDate
+        SimilarEventsRepository $similarEventsRepository,
+        DocumentRepositoryInterface $enrichedEventRepository
     ) {
-        $this->similaritiesClient = $similaritiesClient;
+        $this->similarEventsRepository = $similarEventsRepository;
         $this->enrichedEventRepository = $enrichedEventRepository;
-        $this->minDate = $minDate;
     }
 
     public function nextSuggestion(): Response
     {
         try {
-            $suggestion = $this->similaritiesClient->nextSuggestion($this->minDate);
+            $suggestion = $this->similarEventsRepository->findNextSuggestion();
         } catch (SuggestionsNotFound $e) {
             return new NoContent();
         }

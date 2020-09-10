@@ -16,9 +16,9 @@ class ProductionCommandHandler extends Udb3CommandHandler
     private $productionRepository;
 
     /**
-     * @var SimilaritiesClient
+     * @var SkippedSimilarEventsRepository
      */
-    private $similaritiesClient;
+    private $skippedSimilarEventsRepository;
 
     /**
      * @var DocumentRepositoryInterface
@@ -27,11 +27,11 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
     public function __construct(
         ProductionRepository $productionRepository,
-        SimilaritiesClient $similaritiesClient,
+        SkippedSimilarEventsRepository $skippedSimilarEventsRepository,
         DocumentRepositoryInterface $eventRepository
     ) {
         $this->productionRepository = $productionRepository;
-        $this->similaritiesClient = $similaritiesClient;
+        $this->skippedSimilarEventsRepository = $skippedSimilarEventsRepository;
         $this->eventRepository = $eventRepository;
     }
 
@@ -49,7 +49,6 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         try {
             $this->productionRepository->add($production);
-            $this->eventsWereAddedToProduction($command->getEventIds()[0], $command->getProductionId());
         } catch (DBALException $e) {
             throw EventCannotBeAddedToProduction::becauseSomeEventsBelongToAnotherProduction(
                 $command->getEventIds(),
@@ -69,7 +68,6 @@ class ProductionCommandHandler extends Udb3CommandHandler
 
         try {
             $this->productionRepository->addEvent($command->getEventId(), $production);
-            $this->eventsWereAddedToProduction($command->getEventId(), $command->getProductionId());
         } catch (DBALException $e) {
             throw EventCannotBeAddedToProduction::becauseItAlreadyBelongsToAnotherProduction(
                 $command->getEventId(),
@@ -87,41 +85,13 @@ class ProductionCommandHandler extends Udb3CommandHandler
     public function handleMergeProductions(MergeProductions $command): void
     {
         $toProduction = $this->productionRepository->find($command->getTo());
-        $fromProduction = $this->productionRepository->find($command->getFrom());
 
         $this->productionRepository->moveEvents($command->getFrom(), $toProduction);
-
-        $this->productionsWereMerged(
-            $fromProduction,
-            $toProduction
-        );
     }
 
     public function handleRejectSuggestedEventPair(RejectSuggestedEventPair $command): void
     {
-        $this->similaritiesClient->excludePermanently([SimilarEventPair::fromArray($command->getEventIds())]);
-    }
-
-    private function eventsWereAddedToProduction(string $eventId, ProductionId $productionId): void
-    {
-        try {
-            $pairs = $this->productionRepository->findEventPairs($eventId, $productionId);
-            $this->similaritiesClient->excludeTemporarily($pairs);
-        } catch (EntityNotFoundException $e) {
-        }
-    }
-
-    private function productionsWereMerged(
-        Production $from,
-        Production $to
-    ) {
-        $eventPairs = [];
-        foreach ($from->getEventIds() as $eventIdFrom) {
-            foreach ($to->getEventIds() as $eventIdTo) {
-                $eventPairs[] = new SimilarEventPair($eventIdFrom, $eventIdTo);
-            }
-        }
-        $this->similaritiesClient->excludeTemporarily($eventPairs);
+        $this->skippedSimilarEventsRepository->add($command->getEventPair());
     }
 
     private function assertEventCanBeAddedToProduction(string $eventId)
