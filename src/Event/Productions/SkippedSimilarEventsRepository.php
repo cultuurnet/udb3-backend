@@ -10,6 +10,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SkippedSimilarEventsRepository extends AbstractDBALRepository
 {
+    public const TABLE_NAME = 'similar_events_skipped';
+
     public function __construct(Connection $connection)
     {
         parent::__construct($connection, new StringLiteral('similar_events_skipped'));
