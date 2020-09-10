@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SimilarEventsSchemaConfigurator;
+use CultuurNet\UDB3\Event\Productions\Doctrine\SkippedSimilarEventsSchemaConfigurator;
 use PHPUnit\Framework\TestCase;
 
 class SimilarEventsRepositoryTest extends TestCase
@@ -21,6 +22,11 @@ class SimilarEventsRepositoryTest extends TestCase
      */
     private $productionsRepository;
 
+    /**
+     * @var SkippedSimilarEventsRepository
+     */
+    private $skippedRepository;
+
     protected function setUp(): void
     {
         $schema = $this->createSchema();
@@ -31,10 +37,15 @@ class SimilarEventsRepositoryTest extends TestCase
         $this->createTable(
             ProductionSchemaConfigurator::getTableDefinition($schema)
         );
+        $this->createTable(
+            SkippedSimilarEventsSchemaConfigurator::getTableDefinition($schema)
+        );
 
         $this->repository = new SimilarEventsRepository($this->getConnection());
 
         $this->productionsRepository = new ProductionRepository($this->getConnection());
+
+        $this->skippedRepository = new SkippedSimilarEventsRepository($this->getConnection());
     }
 
     /**
@@ -119,6 +130,27 @@ class SimilarEventsRepositoryTest extends TestCase
         $this->assertEquals($suggestionOnlyOneInProduction, $actual);
     }
 
+    /**
+     * @test
+     */
+    public function it_never_returns_a_suggestion_of_a_skipped_pair_of_events(): void
+    {
+        $skippedPair = $this->givenSkippedPair('879b282d-56fc-4ef6-a2b6-aebeb8c66a8a', '04456137-19c4-464b-9c51-272af9f689d8');
+        $skippedPairWithDifferentOrder = $this->givenSkippedPair('d0659a06-4c17-4f72-8f12-747fb1ee8b10', 'e7605f5b-9f8e-438d-9c53-f991a7e9ae36');
+
+        $skippedSuggestion = new Suggestion($skippedPair->getEventOne(), $skippedPair->getEventTwo(), 0.80);
+        $skippedSuggestionWithDifferentOrder = new Suggestion($skippedPairWithDifferentOrder->getEventTwo(), $skippedPairWithDifferentOrder->getEventOne(), 0.90);
+
+        $suggestion = new Suggestion('3ab86064-045c-42cf-b0c9-24710467031d', '60a7c41d-2ca0-4f1a-8f6c-64a384fe7c3a', 0.75);
+
+        $this->repository->add($skippedSuggestion);
+        $this->repository->add($skippedSuggestionWithDifferentOrder);
+        $this->repository->add($suggestion);
+
+        $actual = $this->repository->findNextSuggestion();
+        $this->assertEquals($suggestion, $actual);
+    }
+
     private function givenProduction(array $events): Production
     {
         $production = Production::createEmpty('foo');
@@ -130,5 +162,12 @@ class SimilarEventsRepositoryTest extends TestCase
         $this->productionsRepository->add($production);
 
         return $production;
+    }
+
+    private function givenSkippedPair(string $eventOne, string $eventTwo): SimilarEventPair
+    {
+        $pair = new SimilarEventPair($eventOne, $eventTwo);
+        $this->skippedRepository->add($pair);
+        return $pair;
     }
 }
