@@ -196,6 +196,24 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_cannot_add_an_event_that_already_belongs_to_that_production(): void
+    {
+        $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
+
+        $eventBelongingToProduction = Uuid::uuid4()->toString();
+        $name = "A Midsummer Night's Scream 2";
+        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToProduction], $name);
+        $this->commandHandler->handle($firstProductionCommand);
+
+        $this->expectException(EventCannotBeAddedToProduction::class);
+        $this->commandHandler->handle(
+            new AddEventToProduction($eventBelongingToProduction, $firstProductionCommand->getProductionId())
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_remove_an_event_from_a_production(): void
     {
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));

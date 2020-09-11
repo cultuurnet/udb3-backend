@@ -26,4 +26,11 @@ final class EventCannotBeAddedToProduction extends Exception
             'Event with id ' . $eventId . ' cannot be added to a production because the event does not exist.'
         );
     }
+
+    public static function becauseItAlreadyBelongsToThatProduction(string $eventId, ProductionId $productionId): self
+    {
+        return new self(
+            'Event with id ' . $eventId . ' cannot be added to production with id ' . $productionId->toNative() . ' because it already belongs to that production.'
+        );
+    }
 }
