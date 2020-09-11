@@ -4,3 +4,5 @@ parameters:
 		- app
 		- src
 		- tests
+	bootstrapFiles:
+		- tests/bootstrap.php
