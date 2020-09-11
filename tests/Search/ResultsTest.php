@@ -6,7 +6,6 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use CultuurNet\UDB3\Offer\OfferType;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_Error;
 use TypeError;
 use ValueObjects\Number\Integer;
 use ValueObjects\Web\Url;
@@ -55,8 +54,7 @@ class ResultsTest extends TestCase
      */
     public function it_only_accepts_an_items_array()
     {
-        $this->expectTypeError();
-
+        $this->expectException(TypeError::class);
         new Results('foo', new Integer(5));
     }
 
@@ -65,7 +63,7 @@ class ResultsTest extends TestCase
      */
     public function it_only_accepts_a_total_items_integer()
     {
-        $this->expectTypeError();
+        $this->expectException(TypeError::class);
 
         new Results(
             OfferIdentifierCollection::fromArray(
@@ -75,14 +73,5 @@ class ResultsTest extends TestCase
             ),
             'foo'
         );
-    }
-
-    private function expectTypeError()
-    {
-        if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-            $this->expectException(TypeError::class);
-        } else {
-            $this->expectException(PHPUnit_Framework_Error::class);
-        }
     }
 }
