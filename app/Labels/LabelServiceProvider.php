@@ -239,8 +239,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         $app[self::COMMAND_HANDLER] = $app->share(
             function (Application $app) {
                 return new CommandHandler(
-                    $app[self::REPOSITORY],
-                    new Version4Generator()
+                    $app[self::REPOSITORY]
                 );
             }
         );
