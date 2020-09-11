@@ -34,7 +34,7 @@ class MediaObjectSerializer implements SerializerInterface
      */
     public function serialize($mediaObject, $format, array $context = array())
     {
-        if (!isset($format) || $format !== 'json-ld') {
+        if ($format !== 'json-ld') {
             throw new UnsupportedException('Unsupported format, only json-ld is available.');
         };
 
@@ -46,7 +46,7 @@ class MediaObjectSerializer implements SerializerInterface
             $type = $this->serializeMimeType($mediaObject->getMimeType());
         }
 
-        $normalizedData = [
+        return  [
             '@id' => $this->iriGenerator->iri($mediaObject->getMediaObjectId()),
             '@type' => $type,
             'contentUrl' => (string) $mediaObject->getSourceLocation(),
@@ -55,8 +55,6 @@ class MediaObjectSerializer implements SerializerInterface
             'copyrightHolder' => (string) $mediaObject->getCopyrightHolder(),
             'inLanguage' => (string) $mediaObject->getLanguage(),
         ];
-
-        return $normalizedData;
     }
 
     public function serializeMimeType(MIMEType $mimeType)
