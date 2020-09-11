@@ -21,13 +21,13 @@ class TabularDataFileWriter implements FileWriterInterface
     /**
      * @param TabularDataFileWriterFactoryInterface   $tabularDataFileWriterFactory
      * @param $include
-     * @param EventInfoServiceInterface               $uitpas
+     * @param EventInfoServiceInterface|null $uitpas
      * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
         TabularDataFileWriterFactoryInterface $tabularDataFileWriterFactory,
         $include,
-        EventInfoServiceInterface $uitpas,
+        EventInfoServiceInterface $uitpas = null,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
     ) {
         $this->tabularDataFileWriterFactory = $tabularDataFileWriterFactory;
