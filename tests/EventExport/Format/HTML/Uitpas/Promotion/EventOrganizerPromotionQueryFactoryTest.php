@@ -25,8 +25,6 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->dateTime = new DateTimeImmutable();
-
         $this->queryFactory = new EventOrganizerPromotionQueryFactory(
             new FrozenClock(
                 DateTimeImmutable::createFromFormat(
