@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\EventExport\Format\TabularData\OOXML;
 
 use CultuurNet\UDB3\EventExport\Format\TabularData\TabularDataFileWriterInterface;
+use PHPExcel;
 
 class OOXMLFileWriter implements TabularDataFileWriterInterface
 {
@@ -19,13 +20,18 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
     protected $i;
 
     /**
+     * @var PHPExcel
+     */
+    private $spreadsheet;
+
+    /**
      * @param $filePath
      */
     public function __construct($filePath)
     {
         $this->filePath = $filePath;
 
-        $this->spreadsheet = new \PHPExcel();
+        $this->spreadsheet = new PHPExcel();
 
         $this->spreadsheet->setActiveSheetIndex(0);
 
