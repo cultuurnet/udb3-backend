@@ -13,9 +13,10 @@ use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Web\Url;
 
-class LocationMarkedAsDuplicateProcessManagerTest extends \PHPUnit_Framework_TestCase
+class LocationMarkedAsDuplicateProcessManagerTest extends TestCase
 {
     /**
      * @var ResultsGeneratorInterface|MockObject
