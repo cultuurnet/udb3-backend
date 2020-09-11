@@ -34,10 +34,18 @@
                 passthru="true"/>
     </target>
 
+    <target name="phpstan">
+        <exec
+                command="./vendor/bin/phpstan analyse"
+                passthru="true"
+                checkreturn="true" />
+    </target>
+
     <target name="test">
         <phingcall target="lint"/>
         <phingcall target="unit-tests"/>
         <phingcall target="coding-standards"/>
+        <phingcall target="phpstan"/>
     </target>
 
 </project>

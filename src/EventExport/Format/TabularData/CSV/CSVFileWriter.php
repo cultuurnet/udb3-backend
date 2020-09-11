@@ -24,8 +24,6 @@ class CSVFileWriter implements TabularDataFileWriterInterface
         fwrite($this->f, "\xFF\xFE");
         fwrite($this->f, "sep={$this->delimiter}");
         fwrite($this->f, PHP_EOL);
-
-        $this->first = true;
     }
 
     public function writeRow($data)

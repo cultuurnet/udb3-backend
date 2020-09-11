@@ -1,0 +1,8 @@
+parameters:
+	level: 0
+	paths:
+		- app
+		- src
+		- tests
+	bootstrapFiles:
+		- tests/bootstrap.php

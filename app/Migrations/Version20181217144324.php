@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class Version20181217144324 extends AbstractMigration
 {
@@ -33,14 +34,14 @@ class Version20181217144324 extends AbstractMigration
     public function down(Schema $schema)
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {
-            $this->createEventStoreTable($schema, $eventStoreTable);
+            $this->createEventStoreTable($schema, new StringLiteral($eventStoreTable));
         }
     }
 
     private function createEventStoreTable(Schema $schema, StringLiteral $name)
     {
         // @see \Broadway\EventStore\DBALEventStore
-        $table = $schema->createTable($name);
+        $table = $schema->createTable($name->toNative());
 
         $table->addColumn('id', 'integer', array('autoincrement' => true));
         $table->addColumn('uuid', 'guid', array('length' => 36));

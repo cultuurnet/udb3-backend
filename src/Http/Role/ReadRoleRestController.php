@@ -43,6 +43,11 @@ class ReadRoleRestController
     private $permissionsRepository;
 
     /**
+     * @var array
+     */
+    private $authorizationList;
+
+    /**
      * ReadRoleRestController constructor.
      * @param EntityServiceInterface $service
      * @param RoleReadingServiceInterface $roleService

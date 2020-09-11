@@ -108,7 +108,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $cdbXml,
         $cdbXmlNamespaceUri
     ) {
-        $organizer = new static();
+        $organizer = new self();
         $organizer->apply(
             new OrganizerImportedFromUDB2(
                 $actorId,

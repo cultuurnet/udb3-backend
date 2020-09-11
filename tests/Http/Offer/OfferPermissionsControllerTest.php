@@ -38,6 +38,11 @@ class OfferPermissionsControllerTest extends TestCase
      */
     private $controllerWithoutUser;
 
+    /**
+     * @var JsonEquals
+     */
+    private $jsonEquals;
+
     public function setUp()
     {
         $permissionsToCheck = array(

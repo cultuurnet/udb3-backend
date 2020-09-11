@@ -51,7 +51,7 @@ class ItemCreated implements SerializableInterface
      */
     public static function deserialize(array $data)
     {
-        return new static($data['itemId'], $data['main_language']);
+        return new self($data['itemId'], $data['main_language']);
     }
 
     /**

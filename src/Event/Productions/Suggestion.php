@@ -14,6 +14,11 @@ class Suggestion
      */
     private $eventTwo;
 
+    /**
+     * @var float
+     */
+    private $similarity;
+
     public function __construct(string $eventOne, string $eventTwo, float $similarity)
     {
         $this->eventOne = $eventOne;
