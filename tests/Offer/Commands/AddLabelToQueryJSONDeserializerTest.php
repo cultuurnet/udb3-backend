@@ -42,10 +42,8 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"query": "city:leuven"}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing value "label".'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing value "label".');
 
         $this->deserializer->deserialize($json);
     }
@@ -57,10 +55,8 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"label": "", "query": "city:leuven"}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing value "label".'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing value "label".');
 
         $this->deserializer->deserialize($json);
     }
@@ -72,10 +68,8 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"label": "foo"}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing value "query".'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing value "query".');
 
         $this->deserializer->deserialize($json);
     }
@@ -87,10 +81,8 @@ class AddLabelToQueryJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"label": "foo", "query": ""}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing value "query".'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing value "query".');
 
         $this->deserializer->deserialize($json);
     }

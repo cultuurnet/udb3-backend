@@ -180,10 +180,8 @@ class ResqueCommandBusTest extends TestCase
             ->with(null)
             ->after('dispatched');
 
-        $this->expectException(
-            get_class($exception),
-            $exception->getMessage()
-        );
+        $this->expectException(get_class($exception));
+        $this->expectExceptionMessage($exception->getMessage());
 
         $this->commandBus->deferredDispatch(1, $command);
     }

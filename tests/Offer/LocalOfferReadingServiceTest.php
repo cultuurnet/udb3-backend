@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use LogicException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Web\Url;
@@ -149,10 +150,8 @@ class LocalOfferReadingServiceTest extends TestCase
             );
 
         // Make sure an exception is thrown when trying to load the iri.
-        $this->expectException(
-            \LogicException::class,
-            'No document repository found for offer type Place.'
-        );
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('No document repository found for offer type Place.');
 
         $service->load((string) $iri);
     }

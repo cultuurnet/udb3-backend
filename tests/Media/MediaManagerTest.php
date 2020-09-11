@@ -194,10 +194,8 @@ class MediaManagerTest extends TestCase
             ->with($id)
             ->willThrowException(new AggregateNotFoundException());
 
-        $this->expectException(
-            MediaObjectNotFoundException::class,
-            "Media object with id '" . $id . "' not found"
-        );
+        $this->expectException(MediaObjectNotFoundException::class);
+        $this->expectExceptionMessage("Media object with id '" . $id . "' not found");
 
         $this->mediaManager->get(new UUID($id));
     }

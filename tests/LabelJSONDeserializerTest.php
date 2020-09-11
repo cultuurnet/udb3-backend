@@ -41,10 +41,8 @@ class LabelJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"foo": "bar"}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing value "label"!'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing value "label"!');
 
         $this->deserializer->deserialize($json);
     }
