@@ -91,13 +91,16 @@ class MediaObjectsExistValidatorTest extends TestCase
             ->method('get')
             ->willReturnCallback(
                 function ($id) use ($ids) {
-                    $exists = in_array($id, $ids);
-
-                    if ($exists) {
-                        return $this->createMock(MediaObject::class);
-                    } else {
-                        throw new MediaObjectNotFoundException();
+                    if (in_array($id, $ids)) {
+                        return new MediaObject(
+                            'https://mocked-image.jpg',
+                            'https://mocked-image-thumbnail.jpg',
+                            'description',
+                            'copyright holder',
+                            $id
+                        );
                     }
+                    throw new MediaObjectNotFoundException();
                 }
             );
     }
