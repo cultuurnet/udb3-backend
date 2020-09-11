@@ -252,7 +252,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         string $cdbXml,
         string $cdbXmlNamespaceUri
     ): self {
-        $place = new static();
+        $place = new self();
         $place->apply(
             new PlaceImportedFromUDB2(
                 $actorId,

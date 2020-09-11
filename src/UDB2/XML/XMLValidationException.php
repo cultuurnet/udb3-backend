@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\UDB2\XML;
 
-class XMLValidationException extends \Exception
+final class XMLValidationException extends \Exception
 {
     /**
      * @param XMLValidationError[] $xmlValidationErrors
@@ -26,6 +26,6 @@ class XMLValidationException extends \Exception
 
         $exceptionMessage = implode(PHP_EOL, $errorMessages);
 
-        return new static($exceptionMessage, $code, $previous);
+        return new self($exceptionMessage, $code, $previous);
     }
 }

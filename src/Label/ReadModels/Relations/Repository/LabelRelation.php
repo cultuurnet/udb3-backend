@@ -99,7 +99,7 @@ class LabelRelation implements \JsonSerializable
      */
     public static function fromRelationalData(array $relation)
     {
-        return new static(
+        return new self(
             new LabelName($relation[SchemaConfigurator::LABEL_NAME]),
             RelationType::fromNative($relation[SchemaConfigurator::RELATION_TYPE]),
             new StringLiteral($relation[SchemaConfigurator::RELATION_ID]),
