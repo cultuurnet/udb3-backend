@@ -16,6 +16,11 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
      */
     protected $keyFactory;
 
+    /**
+     * @var KansentariefForCurrentCardSystemSpecification
+     */
+    private $specification;
+
     public function setUp()
     {
         $this->specification =
