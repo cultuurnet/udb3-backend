@@ -284,7 +284,7 @@ class TabularDataEventFormatter
                         return '';
                     }
 
-                    return $this->formatPriceInfo($event->priceInfo);
+                    return $this->formatPriceInfo($event->priceInfo, $event->mainLanguage);
                 },
                 'property' => 'priceInfo',
             ],
@@ -717,35 +717,23 @@ class TabularDataEventFormatter
         };
     }
 
-    /**
-     * @param array $priceInfo
-     * @return string
-     */
-    private function formatPriceInfo($priceInfo)
+    private function formatPriceInfo(array $priceInfo, string $language): string
     {
-        return implode('; ', array_map([$this, 'formatTariff'], $priceInfo));
+        return implode('; ', array_map(function ($tariff) use ($language) {
+            return $this->formatTariff($tariff, $language);
+        }, $priceInfo));
     }
 
-    private function formatTariff($tariff)
+    private function formatTariff($tariff, string $language)
     {
-        $price = floatval($tariff->price);
+        $price = (float) $tariff->price;
 
         $currencyCode = $tariff->priceCurrency;
         $currency = $this->currencyRepository->get($currencyCode);
 
         $tariffPrice = $this->currencyFormatter->formatCurrency((string) $price, $currency);
 
-        /**
-         * @replay_i18n
-         * @see https://jira.uitdatabank.be/browse/III-2201
-         */
-
-        if (!is_string($tariff->name)) {
-            $mainLanguage = isset($event->mainLanguage) ? $event->mainLanguage : 'nl';
-            $tariffName = $tariff->name->{$mainLanguage};
-        } else {
-            $tariffName = $tariff->name;
-        }
+        $tariffName = $tariff->name->{$language};
 
         return $tariffName.': '.$tariffPrice;
     }
