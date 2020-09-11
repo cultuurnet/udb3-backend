@@ -78,11 +78,6 @@ class EventDocumentImporterTest extends TestCase
     private $repository;
 
     /**
-     * @var EventDenormalizer
-     */
-    private $denormalizer;
-
-    /**
      * @var ImageCollectionFactory|MockObject
      */
     private $imageCollectionFactory;
@@ -108,21 +103,6 @@ class EventDocumentImporterTest extends TestCase
     private $lockedLabelRepository;
 
     /**
-     * @var EventDocumentImporter
-     */
-    private $eventDocumentImporter;
-
-    /**
-     * @var TermPreProcessingDocumentImporter
-     */
-    private $termPreProcessingImporter;
-
-    /**
-     * @var InMemoryDocumentRepository
-     */
-    private $placeDocumentRepository;
-
-    /**
      * @var DocumentImporterInterface
      */
     private $importer;
@@ -130,16 +110,15 @@ class EventDocumentImporterTest extends TestCase
     public function setUp()
     {
         $this->repository = $this->createMock(RepositoryInterface::class);
-        $this->denormalizer = new EventDenormalizer();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $this->commandBus = new TraceableCommandBus();
         $this->consumer = $this->createMock(ConsumerInterface::class);
         $this->shouldApprove = $this->createMock(ConsumerSpecificationInterface::class);
         $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);
 
-        $this->eventDocumentImporter = new EventDocumentImporter(
+        $eventDocumentImporter = new EventDocumentImporter(
             $this->repository,
-            $this->denormalizer,
+            new EventDenormalizer(),
             $this->imageCollectionFactory,
             $this->commandBus,
             $this->shouldApprove,
@@ -147,17 +126,15 @@ class EventDocumentImporterTest extends TestCase
             new NullLogger()
         );
 
-        $this->termPreProcessingImporter = new TermPreProcessingDocumentImporter(
-            $this->eventDocumentImporter,
-            new EventLegacyBridgeCategoryResolver()
-        );
-
-        $this->placeDocumentRepository = new InMemoryDocumentRepository();
-        $this->placeDocumentRepository->save(
+        $placeDocumentRepository = new InMemoryDocumentRepository();
+        $placeDocumentRepository->save(
             $this->getPlaceDocument()->toJsonDocument()
         );
 
-        $this->importer = $this->termPreProcessingImporter;
+        $this->importer = new TermPreProcessingDocumentImporter(
+            $eventDocumentImporter,
+            new EventLegacyBridgeCategoryResolver()
+        );
     }
 
     /**
