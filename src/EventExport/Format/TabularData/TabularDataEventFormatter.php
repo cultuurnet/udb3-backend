@@ -628,21 +628,21 @@ class TabularDataEventFormatter
             ],
             'contactPoint.reservations.email' => [
                 'name' => 'e-mail reservaties',
-                'include' => function ($event) use ($contactPoint) {
+                'include' => function () {
                     return '';
                 },
                 'property' => 'contactPoint',
             ],
             'contactPoint.reservations.telephone' => [
                 'name' => 'telefoon reservaties',
-                'include' => function ($event) use ($contactPoint) {
+                'include' => function () {
                         return '';
                 },
                 'property' => 'contactPoint',
             ],
             'contactPoint.reservations.url' => [
                 'name' => 'online reservaties',
-                'include' => function ($event) use ($contactPoint) {
+                'include' => function () {
                     return '';
                 },
                 'property' => 'contactPoint',
