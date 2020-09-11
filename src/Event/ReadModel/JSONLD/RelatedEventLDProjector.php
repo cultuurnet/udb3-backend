@@ -18,6 +18,11 @@ class RelatedEventLDProjector implements EventListenerInterface
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
+     * @var DocumentRepositoryInterface
+     */
+    private $repository;
+
+    /**
      * @var PlaceService
      */
     protected $placeService;
@@ -42,6 +47,7 @@ class RelatedEventLDProjector implements EventListenerInterface
      * @param EventServiceInterface $eventService
      * @param PlaceService $placeService
      * @param OrganizerService $organizerService
+     * @param IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
      */
     public function __construct(
         DocumentRepositoryInterface $repository,
