@@ -895,7 +895,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Item $item) use ($reason) {
+                function (Item $item) {
                     $item->approve();
                 }
             )

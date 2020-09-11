@@ -387,7 +387,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ]
             )
             ->when(
-                function (Place $place) use ($typicalAgeRange) {
+                function (Place $place) {
                     $place->deleteTypicalAgeRange();
                 }
             )
