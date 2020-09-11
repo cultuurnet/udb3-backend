@@ -13,6 +13,7 @@ use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\PlaceService;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Web\Url;
 
@@ -22,6 +23,35 @@ class RelatedEventLDProjectorTest extends TestCase
      * @var DomainMessageBuilder
      */
     protected $domainMessageBuilder;
+    /**
+     * @var InMemoryDocumentRepository
+     */
+    private $documentRepository;
+
+    /**
+     * @var OrganizerService|MockObject
+     */
+    private $organizerService;
+
+    /**
+     * @var EventServiceInterface|MockObject
+     */
+    private $eventService;
+
+    /**
+     * @var PlaceService|MockObject
+     */
+    private $placeService;
+
+    /**
+     * @var IriOfferIdentifierFactoryInterface|MockObject
+     */
+    private $iriOfferIdentifierFactory;
+
+    /**
+     * @var RelatedEventLDProjector
+     */
+    private $projector;
 
     /**
      * @inheritdoc
