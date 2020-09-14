@@ -7,10 +7,6 @@ use ValueObjects\Enum\Enum;
 /**
  * Class CommandType
  * @package CultuurNet\UDB3\Http\Label\Helper
- * @method static CommandType MAKE_VISIBLE
- * @method static CommandType MAKE_INVISIBLE
- * @method static CommandType MAKE_PUBLIC
- * @method static CommandType MAKE_PRIVATE
  */
 class CommandType extends Enum
 {
@@ -18,4 +14,24 @@ class CommandType extends Enum
     const MAKE_INVISIBLE = 'MakeInvisible';
     const MAKE_PUBLIC = 'MakePublic';
     const MAKE_PRIVATE = 'MakePrivate';
+
+    public static function makeVisible(): self
+    {
+        return self::fromNative(self::MAKE_VISIBLE);
+    }
+
+    public static function makeInvisible(): self
+    {
+        return self::fromNative(self::MAKE_INVISIBLE);
+    }
+
+    public static function makePublic(): self
+    {
+        return self::fromNative(self::MAKE_PUBLIC);
+    }
+
+    public static function makePrivate(): self
+    {
+        return self::fromNative(self::MAKE_PRIVATE);
+    }
 }

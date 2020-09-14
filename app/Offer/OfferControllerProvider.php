@@ -77,7 +77,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             );
 
             $app[$permissionsControllerName] = $app->share(
-                function (Application $app) use ($offerType) {
+                function (Application $app) {
                     $currentUserId = null;
                     if (!is_null($app['current_user'])) {
                         $currentUserId = new StringLiteral($app['current_user']->id);
@@ -97,7 +97,7 @@ class OfferControllerProvider implements ControllerProviderInterface
 
             /** @deprecated */
             $app[$permissionControllerName] = $app->share(
-                function (Application $app) use ($offerType) {
+                function (Application $app) {
                     $currentUserId = null;
                     if (!is_null($app['current_user'])) {
                         $currentUserId = new StringLiteral($app['current_user']->id);

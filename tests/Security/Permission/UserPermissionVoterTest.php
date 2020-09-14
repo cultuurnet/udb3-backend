@@ -53,10 +53,7 @@ class UserPermissionVoterTest extends TestCase
 
         $this->requiredPermission = Permission::VOORZIENINGEN_BEWERKEN();
 
-        $this->userPermissionVoter = new UserPermissionVoter(
-            $this->userPermissionsReadRepository,
-            $this->requiredPermission
-        );
+        $this->userPermissionVoter = new UserPermissionVoter($this->userPermissionsReadRepository);
     }
 
     /**

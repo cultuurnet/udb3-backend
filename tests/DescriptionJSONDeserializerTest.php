@@ -36,10 +36,8 @@ class DescriptionJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"foo": "bar"}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing value for "description".'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing value for "description".');
 
         $this->deserializer->deserialize($json);
     }

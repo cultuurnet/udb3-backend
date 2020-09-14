@@ -56,7 +56,7 @@ class ProxyServiceProvider implements ServiceProviderInterface
         );
 
         $app['get_request_proxy_factory'] = $app->protect(
-            function ($pathRegex, $redirectDomain, $redirectPort) use ($app) {
+            function ($pathRegex, $redirectDomain, $redirectPort) {
                 return new FilterPathMethodProxy(
                     new FilterPathRegex($pathRegex),
                     new StringLiteral('GET'),

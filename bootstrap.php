@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Http\Adapter\Guzzle6\Client;
@@ -45,8 +46,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use ValueObjects\StringLiteral\StringLiteral;
 
 date_default_timezone_set('Europe/Brussels');
-
-define('SYSTEM_USER_UUID', '00000000-0000-0000-0000-000000000000');
 
 $app = new Application();
 
@@ -67,7 +66,7 @@ $app['config'] = array_merge_recursive(
     [
         'user_permissions' => [
             'allow_all' => [
-                SYSTEM_USER_UUID
+                UserIdentityDetails::SYSTEM_USER_UUID
             ],
         ],
     ]

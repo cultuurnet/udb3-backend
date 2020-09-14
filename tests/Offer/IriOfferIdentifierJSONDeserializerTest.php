@@ -59,10 +59,8 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"foo"');
 
-        $this->expectException(
-            NotWellFormedException::class,
-            'Invalid JSON'
-        );
+        $this->expectException(NotWellFormedException::class);
+        $this->expectExceptionMessage('Invalid JSON');
 
         $this->deserializer->deserialize($json);
     }
@@ -74,10 +72,8 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"@type":"Event"}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing property "@id".'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing property "@id".');
 
         $this->deserializer->deserialize($json);
     }
@@ -89,10 +85,8 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
     {
         $json = new StringLiteral('{"@id":"http://du.de/event/1"}');
 
-        $this->expectException(
-            MissingValueException::class,
-            'Missing property "@type".'
-        );
+        $this->expectException(MissingValueException::class);
+        $this->expectExceptionMessage('Missing property "@type".');
 
         $this->deserializer->deserialize($json);
     }
