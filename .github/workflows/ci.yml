@@ -30,5 +30,8 @@ jobs:
               if: steps.composer-cache.outputs.cache-hit != 'true'
               run: composer install --no-progress --no-suggest
 
+            - name: Copy configuration
+              run: cp config.yml.dist config.yml
+
             - name: Run Phing
               run: composer run-script phing
