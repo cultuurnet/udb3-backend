@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -49,7 +50,7 @@ $consoleApp = $app['console'];
 $app['impersonator']->impersonate(
     new Metadata(
         [
-            'user_id' => SYSTEM_USER_UUID,
+            'user_id' => UserIdentityDetails::SYSTEM_USER_UUID,
             'user_nick' => 'udb3',
         ]
     )

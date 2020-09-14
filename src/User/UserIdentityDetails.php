@@ -7,6 +7,8 @@ use ValueObjects\Web\EmailAddress;
 
 class UserIdentityDetails implements \JsonSerializable
 {
+    public const SYSTEM_USER_UUID = '00000000-0000-0000-0000-000000000000';
+
     /**
      * @var StringLiteral
      */

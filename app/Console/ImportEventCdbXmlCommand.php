@@ -7,6 +7,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB2DomainEvents\EventCreated;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,12 +59,12 @@ class ImportEventCdbXmlCommand extends AbstractCommand
         $incomingUdb2Event = new EventCreated(
             new StringLiteral($input->getArgument(self::ID)),
             new DateTimeImmutable(),
-            new StringLiteral(SYSTEM_USER_UUID),
+            new StringLiteral(UserIdentityDetails::SYSTEM_USER_UUID),
             Url::fromNative($input->getArgument(self::URL))
         );
 
         $domainMessage = (new DomainMessageBuilder())
-            ->setUserId(SYSTEM_USER_UUID)
+            ->setUserId(UserIdentityDetails::SYSTEM_USER_UUID)
             ->create($incomingUdb2Event);
 
         $this->eventBus->publish(new DomainEventStream([$domainMessage]));
