@@ -5,5 +5,4 @@ parameters:
 		- src
 		- tests
 	bootstrapFiles:
-		- bootstrap.php
 		- tests/bootstrap.php
