@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "903d1bcd89b4091ba599c7c88a888eec",
+    "content-hash": "1f9fc9f640b1babeb7de7123305b9af6",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1348,16 +1348,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/phpstan-level-0",
+            "version": "dev-feature/phpstan-level-0-and-cleanup",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "c2e635f62393cd8c23c7355c83873017c37944eb"
+                "reference": "936da66ac889f3cd2c2aa24604b5b774f0c43a34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/c2e635f62393cd8c23c7355c83873017c37944eb",
-                "reference": "c2e635f62393cd8c23c7355c83873017c37944eb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/936da66ac889f3cd2c2aa24604b5b774f0c43a34",
+                "reference": "936da66ac889f3cd2c2aa24604b5b774f0c43a34",
                 "shasum": ""
             },
             "require": {
@@ -1423,7 +1423,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-09-11T16:02:59+00:00"
+            "time": "2020-09-15T15:59:44+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -9163,7 +9163,7 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/phpstan-level-0",
+            "version": "dev-feature/phpstan-level-0-and-cleanup",
             "package": "cultuurnet/udb3"
         },
         {
