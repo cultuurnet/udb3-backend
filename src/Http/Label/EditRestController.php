@@ -53,16 +53,16 @@ class EditRestController
         $id = new UUID($id);
 
         switch ($commandType) {
-            case CommandType::MAKE_VISIBLE():
+            case CommandType::makeVisible():
                 $this->writeService->makeVisible($id);
                 break;
-            case CommandType::MAKE_INVISIBLE():
+            case CommandType::makeInvisible():
                 $this->writeService->makeInvisible($id);
                 break;
-            case CommandType::MAKE_PUBLIC():
+            case CommandType::makePublic():
                 $this->writeService->makePublic($id);
                 break;
-            case CommandType::MAKE_PRIVATE():
+            case CommandType::makePrivate():
                 $this->writeService->makePrivate($id);
                 break;
         }

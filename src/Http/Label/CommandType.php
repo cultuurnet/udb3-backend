@@ -15,22 +15,22 @@ class CommandType extends Enum
     const MAKE_PUBLIC = 'MakePublic';
     const MAKE_PRIVATE = 'MakePrivate';
 
-    public static function MAKE_VISIBLE(): self
+    public static function makeVisible(): self
     {
         return self::fromNative(self::MAKE_VISIBLE);
     }
 
-    public static function MAKE_INVISIBLE(): self
+    public static function makeInvisible(): self
     {
         return self::fromNative(self::MAKE_INVISIBLE);
     }
 
-    public static function MAKE_PUBLIC(): self
+    public static function makePublic(): self
     {
         return self::fromNative(self::MAKE_PUBLIC);
     }
 
-    public static function MAKE_PRIVATE(): self
+    public static function makePrivate(): self
     {
         return self::fromNative(self::MAKE_PRIVATE);
     }

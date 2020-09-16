@@ -11,7 +11,7 @@ class CommandTypeTest extends TestCase
      */
     public function it_has_a_make_visible_option()
     {
-        $commandType = CommandType::MAKE_VISIBLE();
+        $commandType = CommandType::makeVisible();
 
         $this->assertEquals($commandType, CommandType::MAKE_VISIBLE);
     }
@@ -21,7 +21,7 @@ class CommandTypeTest extends TestCase
      */
     public function it_has_a_make_invisible_option()
     {
-        $commandType = CommandType::MAKE_INVISIBLE();
+        $commandType = CommandType::makeInvisible();
 
         $this->assertEquals($commandType, CommandType::MAKE_INVISIBLE);
     }
@@ -31,7 +31,7 @@ class CommandTypeTest extends TestCase
      */
     public function it_has_a_make_public_option()
     {
-        $commandType = CommandType::MAKE_PUBLIC();
+        $commandType = CommandType::makePublic();
 
         $this->assertEquals($commandType, CommandType::MAKE_PUBLIC);
     }
@@ -41,7 +41,7 @@ class CommandTypeTest extends TestCase
      */
     public function it_has_a_make_private_option()
     {
-        $commandType = CommandType::MAKE_PRIVATE();
+        $commandType = CommandType::makePrivate();
 
         $this->assertEquals($commandType, CommandType::MAKE_PRIVATE);
     }
@@ -55,10 +55,10 @@ class CommandTypeTest extends TestCase
 
         $this->assertEquals(
             [
-                CommandType::MAKE_VISIBLE()->getName() => CommandType::MAKE_VISIBLE,
-                CommandType::MAKE_INVISIBLE()->getName() => CommandType::MAKE_INVISIBLE,
-                CommandType::MAKE_PUBLIC()->getName() => CommandType::MAKE_PUBLIC,
-                CommandType::MAKE_PRIVATE()->getName() => CommandType::MAKE_PRIVATE,
+                CommandType::makeVisible()->getName() => CommandType::MAKE_VISIBLE,
+                CommandType::makeInvisible()->getName() => CommandType::MAKE_INVISIBLE,
+                CommandType::makePublic()->getName() => CommandType::MAKE_PUBLIC,
+                CommandType::makePrivate()->getName() => CommandType::MAKE_PRIVATE,
             ],
             $options
         );
