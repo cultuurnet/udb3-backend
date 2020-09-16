@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Label\Specifications;
 
+use CultuurNet\UDB3\Label as LabelValueObject;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved as OrganizerLabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelAdded as PlaceLabelAdded;
@@ -15,7 +16,7 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
      */
     private $labelEventIsOfOrganizerType;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelEventIsOfOrganizerType = new LabelEventIsOfOrganizerType();
     }
@@ -23,9 +24,9 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_is_satisfied_by_label_added_on_event()
+    public function it_is_satisfied_by_label_added_on_event(): void
     {
-        $labelAdded = $this->createEvent(OrganizerLabelAdded::class);
+        $labelAdded = new OrganizerLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertTrue($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelAdded
@@ -35,9 +36,9 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_is_satisfied_by_label_removed_from_event()
+    public function it_is_satisfied_by_label_removed_from_event(): void
     {
-        $labelRemoved = $this->createEvent(OrganizerLabelRemoved::class);
+        $labelRemoved = new OrganizerLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertTrue($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelRemoved
@@ -47,9 +48,9 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_is_not_satisfied_by_label_added_on_place()
+    public function it_is_not_satisfied_by_label_added_on_place(): void
     {
-        $labelAdded = $this->createEvent(PlaceLabelAdded::class);
+        $labelAdded = new PlaceLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertFalse($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelAdded
@@ -59,21 +60,12 @@ class LabelEventIsOfOrganizerTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_is_not_satisfied_by_label_removed_from_place()
+    public function it_is_not_satisfied_by_label_removed_from_place(): void
     {
-        $labelRemoved = $this->createEvent(PlaceLabelRemoved::class);
+        $labelRemoved = new PlaceLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertFalse($this->labelEventIsOfOrganizerType->isSatisfiedBy(
             $labelRemoved
         ));
-    }
-
-    /**
-     * @param string $className
-     * @return mixed
-     */
-    private function createEvent($className)
-    {
-        return $this->createMock($className);
     }
 }
