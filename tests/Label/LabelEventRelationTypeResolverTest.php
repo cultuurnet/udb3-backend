@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Label;
 
 use CultuurNet\UDB3\Event\Events\LabelAdded as EventLabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved as EventLabelRemoved;
+use CultuurNet\UDB3\Label as LabelValueObject;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved as OrganizerLabelRemoved;
@@ -18,7 +19,7 @@ class LabelEventRelationTypeResolverTest extends TestCase
      */
     private $labelEventRelationTypeResolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->labelEventRelationTypeResolver = new LabelEventRelationTypeResolver();
     }
@@ -26,9 +27,9 @@ class LabelEventRelationTypeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_relation_type_event_for_label_added_on_event()
+    public function it_returns_relation_type_event_for_label_added_on_event(): void
     {
-        $labelAdded = $this->createEvent(EventLabelAdded::class);
+        $labelAdded = new EventLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
             RelationType::EVENT(),
@@ -39,9 +40,9 @@ class LabelEventRelationTypeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_relation_type_event_for_label_removed_from_event()
+    public function it_returns_relation_type_event_for_label_removed_from_event(): void
     {
-        $labelRemoved = $this->createEvent(EventLabelRemoved::class);
+        $labelRemoved = new EventLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
             RelationType::EVENT(),
@@ -52,9 +53,9 @@ class LabelEventRelationTypeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_relation_type_place_for_label_added_on_place()
+    public function it_returns_relation_type_place_for_label_added_on_place(): void
     {
-        $labelAdded = $this->createEvent(PlaceLabelAdded::class);
+        $labelAdded = new PlaceLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
             RelationType::PLACE(),
@@ -65,9 +66,9 @@ class LabelEventRelationTypeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_relation_type_place_for_label_removed_from_place()
+    public function it_returns_relation_type_place_for_label_removed_from_place(): void
     {
-        $labelRemoved = $this->createEvent(PlaceLabelRemoved::class);
+        $labelRemoved = new PlaceLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
             RelationType::PLACE(),
@@ -78,9 +79,9 @@ class LabelEventRelationTypeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_relation_type_organizer_for_label_added_on_organizer()
+    public function it_returns_relation_type_organizer_for_label_added_on_organizer(): void
     {
-        $labelAdded = $this->createEvent(OrganizerLabelAdded::class);
+        $labelAdded = new OrganizerLabelAdded('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
             RelationType::ORGANIZER(),
@@ -91,9 +92,9 @@ class LabelEventRelationTypeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_relation_type_organizer_for_label_removed_from_organizer()
+    public function it_returns_relation_type_organizer_for_label_removed_from_organizer(): void
     {
-        $labelRemoved = $this->createEvent(OrganizerLabelRemoved::class);
+        $labelRemoved = new OrganizerLabelRemoved('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
 
         $this->assertEquals(
             RelationType::ORGANIZER(),
@@ -104,20 +105,11 @@ class LabelEventRelationTypeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_illegal_argument_for_label_events_other_then_added_or_removed()
+    public function it_throws_illegal_argument_for_label_events_other_then_added_or_removed(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $dummyLabelEvent = $this->createEvent(DummyLabelEvent::class);
+        $dummyLabelEvent = new DummyLabelEvent('6b96a237-2e00-49a2-ba6d-fc2beab0707e', new LabelValueObject('foo'));
         $this->labelEventRelationTypeResolver->getRelationType($dummyLabelEvent);
-    }
-
-    /**
-     * @param string $className
-     * @return mixed
-     */
-    private function createEvent($className)
-    {
-        return $this->createMock($className);
     }
 }

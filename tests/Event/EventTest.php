@@ -111,24 +111,6 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_throws_an_error_when_creating_an_event_with_a_non_string_eventid()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected eventId to be a string, received integer');
-
-        Event::create(
-            101,
-            new Language('en'),
-            new Title('some representative title'),
-            new EventType('0.50.4.0.0', 'concert'),
-            new LocationId(UUID::generateAsString()),
-            new Calendar(CalendarType::PERMANENT())
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_sets_the_audience_type_to_education_when_creating_an_event_with_a_dummy_education_location()
     {
         $eventUuid = UUID::generateAsString();
