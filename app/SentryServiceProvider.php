@@ -31,7 +31,7 @@ class SentryServiceProvider implements ServiceProviderInterface
                 /** @var HubInterface $sentryHub */
                 $sentryHub = $app['sentry_hub'];
 
-                return static function(Throwable $throwable) use ($sentryHub) {
+                return static function (Throwable $throwable) use ($sentryHub) {
                     $sentryHub->captureException($throwable);
                     throw $throwable;
                 };
