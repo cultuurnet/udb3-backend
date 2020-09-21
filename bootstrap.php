@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
+use CultuurNet\UDB3\Silex\SentryServiceProvider;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use DerAlex\Silex\YamlConfigServiceProvider;
@@ -83,6 +84,8 @@ $app['event_store_factory'] = $app->protect(
         );
     }
 );
+
+$app->register(new SentryServiceProvider());
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
