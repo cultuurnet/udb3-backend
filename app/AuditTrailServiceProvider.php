@@ -15,7 +15,6 @@ use Silex\ServiceProviderInterface;
 
 class AuditTrailServiceProvider implements ServiceProviderInterface
 {
-
     public function register(Application $app)
     {
         $app['audit_trail_logger'] = $app->share(
