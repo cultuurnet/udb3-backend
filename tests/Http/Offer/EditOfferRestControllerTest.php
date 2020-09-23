@@ -8,6 +8,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Facility;
+use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
@@ -91,7 +92,7 @@ class EditOfferRestControllerTest extends TestCase
         $this->labelDeserializer = new LabelJSONDeserializer();
         $this->titleDeserializer = new TitleJSONDeserializer();
         $this->descriptionDeserializer = new DescriptionJSONDeserializer();
-        $this->priceInfoDeserializer = new PriceInfoJSONDeserializer();
+        $this->priceInfoDeserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
         $this->calendarDeserializer = new CalendarJSONDeserializer(
             new CalendarJSONParser(),
             $this->calendarDataValidator

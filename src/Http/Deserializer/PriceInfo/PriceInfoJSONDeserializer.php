@@ -9,7 +9,6 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\PriceInfo\Tariff;
-use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use ValueObjects\Money\Currency;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -17,19 +16,15 @@ use ValueObjects\StringLiteral\StringLiteral;
 class PriceInfoJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @var DataValidatorInterface
+     * @var PriceInfoDataValidator
      */
     private $validator;
 
     /**
-     * @param DataValidatorInterface|null $validator
+     * @param PriceInfoDataValidator $validator
      */
-    public function __construct(DataValidatorInterface $validator = null)
+    public function __construct(PriceInfoDataValidator $validator)
     {
-        if (!$validator) {
-            $validator = new PriceInfoDataValidator();
-        }
-
         $this->validator = $validator;
 
         $assoc = true;
@@ -42,10 +37,6 @@ class PriceInfoJSONDeserializer extends JSONDeserializer
      */
     public function forMainLanguage(Language $language)
     {
-        if (!($this->validator instanceof PriceInfoDataValidator)) {
-            return $this;
-        }
-
         $c = clone $this;
         $c->validator = $c->validator->forMainLanguage($language);
         return $c;

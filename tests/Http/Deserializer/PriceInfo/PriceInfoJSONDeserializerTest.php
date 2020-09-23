@@ -23,7 +23,7 @@ class PriceInfoJSONDeserializerTest extends TestCase
 
     public function setUp()
     {
-        $this->deserializer = new PriceInfoJSONDeserializer();
+        $this->deserializer = new PriceInfoJSONDeserializer(new PriceInfoDataValidator());
     }
 
     /**
@@ -62,21 +62,6 @@ class PriceInfoJSONDeserializerTest extends TestCase
             $expected = ['[1].name' => "Missing translation for mainLanguage 'en'."];
             $this->assertEquals($expected, $messages);
         }
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_the_same_deserializer_if_the_injected_validator_is_not_mainLanguage_aware()
-    {
-        $validator = $this->createMock(DataValidatorInterface::class);
-        $deserializer = new PriceInfoJSONDeserializer($validator);
-        $expected = $deserializer;
-
-        $mainLanguage = new Language('en');
-        $actual = $deserializer->forMainLanguage($mainLanguage);
-
-        $this->assertEquals($expected, $actual);
     }
 
     /**
