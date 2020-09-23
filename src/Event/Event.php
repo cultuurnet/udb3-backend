@@ -66,6 +66,7 @@ use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use DateTimeImmutable;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -97,29 +98,16 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         parent::__construct();
     }
 
-    /**
-     * Factory method to create a new event.
-     *
-     * @param $eventId
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param LocationId $location
-     * @param CalendarInterface $calendar
-     * @param Theme|null $theme
-     * @param \DateTimeImmutable|null $publicationDate
-     * @return Event
-     */
     public static function create(
-        $eventId,
+        string $eventId,
         Language $mainLanguage,
         Title $title,
         EventType $eventType,
         LocationId $location,
         CalendarInterface $calendar,
         Theme $theme = null,
-        \DateTimeImmutable $publicationDate = null
-    ) {
+        DateTimeImmutable $publicationDate = null
+    ): self {
         $event = new self();
 
         $event->apply(
