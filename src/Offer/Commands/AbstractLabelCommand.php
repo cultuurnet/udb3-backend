@@ -14,7 +14,7 @@ abstract class AbstractLabelCommand extends AbstractCommand implements LabelSecu
     protected $label;
 
     /**
-     * @param $itemId
+     * @param string $itemId
      *  The id of the item that is targeted by the command.
      *
      * @param Label $label

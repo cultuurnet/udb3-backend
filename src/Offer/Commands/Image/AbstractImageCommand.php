@@ -13,7 +13,7 @@ abstract class AbstractImageCommand extends AbstractCommand
     protected $image;
 
     /**
-     * @param $itemId
+     * @param string $itemId
      *  The id of the item that is targeted by the command.
      *
      * @param Image $image

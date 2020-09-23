@@ -25,7 +25,7 @@ abstract class AbstractUpdateImage extends AbstractCommand
     protected $copyrightHolder;
 
     /**
-     * @param $itemId
+     * @param string $itemId
      * @param UUID $mediaObjectId
      * @param StringLiteral $description
      * @param StringLiteral $copyrightHolder
