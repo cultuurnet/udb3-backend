@@ -74,15 +74,8 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
         }
     }
 
-    /**
-     * @param $id
-     * @param \CultuurNet\UDB3\ReadModel\DocumentEventFactory $eventFactory
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \CultuurNet\UDB3\EventSourcing\DomainMessageBuilder $domainMessageBuilder
-     * @param \Broadway\EventHandling\EventBusInterface $eventBus
-     */
     protected function fireEvent(
-        $id,
+        string $id,
         DocumentEventFactory $eventFactory,
         OutputInterface $output,
         DomainMessageBuilder $domainMessageBuilder,
