@@ -13,10 +13,6 @@ use ValueObjects\Identity\UUID;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-/**
- * @todo Move to udb3-symfony
- * @see https://jira.uitdatabank.be/browse/III-1513
- */
 class ImageUploaderService implements ImageUploaderInterface
 {
     /**
