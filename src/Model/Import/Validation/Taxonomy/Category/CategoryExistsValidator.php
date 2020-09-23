@@ -8,14 +8,9 @@ use Respect\Validation\Validator;
 
 class CategoryExistsValidator extends Validator
 {
-
-    /**
-     * @param CategoryResolverInterface $categoryResolver
-     * @param $documentType
-     */
     public function __construct(
         CategoryResolverInterface $categoryResolver,
-        $documentType
+        string $documentType
     ) {
         // Only check that the category exists if it actually has an id.
         // Any other errors will be reported by the validators in udb3-models.
