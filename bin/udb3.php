@@ -92,4 +92,11 @@ $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
 
-$consoleApp->run();
+try {
+    $consoleApp->run();
+} catch (\Throwable $throwable) {
+    $handler = $app['uncaught_error_handler'];
+
+    // The runtime exception is re-thrown to show it on the command line.
+    $handler($throwable);
+}
