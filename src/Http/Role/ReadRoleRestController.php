@@ -52,7 +52,7 @@ class ReadRoleRestController
      * @param EntityServiceInterface $service
      * @param RoleReadingServiceInterface $roleService
      * @param \CultureFeed_User $currentUser
-     * @param $authorizationList
+     * @param array $authorizationList
      * @param RepositoryInterface $roleSearchRepository
      * @param UserPermissionsReadRepositoryInterface $permissionsRepository
      */
@@ -60,7 +60,7 @@ class ReadRoleRestController
         EntityServiceInterface $service,
         RoleReadingServiceInterface $roleService,
         \CultureFeed_User $currentUser,
-        $authorizationList,
+        array $authorizationList,
         RepositoryInterface $roleSearchRepository,
         UserPermissionsReadRepositoryInterface $permissionsRepository
     ) {
@@ -122,7 +122,7 @@ class ReadRoleRestController
     }
 
     /**
-     * @param $userId
+     * @param string $userId
      * @return Response
      */
     public function getUserRoles($userId)
@@ -202,7 +202,7 @@ class ReadRoleRestController
     }
 
     /**
-     * @param $roleId
+     * @param string $roleId
      * @return Response
      */
     public function getRoleLabels($roleId)

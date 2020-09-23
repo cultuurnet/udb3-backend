@@ -67,7 +67,7 @@ abstract class AbstractProjector implements EventListenerInterface
     abstract public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata);
 
     /**
-     * @param $payload
+     * @param mixed $payload
      * @return bool
      */
     private function isLabelAdded($payload)
@@ -77,7 +77,7 @@ abstract class AbstractProjector implements EventListenerInterface
     }
 
     /**
-     * @param $payload
+     * @param mixed $payload
      * @return bool
      */
     private function isLabelRemoved($payload)
@@ -87,7 +87,7 @@ abstract class AbstractProjector implements EventListenerInterface
     }
 
     /**
-     * @param $payload
+     * @param mixed $payload
      * @return bool
      */
     private function isLabelsImported($payload)
