@@ -2,11 +2,13 @@
 
 namespace CultuurNet\UDB3;
 
+use stdClass;
+
 class LabelImporter
 {
     /**
      * @param \CultureFeed_Cdb_Item_Base $item
-     * @param $jsonLD
+     * @param stdClass $jsonLD
      */
     public function importLabels(\CultureFeed_Cdb_Item_Base $item, $jsonLD)
     {
