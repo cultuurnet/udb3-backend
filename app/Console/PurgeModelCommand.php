@@ -65,10 +65,9 @@ class PurgeModelCommand extends Command
     }
 
     /**
-     * @param $model
      * @return PurgeServiceInterface[]
      */
-    private function getPurgeServices($model)
+    private function getPurgeServices(string $model): array
     {
         $purgeServices = array();
 
@@ -84,18 +83,14 @@ class PurgeModelCommand extends Command
     /**
      * @param PurgeServiceInterface[] $purgeServices
      */
-    private function purge($purgeServices)
+    private function purge(array $purgeServices)
     {
         foreach ($purgeServices as $purgeService) {
             $purgeService->purgeAll();
         }
     }
 
-    /**
-     * @param string $model
-     * @return bool
-     */
-    private function isModelValid($model)
+    private function isModelValid(string $model): bool
     {
         return (
             self::READ_MODEL === $model ||
