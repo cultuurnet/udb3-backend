@@ -324,5 +324,7 @@ class HTMLEventFormatter
                 return $event->location->address->{$mainLanguage}->{$addressField};
             }
         }
+
+        return '';
     }
 }
