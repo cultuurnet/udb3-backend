@@ -40,11 +40,7 @@ class ReadPlaceRestController
         $this->serializer = $serializer;
     }
 
-    /**
-     * @param $cdbid
-     * @return JsonLdResponse
-     */
-    public function get($cdbid)
+    public function get(string $cdbid): JsonLdResponse
     {
         $response = null;
 
