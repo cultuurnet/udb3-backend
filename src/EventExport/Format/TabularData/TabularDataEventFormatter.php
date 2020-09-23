@@ -796,13 +796,10 @@ class TabularDataEventFormatter
     {
         if (isset($event->location->address->{$addressField})) {
             return $event->location->address->{$addressField};
-        } else {
-            $mainLanguage = isset($event->mainLanguage) ? $event->mainLanguage : 'nl';
-            if (isset($event->location->address->{$mainLanguage}->{$addressField})) {
-                return $event->location->address->{$mainLanguage}->{$addressField};
-            }
         }
 
-        return '';
+        $mainLanguage = $event->mainLanguage ?? 'nl';
+
+        return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
     }
 }
