@@ -19,6 +19,8 @@ interface MediaManagerInterface extends CommandHandlerInterface
      */
     public function get(UUID $id);
 
+    public function getImage(UUID $imageId): Image;
+
     /**
      * @param UploadImage $uploadImage
      * @return mixed
