@@ -103,10 +103,10 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
     /**
-     * @param $selection
+     * @param string[] $selection
      * @return ExportEventsAsPDF
      */
-    public function withSelection($selection)
+    public function withSelection(array $selection)
     {
         $exportEvents = clone $this;
         $exportEvents->setSelection($selection);
@@ -117,7 +117,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
     /**
      * @param string[] $selection
      */
-    private function setSelection($selection)
+    private function setSelection(array $selection)
     {
         $this->selection = $selection;
     }
