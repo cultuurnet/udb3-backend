@@ -791,13 +791,8 @@ class TabularDataEventFormatter
     /**
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
-     *
-     * @param object $event
-     * @param string $addressField
-     *
-     * @return string
      */
-    private function getAddressField($event, $addressField)
+    private function getAddressField($event, string $addressField): string
     {
         if (isset($event->location->address->{$addressField})) {
             return $event->location->address->{$addressField};
@@ -807,5 +802,7 @@ class TabularDataEventFormatter
                 return $event->location->address->{$mainLanguage}->{$addressField};
             }
         }
+
+        return '';
     }
 }
