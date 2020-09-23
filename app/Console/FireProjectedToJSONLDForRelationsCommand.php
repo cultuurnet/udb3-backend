@@ -92,6 +92,8 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
             $input,
             $output
         );
+
+        return 0;
     }
 
     protected function fireEvents(

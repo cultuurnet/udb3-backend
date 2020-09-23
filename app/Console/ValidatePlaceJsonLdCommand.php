@@ -46,7 +46,11 @@ class ValidatePlaceJsonLdCommand extends AbstractCommand
         } catch (GroupedValidationException $e) {
             foreach ($e->getMessages() as $message) {
                 $logger->error($message);
+
+                return 1;
             }
         }
+
+        return 0;
     }
 }

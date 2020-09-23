@@ -50,5 +50,7 @@ class FireProjectedToJSONLDCommand extends AbstractFireProjectedToJSONLDCommand
             $input,
             $output
         );
+
+        return 0;
     }
 }

@@ -161,7 +161,7 @@ class ReplayCommand extends AbstractCommand
             );
 
             if (!$helper->ask($input, $output, $question)) {
-                return;
+                return 0;
             }
         }
 
@@ -187,6 +187,8 @@ class ReplayCommand extends AbstractCommand
         if ($this->eventBus instanceof ReplayModeEventBusInterface) {
             $this->eventBus->stopReplayMode();
         }
+
+        return 0;
     }
 
     /**

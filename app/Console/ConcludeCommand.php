@@ -72,6 +72,8 @@ class ConcludeCommand extends AbstractConcludeCommand
 
             $this->dispatchConclude($result->getId());
         }
+
+        return 0;
     }
 
     private function createSolrQuery(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)

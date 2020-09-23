@@ -53,6 +53,10 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
             $logger->info('Successfully marked place as duplicate');
         } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
             $logger->error($e->getMessage());
+
+            return 1;
         }
+
+        return 0;
     }
 }

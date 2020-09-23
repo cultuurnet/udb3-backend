@@ -68,5 +68,7 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
             )
         );
         $logger->info('Successfully re-dispatched MarkedAsDuplicate event');
+
+        return 0;
     }
 }
