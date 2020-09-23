@@ -5,6 +5,8 @@
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
+use stdClass;
+
 /**
  * Interface for components that can provide the JSON-LD representation
  * of an Organizer, which will be embedded in the JSON-LD representation
@@ -13,12 +15,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 interface OrganizerServiceInterface
 {
     /**
-     * Gets the JSON-LD structure of an Organizer.
-     *
-     * @param string $organizerId
-     *   Id of the Organizer.
-     *
-     * @return \stdClass
+     * @return stdClass
      */
-    public function organizerJSONLD($oganizerId);
+    public function organizerJSONLD(string $organizerId);
 }
