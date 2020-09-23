@@ -93,11 +93,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
      */
     private $concluded = false;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public static function create(
         string $eventId,
         Language $mainLanguage,
