@@ -105,7 +105,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
 
         if (!empty($phones)) {
             $contactPoint['phone'] = array_map(
-                function (\CultureFeed_Cdb_Data_phone $phone) {
+                function (\CultureFeed_Cdb_Data_Phone $phone) {
                     return $phone->getNumber();
                 },
                 $phones
