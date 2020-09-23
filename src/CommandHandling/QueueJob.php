@@ -18,7 +18,7 @@ class QueueJob
     public $args;
 
     /**
-     * @var ResqueCommandBus|ContextAwareInterface
+     * @var ResqueCommandBus
      */
     private static $commandBus;
 
