@@ -10,7 +10,6 @@ class BookingInfoDataValidator implements DataValidatorInterface
 {
     /**
      * @param array $data
-     * @return array
      * @throws DataValidationException
      */
     public function validate(array $data)
