@@ -95,11 +95,7 @@ class ContextController
             );
     }
 
-    /**
-     * @param $path
-     * @return string
-     */
-    private function getEntityFile($path)
+    private function getEntityFile(string $path): string
     {
         return file_get_contents($path);
     }
