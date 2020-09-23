@@ -23,7 +23,7 @@ interface OfferEditingServiceInterface
     public function addLabel($id, Label $label);
 
     /**
-     * @param $id
+     * @param string $id
      * @param Label $label
      * @return string
      */
