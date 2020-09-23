@@ -42,20 +42,11 @@ class ImageUploaderService implements ImageUploaderInterface
      */
     protected $maxFileSize;
 
-    /**
-     * @param UuidGeneratorInterface $uuidGenerator
-     * @param CommandBusInterface $commandBus
-     * @param FilesystemInterface $filesystem
-     * @param $uploadDirectory
-     *
-     * @param Natural|null $maxFileSize
-     *  The maximum file size in bytes.
-     */
     public function __construct(
         UuidGeneratorInterface $uuidGenerator,
         CommandBusInterface $commandBus,
         FilesystemInterface $filesystem,
-        $uploadDirectory,
+        string $uploadDirectory,
         Natural $maxFileSize = null
     ) {
         $this->uuidGenerator = $uuidGenerator;
