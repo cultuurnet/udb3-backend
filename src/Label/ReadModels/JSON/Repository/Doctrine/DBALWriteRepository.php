@@ -146,7 +146,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         IntegerValue $value,
         UUID $uuid
     ) {
-        $currentCount = $this->getCurrentCount($uuid);
+        $currentCount = $this->getCurrentCount($uuid)->toNative();
         $newCount = $currentCount + $value->toNative();
 
         $queryBuilder = $this->createQueryBuilder()
