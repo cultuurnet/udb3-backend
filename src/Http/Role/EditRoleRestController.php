@@ -90,7 +90,7 @@ class EditRoleRestController
 
     /**
      * @param Request $request
-     * @param $id
+     * @param string $id
      * @return Response
      */
     public function update(Request $request, $id): Response
@@ -160,7 +160,7 @@ class EditRoleRestController
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @return Response
      */
     public function delete($id): Response
@@ -177,7 +177,7 @@ class EditRoleRestController
     }
 
     /**
-     * @param $roleId
+     * @param string $roleId
      * @param string $permissionKey
      * @return Response
      */
@@ -204,7 +204,7 @@ class EditRoleRestController
     }
 
     /**
-     * @param $roleId
+     * @param string $roleId
      * @param string $permissionKey
      * @return Response
      */
@@ -287,8 +287,8 @@ class EditRoleRestController
     }
 
     /**
-     * @param $roleId
-     * @param $userId
+     * @param string $roleId
+     * @param string $userId
      * @return Response
      * @throws InvalidArgumentException
      */
@@ -315,8 +315,8 @@ class EditRoleRestController
     }
 
     /**
-     * @param $roleId
-     * @param $userId
+     * @param string $roleId
+     * @param string $userId
      * @return Response
      * @throws InvalidArgumentException
      */
