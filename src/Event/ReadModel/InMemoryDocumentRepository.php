@@ -26,6 +26,8 @@ class InMemoryDocumentRepository implements DocumentRepositoryInterface
 
             return $this->documents[$id];
         }
+
+        return null;
     }
 
     /**
