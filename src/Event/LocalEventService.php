@@ -15,7 +15,7 @@ use CultuurNet\UDB3\LocalEntityService;
 class LocalEventService extends LocalEntityService implements EventServiceInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var RelationsRepository
      */
     protected $eventRelationsRepository;
 
