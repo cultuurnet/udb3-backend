@@ -256,7 +256,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
     /**
-     * @return null|\string[]
+     * @return null|string[]
      */
     public function getSelection(): ?array
     {

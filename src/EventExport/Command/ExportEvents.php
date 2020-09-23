@@ -70,7 +70,7 @@ abstract class ExportEvents implements ExportEventsInterface
     }
 
     /**
-     * @return null|\string[]
+     * @return null|string[]
      */
     public function getSelection(): ?array
     {
@@ -78,7 +78,7 @@ abstract class ExportEvents implements ExportEventsInterface
     }
 
     /**
-     * @return null|\string[]
+     * @return null|string[]
      */
     public function getInclude(): ?array
     {
