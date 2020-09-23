@@ -229,10 +229,7 @@ class ReplayCommand extends AbstractCommand
         );
     }
 
-    /**
-     * @param $subscribers
-     */
-    private function setSubscribers($subscribers, OutputInterface $output)
+    private function setSubscribers(array $subscribers, OutputInterface $output)
     {
         $subscribersString = implode(', ', $subscribers);
         $msg = 'Registering the following subscribers with the event bus: %s';
