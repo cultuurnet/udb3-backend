@@ -13,7 +13,6 @@ use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\ConfigWriter;
 use Doctrine\DBAL\Connection;
-use Silex\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
