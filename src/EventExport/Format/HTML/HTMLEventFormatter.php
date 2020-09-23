@@ -225,10 +225,6 @@ class HTMLEventFormatter
         }
     }
 
-    /**
-     * @param $event
-     * @param $formattedEvent
-     */
     private function formatTaaliconen($event, &$formattedEvent)
     {
         $taalicoonCount = 0;
@@ -255,10 +251,9 @@ class HTMLEventFormatter
     }
 
     /**
-     * @param $event
      * @return string[]
      */
-    private function getBrands($event)
+    private function getBrands($event): array
     {
         return array_keys(
             array_filter(
