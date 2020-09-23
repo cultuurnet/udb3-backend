@@ -572,7 +572,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
 
         if (!isset($offerLd->image) && count($filteredMediaObjects) > 0) {
-            $offerLd->image = array_values($filteredMediaObjects)[0]->contentUrl;
+            $offerLd->{"image"} = array_values($filteredMediaObjects)[0]->contentUrl;
         }
 
         // If no media objects are left remove the attribute.
