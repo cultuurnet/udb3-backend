@@ -13,39 +13,23 @@ abstract class AbstractLabelCommand extends AbstractCommand implements LabelSecu
      */
     protected $label;
 
-    /**
-     * @param string $itemId
-     *  The id of the item that is targeted by the command.
-     *
-     * @param Label $label
-     *  The label that is used in the command.
-     */
-    public function __construct($itemId, Label $label)
+    public function __construct(string $itemId, Label $label)
     {
         parent::__construct($itemId);
         $this->label = $label;
     }
 
-    /**
-     * @return string
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->itemId;
     }
 
-    /**
-     * @return Label
-     */
-    public function getLabel()
+    public function getLabel(): Label
     {
         return $this->label;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return [
             new StringLiteral((string)$this->label),
