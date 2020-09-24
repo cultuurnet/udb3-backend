@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
 use Cake\Chronos\Chronos;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
@@ -18,6 +19,7 @@ class AbstractPublishTest extends TestCase
             Chronos::now()->addWeek()->format(DATE_ATOM)
         );
 
+        /** @var AbstractPublish|MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             [(new UUID())->toNative(), $futurePublicationDate]
@@ -37,6 +39,7 @@ class AbstractPublishTest extends TestCase
         $now = Chronos::now();
         Chronos::setTestNow($now);
 
+        /** @var AbstractPublish|MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             [(new UUID())->toNative()]
@@ -59,7 +62,7 @@ class AbstractPublishTest extends TestCase
         $lastMonth = $now->subMonth();
         Chronos::setTestNow($now);
 
-        /** @var AbstractPublish $abstractPublish */
+        /** @var AbstractPublish|MockObject $publishCommand */
         $publishCommand = $this->getMockForAbstractClass(
             AbstractPublish::class,
             [(new UUID())->toNative(), $lastMonth]
