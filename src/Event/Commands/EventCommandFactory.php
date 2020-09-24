@@ -23,11 +23,13 @@ use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTheme;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateBookingInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateContactPoint;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateDescription;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateOrganizer;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateType;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTypicalAgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
@@ -55,12 +57,12 @@ class EventCommandFactory implements OfferCommandFactoryInterface
         return new RemoveLabel($id, $label);
     }
 
-    public function createUpdateTypeCommand(string $id, EventType $type): UpdateType
+    public function createUpdateTypeCommand(string $id, EventType $type): AbstractUpdateType
     {
         return new UpdateType($id, $type);
     }
 
-    public function createUpdateThemeCommand(string $id, Theme $theme): UpdateTheme
+    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme
     {
         return new UpdateTheme($id, $theme);
     }
