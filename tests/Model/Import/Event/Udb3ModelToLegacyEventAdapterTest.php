@@ -45,7 +45,7 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
     private $adapter;
 
     /**
-     * @var Udb3ModelToLegacyOfferAdapter
+     * @var Udb3ModelToLegacyEventAdapter
      */
     private $completeAdapter;
 
