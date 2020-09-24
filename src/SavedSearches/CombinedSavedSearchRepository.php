@@ -14,7 +14,7 @@ class CombinedSavedSearchRepository implements SavedSearchRepositoryInterface
 
     public function __construct(SavedSearchRepositoryInterface ...$repositories)
     {
-        $this->repositories[] = $repositories;
+        $this->repositories = $repositories;
     }
 
     /**
