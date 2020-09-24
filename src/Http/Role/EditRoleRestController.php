@@ -124,7 +124,7 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    public function delete(string $id): Response
+    public function delete(string $roleId): Response
     {
         if (empty($roleId)) {
             throw new InvalidArgumentException('Required field roleId is missing');
