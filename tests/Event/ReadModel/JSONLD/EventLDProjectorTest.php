@@ -1137,14 +1137,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      * @dataProvider eventUpdateDataProvider
-     * @param $documentWithUDB3Media
-     * @param $domainMessage
-     * @param $expectedMediaObjects
      */
     public function it_prioritizes_udb3_media_when_updating_an_event(
-        $documentWithUDB3Media,
-        $domainMessage,
-        $expectedMediaObjects
+        JsonDocument $documentWithUDB3Media,
+        DomainMessage $domainMessage,
+        array $expectedMediaObjects
     ) {
         $this->documentRepository->save($documentWithUDB3Media);
 
