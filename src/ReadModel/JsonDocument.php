@@ -47,7 +47,7 @@ class JsonDocument implements ReadModelInterface
 
     /**
      * @param callable $fn
-     * @return
+     * @return static
      */
     public function apply(callable $fn)
     {
