@@ -13,7 +13,7 @@ class CultureFeedUserIdentificationTest extends TestCase
     private $cultureFeedUser;
 
     /**
-     * @var \string[][]
+     * @var string[][]
      */
     private $permissionList;
 
