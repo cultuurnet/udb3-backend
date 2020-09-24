@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
+use CultureFeed_Cdb_Item_Event;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -62,12 +63,7 @@ class CdbXMLImporterTest extends TestCase
         date_default_timezone_set('Europe/Brussels');
     }
 
-    /**
-     * @param $fileName
-     * @param string $version
-     * @return \CultureFeed_Cdb_Item_Event
-     */
-    private function createEventFromCdbXml($fileName, $version = '3.2')
+    private function createEventFromCdbXml(string $fileName, $version = '3.2'): CultureFeed_Cdb_Item_Event
     {
         $cdbXml = file_get_contents(
             __DIR__ . '/' . $fileName
