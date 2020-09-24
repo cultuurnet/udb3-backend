@@ -65,14 +65,4 @@ class CombinedSavedSearchRepositoryTest extends TestCase
 
         $this->assertEquals($savedSearches, $combinedRepository->ownedByCurrentUser());
     }
-
-    /**
-     * @test
-     */
-    public function it_throws_an_exception_when_a_provided_argument_is_not_a_repository()
-    {
-        $invalidRepository = new \stdClass();
-        $this->expectException(\InvalidArgumentException::class);
-        new CombinedSavedSearchRepository($invalidRepository);
-    }
 }
