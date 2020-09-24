@@ -36,6 +36,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\Title;
+use stdClass;
 
 class OrganizerLDProjector implements EventListenerInterface
 {
@@ -198,12 +199,7 @@ class OrganizerLDProjector implements EventListenerInterface
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @param $jsonLD
-     * @param DomainMessage $domainMessage
-     * @return mixed
-     */
-    private function appendCreator($jsonLD, $domainMessage)
+    private function appendCreator(stdClass $jsonLD, DomainMessage $domainMessage): stdClass
     {
         $newJsonLD = clone $jsonLD;
 
