@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarInterface;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -297,7 +298,9 @@ class EventLDProjector extends OfferLDProjector implements
                 $eventCreated->getLocation()->toNative()
             );
 
-        $calendarJsonLD = $eventCreated->getCalendar()->toJsonLd();
+        /** @var Calendar $calendar */
+        $calendar = $eventCreated->getCalendar();
+        $calendarJsonLD = $calendar->toJsonLd();
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
         $availableTo = AvailableTo::createFromCalendar($eventCreated->getCalendar());
@@ -364,7 +367,9 @@ class EventLDProjector extends OfferLDProjector implements
         $eventJsonLD->{'@id'} = $this->iriGenerator->iri($eventCopied->getItemId());
 
         // Set the new calendar.
-        $calendarJsonLD = $eventCopied->getCalendar()->toJsonLd();
+        /** @var Calendar $calendar */
+        $calendar = $eventCopied->getCalendar();
+        $calendarJsonLD = $calendar->toJsonLd();
 
         $eventJsonLD = (object) array_merge(
             (array) $eventJsonLD,
