@@ -309,7 +309,7 @@ class HTMLEventFormatter
     * @replay_i18n
     * @see https://jira.uitdatabank.be/browse/III-2201
     */
-    private function getAddressField($event, string $addressField): string
+    private function getAddressField(stdClass $event, string $addressField): string
     {
         if (isset($event->location->address->{$addressField})) {
             return $event->location->address->{$addressField};
