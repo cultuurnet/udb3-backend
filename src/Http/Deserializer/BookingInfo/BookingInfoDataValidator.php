@@ -8,11 +8,7 @@ use CultuurNet\UDB3\ValueObject\MultilingualString;
 
 class BookingInfoDataValidator implements DataValidatorInterface
 {
-    /**
-     * @param array $data
-     * @throws DataValidationException
-     */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         if (!isset($data['bookingInfo'])) {
             $e = new DataValidationException();
