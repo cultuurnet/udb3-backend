@@ -675,14 +675,11 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider mediaObjectDataProvider
-     * @param JsonDocument $initialDocument
-     * @param Image $image
-     * @param $expectedProjection
      */
     public function it_should_remove_the_media_object_of_an_image(
         JsonDocument $initialDocument,
         Image $image,
-        $expectedProjection
+        stdClass $expectedProjection
     ) {
         $this->documentRepository->save($initialDocument);
         $imageRemovedEvent = new ImageRemoved($initialDocument->getId(), $image);
