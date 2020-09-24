@@ -161,11 +161,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $queryBuilder->execute();
     }
 
-    /**
-     * @param UUID $uuid
-     * @return IntegerValue
-     */
-    private function getCurrentCount(UUID $uuid)
+    private function getCurrentCount(UUID $uuid): IntegerValue
     {
         $queryBuilder = $this->createQueryBuilder()
             ->select([SchemaConfigurator::COUNT_COLUMN])
