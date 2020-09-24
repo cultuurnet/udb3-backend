@@ -616,7 +616,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $eventDeleted = new EventDeleted($eventId);
 
-        $this->project($eventDeleted, $eventDeleted->getItemId(), null, null, false);
+        $this->project($eventDeleted, $eventDeleted->getItemId());
 
         $eventUpdatedFromUdb2 = $this->cdbXMLEventFactory->eventUpdatedFromUDB2(
             'samples/event_with_empty_keyword.cdbxml.xml'

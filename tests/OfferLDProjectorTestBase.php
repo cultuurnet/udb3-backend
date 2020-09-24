@@ -16,6 +16,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -86,17 +87,15 @@ abstract class OfferLDProjectorTestBase extends TestCase
      * @param object $event
      * @param string $entityId
      * @param Metadata|null $metadata
-     * @param DateTime $dateTime
-     * @param bool $returnBody
-     * @return \stdClass
+     * @param DateTime|null $dateTime
+     * @return stdClass
      */
     protected function project(
         $event,
-        $entityId,
+        string $entityId,
         Metadata $metadata = null,
-        DateTime $dateTime = null,
-        $returnBody = true
-    ) {
+        DateTime $dateTime = null
+    ): stdClass {
         if (null === $metadata) {
             $metadata = new Metadata();
         }
@@ -115,9 +114,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             )
         );
 
-        if ($returnBody) {
-            return $this->getBody($entityId);
-        }
+        return $this->getBody($entityId);
     }
 
     /**
