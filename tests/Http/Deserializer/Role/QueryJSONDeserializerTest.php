@@ -36,9 +36,7 @@ class QueryJSONDeserializerTest extends TestCase
         try {
             $this->deserializer->deserialize($data);
             $this->fail("No DataValidationException was thrown.");
-        } catch (\Exception $e) {
-            /* @var DataValidationException $e */
-            $this->assertInstanceOf(DataValidationException::class, $e);
+        } catch (DataValidationException $e) {
             $this->assertEquals($expectedException->getValidationMessages(), $e->getValidationMessages());
         }
     }
