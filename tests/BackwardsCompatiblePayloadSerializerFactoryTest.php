@@ -785,9 +785,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $decoded = json_decode($serialized, true);
         $keyword = $decoded['payload']['keyword'];
 
-        /**
-         * @var AbstractLabelEvent $labelAdded
-         */
+        /** @var AbstractLabelEvent $abstractLabelEvent */
         $abstractLabelEvent = $this->serializer->deserialize($decoded);
         $label = $abstractLabelEvent->getLabel();
 
