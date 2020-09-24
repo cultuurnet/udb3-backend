@@ -178,7 +178,7 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
     ): void {
         $entityId = (string) $entityId;
 
-        /** @var UpdateableWithCdbXmlInterface|Organizer|Place $entity */
+        /** @var Organizer|Place $entity */
         $entity = $this->repository->load($entityId);
 
         $entity->updateWithCdbXml(
@@ -217,7 +217,7 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
             );
         }
 
-        /** @var UpdateableWithCdbXmlInterface|Place|Organizer $entity */
+        /** @var Place|Organizer $entity */
         $entity = $this->actorFactory->createFromCdbXml(
             (string) $id,
             $cdbXml->getCdbXml(),
