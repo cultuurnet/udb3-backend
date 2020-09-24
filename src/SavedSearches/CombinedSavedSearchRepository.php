@@ -12,20 +12,9 @@ class CombinedSavedSearchRepository implements SavedSearchRepositoryInterface
      */
     protected $repositories;
 
-    /**
-     * @param SavedSearchRepositoryInterface ...$repositories
-     *   Optionally an unlimited list of repositories to combine.
-     */
     public function __construct(SavedSearchRepositoryInterface ...$repositories)
     {
-        foreach ($repositories as $repository) {
-            $this->addRepository($repository);
-        }
-    }
-
-    private function addRepository(SavedSearchRepositoryInterface $repository): void
-    {
-        $this->repositories[] = $repository;
+        $this->repositories[] = $repositories;
     }
 
     /**
