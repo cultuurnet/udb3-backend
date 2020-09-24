@@ -209,7 +209,7 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
         StringLiteral $eventId,
         CdbXmlContainerInterface $cdbXml
     ): void {
-        /** @var UpdateableWithCdbXmlInterface|Event $udb3Event */
+        /** @var Event $udb3Event */
         $udb3Event = $this->eventRepository->load((string) $eventId);
 
         $udb3Event->updateWithCdbXml(
