@@ -29,7 +29,7 @@ class JsonDocument implements ReadModelInterface
 
     public function getBody(): stdClass
     {
-        return json_decode($this->body);
+        return (object) json_decode($this->body);
     }
 
     public function getRawBody()
