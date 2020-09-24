@@ -52,7 +52,7 @@ class CdbXMLImporter
      *
      * @param \stdClass                   $base
      *   The JSON-LD document object to start from.
-     * @param \CultureFeed_Cdb_Item_Base|\CultureFeed_Cdb_Item_Actor $item
+     * @param \CultureFeed_Cdb_Item_Actor $item
      *   The event/actor data from UDB2 to import.
      *
      * @return \stdClass
