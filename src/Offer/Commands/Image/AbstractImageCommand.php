@@ -12,23 +12,13 @@ abstract class AbstractImageCommand extends AbstractCommand
      */
     protected $image;
 
-    /**
-     * @param string $itemId
-     *  The id of the item that is targeted by the command.
-     *
-     * @param Image $image
-     *  The image that is used in the command.
-     */
-    public function __construct($itemId, Image $image)
+    public function __construct(string $itemId, Image $image)
     {
         parent::__construct($itemId);
         $this->image = $image;
     }
 
-    /**
-     * @return Image
-     */
-    public function getImage()
+    public function getImage(): Image
     {
         return $this->image;
     }
