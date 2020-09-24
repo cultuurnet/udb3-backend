@@ -754,27 +754,17 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         );
     }
 
-    /**
-     * @param string $sampleFile
-     */
-    private function assertEventIdReplacedWithItemId($sampleFile)
+    private function assertEventIdReplacedWithItemId(string $sampleFile)
     {
         $this->assertTypedIdReplacedWithItemId('event', $sampleFile);
     }
 
-    /**
-     * @param string $sampleFile
-     */
-    private function assertPlaceIdReplacedWithItemId($sampleFile)
+    private function assertPlaceIdReplacedWithItemId(string $sampleFile)
     {
         $this->assertTypedIdReplacedWithItemId('place', $sampleFile);
     }
 
-    /**
-     * @param string $type
-     * @param $sampleFile
-     */
-    private function assertTypedIdReplacedWithItemId($type, $sampleFile)
+    private function assertTypedIdReplacedWithItemId(string $type, string $sampleFile)
     {
         $serialized = file_get_contents($sampleFile);
         $decoded = json_decode($serialized, true);
@@ -789,10 +779,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $this->assertEquals($typedId, $itemId);
     }
 
-    /**
-     * @param string $sampleFile
-     */
-    private function assertKeywordReplacedWithLabel($sampleFile)
+    private function assertKeywordReplacedWithLabel(string $sampleFile)
     {
         $serialized = file_get_contents($sampleFile);
         $decoded = json_decode($serialized, true);
@@ -807,11 +794,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $this->assertEquals($keyword, $label);
     }
 
-    /**
-     * @param string $sampleFile
-     * @param $expectedClass
-     */
-    private function assertClass($sampleFile, $expectedClass)
+    private function assertClass(string $sampleFile, string $expectedClass)
     {
         $serialized = file_get_contents($sampleFile);
         $decoded = json_decode($serialized, true);
@@ -821,10 +804,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $this->assertInstanceOf($expectedClass, $newEvent);
     }
 
-    /**
-     * @param string $sampleFile
-     */
-    private function assertLabelNameAdded($sampleFile)
+    private function assertLabelNameAdded(string $sampleFile)
     {
         $serialized = file_get_contents($sampleFile);
         $decoded = json_decode($serialized, true);
@@ -835,10 +815,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $this->assertEquals('2dotstwice', $labelEvent->getName()->toNative());
     }
 
-    /**
-     * @param string $sampleFile
-     */
-    private function assertOrganizerLabelEventFixed($sampleFile)
+    private function assertOrganizerLabelEventFixed(string $sampleFile)
     {
         $serialized = file_get_contents($sampleFile);
         $decoded = json_decode($serialized, true);
