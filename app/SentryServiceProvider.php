@@ -15,7 +15,7 @@ class SentryServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['sentry_hub'] = $app->share(
+        $app[HubInterface::class] = $app->share(
             function ($app) {
                 return new Hub(
                     ClientBuilder::create([
@@ -29,7 +29,7 @@ class SentryServiceProvider implements ServiceProviderInterface
         $app['uncaught_error_handler'] = $app->share(
             function ($app) {
                 /** @var HubInterface $sentryHub */
-                $sentryHub = $app['sentry_hub'];
+                $sentryHub = $app[HubInterface::class];
 
                 return static function (Throwable $throwable) use ($sentryHub) {
                     $sentryHub->captureException($throwable);
