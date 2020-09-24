@@ -90,11 +90,9 @@ class CalendarJSONDeserializerTest extends TestCase
     /**
      * @test
      * @dataProvider calendarDataProvider()
-     * @param $calendarData
-     * @param CalendarType $expectedCalendarType
      */
     public function it_should_return_right_calendar_type_from_json_data(
-        $calendarData,
+        string $calendarData,
         CalendarType $expectedCalendarType
     ) {
         $calendarAsJsonString = new StringLiteral($calendarData);
