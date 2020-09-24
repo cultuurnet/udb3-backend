@@ -3,10 +3,11 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
+use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
+use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -18,11 +19,11 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     private const CANONICAL_PLACE_ID_ARGUMENT = 'canonical_place_id';
 
     /**
-     * @var LocationMarkedAsDuplicateProcessManager
+     * @var EventListenerInterface
      */
     private $processManager;
 
-    public function __construct(CommandBusInterface $commandBus, LocationMarkedAsDuplicateProcessManager $processManager)
+    public function __construct(CommandBusInterface $commandBus, EventListenerInterface $processManager)
     {
         parent::__construct($commandBus);
         $this->processManager = $processManager;
@@ -41,7 +42,10 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $this->processManager->setLogger($logger);
+
+        if ($this->processManager instanceof LoggerAwareInterface) {
+            $this->processManager->setLogger($logger);
+        }
 
         try {
             $this->commandBus->dispatch(
