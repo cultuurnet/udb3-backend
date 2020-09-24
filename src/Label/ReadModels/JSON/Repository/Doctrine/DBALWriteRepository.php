@@ -176,6 +176,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $statement = $queryBuilder->execute();
         $row = $statement->fetch(\PDO::FETCH_NUM);
 
-        return $row[0];
+        return new IntegerValue($row[0]);
     }
 }
