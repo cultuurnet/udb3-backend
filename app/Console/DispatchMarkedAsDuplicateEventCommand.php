@@ -7,8 +7,9 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
+use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
+use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -21,7 +22,7 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
     private const CANONICAL_PLACE_ID_ARGUMENT = 'canonical_place_id';
 
     /**
-     * @var LocationMarkedAsDuplicateProcessManager
+     * @var EventListenerInterface
      */
     private $processManager;
 
@@ -32,7 +33,7 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
 
     public function __construct(
         CommandBusInterface $commandBus,
-        LocationMarkedAsDuplicateProcessManager $processManager,
+        EventListenerInterface $processManager,
         EventBusInterface $eventBus
     ) {
         parent::__construct($commandBus);
@@ -53,7 +54,10 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $this->processManager->setLogger($logger);
+
+        if ($this->processManager instanceof LoggerAwareInterface) {
+            $this->processManager->setLogger($logger);
+        }
 
         $this->eventBus->publish(
             new DomainEventStream(
