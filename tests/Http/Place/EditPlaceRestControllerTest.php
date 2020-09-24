@@ -67,12 +67,12 @@ class EditPlaceRestControllerTest extends TestCase
     private $apiKey;
 
     /**
-     * @var ConsumerInterface|\MockObject
+     * @var ConsumerInterface|MockObject
      */
     private $consumer;
 
     /**
-     * @var ConsumerSpecificationInterface|\MockObject
+     * @var ConsumerSpecificationInterface|MockObject
      */
     private $shouldApprove;
 
