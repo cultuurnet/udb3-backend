@@ -372,11 +372,7 @@ class HTMLEventFormatterTest extends TestCase
         return $repository;
     }
 
-    /**
-     * @param $fileName
-     * @return string
-     */
-    private function getExpectedCalendarSummary($fileName)
+    private function getExpectedCalendarSummary(string $fileName): string
     {
         $expected = file_get_contents(__DIR__.'/../../samples/'.$fileName);
         return trim($expected);
