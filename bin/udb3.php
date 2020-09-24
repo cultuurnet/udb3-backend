@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
-use CultuurNet\UDB3\Silex\Event\EventStreamBuilder;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
@@ -93,4 +92,11 @@ $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
 
-$consoleApp->run();
+try {
+    $consoleApp->run();
+} catch (\Throwable $throwable) {
+    $handler = $app['uncaught_error_handler'];
+
+    // The runtime exception is re-thrown to show it on the command line.
+    $handler($throwable);
+}
