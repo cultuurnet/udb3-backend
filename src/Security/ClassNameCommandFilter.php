@@ -9,10 +9,6 @@ class ClassNameCommandFilter implements CommandFilterInterface
 {
     private $classNames;
 
-    /**
-     * ClassNameCommandFilter constructor.
-     * @param StringLiteral[] $classNames
-     */
     public function __construct(StringLiteral ...$classNames)
     {
         $this->classNames = $classNames;
