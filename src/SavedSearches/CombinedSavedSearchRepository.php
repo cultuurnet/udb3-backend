@@ -23,10 +23,7 @@ class CombinedSavedSearchRepository implements SavedSearchRepositoryInterface
         }
     }
 
-    /**
-     * @param SavedSearchRepositoryInterface $repository
-     */
-    public function addRepository(SavedSearchRepositoryInterface $repository): void
+    private function addRepository(SavedSearchRepositoryInterface $repository): void
     {
         $this->repositories[] = $repository;
     }
