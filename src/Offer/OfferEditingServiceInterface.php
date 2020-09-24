@@ -128,11 +128,7 @@ interface OfferEditingServiceInterface
      */
     public function updateBookingInfo($id, BookingInfo $bookingInfo);
 
-    /**
-     * @param string $id
-     * @param PriceInfo $priceInfo
-     */
-    public function updatePriceInfo($id, PriceInfo $priceInfo);
+    public function updatePriceInfo(string $id, PriceInfo $priceInfo);
 
     /**
      * @param string $id
