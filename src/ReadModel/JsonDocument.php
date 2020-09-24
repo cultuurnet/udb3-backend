@@ -6,6 +6,7 @@
 namespace CultuurNet\UDB3\ReadModel;
 
 use Broadway\ReadModel\ReadModelInterface;
+use stdClass;
 
 class JsonDocument implements ReadModelInterface
 {
@@ -26,7 +27,7 @@ class JsonDocument implements ReadModelInterface
         return $this->id;
     }
 
-    public function getBody()
+    public function getBody(): stdClass
     {
         return json_decode($this->body);
     }
@@ -37,7 +38,7 @@ class JsonDocument implements ReadModelInterface
     }
 
     /**
-     * @param \stdClass $body
+     * @param stdClass $body
      * @return static
      */
     public function withBody($body)
