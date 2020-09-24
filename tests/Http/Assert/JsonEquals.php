@@ -19,11 +19,7 @@ class JsonEquals
         $this->testCase = $testCase;
     }
 
-    /**
-     * @param $expectedJson
-     * @param $actualJson
-     */
-    public function assert($expectedJson, $actualJson)
+    public function assert(string $expectedJson, string $actualJson): void
     {
         $expected = json_decode($expectedJson, true);
         $actual = json_decode($actualJson, true);
