@@ -9,6 +9,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
+use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -30,8 +31,11 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
      */
     private $eventBus;
 
-    public function __construct(CommandBusInterface $commandBus, EventListenerInterface $processManager, EventBusInterface $eventBus)
-    {
+    public function __construct(
+        CommandBusInterface $commandBus,
+        EventListenerInterface $processManager,
+        EventBusInterface $eventBus
+    ) {
         parent::__construct($commandBus);
         $this->processManager = $processManager;
         $this->eventBus = $eventBus;
@@ -50,7 +54,10 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $this->processManager->setLogger($logger);
+
+        if ($this->processManager instanceof LoggerAwareInterface) {
+            $this->processManager->setLogger($logger);
+        }
 
         $this->eventBus->publish(
             new DomainEventStream(
@@ -68,5 +75,7 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
             )
         );
         $logger->info('Successfully re-dispatched MarkedAsDuplicate event');
+
+        return 0;
     }
 }

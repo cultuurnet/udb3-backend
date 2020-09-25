@@ -39,7 +39,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
 
         if ($count == 0) {
             $output->writeln("Could not find any items with missing or outdated coordinates.");
-            return;
+            return 0;
         }
 
         $helper = $this->getHelper('question');
@@ -49,12 +49,14 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         );
 
         if (!$helper->ask($input, $output, $question)) {
-            return;
+            return 0;
         }
 
         foreach ($cdbids as $cdbid) {
             $this->dispatchGeocodingCommand($cdbid, $output);
         }
+
+        return 0;
     }
 
     /**

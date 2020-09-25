@@ -675,14 +675,11 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider mediaObjectDataProvider
-     * @param JsonDocument $initialDocument
-     * @param Image $image
-     * @param $expectedProjection
      */
     public function it_should_remove_the_media_object_of_an_image(
         JsonDocument $initialDocument,
         Image $image,
-        $expectedProjection
+        stdClass $expectedProjection
     ) {
         $this->documentRepository->save($initialDocument);
         $imageRemovedEvent = new ImageRemoved($initialDocument->getId(), $image);
@@ -1137,12 +1134,10 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider imageCollectionDataProvider
-     * @param ImageCollection $images
-     * @param $expectedMediaObjects
      */
     public function it_should_project_imported_udb2_media_files_as_media_objects(
         ImageCollection $images,
-        $expectedMediaObjects
+        array $expectedMediaObjects
     ) {
         $itemId = UUID::generateAsString();
         $imagesImportedEvent = new ImagesImportedFromUDB2($itemId, $images);
@@ -1154,12 +1149,10 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider imageCollectionDataProvider
-     * @param ImageCollection $images
-     * @param $expectedMediaObjects
      */
     public function it_should_project_updated_udb2_media_files_as_media_objects(
         ImageCollection $images,
-        $expectedMediaObjects
+        array $expectedMediaObjects
     ) {
         $itemId = UUID::generateAsString();
         $imagesImportedEvent = new ImagesUpdatedFromUDB2($itemId, $images);

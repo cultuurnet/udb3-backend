@@ -28,5 +28,7 @@ class ConcludeByCdbidCommand extends AbstractConcludeCommand
         $cdbid = $input->getArgument('cdbid');
 
         $this->dispatchConclude($cdbid);
+
+        return 0;
     }
 }

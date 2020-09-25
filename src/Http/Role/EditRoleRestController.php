@@ -47,14 +47,6 @@ class EditRoleRestController
      */
     private $queryJsonDeserializer;
 
-    /**
-     * EditRoleRestController constructor.
-     * @param RoleEditingServiceInterface $service
-     * @param CommandBusInterface $commandBus
-     * @param UpdateRoleRequestDeserializer $updateRoleRequestDeserializer
-     * @param ReadServiceInterface $labelEntityService
-     * @param DeserializerInterface $queryJsonDeserializer
-     */
     public function __construct(
         RoleEditingServiceInterface $service,
         CommandBusInterface $commandBus,
@@ -69,12 +61,7 @@ class EditRoleRestController
         $this->queryJsonDeserializer = $queryJsonDeserializer;
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     * @throws \Exception
-     */
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $bodyContent = json_decode($request->getContent());
         if (empty($bodyContent->name)) {
@@ -88,12 +75,7 @@ class EditRoleRestController
         return new JsonResponse(['roleId' => $roleId->toNative()], 201);
     }
 
-    /**
-     * @param Request $request
-     * @param $id
-     * @return Response
-     */
-    public function update(Request $request, $id): Response
+    public function update(Request $request, string $id): Response
     {
         $command = $this->updateRoleRequestDeserializer->deserialize($request, $id);
 
@@ -102,12 +84,6 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param Request $request
-     * @param string $id
-     * @param string $sapiVersion
-     * @return Response
-     */
     public function addConstraint(Request $request, string $id, string $sapiVersion): Response
     {
         $query = $this->queryJsonDeserializer->deserialize(
@@ -123,12 +99,6 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param Request $request
-     * @param string $id
-     * @param string $sapiVersion
-     * @return JsonResponse
-     */
     public function updateConstraint(Request $request, string $id, string $sapiVersion): Response
     {
         $query = $this->queryJsonDeserializer->deserialize(
@@ -144,11 +114,6 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param string $id
-     * @param string $sapiVersion
-     * @return Response
-     */
     public function removeConstraint(string $id, string $sapiVersion): Response
     {
         $this->service->removeConstraint(
@@ -159,14 +124,8 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param $id
-     * @return Response
-     */
-    public function delete($id): Response
+    public function delete(string $roleId): Response
     {
-        $roleId = (string) $id;
-
         if (empty($roleId)) {
             throw new InvalidArgumentException('Required field roleId is missing');
         }
@@ -176,20 +135,11 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param $roleId
-     * @param string $permissionKey
-     * @return Response
-     */
-    public function addPermission($roleId, $permissionKey): Response
+    public function addPermission(string $roleId, string $permissionKey): Response
     {
-        $roleId = (string) $roleId;
-
         if (empty($roleId)) {
             throw new InvalidArgumentException('Required field roleId is missing');
         }
-
-        $permissionKey = (string) $permissionKey;
 
         if (!in_array($permissionKey, array_keys(Permission::getConstants()))) {
             throw new InvalidArgumentException('Field permission is invalid.');
@@ -203,20 +153,11 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param $roleId
-     * @param string $permissionKey
-     * @return Response
-     */
-    public function removePermission($roleId, $permissionKey): Response
+    public function removePermission(string $roleId, string $permissionKey): Response
     {
-        $roleId = (string) $roleId;
-
         if (empty($roleId)) {
             throw new InvalidArgumentException('Required field roleId is missing');
         }
-
-        $permissionKey = (string) $permissionKey;
 
         if (!in_array($permissionKey, array_keys(Permission::getConstants()))) {
             throw new InvalidArgumentException('Field permission is invalid.');
@@ -230,15 +171,8 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param string $roleId
-     * @param string $labelIdentifier
-     * @return Response
-     * @throws InvalidArgumentException
-     */
-    public function addLabel($roleId, $labelIdentifier): Response
+    public function addLabel(string $roleId, string $labelIdentifier): Response
     {
-        $roleId = (string) $roleId;
         $labelId = $this->getLabelId($labelIdentifier);
 
         if (is_null($labelId)) {
@@ -258,15 +192,8 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param string $roleId
-     * @param string $labelIdentifier
-     * @return Response
-     * @throws InvalidArgumentException
-     */
-    public function removeLabel($roleId, $labelIdentifier): Response
+    public function removeLabel(string $roleId, string $labelIdentifier): Response
     {
-        $roleId = (string) $roleId;
         $labelId = $this->getLabelId($labelIdentifier);
 
         if (is_null($labelId)) {
@@ -286,17 +213,8 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param $roleId
-     * @param $userId
-     * @return Response
-     * @throws InvalidArgumentException
-     */
-    public function addUser($roleId, $userId): Response
+    public function addUser(string $roleId, string $userId): Response
     {
-        $roleId = (string) $roleId;
-        $userId = (string) $userId;
-
         try {
             $roleId = new UUID($roleId);
         } catch (InvalidNativeArgumentException $e) {
@@ -314,17 +232,8 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param $roleId
-     * @param $userId
-     * @return Response
-     * @throws InvalidArgumentException
-     */
-    public function removeUser($roleId, $userId): Response
+    public function removeUser(string $roleId, string $userId): Response
     {
-        $roleId = (string) $roleId;
-        $userId = (string) $userId;
-
         try {
             $roleId = new UUID($roleId);
         } catch (InvalidNativeArgumentException $e) {
@@ -342,11 +251,7 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    /**
-     * @param string $labelIdentifier
-     * @return UUID|null
-     */
-    private function getLabelId($labelIdentifier)
+    private function getLabelId(string $labelIdentifier): ?UUID
     {
         try {
             return new UUID($labelIdentifier);

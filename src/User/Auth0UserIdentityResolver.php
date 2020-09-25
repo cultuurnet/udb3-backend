@@ -40,11 +40,6 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
         return $this->fetchUser('email:"' . urlencode($nick->toNative()) . '" OR nickname:"' . urlencode($nick->toNative()) . '"');
     }
 
-    /**
-     * @param string $query
-     * @return mixed
-     * @throws \Exception
-     */
     private function fetchUser(string $query): ?UserIdentityDetails
     {
         $users = $this->auth0->users()->getAll(

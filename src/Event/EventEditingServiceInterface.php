@@ -86,7 +86,7 @@ interface EventEditingServiceInterface
     /**
      * Update an image of the event.
      *
-     * @param $id
+     * @param string $id
      * @param Image $image
      * @param \ValueObjects\StringLiteral\StringLiteral $description
      * @param \ValueObjects\StringLiteral\StringLiteral $copyrightHolder
@@ -115,7 +115,7 @@ interface EventEditingServiceInterface
      * @param EventType $eventType
      * @param LocationId $location
      * @param CalendarInterface $calendar
-     * @param Theme/null $theme
+     * @param Theme|null $theme
      *
      * @return string $eventId
      */
@@ -161,7 +161,7 @@ interface EventEditingServiceInterface
      * @param EventType $eventType
      * @param LocationId $location
      * @param CalendarInterface $calendar
-     * @param Theme/null $theme
+     * @param Theme|null $theme
      *
      * @return string $commandId
      */

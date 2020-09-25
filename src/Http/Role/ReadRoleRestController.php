@@ -47,20 +47,11 @@ class ReadRoleRestController
      */
     private $authorizationList;
 
-    /**
-     * ReadRoleRestController constructor.
-     * @param EntityServiceInterface $service
-     * @param RoleReadingServiceInterface $roleService
-     * @param \CultureFeed_User $currentUser
-     * @param $authorizationList
-     * @param RepositoryInterface $roleSearchRepository
-     * @param UserPermissionsReadRepositoryInterface $permissionsRepository
-     */
     public function __construct(
         EntityServiceInterface $service,
         RoleReadingServiceInterface $roleService,
         \CultureFeed_User $currentUser,
-        $authorizationList,
+        array $authorizationList,
         RepositoryInterface $roleSearchRepository,
         UserPermissionsReadRepositoryInterface $permissionsRepository
     ) {
@@ -72,11 +63,7 @@ class ReadRoleRestController
         $this->permissionsRepository = $permissionsRepository;
     }
 
-    /**
-     * @param string $id
-     * @return JsonResponse
-     */
-    public function get($id)
+    public function get(string $id): JsonResponse
     {
         $response = null;
 
@@ -97,11 +84,7 @@ class ReadRoleRestController
         return $response;
     }
 
-    /**
-     * @param string $roleId
-     * @return Response
-     */
-    public function getRoleUsers($roleId)
+    public function getRoleUsers(string $roleId): Response
     {
         $document = $this->roleService->getUsersByRoleUuid(new UUID($roleId));
 
@@ -121,11 +104,7 @@ class ReadRoleRestController
         return $response;
     }
 
-    /**
-     * @param $userId
-     * @return Response
-     */
-    public function getUserRoles($userId)
+    public function getUserRoles(string $userId): Response
     {
         $userId = new StringLiteral((string) $userId);
         $document = $this->roleService->getRolesByUserId($userId);
@@ -155,18 +134,12 @@ class ReadRoleRestController
         return $response;
     }
 
-    /**
-     * @return Response
-     */
-    public function getCurrentUserRoles()
+    public function getCurrentUserRoles(): Response
     {
         return $this->getUserRoles($this->currentUser->id);
     }
 
-    /**
-     * @return Response
-     */
-    public function getUserPermissions()
+    public function getUserPermissions(): Response
     {
         $userId = new StringLiteral($this->currentUser->id);
 
@@ -186,11 +159,7 @@ class ReadRoleRestController
             ->setPrivate();
     }
 
-    /**
-     * @param array $permissions
-     * @return array
-     */
-    private function createPermissionsList(array $permissions)
+    private function createPermissionsList(array $permissions): array
     {
         $list = [];
 
@@ -201,11 +170,7 @@ class ReadRoleRestController
         return $list;
     }
 
-    /**
-     * @param $roleId
-     * @return Response
-     */
-    public function getRoleLabels($roleId)
+    public function getRoleLabels(string $roleId): Response
     {
         $document = $this->roleService->getLabelsByRoleUuid(new UUID($roleId));
         $body = json_decode($document->getRawBody(), true);
@@ -223,10 +188,7 @@ class ReadRoleRestController
         return $response;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function getPermissions()
+    public function getPermissions(): JsonResponse
     {
         $list = $this->createPermissionsList(Permission::getConstants());
 
@@ -235,11 +197,7 @@ class ReadRoleRestController
             ->setPrivate();
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    public function search(Request $request)
+    public function search(Request $request): Response
     {
         $query = $request->query->get('query') ?: '';
         $itemsPerPage = $request->query->get('limit') ?: 10;

@@ -24,11 +24,7 @@ class ReadRestController
         $this->jobStatusFactory = $jobStatusFactory;
     }
 
-    /**
-     * @param $jobId
-     * @return ApiProblemJsonResponse|JsonResponse
-     */
-    public function get($jobId)
+    public function get(string $jobId): JsonResponse
     {
         $jobStatus = $this->jobStatusFactory->createFromJobId(
             new StringLiteral($jobId)

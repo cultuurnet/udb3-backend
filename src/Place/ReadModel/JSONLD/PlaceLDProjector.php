@@ -7,6 +7,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\EventType;
@@ -211,7 +212,9 @@ class PlaceLDProjector extends OfferLDProjector implements EventListenerInterfac
             $this->getMainLanguage($jsonLD)
         );
 
-        $calendarJsonLD = $placeCreated->getCalendar()->toJsonLd();
+        /** @var Calendar $calendar */
+        $calendar = $placeCreated->getCalendar();
+        $calendarJsonLD = $calendar->toJsonLd();
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
         $availableTo = AvailableTo::createFromCalendar($placeCreated->getCalendar());

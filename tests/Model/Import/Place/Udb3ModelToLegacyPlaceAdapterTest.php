@@ -26,18 +26,13 @@ use ValueObjects\Geography\Country;
 class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
 {
     /**
-     * @var ImmutablePlace
-     */
-    private $place;
-
-    /**
      * @var Udb3ModelToLegacyPlaceAdapter
      */
     private $adapter;
 
     public function setUp()
     {
-        $this->place = new ImmutablePlace(
+        $place = new ImmutablePlace(
             new UUID('6ba87a6b-efea-4467-9e87-458d145384d9'),
             new Language('nl'),
             new TranslatedTitle(new Language('nl'), new Title('Voorbeeld titel')),
@@ -60,11 +55,12 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
             )
         );
 
-        $this->place = $this->place->withAvailableFrom(
+        /** @var ImmutablePlace $place */
+        $place = $place->withAvailableFrom(
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00')
         );
 
-        $translatedAddress = $this->place->getAddress()
+        $translatedAddress = $place->getAddress()
             ->withTranslation(
                 new Language('fr'),
                 new Address(
@@ -84,9 +80,9 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
                 )
             );
 
-        $this->place = $this->place->withAddress($translatedAddress);
+        $place = $place->withAddress($translatedAddress);
 
-        $this->adapter = new Udb3ModelToLegacyPlaceAdapter($this->place);
+        $this->adapter = new Udb3ModelToLegacyPlaceAdapter($place);
     }
 
     /**

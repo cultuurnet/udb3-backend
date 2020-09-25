@@ -1,14 +1,13 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\CommandHandling;
+
+use Resque_Job;
 
 class QueueJob
 {
     /**
-     * @var \Resque_Job
+     * @var Resque_Job
      */
     public $job;
 
@@ -18,24 +17,20 @@ class QueueJob
     public $args;
 
     /**
-     * @var ResqueCommandBus|ContextAwareInterface
+     * @var ResqueCommandBus
      */
     private static $commandBus;
 
-    public static function setCommandBus(ResqueCommandBus $commandBus)
+    public static function setCommandBus(ResqueCommandBus $commandBus): void
     {
         self::$commandBus = $commandBus;
     }
 
-    public function perform()
+    public function perform(): void
     {
         $command = unserialize(base64_decode($this->args['command']));
-
-        if (self::$commandBus instanceof ContextAwareInterface) {
-            $context = unserialize(base64_decode($this->args['context']));
-            self::$commandBus->setContext($context);
-        }
-
+        $context = unserialize(base64_decode($this->args['context']));
+        self::$commandBus->setContext($context);
         self::$commandBus->deferredDispatch($this->job->payload['id'], $command);
     }
 }

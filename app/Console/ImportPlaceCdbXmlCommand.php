@@ -67,5 +67,7 @@ class ImportPlaceCdbXmlCommand extends AbstractCommand
             ->create($incomingUdb2Event);
 
         $this->eventBus->publish(new DomainEventStream([$domainMessage]));
+
+        return 0;
     }
 }

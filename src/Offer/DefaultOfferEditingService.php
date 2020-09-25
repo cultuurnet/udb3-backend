@@ -104,7 +104,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @param Label $label
      * @return string
      */
@@ -126,7 +126,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @param Label $label
      * @return string
      */
@@ -187,7 +187,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @param Language $language
      * @param StringLiteral $title
      * @return string
@@ -206,7 +206,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @param Language $language
      * @param Description $description
      * @return string
@@ -279,7 +279,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     }
 
     /**
-     * @param $id
+     * @param string $id
      *  Id of the offer to remove the image from.
      *
      * @param Image $image
@@ -297,7 +297,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     }
 
     /**
-     * @param $id
+     * @param string $id
      * @param Image $image
      * @return string
      */
@@ -393,11 +393,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    /**
-     * @param $id
-     * @param PriceInfo $priceInfo
-     */
-    public function updatePriceInfo($id, PriceInfo $priceInfo)
+    public function updatePriceInfo(string $id, PriceInfo $priceInfo)
     {
         $this->guardId($id);
 

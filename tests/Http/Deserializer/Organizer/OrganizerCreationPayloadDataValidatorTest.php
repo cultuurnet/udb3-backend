@@ -48,9 +48,7 @@ class OrganizerCreationPayloadDataValidatorTest extends TestCase
         try {
             $this->validator->validate($data);
             $this->fail('Did not catch expected DataValidationException');
-        } catch (\Exception $e) {
-            /* @var DataValidationException $e */
-            $this->assertInstanceOf(DataValidationException::class, $e);
+        } catch (DataValidationException $e) {
             $this->assertEquals($expectedMessages, $e->getValidationMessages());
         }
     }

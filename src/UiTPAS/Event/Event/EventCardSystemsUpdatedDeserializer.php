@@ -15,7 +15,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  */
 class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): EventCardSystemsUpdated
     {
         $dto = parent::deserialize($data);
 

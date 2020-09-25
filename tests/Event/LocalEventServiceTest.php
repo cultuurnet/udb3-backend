@@ -36,7 +36,7 @@ class LocalEventServiceTest extends TestCase
     protected $iriGenerator;
 
     /**
-     * @var RelationsRepositoryInterface||MockObject
+     * @var RelationsRepositoryInterface|MockObject
      */
     protected $eventRelationsRepository;
 

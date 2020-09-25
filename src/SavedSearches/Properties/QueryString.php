@@ -16,11 +16,7 @@ class QueryString extends StringLiteral
         ]);
     }
 
-    /**
-     * @param $queryString
-     * @return QueryString
-     */
-    public static function fromURLQueryString($queryString)
+    public static function fromURLQueryString(string $queryString): QueryString
     {
         parse_str($queryString, $queryArray);
 

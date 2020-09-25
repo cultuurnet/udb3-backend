@@ -27,7 +27,7 @@ class RelatedPlaceLDProjectorTest extends TestCase
     protected $documentRepository;
 
     /**
-     * @var EntityServiceInterface
+     * @var EntityServiceInterface|MockObject
      */
     private $organizerService;
 

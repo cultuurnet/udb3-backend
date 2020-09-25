@@ -167,11 +167,8 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      * @dataProvider eventDateProvider
-     *
-     * @param $eventFile
-     * @param array     $expectedFormattedEvent
      */
-    public function it_formats_dates($eventFile, $expectedFormattedEvent)
+    public function it_formats_dates(string $eventFile, array $expectedFormattedEvent)
     {
         $event = $this->getJSONEventFromFile($eventFile);
 

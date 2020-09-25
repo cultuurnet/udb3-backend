@@ -151,16 +151,11 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         return $mediaObject;
     }
 
-    /**
-     * @param UUID $imageId
-     * @return Image
-     * @throws MediaObjectNotFoundException
-     */
-    public function getImage(UUID $imageId)
+    public function getImage(UUID $imageId): Image
     {
         $mediaObject = $this->get($imageId);
 
-        $image = new Image(
+        return new Image(
             $mediaObject->getMediaObjectId(),
             $mediaObject->getMimeType(),
             new Description((string) $mediaObject->getDescription()),
@@ -168,7 +163,5 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $mediaObject->getSourceLocation(),
             $mediaObject->getLanguage()
         );
-
-        return $image;
     }
 }

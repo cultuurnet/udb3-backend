@@ -181,12 +181,7 @@ class PatchOfferRestControllerTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
     }
 
-    /**
-     * @param string $contentType
-     * @param $content
-     * @return Request
-     */
-    private function generatePatchRequest($contentType, $content = null)
+    private function generatePatchRequest(string $contentType, ?string $content = null): Request
     {
         $request = Request::create('/offer/' . $this->itemId, 'PATCH', [], [], [], [], $content);
         $request->headers->set('Content-Type', $contentType);

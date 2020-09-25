@@ -173,7 +173,7 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->commandFactory->expects($this->once())
             ->method('createRemoveLabelCommand')
             ->with('foo', new Label('label1'))
-            ->willReturn($this->addLabelCommand);
+            ->willReturn($this->removeLabelCommand);
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')

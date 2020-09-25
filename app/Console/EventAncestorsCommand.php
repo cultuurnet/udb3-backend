@@ -54,5 +54,7 @@ class EventAncestorsCommand extends AbstractCommand
             $output->writeln($ancestor);
         }
         $output->writeln($cdbid);
+
+        return 0;
     }
 }

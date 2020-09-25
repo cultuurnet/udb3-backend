@@ -122,9 +122,7 @@ class EditOrganizerRestControllerTest extends TestCase
             $request = $this->createRequest('POST', 'organizer_create.json');
             $this->controller->create($request);
             $this->fail('Did not catch expected DataValidationException');
-        } catch (\Exception $e) {
-            /* @var DataValidationException $e */
-            $this->assertInstanceOf(DataValidationException::class, $e);
+        } catch (DataValidationException $e) {
             $this->assertEquals($expectedMessages, $e->getValidationMessages());
         }
     }

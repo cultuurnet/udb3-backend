@@ -17,6 +17,7 @@ use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
+use stdClass;
 
 class TabularDataEventFormatter
 {
@@ -753,11 +754,7 @@ class TabularDataEventFormatter
         };
     }
 
-    /**
-     * @param $event
-     * @return string
-     */
-    private function parseEventIdFromUrl($event)
+    private function parseEventIdFromUrl($event): string
     {
         $eventUri = $event->{'@id'};
         $uriParts = explode('/', $eventUri);
@@ -795,21 +792,15 @@ class TabularDataEventFormatter
     /**
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
-     *
-     * @param object $event
-     * @param string $addressField
-     *
-     * @return string
      */
-    private function getAddressField($event, $addressField)
+    private function getAddressField(stdClass $event, string $addressField): string
     {
         if (isset($event->location->address->{$addressField})) {
             return $event->location->address->{$addressField};
-        } else {
-            $mainLanguage = isset($event->mainLanguage) ? $event->mainLanguage : 'nl';
-            if (isset($event->location->address->{$mainLanguage}->{$addressField})) {
-                return $event->location->address->{$mainLanguage}->{$addressField};
-            }
         }
+
+        $mainLanguage = $event->mainLanguage ?? 'nl';
+
+        return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
     }
 }

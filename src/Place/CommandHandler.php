@@ -253,7 +253,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
      */
     protected function handleUpdateAddress(UpdateAddress $updateAddress)
     {
-        /* @var Place $place */
+        /** @var Place $place */
         $place = $this->offerRepository->load($updateAddress->getItemId());
         $place->updateAddress($updateAddress->getAddress(), $updateAddress->getLanguage());
         $this->offerRepository->save($place);

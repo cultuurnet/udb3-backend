@@ -19,6 +19,7 @@ class CanonicalPlaceRepository
         /** @var Place $place */
         $place = $this->repository->load($placeId);
         while ($place->getCanonicalPlaceId()) {
+            /** @var Place $place */
             $place = $this->repository->load($place->getCanonicalPlaceId());
         }
 

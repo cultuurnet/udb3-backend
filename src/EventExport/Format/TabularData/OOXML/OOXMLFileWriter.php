@@ -24,17 +24,11 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
      */
     private $spreadsheet;
 
-    /**
-     * @param $filePath
-     */
-    public function __construct($filePath)
+    public function __construct(string $filePath)
     {
         $this->filePath = $filePath;
-
         $this->spreadsheet = new PHPExcel();
-
         $this->spreadsheet->setActiveSheetIndex(0);
-
         $this->i = 1;
     }
 

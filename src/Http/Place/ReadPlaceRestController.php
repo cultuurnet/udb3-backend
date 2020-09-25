@@ -9,6 +9,7 @@ use CultuurNet\SearchV3\ValueObjects\Place;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadPlaceRestController
@@ -40,11 +41,7 @@ class ReadPlaceRestController
         $this->serializer = $serializer;
     }
 
-    /**
-     * @param $cdbid
-     * @return JsonLdResponse
-     */
-    public function get($cdbid)
+    public function get(string $cdbid): JsonResponse
     {
         $response = null;
 

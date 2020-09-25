@@ -7,6 +7,7 @@ use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
+use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -41,7 +42,10 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
-        $this->processManager->setLogger($logger);
+
+        if ($this->processManager instanceof LoggerAwareInterface) {
+            $this->processManager->setLogger($logger);
+        }
 
         try {
             $this->commandBus->dispatch(
@@ -53,6 +57,10 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
             $logger->info('Successfully marked place as duplicate');
         } catch (CannotMarkPlaceAsCanonical | CannotMarkPlaceAsDuplicate $e) {
             $logger->error($e->getMessage());
+
+            return 1;
         }
+
+        return 0;
     }
 }

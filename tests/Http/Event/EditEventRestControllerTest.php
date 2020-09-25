@@ -63,7 +63,7 @@ class EditEventRestControllerTest extends TestCase
     private $apiKey;
 
     /**
-     * @var ConsumerInterface|\MockObject
+     * @var ConsumerInterface|MockObject
      */
     private $consumer;
 

@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
+use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -55,7 +56,7 @@ class OfferControllerProvider implements ControllerProviderInterface
                         new LabelJSONDeserializer(),
                         new TitleJSONDeserializer(false, new StringLiteral('name')),
                         new DescriptionJSONDeserializer(),
-                        new PriceInfoJSONDeserializer(),
+                        new PriceInfoJSONDeserializer(new PriceInfoDataValidator()),
                         new CalendarJSONDeserializer(
                             new CalendarJSONParser(),
                             $this->getDataCalendarValidator($offerType)

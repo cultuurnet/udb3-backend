@@ -18,7 +18,7 @@ interface ExportEventsInterface
     public function getAddress(): ?EmailAddress;
 
     /**
-     * @return null|\string[]
+     * @return null|string[]
      */
     public function getSelection(): ?array;
 }

@@ -204,7 +204,6 @@ class EventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInterfac
 
     /**
      * @param string $cdbXml
-     * @param string $eventId
      * @return string
      * @throws \RuntimeException
      */

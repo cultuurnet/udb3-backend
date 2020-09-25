@@ -603,7 +603,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $actorId = $placeImportedFromUdb2->getActorId();
 
         $placeDeleted = new PlaceDeleted($actorId);
-        $this->project($placeDeleted, $actorId, null, null, false);
+        $this->project($placeDeleted, $actorId);
 
         $cdbXml = file_get_contents(__DIR__ . '/place_with_short_and_long_description.cdbxml.xml');
         $placeUpdatedFromUdb2 = new PlaceUpdatedFromUDB2(

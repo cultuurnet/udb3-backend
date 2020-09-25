@@ -8,11 +8,7 @@ use ValueObjects\Identity\UUID;
 
 class EventFactory implements DocumentEventFactory
 {
-    /**
-     * @param string $id
-     * @return RoleDetailsProjectedToJSONLD
-     */
-    public function createEvent($id)
+    public function createEvent(string $id): RoleDetailsProjectedToJSONLD
     {
         return new RoleDetailsProjectedToJSONLD(new UUID($id));
     }

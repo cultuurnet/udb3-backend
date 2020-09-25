@@ -134,11 +134,7 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
         return $this->uriNormalizer->__invoke($originalUri);
     }
 
-    /**
-     * @param UriInterface $httpUri
-     * @return UUID
-     */
-    private function identify(Http $httpUri)
+    private function identify(Http $httpUri): UUID
     {
         if (isset($this->uuidRegex) && \preg_match('/' . $this->uuidRegex . '/', (string) $httpUri, $matches)) {
             return UUID::fromNative($matches['uuid']);

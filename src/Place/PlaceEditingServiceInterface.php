@@ -141,7 +141,7 @@ interface PlaceEditingServiceInterface
     /**
      * Update an image of the place.
      *
-     * @param $id
+     * @param string $id
      * @param Image $image
      * @param \ValueObjects\StringLiteral\StringLiteral $description
      * @param \ValueObjects\StringLiteral\StringLiteral $copyrightHolder

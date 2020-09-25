@@ -92,8 +92,6 @@ class CalendarJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param TimeSpan[] $timeSpans
-     *
      * @return Timestamp[]
      */
     private function convertToTimeStamps(TimeSpan ...$timeSpans)

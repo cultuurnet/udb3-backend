@@ -170,8 +170,7 @@ abstract class OfferRestBaseController
 
         $mediaObjectId = new UUID($bodyContent->mediaObjectId);
 
-        // @todo MediaManagerInterface has no getImage() method.
-        // Also, can we be sure that the given $mediaObjectId points to an image and not a different type?
+        // Can we be sure that the given $mediaObjectId points to an image and not a different type?
         $image = $this->mediaManager->getImage($mediaObjectId);
 
         $this->editor->selectMainImage($itemId, $image);
@@ -186,8 +185,7 @@ abstract class OfferRestBaseController
         $copyrightHolder = new StringLiteral($bodyContent->copyrightHolder);
         $imageId = new UUID($mediaObjectId);
 
-        // @todo MediaManagerInterface has no getImage() method.
-        // Also, can we be sure that the given $mediaObjectId points to an image and not a different type?
+        // Can we be sure that the given $mediaObjectId points to an image and not a different type?
         $image = $this->mediaManager->getImage($imageId);
 
         $this->editor->updateImage(
@@ -204,8 +202,7 @@ abstract class OfferRestBaseController
     {
         $imageId = new UUID($mediaObjectId);
 
-        // @todo MediaManagerInterface has no getImage() method.
-        // Also, can we be sure that the given $mediaObjectId points to an image and not a different type?
+        // Can we be sure that the given $mediaObjectId points to an image and not a different type?
         $image = $this->mediaManager->getImage($imageId);
 
         $this->editor->removeImage($itemId, $image);

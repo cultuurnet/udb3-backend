@@ -24,14 +24,8 @@ abstract class AbstractUpdateImage extends AbstractCommand
      */
     protected $copyrightHolder;
 
-    /**
-     * @param $itemId
-     * @param UUID $mediaObjectId
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
-     */
     public function __construct(
-        $itemId,
+        string $itemId,
         UUID $mediaObjectId,
         StringLiteral $description,
         StringLiteral $copyrightHolder
@@ -42,26 +36,17 @@ abstract class AbstractUpdateImage extends AbstractCommand
         $this->copyrightHolder = $copyrightHolder;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getMediaObjectId()
+    public function getMediaObjectId(): UUID
     {
         return $this->mediaObjectId;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getDescription()
+    public function getDescription(): StringLiteral
     {
         return $this->description;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getCopyrightHolder()
+    public function getCopyrightHolder(): StringLiteral
     {
         return $this->copyrightHolder;
     }

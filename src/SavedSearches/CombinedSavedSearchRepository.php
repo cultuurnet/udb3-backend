@@ -12,34 +12,9 @@ class CombinedSavedSearchRepository implements SavedSearchRepositoryInterface
      */
     protected $repositories;
 
-    /**
-     * @param SavedSearchRepositoryInterface $repository,...
-     *   Optionally an unlimited list of repositories to combine.
-     *
-     * @throws \InvalidArgumentException
-     *   When one of the provided arguments does not implement
-     *   SavedSearchRepositoryInterface.
-     */
-    public function __construct()
+    public function __construct(SavedSearchRepositoryInterface ...$repositories)
     {
-        $arguments = func_get_args();
-        foreach ($arguments as $argument) {
-            if (!($argument instanceof SavedSearchRepositoryInterface)) {
-                $error = 'Argument provided should implement SavedSearchRepositoryInterface. ('
-                    . get_class($argument) . ' given.)';
-                throw new \InvalidArgumentException($error);
-            }
-
-            $this->addRepository($argument);
-        }
-    }
-
-    /**
-     * @param SavedSearchRepositoryInterface $repository
-     */
-    public function addRepository(SavedSearchRepositoryInterface $repository): void
-    {
-        $this->repositories[] = $repository;
+        $this->repositories = $repositories;
     }
 
     /**

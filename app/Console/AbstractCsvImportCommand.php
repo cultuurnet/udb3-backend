@@ -59,6 +59,8 @@ abstract class AbstractCsvImportCommand extends AbstractCommand
         }
 
         $output->writeln('Finished import.');
+
+        return 0;
     }
 
     /**

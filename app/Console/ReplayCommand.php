@@ -159,7 +159,7 @@ class ReplayCommand extends AbstractCommand
             );
 
             if (!$helper->ask($input, $output, $question)) {
-                return;
+                return 0;
             }
         }
 
@@ -185,6 +185,8 @@ class ReplayCommand extends AbstractCommand
         if ($this->eventBus instanceof ReplayModeEventBusInterface) {
             $this->eventBus->stopReplayMode();
         }
+
+        return 0;
     }
 
     /**
@@ -225,10 +227,7 @@ class ReplayCommand extends AbstractCommand
         );
     }
 
-    /**
-     * @param $subscribers
-     */
-    private function setSubscribers($subscribers, OutputInterface $output)
+    private function setSubscribers(array $subscribers, OutputInterface $output)
     {
         $subscribersString = implode(', ', $subscribers);
         $msg = 'Registering the following subscribers with the event bus: %s';

@@ -4,9 +4,6 @@ namespace CultuurNet\UDB3\SavedSearches\Properties;
 
 class CreatedByQueryString extends QueryString
 {
-    /**
-     * @param string[] $queryParts
-     */
     public function __construct(string ...$queryParts)
     {
         if (empty($queryParts)) {

@@ -20,16 +20,6 @@ use ValueObjects\Web\PortNumber;
 
 class FilterPathMethodProxy extends Proxy
 {
-    /**
-     * CdbXmlProxy constructor.
-     * @param FilterPathRegex $path
-     * @param StringLiteral|null $method
-     * @param Domain $domain
-     * @param PortNumber $port
-     * @param DiactorosFactory $diactorosFactory
-     * @param HttpFoundationFactory $httpFoundationFactory
-     * @param ClientInterface $client
-     */
     public function __construct(
         FilterPathRegex $path,
         StringLiteral $method,
@@ -80,9 +70,9 @@ class FilterPathMethodProxy extends Proxy
         PortNumber $port
     ) {
         $domainReplacer = new DomainReplacer($domain);
-        
+
         $portReplacer = new PortReplacer($port);
-        
+
         return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 }

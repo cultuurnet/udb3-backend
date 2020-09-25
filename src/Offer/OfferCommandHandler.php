@@ -53,7 +53,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     protected $organizerRepository;
 
     /**
-     * @var RepositoryInterface
+     * @var ReadRepositoryInterface
      */
     protected $labelRepository;
 

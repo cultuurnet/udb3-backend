@@ -21,11 +21,7 @@ class EventFactory implements DocumentEventFactory
         $this->iriGenerator = $iriGenerator;
     }
 
-    /**
-     * @param $id
-     * @return EventProjectedToJSONLD
-     */
-    public function createEvent($id)
+    public function createEvent(string $id): EventProjectedToJSONLD
     {
         return new EventProjectedToJSONLD(
             $id,

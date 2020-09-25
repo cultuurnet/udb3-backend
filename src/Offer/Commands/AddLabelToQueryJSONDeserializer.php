@@ -13,7 +13,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  */
 class AddLabelToQueryJSONDeserializer extends JSONDeserializer
 {
-    public function deserialize(StringLiteral $data)
+    public function deserialize(StringLiteral $data): AddLabelToQuery
     {
         $data = parent::deserialize($data);
 

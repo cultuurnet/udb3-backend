@@ -6,12 +6,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 trait Labelable
 {
-
-    /**
-     * @param $eventLd
-     * @return bool
-     */
-    public function hasLabel($eventLd, StringLiteral $label)
+    public function hasLabel($eventLd, StringLiteral $label): bool
     {
         if ($label->isEmpty()) {
             throw new \InvalidArgumentException('Label can not be empty');

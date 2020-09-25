@@ -99,12 +99,7 @@ class CompositeDataValidator implements DataValidatorInterface
         return $this->getValidatorContextRecursively($data, $depth);
     }
 
-    /**
-     * @param array $data
-     * @param $depth
-     * @return array|null
-     */
-    private function getValidatorContextRecursively(array $data, $depth)
+    private function getValidatorContextRecursively(array $data, array $depth): ?array
     {
         $depth = array_values($depth);
         $key = $depth[0];

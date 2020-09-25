@@ -8,12 +8,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 class SavedSearch implements \JsonSerializable
 {
     /**
-     * @var String
+     * @var StringLiteral
      */
     protected $id;
 
     /**
-     * @var String
+     * @var StringLiteral
      */
     protected $name;
 

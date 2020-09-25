@@ -28,7 +28,7 @@ class RelatedEventLDProjector implements EventListenerInterface
     protected $placeService;
 
     /**
-     * @var OrganizerServiceInterface
+     * @var OrganizerService
      */
     protected $organizerService;
 
@@ -60,8 +60,6 @@ class RelatedEventLDProjector implements EventListenerInterface
         $this->eventService = $eventService;
         $this->placeService = $placeService;
         $this->organizerService = $organizerService;
-
-
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
     }
 

@@ -16,12 +16,12 @@ class DBALRepository implements PermissionRepositoryInterface, PermissionQueryIn
     protected $connection;
 
     /**
-     * @var String
+     * @var StringLiteral
      */
     protected $idField;
 
     /**
-     * @var String
+     * @var StringLiteral
      */
     protected $tableName;
 

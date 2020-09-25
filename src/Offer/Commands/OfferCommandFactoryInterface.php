@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractSelectMainImage;
+use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractApprove;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
@@ -25,174 +26,51 @@ use CultuurNet\UDB3\Language;
 
 interface OfferCommandFactoryInterface
 {
-    /**
-     * @param $id
-     * @param Label $label
-     * @return AbstractAddLabel
-     */
-    public function createAddLabelCommand($id, Label $label);
+    public function createAddLabelCommand(string $id, Label $label): AbstractAddLabel;
 
-    /**
-     * @param $id
-     * @param Label $label
-     * @return AbstractRemoveLabel
-     */
-    public function createRemoveLabelCommand($id, Label $label);
+    public function createRemoveLabelCommand(string $id, Label $label): AbstractRemoveLabel;
 
-    /**
-     * @param $id
-     * @param UUID $imageId
-     * @return AbstractAddImage
-     */
-    public function createAddImageCommand($id, UUID $imageId);
+    public function createAddImageCommand(string $id, UUID $imageId): AbstractAddImage;
 
-    /**
-     * @param $id
-     * @param Image $image
-     * @return AbstractRemoveImage
-     */
-    public function createRemoveImageCommand($id, Image $image);
+    public function createRemoveImageCommand(string $id, Image $image): AbstractRemoveImage;
 
-    /**
-     * @param $id
-     * @param UUID $mediaObjectId
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
-     */
-    public function createUpdateImageCommand(
-        $id,
-        UUID $mediaObjectId,
-        StringLiteral $description,
-        StringLiteral $copyrightHolder
-    );
+    public function createUpdateImageCommand(string $id, UUID $mediaObjectId, StringLiteral $description, StringLiteral $copyrightHolder): AbstractUpdateImage;
 
-    /**
-     * @param $id
-     * @param Image $image
-     * @return AbstractSelectMainImage
-     */
-    public function createSelectMainImageCommand($id, Image $image);
+    public function createSelectMainImageCommand(string $id, Image $image): AbstractSelectMainImage;
 
-    /**
-     * @param $id
-     * @param Language $language
-     * @param StringLiteral $title
-     * @return AbstractUpdateTitle
-     */
-    public function createUpdateTitleCommand($id, Language $language, StringLiteral $title);
+    public function createUpdateTitleCommand(string $id, Language $language, StringLiteral $title): AbstractUpdateTitle;
 
-    /**
-     * @param $id
-     * @param Language $language
-     * @param Description $description
-     * @return AbstractUpdateDescription
-     */
-    public function createUpdateDescriptionCommand($id, Language $language, Description $description);
+    public function createUpdateDescriptionCommand(string $id, Language $language, Description $description): AbstractUpdateDescription;
 
-    /**
-     * @param string $id
-     * @param Calendar $calendar
-     * @return AbstractUpdateCalendar
-     */
-    public function createUpdateCalendarCommand($id, Calendar $calendar);
+    public function createUpdateCalendarCommand(string $id, Calendar $calendar): AbstractUpdateCalendar;
 
-    /**
-     * @param string $id
-     * @param AgeRange $ageRange
-     * @return AbstractUpdateTypicalAgeRange
-     */
-    public function createUpdateTypicalAgeRangeCommand($id, AgeRange $ageRange);
+    public function createUpdateTypicalAgeRangeCommand(string $id, AgeRange $ageRange): AbstractUpdateTypicalAgeRange;
 
-    /**
-     * @param string $id
-     * @return AbstractDeleteTypicalAgeRange
-     */
-    public function createDeleteTypicalAgeRangeCommand($id);
+    public function createDeleteTypicalAgeRangeCommand(string $id): AbstractDeleteTypicalAgeRange;
 
-    /**
-     * @param string $id
-     * @param string $organizerId
-     * @return AbstractUpdateOrganizer
-     */
-    public function createUpdateOrganizerCommand($id, $organizerId);
+    public function createUpdateOrganizerCommand(string $id, string $organizerId): AbstractUpdateOrganizer;
 
-    /**
-     * @param string $id
-     * @param string $organizerId
-     * @return AbstractDeleteOrganizer
-     */
-    public function createDeleteOrganizerCommand($id, $organizerId);
+    public function createDeleteOrganizerCommand(string $id, string $organizerId): AbstractDeleteOrganizer;
 
-    /**
-     * @param string $id
-     * @param ContactPoint $contactPoint
-     * @return AbstractUpdateContactPoint
-     */
-    public function createUpdateContactPointCommand($id, ContactPoint $contactPoint);
+    public function createUpdateContactPointCommand(string $id, ContactPoint $contactPoint): AbstractUpdateContactPoint;
 
-    /**
-     * @param string $id
-     * @param BookingInfo $bookingInfo
-     * @return AbstractUpdateBookingInfo
-     */
-    public function createUpdateBookingInfoCommand($id, BookingInfo $bookingInfo);
+    public function createUpdateBookingInfoCommand(string $id, BookingInfo $bookingInfo): AbstractUpdateBookingInfo;
 
-    /**
-     * @param $id
-     * @param PriceInfo $priceInfo
-     * @return AbstractUpdatePriceInfo
-     */
-    public function createUpdatePriceInfoCommand($id, PriceInfo $priceInfo);
+    public function createUpdatePriceInfoCommand(string $id, PriceInfo $priceInfo): AbstractUpdatePriceInfo;
 
-    /**
-     * @param string $id
-     * @return AbstractDeleteOffer
-     */
-    public function createDeleteOfferCommand($id);
+    public function createDeleteOfferCommand(string $id): AbstractDeleteOffer;
 
-    /**
-     * @param string $id
-     * @return AbstractApprove
-     */
-    public function createApproveCommand($id);
+    public function createApproveCommand(string $id): AbstractApprove;
 
-    /**
-     * @param string $id
-     * @param StringLiteral $reason
-     * @return AbstractReject
-     */
-    public function createRejectCommand($id, StringLiteral $reason);
+    public function createRejectCommand(string $id, StringLiteral $reason): AbstractReject;
 
-    /**
-     * @param string $id
-     * @return AbstractFlagAsInappropriate
-     */
-    public function createFlagAsInappropriate($id);
+    public function createFlagAsInappropriate(string $id): AbstractFlagAsInappropriate;
 
-    /**
-     * @param string $id
-     * @return AbstractFlagAsDuplicate
-     */
-    public function createFlagAsDuplicate($id);
+    public function createFlagAsDuplicate(string $id): AbstractFlagAsDuplicate;
 
-    /**
-     * @param string $id
-     * @param EventType $type
-     * @return AbstractUpdateType
-     */
-    public function createUpdateTypeCommand($id, EventType $type);
+    public function createUpdateTypeCommand(string $id, EventType $type): AbstractUpdateType;
 
-    /**
-     * @param string $id
-     * @param Theme $theme
-     * @return AbstractUpdateTheme
-     */
-    public function createUpdateThemeCommand($id, Theme $theme);
+    public function createUpdateThemeCommand(string $id, Theme $theme): AbstractUpdateTheme;
 
-    /**
-     * @param string $id
-     * @param array $facilities
-     * @return AbstractUpdateFacilities
-     */
-    public function createUpdateFacilitiesCommand($id, array $facilities);
+    public function createUpdateFacilitiesCommand(string $id, array $facilities): AbstractUpdateFacilities;
 }

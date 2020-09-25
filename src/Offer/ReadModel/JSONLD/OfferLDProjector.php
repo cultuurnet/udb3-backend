@@ -1009,10 +1009,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function organizerJSONLD($organizerId)
+    public function organizerJSONLD(string $organizerId)
     {
         try {
             $organizerJSONLD = $this->organizerService->getEntity(

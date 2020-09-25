@@ -290,9 +290,9 @@ class CdbXMLImporter
      */
     private function importPerformers(\CultureFeed_Cdb_Data_EventDetail $detail, $jsonLD)
     {
-        /** @var \CultureFeed_Cdb_Data_Performer $performer */
         $performers = $detail->getPerformers();
         if ($performers) {
+            /** @var \CultureFeed_Cdb_Data_Performer $performer */
             foreach ($performers as $performer) {
                 if ($performer->getLabel()) {
                     $performerData = new \stdClass();

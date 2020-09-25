@@ -16,21 +16,21 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface OfferEditingServiceInterface
 {
     /**
-     * @param $id
+     * @param string $id
      * @param Label $label
      * @return string
      */
     public function addLabel($id, Label $label);
 
     /**
-     * @param $id
+     * @param string $id
      * @param Label $label
      * @return string
      */
     public function removeLabel($id, Label $label);
 
     /**
-     * @param $id
+     * @param string $id
      * @param Language $language
      * @param StringLiteral $title
      * @return string
@@ -38,7 +38,7 @@ interface OfferEditingServiceInterface
     public function updateTitle($id, Language $language, StringLiteral $title);
 
     /**
-     * @param $id
+     * @param string $id
      * @param Language $language
      * @param Description $description
      * @return string
@@ -70,7 +70,7 @@ interface OfferEditingServiceInterface
     public function updateImage($id, Image $image, StringLiteral $description, StringLiteral $copyrightHolder);
 
     /**
-     * @param $id
+     * @param string $id
      *  Id of the offer to remove the image from.
      *
      * @param Image $image
@@ -81,7 +81,7 @@ interface OfferEditingServiceInterface
     public function removeImage($id, Image $image);
 
     /**
-     * @param $id
+     * @param string $id
      * @param Image $image
      * @return string
      */
@@ -128,11 +128,7 @@ interface OfferEditingServiceInterface
      */
     public function updateBookingInfo($id, BookingInfo $bookingInfo);
 
-    /**
-     * @param $id
-     * @param PriceInfo $priceInfo
-     */
-    public function updatePriceInfo($id, PriceInfo $priceInfo);
+    public function updatePriceInfo(string $id, PriceInfo $priceInfo);
 
     /**
      * @param string $id

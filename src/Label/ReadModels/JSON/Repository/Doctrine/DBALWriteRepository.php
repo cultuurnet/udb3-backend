@@ -146,7 +146,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         IntegerValue $value,
         UUID $uuid
     ) {
-        $currentCount = $this->getCurrentCount($uuid);
+        $currentCount = $this->getCurrentCount($uuid)->toNative();
         $newCount = $currentCount + $value->toNative();
 
         $queryBuilder = $this->createQueryBuilder()
@@ -161,11 +161,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $queryBuilder->execute();
     }
 
-    /**
-     * @param UUID $uuid
-     * @return IntegerValue
-     */
-    private function getCurrentCount(UUID $uuid)
+    private function getCurrentCount(UUID $uuid): IntegerValue
     {
         $queryBuilder = $this->createQueryBuilder()
             ->select([SchemaConfigurator::COUNT_COLUMN])
@@ -176,6 +172,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $statement = $queryBuilder->execute();
         $row = $statement->fetch(\PDO::FETCH_NUM);
 
-        return $row[0];
+        return new IntegerValue($row[0]);
     }
 }
