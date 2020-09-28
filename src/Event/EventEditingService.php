@@ -6,7 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\RepositoryInterface;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\CalendarInterface;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
@@ -71,7 +71,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
         Title $title,
         EventType $eventType,
         LocationId $location,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         $theme = null
     ) {
         $eventId = $this->uuidGenerator->generate();
@@ -106,7 +106,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
         Title $title,
         EventType $eventType,
         LocationId $location,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null
     ) {
         $eventId = $this->uuidGenerator->generate();
@@ -139,7 +139,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
     /**
      * @inheritdoc
      */
-    public function copyEvent($originalEventId, CalendarInterface $calendar)
+    public function copyEvent($originalEventId, Calendar $calendar)
     {
         if (!is_string($originalEventId)) {
             throw new \InvalidArgumentException(
@@ -168,7 +168,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
     /**
      * {@inheritdoc}
      */
-    public function updateMajorInfo($eventId, Title $title, EventType $eventType, LocationId $location, CalendarInterface $calendar, $theme = null)
+    public function updateMajorInfo($eventId, Title $title, EventType $eventType, LocationId $location, Calendar $calendar, $theme = null)
     {
         $this->guardId($eventId);
 

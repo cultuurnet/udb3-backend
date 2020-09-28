@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\CalendarInterface;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
@@ -24,7 +24,7 @@ interface PlaceEditingServiceInterface
      * @param Title $title
      * @param EventType $eventType
      * @param Address $address
-     * @param CalendarInterface $calendar
+     * @param Calendar $calendar
      * @param Theme|null $theme
      *
      * @return string $eventId
@@ -34,7 +34,7 @@ interface PlaceEditingServiceInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null
     );
 
@@ -43,7 +43,7 @@ interface PlaceEditingServiceInterface
      * @param Title $title
      * @param EventType $eventType
      * @param Address $address
-     * @param CalendarInterface $calendar
+     * @param Calendar $calendar
      * @param Theme|null $theme
      * @return string $eventId
      */
@@ -52,7 +52,7 @@ interface PlaceEditingServiceInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null
     );
 
@@ -70,10 +70,10 @@ interface PlaceEditingServiceInterface
      * @param Title $title
      * @param EventType $eventType
      * @param \CultuurNet\UDB3\Address\Address $address
-     * @param CalendarInterface $calendar
+     * @param Calendar $calendar
      * @param Theme|null $theme
      */
-    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, CalendarInterface $calendar, Theme $theme = null);
+    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, Calendar $calendar, Theme $theme = null);
 
     /**
      * @param string $id

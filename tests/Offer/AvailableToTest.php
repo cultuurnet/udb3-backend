@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarInterface;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
@@ -13,11 +12,11 @@ class AvailableToTest extends TestCase
     /**
      * @test
      * @dataProvider calendarsDateProvider
-     * @param CalendarInterface $calendar
+     * @param Calendar $calendar
      * @param \DateTimeInterface $expectedAvailableTo
      */
     public function it_creates_available_to_from_calendars(
-        CalendarInterface $calendar,
+        Calendar $calendar,
         \DateTimeInterface $expectedAvailableTo
     ) {
         $availableTo = AvailableTo::createFromCalendar($calendar);

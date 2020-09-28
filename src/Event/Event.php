@@ -6,7 +6,6 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
@@ -99,7 +98,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         Title $title,
         EventType $eventType,
         LocationId $location,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
@@ -131,11 +130,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     /**
      * @param string $newEventId
-     * @param CalendarInterface $calendar
+     * @param Calendar $calendar
      *
      * @return Event
      */
-    public function copy($newEventId, CalendarInterface $calendar)
+    public function copy($newEventId, Calendar $calendar)
     {
         if ($this->hasUncommittedEvents()) {
             throw new \RuntimeException('I refuse to copy, there are uncommitted events present.');
@@ -281,14 +280,14 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
      * @param Title $title
      * @param EventType $eventType
      * @param LocationId $location
-     * @param CalendarInterface $calendar
+     * @param Calendar $calendar
      * @param Theme|null $theme
      */
     public function updateMajorInfo(
         Title $title,
         EventType $eventType,
         LocationId $location,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null
     ) {
         $this->apply(new MajorInfoUpdated($this->eventId, $title, $eventType, $location, $calendar, $theme));

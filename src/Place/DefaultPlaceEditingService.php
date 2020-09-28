@@ -6,7 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Repository\RepositoryInterface;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\CalendarInterface;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
@@ -62,7 +62,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         Title $title,
         EventType $eventType,
         Address $address,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null
     ) {
         $id = $this->uuidGenerator->generate();
@@ -91,7 +91,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         Title $title,
         EventType $eventType,
         Address $address,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null
     ) {
         $id = $this->uuidGenerator->generate();
@@ -118,7 +118,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
     /**
      * {@inheritdoc}
      */
-    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, CalendarInterface $calendar, Theme $theme = null)
+    public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, Calendar $calendar, Theme $theme = null)
     {
         $this->guardId($id);
 

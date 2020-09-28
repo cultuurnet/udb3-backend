@@ -6,7 +6,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarInterface;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -727,7 +726,7 @@ class EventLDProjector extends OfferLDProjector implements
         return FacilitiesUpdated::class;
     }
 
-    protected function isPeriodicCalendarWithoutWeekScheme(CalendarInterface $calendar): bool
+    protected function isPeriodicCalendarWithoutWeekScheme(Calendar $calendar): bool
     {
         return $calendar->getType() === CalendarType::PERIODIC()
             && $calendar->getOpeningHours() === [];
