@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\UDB3\CalendarInterface;
+use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 
 class AvailableTo
@@ -22,10 +22,10 @@ class AvailableTo
     }
 
     /**
-     * @param CalendarInterface $calendar
+     * @param Calendar $calendar
      * @return AvailableTo
      */
-    public static function createFromCalendar(CalendarInterface $calendar)
+    public static function createFromCalendar(Calendar $calendar)
     {
         if ($calendar->getType() === CalendarType::PERMANENT()) {
             $availableTo = new \DateTime('2100-01-01T00:00:00Z');

@@ -6,7 +6,6 @@ use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
-use CultuurNet\UDB3\CalendarInterface;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
@@ -118,7 +117,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null,
         DateTimeImmutable $publicationDate = null
     ): self {
@@ -155,7 +154,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
         Title $title,
         EventType $eventType,
         Address $address,
-        CalendarInterface $calendar,
+        Calendar $calendar,
         Theme $theme = null
     ): void {
         $this->apply(

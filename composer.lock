@@ -1404,12 +1404,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "9f217b825e9da2178434b7a899745341bf988e24"
+                "reference": "31597bc1c03e17bf722697e72524b6f2a31d5576"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9f217b825e9da2178434b7a899745341bf988e24",
-                "reference": "9f217b825e9da2178434b7a899745341bf988e24",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/31597bc1c03e17bf722697e72524b6f2a31d5576",
+                "reference": "31597bc1c03e17bf722697e72524b6f2a31d5576",
                 "shasum": ""
             },
             "require": {
@@ -1475,7 +1475,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-09-18T09:15:27+00:00"
+            "time": "2020-09-28T09:10:39+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -8961,6 +8961,20 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/phpstan",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpstan/phpstan",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-09-02T13:14:53+00:00"
         },
         {
