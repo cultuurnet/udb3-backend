@@ -127,7 +127,7 @@ class EditRoleRestController
     public function delete(string $id): Response
     {
         if (empty($id)) {
-            throw new InvalidArgumentException('Required field roleId is missing');
+            throw new InvalidArgumentException('Required field id is missing');
         }
 
         $this->service->delete(new UUID($id));
