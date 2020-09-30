@@ -230,7 +230,7 @@ class EditRoleRestControllerTest extends TestCase
     public function it_throws_an_exception_when_no_roleId_is_given_to_delete()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Required field roleId is missing');
+        $this->expectExceptionMessage('Required field id is missing');
         $this->controller->delete('');
     }
 
