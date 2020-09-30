@@ -124,13 +124,13 @@ class EditRoleRestController
         return new NoContent();
     }
 
-    public function delete(string $roleId): Response
+    public function delete(string $id): Response
     {
-        if (empty($roleId)) {
-            throw new InvalidArgumentException('Required field roleId is missing');
+        if (empty($id)) {
+            throw new InvalidArgumentException('Required field id is missing');
         }
 
-        $this->service->delete(new UUID($roleId));
+        $this->service->delete(new UUID($id));
 
         return new NoContent();
     }
