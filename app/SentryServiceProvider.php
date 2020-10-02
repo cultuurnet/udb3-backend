@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex;
 
-use Sentry\ClientBuilder;
-use Sentry\State\Hub;
+use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Throwable;
+use function Sentry\init;
 
 class SentryServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
         $app[HubInterface::class] = $app->share(
-            function ($app) {
-                return new Hub(
-                    ClientBuilder::create([
-                        'dsn' => $app['config']['sentry']['dsn'],
-                        'environment' => $app['config']['sentry']['environment'],
-                    ])->getClient()
-                );
+            function (Application $app) {
+                init([
+                    'dsn' => $app['config']['sentry']['dsn'],
+                    'environment' => $app['config']['sentry']['environment'],
+                ]);
+
+                return SentrySdk::getCurrentHub();
             }
         );
 
