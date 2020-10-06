@@ -138,6 +138,61 @@ class EventThemeResolver implements ThemeResolverInterface
                 ],
             ],
             [
+                "label" => "Cursus met open sessies",
+                "id" => "0.3.1.0.1",
+                "primary" => true,
+                "themes" => [
+                    [
+                        "id" => "1.42.0.0.0",
+                        "label" => "Creativiteit",
+                    ],
+                    [
+                        "id" => "1.21.0.0.0",
+                        "label" => "Computer en techniek",
+                    ],
+                    [
+                        "id" => "1.37.0.0.0",
+                        "label" => "Opvoeding",
+                    ],
+                    [
+                        "id" => "1.61.0.0.0",
+                        "label" => "Persoon en relaties",
+                    ],
+                    [
+                        "id" => "1.43.0.0.0",
+                        "label" => "Interculturele vorming",
+                    ],
+                    [
+                        "id" => "1.41.0.0.0",
+                        "label" => "Kunst en kunsteducatie",
+                    ],
+                    [
+                        "id" => "1.37.1.0.0",
+                        "label" => "Gezondheid en zorg",
+                    ],
+                    [
+                        "id" => "1.65.0.0.0",
+                        "label" => "Voeding",
+                    ],
+                    [
+                        "id" => "1.37.2.0.0",
+                        "label" => "Samenleving",
+                    ],
+                    [
+                        "id" => "1.64.0.0.0",
+                        "label" => "Milieu en natuur",
+                    ],
+                    [
+                        "id" => "1.25.0.0.0",
+                        "label" => "Wetenschap",
+                    ],
+                    [
+                        "id" => "1.44.0.0.0",
+                        "label" => "Zingeving, filosofie en religie",
+                    ],
+                ],
+            ],
+            [
                 "label" => "Route",
                 "id" => "0.17.0.0.0",
                 "primary" => true,
