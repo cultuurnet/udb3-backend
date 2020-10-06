@@ -20,6 +20,7 @@ class EventTypeResolver implements TypeResolverInterface
             "0.6.0.0.0" => new EventType("0.6.0.0.0", "Beurs"),
             "0.50.4.0.0" => new EventType("0.50.4.0.0", "Concert"),
             "0.3.1.0.0" => new EventType("0.3.1.0.0", "Cursus of workshop"),
+            "0.3.1.0.1" => new EventType("0.3.1.0.1", "Cursus met open sessies"),
             "0.54.0.0.0" => new EventType("0.54.0.0.0", "Dansvoorstelling"),
             "1.50.0.0.0" => new EventType("1.50.0.0.0", "Eten en drinken"),
             "0.5.0.0.0" => new EventType("0.5.0.0.0", "Festival"),
