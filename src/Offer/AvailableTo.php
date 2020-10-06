@@ -4,6 +4,8 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -19,7 +21,7 @@ class AvailableTo
         $this->availableTo = $availableTo;
     }
 
-    public static function createFromCalendar(Calendar $calendar): AvailableTo
+    public static function createFromCalendar(Calendar $calendar, EventType $eventType = null): AvailableTo
     {
         if ($calendar->getType() === CalendarType::PERMANENT()) {
             // The fixed date for a permanent calendar type does not require time information.
@@ -28,6 +30,11 @@ class AvailableTo
 
         /** @var DateTimeInterface $availableTo */
         $availableTo = $calendar->getEndDate();
+
+        if ($eventType && EventTypeResolver::isOnlyAvailableUntilStartDate($eventType)) {
+            /** @var DateTimeInterface $availableTo */
+            $availableTo = $calendar->getStartDate();
+        }
 
         /**
          * https://jira.uitdatabank.be/browse/III-1581
