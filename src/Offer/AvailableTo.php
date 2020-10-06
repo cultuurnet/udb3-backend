@@ -4,19 +4,20 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use DateTimeInterface;
 
 class AvailableTo
 {
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      */
     private $availableTo;
 
     /**
      * AvailableTo constructor.
-     * @param \DateTimeInterface $availableTo
+     * @param DateTimeInterface $availableTo
      */
-    private function __construct(\DateTimeInterface $availableTo)
+    private function __construct(DateTimeInterface $availableTo)
     {
         $this->availableTo = $availableTo;
     }
@@ -27,6 +28,7 @@ class AvailableTo
            return new self(new \DateTime('2100-01-01T00:00:00Z'));
         }
 
+        /** @var DateTimeInterface $availableTo */
         $availableTo = $calendar->getEndDate();
 
         /**
@@ -50,7 +52,7 @@ class AvailableTo
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
     public function getAvailableTo()
     {
