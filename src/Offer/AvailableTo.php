@@ -21,11 +21,7 @@ class AvailableTo
         $this->availableTo = $availableTo;
     }
 
-    /**
-     * @param Calendar $calendar
-     * @return AvailableTo
-     */
-    public static function createFromCalendar(Calendar $calendar)
+    public static function createFromCalendar(Calendar $calendar): AvailableTo
     {
         if ($calendar->getType() === CalendarType::PERMANENT()) {
             $availableTo = new \DateTime('2100-01-01T00:00:00Z');
