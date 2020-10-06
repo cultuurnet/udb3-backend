@@ -42,8 +42,8 @@ class AvailableTo
          */
         if ($availableTo->format('H:i:s') === '00:00:00') {
             $availableTo = DateTimeImmutable::createFromFormat(
-                'Y-m-d',
-                $availableTo->format('Y-m-d')
+                DATE_ATOM,
+                $availableTo->format(DATE_ATOM)
             )->setTime(23, 59, 59);
         }
 
