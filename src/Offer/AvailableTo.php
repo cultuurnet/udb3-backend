@@ -27,11 +27,7 @@ class AvailableTo
            return new self(new \DateTime('2100-01-01T00:00:00Z'));
         }
 
-        if ($calendar->getType() === CalendarType::SINGLE()) {
-            $availableTo = $calendar->getEndDate() ? $calendar->getEndDate() : $calendar->getStartDate();
-        } else {
-            $availableTo = $calendar->getEndDate();
-        }
+        $availableTo = $calendar->getEndDate();
 
         /**
          * https://jira.uitdatabank.be/browse/III-1581
@@ -43,8 +39,7 @@ class AvailableTo
          * The fixed date for a permanent calendar type does not require time information.
          * This fixed date of 2100-01-01 is checked with the time formats: Y-m-d
          */
-        if ($availableTo->format('Y-m-d') != '2100-01-01' &&
-            $availableTo->format('H:i:s') == '00:00:00') {
+        if ($availableTo->format('H:i:s') === '00:00:00') {
             $availableToWithHours = new \DateTime();
             $availableToWithHours->setTimestamp($availableTo->getTimestamp());
             $availableToWithHours->add(new \DateInterval("P0000-00-00T23:59:59"));
