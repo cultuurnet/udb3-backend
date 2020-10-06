@@ -14,10 +14,6 @@ class AvailableTo
      */
     private $availableTo;
 
-    /**
-     * AvailableTo constructor.
-     * @param DateTimeInterface $availableTo
-     */
     private function __construct(DateTimeInterface $availableTo)
     {
         $this->availableTo = $availableTo;
@@ -47,18 +43,12 @@ class AvailableTo
         return new self($availableTo);
     }
 
-    /**
-     * @return DateTimeInterface
-     */
-    public function getAvailableTo()
+    public function getAvailableTo(): DateTimeInterface
     {
         return $this->availableTo;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->availableTo->format(\DateTime::ATOM);
     }
