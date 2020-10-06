@@ -25,7 +25,8 @@ class AvailableTo
     public static function createFromCalendar(Calendar $calendar): AvailableTo
     {
         if ($calendar->getType() === CalendarType::PERMANENT()) {
-           return new self(new \DateTime('2100-01-01T00:00:00Z'));
+            // The fixed date for a permanent calendar type does not require time information.
+            return new self(new \DateTime('2100-01-01T00:00:00Z'));
         }
 
         /** @var DateTimeInterface $availableTo */
@@ -38,8 +39,6 @@ class AvailableTo
          *
          * To check for missing time information a check is done on formats: H:i:s
          *
-         * The fixed date for a permanent calendar type does not require time information.
-         * This fixed date of 2100-01-01 is checked with the time formats: Y-m-d
          */
         if ($availableTo->format('H:i:s') === '00:00:00') {
             $availableToWithHours = new \DateTime();
