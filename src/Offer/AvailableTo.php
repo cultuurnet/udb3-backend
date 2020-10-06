@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use DateTimeImmutable;
 use DateTimeInterface;
 
 class AvailableTo
@@ -34,17 +35,13 @@ class AvailableTo
 
         /**
          * https://jira.uitdatabank.be/browse/III-1581
-         *
          * When available to has no time information, it needs to be set to almost midnight 23:59:59.
-         *
-         * To check for missing time information a check is done on formats: H:i:s
-         *
          */
         if ($availableTo->format('H:i:s') === '00:00:00') {
-            $availableToWithHours = new \DateTime();
-            $availableToWithHours->setTimestamp($availableTo->getTimestamp());
-            $availableToWithHours->add(new \DateInterval("P0000-00-00T23:59:59"));
-            $availableTo = $availableToWithHours;
+            $availableTo = DateTimeImmutable::createFromFormat(
+                'Y-m-d',
+                $availableTo->format('Y-m-d')
+            )->setTime(23, 59, 59);
         }
 
         return new self($availableTo);
