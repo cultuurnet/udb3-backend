@@ -24,8 +24,10 @@ class AvailableTo
     public static function createFromCalendar(Calendar $calendar): AvailableTo
     {
         if ($calendar->getType() === CalendarType::PERMANENT()) {
-            $availableTo = new \DateTime('2100-01-01T00:00:00Z');
-        } elseif ($calendar->getType() === CalendarType::SINGLE()) {
+           return new self(new \DateTime('2100-01-01T00:00:00Z'));
+        }
+
+        if ($calendar->getType() === CalendarType::SINGLE()) {
             $availableTo = $calendar->getEndDate() ? $calendar->getEndDate() : $calendar->getStartDate();
         } else {
             $availableTo = $calendar->getEndDate();
