@@ -7,16 +7,14 @@ use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
+use Exception;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function register(Application $app)
+    public function register(Application $app): void
     {
         $app->error(
             function (GroupedValidationException $e) {
@@ -50,28 +48,21 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         );
 
         $app->error(
-            function (\Exception $e) {
+            function (Exception $e) {
                 $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
             }
         );
     }
 
-    /**
-     * @param \Exception $e
-     * @return ApiProblem
-     */
-    protected function createNewApiProblem(\Exception $e)
+    private function createNewApiProblem(Exception $e): ApiProblem
     {
         $problem = new ApiProblem($e->getMessage());
-        $problem->setStatus($e->getCode() ? $e->getCode() : ApiProblemJsonResponse::HTTP_BAD_REQUEST);
+        $problem->setStatus($e->getCode() ?: ApiProblemJsonResponse::HTTP_BAD_REQUEST);
         return $problem;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function boot(Application $app)
+    public function boot(Application $app): void
     {
     }
 }
