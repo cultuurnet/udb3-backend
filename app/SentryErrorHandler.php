@@ -21,10 +21,10 @@ class SentryErrorHandler
     /** @var ApiKey|null */
     private $apiKey;
 
-    /** @var string */
+    /** @var string|null */
     private $apiName;
 
-    public function __construct(HubInterface $sentryHub, ?Udb3Token $udb3Token, ?ApiKey $apiKey, string $apiName)
+    public function __construct(HubInterface $sentryHub, ?Udb3Token $udb3Token, ?ApiKey $apiKey, ?string $apiName)
     {
         $this->sentryHub = $sentryHub;
         $this->udb3Token = $udb3Token;
@@ -57,11 +57,11 @@ class SentryErrorHandler
         ];
     }
 
-    private function createTags(?ApiKey $apiKey, string $apiName): array
+    private function createTags(?ApiKey $apiKey, ?string $apiName): array
     {
         return [
             'api_key' => $apiKey ? $apiKey->toNative() : 'null',
-            'api_name' => $apiName ?: 'null',
+            'api_name' => $apiName ?? 'null',
         ];
     }
 }
