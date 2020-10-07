@@ -28,7 +28,8 @@ class SentryServiceProvider implements ServiceProviderInterface
         $app[SentryErrorHandler::class] = $app->share(
             function ($app) {
                 return new SentryErrorHandler(
-                    $app[HubInterface::class]
+                    $app[HubInterface::class],
+                    $app['jwt']
                 );
             }
         );
