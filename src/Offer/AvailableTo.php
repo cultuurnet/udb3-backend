@@ -4,70 +4,58 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\EventTypeResolver;
+use DateTimeImmutable;
+use DateTimeInterface;
 
 class AvailableTo
 {
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      */
     private $availableTo;
 
-    /**
-     * AvailableTo constructor.
-     * @param \DateTimeInterface $availableTo
-     */
-    private function __construct(\DateTimeInterface $availableTo)
+    private function __construct(DateTimeInterface $availableTo)
     {
         $this->availableTo = $availableTo;
     }
 
-    /**
-     * @param Calendar $calendar
-     * @return AvailableTo
-     */
-    public static function createFromCalendar(Calendar $calendar)
+    public static function createFromCalendar(Calendar $calendar, EventType $eventType = null): AvailableTo
     {
         if ($calendar->getType() === CalendarType::PERMANENT()) {
-            $availableTo = new \DateTime('2100-01-01T00:00:00Z');
-        } elseif ($calendar->getType() === CalendarType::SINGLE()) {
-            $availableTo = $calendar->getEndDate() ? $calendar->getEndDate() : $calendar->getStartDate();
-        } else {
-            $availableTo = $calendar->getEndDate();
+            // The fixed date for a permanent calendar type does not require time information.
+            return new self(new \DateTime('2100-01-01T00:00:00Z'));
+        }
+
+        /** @var DateTimeInterface $availableTo */
+        $availableTo = $calendar->getEndDate();
+
+        if ($eventType && EventTypeResolver::isOnlyAvailableUntilStartDate($eventType)) {
+            /** @var DateTimeInterface $availableTo */
+            $availableTo = $calendar->getStartDate();
         }
 
         /**
          * https://jira.uitdatabank.be/browse/III-1581
-         *
          * When available to has no time information, it needs to be set to almost midnight 23:59:59.
-         *
-         * To check for missing time information a check is done on formats: H:i:s
-         *
-         * The fixed date for a permanent calendar type does not require time information.
-         * This fixed date of 2100-01-01 is checked with the time formats: Y-m-d
          */
-        if ($availableTo->format('Y-m-d') != '2100-01-01' &&
-            $availableTo->format('H:i:s') == '00:00:00') {
-            $availableToWithHours = new \DateTime();
-            $availableToWithHours->setTimestamp($availableTo->getTimestamp());
-            $availableToWithHours->add(new \DateInterval("P0000-00-00T23:59:59"));
-            $availableTo = $availableToWithHours;
+        if ($availableTo->format('H:i:s') === '00:00:00') {
+            $availableTo = DateTimeImmutable::createFromFormat(
+                DATE_ATOM,
+                $availableTo->format(DATE_ATOM)
+            )->setTime(23, 59, 59);
         }
 
         return new self($availableTo);
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getAvailableTo()
+    public function getAvailableTo(): DateTimeInterface
     {
         return $this->availableTo;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->availableTo->format(\DateTime::ATOM);
     }
