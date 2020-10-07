@@ -29,8 +29,9 @@ class SentryServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new SentryErrorHandler(
                     $app[HubInterface::class],
-                    $app['jwt'],
-                    $app['auth.api_key']
+                    $app['jwt'] ?? null,
+                    $app['auth.api_key'] ?? null,
+                    $app['api_name'] ?? null
                 );
             }
         );
