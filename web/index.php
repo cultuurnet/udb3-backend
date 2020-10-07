@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
 use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
+use CultuurNet\UDB3\Silex\SentryErrorHandler;
 use Sentry\State\HubInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -275,8 +276,6 @@ try {
 } catch (\Throwable $throwable) {
     // All Silex kernel exceptions are caught by the ErrorHandlerProvider and converted to ApiProblems.
     // The uncaught runtime exceptions are caught here and captured in Sentry.
-    $handler = $app['uncaught_error_handler'];
-
     // The runtime exception is re-thrown to add it to system logs inside `var/log/`.
-    $handler($throwable);
+    $app[SentryErrorHandler::class]->handle($throwable);
 }

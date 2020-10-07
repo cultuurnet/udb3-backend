@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
+use CultuurNet\UDB3\Silex\SentryErrorHandler;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use Knp\Provider\ConsoleServiceProvider;
 
@@ -95,8 +96,6 @@ $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_b
 try {
     $consoleApp->run();
 } catch (\Throwable $throwable) {
-    $handler = $app['uncaught_error_handler'];
-
     // The runtime exception is re-thrown to show it on the command line.
-    $handler($throwable);
+    $app[SentryErrorHandler::class]->handle($throwable);
 }
