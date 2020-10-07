@@ -15,10 +15,10 @@ class SentryErrorHandler
     /** @var HubInterface */
     private $sentryHub;
 
-    /** @var ?Udb3Token */
+    /** @var Udb3Token|null */
     private $udb3Token;
 
-    /** @var ApiKey */
+    /** @var ApiKey|null */
     private $apiKey;
 
     /** @var string */
