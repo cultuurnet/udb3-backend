@@ -838,27 +838,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "683122764da40b708f1785ba98b1d6aa710d972a"
+                "reference": "11cd7e527b7c3d6f8a0929abc7a52481b6db4fc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/683122764da40b708f1785ba98b1d6aa710d972a",
-                "reference": "683122764da40b708f1785ba98b1d6aa710d972a",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/11cd7e527b7c3d6f8a0929abc7a52481b6db4fc9",
+                "reference": "11cd7e527b7c3d6f8a0929abc7a52481b6db4fc9",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/search-v3": "dev-master",
                 "delfimov/translate": "^2.4",
                 "ext-intl": "*",
-                "php": "^7.0",
+                "php": "^7.1",
                 "psr/container": "^1.0"
             },
             "require-dev": {
                 "escapestudios/symfony2-coding-standard": "~2.0",
                 "mikey179/vfsstream": "~1.6.2",
                 "phing/phing": "~2.10",
-                "phpunit/phpunit": "~5.7",
-                "psr/container": "~1.0.0",
+                "phpunit/phpunit": "^7.5",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "2.6.1"
             },
@@ -876,20 +875,12 @@
             ],
             "authors": [
                 {
-                    "name": "Nils Destoop",
-                    "email": "nils.destoop@wunderkraut.com"
-                },
-                {
-                    "name": "Stijn Swaanen",
-                    "email": "stijn.swaanen@publiq.be"
-                },
-                {
-                    "name": "Thomas Jacobs",
-                    "email": "thomas.jacobs@wunderkraut.com"
+                    "name": "Publiq vzw",
+                    "email": "info@publiq.be"
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "time": "2019-03-13T16:49:38+00:00"
+            "time": "2020-10-08T08:08:32+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -7758,6 +7749,7 @@
                 "i18n",
                 "text"
             ],
+            "abandoned": true,
             "time": "2018-12-05T18:34:18+00:00"
         },
         {
