@@ -838,12 +838,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "298849c946cb99083be43fe8dc81ed509b52e00e"
+                "reference": "11cd7e527b7c3d6f8a0929abc7a52481b6db4fc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/298849c946cb99083be43fe8dc81ed509b52e00e",
-                "reference": "298849c946cb99083be43fe8dc81ed509b52e00e",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/11cd7e527b7c3d6f8a0929abc7a52481b6db4fc9",
+                "reference": "11cd7e527b7c3d6f8a0929abc7a52481b6db4fc9",
                 "shasum": ""
             },
             "require": {
@@ -857,7 +857,7 @@
                 "escapestudios/symfony2-coding-standard": "~2.0",
                 "mikey179/vfsstream": "~1.6.2",
                 "phing/phing": "~2.10",
-                "phpunit/phpunit": "~5.7",
+                "phpunit/phpunit": "^7.5",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "2.6.1"
             },
@@ -880,7 +880,7 @@
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "time": "2020-10-08T05:45:24+00:00"
+            "time": "2020-10-08T08:08:32+00:00"
         },
         {
             "name": "cultuurnet/cdb",
