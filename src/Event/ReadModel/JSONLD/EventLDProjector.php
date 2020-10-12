@@ -302,7 +302,7 @@ class EventLDProjector extends OfferLDProjector implements
         $calendarJsonLD = $calendar->toJsonLd();
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
-        $availableTo = AvailableTo::createFromCalendar($eventCreated->getCalendar());
+        $availableTo = AvailableTo::createFromCalendar($eventCreated->getCalendar(), $eventCreated->getEventType());
         $jsonLD->availableTo = (string) $availableTo;
 
         // Same as.
@@ -388,8 +388,16 @@ class EventLDProjector extends OfferLDProjector implements
         unset($eventJsonLD->labels);
         unset($eventJsonLD->hiddenLabels);
 
+        $eventType = null;
+        foreach ($eventJsonLD->terms as $term) {
+            if ($term->domain === 'eventtype') {
+                $typeId = new StringLiteral($term->id);
+                $eventType = $this->eventTypeResolver->byId($typeId);
+            }
+        }
+
         // Set available to and from.
-        $availableTo = AvailableTo::createFromCalendar($eventCopied->getCalendar());
+        $availableTo = AvailableTo::createFromCalendar($eventCopied->getCalendar(), $eventType);
         $eventJsonLD->availableTo = (string) $availableTo;
         unset($eventJsonLD->availableFrom);
 
@@ -432,7 +440,7 @@ class EventLDProjector extends OfferLDProjector implements
           '@type' => 'Place',
         ) + (array) $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
 
-        $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar());
+        $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar(), $majorInfoUpdated->getEventType());
         $jsonLD->availableTo = (string) $availableTo;
 
         // Remove old theme and event type.
