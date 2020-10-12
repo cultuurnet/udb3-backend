@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
@@ -95,14 +96,11 @@ class EventLDProjector extends OfferLDProjector implements
     protected $cdbXMLImporter;
 
     /**
-     * @param DocumentRepositoryInterface $repository
-     * @param IriGeneratorInterface $iriGenerator
-     * @param PlaceService $placeService
-     * @param OrganizerService $organizerService
-     * @param SerializerInterface $mediaObjectSerializer
-     * @param IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
-     * @param CdbXMLImporter $cdbXMLImporter
-     * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
+     * @var EventTypeResolver
+     */
+    private $eventTypeResolver;
+
+    /**
      * @param string[] $basePriceTranslations
      */
     public function __construct(
@@ -114,6 +112,7 @@ class EventLDProjector extends OfferLDProjector implements
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory,
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
+        EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations
     ) {
         parent::__construct(
@@ -129,6 +128,7 @@ class EventLDProjector extends OfferLDProjector implements
         $this->cdbXMLImporter = $cdbXMLImporter;
 
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
+        $this->eventTypeResolver = $eventTypeResolver;
     }
 
     /**

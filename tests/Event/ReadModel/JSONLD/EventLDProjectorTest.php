@@ -34,6 +34,7 @@ use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -158,6 +159,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             new JsonDocumentLanguageEnricher(
                 new EventJsonDocumentLanguageAnalyzer()
             ),
+            new EventTypeResolver(),
             [
                 'nl' => 'Basistarief',
                 'fr' => 'Tarif de base',
