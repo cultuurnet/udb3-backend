@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchReadRepositoryCollection;
 use CultuurNet\UDB3\SavedSearches\SavedSearchWriteRepositoryCollection;
@@ -33,6 +34,18 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app[SavedSearchRepositoryInterface::class] = $app->share(
+            function (Application $app) {
+                return new CombinedSavedSearchRepository(
+                    new Sapi3FixedSavedSearchRepository(
+                        $app['current_user'],
+                        $this->getCreatedByQueryMode($app)
+                    ),
+                    $app['udb3_saved_searches_repo_sapi3']
+                );
+            }
+        );
+
         $app['saved_searches_read_collection'] = $app->share(
             function (Application $app) {
                 $savedSearchReadRepositoryCollection = new SavedSearchReadRepositoryCollection();
@@ -40,13 +53,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                 $savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection
                     ->withRepository(
                         SapiVersion::V3(),
-                        new CombinedSavedSearchRepository(
-                            new Sapi3FixedSavedSearchRepository(
-                                $app['current_user'],
-                                $this->getCreatedByQueryMode($app)
-                            ),
-                            $app['udb3_saved_searches_repo_sapi3']
-                        )
+                        $app[SavedSearchRepositoryInterface::class]
                     );
 
                 return $savedSearchReadRepositoryCollection;
