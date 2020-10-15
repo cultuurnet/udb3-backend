@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
-use CultuurNet\UDB3\SavedSearches\FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\SavedSearchReadRepositoryCollection;
 use CultuurNet\UDB3\SavedSearches\SavedSearchWriteRepositoryCollection;
@@ -21,19 +20,6 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['udb3_saved_searches_repo_sapi2'] = $app->share(
-            function (Application $app) {
-                $user = $app['current_user'];
-
-                return new UDB3SavedSearchRepository(
-                    $app['dbal_connection'],
-                    new StringLiteral('saved_searches_sapi2'),
-                    $app['uuid_generator'],
-                    new StringLiteral($user->id)
-                );
-            }
-        );
-
         $app['udb3_saved_searches_repo_sapi3'] = $app->share(
             function (Application $app) {
                 $user = $app['current_user'];
