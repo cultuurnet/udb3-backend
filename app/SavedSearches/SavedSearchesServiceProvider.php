@@ -5,10 +5,8 @@ namespace CultuurNet\UDB3\Silex\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\CombinedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
-use CultuurNet\UDB3\SavedSearches\SavedSearchWriteRepositoryCollection;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -47,16 +45,8 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
 
         $app['saved_searches_command_handler'] = $app->share(
             function (Application $app) {
-                $savedSearchWriteRepositoryCollection = new SavedSearchWriteRepositoryCollection();
-
-                $savedSearchWriteRepositoryCollection = $savedSearchWriteRepositoryCollection
-                    ->withRepository(
-                        SapiVersion::V3(),
-                        $app['udb3_saved_searches_repo_sapi3']
-                    );
-
                 return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
-                    $savedSearchWriteRepositoryCollection
+                    $app['udb3_saved_searches_repo_sapi3']
                 );
             }
         );

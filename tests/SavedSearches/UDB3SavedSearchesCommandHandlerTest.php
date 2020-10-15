@@ -6,7 +6,6 @@ use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -26,16 +25,7 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->savedSearchesRepository = $this->createMock(SavedSearchRepositoryInterface::class);
-
-        $savedSearchRepositoryCollection = new SavedSearchWriteRepositoryCollection();
-        $savedSearchRepositoryCollection = $savedSearchRepositoryCollection->withRepository(
-            SapiVersion::V3(),
-            $this->savedSearchesRepository
-        );
-
-        $this->udb3SavedSearchesCommandHandler = new UDB3SavedSearchesCommandHandler(
-            $savedSearchRepositoryCollection
-        );
+        $this->udb3SavedSearchesCommandHandler = new UDB3SavedSearchesCommandHandler($this->savedSearchesRepository);
     }
 
     /**
