@@ -7,7 +7,6 @@ use CultureFeed_User;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -35,7 +34,6 @@ class EditSavedSearchesRestController
     public function save(Request $request): Response
     {
         $commandDeserializer = new SubscribeToSavedSearchJSONDeserializer(
-            SapiVersion::V3(),
             new StringLiteral($this->user->id)
         );
 
@@ -51,7 +49,6 @@ class EditSavedSearchesRestController
     public function delete(string $id): Response
     {
         $command = new UnsubscribeFromSavedSearch(
-            SapiVersion::V3(),
             new StringLiteral($this->user->id),
             new StringLiteral($id)
         );

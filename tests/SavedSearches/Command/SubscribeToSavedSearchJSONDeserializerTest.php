@@ -4,17 +4,11 @@ namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use CultuurNet\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var SapiVersion
-     */
-    protected $sapiVersion;
-
     /**
      * @var StringLiteral
      */
@@ -27,11 +21,9 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 
     public function setUp()
     {
-        $this->sapiVersion = SapiVersion::V3();
         $this->userId = new StringLiteral('xyx');
 
         $this->deserializer = new SubscribeToSavedSearchJSONDeserializer(
-            $this->sapiVersion,
             $this->userId
         );
     }
@@ -47,7 +39,6 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 
         $this->assertEquals(
             new SubscribeToSavedSearch(
-                $this->sapiVersion,
                 $this->userId,
                 new StringLiteral('My very first saved search.'),
                 new QueryString('city:"Leuven"')

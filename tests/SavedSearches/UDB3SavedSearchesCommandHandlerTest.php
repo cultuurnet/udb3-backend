@@ -43,12 +43,11 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     public function it_can_handle_subscribe_to_saved_search_commands()
     {
-        $sapiVersion = SapiVersion::V3();
         $userId = new StringLiteral('some-user-id');
         $name = new StringLiteral('My very first saved search!');
         $query = new QueryString('city:"Leuven"');
 
-        $subscribeToSavedSearch = new SubscribeToSavedSearch($sapiVersion, $userId, $name, $query);
+        $subscribeToSavedSearch = new SubscribeToSavedSearch($userId, $name, $query);
 
         $this->savedSearchesRepository->expects($this->once())
             ->method('write')
@@ -66,11 +65,10 @@ class UDB3SavedSearchesCommandHandlerTest extends TestCase
      */
     public function it_can_handle_unsubscribe_from_saved_search_commands()
     {
-        $sapiVersion = SapiVersion::V3();
         $userId = new StringLiteral('some-user-id');
         $searchId = new StringLiteral('some-search-id');
 
-        $unsubscribeFromSavedSearch = new UnsubscribeFromSavedSearch($sapiVersion, $userId, $searchId);
+        $unsubscribeFromSavedSearch = new UnsubscribeFromSavedSearch($userId, $searchId);
 
         $this->savedSearchesRepository->expects($this->once())
             ->method('delete')
