@@ -30,14 +30,6 @@ abstract class SavedSearchCommand
     }
 
     /**
-     * @return SapiVersion
-     */
-    public function getSapiVersion(): SapiVersion
-    {
-        return SapiVersion::fromNative($this->sapiVersion);
-    }
-
-    /**
      * @return StringLiteral
      */
     public function getUserId()
