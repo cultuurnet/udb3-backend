@@ -61,16 +61,6 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                             ),
                             $app['udb3_saved_searches_repo_sapi3']
                         )
-                    )
-                    ->withRepository(
-                        SapiVersion::V2(),
-                        new CombinedSavedSearchRepository(
-                            new FixedSavedSearchRepository(
-                                $app['current_user'],
-                                $this->getCreatedByQueryMode($app)
-                            ),
-                            $app['udb3_saved_searches_repo_sapi2']
-                        )
                     );
 
                 return $savedSearchReadRepositoryCollection;
@@ -85,10 +75,6 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
                     ->withRepository(
                         SapiVersion::V3(),
                         $app['udb3_saved_searches_repo_sapi3']
-                    )
-                    ->withRepository(
-                        SapiVersion::V2(),
-                        $app['udb3_saved_searches_repo_sapi2']
                     );
 
                 return new \CultuurNet\UDB3\SavedSearches\UDB3SavedSearchesCommandHandler(
