@@ -35,10 +35,10 @@ class EditSavedSearchesRestController
         $this->commandBus = $commandBus;
     }
 
-    public function save(Request $request, string $sapiVersion): Response
+    public function save(Request $request): Response
     {
         $commandDeserializer = new SubscribeToSavedSearchJSONDeserializer(
-            SapiVersion::fromNative($sapiVersion),
+            SapiVersion::V3(),
             new StringLiteral($this->user->id)
         );
 
@@ -51,10 +51,10 @@ class EditSavedSearchesRestController
         return new Response('', 201);
     }
 
-    public function delete(string $sapiVersion, string $id): Response
+    public function delete(string $id): Response
     {
         $command = new UnsubscribeFromSavedSearch(
-            SapiVersion::fromNative($sapiVersion),
+            SapiVersion::V3(),
             new StringLiteral($this->user->id),
             new StringLiteral($id)
         );
