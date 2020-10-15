@@ -13,7 +13,7 @@ class UnsubscribeFromSavedSearchTest extends TestCase
      */
     public function it_returns_the_stored_data()
     {
-        $sapiVersion = SapiVersion::V2();
+        $sapiVersion = SapiVersion::V3();
         $userId = new StringLiteral('some-user-id');
         $searchId = new StringLiteral('some-search-id');
 

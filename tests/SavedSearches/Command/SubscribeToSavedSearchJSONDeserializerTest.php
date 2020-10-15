@@ -27,7 +27,7 @@ class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 
     public function setUp()
     {
-        $this->sapiVersion = SapiVersion::V2();
+        $this->sapiVersion = SapiVersion::V3();
         $this->userId = new StringLiteral('xyx');
 
         $this->deserializer = new SubscribeToSavedSearchJSONDeserializer(
