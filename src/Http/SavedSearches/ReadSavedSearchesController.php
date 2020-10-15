@@ -13,23 +13,16 @@ class ReadSavedSearchesController
      */
     private $savedSearchReadRepositoryCollection;
 
-    /**
-     * @param SavedSearchReadRepositoryCollection $savedSearchReadRepositoryCollection
-     */
     public function __construct(
         SavedSearchReadRepositoryCollection $savedSearchReadRepositoryCollection
     ) {
         $this->savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection;
     }
 
-    /**
-     * @param string $sapiVersion
-     * @return JsonResponse
-     */
-    public function ownedByCurrentUser(string $sapiVersion)
+    public function ownedByCurrentUser(): JsonResponse
     {
         $savedSearchRepository = $this->savedSearchReadRepositoryCollection->getRepository(
-            SapiVersion::fromNative($sapiVersion)
+            SapiVersion::V3()
         );
 
         return JsonResponse::create(
