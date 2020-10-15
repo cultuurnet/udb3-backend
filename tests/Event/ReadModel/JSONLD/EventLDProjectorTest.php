@@ -53,6 +53,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
+use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 use Symfony\Component\Serializer\Serializer;
@@ -430,6 +431,80 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->creator = $userId;
 
         $this->assertEquals($expectedJsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_start_date_as_available_to_for_workshops(): void
+    {
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $eventType = new EventType("0.3.1.0.0", "Cursus of workshop");
+
+        $calendar = new Calendar(
+            CalendarType::SINGLE(),
+            $startDate,
+            $endDate,
+            [
+                new Timestamp($startDate, $endDate),
+            ]
+        );
+
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('en'),
+            new Title('Workshop with single day'),
+            $eventType,
+            new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
+            $calendar
+        );
+
+        $body = $this->project($eventCreated, $eventCreated->getEventId());
+        $this->assertEquals($startDate->format(DATE_ATOM), $body->availableTo);
+
+        $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
+        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
+
+        $body = $this->project($eventCopied, '2');
+        $this->assertEquals($startDate->format(DATE_ATOM), $body->availableTo);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_end_date_as_available_to_for_other_event_types(): void
+    {
+        $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
+        $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
+        $eventType = new EventType("1.50.0.0.0", "Eten en drinken");
+
+        $calendar = new Calendar(
+            CalendarType::SINGLE(),
+            $startDate,
+            $endDate,
+            [
+                new Timestamp($startDate, $endDate),
+            ]
+        );
+
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('en'),
+            new Title('Workshop with single day'),
+            $eventType,
+            new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e'),
+            $calendar
+        );
+
+        $body = $this->project($eventCreated, $eventCreated->getEventId());
+        $this->assertEquals($endDate->format(DATE_ATOM), $body->availableTo);
+
+        $this->project($this->aPublishedEvent($eventCreated), $eventCreated->getEventId());
+        $eventCopied = new EventCopied('2', $eventCreated->getEventId(), $calendar);
+
+        $body = $this->project($eventCopied, '2');
+        $this->assertEquals($endDate->format(DATE_ATOM), $body->availableTo);
     }
 
     /**
