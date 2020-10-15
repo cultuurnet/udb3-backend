@@ -19,9 +19,6 @@ class UDB3SavedSearchesCommandHandler extends CommandHandler
         $this->savedSearchRepository = $savedSearchRepository;
     }
 
-    /**
-     * @param SubscribeToSavedSearch $subscribeToSavedSearch
-     */
     public function handleSubscribeToSavedSearch(SubscribeToSavedSearch $subscribeToSavedSearch): void
     {
         $userId = $subscribeToSavedSearch->getUserId();
@@ -31,9 +28,6 @@ class UDB3SavedSearchesCommandHandler extends CommandHandler
         $this->savedSearchRepository->write($userId, $name, $query);
     }
 
-    /**
-     * @param UnsubscribeFromSavedSearch $unsubscribeFromSavedSearch
-     */
     public function handleUnsubscribeFromSavedSearch(UnsubscribeFromSavedSearch $unsubscribeFromSavedSearch): void
     {
         $userId = $unsubscribeFromSavedSearch->getUserId();
