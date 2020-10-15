@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\SavedSearches;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
+use CultuurNet\UDB3\ValueObject\SapiVersion;
 
 class UDB3SavedSearchesCommandHandler extends CommandHandler
 {
@@ -30,9 +31,7 @@ class UDB3SavedSearchesCommandHandler extends CommandHandler
         $name = $subscribeToSavedSearch->getName();
         $query = $subscribeToSavedSearch->getQuery();
 
-        $savedSearchRepository = $this->savedSearchWriteRepositoryCollection->getRepository(
-            $subscribeToSavedSearch->getSapiVersion()
-        );
+        $savedSearchRepository = $this->savedSearchWriteRepositoryCollection->getRepository(SapiVersion::V3());
 
         $savedSearchRepository->write($userId, $name, $query);
     }
@@ -45,9 +44,7 @@ class UDB3SavedSearchesCommandHandler extends CommandHandler
         $userId = $unsubscribeFromSavedSearch->getUserId();
         $searchId = $unsubscribeFromSavedSearch->getSearchId();
 
-        $savedSearchRepository = $this->savedSearchWriteRepositoryCollection->getRepository(
-            $unsubscribeFromSavedSearch->getSapiVersion()
-        );
+        $savedSearchRepository = $this->savedSearchWriteRepositoryCollection->getRepository(SapiVersion::V3());
 
         $savedSearchRepository->delete($userId, $searchId);
     }

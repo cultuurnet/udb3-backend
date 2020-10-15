@@ -19,7 +19,6 @@ class UnsubscribeFromSavedSearchTest extends TestCase
 
         $command = new UnsubscribeFromSavedSearch($sapiVersion, $userId, $searchId);
 
-        $this->assertEquals($sapiVersion, $command->getSapiVersion());
         $this->assertEquals($userId, $command->getUserId());
         $this->assertEquals($searchId, $command->getSearchId());
     }

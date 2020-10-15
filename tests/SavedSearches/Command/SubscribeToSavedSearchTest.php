@@ -14,14 +14,13 @@ class SubscribeToSavedSearchTest extends TestCase
      */
     public function it_returns_the_stored_data()
     {
-        $sapiVersion = SapiVersion::V2();
+        $sapiVersion = SapiVersion::V3();
         $userId = new StringLiteral('some-user-id');
         $name = new StringLiteral('My very first saved search.');
         $query = new QueryString('city:"Leuven"');
 
         $command = new SubscribeToSavedSearch($sapiVersion, $userId, $name, $query);
 
-        $this->assertEquals($sapiVersion, $command->getSapiVersion());
         $this->assertEquals($userId, $command->getUserId());
         $this->assertEquals($name, $command->getName());
         $this->assertEquals($query, $command->getQuery());
