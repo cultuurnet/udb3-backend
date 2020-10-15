@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\SavedSearches;
 
 use CultuurNet\UDB3\Http\SavedSearches\EditSavedSearchesRestController;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesController;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -18,7 +19,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         $app['saved_searches_read_controller'] = $app->share(
             function (Application $app) {
                 return new ReadSavedSearchesController(
-                    $app['saved_searches_read_collection']
+                    $app[SavedSearchRepositoryInterface::class]
                 );
             }
         );

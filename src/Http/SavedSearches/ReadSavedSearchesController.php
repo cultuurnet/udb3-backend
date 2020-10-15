@@ -2,31 +2,25 @@
 
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
-use CultuurNet\UDB3\SavedSearches\SavedSearchReadRepositoryCollection;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ReadSavedSearchesController
 {
     /**
-     * @var SavedSearchReadRepositoryCollection
+     * @var SavedSearchRepositoryInterface
      */
-    private $savedSearchReadRepositoryCollection;
+    private $savedSearchRepository;
 
-    public function __construct(
-        SavedSearchReadRepositoryCollection $savedSearchReadRepositoryCollection
-    ) {
-        $this->savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection;
+    public function __construct(SavedSearchRepositoryInterface $savedSearchRepository)
+    {
+        $this->savedSearchRepository = $savedSearchRepository;
     }
 
     public function ownedByCurrentUser(): JsonResponse
     {
-        $savedSearchRepository = $this->savedSearchReadRepositoryCollection->getRepository(
-            SapiVersion::V3()
-        );
-
         return JsonResponse::create(
-            $savedSearchRepository->ownedByCurrentUser()
+            $this->savedSearchRepository->ownedByCurrentUser()
         );
     }
 }
