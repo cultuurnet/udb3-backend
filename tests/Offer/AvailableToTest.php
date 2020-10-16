@@ -4,8 +4,10 @@ namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class AvailableToTest extends TestCase
 {
@@ -25,6 +27,23 @@ class AvailableToTest extends TestCase
             $expectedAvailableTo,
             $availableTo->getAvailableTo()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_use_start_date_for_certain_event_types(): void
+    {
+        $startDate = new \DateTime('2016-10-10T18:19:20');
+        $endDate = new \DateTime('2020-10-10T18:19:20');
+        $calendar = new Calendar(CalendarType::MULTIPLE(), null, null, [new Timestamp($startDate, $endDate)]);
+        $eventTypeResolver = new EventTypeResolver();
+
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId(new StringLiteral('0.7.0.0.0')));
+        $this->assertEquals($endDate, $availableTo->getAvailableTo());
+
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId(new StringLiteral('0.3.1.0.0')));
+        $this->assertEquals($startDate, $availableTo->getAvailableTo());
     }
 
     /**

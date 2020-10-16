@@ -6,6 +6,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\Productions\ProductionEnrichedEventRepository;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ReadModel\JSONLD\CdbXMLImporter;
@@ -63,6 +64,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                     new JsonDocumentLanguageEnricher(
                         new EventJsonDocumentLanguageAnalyzer()
                     ),
+                    new EventTypeResolver(),
                     $app['config']['base_price_translations']
                 );
 
