@@ -5,8 +5,6 @@ namespace CultuurNet\UDB3\Http\SavedSearches;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
-use CultuurNet\UDB3\SavedSearches\SavedSearchReadRepositoryCollection;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,20 +21,11 @@ class ReadSavedSearchesControllerTest extends TestCase
      * @var ReadSavedSearchesController
      */
     private $readSavedSearchesController;
-    
+
     protected function setUp(): void
     {
         $this->savedSearchRepository = $this->createMock(SavedSearchRepositoryInterface::class);
-
-        $savedSearchReadRepositoryCollection = new SavedSearchReadRepositoryCollection();
-        $savedSearchReadRepositoryCollection = $savedSearchReadRepositoryCollection->withRepository(
-            SapiVersion::V2(),
-            $this->savedSearchRepository
-        );
-
-        $this->readSavedSearchesController = new ReadSavedSearchesController(
-            $savedSearchReadRepositoryCollection
-        );
+        $this->readSavedSearchesController = new ReadSavedSearchesController($this->savedSearchRepository);
     }
 
     /**
@@ -59,9 +48,7 @@ class ReadSavedSearchesControllerTest extends TestCase
             ->method('ownedByCurrentUser')
             ->willReturn($savedSearches);
 
-        $actualResponse = $this->readSavedSearchesController->ownedByCurrentUser(
-            SapiVersion::V2
-        );
+        $actualResponse = $this->readSavedSearchesController->ownedByCurrentUser();
 
         $this->assertEquals(
             JsonResponse::create(

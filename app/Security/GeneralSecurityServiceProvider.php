@@ -6,7 +6,6 @@ use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
-use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
