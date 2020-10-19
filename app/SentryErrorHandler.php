@@ -40,7 +40,6 @@ class SentryErrorHandler
         });
 
         $this->sentryHub->captureException($throwable);
-        throw $throwable;
     }
 
     private function createUser(?Udb3Token $udb3Token): array

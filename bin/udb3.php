@@ -96,6 +96,7 @@ $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_b
 try {
     $consoleApp->run();
 } catch (\Throwable $throwable) {
-    // The runtime exception is re-thrown to show it on the command line.
+    // The runtime exception pushed to Sentry and is re-thrown to still show it on the command line.
     $app[SentryErrorHandler::class]->handle($throwable);
+    throw $throwable;
 }

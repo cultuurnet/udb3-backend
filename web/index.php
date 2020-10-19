@@ -274,8 +274,11 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 try {
     $app->run();
 } catch (\Throwable $throwable) {
-    // All Silex kernel exceptions are caught by the ErrorHandlerProvider and converted to ApiProblems.
+    // All Silex kernel exceptions are caught by the ErrorHandlerProvider and are:
+    //  - Pushed to Sentry
+    //  - Converted to ApiProblems.
     // The uncaught runtime exceptions are caught here and captured in Sentry.
     // The runtime exception is re-thrown to add it to system logs inside `var/log/`.
     $app[SentryErrorHandler::class]->handle($throwable);
+    throw $throwable;
 }
