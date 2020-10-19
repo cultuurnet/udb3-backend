@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Sentry\State\HubInterface;
 use Sentry\State\Scope;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class SentryErrorHandler
@@ -34,6 +35,10 @@ class SentryErrorHandler
 
     public function handle(Throwable $throwable): void
     {
+        if ($throwable instanceof NotFoundHttpException || $throwable->getCode() === 404) {
+            return;
+        }
+
         $this->sentryHub->configureScope(function (Scope $scope) {
             $scope->setUser($this->createUser($this->udb3Token));
             $scope->setTags($this->createTags($this->apiKey, $this->apiName));
