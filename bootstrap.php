@@ -448,7 +448,6 @@ $app['event_bus'] = function ($app) {
             'role_detail_projector',
             'role_labels_projector',
             'label_roles_projector',
-            'role_search_projector',
             'role_search_v3_projector',
             'role_users_projector',
             'user_roles_projector',
@@ -881,32 +880,13 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-$app['role_search_repository.table_name'] = new StringLiteral('roles_search');
 $app['role_search_v3_repository.table_name'] = new StringLiteral('roles_search_v3');
-
-$app['role_search_repository'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
-            $app['dbal_connection'],
-            $app['role_search_repository.table_name']
-        );
-    }
-);
 
 $app['role_search_v3_repository'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository(
             $app['dbal_connection'],
             $app['role_search_v3_repository.table_name']
-        );
-    }
-);
-
-$app['role_search_projector'] = $app->share(
-    function ($app) {
-        return new \CultuurNet\UDB3\Role\ReadModel\Search\Projector(
-            $app['role_search_repository'],
-            SapiVersion::V2()
         );
     }
 );
