@@ -880,7 +880,6 @@ $app['user_roles_repository'] = $app->share(
     }
 );
 
-$app['role_search_repository.table_name'] = new StringLiteral('roles_search');
 $app['role_search_v3_repository.table_name'] = new StringLiteral('roles_search_v3');
 
 $app['role_search_v3_repository'] = $app->share(
