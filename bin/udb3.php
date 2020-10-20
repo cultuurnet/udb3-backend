@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Silex\SentryErrorHandler;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use Knp\Provider\ConsoleServiceProvider;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -43,6 +44,7 @@ $app->register(
 
 /** @var \Knp\Console\Application $consoleApp */
 $consoleApp = $app['console'];
+$consoleApp->setCatchExceptions(false);
 
 // An udb3 system user is needed for conclude and geocode commands.
 // Because of the changes for geocoding the amqp forwarding for udb2 imports also needs a user.
@@ -96,6 +98,6 @@ $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_b
 try {
     $consoleApp->run();
 } catch (\Throwable $throwable) {
-    // The runtime exception is re-thrown to show it on the command line.
     $app[SentryErrorHandler::class]->handle($throwable);
+    $consoleApp->renderException($throwable, new ConsoleOutput());
 }

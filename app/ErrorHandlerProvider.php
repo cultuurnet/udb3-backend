@@ -16,6 +16,10 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app->error(function (Exception $exception) use ($app) {
+            $app[SentryErrorHandler::class]->handle($exception);
+        });
+
         $app->error(
             function (GroupedValidationException $e) {
                 $problem = $this->createNewApiProblem($e);
