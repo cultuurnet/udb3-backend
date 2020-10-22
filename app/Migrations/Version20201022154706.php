@@ -42,7 +42,7 @@ class Version20201022154706 extends AbstractMigration
             ]
         );
 
-        $table->addIndex(
+        $table->setPrimaryKey(
             [
                 'offer_id',
             ],
