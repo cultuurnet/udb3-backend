@@ -13,10 +13,12 @@
     "description": "Voor een boeiend avondje cultuur, is er in Tienen cultuurcentrum De Kruisboog. Het centrum heeft een eigen programmatie, maar staat ook open voor activiteiten van plaatselijke verenigingen.",
     "name": {"nl": "Cultuurcentrum De Kruisboog"},
     "address": {
-      "addressCountry": "BE",
-      "addressLocality": "Tienen",
-      "postalCode": "3300",
-      "streetAddress": "Sint-Jorisplein 20 "
+      "nl": {
+        "addressCountry": "BE",
+        "addressLocality": "Tienen",
+        "postalCode": "3300",
+        "streetAddress": "Sint-Jorisplein 20 "
+      }
     }
   },
   "priceInfo": [
@@ -36,15 +38,17 @@
   "organizer": {
     "@id": "http:\/\/culudb-silex.dev:8080\/organizer\/7481A1F9-D5CB-3BC9-D3C308240015B44D",
     "@context": "\/api\/1.0\/organizer.jsonld",
-    "name": "Davidsfonds Academie",
-    "addresses": [
-      {
+    "name": {
+      "nl": "Davidsfonds Academie"
+    },
+    "address": {
+      "nl": {
         "addressCountry": "BE",
         "addressLocality": "Leuven",
         "postalCode": "3000",
         "streetAddress": "Blijde-Inkomststraat 77"
       }
-    ],
+    },
     "email": ["academie@davidsfonds.be"],
     "phone": [
       "+32 16 310670",

@@ -12,26 +12,32 @@
   "calendarSummary": "do 21\/04\/16 om 20:00 ",
   "location": {
     "@type": "Place",
-    "name": "Rode Zaal",
+    "name": {
+      "nl": "Rode Zaal"
+    },
     "address": {
-      "addressCountry": "BE",
-      "addressLocality": "Scherpenheuvel",
-      "postalCode": "3270",
-      "streetAddress": "August Nihoulstraat 74"
-    }
-  },
-  "organizer": {
-    "@id": "https:\/\/io.uitdatabank.be\/organizer\/289C4681-EE51-8AD8-A7851C6434767415",
-    "@context": "\/api\/1.0\/organizer.jsonld",
-    "name": "GC Den Egger",
-    "addresses": [
-      {
+      "nl": {
         "addressCountry": "BE",
         "addressLocality": "Scherpenheuvel",
         "postalCode": "3270",
         "streetAddress": "August Nihoulstraat 74"
       }
-    ],
+    }
+  },
+  "organizer": {
+    "@id": "https:\/\/io.uitdatabank.be\/organizer\/289C4681-EE51-8AD8-A7851C6434767415",
+    "@context": "\/api\/1.0\/organizer.jsonld",
+    "name": {
+      "nl": "GC Den Egger"
+    },
+    "address": {
+      "nl": {
+        "addressCountry": "BE",
+        "addressLocality": "Scherpenheuvel",
+        "postalCode": "3270",
+        "streetAddress": "August Nihoulstraat 74"
+      }
+    },
     "email": [
       "info@denegger.be"
     ],

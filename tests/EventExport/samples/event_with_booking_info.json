@@ -12,10 +12,12 @@
       "nl": "SMAK"
     },
     "address": {
-      "addressCountry": "BE",
-      "addressLocality": "Gent",
-      "postalCode": "9000",
-      "streetAddress": "Jan Hoetplein 1"
+      "nl": {
+        "addressCountry": "BE",
+        "addressLocality": "Gent",
+        "postalCode": "9000",
+        "streetAddress": "Jan Hoetplein 1"
+      }
     },
     "calendarType": "permanent",
     "availableTo": "2100-01-01T00:00:00+00:00",
@@ -59,7 +61,9 @@
     "@id": "https:\/\/udb-silex-test.uitdatabank.be\/organizers\/6bd731a8-598d-460f-b534-98a604fc4983",
     "@context": "\/contexts\/organizer",
     "url": "http:\/\/smak.be",
-    "name": "SMAK",
+    "name": {
+      "nl": "SMAK"
+    },
     "created": "2016-12-01T09:13:26+00:00",
     "creator": "83b90b27-0ce3-449a-9816-2cf1e44ab56e (BLE)",
     "address": {

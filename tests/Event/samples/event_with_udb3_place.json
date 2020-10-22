@@ -24,10 +24,12 @@
     "available": "2016-04-13T10:41:57+02:00",
     "sameAs": [],
     "address": {
-      "addressCountry": "BE",
-      "addressLocality": "Leuven",
-      "postalCode": "3000",
-      "streetAddress": "teststraat 44"
+      "nl": {
+        "addressCountry": "BE",
+        "addressLocality": "Leuven",
+        "postalCode": "3000",
+        "streetAddress": "teststraat 44"
+      }
     },
     "bookingInfo": {
       "description": "",

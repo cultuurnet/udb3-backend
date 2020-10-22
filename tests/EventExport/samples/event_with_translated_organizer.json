@@ -24,14 +24,14 @@
     "name": {
       "nl": "Davidsfonds Academie"
     },
-    "addresses": [
-      {
+    "address": {
+      "nl": {
         "addressCountry": "BE",
         "addressLocality": "Leuven",
         "postalCode": "3000",
         "streetAddress": "Blijde-Inkomststraat 77"
       }
-    ],
+    },
     "email": ["academie@davidsfonds.be"],
     "phone": [
       "+32 16 310670",

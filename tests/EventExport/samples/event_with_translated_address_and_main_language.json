@@ -32,17 +32,17 @@
   "organizer": {
     "@id": "http:\/\/culudb-silex.dev:8080\/organizer\/7481A1F9-D5CB-3BC9-D3C308240015B44D",
     "@context": "\/api\/1.0\/organizer.jsonld",
-    "name": "Davidsfonds Academie",
-    "addresses": [
-      {
-        "nl" : {
-          "addressCountry": "BE",
-          "addressLocality": "Leuven",
-          "postalCode": "3000",
-          "streetAddress": "Blijde-Inkomststraat 77"
-        }
+    "name": {
+      "nl": "Davidsfonds Academie"
+    },
+    "address": {
+      "nl": {
+        "addressCountry": "BE",
+        "addressLocality": "Leuven",
+        "postalCode": "3000",
+        "streetAddress": "Blijde-Inkomststraat 77"
       }
-    ],
+    },
     "email": ["academie@davidsfonds.be"],
     "phone": [
       "+32 16 310670",
