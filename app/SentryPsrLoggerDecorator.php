@@ -75,7 +75,7 @@ final class SentryPsrLoggerDecorator implements LoggerInterface
 
     public function log($level, $message, array $context = array()): void
     {
-        $this->logger->log($message, $message, $context);
+        $this->logger->log($level, $message, $context);
     }
 
     private function sendThrowableToSentry(array $context = array()): void
