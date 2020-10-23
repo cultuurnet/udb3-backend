@@ -36,7 +36,7 @@ class PopularityTest extends TestCase
      * @dataProvider inValidTypeProvider
      * @param mixed $value
      */
-    public function it_throws_on_invalid_types($value): void
+    public function it_throws_on_invalid_types_if_strict_types_is_enabled($value): void
     {
         $this->expectException(TypeError::class);
 
