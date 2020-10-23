@@ -30,6 +30,6 @@ class DBALPopularityRepository implements PopularityRepository
             ->execute()
             ->fetchColumn();
 
-        return new Popularity((int) $popularity ?: 0);
+        return new Popularity((int) $popularity);
     }
 }
