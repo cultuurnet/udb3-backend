@@ -12,16 +12,22 @@
   "calendarSummary": "di 12\/04\/16 van 20:00 tot 22:00 ",
   "location": {
     "@type": "Place",
-    "name": "Merelbeke, Floracenter, Teaterstraat 39",
+    "name": {
+      "nl": "Merelbeke, Floracenter, Teaterstraat 39"
+    },
     "address": {
-      "addressCountry": "BE",
-      "addressLocality": "Merelbeke",
-      "postalCode": "9820",
-      "streetAddress": "Teaterstraat 39"
+      "nl": {
+        "addressCountry": "BE",
+        "addressLocality": "Merelbeke",
+        "postalCode": "9820",
+        "streetAddress": "Teaterstraat 39"
+      }
     }
   },
   "organizer": {
-    "name": "markant Melle Merelbeke",
+    "name": {
+      "nl": "markant Melle Merelbeke"
+    },
     "@type": "Organizer"
   },
   "bookingInfo": [

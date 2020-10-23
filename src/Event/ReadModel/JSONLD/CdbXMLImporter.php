@@ -217,7 +217,8 @@ class CdbXMLImporter
             $organizer = (array)$organizerManager->organizerJSONLD($organizerId);
         } elseif ($organizerCdb && $contactInfoCdb) {
             $organizer = array();
-            $organizer['name'] = $organizerCdb->getLabel();
+            $organizer['mainLanguage'] = 'nl';
+            $organizer['name']['nl'] = $organizerCdb->getLabel();
 
             $emailsCdb = $contactInfoCdb->getMails();
             if (count($emailsCdb) > 0) {

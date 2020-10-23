@@ -12,10 +12,12 @@
     "description": "De Wildeman is een gezellig gemeenschapscentrum in Herent aan de rand van leuven. Al meer dan tien jaar komen hier grote namen en lokale sterren. Theater, Muziek, Cabaret,.. De Wildeman biedt, vanop de eerste rij, cultuur aan democratische prijzen. Kortom: een gezellige avond uit!",
     "name": {"nl": "GC De Wildeman"},
     "address": {
-      "addressCountry": "BE",
-      "addressLocality": "Herent",
-      "postalCode": "3020",
-      "streetAddress": "Schoolstraat 15"
+      "nl": {
+        "addressCountry": "BE",
+        "addressLocality": "Herent",
+        "postalCode": "3020",
+        "streetAddress": "Schoolstraat 15"
+      }
     },
     "bookingInfo": {
       "description": "",

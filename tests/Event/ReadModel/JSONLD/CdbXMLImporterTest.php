@@ -172,6 +172,25 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
+    public function it_adds_a_dummy_organizer_if_an_organizer_without_id_is_included(): void
+    {
+        $jsonEvent = $this->createJsonEventFromCdbXml('event_with_dummy_organizer.cdbxml.xml');
+
+        $this->assertEquals(
+            [
+                '@type' => 'Organizer',
+                'mainLanguage' => 'nl',
+                'name' => [
+                    'nl' => 'Test organizer',
+                ],
+            ],
+            $jsonEvent->organizer
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_adds_an_email_property_when_cdbxml_has_no_organizer_but_has_contact_with_email()
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_email_and_phone_number.cdbxml.xml');
