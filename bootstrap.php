@@ -1049,7 +1049,7 @@ $app['logger.uitpas'] = $app->share(
         $logger = new Monolog\Logger('uitpas');
         $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
 
-        return new SentryErrorHandler($app[SentryErrorHandler::class], $logger);
+        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
     }
 );
 
