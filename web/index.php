@@ -124,36 +124,6 @@ $app['security.access_rules'] = array(
     array('^/(roles|permissions|users)/.*', Permission::GEBRUIKERS_BEHEREN),
 );
 
-$app['logger.search'] = $app->share(
-    function ($app) {
-        $logger = new \Monolog\Logger('search');
-
-        $handlers = $app['config']['log.search'];
-        foreach ($handlers as $handler_config) {
-            switch ($handler_config['type']) {
-                case 'hipchat':
-                    $handler = new \Monolog\Handler\HipChatHandler(
-                        $handler_config['token'],
-                        $handler_config['room']
-                    );
-                    break;
-                case 'file':
-                    $handler = new \Monolog\Handler\StreamHandler(
-                        __DIR__ . '/' . $handler_config['path']
-                    );
-                    break;
-                default:
-                    continue 2;
-            }
-
-            $handler->setLevel($handler_config['level']);
-            $logger->pushHandler($handler);
-        }
-
-        return $logger;
-    }
-);
-
 // Enable CORS.
 $app->after($app["cors"]);
 

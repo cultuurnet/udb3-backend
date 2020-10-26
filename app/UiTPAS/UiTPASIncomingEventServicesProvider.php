@@ -5,6 +5,8 @@ namespace CultuurNet\UDB3\Silex\UiTPAS;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\SentryErrorHandler;
+use CultuurNet\UDB3\Silex\SentryPsrLoggerDecorator;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\HttpUiTPASLabelsRepository;
@@ -30,7 +32,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 $logger = new Logger('uitpas-events');
                 $logger->pushHandler($app['uitpas_log_handler']);
-                return $logger;
+                return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
             }
         );
 

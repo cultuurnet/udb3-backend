@@ -36,6 +36,8 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
+use CultuurNet\UDB3\Silex\SentryErrorHandler;
+use CultuurNet\UDB3\Silex\SentryPsrLoggerDecorator;
 use CultuurNet\UDB3\Silex\SentryServiceProvider;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
@@ -591,7 +593,7 @@ $app['logger.command_bus'] = $app->share(
             $logger->pushHandler($handler);
         }
 
-        return $logger;
+        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
     }
 );
 
@@ -1019,8 +1021,8 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$app['logger.amqp.event_bus_forwarder'] = $app->share(
-    function () {
+$app['logger.amqp.event_bus_forwarder'] = $app::share(
+    function (Application $app) {
         $logger = new Monolog\Logger('amqp.event_bus_forwarder');
         $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
 
@@ -1030,7 +1032,7 @@ $app['logger.amqp.event_bus_forwarder'] = $app->share(
         );
         $logger->pushHandler($logFileHandler);
 
-        return $logger;
+        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
     }
 );
 
@@ -1043,11 +1045,11 @@ $app['uitpas'] = $app->share(
 );
 
 $app['logger.uitpas'] = $app->share(
-    function () {
+    function (Application $app) {
         $logger = new Monolog\Logger('uitpas');
         $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
 
-        return $logger;
+        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
     }
 );
 
