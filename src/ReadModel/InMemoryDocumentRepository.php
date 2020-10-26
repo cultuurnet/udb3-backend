@@ -11,7 +11,7 @@ class InMemoryDocumentRepository implements DocumentRepositoryInterface
      */
     private $documents;
 
-    public function get(string $id): ?JsonDocument
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         if (isset($this->documents[$id])) {
             if ('GONE' === $this->documents[$id]) {

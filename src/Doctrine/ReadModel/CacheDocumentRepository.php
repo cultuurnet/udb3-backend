@@ -16,7 +16,7 @@ class CacheDocumentRepository implements DocumentRepositoryInterface
         $this->cache = $cache;
     }
 
-    public function get(string $id): ?JsonDocument
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         $value = $this->cache->fetch($id);
 

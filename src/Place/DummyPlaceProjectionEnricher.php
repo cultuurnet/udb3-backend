@@ -25,7 +25,7 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
         $this->dummyPlaceIds = $dummyPlaceIds;
     }
 
-    public function get(string $id): ?JsonDocument
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         $readModel = $this->repository->get($id);
         if (!$readModel) {

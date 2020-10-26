@@ -30,7 +30,7 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
         $this->iriGenerator = $iriGenerator;
     }
 
-    public function get(string $id): ?JsonDocument
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         $document = parent::get($id);
 

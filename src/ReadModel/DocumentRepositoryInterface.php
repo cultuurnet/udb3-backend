@@ -9,7 +9,7 @@ interface DocumentRepositoryInterface
     /**
      * @throws DocumentGoneException
      */
-    public function get(string $id): ?JsonDocument;
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument;
 
     public function save(JsonDocument $readModel): void;
 

@@ -14,7 +14,7 @@ abstract class DocumentRepositoryDecorator implements DocumentRepositoryInterfac
         $this->decoratedRepository = $repository;
     }
 
-    public function get(string $id): ?JsonDocument
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         return $this->decoratedRepository->get($id);
     }
