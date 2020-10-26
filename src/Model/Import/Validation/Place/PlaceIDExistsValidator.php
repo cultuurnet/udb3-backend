@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Model\Import\Validation\Place;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use Respect\Validation\Exceptions\CallbackException;
 use Respect\Validation\Rules\Callback;
 

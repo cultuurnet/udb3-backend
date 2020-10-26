@@ -6,7 +6,6 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label\Events\AbstractEvent;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
@@ -15,6 +14,7 @@ use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterfac
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

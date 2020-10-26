@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

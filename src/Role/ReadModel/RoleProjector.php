@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Role\ReadModel;
 
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class RoleProjector implements EventListenerInterface

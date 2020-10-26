@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\History;
 
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 abstract class BaseHistoryProjector implements EventListenerInterface

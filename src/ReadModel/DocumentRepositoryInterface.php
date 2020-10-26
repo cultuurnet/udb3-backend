@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Event\ReadModel;
+namespace CultuurNet\UDB3\ReadModel;
 
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 
 interface DocumentRepositoryInterface
 {

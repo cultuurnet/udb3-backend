@@ -10,7 +10,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
@@ -18,6 +17,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 

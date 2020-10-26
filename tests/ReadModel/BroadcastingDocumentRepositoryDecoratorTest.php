@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\ReadModel;
 
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

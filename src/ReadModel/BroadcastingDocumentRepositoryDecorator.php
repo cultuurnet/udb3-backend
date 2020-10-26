@@ -8,7 +8,6 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryDecorator;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 
 /**
  * Class BroadcastingDocumentRepositoryDecorator

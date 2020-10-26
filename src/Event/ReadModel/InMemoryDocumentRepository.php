@@ -5,6 +5,7 @@
 
 namespace CultuurNet\UDB3\Event\ReadModel;
 
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class InMemoryDocumentRepository implements DocumentRepositoryInterface

@@ -6,7 +6,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializableInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;

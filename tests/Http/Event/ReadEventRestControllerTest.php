@@ -4,16 +4,16 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
+use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTimeZone;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CultuurNet\UDB3\Event\EventServiceInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 
 class ReadEventRestControllerTest extends TestCase
 {

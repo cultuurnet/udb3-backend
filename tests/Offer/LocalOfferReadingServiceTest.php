@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use LogicException;
 use PHPUnit\Framework\MockObject\MockObject;

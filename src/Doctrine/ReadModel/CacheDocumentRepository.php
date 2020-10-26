@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Doctrine\ReadModel;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\Common\Cache\Cache;
 

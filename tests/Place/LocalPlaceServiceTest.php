@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\Repository\RepositoryInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface as PlaceRelationsRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

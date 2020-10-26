@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Detail;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\AbstractEvent;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;

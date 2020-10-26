@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Role\Events\UserAdded;

@@ -7,6 +7,8 @@ use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
 use Broadway\Repository\AggregateNotFoundException;
+use Broadway\Repository\RepositoryInterface;
+use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
@@ -17,25 +19,23 @@ use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
-use Broadway\UuidGenerator\UuidGeneratorInterface;
-use Broadway\Repository\RepositoryInterface;
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Event\Location\LocationNotFound;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use CultuurNet\UDB3\Title;
 
 class EventEditingServiceTest extends TestCase
 {

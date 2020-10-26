@@ -10,15 +10,15 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\Event\Location\LocationNotFound;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 

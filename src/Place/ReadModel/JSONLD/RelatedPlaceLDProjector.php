@@ -4,10 +4,10 @@ namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 
 class RelatedPlaceLDProjector implements EventListenerInterface
 {

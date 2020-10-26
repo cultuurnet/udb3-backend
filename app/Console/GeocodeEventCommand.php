@@ -6,7 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -3,10 +3,10 @@
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

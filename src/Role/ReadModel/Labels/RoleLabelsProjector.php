@@ -3,10 +3,10 @@
 namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
@@ -28,9 +28,9 @@ class RoleLabelsProjector extends RoleProjector
     private $labelRolesRepository;
 
     /**
-     * @param \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $repository
+     * @param \CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface $repository
      * @param \CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface $labelJsonRepository
-     * @param \CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface $labelRolesRepository
+     * @param \CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface $labelRolesRepository
      */
     public function __construct(
         DocumentRepositoryInterface $repository,

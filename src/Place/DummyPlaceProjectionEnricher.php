@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface

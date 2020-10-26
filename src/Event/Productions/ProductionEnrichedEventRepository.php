@@ -4,8 +4,8 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryDecorator;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 
 class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
 {

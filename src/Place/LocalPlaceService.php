@@ -3,10 +3,10 @@
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\Repository\RepositoryInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\LocalEntityService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface as RelationsRepository;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 
 class LocalPlaceService extends LocalEntityService implements PlaceServiceInterface
 {

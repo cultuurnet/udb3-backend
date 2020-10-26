@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
 use Doctrine\DBAL\DBALException;
 
 class ProductionCommandHandler extends Udb3CommandHandler
