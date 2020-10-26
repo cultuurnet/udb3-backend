@@ -14,17 +14,17 @@ abstract class DocumentRepositoryDecorator implements DocumentRepositoryInterfac
         $this->decoratedRepository = $repository;
     }
 
-    public function get($id)
+    public function get(string $id): ?JsonDocument
     {
         return $this->decoratedRepository->get($id);
     }
 
-    public function save(JsonDocument $readModel)
+    public function save(JsonDocument $readModel): void
     {
         $this->decoratedRepository->save($readModel);
     }
 
-    public function remove($id)
+    public function remove($id): void
     {
         $this->decoratedRepository->remove($id);
     }

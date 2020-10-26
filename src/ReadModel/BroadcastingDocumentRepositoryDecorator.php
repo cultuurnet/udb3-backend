@@ -35,14 +35,14 @@ class BroadcastingDocumentRepositoryDecorator extends DocumentRepositoryDecorato
         $this->eventBus = $eventBus;
     }
 
-    public function save(JsonDocument $readModel)
+    public function save(JsonDocument $readModel): void
     {
         parent::save($readModel);
 
         $this->broadcastDocumentUpdated($readModel->getId());
     }
 
-    protected function broadcastDocumentUpdated($id)
+    protected function broadcastDocumentUpdated($id): void
     {
         $event = $this->eventFactory->createEvent($id);
 

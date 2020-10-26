@@ -6,6 +6,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
 {
@@ -29,7 +30,7 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
         $this->iriGenerator = $iriGenerator;
     }
 
-    public function get($id)
+    public function get(string $id): ?JsonDocument
     {
         $document = parent::get($id);
 

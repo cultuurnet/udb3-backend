@@ -25,7 +25,7 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
         $this->dummyPlaceIds = $dummyPlaceIds;
     }
 
-    public function get($id)
+    public function get(string $id): ?JsonDocument
     {
         $readModel = $this->repository->get($id);
         if (!$readModel) {
@@ -42,12 +42,12 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
         return $readModel;
     }
 
-    public function save(JsonDocument $readModel)
+    public function save(JsonDocument $readModel): void
     {
         $this->repository->save($readModel);
     }
 
-    public function remove($id)
+    public function remove($id): void
     {
         $this->repository->remove($id);
     }

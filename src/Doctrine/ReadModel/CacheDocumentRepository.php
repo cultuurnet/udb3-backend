@@ -16,7 +16,7 @@ class CacheDocumentRepository implements DocumentRepositoryInterface
         $this->cache = $cache;
     }
 
-    public function get($id)
+    public function get(string $id): ?JsonDocument
     {
         $value = $this->cache->fetch($id);
 
@@ -31,12 +31,12 @@ class CacheDocumentRepository implements DocumentRepositoryInterface
         return new JsonDocument($id, $value);
     }
 
-    public function save(JsonDocument $document)
+    public function save(JsonDocument $document): void
     {
         $this->cache->save($document->getId(), $document->getRawBody(), 0);
     }
 
-    public function remove($id)
+    public function remove($id): void
     {
         $this->cache->save($id, 'GONE', 0);
     }
