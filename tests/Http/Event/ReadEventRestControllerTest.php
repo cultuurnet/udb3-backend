@@ -30,6 +30,16 @@ class ReadEventRestControllerTest extends TestCase
     /**
      * @var JsonDocument
      */
+    private $jsonDocument;
+
+    /**
+     * @var JsonDocument
+     */
+    private $jsonDocumentWithMetadata;
+
+    /**
+     * @var JsonDocument
+     */
     private $historyJsonDocument;
 
     /**
@@ -57,6 +67,25 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function setUp()
     {
+        $this->jsonDocument = new JsonDocument(
+            'id',
+            json_encode(
+                [
+                    '@type' => 'Event',
+                ]
+            )
+        );
+
+        $this->jsonDocumentWithMetadata = new JsonDocument(
+            'id',
+            json_encode(
+                [
+                    '@type' => 'Event',
+                    'popularity' => 123456,
+                ]
+            )
+        );
+
         $this->historyJsonDocument = new JsonDocument(
             'id',
             json_encode(
@@ -93,10 +122,10 @@ class ReadEventRestControllerTest extends TestCase
         $jsonRepository = $this->createMock(DocumentRepository::class);
         $jsonRepository->method('get')
             ->willReturnCallback(
-                function ($id) {
+                function (string $id, bool $includeMetadata = false) {
                     switch ($id) {
                         case self::EXISTING_ID:
-                            return $this->historyJsonDocument;
+                            return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
@@ -192,10 +221,23 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_json_get_for_an_event(): void
     {
-        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID);
+        $request = new Request();
+        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->historyJsonDocument->getRawBody(), $jsonResponse->getContent());
+        $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_http_response_with_json_including_metadata_for_an_event(): void
+    {
+        $request = new Request(['includeMetadata' => 'true']);
+        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID, $request);
+
+        $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
+        $this->assertEquals($this->jsonDocumentWithMetadata->getRawBody(), $jsonResponse->getContent());
     }
 
     /**
@@ -203,7 +245,8 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event(): void
     {
-        $jsonResponse = $this->eventRestController->get(self::NON_EXISTING_ID);
+        $request = new Request();
+        $jsonResponse = $this->eventRestController->get(self::NON_EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
     }

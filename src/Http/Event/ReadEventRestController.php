@@ -58,10 +58,12 @@ class ReadEventRestController
         $this->userIdentification = $userIdentification;
     }
 
-    public function get(string $cdbid): JsonResponse
+    public function get(string $cdbid, Request $request): JsonResponse
     {
+        $includeMetadata = (bool) $request->query->get('includeMetadata', false);
+
         try {
-            $event = $this->getEventDocument($cdbid, true);
+            $event = $this->getEventDocument($cdbid, $includeMetadata);
         } catch (EntityNotFoundException $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
