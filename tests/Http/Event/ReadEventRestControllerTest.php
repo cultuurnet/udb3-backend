@@ -89,10 +89,22 @@ class ReadEventRestControllerTest extends TestCase
         $this->event->setEndDate(new \DateTime('2018-10-07 18:00:00', $tz));
         $this->event->setCalendarType('single');
 
-        $eventServiceInterface = $this->createMock(EventServiceInterface::class);
-        $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
-        $serializerInterface = $this->createMock(SerializerInterface::class);
+        $jsonRepository = $this->createMock(DocumentRepository::class);
+        $jsonRepository->method('get')
+            ->willReturnCallback(
+                function ($id) {
+                    switch ($id) {
+                        case self::EXISTING_ID:
+                            return $this->historyJsonDocument;
+                        case self::REMOVED_ID:
+                            throw new DocumentGoneException();
+                        default:
+                            return null;
+                    }
+                }
+            );
 
+        $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
         $documentRepositoryInterface->method('get')
             ->willReturnCallback(
                 function ($id) {
@@ -107,20 +119,7 @@ class ReadEventRestControllerTest extends TestCase
                 }
             );
 
-        $eventServiceInterface->method('getEvent')
-            ->willReturnCallback(
-                function ($id) {
-                    switch ($id) {
-                        case self::EXISTING_ID:
-                            return $this->historyJsonDocument->getRawBody();
-                        case self::REMOVED_ID:
-                            throw new DocumentGoneException();
-                        default:
-                            return null;
-                    }
-                }
-            );
-
+        $serializerInterface = $this->createMock(SerializerInterface::class);
         $serializerInterface->method('deserialize')
             ->willReturnCallback(
                 function () {
@@ -135,7 +134,7 @@ class ReadEventRestControllerTest extends TestCase
          * @var DocumentRepository $documentRepositoryInterface
          */
         $this->eventRestController = new ReadEventRestController(
-            $eventServiceInterface,
+            $jsonRepository,
             $documentRepositoryInterface,
             $serializerInterface,
             $this->userIdentification

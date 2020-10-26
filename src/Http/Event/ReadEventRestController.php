@@ -6,7 +6,6 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
-use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
@@ -26,9 +25,9 @@ class ReadEventRestController
     use ApiProblemJsonResponseTrait;
 
     /**
-     * @var EventServiceInterface
+     * @var DocumentRepository
      */
-    private $service;
+    private $jsonRepository;
 
     /**
      * @var DocumentRepository
@@ -46,12 +45,12 @@ class ReadEventRestController
     private $userIdentification;
 
     public function __construct(
-        EventServiceInterface $service,
+        DocumentRepository $jsonRepository,
         DocumentRepository $historyRepository,
         SerializerInterface $serializer,
         UserIdentificationInterface $userIdentification
     ) {
-        $this->service = $service;
+        $this->jsonRepository = $jsonRepository;
         $this->historyRepository = $historyRepository;
         $this->serializer = $serializer;
         $this->userIdentification = $userIdentification;
@@ -61,11 +60,11 @@ class ReadEventRestController
     {
         $response = null;
 
-        $event = $this->service->getEvent($cdbid);
+        $event = $this->jsonRepository->get($cdbid, true);
 
         if ($event) {
             $response = JsonLdResponse::create()
-                ->setContent($event);
+                ->setContent($event->getRawBody());
 
             $response->headers->set('Vary', 'Origin');
         } else {
@@ -122,8 +121,8 @@ class ReadEventRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $data = $this->service->getEvent($cdbid);
-        $event = $this->serializer->deserialize($data, Event::class);
+        $data = $this->jsonRepository->get($cdbid);
+        $event = $this->serializer->deserialize($data->getRawBody(), Event::class);
 
         if ($style !== 'html' && $style !== 'text') {
             $response = $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
