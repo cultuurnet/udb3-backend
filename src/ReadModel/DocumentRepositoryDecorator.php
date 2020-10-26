@@ -1,9 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Event\ReadModel;
-
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+namespace CultuurNet\UDB3\ReadModel;
 
 abstract class DocumentRepositoryDecorator implements DocumentRepositoryInterface
 {
