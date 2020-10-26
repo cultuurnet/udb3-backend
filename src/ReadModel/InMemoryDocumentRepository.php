@@ -3,10 +3,9 @@
  * @file
  */
 
-namespace CultuurNet\UDB3\Event\ReadModel;
+namespace CultuurNet\UDB3\ReadModel;
 
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 
 class InMemoryDocumentRepository implements DocumentRepositoryInterface
 {
