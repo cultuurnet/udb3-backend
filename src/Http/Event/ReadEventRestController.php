@@ -60,8 +60,6 @@ class ReadEventRestController
 
     public function get(string $cdbid): JsonResponse
     {
-        $response = null;
-
         try {
             $event = $this->getEventDocument($cdbid, true);
         } catch (EntityNotFoundException $e) {
