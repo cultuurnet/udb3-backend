@@ -6,11 +6,13 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,16 +62,16 @@ class ReadEventRestController
     {
         $response = null;
 
-        $event = $this->jsonRepository->get($cdbid, true);
-
-        if ($event) {
-            $response = JsonLdResponse::create()
-                ->setContent($event->getRawBody());
-
-            $response->headers->set('Vary', 'Origin');
-        } else {
-            $response = $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
+        try {
+            $event = $this->getEventDocument($cdbid, true);
+        } catch (EntityNotFoundException $e) {
+            return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
+
+        $response = JsonLdResponse::create()
+            ->setContent($event->getRawBody());
+
+        $response->headers->set('Vary', 'Origin');
 
         return $response;
     }
@@ -121,8 +123,8 @@ class ReadEventRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $data = $this->jsonRepository->get($cdbid);
-        $event = $this->serializer->deserialize($data->getRawBody(), Event::class);
+        $eventDocument = $this->getEventDocument($cdbid);
+        $event = $this->serializer->deserialize($eventDocument->getRawBody(), Event::class);
 
         if ($style !== 'html' && $style !== 'text') {
             $response = $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
@@ -137,5 +139,25 @@ class ReadEventRestController
 
 
         return $response;
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    private function getEventDocument(string $id, bool $includeMetadata = false): JsonDocument
+    {
+        $notFoundException = new EntityNotFoundException("Event with id: {$id} not found");
+
+        try {
+            $document = $this->jsonRepository->get($id, $includeMetadata);
+        } catch (DocumentGoneException $e) {
+            throw $notFoundException;
+        }
+
+        if (!$document) {
+            throw $notFoundException;
+        }
+
+        return $document;
     }
 }

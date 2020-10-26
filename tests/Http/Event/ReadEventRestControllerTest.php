@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
@@ -216,6 +217,17 @@ class ReadEventRestControllerTest extends TestCase
         $calSumResponse = $this->eventRestController->getCalendarSummary(self::EXISTING_ID, $request);
 
         $this->assertEquals($this->calSum, $calSumResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_http_response_with_error_NOT_FOUND_for_calendar_summary_for_non_existing_event(): void
+    {
+        $this->expectException(EntityNotFoundException::class);
+
+        $request = new Request(array('style' => 'text', 'format' => 'lg'));
+        $this->eventRestController->getCalendarSummary(self::NON_EXISTING_ID, $request);
     }
 
     private function givenGodUser(): void
