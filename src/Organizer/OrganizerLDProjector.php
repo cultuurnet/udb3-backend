@@ -30,7 +30,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
@@ -62,7 +62,7 @@ class OrganizerLDProjector implements EventListenerInterface
     }
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $repository;
 
@@ -87,13 +87,13 @@ class OrganizerLDProjector implements EventListenerInterface
     private $cdbXMLImporter;
 
     /**
-     * @param DocumentRepositoryInterface $repository
+     * @param DocumentRepository $repository
      * @param IriGeneratorInterface $iriGenerator
      * @param EventBusInterface $eventBus
      * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
      */
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         EventBusInterface $eventBus,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher

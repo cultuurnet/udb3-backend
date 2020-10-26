@@ -3,17 +3,17 @@
 namespace CultuurNet\UDB3\History;
 
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 abstract class BaseHistoryProjector implements EventListenerInterface
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $documentRepository;
 
-    public function __construct(DocumentRepositoryInterface $documentRepository)
+    public function __construct(DocumentRepository $documentRepository)
     {
         $this->documentRepository = $documentRepository;
     }

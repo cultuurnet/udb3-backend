@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -19,7 +19,7 @@ class ItemVisibilityProjector implements EventListenerInterface, LoggerAwareInte
     use LoggerAwareTrait;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $itemRepository;
 
@@ -29,11 +29,11 @@ class ItemVisibilityProjector implements EventListenerInterface, LoggerAwareInte
     private $relationRepository;
 
     /**
-     * @param DocumentRepositoryInterface $itemRepository
+     * @param DocumentRepository $itemRepository
      * @param ReadRepositoryInterface $relationRepository
      */
     public function __construct(
-        DocumentRepositoryInterface $itemRepository,
+        DocumentRepository $itemRepository,
         ReadRepositoryInterface $relationRepository
     ) {
         $this->itemRepository = $itemRepository;

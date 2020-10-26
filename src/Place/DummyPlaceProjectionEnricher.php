@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
-class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
+class DummyPlaceProjectionEnricher implements DocumentRepository
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $repository;
 
@@ -18,7 +18,7 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
     private $dummyPlaceIds = [];
 
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         array $dummyPlaceIds
     ) {
         $this->repository = $repository;

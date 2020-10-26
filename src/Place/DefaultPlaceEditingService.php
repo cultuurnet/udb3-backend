@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
 use CultuurNet\UDB3\Place\Commands\UpdateMajorInfo;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
@@ -28,7 +28,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
     /**
      * @param CommandBusInterface $commandBus
      * @param UuidGeneratorInterface $uuidGenerator
-     * @param DocumentRepositoryInterface $readRepository
+     * @param DocumentRepository $readRepository
      * @param OfferCommandFactoryInterface $commandFactory
      * @param RepositoryInterface $writeRepository
      * @param LabelServiceInterface $labelService
@@ -36,7 +36,7 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
     public function __construct(
         CommandBusInterface $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        DocumentRepositoryInterface $readRepository,
+        DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
         RepositoryInterface $writeRepository,
         LabelServiceInterface $labelService

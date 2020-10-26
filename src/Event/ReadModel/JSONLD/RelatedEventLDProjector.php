@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\PlaceService;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Web\Url;
 
 class RelatedEventLDProjector implements EventListenerInterface
@@ -18,7 +18,7 @@ class RelatedEventLDProjector implements EventListenerInterface
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $repository;
 
@@ -43,14 +43,14 @@ class RelatedEventLDProjector implements EventListenerInterface
     protected $iriOfferIdentifierFactory;
 
     /**
-     * @param DocumentRepositoryInterface $repository
+     * @param DocumentRepository $repository
      * @param EventServiceInterface $eventService
      * @param PlaceService $placeService
      * @param OrganizerService $organizerService
      * @param IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
      */
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         EventServiceInterface $eventService,
         PlaceService $placeService,
         OrganizerService $organizerService,

@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 
@@ -43,7 +43,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
         EventServiceInterface $eventService,
         CommandBusInterface $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        DocumentRepositoryInterface $readRepository,
+        DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
         RepositoryInterface $writeRepository,
         LabelServiceInterface $labelService,

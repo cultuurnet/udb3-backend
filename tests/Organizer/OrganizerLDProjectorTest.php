@@ -36,7 +36,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\RecordedOn;
@@ -54,7 +54,7 @@ class OrganizerLDProjectorTest extends TestCase
     protected $projector;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     protected $documentRepository;
 
@@ -75,7 +75,7 @@ class OrganizerLDProjectorTest extends TestCase
 
     public function setUp()
     {
-        $this->documentRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->documentRepository = $this->createMock(DocumentRepository::class);
 
         $this->eventBus = $this->createMock(EventBusInterface::class);
 

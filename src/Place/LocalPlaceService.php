@@ -6,7 +6,7 @@ use Broadway\Repository\RepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\LocalEntityService;
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface as RelationsRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class LocalPlaceService extends LocalEntityService implements PlaceServiceInterface
 {
@@ -16,7 +16,7 @@ class LocalPlaceService extends LocalEntityService implements PlaceServiceInterf
     private $placeRelationsRepository;
 
     public function __construct(
-        DocumentRepositoryInterface $documentRepository,
+        DocumentRepository $documentRepository,
         RepositoryInterface $entityRepository,
         RelationsRepository $placeRelationsRepository,
         IriGeneratorInterface $iriGenerator

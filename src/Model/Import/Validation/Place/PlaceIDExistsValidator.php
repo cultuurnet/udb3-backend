@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Model\Import\Validation\Place;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Respect\Validation\Exceptions\CallbackException;
 use Respect\Validation\Rules\Callback;
 
@@ -13,11 +13,11 @@ class PlaceIDExistsValidator extends Callback
 {
     /**
      * @param UUIDParser $placeIDParser
-     * @param DocumentRepositoryInterface $placeDocumentRepository
+     * @param DocumentRepository $placeDocumentRepository
      */
     public function __construct(
         UUIDParser $placeIDParser,
-        DocumentRepositoryInterface $placeDocumentRepository
+        DocumentRepository $placeDocumentRepository
     ) {
         $callback = function ($idUrl) use ($placeIDParser, $placeDocumentRepository) {
             try {

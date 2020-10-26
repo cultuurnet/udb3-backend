@@ -40,7 +40,7 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Theme;
@@ -57,7 +57,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     protected $projector;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     protected $documentRepository;
 

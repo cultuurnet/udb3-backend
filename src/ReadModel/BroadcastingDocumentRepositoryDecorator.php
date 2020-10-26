@@ -26,7 +26,7 @@ class BroadcastingDocumentRepositoryDecorator extends DocumentRepositoryDecorato
     protected $eventBus;
 
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         EventBusInterface $eventBus,
         DocumentEventFactory $eventFactory
     ) {

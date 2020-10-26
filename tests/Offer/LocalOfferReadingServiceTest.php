@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use LogicException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,12 +17,12 @@ class LocalOfferReadingServiceTest extends TestCase
     private $iriOfferIdentifierFactory;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $eventDocumentRepository;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $placeDocumentRepository;
 
@@ -34,8 +34,8 @@ class LocalOfferReadingServiceTest extends TestCase
     public function setUp()
     {
         $this->iriOfferIdentifierFactory = $this->createMock(IriOfferIdentifierFactoryInterface::class);
-        $this->eventDocumentRepository = $this->createMock(DocumentRepositoryInterface::class);
-        $this->placeDocumentRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->eventDocumentRepository = $this->createMock(DocumentRepository::class);
+        $this->placeDocumentRepository = $this->createMock(DocumentRepository::class);
 
         $this->service = (new LocalOfferReadingService($this->iriOfferIdentifierFactory))
             ->withDocumentRepository(OfferType::EVENT(), $this->eventDocumentRepository)
@@ -92,7 +92,7 @@ class LocalOfferReadingServiceTest extends TestCase
             ->willReturn($expectedDocument);
 
         // Make sure the get() method will not be called on the other repositories.
-        /* @var DocumentRepositoryInterface|MockObject $incorrectRepository */
+        /* @var DocumentRepository|MockObject $incorrectRepository */
         foreach ($incorrectRepositories as $incorrectRepository) {
             $incorrectRepository->expects($this->never())
                 ->method('get');

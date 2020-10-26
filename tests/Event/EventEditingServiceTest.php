@@ -29,7 +29,7 @@ use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -65,7 +65,7 @@ class EventEditingServiceTest extends TestCase
     private $commandFactory;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $readRepository;
 
@@ -95,7 +95,7 @@ class EventEditingServiceTest extends TestCase
         $this->commandBus = $this->createMock(CommandBusInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
-        $this->readRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->readRepository = $this->createMock(DocumentRepository::class);
         $this->placeRepository = $this->createMock(PlaceRepository::class);
 
         $this->eventStore = new TraceableEventStore(

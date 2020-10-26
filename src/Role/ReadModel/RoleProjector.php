@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Role\ReadModel;
 
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class RoleProjector implements EventListenerInterface
@@ -12,15 +12,15 @@ class RoleProjector implements EventListenerInterface
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     protected $repository;
 
     /**
      * Projector constructor.
-     * @param DocumentRepositoryInterface $repository
+     * @param DocumentRepository $repository
      */
-    public function __construct(DocumentRepositoryInterface $repository)
+    public function __construct(DocumentRepository $repository)
     {
         $this->repository = $repository;
     }

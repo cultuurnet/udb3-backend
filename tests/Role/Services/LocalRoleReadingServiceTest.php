@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Role\Services;
 
 use Broadway\Repository\RepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -13,22 +13,22 @@ use ValueObjects\Identity\UUID;
 class LocalRoleReadingServiceTest extends TestCase
 {
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $roleReadRepository;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $roleLabelsReadRepository;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $roleUsersPermissionsReadRepository;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $userRolesPermissionsReadRepository;
 
@@ -49,12 +49,12 @@ class LocalRoleReadingServiceTest extends TestCase
 
     public function setUp()
     {
-        $this->roleReadRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->roleReadRepository = $this->createMock(DocumentRepository::class);
         $this->roleWriteRepository = $this->createMock(RepositoryInterface::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
-        $this->roleLabelsReadRepository = $this->createMock(DocumentRepositoryInterface::class);
-        $this->roleUsersPermissionsReadRepository = $this->createMock(DocumentRepositoryInterface::class);
-        $this->userRolesPermissionsReadRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->roleLabelsReadRepository = $this->createMock(DocumentRepository::class);
+        $this->roleUsersPermissionsReadRepository = $this->createMock(DocumentRepository::class);
+        $this->userRolesPermissionsReadRepository = $this->createMock(DocumentRepository::class);
 
         $this->readingService = new LocalRoleReadingService(
             $this->roleReadRepository,

@@ -6,7 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,11 +14,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GeocodeEventCommand extends AbstractGeocodeCommand
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $documentRepository;
 
-    public function __construct(CommandBusInterface $commandBus, Connection $connection, DocumentRepositoryInterface $documentRepository)
+    public function __construct(CommandBusInterface $commandBus, Connection $connection, DocumentRepository $documentRepository)
     {
         parent::__construct($commandBus, $connection);
         $this->documentRepository = $documentRepository;

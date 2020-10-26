@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +31,7 @@ class ReadEventRestController
     private $service;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $historyRepository;
 
@@ -47,7 +47,7 @@ class ReadEventRestController
 
     public function __construct(
         EventServiceInterface $service,
-        DocumentRepositoryInterface $historyRepository,
+        DocumentRepository $historyRepository,
         SerializerInterface $serializer,
         UserIdentificationInterface $userIdentification
     ) {

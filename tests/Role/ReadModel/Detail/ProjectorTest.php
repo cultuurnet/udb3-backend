@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Detail;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\AbstractEvent;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
@@ -37,7 +37,7 @@ class ProjectorTest extends TestCase
     private $constraintUuid;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $repository;
 
@@ -65,7 +65,7 @@ class ProjectorTest extends TestCase
 
         $this->constraintUuid = new UUID();
         $this->query = new Query('city:Leuven');
-        $this->repository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->repository = $this->createMock(DocumentRepository::class);
 
         $this->projector = new Projector($this->repository);
     }

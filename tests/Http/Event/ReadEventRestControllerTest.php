@@ -7,7 +7,7 @@ use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTimeZone;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -90,7 +90,7 @@ class ReadEventRestControllerTest extends TestCase
         $this->event->setCalendarType('single');
 
         $eventServiceInterface = $this->createMock(EventServiceInterface::class);
-        $documentRepositoryInterface = $this->createMock(DocumentRepositoryInterface::class);
+        $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
         $serializerInterface = $this->createMock(SerializerInterface::class);
 
         $documentRepositoryInterface->method('get')
@@ -132,7 +132,7 @@ class ReadEventRestControllerTest extends TestCase
 
         /**
          * @var EventServiceInterface $eventServiceInterface
-         * @var DocumentRepositoryInterface $documentRepositoryInterface
+         * @var DocumentRepository $documentRepositoryInterface
          */
         $this->eventRestController = new ReadEventRestController(
             $eventServiceInterface,

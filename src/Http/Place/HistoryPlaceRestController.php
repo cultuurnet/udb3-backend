@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +19,7 @@ class HistoryPlaceRestController
     private const HISTORY_ERROR_FORBIDDEN = 'Forbidden to access place history.';
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $historyRepository;
 
@@ -30,7 +30,7 @@ class HistoryPlaceRestController
 
 
     public function __construct(
-        DocumentRepositoryInterface $documentRepository,
+        DocumentRepository $documentRepository,
         UserIdentificationInterface $userIdentification
     ) {
         $this->historyRepository = $documentRepository;

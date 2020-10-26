@@ -10,7 +10,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface as RelationsRepository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\LocalEntityService;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class LocalEventService extends LocalEntityService implements EventServiceInterface
 {
@@ -20,7 +20,7 @@ class LocalEventService extends LocalEntityService implements EventServiceInterf
     protected $eventRelationsRepository;
 
     public function __construct(
-        DocumentRepositoryInterface $documentRepository,
+        DocumentRepository $documentRepository,
         RepositoryInterface $eventRepository,
         RelationsRepository $eventRelationsRepository,
         IriGeneratorInterface $iriGenerator

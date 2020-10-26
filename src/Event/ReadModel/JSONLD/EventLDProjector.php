@@ -60,7 +60,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\PlaceService;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
@@ -104,7 +104,7 @@ class EventLDProjector extends OfferLDProjector implements
      * @param string[] $basePriceTranslations
      */
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         PlaceService $placeService,
         OrganizerService $organizerService,

@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\ReadModel;
 
-abstract class DocumentRepositoryDecorator implements DocumentRepositoryInterface
+abstract class DocumentRepositoryDecorator implements DocumentRepository
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     protected $decoratedRepository;
 
-    public function __construct(DocumentRepositoryInterface $repository)
+    public function __construct(DocumentRepository $repository)
     {
         $this->decoratedRepository = $repository;
     }

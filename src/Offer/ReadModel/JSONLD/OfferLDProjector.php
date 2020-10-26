@@ -45,7 +45,7 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsInappropriate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
@@ -62,7 +62,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     protected $repository;
 
@@ -100,7 +100,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     protected $slugger;
 
     /**
-     * @param DocumentRepositoryInterface $repository
+     * @param DocumentRepository $repository
      * @param IriGeneratorInterface $iriGenerator
      * @param EntityServiceInterface $organizerService
      * @param SerializerInterface $mediaObjectSerializer
@@ -108,7 +108,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      * @param string[] $basePriceTranslations
      */
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         EntityServiceInterface $organizerService,
         SerializerInterface $mediaObjectSerializer,

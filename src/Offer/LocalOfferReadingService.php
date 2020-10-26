@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use ValueObjects\Web\Url;
 
@@ -14,7 +14,7 @@ class LocalOfferReadingService implements OfferReadingServiceInterface
     private $iriOfferIdentifierFactory;
 
     /**
-     * @var DocumentRepositoryInterface[]
+     * @var DocumentRepository[]
      */
     private $documentRepositories;
 
@@ -26,12 +26,12 @@ class LocalOfferReadingService implements OfferReadingServiceInterface
 
     /**
      * @param OfferType $offerType
-     * @param DocumentRepositoryInterface $documentRepository
+     * @param DocumentRepository $documentRepository
      * @return static
      */
     public function withDocumentRepository(
         OfferType $offerType,
-        DocumentRepositoryInterface $documentRepository
+        DocumentRepository $documentRepository
     ) {
         $c = clone $this;
         $c->documentRepositories[$offerType->toNative()] = $documentRepository;
@@ -58,7 +58,7 @@ class LocalOfferReadingService implements OfferReadingServiceInterface
 
     /**
      * @param OfferType $offerType
-     * @return DocumentRepositoryInterface
+     * @return DocumentRepository
      */
     private function getDocumentRepository(OfferType $offerType)
     {

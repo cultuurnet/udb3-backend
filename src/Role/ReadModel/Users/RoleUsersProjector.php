@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
@@ -22,7 +22,7 @@ class RoleUsersProjector extends RoleProjector
     private $userIdentityResolver;
 
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         UserIdentityResolverInterface $userIdentityResolver
     ) {
         parent::__construct($repository);

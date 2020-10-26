@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Role\Events\UserAdded;
@@ -16,24 +16,24 @@ class UserRolesProjector extends RoleProjector
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $roleDetailsDocumentRepository;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $roleUsersDocumentRepository;
 
     /**
-     * @param DocumentRepositoryInterface $userRolesDocumentRepository
-     * @param DocumentRepositoryInterface $roleDetailsDocumentRepository
-     * @param DocumentRepositoryInterface $roleUsersDocumentRepository
+     * @param DocumentRepository $userRolesDocumentRepository
+     * @param DocumentRepository $roleDetailsDocumentRepository
+     * @param DocumentRepository $roleUsersDocumentRepository
      */
     public function __construct(
-        DocumentRepositoryInterface $userRolesDocumentRepository,
-        DocumentRepositoryInterface $roleDetailsDocumentRepository,
-        DocumentRepositoryInterface $roleUsersDocumentRepository
+        DocumentRepository $userRolesDocumentRepository,
+        DocumentRepository $roleDetailsDocumentRepository,
+        DocumentRepository $roleUsersDocumentRepository
     ) {
         parent::__construct($userRolesDocumentRepository);
         $this->roleDetailsDocumentRepository = $roleDetailsDocumentRepository;

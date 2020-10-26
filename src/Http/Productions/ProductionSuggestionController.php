@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,13 +18,13 @@ class ProductionSuggestionController
     private $similarEventsRepository;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $enrichedEventRepository;
 
     public function __construct(
         SimilarEventsRepository $similarEventsRepository,
-        DocumentRepositoryInterface $enrichedEventRepository
+        DocumentRepository $enrichedEventRepository
     ) {
         $this->similarEventsRepository = $similarEventsRepository;
         $this->enrichedEventRepository = $enrichedEventRepository;

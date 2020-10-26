@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Offer\Item\Commands\UpdateType;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
-use CultuurNet\UDB3\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -45,7 +45,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $uuidGenerator;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $offerRepository;
 
@@ -98,7 +98,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     {
         $this->commandBus = $this->createMock(CommandBusInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->offerRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->offerRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
         $this->labelService = $this->createMock(LabelServiceInterface::class);
         $this->typeResolver = $this->createMock(TypeResolverInterface::class);
