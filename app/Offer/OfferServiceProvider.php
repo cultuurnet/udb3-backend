@@ -22,11 +22,11 @@ class OfferServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app[PopularityRepository::class] = $app->share(
-          function (Application $app) {
-              return new DBALPopularityRepository(
-                  $app['dbal_connection']
-              );
-          }
+            function (Application $app) {
+                return new DBALPopularityRepository(
+                    $app['dbal_connection']
+                );
+            }
         );
 
         $app['offer_reading_service'] = $app->share(
