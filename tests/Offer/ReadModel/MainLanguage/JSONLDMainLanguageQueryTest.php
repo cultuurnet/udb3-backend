@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Offer\ReadModel\MainLanguage;
 
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class JSONLDMainLanguageQueryTest extends TestCase
 {
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $documentRepository;
 
@@ -23,7 +23,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
 
     public function setUp()
     {
-        $this->documentRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->documentRepository = $this->createMock(DocumentRepository::class);
         $this->query = new JSONLDMainLanguageQuery($this->documentRepository, new Language('nl'));
     }
 

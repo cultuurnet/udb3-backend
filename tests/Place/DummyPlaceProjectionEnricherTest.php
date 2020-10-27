@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,7 @@ class DummyPlaceProjectionEnricherTest extends TestCase
     private $enricher;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $repository;
 
@@ -28,7 +28,7 @@ class DummyPlaceProjectionEnricherTest extends TestCase
     protected function setUp()
     {
         $this->dummyPlaceId = Uuid::uuid4()->toString();
-        $this->repository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->repository = $this->createMock(DocumentRepository::class);
         $this->enricher = new DummyPlaceProjectionEnricher($this->repository, [$this->dummyPlaceId]);
     }
 

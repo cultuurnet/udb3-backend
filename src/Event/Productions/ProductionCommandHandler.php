@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Doctrine\DBAL\DBALException;
 
 class ProductionCommandHandler extends Udb3CommandHandler
@@ -21,14 +21,14 @@ class ProductionCommandHandler extends Udb3CommandHandler
     private $skippedSimilarEventsRepository;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $eventRepository;
 
     public function __construct(
         ProductionRepository $productionRepository,
         SkippedSimilarEventsRepository $skippedSimilarEventsRepository,
-        DocumentRepositoryInterface $eventRepository
+        DocumentRepository $eventRepository
     ) {
         $this->productionRepository = $productionRepository;
         $this->skippedSimilarEventsRepository = $skippedSimilarEventsRepository;

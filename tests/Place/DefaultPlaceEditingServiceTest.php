@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
@@ -24,6 +23,7 @@ use CultuurNet\UDB3\Place\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -54,7 +54,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
     protected $commandFactory;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     protected $readRepository;
 
@@ -83,8 +83,8 @@ class DefaultPlaceEditingServiceTest extends TestCase
 
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
 
-        /** @var DocumentRepositoryInterface $repository */
-        $this->readRepository = $this->createMock(DocumentRepositoryInterface::class);
+        /** @var DocumentRepository $repository */
+        $this->readRepository = $this->createMock(DocumentRepository::class);
 
         $this->eventStore = new TraceableEventStore(
             new InMemoryEventStore()

@@ -3,13 +3,13 @@
 namespace CultuurNet\UDB3\Offer\ReadModel\MainLanguage;
 
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $documentRepository;
 
@@ -19,11 +19,11 @@ class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
     private $fallbackLanguage;
 
     /**
-     * @param DocumentRepositoryInterface $documentRepository
+     * @param DocumentRepository $documentRepository
      * @param Language $fallbackLanguage
      */
     public function __construct(
-        DocumentRepositoryInterface $documentRepository,
+        DocumentRepository $documentRepository,
         Language $fallbackLanguage
     ) {
         $this->documentRepository = $documentRepository;

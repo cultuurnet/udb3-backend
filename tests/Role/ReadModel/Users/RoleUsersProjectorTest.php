@@ -6,7 +6,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializableInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
@@ -23,7 +23,7 @@ use ValueObjects\Web\EmailAddress;
 class RoleUsersProjectorTest extends TestCase
 {
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $repository;
 
@@ -44,7 +44,7 @@ class RoleUsersProjectorTest extends TestCase
 
     protected function setUp()
     {
-        $this->repository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->repository = $this->createMock(DocumentRepository::class);
 
         $this->userIdentityResolver = $this->createMock(
             UserIdentityResolverInterface::class

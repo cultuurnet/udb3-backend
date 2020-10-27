@@ -19,7 +19,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $app['event_controller'] = $app->share(
             function (Application $app) {
                 return new ReadEventRestController(
-                    $app['event_service'],
+                    $app['event_jsonld_repository'],
                     $app['event_history_repository'],
                     $app['search_serializer'],
                     new CultureFeedUserIdentification(

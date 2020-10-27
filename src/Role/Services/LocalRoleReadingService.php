@@ -3,45 +3,45 @@
 namespace CultuurNet\UDB3\Role\Services;
 
 use Broadway\Repository\RepositoryInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\LocalEntityService;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class LocalRoleReadingService extends LocalEntityService implements RoleReadingServiceInterface
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $roleLabelsReadRepository;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $roleUsersReadRepository;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $userRolesReadRepository;
 
     /**
      * ReadRoleRestController constructor.
-     * @param DocumentRepositoryInterface $roleReadRepository
+     * @param DocumentRepository $roleReadRepository
      * @param RepositoryInterface $roleWriteRepository
      * @param IriGeneratorInterface $iriGenerator
-     * @param DocumentRepositoryInterface $roleLabelsReadRepository
-     * @param DocumentRepositoryInterface $roleUsersReadRepository
-     * @param DocumentRepositoryInterface $userRolesReadRepository
+     * @param DocumentRepository $roleLabelsReadRepository
+     * @param DocumentRepository $roleUsersReadRepository
+     * @param DocumentRepository $userRolesReadRepository
      */
     public function __construct(
-        DocumentRepositoryInterface $roleReadRepository,
+        DocumentRepository $roleReadRepository,
         RepositoryInterface $roleWriteRepository,
         IriGeneratorInterface $iriGenerator,
-        DocumentRepositoryInterface $roleLabelsReadRepository,
-        DocumentRepositoryInterface $roleUsersReadRepository,
-        DocumentRepositoryInterface $userRolesReadRepository
+        DocumentRepository $roleLabelsReadRepository,
+        DocumentRepository $roleUsersReadRepository,
+        DocumentRepository $userRolesReadRepository
     ) {
         parent::__construct(
             $roleReadRepository,

@@ -7,8 +7,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryDecorator;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 
 /**
  * Class BroadcastingDocumentRepositoryDecorator
@@ -28,7 +26,7 @@ class BroadcastingDocumentRepositoryDecorator extends DocumentRepositoryDecorato
     protected $eventBus;
 
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         EventBusInterface $eventBus,
         DocumentEventFactory $eventFactory
     ) {
@@ -37,14 +35,14 @@ class BroadcastingDocumentRepositoryDecorator extends DocumentRepositoryDecorato
         $this->eventBus = $eventBus;
     }
 
-    public function save(JsonDocument $readModel)
+    public function save(JsonDocument $readModel): void
     {
         parent::save($readModel);
 
         $this->broadcastDocumentUpdated($readModel->getId());
     }
 
-    protected function broadcastDocumentUpdated($id)
+    protected function broadcastDocumentUpdated($id): void
     {
         $event = $this->eventFactory->createEvent($id);
 

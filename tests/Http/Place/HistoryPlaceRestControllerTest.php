@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,7 +59,7 @@ class HistoryPlaceRestControllerTest extends TestCase
             ]
         );
 
-        $documentRepositoryInterface = $this->createMock(DocumentRepositoryInterface::class);
+        $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
         $documentRepositoryInterface->method('get')
             ->willReturnCallback(
                 function ($id) {
@@ -75,7 +75,7 @@ class HistoryPlaceRestControllerTest extends TestCase
             );
 
         $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
-        /** @var DocumentRepositoryInterface $documentRepositoryInterface */
+        /** @var DocumentRepository $documentRepositoryInterface */
         $this->controller = new HistoryPlaceRestController(
             $documentRepositoryInterface,
             $this->userIdentification

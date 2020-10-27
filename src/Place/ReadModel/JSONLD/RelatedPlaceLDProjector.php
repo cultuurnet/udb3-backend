@@ -4,10 +4,10 @@ namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class RelatedPlaceLDProjector implements EventListenerInterface
 {
@@ -19,7 +19,7 @@ class RelatedPlaceLDProjector implements EventListenerInterface
     private $placeRelations;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $repository;
 
@@ -29,12 +29,12 @@ class RelatedPlaceLDProjector implements EventListenerInterface
     private $organizerService;
 
     /**
-     * @param DocumentRepositoryInterface $repository
+     * @param DocumentRepository $repository
      * @param EntityServiceInterface $organizerService
      * @param RepositoryInterface $placeRelations
      */
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         EntityServiceInterface $organizerService,
         RepositoryInterface $placeRelations
     ) {

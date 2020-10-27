@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
-class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
+class DummyPlaceProjectionEnricher implements DocumentRepository
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     private $repository;
 
@@ -18,14 +18,14 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
     private $dummyPlaceIds = [];
 
     public function __construct(
-        DocumentRepositoryInterface $repository,
+        DocumentRepository $repository,
         array $dummyPlaceIds
     ) {
         $this->repository = $repository;
         $this->dummyPlaceIds = $dummyPlaceIds;
     }
 
-    public function get($id)
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         $readModel = $this->repository->get($id);
         if (!$readModel) {
@@ -42,12 +42,12 @@ class DummyPlaceProjectionEnricher implements DocumentRepositoryInterface
         return $readModel;
     }
 
-    public function save(JsonDocument $readModel)
+    public function save(JsonDocument $readModel): void
     {
         $this->repository->save($readModel);
     }
 
-    public function remove($id)
+    public function remove($id): void
     {
         $this->repository->remove($id);
     }

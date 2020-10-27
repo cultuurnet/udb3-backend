@@ -1,23 +1,17 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\UDB3\Event\ReadModel;
+namespace CultuurNet\UDB3\ReadModel;
 
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 
-class InMemoryDocumentRepository implements DocumentRepositoryInterface
+class InMemoryDocumentRepository implements DocumentRepository
 {
     /**
      * @var JsonDocument[]
      */
     private $documents;
 
-    /**
-     * @inheritdoc
-     */
-    public function get($id)
+    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         if (isset($this->documents[$id])) {
             if ('GONE' === $this->documents[$id]) {
@@ -30,18 +24,12 @@ class InMemoryDocumentRepository implements DocumentRepositoryInterface
         return null;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function save(JsonDocument $readModel)
+    public function save(JsonDocument $readModel): void
     {
         $this->documents[$readModel->getId()] = $readModel;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function remove($id)
+    public function remove($id): void
     {
         $this->documents[$id] = 'GONE';
     }

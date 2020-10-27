@@ -6,12 +6,12 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializableInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
@@ -30,7 +30,7 @@ class RoleLabelsProjectorTest extends TestCase
     private $labelJsonRepository;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $labelRolesRepository;
 
@@ -40,15 +40,15 @@ class RoleLabelsProjectorTest extends TestCase
     private $roleLabelsProjector;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $roleLabelsRepository;
 
     public function setUp()
     {
-        $this->roleLabelsRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->roleLabelsRepository = $this->createMock(DocumentRepository::class);
         $this->labelJsonRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRolesRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->labelRolesRepository = $this->createMock(DocumentRepository::class);
 
         $this->roleLabelsProjector = new RoleLabelsProjector(
             $this->roleLabelsRepository,

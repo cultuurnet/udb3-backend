@@ -6,11 +6,11 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializableInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
@@ -27,13 +27,13 @@ class LabelRolesProjectorTest extends TestCase
     private $labelRolesProjector;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $labelRolesRepository;
 
     public function setUp()
     {
-        $this->labelRolesRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->labelRolesRepository = $this->createMock(DocumentRepository::class);
 
         $this->labelRolesProjector = new LabelRolesProjector(
             $this->labelRolesRepository

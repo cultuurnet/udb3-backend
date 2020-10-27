@@ -4,16 +4,17 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
+use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\EventServiceInterface;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTimeZone;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CultuurNet\UDB3\Event\EventServiceInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 
 class ReadEventRestControllerTest extends TestCase
 {
@@ -25,6 +26,16 @@ class ReadEventRestControllerTest extends TestCase
      * @var ReadEventRestController
      */
     private $eventRestController;
+
+    /**
+     * @var JsonDocument
+     */
+    private $jsonDocument;
+
+    /**
+     * @var JsonDocument
+     */
+    private $jsonDocumentWithMetadata;
 
     /**
      * @var JsonDocument
@@ -56,6 +67,25 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function setUp()
     {
+        $this->jsonDocument = new JsonDocument(
+            'id',
+            json_encode(
+                [
+                    '@type' => 'Event',
+                ]
+            )
+        );
+
+        $this->jsonDocumentWithMetadata = new JsonDocument(
+            'id',
+            json_encode(
+                [
+                    '@type' => 'Event',
+                    'popularity' => 123456,
+                ]
+            )
+        );
+
         $this->historyJsonDocument = new JsonDocument(
             'id',
             json_encode(
@@ -89,10 +119,22 @@ class ReadEventRestControllerTest extends TestCase
         $this->event->setEndDate(new \DateTime('2018-10-07 18:00:00', $tz));
         $this->event->setCalendarType('single');
 
-        $eventServiceInterface = $this->createMock(EventServiceInterface::class);
-        $documentRepositoryInterface = $this->createMock(DocumentRepositoryInterface::class);
-        $serializerInterface = $this->createMock(SerializerInterface::class);
+        $jsonRepository = $this->createMock(DocumentRepository::class);
+        $jsonRepository->method('get')
+            ->willReturnCallback(
+                function (string $id, bool $includeMetadata = false) {
+                    switch ($id) {
+                        case self::EXISTING_ID:
+                            return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
+                        case self::REMOVED_ID:
+                            throw new DocumentGoneException();
+                        default:
+                            return null;
+                    }
+                }
+            );
 
+        $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
         $documentRepositoryInterface->method('get')
             ->willReturnCallback(
                 function ($id) {
@@ -107,20 +149,7 @@ class ReadEventRestControllerTest extends TestCase
                 }
             );
 
-        $eventServiceInterface->method('getEvent')
-            ->willReturnCallback(
-                function ($id) {
-                    switch ($id) {
-                        case self::EXISTING_ID:
-                            return $this->historyJsonDocument->getRawBody();
-                        case self::REMOVED_ID:
-                            throw new DocumentGoneException();
-                        default:
-                            return null;
-                    }
-                }
-            );
-
+        $serializerInterface = $this->createMock(SerializerInterface::class);
         $serializerInterface->method('deserialize')
             ->willReturnCallback(
                 function () {
@@ -132,10 +161,10 @@ class ReadEventRestControllerTest extends TestCase
 
         /**
          * @var EventServiceInterface $eventServiceInterface
-         * @var DocumentRepositoryInterface $documentRepositoryInterface
+         * @var DocumentRepository $documentRepositoryInterface
          */
         $this->eventRestController = new ReadEventRestController(
-            $eventServiceInterface,
+            $jsonRepository,
             $documentRepositoryInterface,
             $serializerInterface,
             $this->userIdentification
@@ -192,10 +221,23 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_json_get_for_an_event(): void
     {
-        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID);
+        $request = new Request();
+        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
-        $this->assertEquals($this->historyJsonDocument->getRawBody(), $jsonResponse->getContent());
+        $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_http_response_with_json_including_metadata_for_an_event(): void
+    {
+        $request = new Request(['includeMetadata' => 'true']);
+        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID, $request);
+
+        $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
+        $this->assertEquals($this->jsonDocumentWithMetadata->getRawBody(), $jsonResponse->getContent());
     }
 
     /**
@@ -203,7 +245,8 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event(): void
     {
-        $jsonResponse = $this->eventRestController->get(self::NON_EXISTING_ID);
+        $request = new Request();
+        $jsonResponse = $this->eventRestController->get(self::NON_EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
     }
@@ -217,6 +260,17 @@ class ReadEventRestControllerTest extends TestCase
         $calSumResponse = $this->eventRestController->getCalendarSummary(self::EXISTING_ID, $request);
 
         $this->assertEquals($this->calSum, $calSumResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_http_response_with_error_NOT_FOUND_for_calendar_summary_for_non_existing_event(): void
+    {
+        $this->expectException(EntityNotFoundException::class);
+
+        $request = new Request(array('style' => 'text', 'format' => 'lg'));
+        $this->eventRestController->getCalendarSummary(self::NON_EXISTING_ID, $request);
     }
 
     private function givenGodUser(): void

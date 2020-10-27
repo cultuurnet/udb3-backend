@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -28,13 +28,13 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
     private $iriGenerator;
 
     /**
-     * @var DocumentRepositoryInterface | MockObject
+     * @var DocumentRepository | MockObject
      */
     private $eventRepository;
 
     protected function setUp(): void
     {
-        $this->eventRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->eventRepository = $this->createMock(DocumentRepository::class);
         $this->productionRepository = $this->createMock(ProductionRepository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
 

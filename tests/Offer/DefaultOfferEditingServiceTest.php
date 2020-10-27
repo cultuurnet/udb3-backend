@@ -7,15 +7,14 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
-use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
+use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateDescription;
 use CultuurNet\UDB3\Offer\Item\Commands\UpdateFacilities;
@@ -25,6 +24,7 @@ use CultuurNet\UDB3\Offer\Item\Commands\UpdateType;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -45,7 +45,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $uuidGenerator;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $offerRepository;
 
@@ -98,7 +98,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     {
         $this->commandBus = $this->createMock(CommandBusInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->offerRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->offerRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
         $this->labelService = $this->createMock(LabelServiceInterface::class);
         $this->typeResolver = $this->createMock(TypeResolverInterface::class);

@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Model\Import\Validation\Place;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ use Respect\Validation\Exceptions\GroupedValidationException;
 class PlaceReferenceExistsValidatorTest extends TestCase
 {
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $repository;
 
@@ -24,7 +24,7 @@ class PlaceReferenceExistsValidatorTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->repository = $this->createMock(DocumentRepository::class);
 
         $this->validator = new PlaceReferenceExistsValidator(
             new PlaceIDParser(),

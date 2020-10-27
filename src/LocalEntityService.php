@@ -4,14 +4,14 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\RepositoryInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class LocalEntityService implements EntityServiceInterface
 {
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     protected $documentRepository;
 
@@ -28,12 +28,12 @@ class LocalEntityService implements EntityServiceInterface
     /**
      * Constructs the local entity service.
      *
-     * @param DocumentRepositoryInterface $documentRepository
+     * @param DocumentRepository $documentRepository
      * @param RepositoryInterface $entityRepository
      * @param IriGeneratorInterface $iriGenerator
      */
     public function __construct(
-        DocumentRepositoryInterface $documentRepository,
+        DocumentRepository $documentRepository,
         RepositoryInterface $entityRepository,
         IriGeneratorInterface $iriGenerator
     ) {

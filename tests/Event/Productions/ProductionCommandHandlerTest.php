@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -31,7 +31,7 @@ class ProductionCommandHandlerTest extends TestCase
     private $skippedSimilarEventsRepository;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $eventRepository;
 
@@ -44,7 +44,7 @@ class ProductionCommandHandlerTest extends TestCase
 
         $this->productionRepository = new ProductionRepository($this->getConnection());
         $this->skippedSimilarEventsRepository = $this->createMock(SkippedSimilarEventsRepository::class);
-        $this->eventRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->eventRepository = $this->createMock(DocumentRepository::class);
         $this->commandHandler = new ProductionCommandHandler(
             $this->productionRepository,
             $this->skippedSimilarEventsRepository,

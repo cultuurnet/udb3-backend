@@ -3,16 +3,16 @@
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\Repository\RepositoryInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface as PlaceRelationsRepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class LocalPlaceServiceTest extends TestCase
 {
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $documentRepository;
 
@@ -39,7 +39,7 @@ class LocalPlaceServiceTest extends TestCase
     protected function setUp()
     {
         $this->documentRepository = $this->createMock(
-            DocumentRepositoryInterface::class
+            DocumentRepository::class
         );
 
         $this->placeRepository = $this->createMock(RepositoryInterface::class);

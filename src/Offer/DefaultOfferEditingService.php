@@ -10,7 +10,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
@@ -18,6 +17,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -34,7 +34,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     protected $uuidGenerator;
 
     /**
-     * @var DocumentRepositoryInterface
+     * @var DocumentRepository
      */
     protected $readRepository;
 
@@ -66,7 +66,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     /**
      * @param CommandBusInterface $commandBus
      * @param UuidGeneratorInterface $uuidGenerator
-     * @param DocumentRepositoryInterface $readRepository
+     * @param DocumentRepository $readRepository
      * @param OfferCommandFactoryInterface $commandFactory
      * @param LabelServiceInterface $labelService
      * @param TypeResolverInterface $typeResolver
@@ -75,7 +75,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     public function __construct(
         CommandBusInterface $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        DocumentRepositoryInterface $readRepository,
+        DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
         LabelServiceInterface $labelService,
         TypeResolverInterface $typeResolver,
