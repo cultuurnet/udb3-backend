@@ -53,8 +53,6 @@ class ReadPlaceRestControllerTest extends TestCase
         $this->place->setEndDate(new \DateTime('2018-10-07 18:00:00'));
         $this->place->setCalendarType('single');
 
-        $entityServiceInterface = $this->createMock(EntityServiceInterface::class);
-
         $serializerInterface = $this->createMock(SerializerInterface::class);
 
         /** @var DocumentRepository|MockObject $jsonRepository */
