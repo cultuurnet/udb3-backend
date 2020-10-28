@@ -148,6 +148,6 @@ class ReadPlaceRestControllerTest extends TestCase
         $request = new Request(['style' => 'text', 'format' => 'lg']);
         $calSumResponse = $this->placeRestController->getCalendarSummary(self::EXISTING_ID, $request);
 
-        $this->assertEquals($this->calSum, $calSumResponse);
+        $this->assertEquals($this->calSum, $calSumResponse->getContent());
     }
 }
