@@ -8,6 +8,8 @@ use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\LocalOfferReadingService;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
+use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -19,6 +21,14 @@ class OfferServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app[PopularityRepository::class] = $app->share(
+            function (Application $app) {
+                return new DBALPopularityRepository(
+                    $app['dbal_connection']
+                );
+            }
+        );
+
         $app['offer_reading_service'] = $app->share(
             function (Application $app) {
                 return (new LocalOfferReadingService($app['iri_offer_identifier_factory']))

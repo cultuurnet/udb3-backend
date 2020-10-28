@@ -8,7 +8,7 @@ namespace CultuurNet\UDB3\ReadModel;
 use Broadway\ReadModel\ReadModelInterface;
 use stdClass;
 
-class JsonDocument implements ReadModelInterface
+final class JsonDocument implements ReadModelInterface
 {
     protected $id;
     protected $body;
@@ -32,6 +32,11 @@ class JsonDocument implements ReadModelInterface
         return (object) json_decode($this->body);
     }
 
+    public function getAssocBody(): array
+    {
+        return json_decode($this->body, true);
+    }
+
     public function getRawBody()
     {
         return $this->body;
@@ -46,6 +51,11 @@ class JsonDocument implements ReadModelInterface
         return new self($this->id, json_encode($body));
     }
 
+    public function withAssocBody(array $body): JsonDocument
+    {
+        return new self($this->id, json_encode($body));
+    }
+
     /**
      * @param callable $fn
      * @return static
@@ -54,5 +64,11 @@ class JsonDocument implements ReadModelInterface
     {
         $body = $fn($this->getBody());
         return $this->withBody($body);
+    }
+
+    public function applyAssoc(callable $fn): JsonDocument
+    {
+        $body = $fn($this->getAssocBody());
+        return $this->withAssocBody($body);
     }
 }
