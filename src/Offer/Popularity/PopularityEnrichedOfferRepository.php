@@ -21,21 +21,37 @@ final class PopularityEnrichedOfferRepository extends DocumentRepositoryDecorato
         $this->popularityRepository = $popularityRepository;
     }
 
+    public function fetch(string $id, bool $includeMetadata = false): JsonDocument
+    {
+        $jsonDocument = parent::fetch($id, $includeMetadata);
+
+        if ($includeMetadata) {
+            $jsonDocument = $this->enrich($jsonDocument);
+        }
+
+        return $jsonDocument;
+    }
+
     public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         $jsonDocument = parent::get($id, $includeMetadata);
 
         if ($includeMetadata && $jsonDocument instanceof JsonDocument) {
-            $popularity = $this->popularityRepository->get($id);
-
-            $jsonDocument = $jsonDocument->applyAssoc(
-                function (array $body) use ($popularity) {
-                    $body['metadata']['popularity'] = $popularity->toNative();
-                    return $body;
-                }
-            );
+            $jsonDocument = $this->enrich($jsonDocument);
         }
 
         return $jsonDocument;
+    }
+
+    private function enrich(JsonDocument $jsonDocument): JsonDocument
+    {
+        $popularity = $this->popularityRepository->get($jsonDocument->getId());
+
+        return $jsonDocument->applyAssoc(
+            function (array $body) use ($popularity) {
+                $body['metadata']['popularity'] = $popularity->toNative();
+                return $body;
+            }
+        );
     }
 }

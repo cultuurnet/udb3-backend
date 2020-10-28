@@ -48,15 +48,17 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
-        $returnedJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, false);
+        $fetchJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, false);
+        $getJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, false);
 
-        $this->assertEquals($jsonLd, $returnedJsonLd);
+        $this->assertEquals($jsonLd, $fetchJsonLd);
+        $this->assertEquals($jsonLd, $getJsonLd);
     }
 
     /**
      * @test
      */
-    public function it_does_not_add_popularity_score_if_no_offer_json_was_found(): void
+    public function it_does_not_attempt_to_add_popularity_score_if_no_offer_json_was_found_when_getting(): void
     {
         $offerId = '4ff559bd-9543-4ae2-900f-fe6d32fd019b';
 
@@ -81,7 +83,8 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
-        $returnedJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, true);
+        $fetchJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, true);
+        $getJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
@@ -95,6 +98,7 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
             )
         );
 
-        $this->assertEquals($expectedJsonLd, $returnedJsonLd);
+        $this->assertEquals($expectedJsonLd, $fetchJsonLd);
+        $this->assertEquals($expectedJsonLd, $getJsonLd);
     }
 }
