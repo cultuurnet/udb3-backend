@@ -48,7 +48,7 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
-        $fetchJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, false);
+        $fetchJsonLd = $this->popularityEnrichedOfferRepository->fetch($offerId, false);
         $getJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, false);
 
         $this->assertEquals($jsonLd, $fetchJsonLd);
@@ -83,7 +83,7 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $jsonLd = new JsonDocument($offerId, json_encode(['@type' => 'Event']));
         $this->decoratedRepository->save($jsonLd);
 
-        $fetchJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, true);
+        $fetchJsonLd = $this->popularityEnrichedOfferRepository->fetch($offerId, true);
         $getJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
