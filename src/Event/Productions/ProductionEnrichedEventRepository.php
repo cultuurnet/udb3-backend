@@ -30,6 +30,13 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
         $this->iriGenerator = $iriGenerator;
     }
 
+    public function fetch(string $id, bool $includeMetadata = false): JsonDocument
+    {
+        return $this->enrich(
+            parent::fetch($id, $includeMetadata)
+        );
+    }
+
     public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
         $document = parent::get($id);
@@ -38,7 +45,13 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
             return null;
         }
 
+        return $this->enrich($document);
+    }
+
+    private function enrich(JsonDocument $document): JsonDocument
+    {
         $jsonObject = $document->getBody();
+        $id = $document->getId();
 
         try {
             $production = $this->productionRepository->findProductionForEventId($id);

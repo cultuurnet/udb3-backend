@@ -6,89 +6,78 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Place;
-use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReadPlaceRestController
 {
-    const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
-    const GET_ERROR_GONE = 'An error occurred while getting the event with id %s which was removed!';
+    private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     use ApiProblemJsonResponseTrait;
 
     /**
-     * @var EntityServiceInterface
+     * @var DocumentRepository
      */
-    private $service;
+    private $documentRepository;
 
     /**
      * @var SerializerInterface
      */
     private $serializer;
 
-    /**
-     * @param EntityServiceInterface $service
-     * @param SerializerInterface $serializer
-     */
+
     public function __construct(
-        EntityServiceInterface $service,
+        DocumentRepository $documentRepository,
         SerializerInterface $serializer
     ) {
-        $this->service = $service;
+        $this->documentRepository = $documentRepository;
         $this->serializer = $serializer;
     }
 
-    public function get(string $cdbid): JsonResponse
+    public function get(string $cdbid, Request $request): JsonResponse
     {
-        $response = null;
+        $includeMetadata = $request->query->get('includeMetadata', false);
 
-        $place = $this->service->getEntity($cdbid);
+        try {
+            $place = $this->documentRepository->fetch($cdbid, $includeMetadata);
+        } catch (DocumentDoesNotExist $e) {
+            return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
+        }
 
-        if ($place) {
-            $response = JsonLdResponse::create()
-                ->setContent($place);
+        $response = JsonLdResponse::create()
+            ->setContent($place->getRawBody());
 
             $response->headers->set('Vary', 'Origin');
-        } else {
-            $response = $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
-        }
 
         return $response;
     }
 
-    /**
-     * @param string $cdbid
-     *
-     * @return string
-     */
-    public function getCalendarSummary($cdbid, Request $request)
+    public function getCalendarSummary($cdbid, Request $request): Response
     {
-        $data = null;
-        $response = null;
-
         $style = $request->query->get('style', 'text');
         $langCode = $request->query->get('langCode', 'nl_BE');
         $hidePastDates = $request->query->get('hidePast', false);
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $data = $this->service->getEntity($cdbid);
-        $place = $this->serializer->deserialize($data, Place::class);
+        $data = $this->documentRepository->fetch($cdbid, false);
+        $place = $this->serializer->deserialize($data->getRawBody(), Place::class);
 
         if ($style !== 'html' && $style !== 'text') {
-            $response = $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
-        } else {
-            if ($style === 'html') {
-                $calSum = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
-            } else {
-                $calSum = new CalendarPlainTextFormatter($langCode, $hidePastDates, $timeZone);
-            }
-            $response = $calSum->format($place, $format);
+            return $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
         }
 
-        return $response;
+        if ($style === 'html') {
+            $calSum = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
+        } else {
+            $calSum = new CalendarPlainTextFormatter($langCode, $hidePastDates, $timeZone);
+        }
+
+        return new Response($calSum->format($place, $format));
     }
 }

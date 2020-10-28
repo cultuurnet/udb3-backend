@@ -15,7 +15,7 @@ class DummyPlaceProjectionEnricher implements DocumentRepository
     /**
      * @var string[]
      */
-    private $dummyPlaceIds = [];
+    private $dummyPlaceIds;
 
     public function __construct(
         DocumentRepository $repository,
@@ -25,21 +25,21 @@ class DummyPlaceProjectionEnricher implements DocumentRepository
         $this->dummyPlaceIds = $dummyPlaceIds;
     }
 
+    public function fetch(string $id, bool $includeMetadata = false): JsonDocument
+    {
+        return $this->enrich(
+            $this->repository->fetch($id)
+        );
+    }
+
     public function get(string $id, bool $includeMetadata = false): ?JsonDocument
     {
-        $readModel = $this->repository->get($id);
+        $readModel = $this->repository->get($id, $includeMetadata);
         if (!$readModel) {
             return $readModel;
         }
 
-        foreach ($this->dummyPlaceIds as $dummyPlaceId) {
-            $body = $readModel->getBody();
-            if (strpos($body->{'@id'}, $dummyPlaceId) !== false) {
-                $body->isDummyPlaceForEducationEvents = true;
-                return $readModel->withBody($body);
-            }
-        }
-        return $readModel;
+        return $this->enrich($readModel);
     }
 
     public function save(JsonDocument $readModel): void
@@ -50,5 +50,17 @@ class DummyPlaceProjectionEnricher implements DocumentRepository
     public function remove($id): void
     {
         $this->repository->remove($id);
+    }
+
+    private function enrich(JsonDocument $readModel): JsonDocument
+    {
+        foreach ($this->dummyPlaceIds as $dummyPlaceId) {
+            $body = $readModel->getBody();
+            if (strpos($body->{'@id'}, $dummyPlaceId) !== false) {
+                $body->isDummyPlaceForEducationEvents = true;
+                return $readModel->withBody($body);
+            }
+        }
+        return $readModel;
     }
 }

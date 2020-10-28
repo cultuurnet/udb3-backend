@@ -6,13 +6,12 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
-use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,8 +62,8 @@ class ReadEventRestController
         $includeMetadata = (bool) $request->query->get('includeMetadata', false);
 
         try {
-            $event = $this->getEventDocument($cdbid, $includeMetadata);
-        } catch (EntityNotFoundException $e) {
+            $event = $this->jsonRepository->fetch($cdbid, $includeMetadata);
+        } catch (DocumentDoesNotExist $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
 
@@ -123,7 +122,7 @@ class ReadEventRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $eventDocument = $this->getEventDocument($cdbid);
+        $eventDocument = $this->jsonRepository->fetch($cdbid);
         $event = $this->serializer->deserialize($eventDocument->getRawBody(), Event::class);
 
         if ($style !== 'html' && $style !== 'text') {
@@ -139,25 +138,5 @@ class ReadEventRestController
 
 
         return $response;
-    }
-
-    /**
-     * @throws EntityNotFoundException
-     */
-    private function getEventDocument(string $id, bool $includeMetadata = false): JsonDocument
-    {
-        $notFoundException = new EntityNotFoundException("Event with id: {$id} not found");
-
-        try {
-            $document = $this->jsonRepository->get($id, $includeMetadata);
-        } catch (DocumentGoneException $e) {
-            throw $notFoundException;
-        }
-
-        if (!$document) {
-            throw $notFoundException;
-        }
-
-        return $document;
     }
 }
