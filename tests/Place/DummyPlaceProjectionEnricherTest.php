@@ -53,10 +53,18 @@ class DummyPlaceProjectionEnricherTest extends TestCase
         $id = Uuid::uuid4()->toString();
         $eventJson = $this->getEventJsonForPlace($this->dummyPlaceId);
         $readModel = new JsonDocument($id, $eventJson);
+
+        $this->repository->expects($this->once())->method('fetch')->with($id)->willReturn($readModel);
         $this->repository->expects($this->once())->method('get')->with($id)->willReturn($readModel);
-        $enrichedReadModel = $this->enricher->get($id);
-        $this->assertNotEquals($readModel, $enrichedReadModel);
-        $this->assertTrue($enrichedReadModel->getBody()->isDummyPlaceForEducationEvents);
+
+        $fetchEnrichedReadModel = $this->enricher->fetch($id);
+        $getEnrichedReadModel = $this->enricher->get($id);
+
+        $this->assertNotEquals($readModel, $fetchEnrichedReadModel);
+        $this->assertNotEquals($readModel, $getEnrichedReadModel);
+
+        $this->assertTrue($fetchEnrichedReadModel->getBody()->isDummyPlaceForEducationEvents);
+        $this->assertTrue($getEnrichedReadModel->getBody()->isDummyPlaceForEducationEvents);
     }
 
     private function getEventJsonForPlace(string $placeId): string
