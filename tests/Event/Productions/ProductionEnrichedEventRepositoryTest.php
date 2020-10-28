@@ -57,15 +57,21 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
         );
 
 
-        $this->eventRepository->method('get')->willReturn($originalJsonDocument);
+        $this->eventRepository->method('fetch')->with($eventId)->willReturn($originalJsonDocument);
+        $this->eventRepository->method('get')->with($eventId)->willReturn($originalJsonDocument);
+
         $this->productionRepository->method('findProductionForEventId')->willThrowException(
             new EntityNotFoundException()
         );
 
-        $actual = $this->productionEnrichedEventRepository->get($eventId);
+        $fetchActual = $this->productionEnrichedEventRepository->fetch($eventId);
+        $getActual = $this->productionEnrichedEventRepository->get($eventId);
 
-        $this->assertEquals($eventId, $actual->getBody()->{'@id'});
-        $this->assertNull($actual->getBody()->production);
+        $this->assertEquals($eventId, $fetchActual->getBody()->{'@id'});
+        $this->assertEquals($eventId, $getActual->getBody()->{'@id'});
+
+        $this->assertNull($fetchActual->getBody()->production);
+        $this->assertNull($getActual->getBody()->production);
     }
 
     /**
@@ -91,22 +97,31 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
             ]
         );
 
-        $this->eventRepository->method('get')->willReturn($originalJsonDocument);
+        $this->eventRepository->method('fetch')->with($eventId)->willReturn($originalJsonDocument);
+        $this->eventRepository->method('get')->with($eventId)->willReturn($originalJsonDocument);
         $this->productionRepository->method('findProductionForEventId')->willReturn($production);
         $this->iriGenerator->method('iri')->with($otherEventId)->willReturn('foo/' . $otherEventId);
 
-        $actual = $this->productionEnrichedEventRepository->get($eventId);
+        $fetchActual = $this->productionEnrichedEventRepository->fetch($eventId);
+        $getActual = $this->productionEnrichedEventRepository->get($eventId);
 
-        $this->assertEquals($eventId, $actual->getBody()->{'@id'});
-        $this->assertEquals($productionId->toNative(), $actual->getBody()->production->id);
-        $this->assertEquals($productionName, $actual->getBody()->production->title);
-        $this->assertEquals(['foo/' . $otherEventId], $actual->getBody()->production->otherEvents);
+        $this->assertEquals($eventId, $fetchActual->getBody()->{'@id'});
+        $this->assertEquals($eventId, $getActual->getBody()->{'@id'});
+
+        $this->assertEquals($productionId->toNative(), $fetchActual->getBody()->production->id);
+        $this->assertEquals($productionId->toNative(), $getActual->getBody()->production->id);
+
+        $this->assertEquals($productionName, $fetchActual->getBody()->production->title);
+        $this->assertEquals($productionName, $getActual->getBody()->production->title);
+
+        $this->assertEquals(['foo/' . $otherEventId], $fetchActual->getBody()->production->otherEvents);
+        $this->assertEquals(['foo/' . $otherEventId], $getActual->getBody()->production->otherEvents);
     }
 
     /**
      * @test
      */
-    public function it_will_return_null_for_a_non_existing_document(): void
+    public function it_will_return_null_when_getting_a_non_existing_document(): void
     {
         $eventId = Uuid::uuid4()->toString();
         $this->eventRepository->method('get')->willReturn(null);
