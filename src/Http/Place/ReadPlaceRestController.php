@@ -6,6 +6,7 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Place;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
@@ -42,18 +43,16 @@ class ReadPlaceRestController
 
     public function get(string $cdbid): JsonResponse
     {
-        $response = null;
+        try {
+            $place = $this->service->getEntity($cdbid);
+        } catch (EntityNotFoundException $e) {
+            return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
+        }
 
-        $place = $this->service->getEntity($cdbid);
-
-        if ($place) {
-            $response = JsonLdResponse::create()
-                ->setContent($place);
+        $response = JsonLdResponse::create()
+            ->setContent($place);
 
             $response->headers->set('Vary', 'Origin');
-        } else {
-            $response = $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
-        }
 
         return $response;
     }
