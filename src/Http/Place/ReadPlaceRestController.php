@@ -8,8 +8,10 @@ use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Place;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -44,13 +46,13 @@ class ReadPlaceRestController
     public function get(string $cdbid): JsonResponse
     {
         try {
-            $place = $this->service->getEntity($cdbid);
+            $place = $this->getEventDocument($cdbid, false);
         } catch (EntityNotFoundException $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
 
         $response = JsonLdResponse::create()
-            ->setContent($place);
+            ->setContent($place->getRawBody());
 
             $response->headers->set('Vary', 'Origin');
 
@@ -73,8 +75,8 @@ class ReadPlaceRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $data = $this->service->getEntity($cdbid);
-        $place = $this->serializer->deserialize($data, Place::class);
+        $data = $this->getEventDocument($cdbid, false);
+        $place = $this->serializer->deserialize($data->getRawBody(), Place::class);
 
         if ($style !== 'html' && $style !== 'text') {
             $response = $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
@@ -88,5 +90,17 @@ class ReadPlaceRestController
         }
 
         return $response;
+    }
+
+    /**
+     * @throws EntityNotFoundException
+     */
+    private function getEventDocument(string $id, bool $includeMetadata): JsonDocument
+    {
+        try {
+            return new JsonDocument($id, $this->service->getEntity($id));
+        } catch (DocumentGoneException $e) {
+            throw new EntityNotFoundException("Event with id: {$id} not found");
+        }
     }
 }
