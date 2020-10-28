@@ -6,7 +6,9 @@ use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,20 +57,23 @@ class ReadPlaceRestControllerTest extends TestCase
 
         $serializerInterface = $this->createMock(SerializerInterface::class);
 
-        $entityServiceInterface->method('getEntity')
+        /** @var DocumentRepository|MockObject $jsonRepository */
+        $jsonRepository = $this->createMock(DocumentRepository::class);
+        $jsonRepository->method('get')
             ->willReturnCallback(
-                function ($id) {
+                function (string $id, bool $includeMetadata = false) {
                     switch ($id) {
                         case self::EXISTING_ID:
-                            return $this->jsonDocument->getRawBody();
+                            return $this->jsonDocument;
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
-                            throw new EntityNotFoundException();
+                            return null;
                     }
                 }
             );
 
+        /** @var SerializerInterface|MockObject $serializerInterface */
         $serializerInterface->method('deserialize')
             ->willReturnCallback(
                 function () {
@@ -76,12 +81,8 @@ class ReadPlaceRestControllerTest extends TestCase
                 }
             );
 
-        /**
-         * @var EntityServiceInterface $entityServiceInterface
-         * @var SerializerInterface $serializerInterface
-         */
         $this->placeRestController = new ReadPlaceRestController(
-            $entityServiceInterface,
+            $jsonRepository,
             $serializerInterface
         );
     }

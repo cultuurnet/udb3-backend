@@ -7,10 +7,10 @@ use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Place;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,24 +22,21 @@ class ReadPlaceRestController
     use ApiProblemJsonResponseTrait;
 
     /**
-     * @var EntityServiceInterface
+     * @var DocumentRepository
      */
-    private $service;
+    private $documentRepository;
 
     /**
      * @var SerializerInterface
      */
     private $serializer;
 
-    /**
-     * @param EntityServiceInterface $service
-     * @param SerializerInterface $serializer
-     */
+
     public function __construct(
-        EntityServiceInterface $service,
+        DocumentRepository $documentRepository,
         SerializerInterface $serializer
     ) {
-        $this->service = $service;
+        $this->documentRepository = $documentRepository;
         $this->serializer = $serializer;
     }
 
@@ -97,10 +94,18 @@ class ReadPlaceRestController
      */
     private function getEventDocument(string $id, bool $includeMetadata): JsonDocument
     {
+        $notFoundException = new EntityNotFoundException("Event with id: {$id} not found");
+
         try {
-            return new JsonDocument($id, $this->service->getEntity($id));
+            $document = $this->documentRepository->get($id, $includeMetadata);
         } catch (DocumentGoneException $e) {
-            throw new EntityNotFoundException("Event with id: {$id} not found");
+            throw $notFoundException;
         }
+
+        if (!$document) {
+            throw $notFoundException;
+        }
+
+        return $document;
     }
 }
