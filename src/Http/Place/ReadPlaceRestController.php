@@ -14,10 +14,11 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReadPlaceRestController
 {
-    const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
+    private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     use ApiProblemJsonResponseTrait;
 
@@ -58,16 +59,8 @@ class ReadPlaceRestController
         return $response;
     }
 
-    /**
-     * @param string $cdbid
-     *
-     * @return string
-     */
-    public function getCalendarSummary($cdbid, Request $request)
+    public function getCalendarSummary($cdbid, Request $request): Response
     {
-        $data = null;
-        $response = null;
-
         $style = $request->query->get('style', 'text');
         $langCode = $request->query->get('langCode', 'nl_BE');
         $hidePastDates = $request->query->get('hidePast', false);
@@ -78,17 +71,16 @@ class ReadPlaceRestController
         $place = $this->serializer->deserialize($data->getRawBody(), Place::class);
 
         if ($style !== 'html' && $style !== 'text') {
-            $response = $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
-        } else {
-            if ($style === 'html') {
-                $calSum = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
-            } else {
-                $calSum = new CalendarPlainTextFormatter($langCode, $hidePastDates, $timeZone);
-            }
-            $response = $calSum->format($place, $format);
+            return $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
         }
 
-        return $response;
+        if ($style === 'html') {
+            $calSum = new CalendarHTMLFormatter($langCode, $hidePastDates, $timeZone);
+        } else {
+            $calSum = new CalendarPlainTextFormatter($langCode, $hidePastDates, $timeZone);
+        }
+
+        return new Response($calSum->format($place, $format));
     }
 
     /**

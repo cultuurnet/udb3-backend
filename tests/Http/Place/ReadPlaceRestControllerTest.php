@@ -16,9 +16,9 @@ use CultuurNet\SearchV3\ValueObjects\Place;
 
 class ReadPlaceRestControllerTest extends TestCase
 {
-    const EXISTING_ID = 'existingId';
-    const NON_EXISTING_ID = 'nonExistingId';
-    const REMOVED_ID = 'removedId';
+    private const EXISTING_ID = 'existingId';
+    private const NON_EXISTING_ID = 'nonExistingId';
+    private const REMOVED_ID = 'removedId';
 
     /**
      * @var ReadPlaceRestController
@@ -110,7 +110,7 @@ class ReadPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_json_get_for_an_event()
+    public function it_returns_a_http_response_with_json_get_for_an_event(): void
     {
         $jsonResponse = $this->placeRestController->get(self::EXISTING_ID, new Request());
 
@@ -133,7 +133,7 @@ class ReadPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event()
+    public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event(): void
     {
         $jsonResponse = $this->placeRestController->get(self::NON_EXISTING_ID, new Request());
 
@@ -143,9 +143,9 @@ class ReadPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_http_response_with_a_calendar_summary_for_a_place()
+    public function it_returns_a_http_response_with_a_calendar_summary_for_a_place(): void
     {
-        $request = new Request(array('style' => 'text', 'format' => 'lg'));
+        $request = new Request(['style' => 'text', 'format' => 'lg']);
         $calSumResponse = $this->placeRestController->getCalendarSummary(self::EXISTING_ID, $request);
 
         $this->assertEquals($this->calSum, $calSumResponse);
