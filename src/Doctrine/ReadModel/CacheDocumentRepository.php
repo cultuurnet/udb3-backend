@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Doctrine\ReadModel;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExistException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Doctrine\Common\Cache\Cache;
@@ -22,11 +22,11 @@ class CacheDocumentRepository implements DocumentRepository
         $value = $this->cache->fetch($id);
 
         if ($value === 'GONE') {
-            throw DocumentDoesNotExistException::gone($id);
+            throw DocumentDoesNotExist::gone($id);
         }
 
         if ($value === false) {
-            throw DocumentDoesNotExistException::notFound($id);
+            throw DocumentDoesNotExist::notFound($id);
         }
 
         return new JsonDocument($id, $value);

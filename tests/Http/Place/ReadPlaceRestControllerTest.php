@@ -6,7 +6,7 @@ use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExistException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -87,9 +87,9 @@ class ReadPlaceRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
                         case self::REMOVED_ID:
-                            throw DocumentDoesNotExistException::gone($id);
+                            throw DocumentDoesNotExist::gone($id);
                         default:
-                            throw DocumentDoesNotExistException::notFound($id);
+                            throw DocumentDoesNotExist::notFound($id);
                     }
                 }
             );
