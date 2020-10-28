@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -63,7 +64,7 @@ class ReadPlaceRestControllerTest extends TestCase
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
-                            return null;
+                            throw new EntityNotFoundException();
                     }
                 }
             );
