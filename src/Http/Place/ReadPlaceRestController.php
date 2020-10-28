@@ -46,7 +46,7 @@ class ReadPlaceRestController
         $includeMetadata = $request->query->get('includeMetadata', false);
 
         try {
-            $place = $this->getEventDocument($cdbid, $includeMetadata);
+            $place = $this->getPlaceDocument($cdbid, $includeMetadata);
         } catch (EntityNotFoundException $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
@@ -67,7 +67,7 @@ class ReadPlaceRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $data = $this->getEventDocument($cdbid, false);
+        $data = $this->getPlaceDocument($cdbid, false);
         $place = $this->serializer->deserialize($data->getRawBody(), Place::class);
 
         if ($style !== 'html' && $style !== 'text') {
@@ -86,7 +86,7 @@ class ReadPlaceRestController
     /**
      * @throws EntityNotFoundException
      */
-    private function getEventDocument(string $id, bool $includeMetadata): JsonDocument
+    private function getPlaceDocument(string $id, bool $includeMetadata): JsonDocument
     {
         $notFoundException = new EntityNotFoundException("Event with id: {$id} not found");
 
