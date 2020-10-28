@@ -14,11 +14,11 @@ class InMemoryDocumentRepository implements DocumentRepository
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
         if (!isset($this->documents[$id])) {
-            throw DocumentDoesNotExistException::notFound($id);
+            throw DocumentDoesNotExist::notFound($id);
         }
 
         if ('GONE' === $this->documents[$id]) {
-            throw DocumentDoesNotExistException::gone($id);
+            throw DocumentDoesNotExist::gone($id);
         }
 
         return $this->documents[$id];

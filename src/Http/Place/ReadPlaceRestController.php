@@ -8,7 +8,7 @@ use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Place;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExistException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +45,7 @@ class ReadPlaceRestController
 
         try {
             $place = $this->documentRepository->fetch($cdbid, $includeMetadata);
-        } catch (DocumentDoesNotExistException $e) {
+        } catch (DocumentDoesNotExist $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
 

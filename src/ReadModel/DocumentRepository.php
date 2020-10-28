@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 interface DocumentRepository
 {
     /**
-     * @throws DocumentDoesNotExistException
+     * @throws DocumentDoesNotExist
      */
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument;
 

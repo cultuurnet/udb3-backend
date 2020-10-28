@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExistException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,7 +63,7 @@ class ReadEventRestController
 
         try {
             $event = $this->jsonRepository->fetch($cdbid, $includeMetadata);
-        } catch (DocumentDoesNotExistException $e) {
+        } catch (DocumentDoesNotExist $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
 
