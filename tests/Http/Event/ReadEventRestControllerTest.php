@@ -8,6 +8,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExistException;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTimeZone;
@@ -120,16 +121,16 @@ class ReadEventRestControllerTest extends TestCase
         $this->event->setCalendarType('single');
 
         $jsonRepository = $this->createMock(DocumentRepository::class);
-        $jsonRepository->method('get')
+        $jsonRepository->method('fetch')
             ->willReturnCallback(
                 function (string $id, bool $includeMetadata = false) {
                     switch ($id) {
                         case self::EXISTING_ID:
                             return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
                         case self::REMOVED_ID:
-                            throw new DocumentGoneException();
+                            throw DocumentDoesNotExistException::gone($id);
                         default:
-                            return null;
+                            throw DocumentDoesNotExistException::notFound($id);
                     }
                 }
             );
@@ -267,7 +268,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_error_NOT_FOUND_for_calendar_summary_for_non_existing_event(): void
     {
-        $this->expectException(EntityNotFoundException::class);
+        $this->expectException(DocumentDoesNotExistException::class);
 
         $request = new Request(array('style' => 'text', 'format' => 'lg'));
         $this->eventRestController->getCalendarSummary(self::NON_EXISTING_ID, $request);

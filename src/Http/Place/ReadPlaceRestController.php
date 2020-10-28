@@ -6,12 +6,10 @@ use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Place;
-use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExistException;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,8 +44,8 @@ class ReadPlaceRestController
         $includeMetadata = $request->query->get('includeMetadata', false);
 
         try {
-            $place = $this->getPlaceDocument($cdbid, $includeMetadata);
-        } catch (EntityNotFoundException $e) {
+            $place = $this->documentRepository->fetch($cdbid, $includeMetadata);
+        } catch (DocumentDoesNotExistException $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
 
@@ -67,7 +65,7 @@ class ReadPlaceRestController
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
-        $data = $this->getPlaceDocument($cdbid, false);
+        $data = $this->documentRepository->fetch($cdbid, false);
         $place = $this->serializer->deserialize($data->getRawBody(), Place::class);
 
         if ($style !== 'html' && $style !== 'text') {
@@ -81,25 +79,5 @@ class ReadPlaceRestController
         }
 
         return new Response($calSum->format($place, $format));
-    }
-
-    /**
-     * @throws EntityNotFoundException
-     */
-    private function getPlaceDocument(string $id, bool $includeMetadata): JsonDocument
-    {
-        $notFoundException = new EntityNotFoundException("Event with id: {$id} not found");
-
-        try {
-            $document = $this->documentRepository->get($id, $includeMetadata);
-        } catch (DocumentGoneException $e) {
-            throw $notFoundException;
-        }
-
-        if (!$document) {
-            throw $notFoundException;
-        }
-
-        return $document;
     }
 }

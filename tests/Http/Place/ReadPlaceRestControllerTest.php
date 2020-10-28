@@ -6,6 +6,7 @@ use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExistException;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -79,16 +80,16 @@ class ReadPlaceRestControllerTest extends TestCase
 
         /** @var DocumentRepository|MockObject $jsonRepository */
         $jsonRepository = $this->createMock(DocumentRepository::class);
-        $jsonRepository->method('get')
+        $jsonRepository->method('fetch')
             ->willReturnCallback(
                 function (string $id, bool $includeMetadata = false) {
                     switch ($id) {
                         case self::EXISTING_ID:
                             return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
                         case self::REMOVED_ID:
-                            throw new DocumentGoneException();
+                            throw DocumentDoesNotExistException::gone($id);
                         default:
-                            return null;
+                            throw DocumentDoesNotExistException::notFound($id);
                     }
                 }
             );
