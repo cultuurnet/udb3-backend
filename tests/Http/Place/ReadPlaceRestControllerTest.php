@@ -31,6 +31,11 @@ class ReadPlaceRestControllerTest extends TestCase
     private $jsonDocument;
 
     /**
+     * @var JsonDocument
+     */
+    private $jsonDocumentWithMetadata;
+
+    /**
      * @var string
      */
     private $calSum;
@@ -45,7 +50,24 @@ class ReadPlaceRestControllerTest extends TestCase
      */
     public function setUp()
     {
-        $this->jsonDocument = new JsonDocument('id', 'place');
+        $this->jsonDocument = new JsonDocument(
+            'existingId',
+            json_encode(['@type' => 'Place']
+            )
+        );
+
+        $this->jsonDocumentWithMetadata = new JsonDocument(
+            'existingId',
+            json_encode(
+                [
+                    '@type' => 'Place',
+                    'metadata' => [
+                        'popularity' => 123456,
+                    ]
+                ]
+            )
+        );
+
         $this->calSum = 'zondag 7 oktober 2018 van 12:15 tot 18:00';
 
         $this->place = new Place();
@@ -62,7 +84,7 @@ class ReadPlaceRestControllerTest extends TestCase
                 function (string $id, bool $includeMetadata = false) {
                     switch ($id) {
                         case self::EXISTING_ID:
-                            return $this->jsonDocument;
+                            return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
@@ -90,7 +112,7 @@ class ReadPlaceRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_json_get_for_an_event()
     {
-        $jsonResponse = $this->placeRestController->get(self::EXISTING_ID);
+        $jsonResponse = $this->placeRestController->get(self::EXISTING_ID, new Request());
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
         $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
@@ -99,9 +121,21 @@ class ReadPlaceRestControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_a_http_response_with_json_including_metadata_for_an_event(): void
+    {
+        $request = new Request(['includeMetadata' => 'true']);
+        $jsonResponse = $this->placeRestController->get(self::EXISTING_ID, $request);
+
+        $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
+        $this->assertEquals($this->jsonDocumentWithMetadata->getRawBody(), $jsonResponse->getContent());
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event()
     {
-        $jsonResponse = $this->placeRestController->get(self::NON_EXISTING_ID);
+        $jsonResponse = $this->placeRestController->get(self::NON_EXISTING_ID, new Request());
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
     }

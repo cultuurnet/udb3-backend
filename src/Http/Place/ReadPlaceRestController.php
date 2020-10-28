@@ -40,10 +40,12 @@ class ReadPlaceRestController
         $this->serializer = $serializer;
     }
 
-    public function get(string $cdbid): JsonResponse
+    public function get(string $cdbid, Request $request): JsonResponse
     {
+        $includeMetadata = $request->query->get('includeMetadata', false);
+
         try {
-            $place = $this->getEventDocument($cdbid, false);
+            $place = $this->getEventDocument($cdbid, $includeMetadata);
         } catch (EntityNotFoundException $e) {
             return $this->createApiProblemJsonResponseNotFound(self::GET_ERROR_NOT_FOUND, $cdbid);
         }
