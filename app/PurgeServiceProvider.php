@@ -67,7 +67,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
             'place_relations',
             'role_permissions',
             'roles_search_v3',
-            'user_roles'
+            'user_roles',
         ];
 
         foreach ($dbalReadModels as $dbalReadModel) {
