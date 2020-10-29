@@ -61,7 +61,6 @@ class PurgeServiceProvider implements ServiceProviderInterface
             'event_permission_readmodel',
             'event_relations',
             'place_relations',
-            'index_readmodel',
             'place_permission_readmodel',
         ];
 
