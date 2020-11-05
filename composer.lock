@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd6d1995ce56e5d47294128db8c0b218",
+    "content-hash": "73e060310a5de781ec79173c7a636860",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1391,16 +1391,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-3570-add-status-events",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "31597bc1c03e17bf722697e72524b6f2a31d5576"
+                "reference": "11a043dc2eed47703c45f38ade3f54ed0f7251f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/31597bc1c03e17bf722697e72524b6f2a31d5576",
-                "reference": "31597bc1c03e17bf722697e72524b6f2a31d5576",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/11a043dc2eed47703c45f38ade3f54ed0f7251f4",
+                "reference": "11a043dc2eed47703c45f38ade3f54ed0f7251f4",
                 "shasum": ""
             },
             "require": {
@@ -1466,7 +1466,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-09-28T09:10:39+00:00"
+            "time": "2020-11-05T14:52:09+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -8953,20 +8953,6 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "funding": [
-                {
-                    "url": "https://github.com/ondrejmirtes",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.patreon.com/phpstan",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpstan/phpstan",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T13:14:53+00:00"
         },
         {
@@ -10243,6 +10229,7 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
+        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
