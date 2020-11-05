@@ -4,6 +4,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
+use CultuurNet\UDB3\Event\UpdateSubEventStatusHandler;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
@@ -615,6 +616,12 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
                 $app['organizer_repository'],
                 $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                 $app['media_manager']
+            )
+        );
+
+        $commandBus->subscribe(
+            new UpdateSubEventStatusHandler(
+                $app['event_repository']
             )
         );
 
