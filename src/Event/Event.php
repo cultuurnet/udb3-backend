@@ -6,6 +6,7 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
@@ -44,6 +45,10 @@ use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\Status\SubEventCancelled;
+use CultuurNet\UDB3\Event\Events\Status\SubEventPostponed;
+use CultuurNet\UDB3\Event\Events\Status\SubEventScheduled;
+use CultuurNet\UDB3\Event\Events\Status\SubEventStatusUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
@@ -52,6 +57,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
@@ -64,8 +70,10 @@ use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
+use InvalidArgumentException;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Person\Age;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -361,6 +369,69 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     public function applyAudienceUpdated(AudienceUpdated $audienceUpdated)
     {
         $this->audience= $audienceUpdated->getAudience();
+    }
+
+    public function updateSubEventStatus(Status $status, Timestamp $subEventTimestamp, string $reason): void
+    {
+        if ($this->calendar->getType()->sameValueAs(CalendarType::PERMANENT())) {
+            return;
+        }
+
+        if ($this->calendar->getType()->sameValueAs(CalendarType::PERIODIC())) {
+            return;
+        }
+
+        if (!$this->calendar->hasTimestamp($subEventTimestamp)) {
+            return;
+        }
+
+        // TODO III-3570: Verify the status of a sub event before applying the new status.
+
+        $this->apply($this->createSubEventUpdateEvent($status, $subEventTimestamp, $reason));
+    }
+
+    private function createSubEventUpdateEvent(Status $status, Timestamp $timestamp, string $reason): SubEventStatusUpdated
+    {
+        if ($status->equals(Status::cancelled())) {
+            return new SubEventCancelled(
+                $this->eventId,
+                $timestamp,
+                $reason
+            );
+        }
+
+        if ($status->equals(Status::postponed())) {
+            return new SubEventPostponed(
+                $this->eventId,
+                $timestamp,
+                $reason
+            );
+        }
+
+        if ($status->equals(Status::scheduled())) {
+            return new SubEventScheduled(
+                $this->eventId,
+                $timestamp,
+                $reason
+            );
+        }
+
+        throw new InvalidArgumentException('Event aggregate can not handle sub event status "' . $status->toNative() . '"');
+    }
+
+    public function applySubEventCancelled(SubEventCancelled $subEventCancelled): void
+    {
+        // TODO III-3570: Set and internal state.
+    }
+
+    public function applySubEventPostponed(SubEventPostponed $subEventPostponed): void
+    {
+        // TODO III-3570: Set and internal state.
+    }
+
+    public function applySubEventScheduled(SubEventScheduled $subEventScheduled): void
+    {
+        // TODO III-3570: Set and internal state.
     }
 
     /**
