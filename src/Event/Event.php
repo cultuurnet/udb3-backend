@@ -58,6 +58,8 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\SubEvent;
+use CultuurNet\UDB3\Event\ValueObjects\SubEvents;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
@@ -99,6 +101,11 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
      * @var boolean
      */
     private $concluded = false;
+
+    /**
+     * @var SubEvents
+     */
+    private $subEvents;
 
     public static function create(
         string $eventId,
@@ -206,6 +213,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();
+        $this->subEvents = SubEvents::createFromCalendar($eventCreated->getCalendar());
     }
 
     /**
@@ -215,6 +223,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     {
         $this->eventId = $eventCopied->getItemId();
         $this->workflowStatus = WorkflowStatus::DRAFT();
+        $this->subEvents = SubEvents::createFromCalendar($eventCopied->getCalendar());
         $this->labels = new LabelCollection();
     }
 
@@ -279,6 +288,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->priceInfo = null;
 
         $this->importWorkflowStatus($udb2Event);
+        $this->subEvents = SubEvents::createEmpty();
         $this->labels = LabelCollection::fromKeywords($udb2Event->getKeywords(true));
     }
 
@@ -312,6 +322,8 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
     {
         $this->locationId = $majorInfoUpdated->getLocation();
+        // TODO III-3750: This will modify previously specified event status.
+        $this->subEvents = SubEvents::createFromCalendar($majorInfoUpdated->getCalendar());
     }
 
     /**
@@ -381,16 +393,21 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             return;
         }
 
+        // This prevents setting a status for a sub event that has no matching timestamp on the calendar.
         if (!$this->calendar->hasTimestamp($subEventTimestamp)) {
             return;
         }
 
-        // TODO III-3570: Verify the status of a sub event before applying the new status.
+        // TODO III-3570: Take into account a change of reason OR create separate flow for reason.
+        // This prevents setting the same status on a sub event.
+        if ($this->subEvents->hasSubEvent(new SubEvent($subEventTimestamp, $status))) {
+            return;
+        }
 
-        $this->apply($this->createSubEventUpdateEvent($status, $subEventTimestamp, $reason));
+        $this->apply($this->createSubEventUpdatedEvent($status, $subEventTimestamp, $reason));
     }
 
-    private function createSubEventUpdateEvent(Status $status, Timestamp $timestamp, string $reason): SubEventStatusUpdated
+    private function createSubEventUpdatedEvent(Status $status, Timestamp $timestamp, string $reason): SubEventStatusUpdated
     {
         if ($status->equals(Status::cancelled())) {
             return new SubEventCancelled(
@@ -421,17 +438,32 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     public function applySubEventCancelled(SubEventCancelled $subEventCancelled): void
     {
-        // TODO III-3570: Set and internal state.
+        $this->subEvents->updateSubEvent(
+            new SubEvent(
+                $subEventCancelled->getTimestamp(),
+                Status::cancelled()
+            )
+        );
     }
 
     public function applySubEventPostponed(SubEventPostponed $subEventPostponed): void
     {
-        // TODO III-3570: Set and internal state.
+        $this->subEvents->updateSubEvent(
+            new SubEvent(
+                $subEventPostponed->getTimestamp(),
+                Status::postponed()
+            )
+        );
     }
 
     public function applySubEventScheduled(SubEventScheduled $subEventScheduled): void
     {
-        // TODO III-3570: Set and internal state.
+        $this->subEvents->updateSubEvent(
+            new SubEvent(
+                $subEventScheduled->getTimestamp(),
+                Status::scheduled()
+            )
+        );
     }
 
     /**
