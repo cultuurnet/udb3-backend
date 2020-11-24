@@ -80,6 +80,30 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     ],
                 ],
             ],
+            'without id' => [
+                [
+                    [
+                        'status' => 'EventCancelled'
+                    ]
+                ],
+                [
+                    0 => [
+                        'id' => 'Required but could not be found',
+                    ],
+                ],
+            ],
+            'without status' => [
+                [
+                    [
+                        'id' => 0
+                    ]
+                ],
+                [
+                    0 => [
+                        'status' => 'Required but could not be found',
+                    ],
+                ],
+            ],
         ];
     }
 }
