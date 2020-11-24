@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
+use CultuurNet\Deserializer\DataValidationException;
 use PHPUnit\Framework\TestCase;
 
 class UpdateSubEventsStatusValidatorTest extends TestCase
@@ -44,5 +45,41 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
 
         $this->validator->validate($data);
         $this->addToAssertionCount(1);
+    }
+
+    /**
+     * @test
+     * @dataProvider getInvalidData
+     */
+    public function it_fails_on_invalid_data(array $data, array $expectedMessages): void
+    {
+        $validationMessages = [];
+
+        try {
+            $this->validator->validate($data);
+        } catch (DataValidationException $e) {
+            $validationMessages = $e->getValidationMessages();
+        }
+
+        $this->assertEquals(
+            $expectedMessages,
+            $validationMessages
+        );
+    }
+
+
+    public function getInvalidData()
+    {
+        return [
+            'empty event' => [
+                [[]],
+                [
+                    0 => [
+                        'id' => 'Required but could not be found',
+                        'status' => 'Required but could not be found',
+                    ],
+                ],
+            ],
+        ];
     }
 }

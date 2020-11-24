@@ -76,6 +76,10 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
 
     private function validateReasons(array $data)
     {
+        if (!isset($data['reason'])) {
+            return [];
+        }
+
         $messages = [];
         foreach ($data['reason'] as $language => $translatedReason) {
             if (empty(trim($translatedReason))) {
