@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
