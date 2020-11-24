@@ -39,7 +39,7 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_will_handle_update_sub_event_status(): void
+    public function it_will_handle_update_sub_event_status_for_single_sub_event(): void
     {
         $id = '1';
 
@@ -49,26 +49,30 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
         $initialTimestamps = [new Timestamp($startDate, $endDate)];
         $expectedTimestamps = [new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::cancelled(), []))];
 
+        $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
+        $expectedCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []);
+
         $command = new UpdateSubEventsStatus($id);
         $command = $command->withUpdatedStatus(0, new EventStatus(EventStatusType::cancelled(), []));
+
         $expectedEvent = new CalendarUpdated(
             $id,
-            new Calendar(CalendarType::SINGLE(), $startDate, $endDate, $expectedTimestamps)
+            $expectedCalendar
         );
 
         $this->scenario
             ->withAggregateId($id)
-            ->given([$this->getEventCreated($id, $initialTimestamps)])
+            ->given([$this->getEventCreated($id, $initialCalendar)])
             ->when($command)
             ->then([$expectedEvent]);
     }
 
     /**
      * @param string $id
-     * @param Timestamp[] $timestamps
+     * @param Calendar $calendar
      * @return EventCreated
      */
-    private function getEventCreated(string $id, array $timestamps): EventCreated
+    private function getEventCreated(string $id, Calendar $calendar): EventCreated
     {
         return new EventCreated(
             $id,
@@ -76,7 +80,7 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
             new Title('some representative title'),
             new EventType('0.50.4.0.0', 'concert'),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::SINGLE(), null, null, $timestamps, [])
+            $calendar
         );
     }
 }
