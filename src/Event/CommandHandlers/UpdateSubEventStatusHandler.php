@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Event;
+namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandlerInterface;
 use Broadway\Repository\RepositoryInterface;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
+use CultuurNet\UDB3\Event\Event;
 
 final class UpdateSubEventStatusHandler implements CommandHandlerInterface
 {

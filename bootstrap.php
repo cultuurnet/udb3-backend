@@ -624,6 +624,12 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
             )
         );
 
+        $commandBus->subscribe(
+            new \CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventStatusHandler(
+                $app['event_repository']
+            )
+        );
+
         $commandBus->subscribe($app['saved_searches_command_handler']);
 
         $commandBus->subscribe(
