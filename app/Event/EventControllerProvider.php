@@ -4,6 +4,8 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
 use CultuurNet\UDB3\Http\Event\ReadEventRestController;
+use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusValidator;
 use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -43,6 +45,15 @@ class EventControllerProvider implements ControllerProviderInterface
             }
         );
 
+        $app[UpdateSubEventsStatusRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateSubEventsStatusRequestHandler(
+                    $app['event_command_bus'],
+                    new UpdateSubEventsStatusValidator()
+                );
+            }
+        );
+
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
@@ -69,6 +80,7 @@ class EventControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
+        $controllers->patch('/{eventId}/subEvents', UpdateSubEventsStatusRequestHandler::class);
         return $controllers;
     }
 }
