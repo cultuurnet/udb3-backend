@@ -68,6 +68,46 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_will_handle_update_sub_event_status_for_multiple_sub_events(): void
+    {
+        $id = '1';
+
+        $startDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-11-24');
+        $endDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-11-24');
+
+        $initialTimestamps = [
+            new Timestamp($startDate, $endDate),
+            new Timestamp($startDate, $endDate),
+            new Timestamp($startDate, $endDate),
+        ];
+        $expectedTimestamps = [
+            new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::scheduled(), [])),
+            new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::cancelled(), [])),
+            new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::postponed(), [])),
+        ];
+
+        $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
+        $expectedCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []);
+
+        $command = new UpdateSubEventsStatus($id);
+        $command = $command->withUpdatedStatus(1, new EventStatus(EventStatusType::cancelled(), []));
+        $command = $command->withUpdatedStatus(2, new EventStatus(EventStatusType::postponed(), []));
+
+        $expectedEvent = new CalendarUpdated(
+            $id,
+            $expectedCalendar
+        );
+
+        $this->scenario
+            ->withAggregateId($id)
+            ->given([$this->getEventCreated($id, $initialCalendar)])
+            ->when($command)
+            ->then([$expectedEvent]);
+    }
+
+    /**
      * @param string $id
      * @param Calendar $calendar
      * @return EventCreated
