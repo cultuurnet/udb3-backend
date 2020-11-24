@@ -9,7 +9,7 @@ use Broadway\Repository\RepositoryInterface;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
 use CultuurNet\UDB3\Event\Event;
 
-final class UpdateSubEventStatusHandler implements CommandHandlerInterface
+final class UpdateSubEventsStatusHandler implements CommandHandlerInterface
 {
     /**
      * @var RepositoryInterface
