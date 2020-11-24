@@ -104,6 +104,63 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     ],
                 ],
             ],
+            'invalid id' => [
+                [
+                    [
+                        'id' => 'DefinitelyNotAnId',
+                        'status' => 'EventCancelled',
+                    ]
+                ],
+                [
+                    0 => [
+                        'id' => 'Should be an integer',
+                    ],
+                ],
+            ],
+            'invalid status' => [
+                [
+                    [
+                        'id' => 0,
+                        'status' => 'DefinitelyNotAValidStatus',
+                    ]
+                ],
+                [
+                    0 => [
+                        'status' => 'Invalid status provided',
+                    ],
+                ],
+            ],
+            'empty reason' => [
+                [
+                    [
+                        'id' => 0,
+                        'status' => 'EventCancelled',
+                        'reason' => [
+                            'nl' => '',
+                        ],
+                    ]
+                ],
+                [
+                    0 => [
+                        'reason.nl' => 'Cannot be empty'
+                    ],
+                ],
+            ],
+            'empty second event' => [
+                [
+                    [
+                        'id' => 0,
+                        'status' => 'EventCancelled',
+                    ],
+                    [],
+                ],
+                [
+                    1 => [
+                        'id' => 'Required but could not be found',
+                        'status' => 'Required but could not be found',
+                    ],
+                ],
+            ],
         ];
     }
 }
