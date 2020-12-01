@@ -61,12 +61,12 @@ class UpdateSubEventsStatusRequestHandler
      */
     private function parseReason(array $data): array
     {
-        if (!isset($data['reason'])) {
-            return  [];
+        if (!isset($data['status']['reason'])) {
+            return [];
         }
 
         $reason = [];
-        foreach ($reason as $language => $translatedReason) {
+        foreach ($data['status']['reason'] as $language => $translatedReason) {
             $reason[] = new StatusReason(new Language($language), $translatedReason);
         }
 
