@@ -34,7 +34,7 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
         $messages = array_merge($messages, $this->validateId($data));
 
         if (!isset($data['status'])) {
-            $messages['status'] = 'Missing required property status';
+            $messages['status'] = 'Required but could not be found';
         } elseif (!is_array($data['status'])) {
             $messages['status'] = 'Should be an object with type and optionally reason properties';
         } else {

@@ -79,7 +79,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                 [[]],
                 [
                     '[0].id' => 'Required but could not be found',
-                    '[0].status.type' => 'Required but could not be found',
+                    '[0].status' => 'Required but could not be found',
                 ],
             ],
             'without id' => [
@@ -101,7 +101,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     ],
                 ],
                 [
-                    '[0].status' => 'Missing required property status',
+                    '[0].status' => 'Required but could not be found',
                 ],
             ],
             'invalid status' => [
@@ -136,7 +136,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     ]
                 ],
                 [
-                    '[0].status.type' => 'Invalid status provided',
+                    '[0].status.type' => 'Required but could not be found',
                 ],
             ],
             'invalid status type' => [
@@ -210,7 +210,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                 ],
                 [
                     '[1].id' => 'Required but could not be found',
-                    '[1].status.type' => 'Required but could not be found',
+                    '[1].status' => 'Required but could not be found',
                 ],
             ],
         ];
