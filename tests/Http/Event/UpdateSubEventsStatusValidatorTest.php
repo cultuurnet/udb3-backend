@@ -146,6 +146,20 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     '[0].status.reason.nl' => 'Cannot be empty',
                 ],
             ],
+            'invalid reason' => [
+                [
+                    [
+                        'id' => 0,
+                        'status' => [
+                            'type' => 'Unavailable',
+                            'reason' => 'Should be an object instead, not a string',
+                        ],
+                    ]
+                ],
+                [
+                    '[0].status.reason' => 'Should be an object with language codes as properties and string values',
+                ],
+            ],
             'empty second event' => [
                 [
                     [

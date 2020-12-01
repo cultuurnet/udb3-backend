@@ -85,6 +85,12 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
             return [];
         }
 
+        if (!is_array($data['status']['reason'])) {
+            return [
+                'status.reason' => 'Should be an object with language codes as properties and string values',
+            ];
+        }
+
         $messages = [];
         foreach ($data['status']['reason'] as $language => $translatedReason) {
             if (empty(trim($translatedReason))) {
