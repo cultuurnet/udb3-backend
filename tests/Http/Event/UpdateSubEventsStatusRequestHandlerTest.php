@@ -78,7 +78,7 @@ class UpdateSubEventsStatusRequestHandlerTest extends TestCase
 
         $this->commandBus->record();
 
-        $this->requestHandler->__invoke($request, $eventId);
+        $this->requestHandler->handle($request, $eventId);
 
         $actual = $this->commandBus->getRecordedCommands();
 
@@ -102,6 +102,6 @@ class UpdateSubEventsStatusRequestHandlerTest extends TestCase
 
         $this->expectException(DataValidationException::class);
 
-        $this->requestHandler->__invoke($request, $eventId);
+        $this->requestHandler->handle($request, $eventId);
     }
 }

@@ -32,7 +32,7 @@ class UpdateSubEventsStatusRequestHandler
         $this->validator = $validator;
     }
 
-    public function __invoke(Request $request, string $eventId)
+    public function handle(Request $request, string $eventId)
     {
         $data = json_decode($request->getContent(), true);
 
