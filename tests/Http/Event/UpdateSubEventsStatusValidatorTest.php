@@ -101,7 +101,18 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     ],
                 ],
                 [
-                    '[0].status.type' => 'Required but could not be found',
+                    '[0].status' => 'Missing required property status',
+                ],
+            ],
+            'invalid status' => [
+                [
+                    [
+                        'id' => 0,
+                        'status' => 'Should not be a string',
+                    ],
+                ],
+                [
+                    '[0].status' => 'Should be an object with type and optionally reason properties',
                 ],
             ],
             'invalid id' => [
@@ -117,7 +128,18 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     '[0].id' => 'Should be an integer',
                 ],
             ],
-            'invalid status' => [
+            'without status type' => [
+                [
+                    [
+                        'id' => 0,
+                        'status' => [],
+                    ]
+                ],
+                [
+                    '[0].status.type' => 'Invalid status provided',
+                ],
+            ],
+            'invalid status type' => [
                 [
                     [
                         'id' => 0,
