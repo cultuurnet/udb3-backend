@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Language;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
