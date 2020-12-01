@@ -29,7 +29,7 @@ final class UpdateSubEventsStatusHandler implements CommandHandlerInterface
 
         /** @var Event $event */
         $event = $this->offerRepository->load($command->getItemId());
-        $event->updateSubEventsStatus($command->getEventStatuses());
+        $event->updateSubEventsStatus($command->getStatuses());
         $this->offerRepository->save($event);
     }
 }

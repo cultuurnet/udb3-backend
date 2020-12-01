@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Commands;
 
-use CultuurNet\UDB3\Event\ValueObjects\EventStatus;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
@@ -16,19 +16,19 @@ final class UpdateSubEventsStatus implements AuthorizableCommandInterface
     private $eventId;
 
     /**
-     * @var EventStatus[]
+     * @var Status[]
      */
-    private $eventStatuses;
+    private $statuses;
 
     public function __construct(string $eventId)
     {
         $this->eventId = $eventId;
     }
 
-    public function withUpdatedStatus(int $timestampPosition, EventStatus $eventStatus): self
+    public function withUpdatedStatus(int $timestampPosition, Status $status): self
     {
         $c = clone $this;
-        $c->eventStatuses[$timestampPosition] = $eventStatus;
+        $c->statuses[$timestampPosition] = $status;
         return $c;
     }
 
@@ -37,9 +37,9 @@ final class UpdateSubEventsStatus implements AuthorizableCommandInterface
         return $this->eventId;
     }
 
-    public function getEventStatuses(): array
+    public function getStatuses(): array
     {
-        return $this->eventStatuses;
+        return $this->statuses;
     }
 
     public function getPermission(): Permission

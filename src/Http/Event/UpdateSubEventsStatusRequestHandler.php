@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
-use CultuurNet\UDB3\Event\ValueObjects\EventStatus;
-use CultuurNet\UDB3\Event\ValueObjects\EventStatusReason;
-use CultuurNet\UDB3\Event\ValueObjects\EventStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
+use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,8 +45,8 @@ class UpdateSubEventsStatusRequestHandler
         foreach ($data as $index => $eventStatus) {
             $command = $command->withUpdatedStatus(
                 $index,
-                new EventStatus(
-                    EventStatusType::fromNative($data['status']),
+                new Status(
+                    StatusType::fromNative($data['status']),
                     $this->parseReason($data)
                 )
             );
@@ -57,7 +57,7 @@ class UpdateSubEventsStatusRequestHandler
 
     /**
      * @param array $data
-     * @return EventStatusReason[]
+     * @return StatusReason[]
      */
     private function parseReason(array $data): array
     {
@@ -67,7 +67,7 @@ class UpdateSubEventsStatusRequestHandler
 
         $reason = [];
         foreach ($reason as $language => $translatedReason) {
-            $reason[] = new EventStatusReason(new Language($language), $translatedReason);
+            $reason[] = new StatusReason(new Language($language), $translatedReason);
         }
 
         return $reason;

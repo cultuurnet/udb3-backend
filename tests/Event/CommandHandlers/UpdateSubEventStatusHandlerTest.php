@@ -14,9 +14,9 @@ use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Event\ValueObjects\EventStatus;
-use CultuurNet\UDB3\Event\ValueObjects\EventStatusType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
@@ -47,13 +47,13 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
         $endDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-11-24');
 
         $initialTimestamps = [new Timestamp($startDate, $endDate)];
-        $expectedTimestamps = [new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::cancelled(), []))];
+        $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::unavailable(), []))];
 
         $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
         $expectedCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []);
 
         $command = new UpdateSubEventsStatus($id);
-        $command = $command->withUpdatedStatus(0, new EventStatus(EventStatusType::cancelled(), []));
+        $command = $command->withUpdatedStatus(0, new Status(StatusType::unavailable(), []));
 
         $expectedEvent = new CalendarUpdated(
             $id,
@@ -83,17 +83,17 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
             new Timestamp($startDate, $endDate),
         ];
         $expectedTimestamps = [
-            new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::scheduled(), [])),
-            new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::cancelled(), [])),
-            new Timestamp($startDate, $endDate, new EventStatus(EventStatusType::postponed(), [])),
+            new Timestamp($startDate, $endDate, new Status(StatusType::available(), [])),
+            new Timestamp($startDate, $endDate, new Status(StatusType::unavailable(), [])),
+            new Timestamp($startDate, $endDate, new Status(StatusType::temporarilyUnavailable(), [])),
         ];
 
         $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
         $expectedCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []);
 
         $command = new UpdateSubEventsStatus($id);
-        $command = $command->withUpdatedStatus(1, new EventStatus(EventStatusType::cancelled(), []));
-        $command = $command->withUpdatedStatus(2, new EventStatus(EventStatusType::postponed(), []));
+        $command = $command->withUpdatedStatus(1, new Status(StatusType::unavailable(), []));
+        $command = $command->withUpdatedStatus(2, new Status(StatusType::temporarilyUnavailable(), []));
 
         $expectedEvent = new CalendarUpdated(
             $id,
