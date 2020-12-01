@@ -42,9 +42,9 @@ class UpdateSubEventsStatusRequestHandler
 
         $command = new UpdateSubEventsStatus($eventId);
 
-        foreach ($data as $index => $eventStatus) {
+        foreach ($data as $subEventStatus) {
             $command = $command->withUpdatedStatus(
-                $index,
+                $subEventStatus['id'],
                 new Status(
                     StatusType::fromNative($data['status']),
                     $this->parseReason($data)
