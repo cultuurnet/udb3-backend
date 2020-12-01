@@ -27,18 +27,22 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
         $data = [
             [
                 'id' => 1,
-                'status' => 'EventPostponed',
-                'reason' => [
-                    'nl' => 'Niet vandaag',
-                    'fr' => "Pas aujourd'hui",
+                'status' => [
+                    'type' => 'TemporarilyUnavailable',
+                    'reason' => [
+                        'nl' => 'Niet vandaag',
+                        'fr' => "Pas aujourd'hui",
+                    ],
                 ],
             ],
             [
                 'id' => 2,
-                'status' => 'EventCancelled',
-                'reason' => [
-                    'nl' => 'Nee',
-                    'fr' => 'Non',
+                'status' => [
+                    'type' => 'Unavailable',
+                    'reason' => [
+                        'nl' => 'Nee',
+                        'fr' => 'Non',
+                    ],
                 ],
             ],
         ];
@@ -74,91 +78,87 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
             'empty event' => [
                 [[]],
                 [
-                    0 => [
-                        'id' => 'Required but could not be found',
-                        'status' => 'Required but could not be found',
-                    ],
+                    '[0].id' => 'Required but could not be found',
+                    '[0].status.type' => 'Required but could not be found',
                 ],
             ],
             'without id' => [
                 [
                     [
-                        'status' => 'EventCancelled'
+                        'status' => [
+                            'type' => 'Unavailable',
+                        ],
                     ]
                 ],
                 [
-                    0 => [
-                        'id' => 'Required but could not be found',
-                    ],
+                    '[0].id' => 'Required but could not be found',
                 ],
             ],
             'without status' => [
                 [
                     [
-                        'id' => 0
-                    ]
+                        'id' => 0,
+                    ],
                 ],
                 [
-                    0 => [
-                        'status' => 'Required but could not be found',
-                    ],
+                    '[0].status.type' => 'Required but could not be found',
                 ],
             ],
             'invalid id' => [
                 [
                     [
                         'id' => 'DefinitelyNotAnId',
-                        'status' => 'EventCancelled',
+                        'status' => [
+                            'type' => 'Unavailable',
+                        ],
                     ]
                 ],
                 [
-                    0 => [
-                        'id' => 'Should be an integer',
-                    ],
+                    '[0].id' => 'Should be an integer',
                 ],
             ],
             'invalid status' => [
                 [
                     [
                         'id' => 0,
-                        'status' => 'DefinitelyNotAValidStatus',
+                        'status' => [
+                            'type' => 'DefinitelyNotAValidStatus',
+                        ],
                     ]
                 ],
                 [
-                    0 => [
-                        'status' => 'Invalid status provided',
-                    ],
+                    '[0].status.type' => 'Invalid status provided',
                 ],
             ],
             'empty reason' => [
                 [
                     [
                         'id' => 0,
-                        'status' => 'EventCancelled',
-                        'reason' => [
-                            'nl' => '',
+                        'status' => [
+                            'type' => 'Unavailable',
+                            'reason' => [
+                                'nl' => '',
+                            ],
                         ],
                     ]
                 ],
                 [
-                    0 => [
-                        'reason.nl' => 'Cannot be empty'
-                    ],
+                    '[0].status.reason.nl' => 'Cannot be empty',
                 ],
             ],
             'empty second event' => [
                 [
                     [
                         'id' => 0,
-                        'status' => 'EventCancelled',
+                        'status' => [
+                            'type' => 'Unavailable',
+                        ],
                     ],
                     [],
                 ],
                 [
-                    1 => [
-                        'id' => 'Required but could not be found',
-                        'status' => 'Required but could not be found',
-                    ],
+                    '[1].id' => 'Required but could not be found',
+                    '[1].status.type' => 'Required but could not be found',
                 ],
             ],
         ];
