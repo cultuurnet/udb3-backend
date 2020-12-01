@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
 use CultuurNet\UDB3\Language;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,10 +79,11 @@ class UpdateSubEventsStatusRequestHandlerTest extends TestCase
 
         $this->commandBus->record();
 
-        $this->requestHandler->handle($request, $eventId);
+        $response = $this->requestHandler->handle($request, $eventId);
 
         $actual = $this->commandBus->getRecordedCommands();
 
+        $this->assertEquals((new NoContent())->getStatusCode(), $response->getStatusCode());
         $this->assertEquals([$expected], $actual);
     }
 
