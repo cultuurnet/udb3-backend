@@ -15,9 +15,9 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
     {
         $messages = [];
         foreach ($data as $index => $eventStatus) {
-            $eventStatusMessages = $this->validateEventStatus($eventStatus);
+            $eventStatusMessages = $this->validateEventStatus($eventStatus, $index);
             if (!empty($eventStatusMessages)) {
-                $messages[$index] = $eventStatusMessages;
+                $messages = array_merge($messages, $eventStatusMessages);
             }
         }
 
@@ -28,14 +28,19 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
         }
     }
 
-    private function validateEventStatus(array $data): array
+    private function validateEventStatus(array $data, int $index): array
     {
         $messages = [];
         $messages = array_merge($messages, $this->validateId($data));
         $messages = array_merge($messages, $this->validateType($data));
         $messages = array_merge($messages, $this->validateReasons($data));
 
-        return $messages;
+        $messagesWithIndexBeforeKey = [];
+        foreach ($messages as $key => $message) {
+            $messagesWithIndexBeforeKey["[$index].$key"] = $message;
+        }
+
+        return $messagesWithIndexBeforeKey;
     }
 
     private function validateId(array $data): array
