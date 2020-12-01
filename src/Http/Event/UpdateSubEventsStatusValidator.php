@@ -32,7 +32,7 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
     {
         $messages = [];
         $messages = array_merge($messages, $this->validateId($data));
-        $messages = array_merge($messages, $this->validateStatus($data));
+        $messages = array_merge($messages, $this->validateType($data));
         $messages = array_merge($messages, $this->validateReasons($data));
 
         return $messages;
@@ -55,35 +55,35 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
         return [];
     }
 
-    private function validateStatus(array $data): array
+    private function validateType(array $data): array
     {
-        if (!isset($data['status'])) {
+        if (!isset($data['status']['type'])) {
             return [
-                'status' => 'Required but could not be found',
+                'status.type' => 'Required but could not be found',
             ];
         }
 
         try {
-            StatusType::fromNative($data['status']);
+            StatusType::fromNative($data['status']['type']);
         } catch (InvalidArgumentException $e) {
             return [
-                'status' => 'Invalid status provided',
+                'status.type' => 'Invalid status provided',
             ];
         }
 
         return [];
     }
 
-    private function validateReasons(array $data)
+    private function validateReasons(array $data): array
     {
-        if (!isset($data['reason'])) {
+        if (!isset($data['status']['reason'])) {
             return [];
         }
 
         $messages = [];
-        foreach ($data['reason'] as $language => $translatedReason) {
+        foreach ($data['status']['reason'] as $language => $translatedReason) {
             if (empty(trim($translatedReason))) {
-                $messages['reason.' . $language] = 'Cannot be empty';
+                $messages['status.reason.' . $language] = 'Cannot be empty';
             }
         }
 
