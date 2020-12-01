@@ -46,8 +46,8 @@ class UpdateSubEventsStatusRequestHandler
             $command = $command->withUpdatedStatus(
                 $subEventStatus['id'],
                 new Status(
-                    StatusType::fromNative($data['status']),
-                    $this->parseReason($data)
+                    StatusType::fromNative($subEventStatus['status']['type']),
+                    $this->parseReason($subEventStatus)
                 )
             );
         }
