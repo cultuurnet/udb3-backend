@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd6d1995ce56e5d47294128db8c0b218",
+    "content-hash": "6eda89ffafcf96a770716824fbc5e5f9",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1391,16 +1391,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-3570-value-object-adapters",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "913de5f9e86f057bea3ad93868becf7f8c3880af"
+                "reference": "24f6478b2e2d3e7da15847bda839cb898f6214e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/913de5f9e86f057bea3ad93868becf7f8c3880af",
-                "reference": "913de5f9e86f057bea3ad93868becf7f8c3880af",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/24f6478b2e2d3e7da15847bda839cb898f6214e4",
+                "reference": "24f6478b2e2d3e7da15847bda839cb898f6214e4",
                 "shasum": ""
             },
             "require": {
@@ -1417,7 +1417,7 @@
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/search": "~1.1",
-                "cultuurnet/udb3-models": "~0.1",
+                "cultuurnet/udb3-models": "^2.0",
                 "cultuurnet/valueobjects": "~3.0",
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
@@ -1466,7 +1466,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-11-24T09:28:41+00:00"
+            "time": "2020-12-01T13:06:17+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1617,16 +1617,16 @@
         },
         {
             "name": "cultuurnet/udb3-models",
-            "version": "dev-master",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "1c43511aea2803f33ca7501475c4420a2d6ef229"
+                "reference": "1862d7897e3802705c7f0ae4e3b6cfc1614adc3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/1c43511aea2803f33ca7501475c4420a2d6ef229",
-                "reference": "1c43511aea2803f33ca7501475c4420a2d6ef229",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/1862d7897e3802705c7f0ae4e3b6cfc1614adc3c",
+                "reference": "1862d7897e3802705c7f0ae4e3b6cfc1614adc3c",
                 "shasum": ""
             },
             "require": {
@@ -1660,7 +1660,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2020-09-07T09:01:31+00:00"
+            "time": "2020-11-30T17:37:37+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -10111,6 +10111,12 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-3570-value-object-adapters",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
             "version": "0.9999999.9999999.9999999-dev",
             "package": "cultuurnet/udb3-api-guard"
         },
@@ -10126,6 +10132,7 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
+        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
