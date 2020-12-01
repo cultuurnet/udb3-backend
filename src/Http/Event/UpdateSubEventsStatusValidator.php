@@ -93,6 +93,10 @@ class UpdateSubEventsStatusValidator implements DataValidatorInterface
 
         $messages = [];
         foreach ($data['status']['reason'] as $language => $translatedReason) {
+            if (!is_string($language) || strlen($language) !== 2) {
+                $messages['status.reason.' . $language] = 'Language key should be a string of exactly 2 characters';
+            }
+
             if (empty(trim($translatedReason))) {
                 $messages['status.reason.' . $language] = 'Cannot be empty';
             }

@@ -160,6 +160,22 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     '[0].status.reason' => 'Should be an object with language codes as properties and string values',
                 ],
             ],
+            'invalid reason language' => [
+                [
+                    [
+                        'id' => 0,
+                        'status' => [
+                            'type' => 'Unavailable',
+                            'reason' => [
+                                'foo' => 'bar',
+                            ],
+                        ],
+                    ]
+                ],
+                [
+                    '[0].status.reason.foo' => 'Language key should be a string of exactly 2 characters',
+                ],
+            ],
             'empty second event' => [
                 [
                     [
