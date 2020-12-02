@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\RelatedEventLDProjector;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use Silex\Application;
@@ -32,14 +33,16 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
         $app['event_jsonld_repository'] = $app->share(
             function ($app) {
                 return new BroadcastingDocumentRepositoryDecorator(
-                    new PopularityEnrichedOfferRepository(
-                        $app[PopularityRepository::class],
-                        new ProductionEnrichedEventRepository(
-                            new CacheDocumentRepository(
-                                $app['event_jsonld_cache']
-                            ),
-                            $app[ProductionRepository::class],
-                            $app['event_iri_generator']
+                    new NewPropertyPolyfillOfferRepository(
+                        new PopularityEnrichedOfferRepository(
+                            $app[PopularityRepository::class],
+                            new ProductionEnrichedEventRepository(
+                                new CacheDocumentRepository(
+                                    $app['event_jsonld_cache']
+                                ),
+                                $app[ProductionRepository::class],
+                                $app['event_iri_generator']
+                            )
                         )
                     ),
                     $app['event_bus'],
