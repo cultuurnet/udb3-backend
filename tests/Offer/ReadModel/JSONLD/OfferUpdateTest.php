@@ -55,6 +55,7 @@ class OfferUpdateTest extends TestCase
                     'calendarType' => 'permanent',
                 ],
                 'calendarType' => 'permanent',
+                'status' => 'Available',
             ])
         );
 

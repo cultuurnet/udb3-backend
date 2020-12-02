@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
@@ -64,6 +65,7 @@ use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use ValueObjects\Identity\UUID;
@@ -332,6 +334,48 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     public function applyLocationUpdated(LocationUpdated $locationUpdated)
     {
         $this->locationId = $locationUpdated->getLocationId();
+    }
+
+    /**
+     * @param Status[] $statuses
+     *   List of event status updates to apply to the timestamps in the event's calendar.
+     *   The statuses should be keyed by the index number of the timestamp(s) to update.
+     * @see UpdateSubEventsStatus
+     */
+    public function updateSubEventsStatus(array $statuses): void
+    {
+        $timestamps = $this->calendar->getTimestamps();
+
+        foreach ($statuses as $index => $status) {
+            if (!isset($timestamps[$index])) {
+                // If the timestamp to update doesn't exist, it's most likely a concurrency issue.
+                continue;
+            }
+
+            $timestamp = $timestamps[$index];
+
+            $updatedTimestamp = new Timestamp(
+                $timestamp->getStartDate(),
+                $timestamp->getEndDate(),
+                $status
+            );
+
+            $timestamps[$index] = $updatedTimestamp;
+        }
+
+        $updatedCalendar = new Calendar(
+            $this->calendar->getType(),
+            $this->calendar->getStartDate(),
+            $this->calendar->getEndDate(),
+            $timestamps,
+            $this->calendar->getOpeningHours()
+        );
+
+        if (!$this->calendar->sameAs($updatedCalendar)) {
+            $this->apply(
+                new CalendarUpdated($this->eventId, $updatedCalendar)
+            );
+        }
     }
 
     public function updateAudience(

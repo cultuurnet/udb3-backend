@@ -203,6 +203,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->workflowStatus = 'DRAFT';
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
+        $jsonLD->status = 'Available';
 
         $body = $this->project(
             $placeCreated,
@@ -267,6 +268,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->workflowStatus = 'DRAFT';
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
+        $jsonLD->status = 'Available';
 
         $body = $this->project(
             $placeCreated,
@@ -326,6 +328,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->availableTo = '2100-01-01T00:00:00+00:00';
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
+        $jsonLD->status = 'Available';
 
         $metadata = new Metadata(
             [
@@ -778,6 +781,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->languages = ['en'];
         $expectedJsonLD->completedLanguages = ['en'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
+        $expectedJsonLD->status = 'Available';
 
         $body = $this->project(
             $majorInfoUpdated,
