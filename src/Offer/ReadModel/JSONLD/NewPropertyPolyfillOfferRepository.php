@@ -46,7 +46,8 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
         return $json;
     }
 
-    private function polyfillSubEventStatus(array $json): array {
+    private function polyfillSubEventStatus(array $json): array
+    {
         if (!isset($json['subEvent']) || !is_array($json['subEvent'])) {
             return $json;
         }
