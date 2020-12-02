@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
@@ -85,6 +86,8 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                     $app[PopularityRepository::class],
                     $repository
                 );
+
+                $repository = new NewPropertyPolyfillOfferRepository($repository);
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
