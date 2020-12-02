@@ -20,8 +20,8 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
     {
         $document = parent::get($id, $includeMetadata);
 
-        if (!is_null($document)) {
-            return $document;
+        if (is_null($document)) {
+            return null;
         }
 
         return $this->polyfillNewProperties($document);
