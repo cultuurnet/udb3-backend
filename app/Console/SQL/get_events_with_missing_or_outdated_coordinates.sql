@@ -53,6 +53,6 @@ INNER JOIN
 ON
 	pl.uuid = pl_cre.uuid
 WHERE
-	pl_cre.max_cre > pl_geo.max_geo;
+	pl_cre.max_cre > pl_geo.max_geo
 AND
-    aggregate_type = 'event'
+    aggregate_type = 'event';
