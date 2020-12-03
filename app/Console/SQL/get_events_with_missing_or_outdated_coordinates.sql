@@ -2,14 +2,16 @@
 SELECT
 	uuid
 FROM
-	udb3.events
+	udb3.event_store
 WHERE
+    aggregate_type = 'event'
+AND
 	uuid NOT IN
 	(
 		SELECT
 			uuid
 		FROM
-			udb3.events
+			udb3.event_store
 		WHERE
 			type = 'CultuurNet.UDB3.Event.Events.GeoCoordinatesUpdated'
 	)
@@ -22,13 +24,13 @@ UNION
 SELECT
 	DISTINCT (pl.uuid)
 FROM
-	udb3.events AS pl
+	udb3.event_store AS pl
 INNER JOIN
 	(
 		SELECT
 			uuid, MAX(id) AS max_geo
 		FROM
-			udb3.events
+			udb3.event_store
 		WHERE
 			type = 'CultuurNet.UDB3.Event.Events.GeoCoordinatesUpdated'
 		GROUP BY
@@ -41,7 +43,7 @@ INNER JOIN
 		SELECT
 			uuid, MAX(id) AS max_cre
 		FROM
-			udb3.events
+			udb3.event_store
 		WHERE
 			type IN ('CultuurNet.UDB3.Event.Events.EventImportedFromUDB2',
 							 'CultuurNet.UDB3.Event.Events.EventUpdatedFromUDB2')
@@ -52,3 +54,5 @@ ON
 	pl.uuid = pl_cre.uuid
 WHERE
 	pl_cre.max_cre > pl_geo.max_geo;
+AND
+    aggregate_type = 'event'
