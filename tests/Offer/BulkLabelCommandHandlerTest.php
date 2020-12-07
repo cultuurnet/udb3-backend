@@ -91,7 +91,11 @@ class BulkLabelCommandHandlerTest extends TestCase
         $this->resultGenerator->expects($this->once())
             ->method('search')
             ->with($this->query)
-            ->willReturn($this->offerIdentifiers);
+            ->willReturnCallback(
+                function () {
+                    yield from $this->offerIdentifiers;
+                }
+            );
 
         $this->expectEventAndPlaceToBeLabelledWith($this->label);
 

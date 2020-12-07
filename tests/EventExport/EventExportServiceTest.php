@@ -183,7 +183,11 @@ class EventExportServiceTest extends TestCase
 
         $this->resultsGenerator->expects($this->any())
             ->method('search')
-            ->willReturn(new ArrayIterator($this->searchResults));
+            ->willReturnCallback(
+                function () {
+                    yield from $this->searchResults;
+                }
+            );
     }
 
     /**
