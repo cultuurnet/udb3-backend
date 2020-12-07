@@ -3,12 +3,24 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 abstract class AbstractGeocodeCommand extends AbstractCommand
 {
+    /**
+     * @var ResultsGeneratorInterface
+     */
+    private $searchResultsGenerator;
+
+    public function __construct(CommandBusInterface $commandBus, ResultsGeneratorInterface $searchResultsGenerator)
+    {
+        parent::__construct($commandBus);
+        $this->searchResultsGenerator = $searchResultsGenerator;
+    }
+
     /**
      * @inheritdoc
      */

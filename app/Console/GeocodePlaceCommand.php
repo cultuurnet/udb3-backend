@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,9 +18,12 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
      */
     private $documentRepository;
 
-    public function __construct(CommandBusInterface $commandBus, DocumentRepository $documentRepository)
-    {
-        parent::__construct($commandBus);
+    public function __construct(
+        CommandBusInterface $commandBus,
+        ResultsGeneratorInterface $searchResultsGenerator,
+        DocumentRepository $documentRepository
+    ) {
+        parent::__construct($commandBus, $searchResultsGenerator);
         $this->documentRepository = $documentRepository;
     }
 
