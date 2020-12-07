@@ -12,17 +12,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 abstract class AbstractGeocodeCommand extends AbstractCommand
 {
     /**
-     * @var Connection
-     */
-    protected $connection;
-
-    public function __construct(CommandBusInterface $commandBus, Connection $connection)
-    {
-        parent::__construct($commandBus);
-        $this->connection = $connection;
-    }
-
-    /**
      * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)

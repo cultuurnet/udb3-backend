@@ -85,8 +85,8 @@ $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['even
 $consoleApp->add(new PurgeModelCommand($app[PurgeServiceProvider::PURGE_SERVICE_MANAGER]));
 $consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app['sapi3_search_service']));
 $consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
-$consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app['dbal_connection'], $app['place_jsonld_repository']));
-$consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app['dbal_connection'], $app['event_jsonld_repository']));
+$consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app['place_jsonld_repository']));
+$consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app['event_jsonld_repository']));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
