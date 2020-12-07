@@ -22,12 +22,16 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
     {
         $app['place_geocoordinates_command_handler'] = $app->share(
             function (Application $app) {
-                return new GeoCoordinatesCommandHandler(
+                $handler = new GeoCoordinatesCommandHandler(
                     $app['place_repository'],
                     new DefaultAddressFormatter(),
                     new LocalityAddressFormatter(),
                     $app['geocoding_service']
                 );
+
+                $handler->setLogger($app['logger.command_bus']);
+
+                return $handler;
             }
         );
 
