@@ -2,13 +2,11 @@
 
 namespace CultuurNet\UDB3\Search;
 
+use Generator;
+
 interface ResultsGeneratorInterface
 {
     public function count(string $query): int;
 
-    /**
-     * @param string $query
-     * @return \Iterator
-     */
-    public function search(string $query);
+    public function search(string $query): Generator;
 }
