@@ -6,7 +6,9 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
+use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -25,11 +27,15 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
 
     public function __construct(
         CommandBusInterface $commandBus,
-        ResultsGeneratorInterface $searchResultsGenerator,
+        SearchServiceInterface $searchService,
         DocumentRepository $documentRepository
     ) {
         parent::__construct($commandBus);
-        $this->searchResultsGenerator = $searchResultsGenerator;
+        $this->searchResultsGenerator = new ResultsGenerator(
+            $searchService,
+            ['created' => 'asc'],
+            100
+        );
         $this->documentRepository = $documentRepository;
     }
 
