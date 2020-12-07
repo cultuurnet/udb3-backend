@@ -113,11 +113,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
             );
     }
 
-    /**
-     * @param string $itemId
-     * @param OutputInterface $output
-     */
-    abstract protected function dispatchGeocodingCommand($itemId, OutputInterface $output);
+    abstract protected function dispatchGeocodingCommand(string $itemId, OutputInterface $output): void;
 
     abstract protected function getQueryForMissingCoordinates(): string;
 }

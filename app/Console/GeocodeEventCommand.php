@@ -12,7 +12,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
     /**
      * @inheritdoc
      */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('event:geocode')
@@ -32,10 +32,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
         return 'NOT(_exists_:geo) AND NOT(_exists_:location.id)';
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function dispatchGeocodingCommand($eventId, OutputInterface $output)
+    protected function dispatchGeocodingCommand(string $eventId, OutputInterface $output): void
     {
         $document = $this->getDocument($eventId);
         if (is_null($document)) {

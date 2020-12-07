@@ -12,7 +12,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
     /**
      * @inheritdoc
      */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('place:geocode')
@@ -30,10 +30,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
         return 'NOT(_exists_:geo)';
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function dispatchGeocodingCommand($placeId, OutputInterface $output)
+    protected function dispatchGeocodingCommand(string $placeId, OutputInterface $output): void
     {
         $document = $this->getDocument($placeId);
         if (is_null($document)) {
