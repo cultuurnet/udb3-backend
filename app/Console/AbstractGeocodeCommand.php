@@ -48,33 +48,25 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $cdbids = array_values($input->getOption('cdbid'));
-
-        if ($input->getOption('all')) {
-            $cdbids = $this->getAllCdbIds();
-        } elseif (empty($cdbids)) {
-            $cdbids = $this->getOutdatedCdbIds();
+        if ($input->getOption('cdbid')) {
+            return $this->geocodeManually($input, $output);
         }
+        return $this->geocodeByQuery($input, $output);
+    }
 
+    private function geocodeManually(InputInterface $input, OutputInterface $output): ?int
+    {
+        $cdbids = array_values(array_filter($input->getOption('cdbid')));
         $count = count($cdbids);
 
-        if ($count == 0) {
-            $output->writeln("Could not find any items with missing or outdated coordinates.");
+        if ($count === 0) {
+            $output->writeln("Please enter at least one cdbid to geocode.");
             return 0;
         }
 
-        $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion(
-            "This action will queue {$count} items for geocoding, continue? [y/N] ",
-            true
-        );
-
-        if (!$helper->ask($input, $output, $question)) {
+        if (!$this->askConfirmation($input, $output, $count)) {
             return 0;
         }
 
@@ -83,6 +75,42 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         }
 
         return 0;
+    }
+
+    private function geocodeByQuery(InputInterface $input, OutputInterface $output): ?int
+    {
+        $query = $this->getQueryForMissingCoordinates();
+        $count = $this->searchResultsGenerator->count($query);
+
+        if ($count === 0) {
+            $output->writeln("Could not find any items with missing or outdated coordinates.");
+            return 0;
+        }
+
+        if (!$this->askConfirmation($input, $output, $count)) {
+            return 0;
+        }
+
+        $results = $this->searchResultsGenerator->search($query);
+        foreach ($results as $cdbid => $result) {
+            $this->dispatchGeocodingCommand($cdbid, $output);
+        }
+
+        return 0;
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
+    {
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion(
+                    "This action will queue {$count} items for geocoding, continue? [y/N] ",
+                    true
+                )
+            );
     }
 
     /**
