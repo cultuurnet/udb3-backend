@@ -82,6 +82,12 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
             );
 
             $coordinates = $this->geocodingService->getCoordinates($fallbackAddress);
+
+            if (!is_null($coordinates)) {
+                $this->logger->debug(
+                    "Found coordinates for fallback address '$fallbackAddress' for offer id $offerId"
+                );
+            }
         }
 
         if ($coordinates === null) {
