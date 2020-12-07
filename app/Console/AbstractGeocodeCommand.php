@@ -39,15 +39,6 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         $this->documentRepository = $documentRepository;
     }
 
-    protected function getDocument(string $id): ?JsonDocument
-    {
-        try {
-            return $this->documentRepository->fetch($id);
-        } catch (DocumentDoesNotExist $e) {
-            return null;
-        }
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         if ($input->getOption('cdbid')) {
@@ -111,6 +102,15 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
                     true
                 )
             );
+    }
+
+    protected function getDocument(string $id): ?JsonDocument
+    {
+        try {
+            return $this->documentRepository->fetch($id);
+        } catch (DocumentDoesNotExist $e) {
+            return null;
+        }
     }
 
     abstract protected function dispatchGeocodingCommand(string $itemId, OutputInterface $output): void;
