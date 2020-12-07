@@ -3,7 +3,10 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,9 +34,13 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         $this->documentRepository = $documentRepository;
     }
 
-    protected function getDocumentRepository(): DocumentRepository
+    protected function getDocument(string $id): ?JsonDocument
     {
-        return $this->documentRepository;
+        try {
+            return $this->documentRepository->fetch($id);
+        } catch (DocumentDoesNotExist $e) {
+            return null;
+        }
     }
 
     /**

@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,13 +37,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
      */
     protected function dispatchGeocodingCommand($eventId, OutputInterface $output)
     {
-
-        try {
-            $document = $this->getDocumentRepository()->get($eventId);
-        } catch (DocumentGoneException $e) {
-            $document = null;
-        }
-
+        $document = $this->getDocument($eventId);
         if (is_null($document)) {
             $output->writeln("Skipping {$eventId}. (Could not find JSON-LD in local repository.)");
             return;

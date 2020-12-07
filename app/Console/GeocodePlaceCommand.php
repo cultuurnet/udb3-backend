@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,12 +37,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
      */
     protected function dispatchGeocodingCommand($placeId, OutputInterface $output)
     {
-        try {
-            $document = $this->getDocumentRepository()->get($placeId);
-        } catch (DocumentGoneException $e) {
-            $document = null;
-        }
-
+        $document = $this->getDocument($placeId);
         if (is_null($document)) {
             $output->writeln("Skipping {$placeId}. (Could not find JSON-LD in local repository.)");
             return;
