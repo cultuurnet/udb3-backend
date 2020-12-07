@@ -3,8 +3,6 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
