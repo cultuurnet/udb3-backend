@@ -9,9 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodePlaceCommand extends AbstractGeocodeCommand
 {
-    /**
-     * @inheritdoc
-     */
     public function configure(): void
     {
         $this
