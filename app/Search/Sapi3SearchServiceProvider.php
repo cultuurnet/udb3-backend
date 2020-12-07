@@ -11,14 +11,14 @@ use Silex\ServiceProviderInterface;
 
 class Sapi3SearchServiceProvider implements ServiceProviderInterface
 {
-    const SEARCH_SERVICE = 'sapi3_search_service';
+    const SEARCH_SERVICE_EVENTS = 'sapi3_search_service_events';
     const SEARCH_SERVICE_PLACES = 'sapi3_search_service_places';
     const ORGANIZERS_COUNTING_SEARCH_SERVICE = 'sapi3_organizers_counting_service';
     const OFFERS_COUNTING_SEARCH_SERVICE = 'sapi3_offers_counting_service';
 
     public function register(Application $app)
     {
-        $app[self::SEARCH_SERVICE] = $app->share(
+        $app[self::SEARCH_SERVICE_EVENTS] = $app->share(
             function ($app) {
                 return new \CultuurNet\UDB3\Search\Sapi3SearchService(
                     new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/events/'),
@@ -68,7 +68,7 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
         $app['search_results_generator'] = $app->share(
             function (Application $app) {
                 $resultsGenerator = new ResultsGenerator(
-                    $app['sapi3_search_service']
+                    $app[self::SEARCH_SERVICE_EVENTS]
                 );
                 $resultsGenerator->setLogger($app['search_results_generator_logger']);
                 return $resultsGenerator;

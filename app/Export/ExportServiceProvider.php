@@ -14,6 +14,7 @@ use CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -47,7 +48,7 @@ class ExportServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return $this->createEventExportService(
                     $app,
-                    $app['sapi3_search_service']
+                    $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]
                 );
             }
         );

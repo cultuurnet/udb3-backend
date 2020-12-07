@@ -50,7 +50,7 @@ class EventEditingServiceProvider implements ServiceProviderInterface
             function ($app) {
                 return new ReplayFilteringEventListener(
                     new LocationMarkedAsDuplicateProcessManager(
-                        new ResultsGenerator($app[Sapi3SearchServiceProvider::SEARCH_SERVICE]),
+                        new ResultsGenerator($app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]),
                         $app['event_command_bus']
                     )
                 );
