@@ -41,7 +41,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        if ($input->getOption('cdbid')) {
+        if ($input->getOption('id')) {
             return $this->geocodeManually($input, $output);
         }
         return $this->geocodeByQuery($input, $output);
@@ -49,11 +49,11 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
 
     private function geocodeManually(InputInterface $input, OutputInterface $output): ?int
     {
-        $cdbids = array_values(array_filter($input->getOption('cdbid')));
-        $count = count($cdbids);
+        $ids = array_values(array_filter($input->getOption('id')));
+        $count = count($ids);
 
         if ($count === 0) {
-            $output->writeln("Please enter at least one cdbid to geocode.");
+            $output->writeln("Please enter at least one id to geocode.");
             return 0;
         }
 
@@ -61,8 +61,8 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
             return 0;
         }
 
-        foreach ($cdbids as $cdbid) {
-            $this->dispatchGeocodingCommand($cdbid, $output);
+        foreach ($ids as $id) {
+            $this->dispatchGeocodingCommand($id, $output);
         }
 
         return 0;
@@ -83,8 +83,8 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         }
 
         $results = $this->searchResultsGenerator->search($query);
-        foreach ($results as $cdbid => $result) {
-            $this->dispatchGeocodingCommand($cdbid, $output);
+        foreach ($results as $id => $result) {
+            $this->dispatchGeocodingCommand($id, $output);
         }
 
         return 0;

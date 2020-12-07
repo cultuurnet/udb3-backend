@@ -15,10 +15,10 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             ->setName('event:geocode')
             ->setDescription('Geocode events with missing or outdated coordinates.')
             ->addOption(
-                'cdbid',
+                'id',
                 null,
                 InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
-                'Fixed list of cdbids of the events to geocode.'
+                'Fixed list of ids of the events to geocode.'
             );
     }
 

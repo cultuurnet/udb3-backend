@@ -15,10 +15,10 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
             ->setName('place:geocode')
             ->setDescription('Geocode places with missing or outdated coordinates.')
             ->addOption(
-                'cdbid',
+                'id',
                 null,
                 InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
-                'Fixed list of cdbids of the places to geocode.'
+                'Fixed list of ids of the places to geocode.'
             );
     }
 
