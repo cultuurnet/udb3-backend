@@ -24,7 +24,6 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
         $this->documentRepository = $documentRepository;
     }
 
-
     /**
      * @inheritdoc
      */
@@ -45,22 +44,6 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
                 InputOption::VALUE_NONE,
                 'Geocode all places in the event store.'
             );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getAllItemsSQLFile()
-    {
-        return __DIR__ . '/SQL/get_all_places.sql';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getOutdatedItemsSQLFile()
-    {
-        return __DIR__ . '/SQL/get_places_with_missing_or_outdated_coordinates.sql';
     }
 
     /**

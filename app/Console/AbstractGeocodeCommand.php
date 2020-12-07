@@ -64,36 +64,4 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
      * @param OutputInterface $output
      */
     abstract protected function dispatchGeocodingCommand($itemId, OutputInterface $output);
-
-    /**
-     * @return string
-     */
-    abstract protected function getAllItemsSQLFile();
-
-    /**
-     * @return string
-     */
-    abstract protected function getOutdatedItemsSQLFile();
-
-    /**
-     * @return mixed[]
-     * @throws DBALException
-     */
-    private function getAllCdbIds()
-    {
-        $sql = file_get_contents($this->getAllItemsSQLFile());
-        $results = $this->connection->query($sql);
-        return $results->fetchAll(\PDO::FETCH_COLUMN);
-    }
-
-    /**
-     * @return mixed[]
-     * @throws DBALException
-     */
-    private function getOutdatedCdbIds()
-    {
-        $sql = file_get_contents($this->getOutdatedItemsSQLFile());
-        $results = $this->connection->query($sql);
-        return $results->fetchAll(\PDO::FETCH_COLUMN);
-    }
 }

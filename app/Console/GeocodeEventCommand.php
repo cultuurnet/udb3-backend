@@ -49,22 +49,6 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
     /**
      * @inheritdoc
      */
-    protected function getAllItemsSQLFile()
-    {
-        return __DIR__ . '/SQL/get_all_events.sql';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getOutdatedItemsSQLFile()
-    {
-        return __DIR__ . '/SQL/get_events_with_missing_or_outdated_coordinates.sql';
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function dispatchGeocodingCommand($eventId, OutputInterface $output)
     {
 
