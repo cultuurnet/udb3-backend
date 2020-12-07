@@ -19,6 +19,12 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
                 null,
                 InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
                 'Fixed list of ids of the places to geocode.'
+            )
+            ->addOption(
+                'force',
+                null,
+                InputOption::VALUE_NONE,
+                'Skip confirmation.'
             );
     }
 

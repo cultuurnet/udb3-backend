@@ -92,6 +92,10 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
 
     private function askConfirmation(InputInterface $input, OutputInterface $output, int $count): bool
     {
+        if ($input->getOption('force')) {
+            return true;
+        }
+
         return $this
             ->getHelper('question')
             ->ask(
