@@ -4,28 +4,16 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodePlaceCommand extends AbstractGeocodeCommand
 {
     public function configure(): void
     {
+        parent::configure();
         $this
             ->setName('place:geocode')
-            ->setDescription('Geocode places with missing or outdated coordinates.')
-            ->addOption(
-                'id',
-                null,
-                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
-                'Fixed list of ids of the places to geocode.'
-            )
-            ->addOption(
-                'force',
-                null,
-                InputOption::VALUE_NONE,
-                'Skip confirmation.'
-            );
+            ->setDescription('Geocode places with missing or outdated coordinates.');
     }
 
     protected function getQueryForMissingCoordinates(): string

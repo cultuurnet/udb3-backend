@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
@@ -37,6 +38,23 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
             100
         );
         $this->documentRepository = $documentRepository;
+    }
+
+    protected function configure()
+    {
+        $this
+            ->addOption(
+                'id',
+                null,
+                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
+                'Fixed list of ids of the places to geocode.'
+            )
+            ->addOption(
+                'force',
+                null,
+                InputOption::VALUE_NONE,
+                'Skip confirmation.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): ?int
