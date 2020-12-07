@@ -22,12 +22,6 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
                 null,
                 InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
                 'Fixed list of cdbids of the places to geocode.'
-            )
-            ->addOption(
-                'all',
-                null,
-                InputOption::VALUE_NONE,
-                'Geocode all places in the event store.'
             );
     }
 
