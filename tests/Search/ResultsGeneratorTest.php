@@ -66,6 +66,37 @@ class ResultsGeneratorTest extends TestCase
     /**
      * @test
      */
+    public function it_can_return_a_count_for_a_query(): void
+    {
+        $givenQuery = '*';
+        $expectedCount = 12345678;
+
+        $this->searchService->expects($this->once())
+            ->method('search')
+            ->with($givenQuery, 1, 0)
+            ->willReturn(
+                new Results(
+                    OfferIdentifierCollection::fromArray(
+                        [
+                            new IriOfferIdentifier(
+                                Url::fromNative('http://io.uitdatabank.dev/event/0d325df2-da0a-4d4e-957f-60220c2f9baf'),
+                                '0d325df2-da0a-4d4e-957f-60220c2f9baf',
+                                OfferType::EVENT()
+                            )
+                        ]
+                    ),
+                    new Integer($expectedCount)
+                )
+            );
+
+        $actualCount = $this->generator->count($givenQuery);
+
+        $this->assertEquals($expectedCount, $actualCount);
+    }
+
+    /**
+     * @test
+     */
     public function it_has_configurable_sorting_and_page_size_with_default_values()
     {
         $generator = new ResultsGenerator($this->searchService);

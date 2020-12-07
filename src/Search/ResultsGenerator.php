@@ -17,6 +17,9 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
      */
     private const SORT_CREATED_ASC = ['created' => 'asc'];
 
+    private const COUNT_PAGE_LIMIT = 1;
+    private const COUNT_PAGE_START = 0;
+
     /**
      * @var SearchServiceInterface
      */
@@ -73,6 +76,14 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
     public function getPageSize(): int
     {
         return $this->pageSize;
+    }
+
+    public function count(string $query): int
+    {
+        return $this->searchService
+            ->search($query, self::COUNT_PAGE_LIMIT, self::COUNT_PAGE_START)
+            ->getTotalItems()
+            ->toNative();
     }
 
     public function search(string $query): Generator
