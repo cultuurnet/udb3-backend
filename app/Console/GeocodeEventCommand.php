@@ -25,6 +25,13 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             );
     }
 
+    protected function getQueryForMissingCoordinates(): string
+    {
+        // Only geo-code events without location id. Events with a location id can only be geo-coded by geo-coding the
+        // linked place.
+        return 'NOT(_exists_:geo) AND NOT(_exists_:location.id)';
+    }
+
     /**
      * @inheritdoc
      */

@@ -90,4 +90,6 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
      * @param OutputInterface $output
      */
     abstract protected function dispatchGeocodingCommand($itemId, OutputInterface $output);
+
+    abstract protected function getQueryForMissingCoordinates(): string;
 }

@@ -25,6 +25,11 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
             );
     }
 
+    protected function getQueryForMissingCoordinates(): string
+    {
+        return 'NOT(_exists_:geo)';
+    }
+
     /**
      * @inheritdoc
      */
