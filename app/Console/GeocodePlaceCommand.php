@@ -6,27 +6,11 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodePlaceCommand extends AbstractGeocodeCommand
 {
-    /**
-     * @var DocumentRepository
-     */
-    private $documentRepository;
-
-    public function __construct(
-        CommandBusInterface $commandBus,
-        ResultsGeneratorInterface $searchResultsGenerator,
-        DocumentRepository $documentRepository
-    ) {
-        parent::__construct($commandBus, $searchResultsGenerator);
-        $this->documentRepository = $documentRepository;
-    }
-
     /**
      * @inheritdoc
      */
@@ -55,7 +39,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
     protected function dispatchGeocodingCommand($placeId, OutputInterface $output)
     {
         try {
-            $document = $this->documentRepository->get($placeId);
+            $document = $this->getDocumentRepository()->get($placeId);
         } catch (DocumentGoneException $e) {
             $document = null;
         }

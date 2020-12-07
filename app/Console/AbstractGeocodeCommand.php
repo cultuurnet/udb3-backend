@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,10 +16,24 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
      */
     private $searchResultsGenerator;
 
-    public function __construct(CommandBusInterface $commandBus, ResultsGeneratorInterface $searchResultsGenerator)
-    {
+    /**
+     * @var DocumentRepository
+     */
+    private $documentRepository;
+
+    public function __construct(
+        CommandBusInterface $commandBus,
+        ResultsGeneratorInterface $searchResultsGenerator,
+        DocumentRepository $documentRepository
+    ) {
         parent::__construct($commandBus);
         $this->searchResultsGenerator = $searchResultsGenerator;
+        $this->documentRepository = $documentRepository;
+    }
+
+    protected function getDocumentRepository(): DocumentRepository
+    {
+        return $this->documentRepository;
     }
 
     /**
