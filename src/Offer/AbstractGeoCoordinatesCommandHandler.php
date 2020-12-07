@@ -7,9 +7,14 @@ use CultuurNet\Geocoding\GeocodingServiceInterface;
 use CultuurNet\UDB3\Address\AddressFormatterInterface;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateGeoCoordinatesFromAddress;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler
+abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var RepositoryInterface
      */
@@ -46,6 +51,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler
         $this->defaultAddressFormatter = $defaultAddressFormatter;
         $this->fallbackAddressFormatter = $fallbackAddressFormatter;
         $this->geocodingService = $geocodingService;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -53,26 +59,38 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler
      */
     protected function updateGeoCoordinatesFromAddress(AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates)
     {
-        $coordinates = $this->geocodingService->getCoordinates(
-            $this->defaultAddressFormatter->format(
-                $updateGeoCoordinates->getAddress()
-            )
+        $offerId = $updateGeoCoordinates->getItemId();
+
+        $exactAddress = $this->defaultAddressFormatter->format(
+            $updateGeoCoordinates->getAddress()
         );
 
+        $coordinates = $this->geocodingService->getCoordinates($exactAddress);
+
         if ($coordinates === null) {
-            $coordinates = $this->geocodingService->getCoordinates(
-                $this->fallbackAddressFormatter->format(
-                    $updateGeoCoordinates->getAddress()
+            $fallbackAddress = $this->fallbackAddressFormatter->format(
+                $updateGeoCoordinates->getAddress()
+            );
+
+            $this->logger->debug(
+                sprintf(
+                    "Could not find coordinates for exact address '%s', trying '%s' instead for offer id %s.",
+                    $exactAddress,
+                    $fallbackAddress,
+                    $offerId
                 )
             );
+
+            $coordinates = $this->geocodingService->getCoordinates($fallbackAddress);
         }
 
         if ($coordinates === null) {
+            $this->logger->debug('Could not find coordinates for fallback address for offer id ' . $offerId);
             return;
         }
 
         /** @var Offer $offer */
-        $offer = $this->offerRepository->load($updateGeoCoordinates->getItemId());
+        $offer = $this->offerRepository->load($offerId);
         $offer->updateGeoCoordinates($coordinates);
         $this->offerRepository->save($offer);
     }
