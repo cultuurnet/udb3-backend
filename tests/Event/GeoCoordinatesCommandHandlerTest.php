@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -73,9 +74,9 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_place()
+    public function it_creates_coordinates_from_an_address_and_updates_them_on_the_given_event()
     {
-        $eventId = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
+        $eventId = '004aea08-e13d-48c9-b9eb-a18f20e6d44e';
 
         $address = new Address(
             new Street('Wetstraat 1'),
@@ -84,14 +85,10 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             Country::fromNative('BE')
         );
 
-        $eventCreated = new EventCreated(
+        $eventImported = new EventImportedFromUDB2(
             $eventId,
-            new Language('en'),
-            new Title('Faith no More'),
-            new EventType('0.50.4.0.0', 'Concert'),
-            new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
-            new Calendar(CalendarType::PERMANENT()),
-            new Theme('1.8.1.0.0', 'Rock')
+            file_get_contents(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
         $command = new UpdateGeoCoordinatesFromAddress($eventId, $address);
@@ -110,7 +107,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->scenario
             ->withAggregateId($eventId)
-            ->given([$eventCreated])
+            ->given([$eventImported])
             ->when($command)
             ->then([$expectedEvent]);
     }
@@ -120,7 +117,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_has_a_fallback_to_locality_when_full_address_has_null_coordinates()
     {
-        $eventId = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
+        $eventId = '004aea08-e13d-48c9-b9eb-a18f20e6d44e';
 
         $address = new Address(
             new Street('Wetstraat 1 (foutief)'),
@@ -129,14 +126,10 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
             Country::fromNative('BE')
         );
 
-        $eventCreated = new EventCreated(
+        $eventImported = new EventImportedFromUDB2(
             $eventId,
-            new Language('en'),
-            new Title('Faith no More'),
-            new EventType('0.50.4.0.0', 'Concert'),
-            new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
-            new Calendar(CalendarType::PERMANENT()),
-            new Theme('1.8.1.0.0', 'Rock')
+            file_get_contents(__DIR__ . '/samples/event_004aea08-e13d-48c9-b9eb-a18f20e6d44e.xml'),
+            'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL'
         );
 
         $command = new UpdateGeoCoordinatesFromAddress($eventId, $address);
@@ -162,7 +155,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->scenario
             ->withAggregateId($eventId)
-            ->given([$eventCreated])
+            ->given([$eventImported])
             ->when($command)
             ->then([$expectedEvent]);
     }
