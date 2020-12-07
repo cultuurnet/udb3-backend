@@ -53,6 +53,13 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
         }
         $location = $jsonLd['location'];
 
+        if (isset($location['@id'])) {
+            $output->writeln(
+                "Skipping {$eventId}. (JSON-LD contains a location with an id. Geocode the linked place instead.)"
+            );
+            return;
+        }
+
         if (!isset($location['address'])) {
             $output->writeln("Skipping {$eventId}. (JSON-LD does not contain an address.)");
             return;
