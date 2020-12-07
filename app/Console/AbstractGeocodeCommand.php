@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
