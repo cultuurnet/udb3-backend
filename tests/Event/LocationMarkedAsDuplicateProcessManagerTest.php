@@ -77,23 +77,27 @@ class LocationMarkedAsDuplicateProcessManagerTest extends TestCase
         $this->searchResultsGenerator->expects($this->once())
             ->method('search')
             ->with('location.mainId:110ecece-f6b0-4360-b5c5-c95babcfe045')
-            ->willReturn([
-                new IriOfferIdentifier(
-                    Url::fromNative('http://www.uitdatabank.be/events/c393e98b-b33e-4948-b97a-3c48e3748398'),
-                    'c393e98b-b33e-4948-b97a-3c48e3748398',
-                    OfferType::EVENT()
-                ),
-                new IriOfferIdentifier(
-                    Url::fromNative('http://www.uitdatabank.be/events/d8835de7-c84d-417b-a173-079401f29fde'),
-                    'd8835de7-c84d-417b-a173-079401f29fde',
-                    OfferType::EVENT()
-                ),
-                new IriOfferIdentifier(
-                    Url::fromNative('http://www.uitdatabank.be/events/13ca4b6b-92b0-407d-b472-634dd0e654d0'),
-                    '13ca4b6b-92b0-407d-b472-634dd0e654d0',
-                    OfferType::EVENT()
-                ),
-            ]);
+            ->willReturnCallback(
+                function () {
+                    yield from [
+                        new IriOfferIdentifier(
+                            Url::fromNative('http://www.uitdatabank.be/events/c393e98b-b33e-4948-b97a-3c48e3748398'),
+                            'c393e98b-b33e-4948-b97a-3c48e3748398',
+                            OfferType::EVENT()
+                        ),
+                        new IriOfferIdentifier(
+                            Url::fromNative('http://www.uitdatabank.be/events/d8835de7-c84d-417b-a173-079401f29fde'),
+                            'd8835de7-c84d-417b-a173-079401f29fde',
+                            OfferType::EVENT()
+                        ),
+                        new IriOfferIdentifier(
+                            Url::fromNative('http://www.uitdatabank.be/events/13ca4b6b-92b0-407d-b472-634dd0e654d0'),
+                            '13ca4b6b-92b0-407d-b472-634dd0e654d0',
+                            OfferType::EVENT()
+                        ),
+                    ];
+                }
+            );
 
         $this->commandBus->record();
 

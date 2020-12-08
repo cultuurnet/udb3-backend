@@ -2,78 +2,30 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Event\Commands\UpdateGeoCoordinatesFromAddress;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodeEventCommand extends AbstractGeocodeCommand
 {
-    /**
-     * @var DocumentRepository
-     */
-    private $documentRepository;
-
-    public function __construct(CommandBusInterface $commandBus, Connection $connection, DocumentRepository $documentRepository)
+    public function configure(): void
     {
-        parent::__construct($commandBus, $connection);
-        $this->documentRepository = $documentRepository;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function configure()
-    {
+        parent::configure();
         $this
             ->setName('event:geocode')
-            ->setDescription('Geocode events with missing or outdated coordinates.')
-            ->addOption(
-                'cdbid',
-                null,
-                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
-                'Fixed list of cdbids of the events to geocode.'
-            )
-            ->addOption(
-                'all',
-                null,
-                InputOption::VALUE_NONE,
-                'Geocode all events in the event store.'
-            );
+            ->setDescription('Geocode events with missing or outdated coordinates.');
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getAllItemsSQLFile()
+    protected function getQueryForMissingCoordinates(): string
     {
-        return __DIR__ . '/SQL/get_all_events.sql';
+        // Only geo-code events without location id. Events with a location id can only be geo-coded by geo-coding the
+        // linked place.
+        return 'NOT(_exists_:geo) AND NOT(_exists_:location.id)';
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getOutdatedItemsSQLFile()
+    protected function dispatchGeocodingCommand(string $eventId, OutputInterface $output): void
     {
-        return __DIR__ . '/SQL/get_events_with_missing_or_outdated_coordinates.sql';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function dispatchGeocodingCommand($eventId, OutputInterface $output)
-    {
-
-        try {
-            $document = $this->documentRepository->get($eventId);
-        } catch (DocumentGoneException $e) {
-            $document = null;
-        }
-
+        $document = $this->getDocument($eventId);
         if (is_null($document)) {
             $output->writeln("Skipping {$eventId}. (Could not find JSON-LD in local repository.)");
             return;
@@ -88,6 +40,13 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
             return;
         }
         $location = $jsonLd['location'];
+
+        if (isset($location['@id'])) {
+            $output->writeln(
+                "Skipping {$eventId}. (JSON-LD contains a location with an id. Geocode the linked place instead.)"
+            );
+            return;
+        }
 
         if (!isset($location['address'])) {
             $output->writeln("Skipping {$eventId}. (JSON-LD does not contain an address.)");

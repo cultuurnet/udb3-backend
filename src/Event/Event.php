@@ -130,6 +130,15 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         return $event;
     }
 
+    public function updateGeoCoordinates(Coordinates $coordinates)
+    {
+        if ($this->locationId) {
+            return;
+        }
+
+        parent::updateGeoCoordinates($coordinates);
+    }
+
     /**
      * @param string $newEventId
      * @param Calendar $calendar

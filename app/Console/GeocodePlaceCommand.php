@@ -2,78 +2,28 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Place\Commands\UpdateGeoCoordinatesFromAddress;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use Doctrine\DBAL\Connection;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GeocodePlaceCommand extends AbstractGeocodeCommand
 {
-    /**
-     * @var DocumentRepository
-     */
-    private $documentRepository;
-
-    public function __construct(CommandBusInterface $commandBus, Connection $connection, DocumentRepository $documentRepository)
+    public function configure(): void
     {
-        parent::__construct($commandBus, $connection);
-        $this->documentRepository = $documentRepository;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function configure()
-    {
+        parent::configure();
         $this
             ->setName('place:geocode')
-            ->setDescription('Geocode places with missing or outdated coordinates.')
-            ->addOption(
-                'cdbid',
-                null,
-                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
-                'Fixed list of cdbids of the places to geocode.'
-            )
-            ->addOption(
-                'all',
-                null,
-                InputOption::VALUE_NONE,
-                'Geocode all places in the event store.'
-            );
+            ->setDescription('Geocode places with missing or outdated coordinates.');
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getAllItemsSQLFile()
+    protected function getQueryForMissingCoordinates(): string
     {
-        return __DIR__ . '/SQL/get_all_places.sql';
+        return 'NOT(_exists_:geo)';
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getOutdatedItemsSQLFile()
+    protected function dispatchGeocodingCommand(string $placeId, OutputInterface $output): void
     {
-        return __DIR__ . '/SQL/get_places_with_missing_or_outdated_coordinates.sql';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function dispatchGeocodingCommand($placeId, OutputInterface $output)
-    {
-        try {
-            $document = $this->documentRepository->get($placeId);
-        } catch (DocumentGoneException $e) {
-            $document = null;
-        }
-
+        $document = $this->getDocument($placeId);
         if (is_null($document)) {
             $output->writeln("Skipping {$placeId}. (Could not find JSON-LD in local repository.)");
             return;
