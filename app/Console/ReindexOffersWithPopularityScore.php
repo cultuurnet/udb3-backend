@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\EventHandling\EventBusInterface;
+use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use Doctrine\DBAL\Connection;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -55,6 +56,10 @@ class ReindexOffersWithPopularityScore extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->eventBus instanceof ReplayModeEventBusInterface) {
+            throw new \InvalidArgumentException('The event bus should implement the "ReplayModeEventBusInterface".');
+        }
+
         $type = $input->getArgument('type');
         if (!\in_array($type, $this->allowedTypes, true)) {
             throw new \InvalidArgumentException('The type "' . $type . '" is not support. Use event or place.');
