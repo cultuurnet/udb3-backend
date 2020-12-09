@@ -50,7 +50,7 @@ class ReindexOffersWithPopularityScore extends Command
     {
         $type = $input->getArgument('type');
         if (!\in_array($type, $this->allowedTypes, true)) {
-            throw new \InvalidArgumentException('The type "' . $type . " is not support. Use event or place.");
+            throw new \InvalidArgumentException('The type "' . $type . '" is not support. Use event or place.');
         }
 
         $offers = $this->getOffers($type);
