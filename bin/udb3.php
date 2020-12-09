@@ -97,7 +97,14 @@ $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['e
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
-$consoleApp->add(new ReindexOffersWithPopularityScore($app['dbal_connection'], $app['event_bus']));
+$consoleApp->add(
+    new ReindexOffersWithPopularityScore(
+        $app['dbal_connection'],
+        $app['event_bus'],
+        $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
+        $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+    )
+);
 
 try {
     $consoleApp->run();
