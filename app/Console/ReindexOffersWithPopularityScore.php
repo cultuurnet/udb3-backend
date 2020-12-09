@@ -48,4 +48,15 @@ class ReindexOffersWithPopularityScore extends Command
 
         return 0;
     }
+
+    private function getOffers(string $type): array
+    {
+        return $this->connection->createQueryBuilder()
+            ->select('offer_id')
+            ->from('offer_popularity')
+            ->where('offer_type = :type')
+            ->setParameter(':type', $type)
+            ->execute()
+            ->fetchAll();
+    }
 }
