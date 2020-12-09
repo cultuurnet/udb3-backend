@@ -44,6 +44,11 @@ class ReindexOffersWithPopularityScore extends Command
 
         if (!\in_array($type, $this->allowedTypes, true)) {
             throw new \InvalidArgumentException('The type "'.$type." is not support. Use event or place.");
+
+        $offers = $this->getOffers($type);
+        if (count($offers) < 1) {
+            $output->writeln('No '.$type.'s found with a popularity.');
+            return 0;
         }
 
         return 0;
