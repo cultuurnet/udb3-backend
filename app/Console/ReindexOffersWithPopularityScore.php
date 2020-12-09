@@ -82,8 +82,8 @@ class ReindexOffersWithPopularityScore extends Command
             throw new \InvalidArgumentException('The type "' . $type . '" is not support. Use event or place.');
         }
 
-        $offers = $this->getOffers($type);
-        if (count($offers) < 1) {
+        $offerIds = $this->getOfferIds($type);
+        if (count($offerIds) < 1) {
             $output->writeln('No ' . $type . 's found with a popularity.');
             return 0;
         }
@@ -95,7 +95,7 @@ class ReindexOffersWithPopularityScore extends Command
         return 0;
     }
 
-    private function getOffers(string $type): array
+    private function getOfferIds(string $type): array
     {
         return $this->connection->createQueryBuilder()
             ->select('offer_id')
