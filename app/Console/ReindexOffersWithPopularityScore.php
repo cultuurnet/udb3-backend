@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
+use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,11 +30,27 @@ class ReindexOffersWithPopularityScore extends Command
      */
     private $eventBus;
 
-    public function __construct(Connection $connection, EventBusInterface $eventBus)
-    {
+    /**
+     * @var DocumentEventFactory
+     */
+    private $eventFactoryForEvents;
+
+    /**
+     * @var DocumentEventFactory
+     */
+    private $eventFactoryForPlaces;
+
+    public function __construct(
+        Connection $connection,
+        EventBusInterface $eventBus,
+        DocumentEventFactory $eventFactoryForEvents,
+        DocumentEventFactory  $eventFactoryForPlaces
+    ) {
         parent::__construct();
         $this->connection = $connection;
         $this->eventBus = $eventBus;
+        $this->eventFactoryForEvents = $eventFactoryForEvents;
+        $this->eventFactoryForPlaces = $eventFactoryForPlaces;
     }
 
     protected function configure(): void
