@@ -115,7 +115,7 @@ class ReindexOffersWithPopularityScore extends Command
             ->where('offer_type = :type')
             ->setParameter(':type', $type)
             ->execute()
-            ->fetchAll();
+            ->fetchAll(FetchMode::COLUMN);
     }
 
     private function askConfirmation(InputInterface $input, OutputInterface $output, string $type, int $count): bool
