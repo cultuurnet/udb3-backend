@@ -76,7 +76,7 @@ class ReplayCommand extends AbstractCommand
         );
 
         $this
-            ->setName('replay')
+            ->setName('offer:replay')
             ->setDescription('Replay the event stream to the event bus with only read models attached.')
             ->addArgument(
                 'aggregate',
