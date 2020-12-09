@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
@@ -91,6 +92,17 @@ class ReindexOffersWithPopularityScore extends Command
         if (!$this->askConfirmation($input, $output, $type, count($offerIds))) {
             return 0;
         }
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->startReplayMode();
+        }
+
+        foreach ($offerIds as $offerId) {
+            $this->dispatchEvent($type, $offerId);
+        }
+
+        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
+            $this->eventBus->stopReplayMode();
+        }
 
         return 0;
     }
@@ -119,5 +131,16 @@ class ReindexOffersWithPopularityScore extends Command
                 $output,
                 new ConfirmationQuestion('Reindex ' . $count . ' ' . $type . 's? [y/N] ', true)
             );
+    }
+
+    private function dispatchEvent(string $type, string $id): void
+    {
+        if ($type === 'place') {
+            $event = $this->eventFactoryForPlaces->createEvent($id);
+        } else {
+            $event = $this->eventFactoryForEvents->createEvent($id);
+        }
+
+        $this->eventBus->publish(new DomainEventStream([$event]));
     }
 }
