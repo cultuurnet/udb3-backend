@@ -6,7 +6,9 @@ use Doctrine\DBAL\Connection;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ReindexOffersWithPopularityScore extends Command
 {
@@ -35,21 +37,29 @@ class ReindexOffersWithPopularityScore extends Command
                 'type',
                 InputArgument::REQUIRED,
                 'The type of the offer, either place or event.'
+            )
+            ->addOption(
+                'force',
+                null,
+                InputOption::VALUE_NONE,
+                'Skip confirmation.'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $type = $input->getArgument('type');
-
         if (!\in_array($type, $this->allowedTypes, true)) {
-            throw new \InvalidArgumentException('The type "'.$type." is not support. Use event or place.");
+            throw new \InvalidArgumentException('The type "' . $type . " is not support. Use event or place.");
+        }
 
         $offers = $this->getOffers($type);
         if (count($offers) < 1) {
             $output->writeln('No '.$type.'s found with a popularity.');
             return 0;
         }
+
+        $this->askConfirmation($input, $output, $type, count($offers));
 
         return 0;
     }
@@ -63,5 +73,20 @@ class ReindexOffersWithPopularityScore extends Command
             ->setParameter(':type', $type)
             ->execute()
             ->fetchAll();
+    }
+
+    private function askConfirmation(InputInterface $input, OutputInterface $output, string $type, int $count): bool
+    {
+        if ($input->getOption('force')) {
+            return true;
+        }
+
+        return $this
+            ->getHelper('question')
+            ->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion('Reindex '.$count. ' '.$type.'s? [y/N] ', true)
+            );
     }
 }
