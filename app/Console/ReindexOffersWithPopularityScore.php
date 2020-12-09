@@ -55,7 +55,7 @@ class ReindexOffersWithPopularityScore extends Command
 
         $offers = $this->getOffers($type);
         if (count($offers) < 1) {
-            $output->writeln('No '.$type.'s found with a popularity.');
+            $output->writeln('No ' . $type . 's found with a popularity.');
             return 0;
         }
 
@@ -86,7 +86,7 @@ class ReindexOffersWithPopularityScore extends Command
             ->ask(
                 $input,
                 $output,
-                new ConfirmationQuestion('Reindex '.$count. ' '.$type.'s? [y/N] ', true)
+                new ConfirmationQuestion('Reindex ' . $count . ' ' . $type . 's? [y/N] ', true)
             );
     }
 }
