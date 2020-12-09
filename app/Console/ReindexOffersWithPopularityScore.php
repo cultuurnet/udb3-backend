@@ -71,7 +71,9 @@ class ReindexOffersWithPopularityScore extends Command
             return 0;
         }
 
-        $this->askConfirmation($input, $output, $type, count($offers));
+        if (!$this->askConfirmation($input, $output, $type, count($offerIds))) {
+            return 0;
+        }
 
         return 0;
     }
