@@ -27,6 +27,7 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
 {
     public const PROJECTOR = 'event_jsonld_projector';
     public const RELATED_PROJECTOR = 'related_event_jsonld_projector';
+    public const JSONLD_PROJECTED_EVENT_FACTORY = 'event_jsonld_projected_event_factory';
 
     public function register(Application $app)
     {
@@ -77,6 +78,14 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                 );
 
                 return $projector;
+            }
+        );
+
+        $app[self::JSONLD_PROJECTED_EVENT_FACTORY] = $app->share(
+            function ($app) {
+                return new EventFactory(
+                    $app['event_iri_generator']
+                );
             }
         );
 
