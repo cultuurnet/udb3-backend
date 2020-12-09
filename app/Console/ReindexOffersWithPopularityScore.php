@@ -7,6 +7,7 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\FetchMode;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -92,6 +93,7 @@ class ReindexOffersWithPopularityScore extends Command
         if (!$this->askConfirmation($input, $output, $type, count($offerIds))) {
             return 0;
         }
+
         if ($this->eventBus instanceof ReplayModeEventBusInterface) {
             $this->eventBus->startReplayMode();
         }
@@ -129,7 +131,7 @@ class ReindexOffersWithPopularityScore extends Command
             ->ask(
                 $input,
                 $output,
-                new ConfirmationQuestion('Reindex ' . $count . ' ' . $type . 's? [y/N] ', true)
+                new ConfirmationQuestion('Reindex ' . $count . ' ' . $type . 's? [y/N] ', false)
             );
     }
 
