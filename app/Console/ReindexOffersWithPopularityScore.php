@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Doctrine\DBAL\Connection;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,6 +14,17 @@ class ReindexOffersWithPopularityScore extends Command
         'event',
         'place',
     ];
+
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    public function __construct(Connection $connection)
+    {
+        parent::__construct();
+        $this->connection = $connection;
+    }
 
     protected function configure(): void
     {
