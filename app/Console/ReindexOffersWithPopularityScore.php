@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use Broadway\EventHandling\EventBusInterface;
 use Doctrine\DBAL\Connection;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,10 +23,16 @@ class ReindexOffersWithPopularityScore extends Command
      */
     private $connection;
 
-    public function __construct(Connection $connection)
+    /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
+
+    public function __construct(Connection $connection, EventBusInterface $eventBus)
     {
         parent::__construct();
         $this->connection = $connection;
+        $this->eventBus = $eventBus;
     }
 
     protected function configure(): void
