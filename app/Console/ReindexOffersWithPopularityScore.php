@@ -59,11 +59,6 @@ class ReindexOffersWithPopularityScore extends Command
         $this
             ->setName($this->type.':reindex-offers-with-popularity')
             ->setDescription('Reindex events or places that have a popularity score.')
-            ->addArgument(
-                'type',
-                InputArgument::REQUIRED,
-                'The type of the offer, either place or event.'
-            )
             ->addOption(
                 'force',
                 null,
