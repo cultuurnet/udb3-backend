@@ -4,7 +4,7 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
-use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Offer\OfferType;use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
@@ -99,9 +99,17 @@ $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
 $consoleApp->add(
     new ReindexOffersWithPopularityScore(
+        OfferType::EVENT(),
         $app['dbal_connection'],
         $app['event_bus'],
-        $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY],
+        $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+    )
+);
+$consoleApp->add(
+    new ReindexOffersWithPopularityScore(
+        OfferType::PLACE(),
+        $app['dbal_connection'],
+        $app['event_bus'],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );

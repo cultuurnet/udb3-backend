@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\Domain\DomainEventStream;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
@@ -16,10 +17,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class ReindexOffersWithPopularityScore extends Command
 {
-    private $allowedTypes = [
-        'event',
-        'place',
-    ];
+    /**
+     * @var string
+     */
+    private $type;
 
     /**
      * @var Connection
@@ -36,28 +37,27 @@ class ReindexOffersWithPopularityScore extends Command
      */
     private $eventFactoryForEvents;
 
-    /**
-     * @var DocumentEventFactory
-     */
-    private $eventFactoryForPlaces;
-
     public function __construct(
+        OfferType $type,
         Connection $connection,
         ReplayModeEventBusInterface $eventBus,
-        DocumentEventFactory $eventFactoryForEvents,
-        DocumentEventFactory  $eventFactoryForPlaces
+        DocumentEventFactory $eventFactoryForEvents
     ) {
-        parent::__construct();
+        $this->type = \strtolower($type->toNative());
         $this->connection = $connection;
         $this->eventBus = $eventBus;
         $this->eventFactoryForEvents = $eventFactoryForEvents;
-        $this->eventFactoryForPlaces = $eventFactoryForPlaces;
+
+        // It's important to call the parent constructor after setting the properties.
+        // Because the parent constructor calls the `configure` method.
+        // In this command the command name is created dynamically with the type property.
+        parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('offer:reindex-offers-with-popularity')
+            ->setName($this->type.':reindex-offers-with-popularity')
             ->setDescription('Reindex events or places that have a popularity score.')
             ->addArgument(
                 'type',
@@ -74,25 +74,20 @@ class ReindexOffersWithPopularityScore extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $type = $input->getArgument('type');
-        if (!\in_array($type, $this->allowedTypes, true)) {
-            throw new \InvalidArgumentException('The type "' . $type . '" is not supported. Use event or place.');
-        }
-
-        $offerIds = $this->getOfferIds($type);
+        $offerIds = $this->getOfferIds($this->type);
         if (count($offerIds) < 1) {
-            $output->writeln('No ' . $type . 's found with a popularity.');
+            $output->writeln('No ' . $this->type . 's found with a popularity.');
             return 0;
         }
 
-        if (!$this->askConfirmation($input, $output, $type, count($offerIds))) {
+        if (!$this->askConfirmation($input, $output, $this->type, count($offerIds))) {
             return 0;
         }
 
         $this->eventBus->startReplayMode();
 
         foreach ($offerIds as $offerId) {
-            $this->dispatchEvent($type, $offerId);
+            $this->dispatchEvent($offerId);
         }
 
         $this->eventBus->stopReplayMode();
@@ -126,14 +121,9 @@ class ReindexOffersWithPopularityScore extends Command
             );
     }
 
-    private function dispatchEvent(string $type, string $id): void
+    private function dispatchEvent(string $id): void
     {
-        if ($type === 'place') {
-            $event = $this->eventFactoryForPlaces->createEvent($id);
-        } else {
-            $event = $this->eventFactoryForEvents->createEvent($id);
-        }
-
+        $event = $this->eventFactoryForEvents->createEvent($id);
         $this->eventBus->publish(new DomainEventStream([$event]));
     }
 }
