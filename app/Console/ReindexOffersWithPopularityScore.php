@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\Domain\DomainEventStream;
-use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
@@ -28,7 +27,7 @@ class ReindexOffersWithPopularityScore extends Command
     private $connection;
 
     /**
-     * @var EventBusInterface
+     * @var ReplayModeEventBusInterface
      */
     private $eventBus;
 
@@ -44,7 +43,7 @@ class ReindexOffersWithPopularityScore extends Command
 
     public function __construct(
         Connection $connection,
-        EventBusInterface $eventBus,
+        ReplayModeEventBusInterface $eventBus,
         DocumentEventFactory $eventFactoryForEvents,
         DocumentEventFactory  $eventFactoryForPlaces
     ) {
@@ -75,10 +74,6 @@ class ReindexOffersWithPopularityScore extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->eventBus instanceof ReplayModeEventBusInterface) {
-            throw new \InvalidArgumentException('The event bus should implement the "ReplayModeEventBusInterface".');
-        }
-
         $type = $input->getArgument('type');
         if (!\in_array($type, $this->allowedTypes, true)) {
             throw new \InvalidArgumentException('The type "' . $type . '" is not support. Use event or place.');
@@ -94,17 +89,13 @@ class ReindexOffersWithPopularityScore extends Command
             return 0;
         }
 
-        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
-            $this->eventBus->startReplayMode();
-        }
+        $this->eventBus->startReplayMode();
 
         foreach ($offerIds as $offerId) {
             $this->dispatchEvent($type, $offerId);
         }
 
-        if ($this->eventBus instanceof ReplayModeEventBusInterface) {
-            $this->eventBus->stopReplayMode();
-        }
+        $this->eventBus->stopReplayMode();
 
         return 0;
     }
