@@ -4,12 +4,12 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\Domain\DomainEventStream;
 use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
+use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Knp\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -118,7 +118,12 @@ class ReindexOffersWithPopularityScore extends Command
 
     private function dispatchEvent(string $id): void
     {
-        $event = $this->eventFactoryForEvents->createEvent($id);
-        $this->eventBus->publish(new DomainEventStream([$event]));
+        $projectedEvent = $this->eventFactoryForEvents->createEvent($id);
+
+        $this->eventBus->publish(
+            new DomainEventStream([
+                (new DomainMessageBuilder())->create($projectedEvent)
+            ])
+        );
     }
 }
