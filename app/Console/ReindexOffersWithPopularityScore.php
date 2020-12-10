@@ -122,7 +122,7 @@ class ReindexOffersWithPopularityScore extends Command
 
         $this->eventBus->publish(
             new DomainEventStream([
-                (new DomainMessageBuilder())->create($projectedEvent)
+                (new DomainMessageBuilder())->create($projectedEvent),
             ])
         );
     }
