@@ -4,6 +4,7 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
@@ -18,8 +19,10 @@ use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
+use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
@@ -95,6 +98,22 @@ $consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['e
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));
+$consoleApp->add(
+    new ReindexOffersWithPopularityScore(
+        OfferType::EVENT(),
+        $app['dbal_connection'],
+        $app['event_bus'],
+        $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+    )
+);
+$consoleApp->add(
+    new ReindexOffersWithPopularityScore(
+        OfferType::PLACE(),
+        $app['dbal_connection'],
+        $app['event_bus'],
+        $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
+    )
+);
 
 try {
     $consoleApp->run();
