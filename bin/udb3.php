@@ -4,7 +4,8 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
-use CultuurNet\UDB3\Offer\OfferType;use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
