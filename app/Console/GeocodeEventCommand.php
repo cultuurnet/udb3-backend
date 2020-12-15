@@ -20,7 +20,7 @@ class GeocodeEventCommand extends AbstractGeocodeCommand
     {
         // Only geo-code events without location id. Events with a location id can only be geo-coded by geo-coding the
         // linked place.
-        return 'NOT(_exists_:geo) AND NOT(_exists_:location.id)';
+        return 'NOT(_exists_:geo OR _exists_:location.id OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
     protected function dispatchGeocodingCommand(string $eventId, OutputInterface $output): void
