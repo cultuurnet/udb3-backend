@@ -18,7 +18,7 @@ class GeocodePlaceCommand extends AbstractGeocodeCommand
 
     protected function getQueryForMissingCoordinates(): string
     {
-        return 'NOT(_exists_:geo)';
+        return 'NOT(_exists_:geo OR workflowStatus:DELETED OR workflowStatus:REJECTED)';
     }
 
     protected function dispatchGeocodingCommand(string $placeId, OutputInterface $output): void
