@@ -28,5 +28,7 @@
   "endDate": "2015-01-29T13:25:21+01:00",
   "languages": ["en"],
   "completedLanguages": ["en"],
-  "status": "Available"
+  "status": {
+    "type": "Available"
+  }
 }
