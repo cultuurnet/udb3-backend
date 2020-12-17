@@ -7,7 +7,6 @@ use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Offer\Events\StatusUpdated;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Psr\Log\LoggerInterface;
 
 final class StatusUpdatedProjector implements EventListenerInterface
@@ -66,8 +65,14 @@ final class StatusUpdatedProjector implements EventListenerInterface
         $jsonDocument = $documentRepository->fetch($statusUpdated->getId());
         $json = $jsonDocument->getAssocBody();
 
-        // TODO: Also update the sub events for calendar type single and multiple.
         $json['status'] = $statusUpdated->getStatus()->serialize();
+
+        if (!empty($json['subEvent'])) {
+            $nrOfSubEvents = count($json['subEvent']);
+            for ($subEventIndex = 0; $subEventIndex < $nrOfSubEvents; $subEventIndex++) {
+                $json['subEvent'][$subEventIndex]['status'] = $statusUpdated->getStatus()->serialize();
+            }
+        }
 
         $this->eventRepository->save($jsonDocument->withAssocBody($json));
     }

@@ -173,7 +173,11 @@ class StatusUpdatedProjectorTest extends TestCase
                     'subEvent' => [
                         [
                             'status' => [
-                                'type' => 'Available',
+                                'type' => 'Unavailable',
+                                'reason' => [
+                                    'nl' => 'Nog steeds geen concerten mogelijk.',
+                                    'en' => 'Still no concerts allowed.',
+                                ],
                             ],
                             'startDate' => '2020-12-01T00:00:00+00:00',
                             'endDate' => '2020-12-08T00:00:00+00:00',
@@ -206,7 +210,11 @@ class StatusUpdatedProjectorTest extends TestCase
                     'subEvent' => [
                         [
                             'status' => [
-                                'type' => 'Available',
+                                'type' => 'Unavailable',
+                                'reason' => [
+                                    'nl' => 'Nog steeds geen concerten mogelijk.',
+                                    'en' => 'Still no concerts allowed.',
+                                ],
                             ],
                             'startDate' => '2020-12-01T00:00:00+00:00',
                             'endDate' => '2020-12-04T00:00:00+00:00',
@@ -214,7 +222,11 @@ class StatusUpdatedProjectorTest extends TestCase
                         ],
                         [
                             'status' => [
-                                'type' => 'Available',
+                                'type' => 'Unavailable',
+                                'reason' => [
+                                    'nl' => 'Nog steeds geen concerten mogelijk.',
+                                    'en' => 'Still no concerts allowed.',
+                                ],
                             ],
                             'startDate' => '2020-12-06T00:00:00+00:00',
                             'endDate' => '2020-12-08T00:00:00+00:00',
