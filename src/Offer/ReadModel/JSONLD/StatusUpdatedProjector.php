@@ -7,6 +7,7 @@ use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Offer\Events\StatusUpdated;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Psr\Log\LoggerInterface;
 
 final class StatusUpdatedProjector implements EventListenerInterface
@@ -40,30 +41,34 @@ final class StatusUpdatedProjector implements EventListenerInterface
 
     protected function applyStatusUpdated(StatusUpdated $statusUpdated): void
     {
-        $offer = null;
-        $offerId = $statusUpdated->getId();
-
         try {
-            $offer = $this->eventRepository->fetch($offerId);
-        } catch (DocumentDoesNotExist $documentDoesNotExist) {
-            $this->logger->debug('No event found with id ' . $offerId . ' to apply StatusUpdated.');
-        }
-
-        if ($offer) {
-            // Update the event status and sub events.
-
-            $this->logger->debug('Applied StatusUpdated on event with id ' . $offerId);
+            $this->updateStatus($this->eventRepository, $statusUpdated);
+            $this->logger->debug('Applied StatusUpdated on event with id ' . $statusUpdated->getId());
             return;
+        } catch (DocumentDoesNotExist $documentDoesNotExist) {
+            $this->logger->debug('No event found with id ' . $statusUpdated->getId() . ' to apply StatusUpdated.');
         }
 
         try {
-            $offer = $this->placeRepository->fetch($offerId);
-        } catch (DocumentDoesNotExist $documentDoesNotExist) {
-            $this->logger->warning('No place or event found with id ' . $offerId . ' to apply StatusUpdated.');
+            $this->updateStatus($this->placeRepository, $statusUpdated);
+            $this->logger->debug('Applied StatusUpdated on place with id ' . $statusUpdated->getId());
             return;
+        } catch (DocumentDoesNotExist $documentDoesNotExist) {
+            $this->logger->warning('No place or event found with id ' . $statusUpdated->getId() . ' to apply StatusUpdated.');
         }
+    }
 
-        // Update the place status.
-        $this->logger->debug('Applied StatusUpdated on place with id ' . $offerId);
+    /**
+     * @throws DocumentDoesNotExist
+     */
+    private function updateStatus(DocumentRepository $documentRepository, StatusUpdated $statusUpdated): void
+    {
+        $jsonDocument = $documentRepository->fetch($statusUpdated->getId());
+        $json = $jsonDocument->getAssocBody();
+
+        // TODO: Also update the sub events for calendar type single and multiple.
+        $json['status'] = $statusUpdated->getStatus()->serialize();
+
+        $this->eventRepository->save($jsonDocument->withAssocBody($json));
     }
 }
