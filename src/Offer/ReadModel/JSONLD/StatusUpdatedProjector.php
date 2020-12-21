@@ -74,6 +74,6 @@ final class StatusUpdatedProjector implements EventListenerInterface
             }
         }
 
-        $this->eventRepository->save($jsonDocument->withAssocBody($json));
+        $documentRepository->save($jsonDocument->withAssocBody($json));
     }
 }
