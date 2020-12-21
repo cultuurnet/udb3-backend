@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Offer\Events\StatusUpdated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\ReadModel\OfferDocumentRepository;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +37,11 @@ class StatusUpdatedProjectorTest extends TestCase
     private $placeRepository;
 
     /**
+     * @var DocumentRepository
+     */
+    private $offerRepository;
+
+    /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
@@ -51,11 +57,11 @@ class StatusUpdatedProjectorTest extends TestCase
 
         $this->eventRepository = new InMemoryDocumentRepository();
         $this->placeRepository = new InMemoryDocumentRepository();
+        $this->offerRepository = new OfferDocumentRepository($this->eventRepository, $this->placeRepository);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->statusUpdatedProjector = new StatusUpdatedProjector(
-            $this->eventRepository,
-            $this->placeRepository,
+            $this->offerRepository,
             $this->logger
         );
     }
@@ -67,7 +73,7 @@ class StatusUpdatedProjectorTest extends TestCase
     {
         $this->logger->expects($this->once())
             ->method('warning')
-            ->with('No place or event found with id 542d8328-0051-4890-afbb-38b0cc8dae07 to apply StatusUpdated.');
+            ->with('No offer found with id 542d8328-0051-4890-afbb-38b0cc8dae07 to apply StatusUpdated.');
 
         $statusUpdated = new StatusUpdated(
             '542d8328-0051-4890-afbb-38b0cc8dae07',
@@ -92,7 +98,9 @@ class StatusUpdatedProjectorTest extends TestCase
     public function it_applies_status_updated_on_events(Calendar $calendar, array $expectedBody): void
     {
         $initialEvent = new JsonDocument('542d8328-0051-4890-afbb-38b0cc8dae07');
-        $initialEvent = $initialEvent->withAssocBody($calendar->toJsonLd());
+        $body = $calendar->toJsonLd();
+        $body['@context'] = '/contexts/event';
+        $initialEvent = $initialEvent->withAssocBody($body);
         $this->eventRepository->save($initialEvent);
 
         $statusUpdated = new StatusUpdated(
@@ -121,6 +129,7 @@ class StatusUpdatedProjectorTest extends TestCase
                     CalendarType::PERMANENT()
                 ),
                 [
+                    '@context' => '/contexts/event',
                     'status' => [
                         'type' => 'Unavailable',
                         'reason' => [
@@ -138,6 +147,7 @@ class StatusUpdatedProjectorTest extends TestCase
                     new \DateTime('2020-12-08')
                 ),
                 [
+                    '@context' => '/contexts/event',
                     'status' => [
                         'type' => 'Unavailable',
                         'reason' => [
@@ -160,6 +170,7 @@ class StatusUpdatedProjectorTest extends TestCase
                     ]
                 ),
                 [
+                    '@context' => '/contexts/event',
                     'status' => [
                         'type' => 'Unavailable',
                         'reason' => [
@@ -197,6 +208,7 @@ class StatusUpdatedProjectorTest extends TestCase
                     ]
                 ),
                 [
+                    '@context' => '/contexts/event',
                     'status' => [
                         'type' => 'Unavailable',
                         'reason' => [

@@ -55,7 +55,7 @@ final class OfferDocumentRepository implements DocumentRepository
             return;
         }
 
-        throw new \RuntimeException('A context should be `context/place` or `context/event`');
+        throw new \RuntimeException('A context should be `/contexts/place` or `/contexts/event`');
     }
 
     public function remove($id): void
