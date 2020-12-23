@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
@@ -177,6 +178,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         if (!$this->typeId || $this->typeId !== $type->getId()) {
             $this->apply($this->createTypeUpdatedEvent($type));
         }
+    }
+
+    public function updateStatus(Status $status): void
+    {
+        $this->updateCalendar($this->calendar->withStatus($status));
     }
 
     /**
