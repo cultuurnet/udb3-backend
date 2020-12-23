@@ -38,6 +38,6 @@ abstract class AbstractUpdateStatus implements AuthorizableCommandInterface
 
     public function getPermission(): Permission
     {
-        return  Permission::AANBOD_MODEREREN();
+        return  Permission::AANBOD_BEWERKEN();
     }
 }
