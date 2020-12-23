@@ -46,5 +46,7 @@
   ],
   "languages": ["en"],
   "completedLanguages": ["en"],
-  "status": "Available"
+  "status": {
+    "type":"Available"
+  }
 }

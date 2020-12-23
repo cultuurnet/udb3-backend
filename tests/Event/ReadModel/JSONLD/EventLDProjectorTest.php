@@ -969,7 +969,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->endDate = '2015-02-26T13:25:21+01:00';
         $expectedJsonLD->availableTo = $expectedJsonLD->endDate;
         $expectedJsonLD->modified = $this->recordedOn->toString();
-        $expectedJsonLD->status = 'Available';
+        $expectedJsonLD->status = (object)[
+            'type' => 'Available',
+        ];
 
         $body = $this->project($majorInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1007,7 +1009,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->endDate = '2020-01-27T12:12:12+01:00';
         $expectedJsonLD->availableTo = '2020-01-27T12:12:12+01:00';
         $expectedJsonLD->modified = $this->recordedOn->toString();
-        $expectedJsonLD->status = 'Available';
+        $expectedJsonLD->status = (object) [
+            'type' => 'Available',
+        ];
 
         $body = $this->project($calendarUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1343,7 +1347,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->audience = (object)['audienceType' => 'everyone'];
         $jsonLD->languages = [$mainLanguage->getCode()];
         $jsonLD->completedLanguages = [$mainLanguage->getCode()];
-        $jsonLD->status = 'Available';
+        $jsonLD->status = (object)[
+            'type' => 'Available',
+        ];
 
         return $jsonLD;
     }
