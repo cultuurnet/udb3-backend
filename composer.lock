@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ae4e6f8e1e4f090fda14cabb0a368be",
+    "content-hash": "24d25eb35a51d6bc3fe6dd1f08bedcc1",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1391,16 +1391,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-feature/III-3656-status-updated",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "1653875fdbc559dc359c40773e677ef3a011d998"
+                "reference": "a3a0e87f4c022b4913d3906a852443ca0bcd93b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/1653875fdbc559dc359c40773e677ef3a011d998",
-                "reference": "1653875fdbc559dc359c40773e677ef3a011d998",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a3a0e87f4c022b4913d3906a852443ca0bcd93b3",
+                "reference": "a3a0e87f4c022b4913d3906a852443ca0bcd93b3",
                 "shasum": ""
             },
             "require": {
@@ -1444,6 +1444,7 @@
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "2.6.1"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1466,7 +1467,11 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2020-12-16T15:11:30+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/udb3-php/issues",
+                "source": "https://github.com/cultuurnet/udb3-php/tree/master"
+            },
+            "time": "2020-12-23T08:57:47+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -10211,22 +10216,22 @@
     ],
     "aliases": [
         {
-            "alias": "1.2",
-            "alias_normalized": "1.2.0.0",
+            "package": "chrisboulton/php-resque",
             "version": "dev-compat-1-2",
-            "package": "chrisboulton/php-resque"
+            "alias": "1.2",
+            "alias_normalized": "1.2.0.0"
         },
         {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
+            "package": "cultuurnet/udb3-api-guard",
             "version": "0.9999999.9999999.9999999-dev",
-            "package": "cultuurnet/udb3-api-guard"
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0"
         },
         {
-            "alias": "1.3.1",
-            "alias_normalized": "1.3.1.0",
+            "package": "jeremykendall/php-domain-parser",
             "version": "4.0.3.0-alpha",
-            "package": "jeremykendall/php-domain-parser"
+            "alias": "1.3.1",
+            "alias_normalized": "1.3.1.0"
         }
     ],
     "minimum-stability": "dev",
@@ -10234,7 +10239,6 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
-        "cultuurnet/udb3": 20,
         "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
@@ -10244,5 +10248,5 @@
         "php": "^7.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
