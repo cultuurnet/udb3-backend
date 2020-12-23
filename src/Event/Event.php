@@ -380,11 +380,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             $this->calendar->getOpeningHours()
         );
 
-        if (!$this->calendar->sameAs($updatedCalendar)) {
-            $this->apply(
-                new CalendarUpdated($this->eventId, $updatedCalendar)
-            );
-        }
+        $this->updateCalendar($updatedCalendar);
     }
 
     public function updateAudience(
