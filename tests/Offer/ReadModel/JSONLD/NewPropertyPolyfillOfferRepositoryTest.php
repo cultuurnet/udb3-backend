@@ -40,20 +40,33 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
 
     /**
      * @test
+     * @dataProvider statusProvider
      */
-    public function it_should_not_change_status_if_already_set_with_correct_format(): void
+    public function it_should_not_change_status_if_already_set_with_correct_format(array $status): void
     {
         $this
-            ->given([
+            ->given($status)
+            ->assertReturnedDocumentContains($status);
+    }
+
+    public function statusProvider(): array
+    {
+        return [
+            'without_reason' => [
                 'status' => [
                     'type' => 'Unavailable',
                 ],
-            ])
-            ->assertReturnedDocumentContains([
+            ],
+            'with_reason' => [
                 'status' => [
                     'type' => 'Unavailable',
+                    'reason' => [
+                        'nl' => 'Uitgesteld',
+                        'en' => 'Postponed'
+                    ]
                 ],
-            ]);
+            ]
+        ];
     }
 
     /**
