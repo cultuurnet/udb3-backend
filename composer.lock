@@ -1395,12 +1395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "a3a0e87f4c022b4913d3906a852443ca0bcd93b3"
+                "reference": "aeb439b611a893a6f8b0a0d7f9c001ac5eabf6fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/a3a0e87f4c022b4913d3906a852443ca0bcd93b3",
-                "reference": "a3a0e87f4c022b4913d3906a852443ca0bcd93b3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/aeb439b611a893a6f8b0a0d7f9c001ac5eabf6fc",
+                "reference": "aeb439b611a893a6f8b0a0d7f9c001ac5eabf6fc",
                 "shasum": ""
             },
             "require": {
@@ -1471,7 +1471,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-php/issues",
                 "source": "https://github.com/cultuurnet/udb3-php/tree/master"
             },
-            "time": "2020-12-23T08:57:47+00:00"
+            "time": "2020-12-23T15:27:34+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
