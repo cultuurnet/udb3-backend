@@ -40,9 +40,19 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
 
     private function polyfillStatus(array $json): array
     {
-        if (!isset($json['status'])) {
-            $json['status'] = StatusType::available()->toNative();
+        // Fixing the previous status format without the type property.
+        if (isset($json['status']) && !isset($json['status']['type'])) {
+            $json['status'] = [
+                'type' => $json['status'],
+            ];
         }
+
+        if (!isset($json['status'])) {
+            $json['status'] = [
+                'type' => StatusType::available()->toNative(),
+            ];
+        }
+
         return $json;
     }
 

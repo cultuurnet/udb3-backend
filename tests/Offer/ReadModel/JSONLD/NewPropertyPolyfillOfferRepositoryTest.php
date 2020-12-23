@@ -29,17 +29,45 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     {
         $this
             ->given([])
-            ->assertReturnedDocumentContains(['status' => 'Available']);
+            ->assertReturnedDocumentContains(
+                [
+                    'status' => [
+                        'type' => 'Available',
+                    ],
+                ]
+            );
     }
 
     /**
      * @test
      */
-    public function it_should_not_change_status_if_already_set(): void
+    public function it_should_not_change_status_if_already_set_with_correct_format(): void
+    {
+        $this
+            ->given([
+                'status' => [
+                    'type' => 'Unavailable',
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'status' => [
+                    'type' => 'Unavailable',
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_fix_status_if_already_set_with_wrong_format(): void
     {
         $this
             ->given(['status' => 'Unavailable'])
-            ->assertReturnedDocumentContains(['status' => 'Unavailable']);
+            ->assertReturnedDocumentContains([
+                'status' => [
+                    'type' => 'Unavailable',
+                ],
+            ]);
     }
 
     /**
