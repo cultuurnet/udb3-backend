@@ -22,9 +22,7 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
-use DateTimeImmutable;
 use ValueObjects\Geography\Country;
 
 class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
@@ -51,37 +49,6 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
 
         $newStatus = new Status(StatusType::temporarilyUnavailable(), []);
         $expectedCalendar = (new Calendar(CalendarType::PERMANENT()))->withStatus($newStatus);
-
-        $command = new UpdateStatus($id, $newStatus);
-
-        $expectedEvent = new CalendarUpdated(
-            $id,
-            $expectedCalendar
-        );
-
-        $this->scenario
-            ->withAggregateId($id)
-            ->given([$this->getPlaceCreated($id, $initialCalendar)])
-            ->when($command)
-            ->then([$expectedEvent]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_update_status_of_sub_events(): void
-    {
-        $id = '1';
-        $startDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-12-24');
-        $endDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-12-24');
-
-        $initialTimestamps = [new Timestamp($startDate, $endDate)];
-        $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $initialTimestamps);
-
-        $newStatus = new Status(StatusType::unavailable(), []);
-
-        $expectedTimestamps = [new Timestamp($startDate, $endDate, new Status(StatusType::unavailable(), []))];
-        $expectedCalendar = (new Calendar(CalendarType::SINGLE(), $startDate, $startDate, $expectedTimestamps, []))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);
 
