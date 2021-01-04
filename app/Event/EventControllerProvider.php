@@ -82,7 +82,7 @@ class EventControllerProvider implements ControllerProviderInterface
         $controllers->get('/{cdbid}/calsum', 'event_controller:getCalendarSummary');
 
         $controllers->patch('/{eventId}/subEvents', UpdateSubEventsStatusRequestHandler::class . ':handle');
-        $controllers->put('/{cdbid}/status', UpdateStatusRequestHandler::class . ':handle');
+        $controllers->put('/{eventId}/status', UpdateStatusRequestHandler::class . ':handle');
         return $controllers;
     }
 }
