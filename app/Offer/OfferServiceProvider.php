@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Http\CompositePsr7RequestAuthorizer;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\LocalOfferReadingService;
@@ -73,6 +74,12 @@ class OfferServiceProvider implements ServiceProviderInterface
                     $app['event_repository'],
                     $app['place_repository']
                 );
+            }
+        );
+
+        $app[UpdateStatusHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateStatusHandler($app[OfferRepository::class]);
             }
         );
     }
