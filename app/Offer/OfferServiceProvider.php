@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Http\CompositePsr7RequestAuthorizer;
 use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\LocalOfferReadingService;
+use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
@@ -62,6 +63,15 @@ class OfferServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ConsumerIsInPermissionGroup(
                     new StringLiteral((string) $app['config']['uitid']['auto_approve_group_id'])
+                );
+            }
+        );
+
+        $app[OfferRepository::class] = $app->share(
+            function (Application $app) {
+                return new OfferRepository(
+                    $app['event_repository'],
+                    $app['place_repository']
                 );
             }
         );
