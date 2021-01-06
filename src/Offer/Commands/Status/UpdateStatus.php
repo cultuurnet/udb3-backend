@@ -8,21 +8,21 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-abstract class AbstractUpdateStatus implements AuthorizableCommandInterface
+final class UpdateStatus implements AuthorizableCommandInterface
 {
     /**
      * @var string
      */
-    private $eventId;
+    private $offerId;
 
     /**
      * @var Status
      */
     private $status;
 
-    public function __construct(string $eventId, Status $status)
+    public function __construct(string $offerId, Status $status)
     {
-        $this->eventId = $eventId;
+        $this->offerId = $offerId;
         $this->status = $status;
     }
 
@@ -33,7 +33,7 @@ abstract class AbstractUpdateStatus implements AuthorizableCommandInterface
 
     public function getItemId(): string
     {
-        return $this->eventId;
+        return $this->offerId;
     }
 
     public function getPermission(): Permission
