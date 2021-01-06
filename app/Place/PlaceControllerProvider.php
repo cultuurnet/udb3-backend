@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
 use CultuurNet\UDB3\Http\Place\HistoryPlaceRestController;
 use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
-use CultuurNet\UDB3\Http\Place\UpdateStatusRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -79,7 +79,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
         $controllers->put('/{itemId}/images/{mediaObjectId}', 'place_editing_controller:updateImage');
 
         $controllers->get('/{cdbid}/calsum', 'place_controller:getCalendarSummary');
-        $controllers->put('/{placeId}/status', UpdateStatusRequestHandler::class . ':handle');
+        $controllers->put('/{offerId}/status', UpdateStatusRequestHandler::class . ':handle');
 
         return $controllers;
     }

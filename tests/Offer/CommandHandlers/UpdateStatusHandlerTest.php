@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Event\CommandHandlers;
+namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandlerInterface;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
@@ -10,7 +10,7 @@ use Broadway\EventHandling\EventBusInterface;
 use Broadway\EventStore\EventStoreInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Event\Commands\Status\UpdateStatus;
+use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -19,6 +19,8 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\OfferRepository;
+use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Timestamp;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
@@ -29,9 +31,9 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
         EventStoreInterface $eventStore,
         EventBusInterface $eventBus
     ): CommandHandlerInterface {
-        $repository = new EventRepository(
-            $eventStore,
-            $eventBus
+        $repository = new OfferRepository(
+            new EventRepository($eventStore, $eventBus),
+            new PlaceRepository($eventStore, $eventBus)
         );
 
         return new UpdateStatusHandler($repository);
