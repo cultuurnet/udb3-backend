@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Http\Place;
+namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
-use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 use CultuurNet\UDB3\Language;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +26,7 @@ class UpdateStatusRequestHandler
      */
     private $validator;
 
-    public function handle(Request $request, string $placeId): Response
+    public function handle(Request $request, string $offerId): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -38,7 +37,7 @@ class UpdateStatusRequestHandler
             $this->parseReason($data)
         );
 
-        $this->commandBus->dispatch(new UpdateStatus($placeId, $newStatus));
+        $this->commandBus->dispatch(new UpdateStatus($offerId, $newStatus));
 
         return new NoContent();
     }
