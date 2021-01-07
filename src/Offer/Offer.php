@@ -180,7 +180,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    public function updateStatus(Status $status): void
+    public function updateAllStatuses(Status $status): void
     {
         $this->updateCalendar(
             $this->calendar
