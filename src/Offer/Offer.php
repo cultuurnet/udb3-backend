@@ -182,7 +182,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateStatus(Status $status): void
     {
-        $this->updateCalendar($this->calendar->withStatus($status));
+        $this->updateCalendar(
+            $this->calendar
+                ->withStatus($status)
+                ->withStatusOnTimestamps($status)
+        );
     }
 
     /**
