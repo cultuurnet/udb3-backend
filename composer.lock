@@ -1395,12 +1395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "aeb439b611a893a6f8b0a0d7f9c001ac5eabf6fc"
+                "reference": "48645e1b47ab71f3f8175768f9e726ba9ca9d5a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/aeb439b611a893a6f8b0a0d7f9c001ac5eabf6fc",
-                "reference": "aeb439b611a893a6f8b0a0d7f9c001ac5eabf6fc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/48645e1b47ab71f3f8175768f9e726ba9ca9d5a9",
+                "reference": "48645e1b47ab71f3f8175768f9e726ba9ca9d5a9",
                 "shasum": ""
             },
             "require": {
@@ -1444,7 +1444,6 @@
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "2.6.1"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1467,11 +1466,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "support": {
-                "issues": "https://github.com/cultuurnet/udb3-php/issues",
-                "source": "https://github.com/cultuurnet/udb3-php/tree/master"
-            },
-            "time": "2020-12-23T15:27:34+00:00"
+            "time": "2021-01-07T14:07:56+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -5641,16 +5636,6 @@
                 "logging",
                 "sentry"
             ],
-            "funding": [
-                {
-                    "url": "https://sentry.io/",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://sentry.io/pricing/",
-                    "type": "custom"
-                }
-            ],
             "time": "2020-09-14T09:30:55+00:00"
         },
         {
@@ -5737,16 +5722,6 @@
                 "log",
                 "logging",
                 "sentry"
-            ],
-            "funding": [
-                {
-                    "url": "https://sentry.io/",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://sentry.io/pricing/",
-                    "type": "custom"
-                }
             ],
             "time": "2020-09-14T07:02:40+00:00"
         },
@@ -6275,20 +6250,6 @@
             ],
             "description": "Symfony HttpClient component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T08:01:15+00:00"
         },
         {
@@ -6349,20 +6310,6 @@
                 "interfaces",
                 "interoperability",
                 "standards"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-08-17T09:35:39+00:00"
         },
@@ -6557,20 +6504,6 @@
                 "config",
                 "configuration",
                 "options"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-10T09:12:14+00:00"
         },
@@ -6922,20 +6855,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -7050,20 +6969,6 @@
                 "polyfill",
                 "portable",
                 "uuid"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -7575,20 +7480,6 @@
                 "interfaces",
                 "interoperability",
                 "standards"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-06T13:19:58+00:00"
         },
@@ -10216,22 +10107,22 @@
     ],
     "aliases": [
         {
-            "package": "chrisboulton/php-resque",
-            "version": "dev-compat-1-2",
             "alias": "1.2",
-            "alias_normalized": "1.2.0.0"
+            "alias_normalized": "1.2.0.0",
+            "version": "dev-compat-1-2",
+            "package": "chrisboulton/php-resque"
         },
         {
-            "package": "cultuurnet/udb3-api-guard",
-            "version": "0.9999999.9999999.9999999-dev",
             "alias": "0.1",
-            "alias_normalized": "0.1.0.0"
+            "alias_normalized": "0.1.0.0",
+            "version": "0.9999999.9999999.9999999-dev",
+            "package": "cultuurnet/udb3-api-guard"
         },
         {
-            "package": "jeremykendall/php-domain-parser",
-            "version": "4.0.3.0-alpha",
             "alias": "1.3.1",
-            "alias_normalized": "1.3.1.0"
+            "alias_normalized": "1.3.1.0",
+            "version": "4.0.3.0-alpha",
+            "package": "jeremykendall/php-domain-parser"
         }
     ],
     "minimum-stability": "dev",
@@ -10247,6 +10138,5 @@
     "platform": {
         "php": "^7.1"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "platform-dev": []
 }

@@ -27,7 +27,7 @@ class UpdateStatusHandler implements CommandHandlerInterface
         }
 
         $offer = $this->offerRepository->load($command->getItemId());
-        $offer->updateStatus($command->getStatus());
+        $offer->updateAllStatuses($command->getStatus());
         $this->offerRepository->save($offer);
     }
 }
