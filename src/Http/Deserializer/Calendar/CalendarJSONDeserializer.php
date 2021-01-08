@@ -61,9 +61,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
             $this->getCalendarType((array) $data),
             $this->getStartDate((array) $data),
             $this->getEndDate((array) $data),
-            $this->convertToTimeStamps(
-                ...$this->calendarJSONParser->getTimeSpans($data)
-            ),
+            $this->calendarJSONParser->getTimestamps($data),
             $this->calendarJSONParser->getOpeningHours($data)
         );
     }
@@ -75,11 +73,11 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getCalendarType(array $data)
     {
-        if (count($this->calendarJSONParser->getTimeSpans($data)) > 1) {
+        if (count($this->calendarJSONParser->getTimestamps($data)) > 1) {
             return CalendarType::MULTIPLE();
         }
 
-        if (count($this->calendarJSONParser->getTimeSpans($data)) == 1) {
+        if (count($this->calendarJSONParser->getTimestamps($data)) == 1) {
             return CalendarType::SINGLE();
         }
 
@@ -92,30 +90,13 @@ class CalendarJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @return Timestamp[]
-     */
-    private function convertToTimeStamps(TimeSpan ...$timeSpans)
-    {
-        $timeStamps = [];
-
-        foreach ($timeSpans as $timeSpan) {
-            $timeStamps[] = new Timestamp(
-                $timeSpan->getStart(),
-                $timeSpan->getEnd()
-            );
-        }
-
-        return $timeStamps;
-    }
-
-    /**
      * @param array $data
      *
      * @return \DateTimeInterface|null
      */
     private function getStartDate(array $data)
     {
-        $timeSpans = $this->calendarJSONParser->getTimeSpans($data);
+        $timeSpans = $this->calendarJSONParser->getTimestamps($data);
         if (count($timeSpans)) {
             return null;
         }
@@ -134,7 +115,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getEndDate(array $data)
     {
-        $timeSpans = $this->calendarJSONParser->getTimeSpans($data);
+        $timeSpans = $this->calendarJSONParser->getTimestamps($data);
         if (count($timeSpans)) {
             return null;
         }
