@@ -21,6 +21,8 @@ use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
+use CultuurNet\UDB3\Silex\Console\UpdateEventStatusCommand;
+use CultuurNet\UDB3\Silex\Console\UpdatePlaceStatusCommand;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -114,6 +116,9 @@ $consoleApp->add(
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
+$consoleApp->add(new UpdateEventStatusCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
+$consoleApp->add(new UpdatePlaceStatusCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
+
 
 try {
     $consoleApp->run();
