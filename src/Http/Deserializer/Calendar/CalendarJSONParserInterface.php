@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Calendar\OpeningHour;
+use CultuurNet\UDB3\Timestamp;
 
 interface CalendarJSONParserInterface
 {
@@ -26,6 +27,13 @@ interface CalendarJSONParserInterface
      * @return TimeSpan[]
      */
     public function getTimeSpans($data);
+
+    /**
+     * @param mixed $data
+     *
+     * @return Timestamp[]
+     */
+    public function getTimestamps($data);
 
     /**
      * @param mixed $data
