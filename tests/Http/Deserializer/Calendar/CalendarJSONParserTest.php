@@ -130,9 +130,17 @@ class CalendarJSONParserTest extends TestCase
                 $startDatePeriod1,
                 $endDatePeriod1
             ),
-            new Timestamp(
+            (new Timestamp(
                 $startDatePeriod2,
                 $endDatePeriod2
+            ))->withStatus(
+                new Status(
+                    StatusType::unavailable(),
+                    [
+                        new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
+                        new StatusReason(new Language('fr'), 'Reason in het Frans'),
+                    ]
+                )
             ),
         ];
 
