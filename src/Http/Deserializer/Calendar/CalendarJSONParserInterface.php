@@ -7,31 +7,17 @@ use CultuurNet\UDB3\Timestamp;
 
 interface CalendarJSONParserInterface
 {
-    /**
-     * @param mixed $data
-     *
-     * @return \DateTimeInterface|null
-     */
-    public function getStartDate($data);
+    public function getStartDate(array $data): ?\DateTimeInterface;
+
+    public function getEndDate(array $data): ?\DateTimeInterface;
 
     /**
-     * @param mixed $data
-     *
-     * @return \DateTimeInterface|null
-     */
-    public function getEndDate($data);
-
-    /**
-     * @param mixed $data
-     *
      * @return Timestamp[]
      */
-    public function getTimestamps($data);
+    public function getTimestamps(array $data): array;
 
     /**
-     * @param mixed $data
-     *
      * @return OpeningHour[]
      */
-    public function getOpeningHours($data);
+    public function getOpeningHours(array $data): array;
 }

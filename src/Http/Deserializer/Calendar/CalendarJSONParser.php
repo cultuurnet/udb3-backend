@@ -9,12 +9,7 @@ use CultuurNet\UDB3\Timestamp;
 
 class CalendarJSONParser implements CalendarJSONParserInterface
 {
-    /**
-     * @param array $data
-     *
-     * @return \DateTimeInterface|null
-     */
-    public function getStartDate($data)
+    public function getStartDate(array $data): ?\DateTimeInterface
     {
         if (!isset($data['startDate'])) {
             return null;
@@ -23,12 +18,7 @@ class CalendarJSONParser implements CalendarJSONParserInterface
         return new \DateTime($data['startDate']);
     }
 
-    /**
-     * @param array $data
-     *
-     * @return \DateTimeInterface|null
-     */
-    public function getEndDate($data)
+    public function getEndDate(array $data): ?\DateTimeInterface
     {
         if (!isset($data['endDate'])) {
             return null;
@@ -38,10 +28,9 @@ class CalendarJSONParser implements CalendarJSONParserInterface
     }
 
     /**
-     * @param mixed $data
      * @return Timestamp[]
      */
-    public function getTimestamps($data)
+    public function getTimestamps(array $data): array
     {
         $timestamps = [];
 
@@ -60,11 +49,9 @@ class CalendarJSONParser implements CalendarJSONParserInterface
     }
 
     /**
-     * @param array $data
-     *
      * @return OpeningHour[]
      */
-    public function getOpeningHours($data)
+    public function getOpeningHours(array $data): array
     {
         $openingHours = [];
 
