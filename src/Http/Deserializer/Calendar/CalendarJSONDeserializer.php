@@ -95,8 +95,8 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getStartDate(array $data)
     {
-        $timeSpans = $this->calendarJSONParser->getTimestamps($data);
-        if (count($timeSpans)) {
+        $timestamps = $this->calendarJSONParser->getTimestamps($data);
+        if (count($timestamps)) {
             return null;
         }
 
@@ -114,8 +114,8 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getEndDate(array $data)
     {
-        $timeSpans = $this->calendarJSONParser->getTimestamps($data);
-        if (count($timeSpans)) {
+        $timestamps = $this->calendarJSONParser->getTimestamps($data);
+        if (count($timestamps)) {
             return null;
         }
 
