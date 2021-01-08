@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\Timestamp;
 
 class CalendarJSONParser implements CalendarJSONParserInterface
 {
@@ -57,6 +58,28 @@ class CalendarJSONParser implements CalendarJSONParserInterface
         }
 
         return $timeSpans;
+    }
+
+    /**
+     * @param mixed $data
+     * @return Timestamp[]
+     */
+    public function getTimestamps($data)
+    {
+        $timestamps = [];
+
+        if (!empty($data['timeSpans'])) {
+            foreach ($data['timeSpans'] as $index => $timeSpan) {
+                if (!empty($timeSpan['start']) && !empty($timeSpan['end'])) {
+                    $startDate = new \DateTime($timeSpan['start']);
+                    $endDate = new \DateTime($timeSpan['end']);
+                    $timestamps[] = new Timestamp($startDate, $endDate);
+                }
+            }
+            ksort($timestamps);
+        }
+
+        return $timestamps;
     }
 
     /**
