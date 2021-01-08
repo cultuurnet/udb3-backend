@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Calendar\OpeningHour;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Timestamp;
 
 interface CalendarJSONParserInterface
@@ -10,6 +11,8 @@ interface CalendarJSONParserInterface
     public function getStartDate(array $data): ?\DateTimeInterface;
 
     public function getEndDate(array $data): ?\DateTimeInterface;
+
+    public function getStatus(array $data): ?Status;
 
     /**
      * @return Timestamp[]
