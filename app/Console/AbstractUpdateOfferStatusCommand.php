@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBusInterface;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
+use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class UpdateOfferStatusCommand extends AbstractCommand
+abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
 {
-    private const QUERY_ARGUMENT = 'query';
-
     /**
      * @var ResultsGenerator
      */
@@ -34,18 +36,17 @@ class UpdateOfferStatusCommand extends AbstractCommand
         );
     }
 
-    protected function configure()
-    {
-        $this->addArgument(
-            self::QUERY_ARGUMENT,
-            InputArgument::REQUIRED,
-            'SAPI3 query to retrieve the offers to update'
-        );
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $query = $input->getArgument(self::QUERY_ARGUMENT);
+        $query = 'ADD_SAPI_QUERY_HERE';
+        $status = new Status(
+            StatusType::unavailable(),
+            [
+                new StatusReason(new Language('nl'), 'Afgelast door Covid-19'),
+                new StatusReason(new Language('en'), 'Cancelled because of Covid-19'),
+            ]
+        );
+
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count === 0) {
@@ -69,8 +70,12 @@ class UpdateOfferStatusCommand extends AbstractCommand
 
         $offers = $this->searchResultsGenerator->search($query);
         foreach ($offers as $id => $offer) {
-            // update status
+            $this->commandBus->dispatch(
+                new UpdateStatus($id, $status)
+            );
         }
+
+        $output->writeln("Updated {$count} offers");
 
         return 0;
     }
