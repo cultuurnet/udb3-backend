@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
@@ -115,6 +116,36 @@ class CalendarJSONParserTest extends TestCase
         $this->assertEquals(
             $timeSpans,
             $this->calendarJSONParser->getTimeSpans(
+                $this->updateCalendarAsArray
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_the_timestamps()
+    {
+        $startDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
+        $endDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-01T16:00:00+01:00');
+
+        $startDatePeriod2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00');
+        $endDatePeriod2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
+
+        $timestamps = [
+            new Timestamp(
+                $startDatePeriod1,
+                $endDatePeriod1
+            ),
+            new Timestamp(
+                $startDatePeriod2,
+                $endDatePeriod2
+            ),
+        ];
+
+        $this->assertEquals(
+            $timestamps,
+            $this->calendarJSONParser->getTimestamps(
                 $this->updateCalendarAsArray
             )
         );
