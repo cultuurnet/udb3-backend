@@ -36,9 +36,9 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     public function deserialize(StringLiteral $data)
     {
-        $data = parent::deserialize($data);
+        $data = (array) parent::deserialize($data);
 
-        $this->calendarDataValidator->validate((array) $data);
+        $this->calendarDataValidator->validate($data);
 
         // There are 6 possible options in 2 categories.
         //
@@ -56,13 +56,20 @@ class CalendarJSONDeserializer extends JSONDeserializer
         // 1. Just one time span => single
         // 2. Multiple time spans => multiple
 
-        return new Calendar(
-            $this->getCalendarType((array) $data),
-            $this->getStartDate((array) $data),
-            $this->getEndDate((array) $data),
+        $calendar = new Calendar(
+            $this->getCalendarType($data),
+            $this->getStartDate($data),
+            $this->getEndDate($data),
             $this->calendarJSONParser->getTimestamps($data),
             $this->calendarJSONParser->getOpeningHours($data)
         );
+
+        $status = $this->calendarJSONParser->getStatus($data);
+        if ($status !== null) {
+            $calendar = $calendar->withStatus($status);
+        }
+
+        return $calendar;
     }
 
     /**
