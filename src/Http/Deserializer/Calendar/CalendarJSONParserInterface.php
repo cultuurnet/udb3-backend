@@ -24,13 +24,6 @@ interface CalendarJSONParserInterface
     /**
      * @param mixed $data
      *
-     * @return TimeSpan[]
-     */
-    public function getTimeSpans($data);
-
-    /**
-     * @param mixed $data
-     *
      * @return Timestamp[]
      */
     public function getTimestamps($data);

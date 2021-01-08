@@ -38,29 +38,6 @@ class CalendarJSONParser implements CalendarJSONParserInterface
     }
 
     /**
-     * @param array $data
-     *
-     * @return TimeSpan[]
-     */
-    public function getTimeSpans($data)
-    {
-        $timeSpans = [];
-
-        if (!empty($data['timeSpans'])) {
-            foreach ($data['timeSpans'] as $index => $timeSpan) {
-                if (!empty($timeSpan['start']) && !empty($timeSpan['end'])) {
-                    $startDate = new \DateTime($timeSpan['start']);
-                    $endDate = new \DateTime($timeSpan['end']);
-                    $timeSpans[] = new TimeSpan($startDate, $endDate);
-                }
-            }
-            ksort($timeSpans);
-        }
-
-        return $timeSpans;
-    }
-
-    /**
      * @param mixed $data
      * @return Timestamp[]
      */
