@@ -94,36 +94,6 @@ class CalendarJSONParserTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_the_time_spans()
-    {
-        $startDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
-        $endDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-01T16:00:00+01:00');
-
-        $startDatePeriod2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00');
-        $endDatePeriod2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
-
-        $timeSpans = [
-            new TimeSpan(
-                $startDatePeriod1,
-                $endDatePeriod1
-            ),
-            new TimeSpan(
-                $startDatePeriod2,
-                $endDatePeriod2
-            ),
-        ];
-
-        $this->assertEquals(
-            $timeSpans,
-            $this->calendarJSONParser->getTimeSpans(
-                $this->updateCalendarAsArray
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_can_get_the_timestamps()
     {
         $startDatePeriod1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
@@ -154,7 +124,7 @@ class CalendarJSONParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_create_time_spans_when_json_is_missing_an_end_property()
+    public function it_should_not_create_timestamps_when_json_is_missing_an_end_property()
     {
         $calendarData = json_decode(
             file_get_contents(__DIR__ . '/samples/calendar_missing_time_span_end.json'),
@@ -162,14 +132,14 @@ class CalendarJSONParserTest extends TestCase
         );
 
         $this->assertEmpty(
-            $this->calendarJSONParser->getTimeSpans($calendarData)
+            $this->calendarJSONParser->getTimestamps($calendarData)
         );
     }
 
     /**
      * @test
      */
-    public function it_should_not_create_time_spans_when_json_is_missing_a_start_property()
+    public function it_should_not_create_timestamps_when_json_is_missing_a_start_property()
     {
         $calendarData = json_decode(
             file_get_contents(__DIR__ . '/samples/calendar_missing_time_span_start.json'),
@@ -177,7 +147,7 @@ class CalendarJSONParserTest extends TestCase
         );
 
         $this->assertEmpty(
-            $this->calendarJSONParser->getTimeSpans($calendarData)
+            $this->calendarJSONParser->getTimestamps($calendarData)
         );
     }
 
