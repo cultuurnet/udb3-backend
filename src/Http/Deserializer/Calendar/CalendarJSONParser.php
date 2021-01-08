@@ -49,7 +49,13 @@ class CalendarJSONParser implements CalendarJSONParserInterface
                 if (!empty($timeSpan['start']) && !empty($timeSpan['end'])) {
                     $startDate = new \DateTime($timeSpan['start']);
                     $endDate = new \DateTime($timeSpan['end']);
-                    $timestamps[] = new Timestamp($startDate, $endDate);
+                    $timestamp = new Timestamp($startDate, $endDate);
+
+                    if (isset($timeSpan['status'])) {
+                        $timestamp = $timestamp->withStatus(Status::deserialize($timeSpan['status']));
+                    }
+
+                    $timestamps[] = $timestamp;
                 }
             }
             ksort($timestamps);
