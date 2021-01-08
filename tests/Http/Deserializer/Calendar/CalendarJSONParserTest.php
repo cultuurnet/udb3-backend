@@ -6,6 +6,10 @@ use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
+use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
@@ -88,6 +92,25 @@ class CalendarJSONParserTest extends TestCase
             $this->calendarJSONParser->getEndDate(
                 $updateCalendarAsArray
             )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_the_status()
+    {
+        $status = new Status(
+            StatusType::unavailable(),
+            [
+                new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
+                new StatusReason(new Language('fr'), 'Reason in het Frans'),
+            ]
+        );
+
+        $this->assertEquals(
+            $status,
+            $this->calendarJSONParser->getStatus($this->updateCalendarAsArray)
         );
     }
 
