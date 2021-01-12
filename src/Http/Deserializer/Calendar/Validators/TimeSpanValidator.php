@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar\Validators;
 
 class TimeSpanValidator
 {
-    public function validate(array $data)
+    public function validate(array $data): array
     {
         $messages = [];
 
