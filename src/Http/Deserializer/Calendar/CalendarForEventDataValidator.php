@@ -10,10 +10,9 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 class CalendarForEventDataValidator implements DataValidatorInterface
 {
     /**
-     * @param array $data
      * @throws DataValidationException
      */
-    public function validate(array $data)
+    public function validate(array $data): void
     {
         $messages = [];
 
@@ -55,7 +54,5 @@ class CalendarForEventDataValidator implements DataValidatorInterface
             $e->setValidationMessages($messages);
             throw $e;
         }
-
-        return true;
     }
 }
