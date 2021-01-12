@@ -29,9 +29,8 @@ class CalendarForEventDataValidatorTest extends TestCase
             true
         );
 
-        $this->assertTrue(
-            $this->calendarForEventDataValidator->validate($data)
-        );
+        $this->calendarForEventDataValidator->validate($data);
+        $this->addToAssertionCount(1);
     }
 
     /**
