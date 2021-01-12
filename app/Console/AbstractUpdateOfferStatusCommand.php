@@ -14,7 +14,9 @@ use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 
 abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
 {
@@ -38,14 +40,11 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $query = 'ADD_SAPI_QUERY_HERE';
-        $status = new Status(
-            StatusType::unavailable(),
-            [
-                new StatusReason(new Language('nl'), 'Afgelast door Covid-19'),
-                new StatusReason(new Language('en'), 'Cancelled because of Covid-19'),
-            ]
-        );
+        $query = $this->askForQuery($input, $output);
+        $statusType = $this->askForStatusType($input, $output);
+        $reasons = $this->askForReasons($input, $output);
+
+        $status = new Status($statusType, $reasons);
 
         $count = $this->searchResultsGenerator->count($query);
 
@@ -78,5 +77,60 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
         $output->writeln("Updated {$count} offers");
 
         return 0;
+    }
+
+    private function askForQuery($input, $output): string
+    {
+        $question = new Question("Provide SAPI 3 query for offers to update");
+        return $this->getHelper('question')->ask($input, $output, $question);
+    }
+
+    private function askForStatusType(InputInterface $input, OutputInterface $output): StatusType
+    {
+        $question =  new ChoiceQuestion(
+            'What should be the new status?',
+            [
+                StatusType::available()->toNative(),
+                StatusType::temporarilyUnavailable()->toNative(),
+                StatusType::unavailable()->toNative(),
+            ]
+        );
+        $question->setErrorMessage('Invalid status: %s');
+        return StatusType::fromNative($this->getHelper('question')->ask($input, $output, $question));
+    }
+
+    /**
+     * @return StatusReason[]
+     */
+    private function askForReasons(InputInterface $input, OutputInterface $output): array
+    {
+        $reasons = [];
+
+        $addReasonQuestion = new ConfirmationQuestion('Do you want to add a reason? [y/N]', false);
+        $addReason = $this->getHelper('question')->ask($input, $output, $addReasonQuestion);
+
+        while ($addReason) {
+            $reasons[] = $this->askForReason($input, $output);
+            $addReason = $this->getHelper('question')->ask($input, $output, $addReasonQuestion);
+        }
+
+        return $reasons;
+    }
+
+    private function askForReason(InputInterface $input, OutputInterface $output): StatusReason
+    {
+        $languageQuestion = new Question('Language code (e.g. nl, fr, en)');
+        $languageQuestion->setValidator(function ($answer) {
+            return new Language($answer);
+        });
+        $languageQuestion->setMaxAttempts(2);
+
+        /** @var Language $language */
+        $language = $this->getHelper('question')->ask($input, $output, $languageQuestion);
+
+        $reasonQuestion = new Question('Describe reason for language: ' . $language->getCode());
+        $reason = $this->getHelper('question')->ask($input, $output, $reasonQuestion);
+
+        return new StatusReason($language, $reason);
     }
 }
