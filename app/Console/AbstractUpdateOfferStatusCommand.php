@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +21,11 @@ use Symfony\Component\Console\Question\Question;
 
 abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
 {
+    /**
+     * @var OfferType
+     */
+    protected $offerType;
+
     /**
      * @var ResultsGenerator
      */
@@ -41,24 +47,20 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $query = $this->askForQuery($input, $output);
+        $count = $this->searchResultsGenerator->count($query);
+        $output->writeln("This command will update $count {$this->getOfferTypeString()}");
+
         $statusType = $this->askForStatusType($input, $output);
         $reasons = $this->askForReasons($input, $output);
 
         $status = new Status($statusType, $reasons);
-
-        $count = $this->searchResultsGenerator->count($query);
-
-        if ($count === 0) {
-            $output->writeln("Could not find any offers for this query.");
-            return 0;
-        }
 
         $confirmation = $this->getHelper('question')
             ->ask(
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "This action will update the status of {$count} offers, continue? [y/N] ",
+                    "This action will update the status of {$count} {$this->getOfferTypeString()} to {$statusType->toNative()}, continue? [y/N] ",
                     true
                 )
             );
@@ -74,14 +76,14 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
             );
         }
 
-        $output->writeln("Updated {$count} offers");
+        $output->writeln("Updated {$count} {$this->getOfferTypeString()}");
 
         return 0;
     }
 
     private function askForQuery($input, $output): string
     {
-        $question = new Question("Provide SAPI 3 query for offers to update");
+        $question = new Question("Provide SAPI 3 query for {$this->getOfferTypeString()} to update\n");
         return $this->getHelper('question')->ask($input, $output, $question);
     }
 
@@ -119,7 +121,7 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
 
     private function askForReason(InputInterface $input, OutputInterface $output): StatusReason
     {
-        $languageQuestion = new Question('Language code (e.g. nl, fr, en)');
+        $languageQuestion = new Question("Language code (e.g. nl, fr, en) \n");
         $languageQuestion->setValidator(function ($answer) {
             return new Language($answer);
         });
@@ -128,9 +130,14 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
         /** @var Language $language */
         $language = $this->getHelper('question')->ask($input, $output, $languageQuestion);
 
-        $reasonQuestion = new Question('Describe reason for language: ' . $language->getCode());
+        $reasonQuestion = new Question("Describe reason for language: {$language->getCode()}\n");
         $reason = $this->getHelper('question')->ask($input, $output, $reasonQuestion);
 
         return new StatusReason($language, $reason);
+    }
+
+    private function getOfferTypeString(): string
+    {
+        return strtolower($this->offerType->toNative());
     }
 }
