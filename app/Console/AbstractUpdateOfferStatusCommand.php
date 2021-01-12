@@ -48,7 +48,7 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
     {
         $query = $this->askForQuery($input, $output);
         $count = $this->searchResultsGenerator->count($query);
-        $output->writeln("This command will update $count {$this->getOfferTypeString()}");
+        $output->writeln("This command will update $count {$this->pluralizedOfferType()}");
 
         $statusType = $this->askForStatusType($input, $output);
         $reasons = $this->askForReasons($input, $output);
@@ -60,7 +60,7 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "This action will update the status of {$count} {$this->getOfferTypeString()} to {$statusType->toNative()}, continue? [y/N] ",
+                    "This action will update the status of {$count} {$this->pluralizedOfferType()} to {$statusType->toNative()}, continue? [y/N] ",
                     true
                 )
             );
@@ -76,14 +76,14 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
             );
         }
 
-        $output->writeln("Updated {$count} {$this->getOfferTypeString()}");
+        $output->writeln("Updated {$count} {$this->pluralizedOfferType()}");
 
         return 0;
     }
 
     private function askForQuery($input, $output): string
     {
-        $question = new Question("Provide SAPI 3 query for {$this->getOfferTypeString()} to update\n");
+        $question = new Question("Provide SAPI 3 query for {$this->pluralizedOfferType()} to update\n");
         return $this->getHelper('question')->ask($input, $output, $question);
     }
 
@@ -136,8 +136,8 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
         return new StatusReason($language, $reason);
     }
 
-    private function getOfferTypeString(): string
+    private function pluralizedOfferType(): string
     {
-        return strtolower($this->offerType->toNative());
+        return strtolower($this->offerType->toNative()) . 's';
     }
 }
