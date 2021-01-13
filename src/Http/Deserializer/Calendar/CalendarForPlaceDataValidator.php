@@ -6,6 +6,7 @@ use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\StartDateEndDateValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\TimeSpanValidator;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 
 class CalendarForPlaceDataValidator implements DataValidatorInterface
 {
@@ -20,11 +21,20 @@ class CalendarForPlaceDataValidator implements DataValidatorInterface
 
         // For a place the following specific rules apply:
         // - Never timestamps
+        // - If a status on the top level this should be in the correct format
         // - If a start date is given then an end date is also needed
         // - If an end date is given then a start date is also needed
 
         if ($calendarJSONParser->getTimestamps($data)) {
             $messages['time_spans'] = 'No time spans allowed for place calendar.';
+        }
+
+        if (isset($data['status'])) {
+            try {
+                (new UpdateStatusValidator())->validate($data['status']);
+            } catch (DataValidationException $dataValidationException) {
+                $messages['status'] = $dataValidationException->getValidationMessages();
+            }
         }
 
         $messages = array_merge(

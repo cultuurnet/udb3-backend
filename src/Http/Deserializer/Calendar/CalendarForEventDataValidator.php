@@ -6,6 +6,7 @@ use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\StartDateEndDateValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\TimeSpanValidator;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 
 class CalendarForEventDataValidator implements DataValidatorInterface
 {
@@ -20,12 +21,21 @@ class CalendarForEventDataValidator implements DataValidatorInterface
 
         // For an event the following specific rules apply:
         // - Empty data is not allowed
+        // - If a status on the top level this should be in the correct format
         // - If a start date is given then an end date is also needed
         // - If an end date is given then a start date is also needed
         // - When multiple time spans no opening hours
 
         if (count($data) === 0) {
             $messages['permanent'] = 'Permanent events are not supported.';
+        }
+
+        if (isset($data['status'])) {
+            try {
+                (new UpdateStatusValidator())->validate($data['status']);
+            } catch (DataValidationException $dataValidationException) {
+                $messages['status'] = $dataValidationException->getValidationMessages();
+            }
         }
 
         $messages = array_merge(
