@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -78,13 +79,16 @@ class UpdateOfferStatusCommand extends AbstractCommand
         }
 
         $offers = $this->searchResultsGenerator->search($query);
+        $progressBar = new ProgressBar($output, $count);
+
         foreach ($offers as $id => $offer) {
             $this->commandBus->dispatch(
                 new UpdateStatus($id, $status)
             );
+            $progressBar->advance();
         }
 
-        $output->writeln("Updated {$count} {$this->getPluralOfferType()}");
+        $progressBar->finish();
 
         return 0;
     }
