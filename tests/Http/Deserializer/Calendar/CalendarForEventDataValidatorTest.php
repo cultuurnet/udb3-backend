@@ -54,7 +54,7 @@ class CalendarForEventDataValidatorTest extends TestCase
      * @param array $data
      * @param array $messages
      */
-    public function it_throws_when_time_spans_are_present(
+    public function it_throws_when_invalid_data_is_present(
         array $data,
         array $messages
     ) {
