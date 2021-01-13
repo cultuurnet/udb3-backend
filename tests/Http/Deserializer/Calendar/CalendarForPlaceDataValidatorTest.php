@@ -12,7 +12,7 @@ class CalendarForPlaceDataValidatorTest extends TestCase
      */
     private $calendarForPlaceDataValidator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calendarForPlaceDataValidator = new CalendarForPlaceDataValidator();
     }
@@ -20,13 +20,11 @@ class CalendarForPlaceDataValidatorTest extends TestCase
     /**
      * @test
      * @dataProvider dataProvider
-     * @param array $data
-     * @param array $messages
      */
     public function it_throws_when_invalid_data_is_present(
         array $data,
         array $messages
-    ) {
+    ): void {
         $expectedException = new DataValidationException();
         $expectedException->setValidationMessages($messages);
 
@@ -41,10 +39,7 @@ class CalendarForPlaceDataValidatorTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return [
             'it_throws_when_time_spans_are_present' => [

@@ -12,7 +12,7 @@ class CalendarForEventDataValidatorTest extends TestCase
      */
     private $calendarForEventDataValidator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calendarForEventDataValidator = new CalendarForEventDataValidator();
     }
@@ -20,9 +20,8 @@ class CalendarForEventDataValidatorTest extends TestCase
     /**
      * @test
      * @dataProvider fileDataProvider
-     * @param string $file
      */
-    public function it_does_not_throw_for_valid_calendars($file)
+    public function it_does_not_throw_for_valid_calendars(string $file): void
     {
         $data = json_decode(
             file_get_contents(__DIR__ . '/samples/' . $file),
@@ -33,10 +32,7 @@ class CalendarForEventDataValidatorTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    /**
-     * @return array
-     */
-    public function fileDataProvider()
+    public function fileDataProvider():array
     {
         return [
             'single_time_span' => [
@@ -51,13 +47,11 @@ class CalendarForEventDataValidatorTest extends TestCase
     /**
      * @test
      * @dataProvider dataProvider
-     * @param array $data
-     * @param array $messages
      */
     public function it_throws_when_invalid_data_is_present(
         array $data,
         array $messages
-    ) {
+    ): void {
         $expectedException = new DataValidationException();
         $expectedException->setValidationMessages($messages);
 
@@ -72,10 +66,7 @@ class CalendarForEventDataValidatorTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return [
             'it_throws_when_permanent' => [
