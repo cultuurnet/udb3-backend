@@ -115,8 +115,8 @@ $consoleApp->add(
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
-$consoleApp->add(new UpdateOfferStatusCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS], OfferType::EVENT()));
-$consoleApp->add(new UpdateOfferStatusCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES], OfferType::PLACE()));
+$consoleApp->add(new UpdateOfferStatusCommand(OfferType::EVENT(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
+$consoleApp->add(new UpdateOfferStatusCommand(OfferType::PLACE(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
 
 
 try {

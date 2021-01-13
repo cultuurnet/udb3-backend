@@ -33,9 +33,9 @@ class UpdateOfferStatusCommand extends AbstractCommand
     private $searchResultsGenerator;
 
     public function __construct(
+        OfferType $offerType,
         CommandBusInterface $commandBus,
-        SearchServiceInterface $searchService,
-        OfferType $offerType
+        SearchServiceInterface $searchService
     ) {
         parent::__construct($commandBus);
         $this->searchResultsGenerator = new ResultsGenerator(
