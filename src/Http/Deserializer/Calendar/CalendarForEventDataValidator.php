@@ -33,20 +33,23 @@ class CalendarForEventDataValidator implements DataValidatorInterface
             (new TimeSpanValidator())->validate($data)
         );
 
-        $timestamps = $calendarJSONParser->getTimestamps($data);
+        // When the time spans contain errors it makes no sense to validate the rest of the data.
+        if (empty($messages)) {
+            $timestamps = $calendarJSONParser->getTimestamps($data);
 
-        // Single and multiple calendar types always have `timestamps` from which the start and end date are dynamically
-        // determined. If there are no timestamps though, and a start and end date are given (ie. periodic calendar), the
-        // start and end date SHOULD be validated.
-        if (count($timestamps) === 0) {
-            $messages = array_merge(
-                $messages,
-                (new StartDateEndDateValidator())->validate($data)
-            );
-        }
+            // Single and multiple calendar types always have `timestamps` from which the start and end date are dynamically
+            // determined. If there are no timestamps though, and a start and end date are given (ie. periodic calendar), the
+            // start and end date SHOULD be validated.
+            if (count($timestamps) === 0) {
+                $messages = array_merge(
+                    $messages,
+                    (new StartDateEndDateValidator())->validate($data)
+                );
+            }
 
-        if (count($timestamps) > 0 && count($calendarJSONParser->getOpeningHours($data)) > 0) {
-            $messages['opening_hours'] = 'When opening hours are given no time spans are allowed.';
+            if (count($timestamps) > 0 && count($calendarJSONParser->getOpeningHours($data)) > 0) {
+                $messages['opening_hours'] = 'When opening hours are given no time spans are allowed.';
+            }
         }
 
         if (!empty($messages)) {
