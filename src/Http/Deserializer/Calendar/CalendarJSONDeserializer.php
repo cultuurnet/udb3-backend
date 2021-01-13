@@ -11,7 +11,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class CalendarJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @var CalendarJSONParserInterface
+     * @var CalendarJSONParser
      */
     private $calendarJSONParser;
 
@@ -21,7 +21,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
     private $calendarDataValidator;
 
     public function __construct(
-        CalendarJSONParserInterface $calendarJSONParser,
+        CalendarJSONParser $calendarJSONParser,
         DataValidatorInterface $calendarDataValidator
     ) {
         parent::__construct(true);

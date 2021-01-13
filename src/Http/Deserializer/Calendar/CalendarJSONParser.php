@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Timestamp;
 
-class CalendarJSONParser implements CalendarJSONParserInterface
+class CalendarJSONParser
 {
     public function getStartDate(array $data): ?\DateTimeInterface
     {
