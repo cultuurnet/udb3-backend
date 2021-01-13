@@ -2,6 +2,9 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar\Validators;
 
+use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
+
 class TimeSpanValidator
 {
     public function validate(array $data): array
@@ -16,6 +19,14 @@ class TimeSpanValidator
 
                 if (empty($timeSpan['end'])) {
                     $messages['end_' . $index] = 'An end is required for a time span.';
+                }
+
+                if (isset($timeSpan['status'])) {
+                    try {
+                        (new UpdateStatusValidator())->validate($timeSpan['status']);
+                    } catch (DataValidationException $dataValidationException) {
+                        $messages['status_' . $index] = $dataValidationException->getValidationMessages();
+                    }
                 }
             }
         }
