@@ -19,7 +19,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
+class UpdateOfferStatusCommand extends AbstractCommand
 {
     /**
      * @var OfferType
