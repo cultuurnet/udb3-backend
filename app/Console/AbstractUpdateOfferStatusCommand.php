@@ -33,22 +33,30 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
 
     public function __construct(
         CommandBusInterface $commandBus,
-        SearchServiceInterface $searchService
+        SearchServiceInterface $searchService,
+        OfferType $offerType
     ) {
-        parent::__construct($commandBus);
-        $this->commandBus = $commandBus;
         $this->searchResultsGenerator = new ResultsGenerator(
             $searchService,
             ['created' => 'asc'],
             100
         );
+        $this->offerType = $offerType;
+        parent::__construct($commandBus);
+    }
+
+    protected function configure(): void
+    {
+        $this
+            ->setName($this->getSingularOfferType() . ':status:update')
+            ->setDescription("Batch update status of {$this->getPluralOfferType()} through SAPI 3 query.");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $query = $this->askForQuery($input, $output);
         $count = $this->searchResultsGenerator->count($query);
-        $output->writeln("This command will update $count {$this->pluralizedOfferType()}");
+        $output->writeln("This command will update $count {$this->getPluralOfferType()}");
 
         $statusType = $this->askForStatusType($input, $output);
         $reasons = $this->askForReasons($input, $output);
@@ -60,7 +68,7 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    "This action will update the status of {$count} {$this->pluralizedOfferType()} to {$statusType->toNative()}, continue? [y/N] ",
+                    "This action will update the status of {$count} {$this->getPluralOfferType()} to {$statusType->toNative()}, continue? [y/N] ",
                     true
                 )
             );
@@ -76,14 +84,14 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
             );
         }
 
-        $output->writeln("Updated {$count} {$this->pluralizedOfferType()}");
+        $output->writeln("Updated {$count} {$this->getPluralOfferType()}");
 
         return 0;
     }
 
     private function askForQuery($input, $output): string
     {
-        $question = new Question("Provide SAPI 3 query for {$this->pluralizedOfferType()} to update\n");
+        $question = new Question("Provide SAPI 3 query for {$this->getPluralOfferType()} to update\n");
         return $this->getHelper('question')->ask($input, $output, $question);
     }
 
@@ -136,8 +144,13 @@ abstract class AbstractUpdateOfferStatusCommand extends AbstractCommand
         return new StatusReason($language, $reason);
     }
 
-    private function pluralizedOfferType(): string
+    private function getSingularOfferType(): string
     {
-        return strtolower($this->offerType->toNative()) . 's';
+        return strtolower($this->offerType->toNative());
+    }
+
+    private function getPluralOfferType(): string
+    {
+        return $this->getSingularOfferType() . 's';
     }
 }

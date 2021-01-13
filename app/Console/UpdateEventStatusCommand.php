@@ -4,16 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Offer\OfferType;
-
 class UpdateEventStatusCommand extends AbstractUpdateOfferStatusCommand
 {
-    protected function configure(): void
-    {
-        $this->offerType = OfferType::EVENT();
-
-        $this
-            ->setName('event:status:update')
-            ->setDescription('Batch update status of events through SAPI 3 query.');
-    }
 }
