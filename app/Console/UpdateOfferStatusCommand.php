@@ -37,20 +37,16 @@ class UpdateOfferStatusCommand extends AbstractCommand
         SearchServiceInterface $searchService,
         OfferType $offerType
     ) {
+        parent::__construct($commandBus);
         $this->searchResultsGenerator = new ResultsGenerator(
             $searchService,
             ['created' => 'asc'],
             100
         );
         $this->offerType = $offerType;
-        parent::__construct($commandBus);
-    }
 
-    protected function configure(): void
-    {
-        $this
-            ->setName($this->getSingularOfferType() . ':status:update')
-            ->setDescription("Batch update status of {$this->getPluralOfferType()} through SAPI 3 query.");
+        $this->setName($this->getSingularOfferType() . ':status:update');
+        $this->setDescription("Batch update status of {$this->getPluralOfferType()} through SAPI 3 query.");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
