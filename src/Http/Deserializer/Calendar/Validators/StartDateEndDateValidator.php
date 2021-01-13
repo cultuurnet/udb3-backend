@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 
 class StartDateEndDateValidator
 {
-    public function validate(array $data)
+    public function validate(array $data): array
     {
         $messages = [];
 
