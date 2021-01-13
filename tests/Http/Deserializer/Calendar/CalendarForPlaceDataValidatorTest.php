@@ -64,6 +64,16 @@ class CalendarForPlaceDataValidatorTest extends TestCase
                     'time_spans' => 'No time spans allowed for place calendar.',
                 ],
             ],
+            'it_throws_on_invalid_top_level_status' => [
+                'data' => [
+                    'status' => [],
+                ],
+                'messages' => [
+                    'status' => [
+                        'type' => 'Required but could not be found',
+                    ],
+                ],
+            ],
             'it_throws_when_end_date_is_missing' => [
                 'data' => [
                     'startDate' => '2020-01-26T09:00:00+01:00',
