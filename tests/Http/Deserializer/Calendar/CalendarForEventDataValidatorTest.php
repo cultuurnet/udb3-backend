@@ -144,6 +144,22 @@ class CalendarForEventDataValidatorTest extends TestCase
                     'end_0' => 'An end is required for a time span.',
                 ],
             ],
+            'it_throws_on_invalid_status_inside_time_span' => [
+                'data' => [
+                    'timeSpans' => [
+                        [
+                            'start' => '2020-01-26T09:00:00+01:00',
+                            'end' => '2020-02-01T16:00:00+01:00',
+                            'status' => [],
+                        ],
+                    ],
+                ],
+                'messages' => [
+                    'status_0' => [
+                        'type' => 'Required but could not be found',
+                    ],
+                ],
+            ],
             'it_throws_time_spans_and_opening_hours' => [
                 'data' => [
                     'timeSpans' => [
