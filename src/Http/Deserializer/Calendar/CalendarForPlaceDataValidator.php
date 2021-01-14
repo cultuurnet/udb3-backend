@@ -4,12 +4,15 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\StartDateEndDateValidator;
+use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\ThrowIfNotEmpty;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\TimeSpanValidator;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 
 class CalendarForPlaceDataValidator implements DataValidatorInterface
 {
+    use ThrowIfNotEmpty;
+
     /**
      * @throws DataValidationException
      */
@@ -53,10 +56,6 @@ class CalendarForPlaceDataValidator implements DataValidatorInterface
         // - Opening hours
         // - Start date, end date and opening hours
 
-        if (!empty($messages)) {
-            $e = new DataValidationException();
-            $e->setValidationMessages($messages);
-            throw $e;
-        }
+        $this->throwIfNotEmpty($messages);
     }
 }
