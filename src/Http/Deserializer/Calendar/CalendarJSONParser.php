@@ -75,20 +75,17 @@ class CalendarJSONParser
             return [];
         }
 
-        if (!empty($data['openingHours'])) {
-            foreach ($data['openingHours'] as $openingHour) {
-                if (!empty($openingHour['dayOfWeek']) &&
-                    !empty($openingHour['opens']) &&
-                    !empty($openingHour['closes'])) {
-                    $daysOfWeek = DayOfWeekCollection::deserialize($openingHour['dayOfWeek']);
-
-                    $openingHours[] = new OpeningHour(
-                        OpeningTime::fromNativeString($openingHour['opens']),
-                        OpeningTime::fromNativeString($openingHour['closes']),
-                        $daysOfWeek
-                    );
-                }
+        $openingHours = [];
+        foreach ($data['openingHours'] as $openingHour) {
+            if (empty($openingHour['dayOfWeek']) || empty($openingHour['opens']) || empty($openingHour['closes'])) {
+                continue;
             }
+
+            $openingHours[] = new OpeningHour(
+                OpeningTime::fromNativeString($openingHour['opens']),
+                OpeningTime::fromNativeString($openingHour['closes']),
+                DayOfWeekCollection::deserialize($openingHour['dayOfWeek'])
+            );
         }
 
         return $openingHours;
