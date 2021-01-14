@@ -42,7 +42,9 @@ class CalendarJSONParser
      */
     public function getTimestamps(array $data): array
     {
-        $timestamps = [];
+        if (empty($data['timeSpans'])) {
+            return [];
+        }
 
         if (!empty($data['timeSpans'])) {
             foreach ($data['timeSpans'] as $index => $timeSpan) {
@@ -69,7 +71,9 @@ class CalendarJSONParser
      */
     public function getOpeningHours(array $data): array
     {
-        $openingHours = [];
+        if (empty($data['openingHours'])) {
+            return [];
+        }
 
         if (!empty($data['openingHours'])) {
             foreach ($data['openingHours'] as $openingHour) {
