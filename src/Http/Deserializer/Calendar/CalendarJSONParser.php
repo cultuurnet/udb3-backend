@@ -46,22 +46,22 @@ class CalendarJSONParser
             return [];
         }
 
-        if (!empty($data['timeSpans'])) {
-            foreach ($data['timeSpans'] as $index => $timeSpan) {
-                if (!empty($timeSpan['start']) && !empty($timeSpan['end'])) {
-                    $startDate = new \DateTime($timeSpan['start']);
-                    $endDate = new \DateTime($timeSpan['end']);
-                    $timestamp = new Timestamp($startDate, $endDate);
-
-                    if (isset($timeSpan['status'])) {
-                        $timestamp = $timestamp->withStatus(Status::deserialize($timeSpan['status']));
-                    }
-
-                    $timestamps[] = $timestamp;
-                }
+        $timestamps = [];
+        foreach ($data['timeSpans'] as $index => $timeSpan) {
+            if (empty($timeSpan['start']) || empty($timeSpan['end'])) {
+                continue;
             }
-            ksort($timestamps);
+
+            $timestamp = new Timestamp(new \DateTime($timeSpan['start']), new \DateTime($timeSpan['end']));
+
+            if (isset($timeSpan['status'])) {
+                $timestamp = $timestamp->withStatus(Status::deserialize($timeSpan['status']));
+            }
+
+            $timestamps[] = $timestamp;
         }
+
+        ksort($timestamps);
 
         return $timestamps;
     }
