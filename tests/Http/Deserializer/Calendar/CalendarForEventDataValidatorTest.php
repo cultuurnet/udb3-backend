@@ -12,7 +12,7 @@ class CalendarForEventDataValidatorTest extends TestCase
      */
     private $calendarForEventDataValidator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calendarForEventDataValidator = new CalendarForEventDataValidator();
     }
@@ -20,24 +20,19 @@ class CalendarForEventDataValidatorTest extends TestCase
     /**
      * @test
      * @dataProvider fileDataProvider
-     * @param string $file
      */
-    public function it_does_not_throw_for_valid_calendars($file)
+    public function it_does_not_throw_for_valid_calendars(string $file): void
     {
         $data = json_decode(
             file_get_contents(__DIR__ . '/samples/' . $file),
             true
         );
 
-        $this->assertTrue(
-            $this->calendarForEventDataValidator->validate($data)
-        );
+        $this->calendarForEventDataValidator->validate($data);
+        $this->addToAssertionCount(1);
     }
 
-    /**
-     * @return array
-     */
-    public function fileDataProvider()
+    public function fileDataProvider():array
     {
         return [
             'single_time_span' => [
@@ -52,13 +47,11 @@ class CalendarForEventDataValidatorTest extends TestCase
     /**
      * @test
      * @dataProvider dataProvider
-     * @param array $data
-     * @param array $messages
      */
-    public function it_throws_when_time_spans_are_present(
+    public function it_throws_when_invalid_data_is_present(
         array $data,
         array $messages
-    ) {
+    ): void {
         $expectedException = new DataValidationException();
         $expectedException->setValidationMessages($messages);
 
@@ -73,10 +66,7 @@ class CalendarForEventDataValidatorTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return [
             'it_throws_when_permanent' => [
@@ -84,6 +74,16 @@ class CalendarForEventDataValidatorTest extends TestCase
                 ],
                 'messages' => [
                     'permanent' => 'Permanent events are not supported.',
+                ],
+            ],
+            'it_throws_on_invalid_top_level_status' => [
+                'data' => [
+                    'status' => [],
+                ],
+                'messages' => [
+                    'status' => [
+                        'type' => 'Required but could not be found',
+                    ],
                 ],
             ],
             'it_throws_when_end_date_is_missing' => [
@@ -133,6 +133,22 @@ class CalendarForEventDataValidatorTest extends TestCase
                 ],
                 'messages' => [
                     'end_0' => 'An end is required for a time span.',
+                ],
+            ],
+            'it_throws_on_invalid_status_inside_time_span' => [
+                'data' => [
+                    'timeSpans' => [
+                        [
+                            'start' => '2020-01-26T09:00:00+01:00',
+                            'end' => '2020-02-01T16:00:00+01:00',
+                            'status' => [],
+                        ],
+                    ],
+                ],
+                'messages' => [
+                    'status_0' => [
+                        'type' => 'Required but could not be found',
+                    ],
                 ],
             ],
             'it_throws_time_spans_and_opening_hours' => [

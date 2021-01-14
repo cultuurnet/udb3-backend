@@ -6,13 +6,12 @@ use CultuurNet\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
-use CultuurNet\UDB3\Timestamp;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CalendarJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @var CalendarJSONParserInterface
+     * @var CalendarJSONParser
      */
     private $calendarJSONParser;
 
@@ -22,7 +21,7 @@ class CalendarJSONDeserializer extends JSONDeserializer
     private $calendarDataValidator;
 
     public function __construct(
-        CalendarJSONParserInterface $calendarJSONParser,
+        CalendarJSONParser $calendarJSONParser,
         DataValidatorInterface $calendarDataValidator
     ) {
         parent::__construct(true);
@@ -37,9 +36,9 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     public function deserialize(StringLiteral $data)
     {
-        $data = parent::deserialize($data);
+        $data = (array) parent::deserialize($data);
 
-        $this->calendarDataValidator->validate((array) $data);
+        $this->calendarDataValidator->validate($data);
 
         // There are 6 possible options in 2 categories.
         //
@@ -57,15 +56,20 @@ class CalendarJSONDeserializer extends JSONDeserializer
         // 1. Just one time span => single
         // 2. Multiple time spans => multiple
 
-        return new Calendar(
-            $this->getCalendarType((array) $data),
-            $this->getStartDate((array) $data),
-            $this->getEndDate((array) $data),
-            $this->convertToTimeStamps(
-                ...$this->calendarJSONParser->getTimeSpans($data)
-            ),
+        $calendar = new Calendar(
+            $this->getCalendarType($data),
+            $this->getStartDate($data),
+            $this->getEndDate($data),
+            $this->calendarJSONParser->getTimestamps($data),
             $this->calendarJSONParser->getOpeningHours($data)
         );
+
+        $status = $this->calendarJSONParser->getStatus($data);
+        if ($status !== null) {
+            $calendar = $calendar->withStatus($status);
+        }
+
+        return $calendar;
     }
 
     /**
@@ -75,11 +79,11 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getCalendarType(array $data)
     {
-        if (count($this->calendarJSONParser->getTimeSpans($data)) > 1) {
+        if (count($this->calendarJSONParser->getTimestamps($data)) > 1) {
             return CalendarType::MULTIPLE();
         }
 
-        if (count($this->calendarJSONParser->getTimeSpans($data)) == 1) {
+        if (count($this->calendarJSONParser->getTimestamps($data)) == 1) {
             return CalendarType::SINGLE();
         }
 
@@ -92,31 +96,14 @@ class CalendarJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @return Timestamp[]
-     */
-    private function convertToTimeStamps(TimeSpan ...$timeSpans)
-    {
-        $timeStamps = [];
-
-        foreach ($timeSpans as $timeSpan) {
-            $timeStamps[] = new Timestamp(
-                $timeSpan->getStart(),
-                $timeSpan->getEnd()
-            );
-        }
-
-        return $timeStamps;
-    }
-
-    /**
      * @param array $data
      *
      * @return \DateTimeInterface|null
      */
     private function getStartDate(array $data)
     {
-        $timeSpans = $this->calendarJSONParser->getTimeSpans($data);
-        if (count($timeSpans)) {
+        $timestamps = $this->calendarJSONParser->getTimestamps($data);
+        if (count($timestamps)) {
             return null;
         }
 
@@ -134,8 +121,8 @@ class CalendarJSONDeserializer extends JSONDeserializer
      */
     private function getEndDate(array $data)
     {
-        $timeSpans = $this->calendarJSONParser->getTimeSpans($data);
-        if (count($timeSpans)) {
+        $timestamps = $this->calendarJSONParser->getTimestamps($data);
+        if (count($timestamps)) {
             return null;
         }
 

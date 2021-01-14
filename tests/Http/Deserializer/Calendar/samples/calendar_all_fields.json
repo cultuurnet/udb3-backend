@@ -2,6 +2,13 @@
   "type": "single",
   "startDate": "2020-01-26T09:00:00+01:00",
   "endDate": "2020-02-10T16:00:00+01:00",
+  "status": {
+    "type": "Unavailable",
+    "reason": {
+      "nl": "Reason in het Nederlands",
+      "fr": "Reason in het Frans"
+    }
+  },
   "timeSpans": [
     {
       "start": "2020-01-26T09:00:00+01:00",
@@ -9,7 +16,14 @@
     },
     {
       "start": "2020-02-03T09:00:00+01:00",
-      "end": "2020-02-10T16:00:00+01:00"
+      "end": "2020-02-10T16:00:00+01:00",
+      "status": {
+        "type": "Unavailable",
+        "reason": {
+          "nl": "Reason in het Nederlands",
+          "fr": "Reason in het Frans"
+        }
+      }
     }
   ],
   "openingHours": [

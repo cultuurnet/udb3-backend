@@ -8,7 +8,12 @@ use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
+use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
+use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Timestamp;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
@@ -79,6 +84,112 @@ class CalendarJSONDeserializerTest extends TestCase
             \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00'),
             [],
             $openingHours
+        );
+
+        $this->assertEquals(
+            $expectedCalendar,
+            $calendarJSONDeserializer->deserialize($calendarAsJsonString)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_json_to_calendar_with_status()
+    {
+        $calendarAsJsonString = new StringLiteral(
+            file_get_contents(__DIR__ . '/samples/calendar_with_status.json')
+        );
+
+        $calendarJSONDeserializer = new CalendarJSONDeserializer(
+            new CalendarJSONParser(),
+            $this->calendarDataValidator
+        );
+
+        $expectedCalendar = new Calendar(
+            CalendarType::PERIODIC(),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00'),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00')
+        );
+
+        $expectedCalendar = $expectedCalendar->withStatus(
+            new Status(
+                StatusType::unavailable(),
+                [
+                    new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
+                    new StatusReason(new Language('fr'), 'Reason in het Frans'),
+                ]
+            )
+        );
+
+        $this->assertEquals(
+            $expectedCalendar,
+            $calendarJSONDeserializer->deserialize($calendarAsJsonString)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_json_to_calendar_with_status_on_time_spans()
+    {
+        $calendarAsJsonString = new StringLiteral(
+            file_get_contents(__DIR__ . '/samples/calendar_with_status_on_time_spans.json')
+        );
+
+        $calendarJSONDeserializer = new CalendarJSONDeserializer(
+            new CalendarJSONParser(),
+            $this->calendarDataValidator
+        );
+
+        $startDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-01-26T09:00:00+01:00');
+        $endDate1 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-01T16:00:00+01:00');
+
+        $startDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00');
+        $endDate2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
+
+        $timestamps = [
+            (new Timestamp(
+                $startDate1,
+                $endDate1
+            ))->withStatus(
+                new Status(
+                    StatusType::temporarilyUnavailable(),
+                    [
+                        new StatusReason(new Language('nl'), 'TemporarilyUnavailable in het Nederlands'),
+                        new StatusReason(new Language('fr'), 'TemporarilyUnavailable in het Frans'),
+                    ]
+                )
+            ),
+            (new Timestamp(
+                $startDate2,
+                $endDate2
+            ))->withStatus(
+                new Status(
+                    StatusType::unavailable(),
+                    [
+                        new StatusReason(new Language('nl'), 'Unavailable in het Nederlands'),
+                        new StatusReason(new Language('fr'), 'Unavailable in het Frans'),
+                    ]
+                )
+            ),
+        ];
+
+        $expectedCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            $timestamps
+        );
+
+        $expectedCalendar = $expectedCalendar->withStatus(
+            new Status(
+                StatusType::TemporarilyUnavailable(),
+                [
+                    new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
+                    new StatusReason(new Language('fr'), 'Reason in het Frans'),
+                ]
+            )
         );
 
         $this->assertEquals(

@@ -12,7 +12,7 @@ class CalendarForPlaceDataValidatorTest extends TestCase
      */
     private $calendarForPlaceDataValidator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calendarForPlaceDataValidator = new CalendarForPlaceDataValidator();
     }
@@ -20,13 +20,11 @@ class CalendarForPlaceDataValidatorTest extends TestCase
     /**
      * @test
      * @dataProvider dataProvider
-     * @param array $data
-     * @param array $messages
      */
-    public function it_throws_when_time_spans_are_present(
+    public function it_throws_when_invalid_data_is_present(
         array $data,
         array $messages
-    ) {
+    ): void {
         $expectedException = new DataValidationException();
         $expectedException->setValidationMessages($messages);
 
@@ -41,10 +39,7 @@ class CalendarForPlaceDataValidatorTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return [
             'it_throws_when_time_spans_are_present' => [
@@ -62,6 +57,16 @@ class CalendarForPlaceDataValidatorTest extends TestCase
                 ],
                 'messages' => [
                     'time_spans' => 'No time spans allowed for place calendar.',
+                ],
+            ],
+            'it_throws_on_invalid_top_level_status' => [
+                'data' => [
+                    'status' => [],
+                ],
+                'messages' => [
+                    'status' => [
+                        'type' => 'Required but could not be found',
+                    ],
                 ],
             ],
             'it_throws_when_end_date_is_missing' => [

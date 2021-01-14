@@ -5,15 +5,12 @@ namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
+use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Timestamp;
 
-class CalendarJSONParser implements CalendarJSONParserInterface
+class CalendarJSONParser
 {
-    /**
-     * @param array $data
-     *
-     * @return \DateTimeInterface|null
-     */
-    public function getStartDate($data)
+    public function getStartDate(array $data): ?\DateTimeInterface
     {
         if (!isset($data['startDate'])) {
             return null;
@@ -22,12 +19,7 @@ class CalendarJSONParser implements CalendarJSONParserInterface
         return new \DateTime($data['startDate']);
     }
 
-    /**
-     * @param array $data
-     *
-     * @return \DateTimeInterface|null
-     */
-    public function getEndDate($data)
+    public function getEndDate(array $data): ?\DateTimeInterface
     {
         if (!isset($data['endDate'])) {
             return null;
@@ -36,52 +28,64 @@ class CalendarJSONParser implements CalendarJSONParserInterface
         return new \DateTime($data['endDate']);
     }
 
-    /**
-     * @param array $data
-     *
-     * @return TimeSpan[]
-     */
-    public function getTimeSpans($data)
+    public function getStatus(array $data): ?Status
     {
-        $timeSpans = [];
-
-        if (!empty($data['timeSpans'])) {
-            foreach ($data['timeSpans'] as $index => $timeSpan) {
-                if (!empty($timeSpan['start']) && !empty($timeSpan['end'])) {
-                    $startDate = new \DateTime($timeSpan['start']);
-                    $endDate = new \DateTime($timeSpan['end']);
-                    $timeSpans[] = new TimeSpan($startDate, $endDate);
-                }
-            }
-            ksort($timeSpans);
+        if (!isset($data['status'])) {
+            return null;
         }
 
-        return $timeSpans;
+        return Status::deserialize($data['status']);
     }
 
     /**
-     * @param array $data
-     *
+     * @return Timestamp[]
+     */
+    public function getTimestamps(array $data): array
+    {
+        if (empty($data['timeSpans'])) {
+            return [];
+        }
+
+        $timestamps = [];
+        foreach ($data['timeSpans'] as $index => $timeSpan) {
+            if (empty($timeSpan['start']) || empty($timeSpan['end'])) {
+                continue;
+            }
+
+            $timestamp = new Timestamp(new \DateTime($timeSpan['start']), new \DateTime($timeSpan['end']));
+
+            if (isset($timeSpan['status'])) {
+                $timestamp = $timestamp->withStatus(Status::deserialize($timeSpan['status']));
+            }
+
+            $timestamps[] = $timestamp;
+        }
+
+        ksort($timestamps);
+
+        return $timestamps;
+    }
+
+    /**
      * @return OpeningHour[]
      */
-    public function getOpeningHours($data)
+    public function getOpeningHours(array $data): array
     {
+        if (empty($data['openingHours'])) {
+            return [];
+        }
+
         $openingHours = [];
-
-        if (!empty($data['openingHours'])) {
-            foreach ($data['openingHours'] as $openingHour) {
-                if (!empty($openingHour['dayOfWeek']) &&
-                    !empty($openingHour['opens']) &&
-                    !empty($openingHour['closes'])) {
-                    $daysOfWeek = DayOfWeekCollection::deserialize($openingHour['dayOfWeek']);
-
-                    $openingHours[] = new OpeningHour(
-                        OpeningTime::fromNativeString($openingHour['opens']),
-                        OpeningTime::fromNativeString($openingHour['closes']),
-                        $daysOfWeek
-                    );
-                }
+        foreach ($data['openingHours'] as $openingHour) {
+            if (empty($openingHour['dayOfWeek']) || empty($openingHour['opens']) || empty($openingHour['closes'])) {
+                continue;
             }
+
+            $openingHours[] = new OpeningHour(
+                OpeningTime::fromNativeString($openingHour['opens']),
+                OpeningTime::fromNativeString($openingHour['closes']),
+                DayOfWeekCollection::deserialize($openingHour['dayOfWeek'])
+            );
         }
 
         return $openingHours;
