@@ -1585,16 +1585,16 @@
         },
         {
             "name": "cultuurnet/udb3-models",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "3f7d5cb60b958e5c2c3f9c781db711d5b8f3a41d"
+                "reference": "02d682adeb08b231fecf317f21f34bc300e6f8b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/3f7d5cb60b958e5c2c3f9c781db711d5b8f3a41d",
-                "reference": "3f7d5cb60b958e5c2c3f9c781db711d5b8f3a41d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/02d682adeb08b231fecf317f21f34bc300e6f8b5",
+                "reference": "02d682adeb08b231fecf317f21f34bc300e6f8b5",
                 "shasum": ""
             },
             "require": {
@@ -1628,11 +1628,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "support": {
-                "issues": "https://github.com/cultuurnet/udb3-models/issues",
-                "source": "https://github.com/cultuurnet/udb3-models/tree/v2.0.1"
-            },
-            "time": "2020-12-02T11:27:59+00:00"
+            "time": "2021-01-06T14:36:04+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
