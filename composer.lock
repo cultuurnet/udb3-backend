@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24d25eb35a51d6bc3fe6dd1f08bedcc1",
+    "content-hash": "ca5afe40b070139ebc7c588c0dff4c2c",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -706,12 +706,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "743ce678f246acc5309f102feda9eb14ebd1d6a3"
+                "reference": "9ac68bb3e25255f77cba4be284e26b143406c79d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/743ce678f246acc5309f102feda9eb14ebd1d6a3",
-                "reference": "743ce678f246acc5309f102feda9eb14ebd1d6a3",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/9ac68bb3e25255f77cba4be284e26b143406c79d",
+                "reference": "9ac68bb3e25255f77cba4be284e26b143406c79d",
                 "shasum": ""
             },
             "require": {
@@ -724,7 +724,6 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "php-coveralls/php-coveralls": "^2.1",
                 "phpunit/phpunit": "^7.5",
                 "squizlabs/php_codesniffer": "2.6.1"
             },
@@ -743,8 +742,14 @@
             "license": [
                 "Apache-2.0"
             ],
+            "authors": [
+                {
+                    "name": "publiq vzw",
+                    "email": "info@publiq.be"
+                }
+            ],
             "description": "AMQP integration for Broadway library",
-            "time": "2019-08-29T07:58:48+00:00"
+            "time": "2021-01-14T14:02:00+00:00"
         },
         {
             "name": "cultuurnet/broadway-tools",
@@ -752,22 +757,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-tools.git",
-                "reference": "3e954d5eb4c9581c1f42eb17a83a9ed506e606ce"
+                "reference": "5e3f2bfd64e520422eeeb8507b93f62bf91bb174"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/3e954d5eb4c9581c1f42eb17a83a9ed506e606ce",
-                "reference": "3e954d5eb4c9581c1f42eb17a83a9ed506e606ce",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/5e3f2bfd64e520422eeeb8507b93f62bf91bb174",
+                "reference": "5e3f2bfd64e520422eeeb8507b93f62bf91bb174",
                 "shasum": ""
             },
             "require": {
                 "broadway/broadway": "~0.10.",
-                "php": "~5.6 || >=7.0"
+                "php": ">=7.1",
+                "psr/log": "^1.1"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
+                "phpunit/phpunit": "^7.5",
                 "squizlabs/php_codesniffer": "~2.3"
             },
             "type": "library",
@@ -785,7 +790,13 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2020-04-09T12:38:18+00:00"
+            "authors": [
+                {
+                    "name": "publiq vzw",
+                    "email": "info@publiq.be"
+                }
+            ],
+            "time": "2021-01-14T13:40:25+00:00"
         },
         {
             "name": "cultuurnet/calendar-summary",
@@ -1199,52 +1210,6 @@
             "time": "2018-06-29T14:28:08+00:00"
         },
         {
-            "name": "cultuurnet/search",
-            "version": "v1.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/Search.git",
-                "reference": "1e632b3bee662ec414235fe8db06886493387888"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/1e632b3bee662ec414235fe8db06886493387888",
-                "reference": "1e632b3bee662ec414235fe8db06886493387888",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/auth": "~1.1",
-                "cultuurnet/cdb": "~2.1",
-                "php": ">=5.3.0",
-                "symfony/console": "~2.5"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.1"
-            },
-            "bin": [
-                "bin/cultuurnet-search"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "CultuurNet\\Search": [
-                        "lib"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "CultuurNet search service",
-            "time": "2017-04-05T13:30:05+00:00"
-        },
-        {
             "name": "cultuurnet/search-v3",
             "version": "dev-master",
             "source": {
@@ -1346,23 +1311,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb2-domain-events.git",
-                "reference": "cee3614c817132c0f506cb6a7c9e1dd5efd9aa09"
+                "reference": "a83636e56e12db725e38a23057676983b983f7c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/cee3614c817132c0f506cb6a7c9e1dd5efd9aa09",
-                "reference": "cee3614c817132c0f506cb6a7c9e1dd5efd9aa09",
+                "url": "https://api.github.com/repos/cultuurnet/udb2-domain-events/zipball/a83636e56e12db725e38a23057676983b983f7c0",
+                "reference": "a83636e56e12db725e38a23057676983b983f7c0",
                 "shasum": ""
             },
             "require": {
                 "broadway/broadway": "~0.10",
                 "cultuurnet/deserializer": "~0.1",
-                "cultuurnet/valueobjects": "~3.0"
+                "cultuurnet/valueobjects": "~3.0",
+                "php": ">=7.1"
             },
             "require-dev": {
                 "phing/phing": "~2.10",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
+                "phpunit/phpunit": "^7.5",
                 "squizlabs/php_codesniffer": "~2.2"
             },
             "type": "library",
@@ -1382,12 +1347,12 @@
             ],
             "authors": [
                 {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
+                    "name": "publiq vzw",
+                    "email": "info@publiq.be"
                 }
             ],
             "description": "PHP models for domain events in UiTdatabank version 2",
-            "time": "2018-06-29T14:27:15+00:00"
+            "time": "2021-01-13T12:51:37+00:00"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1395,12 +1360,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "48645e1b47ab71f3f8175768f9e726ba9ca9d5a9"
+                "reference": "7ba45afa6a4464e4321a9adabb0b05788fabd82f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/48645e1b47ab71f3f8175768f9e726ba9ca9d5a9",
-                "reference": "48645e1b47ab71f3f8175768f9e726ba9ca9d5a9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/7ba45afa6a4464e4321a9adabb0b05788fabd82f",
+                "reference": "7ba45afa6a4464e4321a9adabb0b05788fabd82f",
                 "shasum": ""
             },
             "require": {
@@ -1409,14 +1374,11 @@
                 "cakephp/chronos": "^1.1",
                 "chrisboulton/php-resque": "~1.2",
                 "commerceguys/intl": "^0.7.1",
-                "cultuurnet/auth": "~1.2",
                 "cultuurnet/broadway-tools": "~0.1",
                 "cultuurnet/cdb": "~2.2.0",
-                "cultuurnet/clock": "~0.1",
                 "cultuurnet/culturefeed-php": "~1.7",
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/geocoding": "~0.1",
-                "cultuurnet/search": "~1.1",
                 "cultuurnet/udb3-models": "^2.0",
                 "cultuurnet/valueobjects": "~3.0",
                 "danielstjules/stringy": "~1.9",
@@ -1432,8 +1394,7 @@
                 "php-http/httplug": "^1.0",
                 "predis/predis": "~1.0",
                 "psr/log": "~1.0",
-                "ramsey/uuid": "^2.9",
-                "symfony/http-foundation": "~2.7.2"
+                "ramsey/uuid": "^2.9"
             },
             "require-dev": {
                 "escapestudios/symfony2-coding-standard": "~2.0",
@@ -1466,7 +1427,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2021-01-07T14:07:56+00:00"
+            "time": "2021-01-13T15:17:32+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1525,22 +1486,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-http-foundation.git",
-                "reference": "96f234a269ae988785df8a27d9d19868ea1efdf1"
+                "reference": "7783fd10d37fb24c6fc4e66a376ff5d847b8b3ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/96f234a269ae988785df8a27d9d19868ea1efdf1",
-                "reference": "96f234a269ae988785df8a27d9d19868ea1efdf1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/7783fd10d37fb24c6fc4e66a376ff5d847b8b3ea",
+                "reference": "7783fd10d37fb24c6fc4e66a376ff5d847b8b3ea",
                 "shasum": ""
             },
             "require": {
                 "crell/api-problem": "~1.7",
+                "php": ">=7.1",
                 "symfony/http-foundation": "~2.7.2"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
+                "phpunit/phpunit": "^7.5",
                 "squizlabs/php_codesniffer": "~2.3"
             },
             "type": "library",
@@ -1558,7 +1519,13 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29T14:28:42+00:00"
+            "authors": [
+                {
+                    "name": "publiq vzw",
+                    "email": "info@publiq.be"
+                }
+            ],
+            "time": "2021-01-15T09:27:01+00:00"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1566,18 +1533,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "7d9e151a586791d4f672575d377bec0d35965a51"
+                "reference": "97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/7d9e151a586791d4f672575d377bec0d35965a51",
-                "reference": "7d9e151a586791d4f672575d377bec0d35965a51",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6",
+                "reference": "97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/clock": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
-                "lcobucci/jwt": "~3.1"
+                "lcobucci/jwt": "3.3.*",
+                "php": ">=7.1"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -1617,16 +1585,16 @@
         },
         {
             "name": "cultuurnet/udb3-models",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "3f7d5cb60b958e5c2c3f9c781db711d5b8f3a41d"
+                "reference": "02d682adeb08b231fecf317f21f34bc300e6f8b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/3f7d5cb60b958e5c2c3f9c781db711d5b8f3a41d",
-                "reference": "3f7d5cb60b958e5c2c3f9c781db711d5b8f3a41d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/02d682adeb08b231fecf317f21f34bc300e6f8b5",
+                "reference": "02d682adeb08b231fecf317f21f34bc300e6f8b5",
                 "shasum": ""
             },
             "require": {
@@ -1660,11 +1628,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "support": {
-                "issues": "https://github.com/cultuurnet/udb3-models/issues",
-                "source": "https://github.com/cultuurnet/udb3-models/tree/v2.0.1"
-            },
-            "time": "2020-12-02T11:27:59+00:00"
+            "time": "2021-01-06T14:36:04+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -3427,32 +3391,29 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.2.5",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "82be04b4753f8b7693b62852b7eab30f97524f9b"
+                "reference": "c1123697f6a2ec29162b82f170dd4a491f524773"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/82be04b4753f8b7693b62852b7eab30f97524f9b",
-                "reference": "82be04b4753f8b7693b62852b7eab30f97524f9b",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/c1123697f6a2ec29162b82f170dd4a491f524773",
+                "reference": "c1123697f6a2ec29162b82f170dd4a491f524773",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "php": ">=5.5"
+                "php": "^5.6 || ^7.0"
             },
             "require-dev": {
-                "mdanter/ecc": "~0.3.1",
                 "mikey179/vfsstream": "~1.5",
                 "phpmd/phpmd": "~2.2",
                 "phpunit/php-invoker": "~1.1",
-                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit": "^5.7 || ^7.3",
                 "squizlabs/php_codesniffer": "~2.3"
-            },
-            "suggest": {
-                "mdanter/ecc": "Required to use Elliptic Curves based algorithms."
             },
             "type": "library",
             "extra": {
@@ -3481,7 +3442,17 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2018-11-11T12:22:26+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/lcobucci",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/lcobucci",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2020-08-20T13:22:28+00:00"
         },
         {
             "name": "league/csv",
@@ -5635,6 +5606,16 @@
                 "log",
                 "logging",
                 "sentry"
+            ],
+            "funding": [
+                {
+                    "url": "https://sentry.io/",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://sentry.io/pricing/",
+                    "type": "custom"
+                }
             ],
             "time": "2020-09-14T09:30:55+00:00"
         },
@@ -8194,6 +8175,52 @@
             "time": "2018-02-22T13:58:36+00:00"
         },
         {
+            "name": "cultuurnet/search",
+            "version": "v1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/Search.git",
+                "reference": "1e632b3bee662ec414235fe8db06886493387888"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/1e632b3bee662ec414235fe8db06886493387888",
+                "reference": "1e632b3bee662ec414235fe8db06886493387888",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/auth": "~1.1",
+                "cultuurnet/cdb": "~2.1",
+                "php": ">=5.3.0",
+                "symfony/console": "~2.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1"
+            },
+            "bin": [
+                "bin/cultuurnet-search"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "CultuurNet\\Search": [
+                        "lib"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "CultuurNet search service",
+            "time": "2017-04-05T13:30:05+00:00"
+        },
+        {
             "name": "doctrine/collections",
             "version": "v1.6.2",
             "source": {
@@ -10113,12 +10140,6 @@
             "package": "chrisboulton/php-resque"
         },
         {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "0.9999999.9999999.9999999-dev",
-            "package": "cultuurnet/udb3-api-guard"
-        },
-        {
             "alias": "1.3.1",
             "alias_normalized": "1.3.1.0",
             "version": "4.0.3.0-alpha",
@@ -10130,7 +10151,6 @@
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/search-v3": 20,
-        "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
@@ -10138,5 +10158,6 @@
     "platform": {
         "php": "^7.1"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
