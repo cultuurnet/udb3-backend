@@ -5,6 +5,8 @@ namespace CultuurNet\UDB3\Silex\Offer;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -31,6 +33,15 @@ class OfferControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
+        $app[UpdateStatusRequestHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateStatusRequestHandler(
+                    $app['event_command_bus'],
+                    new UpdateStatusValidator()
+                );
+            }
+        );
+
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
