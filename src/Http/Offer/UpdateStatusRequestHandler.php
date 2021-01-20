@@ -26,6 +26,12 @@ class UpdateStatusRequestHandler
      */
     private $validator;
 
+    public function __construct(CommandBusInterface $commandBus, UpdateStatusValidator $validator)
+    {
+        $this->commandBus = $commandBus;
+        $this->validator = $validator;
+    }
+
     public function handle(Request $request, string $offerId): Response
     {
         $data = json_decode($request->getContent(), true);
