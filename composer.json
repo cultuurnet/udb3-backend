@@ -77,7 +77,6 @@
     "alchemy/zippy": "~0.2",
     "escapestudios/symfony2-coding-standard": "^3.12",
     "mikey179/vfsstream": "~1.6.2",
-    "phing/phing": "~2.10",
     "phpstan/phpstan": "^0.12.42",
     "phpunit/phpunit": "^7.5",
     "satooshi/php-coveralls": "~0.7",
