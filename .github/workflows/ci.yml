@@ -10,9 +10,10 @@ jobs:
                 php-versions: ['7.1', '7.2', '7.3', '7.4']
         name: PHP ${{ matrix.php-versions }}
         steps:
-            - uses: actions/checkout@v2
+            - name: 📤 Checkout project
+              uses: actions/checkout@v2
 
-            - name: Install PHP
+            - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-versions }}
@@ -20,13 +21,13 @@ jobs:
                   extensions: intl
                   tools: composer:v1
 
-            - name: Check PHP Version
+            - name: ✌️ Check PHP Version
               run: php -v
 
-            - name: Validate composer.json and composer.lock
+            - name: 🛂 Validate composer.json and composer.lock
               run: composer validate
 
-            - name: Cache Composer packages
+            - name: 📩 Cache Composer packages
               id: composer-cache
               uses: actions/cache@v2
               with:
@@ -35,26 +36,27 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-php-
 
-            - name: Install dependencies
+            - name: 📦 Install dependencies
               if: steps.composer-cache.outputs.cache-hit != 'true'
               run: composer install --no-progress --no-suggest
 
-            - name: Run tests
+            - name: ✅ Run tests
               run: composer test
 
     phpcs:
         runs-on: ubuntu-latest
         name: Code style
         steps:
-            - uses: actions/checkout@v2
+            - name: 📤 Checkout project
+              uses: actions/checkout@v2
 
-            - name: Install PHP
+            - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
                   tools: composer:v1
 
-            - name: Cache Composer packages
+            - name: 📩 Cache Composer packages
               id: composer-cache
               uses: actions/cache@v2
               with:
@@ -63,26 +65,27 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-php-
 
-            - name: Install dependencies
+            - name: 📦 Install dependencies
               if: steps.composer-cache.outputs.cache-hit != 'true'
               run: composer install --no-progress --no-suggest
 
-            - name: Run code style check
+            - name: ✨ Run code style check
               run: composer phpcs
 
     phpstan:
         runs-on: ubuntu-latest
         name: Static analysis
         steps:
-            - uses: actions/checkout@v2
+            - name: 📤 Checkout project
+              uses: actions/checkout@v2
 
-            - name: Install PHP
+            - name: 🐘 Install PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
                   tools: composer:v1
 
-            - name: Cache Composer packages
+            - name: 📩 Cache Composer packages
               id: composer-cache
               uses: actions/cache@v2
               with:
@@ -91,9 +94,9 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-php-
 
-            - name: Install dependencies
+            - name: 📦 Install dependencies
               if: steps.composer-cache.outputs.cache-hit != 'true'
               run: composer install --no-progress --no-suggest
 
-            - name: Run static analysis
+            - name: 🔍 Run static analysis
               run: composer phpstan
