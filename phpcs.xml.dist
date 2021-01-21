@@ -4,10 +4,12 @@
     <file>src</file>
     <file>tests</file>
 
-    <config name="report_format" value="full" />
     <arg name="extensions" value="php" />
+
+    <config name="report_format" value="full" />
     <config name="ignore_warnings_on_exit" value="1" />
     <config name="ignore_errors_on_exit" value="0" />
+    <config name="installed_paths" value="vendor/escapestudios/symfony2-coding-standard" />
 
     <rule ref="PSR2">
         <exclude name="Generic.Files.LineLength"/>
@@ -20,5 +22,5 @@
         <exclude-pattern>*/tests/*</exclude-pattern>
     </rule>
 
-    <rule ref="Symfony2.Arrays.MultiLineArrayComma" />
+    <rule ref="Symfony.Arrays.MultiLineArrayComma" />
 </ruleset>
