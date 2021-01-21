@@ -776,5 +776,4 @@ class EventDocumentImporterTest extends TestCase
             false
         );
     }
-
 }

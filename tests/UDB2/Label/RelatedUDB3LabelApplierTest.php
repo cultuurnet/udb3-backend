@@ -161,10 +161,10 @@ class RelatedUDB3LabelApplierTest extends TestCase
         $aggregate->expects($this->once())
             ->method('addLabel')
             ->with($this->callback(
-                function(Label $label) {
+                function (Label $label) {
                     return $label->equals(new Label('2dotstwice', false));
-                })
-            );
+                }
+            ));
 
         return $aggregate;
     }

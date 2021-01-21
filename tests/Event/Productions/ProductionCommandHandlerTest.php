@@ -165,8 +165,10 @@ class ProductionCommandHandlerTest extends TestCase
 
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
-        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction],
-            $name);
+        $firstProductionCommand = GroupEventsAsProduction::withProductionName(
+            [$eventBelongingToFirstProduction],
+            $name
+        );
         $this->commandHandler->handle($firstProductionCommand);
 
         $name = "A Midsummer Night's Scream 3";
@@ -248,14 +250,18 @@ class ProductionCommandHandlerTest extends TestCase
 
         $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
-        $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToFirstProduction],
-            $name);
+        $firstProductionCommand = GroupEventsAsProduction::withProductionName(
+            [$eventBelongingToFirstProduction],
+            $name
+        );
         $this->commandHandler->handle($firstProductionCommand);
 
         $eventBelongingToSecondProduction = Uuid::uuid4()->toString();
         $name = "A Midsummer Night's Scream 3";
-        $secondProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToSecondProduction],
-            $name);
+        $secondProductionCommand = GroupEventsAsProduction::withProductionName(
+            [$eventBelongingToSecondProduction],
+            $name
+        );
         $this->commandHandler->handle($secondProductionCommand);
 
         $this->commandHandler->handle(

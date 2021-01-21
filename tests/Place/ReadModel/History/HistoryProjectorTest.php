@@ -177,8 +177,10 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_DescriptionTranslated_event()
     {
         $descriptionTranslatedEvent = $this->aDescriptionTranslatedEvent();
-        $domainMessage = $this->aDomainMessageForEvent($descriptionTranslatedEvent->getItemId(),
-            $descriptionTranslatedEvent);
+        $domainMessage = $this->aDomainMessageForEvent(
+            $descriptionTranslatedEvent->getItemId(),
+            $descriptionTranslatedEvent
+        );
 
         $this->historyProjector->handle($domainMessage);
         $this->assertHistoryContainsLogWithDescription(
@@ -208,8 +210,10 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_PlaceImportedFromUDB2_event()
     {
         $placeImportedFromUDB2Event = $this->aPlaceImportedFromUDB2Event();
-        $domainMessage = $this->aDomainMessageForEvent($placeImportedFromUDB2Event->getActorId(),
-            $placeImportedFromUDB2Event);
+        $domainMessage = $this->aDomainMessageForEvent(
+            $placeImportedFromUDB2Event->getActorId(),
+            $placeImportedFromUDB2Event
+        );
 
         $this->historyProjector->handle($domainMessage);
 
@@ -233,7 +237,6 @@ class HistoryProjectorTest extends TestCase
                 ],
             ]
         );
-
     }
 
     /**
@@ -242,8 +245,10 @@ class HistoryProjectorTest extends TestCase
     public function it_projects_PlaceUpdatedFromUDB2_event()
     {
         $placeImportedFromUDB2Event = $this->aPlaceUpdatedFromUDB2Event();
-        $domainMessage = $this->aDomainMessageForEvent($placeImportedFromUDB2Event->getActorId(),
-            $placeImportedFromUDB2Event);
+        $domainMessage = $this->aDomainMessageForEvent(
+            $placeImportedFromUDB2Event->getActorId(),
+            $placeImportedFromUDB2Event
+        );
 
         $this->historyProjector->handle($domainMessage);
 

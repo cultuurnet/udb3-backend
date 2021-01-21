@@ -106,7 +106,7 @@ class EventCdbXmlEnricherTest extends TestCase
         );
 
         $this->expectException(XMLValidationException::class);
-        $this->expectExceptionMessage( 'Oops (Line: 0, column: 0)');
+        $this->expectExceptionMessage('Oops (Line: 0, column: 0)');
 
         $this->publish($incomingEvent);
     }
@@ -116,7 +116,8 @@ class EventCdbXmlEnricherTest extends TestCase
      * @test
      * @param EventUpdated|EventCreated $incomingEvent
      */
-    public function it_should_retrieve_cdbxml_from_sapi_with_a_transformer($incomingEvent) {
+    public function it_should_retrieve_cdbxml_from_sapi_with_a_transformer($incomingEvent)
+    {
         $this->expectHttpClientToReturnCdbXmlFromUrl(
             'http://search-prod.lodgon.com/search/rest/detail/event/d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1?noauth=true&version=3.3'
         );

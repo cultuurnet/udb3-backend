@@ -319,7 +319,6 @@ class OfferLDProjectorTest extends TestCase
             $expectedBody,
             $body
         );
-
     }
 
     /**

@@ -11,7 +11,7 @@ class CompositePsr7RequestAuthorizer implements Psr7RequestAuthorizerInterface
      */
     private $psr7RequestAuthorizers;
 
-    public function __construct(Psr7RequestAuthorizerInterface... $psr7RequestAuthorizers)
+    public function __construct(Psr7RequestAuthorizerInterface ...$psr7RequestAuthorizers)
     {
         $this->psr7RequestAuthorizers = $psr7RequestAuthorizers;
     }

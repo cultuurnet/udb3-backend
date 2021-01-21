@@ -119,7 +119,8 @@ class ActorEventCdbXmlEnricherTest extends TestCase
      * @test
      * @param ActorUpdated|ActorCreated $incomingEvent
      */
-    public function it_should_retrieve_cdbxml_from_sapi_with_a_transformer($incomingEvent) {
+    public function it_should_retrieve_cdbxml_from_sapi_with_a_transformer($incomingEvent)
+    {
         $this->expectHttpClientToReturnCdbXmlFromUrl(
             'http://search-prod.lodgon.com/search/rest/detail/event/318F2ACB-F612-6F75-0037C9C29F44087A?noauth=true&version=3.3'
         );
