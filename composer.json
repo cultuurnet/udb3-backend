@@ -117,6 +117,11 @@
   "scripts": {
     "test": "vendor/bin/phpunit",
     "phpstan": "vendor/bin/phpstan analyse",
-    "phpcs": "vendor/bin/phpcs -p"
+    "phpcs": "vendor/bin/phpcs -p",
+    "ci": [
+      "composer phpstan",
+      "composer test",
+      "composer phpcs"
+    ]
   }
 }
