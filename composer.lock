@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "037f0ddb5ca3a0dd9239c484a9f66b8f",
+    "content-hash": "0fe4cc5917bb22449fd7bb7f1c26e9a1",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -442,12 +442,12 @@
             "version": "v1.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/clue/php-stream-filter.git",
+                "url": "https://github.com/clue/stream-filter.git",
                 "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
+                "url": "https://api.github.com/repos/clue/stream-filter/zipball/5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
                 "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
                 "shasum": ""
             },
@@ -1215,12 +1215,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/search-v3.git",
-                "reference": "d3359eab84b52f2f6f8f00e38cd53096abd3d288"
+                "reference": "bcf77c45b5a790c77eeb7c2fd24c3fa5d301562d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/search-v3/zipball/d3359eab84b52f2f6f8f00e38cd53096abd3d288",
-                "reference": "d3359eab84b52f2f6f8f00e38cd53096abd3d288",
+                "url": "https://api.github.com/repos/cultuurnet/search-v3/zipball/bcf77c45b5a790c77eeb7c2fd24c3fa5d301562d",
+                "reference": "bcf77c45b5a790c77eeb7c2fd24c3fa5d301562d",
                 "shasum": ""
             },
             "require": {
@@ -1260,7 +1260,7 @@
                 }
             ],
             "description": "Cultuurnet search service for version 3",
-            "time": "2019-02-14T11:49:27+00:00"
+            "time": "2020-09-04T13:39:11+00:00"
         },
         {
             "name": "cultuurnet/silex-amqp",
@@ -1581,7 +1581,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2020-01-21T16:55:27+00:00"
+            "time": "2021-01-15T09:26:35+00:00"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -7705,12 +7705,12 @@
             "version": "1.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/83e253c8e0be5b0257b881e1827274667c5c17a9",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/83e253c8e0be5b0257b881e1827274667c5c17a9",
                 "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9",
                 "shasum": ""
             },
@@ -8243,6 +8243,59 @@
                 "php"
             ],
             "time": "2019-06-09T13:48:14+00:00"
+        },
+        {
+            "name": "escapestudios/symfony2-coding-standard",
+            "version": "3.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/djoos/Symfony-coding-standard.git",
+                "reference": "1524e573f5061555af3c363f0948c444d8522499"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/djoos/Symfony-coding-standard/zipball/1524e573f5061555af3c363f0948c444d8522499",
+                "reference": "1524e573f5061555af3c363f0948c444d8522499",
+                "shasum": ""
+            },
+            "require": {
+                "squizlabs/php_codesniffer": "^3.3.1"
+            },
+            "conflict": {
+                "squizlabs/php_codesniffer": "<3 || >=4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0 || ^6.0 || ^7.0"
+            },
+            "type": "phpcodesniffer-standard",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Joos",
+                    "email": "iam@davidjoos.com"
+                },
+                {
+                    "name": "Community contributors",
+                    "homepage": "https://github.com/djoos/Symfony-coding-standard/graphs/contributors"
+                }
+            ],
+            "description": "CodeSniffer ruleset for the Symfony 2+ coding standard",
+            "homepage": "https://github.com/djoos/Symfony-coding-standard",
+            "keywords": [
+                "Coding Standard",
+                "Symfony2",
+                "phpcs",
+                "symfony"
+            ],
+            "time": "2021-01-18T12:40:14+00:00"
         },
         {
             "name": "mikey179/vfsstream",
@@ -10019,16 +10072,16 @@
     ],
     "aliases": [
         {
-            "package": "chrisboulton/php-resque",
-            "version": "dev-compat-1-2",
             "alias": "1.2",
-            "alias_normalized": "1.2.0.0"
+            "alias_normalized": "1.2.0.0",
+            "version": "dev-compat-1-2",
+            "package": "chrisboulton/php-resque"
         },
         {
-            "package": "jeremykendall/php-domain-parser",
-            "version": "4.0.3.0-alpha",
             "alias": "1.3.1",
-            "alias_normalized": "1.3.1.0"
+            "alias_normalized": "1.3.1.0",
+            "version": "4.0.3.0-alpha",
+            "package": "jeremykendall/php-domain-parser"
         }
     ],
     "minimum-stability": "dev",
@@ -10044,5 +10097,5 @@
         "php": "^7.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }
