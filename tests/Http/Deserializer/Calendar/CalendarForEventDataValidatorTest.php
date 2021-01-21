@@ -170,9 +170,9 @@ class CalendarForEventDataValidatorTest extends TestCase
                             'dayOfWeek' => [
                                 'tuesday',
                                 'wednesday',
-                            ]
+                            ],
                         ],
-                    ]
+                    ],
                 ],
                 'messages' => [
                     'opening_hours' => 'When opening hours are given no time spans are allowed.',

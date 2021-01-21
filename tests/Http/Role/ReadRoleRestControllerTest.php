@@ -97,8 +97,8 @@ class ReadRoleRestControllerTest extends TestCase
         $this->cfUser = new \CultureFeed_User();
         $this->authorizationList = [
             'allow_all' => [
-                0 => '948cf2a5-65c5-470e-ab55-97ee4b05f576'
-            ]
+                0 => '948cf2a5-65c5-470e-ab55-97ee4b05f576',
+            ],
         ];
 
         $this->roleRestController = new ReadRoleRestController(
@@ -312,7 +312,7 @@ class ReadRoleRestControllerTest extends TestCase
         $this->cfUser->id = $userId->toNative();
 
         $permissions = [
-            0 => Permission::getByName('AANBOD_MODEREREN')
+            0 => Permission::getByName('AANBOD_MODEREREN'),
         ];
 
         $this->permissionsRepository
@@ -324,7 +324,7 @@ class ReadRoleRestControllerTest extends TestCase
         $responseJson = $response->getContent();
 
         $expectedResponseJson = json_encode([
-            "AANBOD_MODEREREN"
+            "AANBOD_MODEREREN",
         ]);
 
         $this->jsonEquals->assert($expectedResponseJson, $responseJson);

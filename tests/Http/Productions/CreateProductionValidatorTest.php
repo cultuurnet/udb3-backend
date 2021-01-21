@@ -28,7 +28,7 @@ class CreateProductionValidatorTest extends TestCase
             'eventIds' => [
                 Uuid::uuid4()->toString(),
                 Uuid::uuid4()->toString(),
-            ]
+            ],
         ];
 
         $this->validator->validate($data);
@@ -71,7 +71,7 @@ class CreateProductionValidatorTest extends TestCase
                 ],
                 [
                     'eventIds' => 'Required but could not be found',
-                ]
+                ],
             ],
             'With empty events' => [
                 [
@@ -80,7 +80,7 @@ class CreateProductionValidatorTest extends TestCase
                 ],
                 [
                     'eventIds' => 'At least two events should be provided',
-                ]
+                ],
             ],
             'With one event' => [
                 [
@@ -91,7 +91,7 @@ class CreateProductionValidatorTest extends TestCase
                 ],
                 [
                     'eventIds' => 'At least two events should be provided',
-                ]
+                ],
             ],
             'Without name' => [
                 [
@@ -102,7 +102,7 @@ class CreateProductionValidatorTest extends TestCase
                 ],
                 [
                     'name' => 'Required but could not be found',
-                ]
+                ],
             ],
             'With empty name' => [
                 [
@@ -114,7 +114,7 @@ class CreateProductionValidatorTest extends TestCase
                 ],
                 [
                     'name' => 'Cannot be empty',
-                ]
+                ],
             ],
         ];
     }

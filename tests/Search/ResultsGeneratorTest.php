@@ -82,7 +82,7 @@ class ResultsGeneratorTest extends TestCase
                                 Url::fromNative('http://io.uitdatabank.dev/event/0d325df2-da0a-4d4e-957f-60220c2f9baf'),
                                 '0d325df2-da0a-4d4e-957f-60220c2f9baf',
                                 OfferType::EVENT()
-                            )
+                            ),
                         ]
                     ),
                     new Integer($expectedCount)

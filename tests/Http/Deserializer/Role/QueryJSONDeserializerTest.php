@@ -49,7 +49,7 @@ class QueryJSONDeserializerTest extends TestCase
         $data = new StringLiteral(
             json_encode(
                 [
-                    'query' => 'city:3000'
+                    'query' => 'city:3000',
                 ]
             )
         );

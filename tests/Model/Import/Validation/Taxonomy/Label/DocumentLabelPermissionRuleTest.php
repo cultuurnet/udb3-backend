@@ -69,7 +69,7 @@ class DocumentLabelPermissionRuleTest extends TestCase
             'hiddenLabels' => [
                 'lorem',
                 'ipsum',
-            ]
+            ],
         ];
 
         $this->assertTrue(
@@ -91,7 +91,7 @@ class DocumentLabelPermissionRuleTest extends TestCase
             'hiddenLabels' => [
                 'lorem',
                 'ipsum',
-            ]
+            ],
         ];
 
         $this->assertTrue(
@@ -113,7 +113,7 @@ class DocumentLabelPermissionRuleTest extends TestCase
             'hiddenLabels' => [
                 'lorem',
                 'ipsum',
-            ]
+            ],
         ];
 
         $this->assertTrue(
@@ -135,7 +135,7 @@ class DocumentLabelPermissionRuleTest extends TestCase
             'hiddenLabels' => [
                 'lorem',
                 'ipsum',
-            ]
+            ],
         ];
 
         $userId = new StringLiteral('user_id');

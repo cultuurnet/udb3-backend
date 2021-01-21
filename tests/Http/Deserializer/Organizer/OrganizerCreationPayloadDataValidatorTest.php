@@ -34,7 +34,7 @@ class OrganizerCreationPayloadDataValidatorTest extends TestCase
                 [
                     'value' => 'foo',
                     'type' => 'not-a-valid-type',
-                ]
+                ],
             ],
         ];
 

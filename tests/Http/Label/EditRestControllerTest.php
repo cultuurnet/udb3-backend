@@ -61,7 +61,7 @@ class EditRestControllerTest extends TestCase
             ->willReturn($this->uuid);
 
         $expectedJson = [
-            'uuid' => $this->uuid->toNative()
+            'uuid' => $this->uuid->toNative(),
         ];
 
         $jsonResponse = $this->editRestController->create($request);
@@ -99,7 +99,7 @@ class EditRestControllerTest extends TestCase
             [['command' => 'MakeVisible'], 'makeVisible'],
             [['command' => 'MakeInvisible'], 'makeInvisible'],
             [['command' => 'MakePublic'], 'makePublic'],
-            [['command' => 'MakePrivate'], 'makePrivate']
+            [['command' => 'MakePrivate'], 'makePrivate'],
         ];
     }
 

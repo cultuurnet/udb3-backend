@@ -31,7 +31,7 @@ class OrFilterTest extends TestCase
     {
         $orFilter = new OrFilter(array(
             new AcceptFilter(new StringLiteral(self::APPLICATION_XML)),
-            new MethodFilter(new StringLiteral('POST'))
+            new MethodFilter(new StringLiteral('POST')),
         ));
 
         $this->assertTrue($orFilter->matches($this->request));
@@ -44,7 +44,7 @@ class OrFilterTest extends TestCase
     {
         $orFilter = new OrFilter(array(
             new AcceptFilter(new StringLiteral('application/json')),
-            new MethodFilter(new StringLiteral('PUT'))
+            new MethodFilter(new StringLiteral('PUT')),
         ));
 
         $this->assertFalse($orFilter->matches($this->request));

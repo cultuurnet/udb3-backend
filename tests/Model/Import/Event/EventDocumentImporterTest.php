@@ -541,7 +541,7 @@ class EventDocumentImporterTest extends TestCase
         ];
         $body['hiddenLabels'] = [
             'lorem',
-            'ipsum'
+            'ipsum',
         ];
         $document = $document->withBody($body);
         $id = $document->getId();
@@ -657,7 +657,7 @@ class EventDocumentImporterTest extends TestCase
             'location' => [
                 '@id' => 'https://io.uitdatabank.be/places/f3277646-1cc8-4af9-b6d5-a47f3c4f2ac0',
             ],
-            'availableFrom' => '2018-01-01T00:00:00+01:00'
+            'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
     }
 

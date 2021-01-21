@@ -81,7 +81,7 @@ class EventCdbXmlEnricherTest extends TestCase
 
         $this->assertTracedEvents(
             [
-                $newEvent
+                $newEvent,
             ]
         );
     }
@@ -159,7 +159,7 @@ class EventCdbXmlEnricherTest extends TestCase
                     $eventCreated->getUrl(),
                     new StringLiteral($this->cdbXml()),
                     new StringLiteral($this->cdbXmlNamespaceUri())
-                )
+                ),
             ],
             [
                 $eventUpdated,
@@ -170,8 +170,8 @@ class EventCdbXmlEnricherTest extends TestCase
                     $eventCreated->getUrl(),
                     new StringLiteral($this->cdbXml()),
                     new StringLiteral($this->cdbXmlNamespaceUri())
-                )
-            ]
+                ),
+            ],
         ];
     }
 

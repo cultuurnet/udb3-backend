@@ -185,7 +185,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
         $this->assertEquals(
             [
                 'free drink (10 ptn)',
-                'one point to rule them all (1 pt)'
+                'one point to rule them all (1 pt)',
             ],
             $promotions
         );

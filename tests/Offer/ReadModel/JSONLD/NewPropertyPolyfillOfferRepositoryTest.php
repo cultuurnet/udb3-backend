@@ -62,10 +62,10 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                     'type' => 'Unavailable',
                     'reason' => [
                         'nl' => 'Uitgesteld',
-                        'en' => 'Postponed'
-                    ]
+                        'en' => 'Postponed',
+                    ],
                 ],
-            ]
+            ],
         ];
     }
 
@@ -103,7 +103,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             'endDate' => '2020-01-02T20:00:00+01:00',
                             'status' => [
                                 'type' => 'Unavailable',
-                            ]
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -112,11 +112,11 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             'status' => [
                                 'type' => 'TemporarilyUnavailable',
                                 'reason' => [
-                                    'nl' => 'Tijdelijk uitgesteld'
+                                    'nl' => 'Tijdelijk uitgesteld',
                                 ],
-                            ]
+                            ],
                         ],
-                    ]
+                    ],
                 ]
             )
             ->assertReturnedDocumentContains(
@@ -128,7 +128,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             'endDate' => '2020-01-01T20:00:00+01:00',
                             'status' => [
                                 'type' => 'Available',
-                            ]
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -136,7 +136,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             'endDate' => '2020-01-02T20:00:00+01:00',
                             'status' => [
                                 'type' => 'Unavailable',
-                            ]
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -145,11 +145,11 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             'status' => [
                                 'type' => 'TemporarilyUnavailable',
                                 'reason' => [
-                                    'nl' => 'Tijdelijk uitgesteld'
+                                    'nl' => 'Tijdelijk uitgesteld',
                                 ],
-                            ]
+                            ],
                         ],
-                    ]
+                    ],
                 ]
             );
     }

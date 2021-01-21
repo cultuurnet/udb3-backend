@@ -124,7 +124,7 @@ class ExportEventsAsPDFTest extends TestCase
     {
         $selection = [
             'some-id',
-            'another-id'
+            'another-id',
         ];
         $newExport = $this->export->withSelection($selection);
 

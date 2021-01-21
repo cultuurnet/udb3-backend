@@ -68,7 +68,7 @@ class PatchOfferRestControllerTest extends TestCase
             'Approve event' => [
                 'offerType' => OfferType::EVENT(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=Approve'),
-                'expectedCommand' => new Approve($this->itemId)
+                'expectedCommand' => new Approve($this->itemId),
             ],
             'Reject event' => [
                 'offerType' => OfferType::EVENT(),
@@ -76,22 +76,22 @@ class PatchOfferRestControllerTest extends TestCase
                     'application/ld+json;domain-model=Reject',
                     json_encode(['reason' => 'Description missing :('])
                 ),
-                'expectedCommand' => new Reject($this->itemId, new StringLiteral('Description missing :('))
+                'expectedCommand' => new Reject($this->itemId, new StringLiteral('Description missing :(')),
             ],
             'Flag event as duplicate' => [
                 'offerType' => OfferType::EVENT(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsDuplicate'),
-                'expectedCommand' => new FlagAsDuplicate($this->itemId)
+                'expectedCommand' => new FlagAsDuplicate($this->itemId),
             ],
             'Flag event as inappropriate' => [
                 'offerType' => OfferType::EVENT(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsInappropriate'),
-                'expectedCommand' => new FlagAsInappropriate($this->itemId)
+                'expectedCommand' => new FlagAsInappropriate($this->itemId),
             ],
             'Approve place' => [
                 'offerType' => OfferType::PLACE(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=Approve'),
-                'expectedCommand' => new ApprovePlace($this->itemId)
+                'expectedCommand' => new ApprovePlace($this->itemId),
             ],
             'Reject place' => [
                 'offerType' => OfferType::PLACE(),
@@ -99,17 +99,17 @@ class PatchOfferRestControllerTest extends TestCase
                     'application/ld+json;domain-model=Reject',
                     json_encode(['reason' => 'Description missing :('])
                 ),
-                'expectedCommand' => new RejectPlace($this->itemId, new StringLiteral('Description missing :('))
+                'expectedCommand' => new RejectPlace($this->itemId, new StringLiteral('Description missing :(')),
             ],
             'Flag place as duplicate' => [
                 'offerType' => OfferType::PLACE(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsDuplicate'),
-                'expectedCommand' => new FlagAsDuplicatePlace($this->itemId)
+                'expectedCommand' => new FlagAsDuplicatePlace($this->itemId),
             ],
             'Flag place as inappropriate' => [
                 'offerType' => OfferType::PLACE(),
                 'request' => $this->generatePatchRequest('application/ld+json;domain-model=FlagAsInappropriate'),
-                'expectedCommand' => new FlagAsInappropriatePlace($this->itemId)
+                'expectedCommand' => new FlagAsInappropriatePlace($this->itemId),
             ],
             'Publish event with publication date' => [
                 'offerType' => OfferType::EVENT(),
@@ -123,7 +123,7 @@ class PatchOfferRestControllerTest extends TestCase
                         \DateTime::ISO8601,
                         '2030-02-01T12:00:00+00:00'
                     )
-                )
+                ),
             ],
         ];
     }

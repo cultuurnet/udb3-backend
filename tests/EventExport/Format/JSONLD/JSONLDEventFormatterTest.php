@@ -26,7 +26,7 @@ class JSONLDEventFormatterTest extends TestCase
         $includedProperties = [
             'id',
             'terms.eventtype',
-            'terms.theme'
+            'terms.theme',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
         $formatter = new JSONLDEventFormatter($includedProperties);
@@ -67,7 +67,7 @@ class JSONLDEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'terms.eventtype'
+            'terms.eventtype',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
         $formatter = new JSONLDEventFormatter($includedProperties);

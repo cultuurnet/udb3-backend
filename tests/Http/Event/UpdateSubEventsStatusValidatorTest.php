@@ -88,7 +88,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                         'status' => [
                             'type' => 'Unavailable',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     '[0].id' => 'Required but could not be found',
@@ -122,7 +122,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                         'status' => [
                             'type' => 'Unavailable',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     '[0].id' => 'Should be an integer',
@@ -133,7 +133,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                     [
                         'id' => 0,
                         'status' => [],
-                    ]
+                    ],
                 ],
                 [
                     '[0].status.type' => 'Required but could not be found',
@@ -146,7 +146,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                         'status' => [
                             'type' => 'DefinitelyNotAValidStatus',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     '[0].status.type' => 'Invalid status provided',
@@ -162,7 +162,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                                 'nl' => '',
                             ],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     '[0].status.reason.nl' => 'Cannot be empty',
@@ -176,7 +176,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                             'type' => 'Unavailable',
                             'reason' => 'Should be an object instead, not a string',
                         ],
-                    ]
+                    ],
                 ],
                 [
                     '[0].status.reason' => 'Should be an object with language codes as properties and string values',
@@ -192,7 +192,7 @@ class UpdateSubEventsStatusValidatorTest extends TestCase
                                 'foo' => 'bar',
                             ],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     '[0].status.reason.foo' => 'Language key should be a string of exactly 2 characters',

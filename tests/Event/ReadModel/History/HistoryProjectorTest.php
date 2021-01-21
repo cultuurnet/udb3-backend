@@ -258,7 +258,7 @@ class HistoryProjectorTest extends TestCase
                     'api' => 'json-api',
                     'consumer' => [
                         'name' => 'My super duper name',
-                    ]
+                    ],
                 ]
             ),
             $eventCreated,

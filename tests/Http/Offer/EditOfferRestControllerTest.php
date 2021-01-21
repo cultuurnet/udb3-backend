@@ -341,8 +341,8 @@ class EditOfferRestControllerTest extends TestCase
                     [
                         '3.23.1.0.0',
                         '3.23.2.0.0',
-                        '3.23.3.0.0'
-                    ]
+                        '3.23.3.0.0',
+                    ],
             ]
         );
 

@@ -31,7 +31,7 @@ class AndFilterTest extends TestCase
     {
         $andFilter = new AndFilter(array(
             new AcceptFilter(new StringLiteral(self::APPLICATION_XML)),
-            new MethodFilter(new StringLiteral('POST'))
+            new MethodFilter(new StringLiteral('POST')),
         ));
 
         $this->assertTrue($andFilter->matches($this->request));
@@ -44,7 +44,7 @@ class AndFilterTest extends TestCase
     {
         $andFilter = new AndFilter(array(
             new AcceptFilter(new StringLiteral(self::APPLICATION_XML)),
-            new MethodFilter(new StringLiteral('PUT'))
+            new MethodFilter(new StringLiteral('PUT')),
         ));
 
         $this->assertFalse($andFilter->matches($this->request));

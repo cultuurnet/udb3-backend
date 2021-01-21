@@ -84,7 +84,7 @@ class OfferPermissionsControllerTest extends TestCase
         $expectedPermissions = array(
             'Aanbod bewerken',
             'Aanbod modereren',
-            'Aanbod verwijderen'
+            'Aanbod verwijderen',
         );
         $expectedResponseJson = json_encode(['permissions' => $expectedPermissions]);
 
@@ -108,7 +108,7 @@ class OfferPermissionsControllerTest extends TestCase
         $expectedPermissions = array(
             'Aanbod bewerken',
             'Aanbod modereren',
-            'Aanbod verwijderen'
+            'Aanbod verwijderen',
         );
         $expectedResponseJson = json_encode(['permissions' => $expectedPermissions]);
 

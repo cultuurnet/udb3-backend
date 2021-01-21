@@ -33,8 +33,8 @@ class PermissionsVoterTest extends TestCase
 
         $permissionsList = [
             'allow_all' => [
-                $this->kingId
-            ]
+                $this->kingId,
+            ],
         ];
 
         $this->voter = new PermissionsVoter($permissionsList);

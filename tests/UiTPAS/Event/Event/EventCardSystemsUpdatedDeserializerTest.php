@@ -34,7 +34,7 @@ class EventCardSystemsUpdatedDeserializerTest extends TestCase
                     [
                         'id' => 25,
                         'name' => 'UiTPAS Dender',
-                    ]
+                    ],
                 ],
             ]
         );

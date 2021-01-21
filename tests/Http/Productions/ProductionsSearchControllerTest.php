@@ -79,7 +79,7 @@ class ProductionsSearchControllerTest extends TestCase
         $name = 'Indiana Foo and the arrayders of the lost SPARC';
         $events = [
             Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString()
+            Uuid::uuid4()->toString(),
         ];
 
         $productions = [new Production($productionId, $name, $events),];

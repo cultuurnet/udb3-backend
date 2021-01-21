@@ -46,7 +46,7 @@ class QueryFactoryTest extends TestCase
         $request = new Request([
             QueryFactory::QUERY => self::QUERY_VALUE,
             QueryFactory::START => self::START_VALUE,
-            QueryFactory::LIMIT => self::LIMIT_VALUE
+            QueryFactory::LIMIT => self::LIMIT_VALUE,
         ]);
 
         $query = $this->queryFactory->createFromRequest($request);
@@ -68,7 +68,7 @@ class QueryFactoryTest extends TestCase
     {
         $request = new Request([
             QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::LIMIT => self::LIMIT_VALUE
+            QueryFactory::LIMIT => self::LIMIT_VALUE,
         ]);
 
         $query = $this->queryFactory->createFromRequest($request);
@@ -90,7 +90,7 @@ class QueryFactoryTest extends TestCase
     {
         $request = new Request([
             QueryFactory::QUERY => self::QUERY_VALUE,
-            QueryFactory::START => self::START_VALUE
+            QueryFactory::START => self::START_VALUE,
         ]);
 
         $query = $this->queryFactory->createFromRequest($request);
@@ -134,7 +134,7 @@ class QueryFactoryTest extends TestCase
         $request = new Request([
             QueryFactory::QUERY => self::QUERY_VALUE,
             QueryFactory::START => 0,
-            QueryFactory::LIMIT => 0
+            QueryFactory::LIMIT => 0,
         ]);
 
         $query = $this->queryFactory->createFromRequest($request);

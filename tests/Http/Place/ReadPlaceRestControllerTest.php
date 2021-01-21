@@ -63,7 +63,7 @@ class ReadPlaceRestControllerTest extends TestCase
                     '@type' => 'Place',
                     'metadata' => [
                         'popularity' => 123456,
-                    ]
+                    ],
                 ]
             )
         );

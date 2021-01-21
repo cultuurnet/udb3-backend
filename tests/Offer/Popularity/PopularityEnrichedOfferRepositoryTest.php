@@ -93,7 +93,7 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
                     '@type' => 'Event',
                     'metadata' => [
                         'popularity' => 1234567,
-                    ]
+                    ],
                 ]
             )
         );

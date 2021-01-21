@@ -53,7 +53,7 @@ class CalendarForPlaceDataValidatorTest extends TestCase
                             'start' => '2020-02-03T09:00:00+01:00',
                             'end' => '2020-02-10T16:00:00+01:00',
                         ],
-                    ]
+                    ],
                 ],
                 'messages' => [
                     'time_spans' => 'No time spans allowed for place calendar.',

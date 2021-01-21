@@ -76,13 +76,13 @@ class EditOrganizerRestControllerTest extends TestCase
                 ),
                 new ContactPoint(
                     [
-                        "+32 498 71 49 96"
+                        "+32 498 71 49 96",
                     ],
                     [
-                        "jos@hetdepot.be"
+                        "jos@hetdepot.be",
                     ],
                     [
-                        "https://www.facebook.com/hetdepot"
+                        "https://www.facebook.com/hetdepot",
                     ]
                 )
             )
@@ -302,15 +302,15 @@ class EditOrganizerRestControllerTest extends TestCase
         $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
         $contactPoint = new ContactPoint(
             [
-                "+32 498 71 49 96"
+                "+32 498 71 49 96",
             ],
             [
                 "jos@hetdepot.be",
-                "info@hetdepot.be"
+                "info@hetdepot.be",
             ],
             [
                 "https://www.facebook.com/hetdepot",
-                "https://www.depot.be"
+                "https://www.depot.be",
             ]
         );
 

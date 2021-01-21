@@ -947,7 +947,7 @@ class HistoryProjectorTest extends TestCase
                 'api' => self::META_API,
                 'consumer' => [
                     'name' => self::META_CONSUMER,
-                ]
+                ],
             ]
         );
     }

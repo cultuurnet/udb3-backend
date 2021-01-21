@@ -67,7 +67,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
                                 $cardSystem
                             ),
                         ]
-                    )
+                    ),
                 ],
                 [
                     $keyFactory->buildKey(
@@ -79,7 +79,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
                                 $cardSystem
                             ),
                         ]
-                    )
+                    ),
                 ],
                 [
                     $keyFactory->buildKey(
@@ -96,7 +96,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
                                 '7'
                             ),
                         ]
-                    )
+                    ),
                 ],
             ];
         }
@@ -130,7 +130,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
                             '7'
                         ),
                     ]
-                )
+                ),
             ],
             [
                 $keyFactory->buildKey(
@@ -142,7 +142,7 @@ class KansentariefDiscountSpecificationTest extends TestCase
                             '7'
                         ),
                     ]
-                )
+                ),
             ],
         ];
     }
