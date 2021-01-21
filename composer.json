@@ -116,7 +116,6 @@
     }
   ],
   "scripts": {
-    "phing": "./vendor/bin/phing test",
     "test": "vendor/bin/phpunit",
     "phpstan": "vendor/bin/phpstan analyse",
     "phpcs": "vendor/bin/phpcs -p"

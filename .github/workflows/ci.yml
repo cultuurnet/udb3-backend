@@ -3,8 +3,7 @@ name: CI
 on: push
 
 jobs:
-    build:
-
+    tests:
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -40,5 +39,61 @@ jobs:
               if: steps.composer-cache.outputs.cache-hit != 'true'
               run: composer install --no-progress --no-suggest
 
-            - name: Run Phing
-              run: composer run-script phing
+            - name: Run tests
+              run: composer test
+
+    phpcs:
+        runs-on: ubuntu-latest
+        name: Code style
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 7.1
+                  tools: composer:v1
+
+            - name: Cache Composer packages
+              id: composer-cache
+              uses: actions/cache@v2
+              with:
+                  path: vendor
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
+
+            - name: Install dependencies
+              if: steps.composer-cache.outputs.cache-hit != 'true'
+              run: composer install --no-progress --no-suggest
+
+            - name: Run code style check
+              run: composer phpcs
+
+    phpstan:
+        runs-on: ubuntu-latest
+        name: Static analysis
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Install PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 7.1
+                  tools: composer:v1
+
+            - name: Cache Composer packages
+              id: composer-cache
+              uses: actions/cache@v2
+              with:
+                  path: vendor
+                  key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-
+
+            - name: Install dependencies
+              if: steps.composer-cache.outputs.cache-hit != 'true'
+              run: composer install --no-progress --no-suggest
+
+            - name: Run static analysis
+              run: composer phpstan
