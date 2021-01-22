@@ -115,5 +115,4 @@ class Auth0ManagementTokenProviderTest extends TestCase
 
         $this->assertEquals('New-Token', $result);
     }
-
 }

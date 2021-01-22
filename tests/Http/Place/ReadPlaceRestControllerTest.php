@@ -53,8 +53,7 @@ class ReadPlaceRestControllerTest extends TestCase
     {
         $this->jsonDocument = new JsonDocument(
             'existingId',
-            json_encode(['@type' => 'Place']
-            )
+            json_encode(['@type' => 'Place'])
         );
 
         $this->jsonDocumentWithMetadata = new JsonDocument(
@@ -64,7 +63,7 @@ class ReadPlaceRestControllerTest extends TestCase
                     '@type' => 'Place',
                     'metadata' => [
                         'popularity' => 123456,
-                    ]
+                    ],
                 ]
             )
         );

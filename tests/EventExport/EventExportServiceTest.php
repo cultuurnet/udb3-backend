@@ -401,7 +401,7 @@ class EventExportServiceTest extends TestCase
         $unavailableEventIds = [
             'http://example.com/event/3',
             'http://example.com/event/6',
-            'http://example.com/event/17'
+            'http://example.com/event/17',
         ];
         $expectedDetails = $this->searchResultsWithout(
             $this->searchResultsDetails,
@@ -452,7 +452,7 @@ class EventExportServiceTest extends TestCase
         $unavailableEventIds = [
             'http://example.com/event/4',
             'http://example.com/event/7',
-            'http://example.com/event/16'
+            'http://example.com/event/16',
         ];
 
         $this->setUpEventService($unavailableEventIds);
@@ -562,14 +562,14 @@ class EventExportServiceTest extends TestCase
                 "selection" => [
                     'http://example.com/event/4',
                     'http://example.com/event/7',
-                    'http://example.com/event/16'
-                ]
+                    'http://example.com/event/16',
+                ],
             ],
             [
                 "fileFormat" => $this->getFileFormat('txt'),
                 "query" => new EventExportQuery('city:Leuven'),
-                "selection" => null
-            ]
+                "selection" => null,
+            ],
         ];
     }
 }

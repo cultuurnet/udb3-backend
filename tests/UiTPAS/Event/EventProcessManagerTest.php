@@ -166,7 +166,7 @@ class EventProcessManagerTest extends TestCase
             '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
                 new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
                 new StringLiteral('Mock CS UiTPAS Oostende')
-            )
+            ),
         ];
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);

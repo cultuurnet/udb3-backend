@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer\Security;
 
-use CultuurNet\Search\Parameter\Query;
+use CultuurNet\SearchV3\Parameter\Query;
 use ValueObjects\StringLiteral\StringLiteral;
 
 interface SearchQueryFactoryInterface

@@ -80,7 +80,6 @@ class HistoryPlaceRestControllerTest extends TestCase
             $documentRepositoryInterface,
             $this->userIdentification
         );
-
     }
 
     /**

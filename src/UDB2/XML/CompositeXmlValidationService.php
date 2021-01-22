@@ -9,7 +9,7 @@ class CompositeXmlValidationService implements XMLValidationServiceInterface
      */
     private $xmlValidationServices;
 
-    public function __construct(XMLValidationServiceInterface... $xmlValidationServices)
+    public function __construct(XMLValidationServiceInterface ...$xmlValidationServices)
     {
         $this->xmlValidationServices = $xmlValidationServices;
     }

@@ -258,10 +258,10 @@ trait OfferCommandHandlerTestTrait
             )
             ->then([
                 new $eventClass(
-                $itemId,
-                $mediaObjectId,
-                $description,
-                $copyrightHolder
+                    $itemId,
+                    $mediaObjectId,
+                    $description,
+                    $copyrightHolder
                 ),
             ]);
     }

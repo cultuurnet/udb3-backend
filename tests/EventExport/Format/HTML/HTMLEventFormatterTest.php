@@ -223,7 +223,7 @@ class HTMLEventFormatterTest extends TestCase
         return [
             'without location' => [
                 'event_without_location.json',
-                $expectedFormattedEvent
+                $expectedFormattedEvent,
             ],
             'without location address' => [
                 'event_without_location_address.json',
@@ -231,8 +231,8 @@ class HTMLEventFormatterTest extends TestCase
                     'address' => [
                         'name' => 'Cultuurcentrum De Kruisboog',
                         'isDummyAddress' => false,
-                    ]
-                ]
+                    ],
+                ],
             ],
             'without location name' => [
                 'event_without_location_name.json',
@@ -244,8 +244,8 @@ class HTMLEventFormatterTest extends TestCase
                         'country' => 'BE',
                         'concatenated' => 'Sint-Jorisplein 20  3300 Tienen BE',
                         'isDummyAddress' => false,
-                    ]
-                ]
+                    ],
+                ],
             ],
             'with coordinates' => [
                 'event_with_location_coordinates.json',
@@ -254,9 +254,9 @@ class HTMLEventFormatterTest extends TestCase
                         'latitude' => '50.804739',
                         'longitude' => '4.936491',
                         'isDummyAddress' => false,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -527,7 +527,7 @@ class HTMLEventFormatterTest extends TestCase
                         [
                             'price' => '150',
                             'label' => 'Kansentarief voor UiTPAS Regio Aalst',
-                        ]
+                        ],
                     ],
                 ],
                 [
@@ -557,7 +557,7 @@ class HTMLEventFormatterTest extends TestCase
                         [
                             'price' => '30',
                             'label' => 'Kansentarief voor kaarthouders uit een andere regio',
-                        ]
+                        ],
                     ],
                 ],
                 [
@@ -665,7 +665,7 @@ class HTMLEventFormatterTest extends TestCase
             'contentUrl' =>  'http://media.uitdatabank.be/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
             'thumbnailUrl' =>  'http://media.uitdatabank.be/558bb7cf-5ff8-40b4-872b-5f5b46bb16c2.jpg',
             'description' =>  'De Kortste Nacht',
-            'copyrightHolder' =>  'Rode Ridder'
+            'copyrightHolder' =>  'Rode Ridder',
         ];
 
         $this->assertEquals($expectedMediaObject, $formattedEvent['mediaObject']);

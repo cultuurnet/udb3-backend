@@ -43,7 +43,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                             Condition::VALUE_MY_CARDSYSTEM
                         ),
                     ]
-                )
+                ),
             ],
             [
                 $keyFactory->buildKey(
@@ -55,7 +55,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                             Condition::VALUE_MY_CARDSYSTEM
                         ),
                     ]
-                )
+                ),
             ],
             [
                 $keyFactory->buildKey(
@@ -73,7 +73,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                         ),
                     ]
                 ),
-            ]
+            ],
         ];
 
         return $data;
@@ -108,7 +108,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                             Condition::VALUE_AT_LEAST_ONE_CARDSYSTEM
                         ),
                     ]
-                )
+                ),
             ],
             [
                 $keyFactory->buildKey(
@@ -120,7 +120,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                             Condition::VALUE_AT_LEAST_ONE_CARDSYSTEM
                         ),
                     ]
-                )
+                ),
             ],
             [
                 $keyFactory->buildKey(
@@ -137,7 +137,7 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
                             '7'
                         ),
                     ]
-                )
+                ),
             ],
         ];
 

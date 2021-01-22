@@ -311,14 +311,14 @@ class OrganizerDocumentImporterTest extends TestCase
                 'labels' => [
                     'foo',
                     'bar',
-                ]
+                ],
             ]
             +
             [
                 'hiddenLabels' => [
                     'lorem',
                     'ipsum',
-                ]
+                ],
             ];
     }
 

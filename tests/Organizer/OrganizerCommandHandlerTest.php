@@ -324,7 +324,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                     new AddressUpdated(
                         $organizerId,
                         $address
-                    )
+                    ),
                 ]
             )
             ->when(

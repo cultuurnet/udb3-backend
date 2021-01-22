@@ -67,7 +67,7 @@ class ReadRestControllerTest extends TestCase
         $this->request = new Request([
             QueryFactory::QUERY => 'label',
             QueryFactory::START => 5,
-            QueryFactory::LIMIT => 2
+            QueryFactory::LIMIT => 2,
         ]);
 
         $this->query = new Query(
@@ -146,7 +146,7 @@ class ReadRestControllerTest extends TestCase
             'totalItems' => 2,
             'member' => [
                 $this->entityToArray($this->entity),
-                $this->entityToArray($this->entity)
+                $this->entityToArray($this->entity),
             ],
         ];
 
@@ -210,7 +210,7 @@ class ReadRestControllerTest extends TestCase
             'uuid' => $entity->getUuid()->toNative(),
             'name' => $entity->getName()->toNative(),
             'visibility' => $entity->getVisibility()->toNative(),
-            'privacy' => $entity->getPrivacy()->toNative()
+            'privacy' => $entity->getPrivacy()->toNative(),
         ];
     }
 }

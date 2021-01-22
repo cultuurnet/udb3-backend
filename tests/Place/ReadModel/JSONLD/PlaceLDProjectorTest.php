@@ -624,7 +624,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($placeUpdatedFromUdb2, $actorId);
 
         $this->assertEquals("Korte beschrijving.\n\nLange beschrijving.", $body->description->nl);
-
     }
 
     /**

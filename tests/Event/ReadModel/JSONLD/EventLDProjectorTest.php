@@ -894,7 +894,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             $expectedBody,
             $body
         );
-
     }
 
     /**

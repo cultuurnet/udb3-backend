@@ -47,7 +47,7 @@ class CategoryExistsValidatorTest extends TestCase
         ];
 
         $expected = [
-            'term 99.3.1.0.0 does not exist or is not applicable for Event'
+            'term 99.3.1.0.0 does not exist or is not applicable for Event',
         ];
 
         try {

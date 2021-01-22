@@ -30,8 +30,8 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $this->decoratedRepository = new InMemoryDocumentRepository();
 
         $this->popularityEnrichedOfferRepository = new PopularityEnrichedOfferRepository(
-          $this->popularityRepository,
-          $this->decoratedRepository
+            $this->popularityRepository,
+            $this->decoratedRepository
         );
     }
 
@@ -93,7 +93,7 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
                     '@type' => 'Event',
                     'metadata' => [
                         'popularity' => 1234567,
-                    ]
+                    ],
                 ]
             )
         );

@@ -39,7 +39,7 @@ class ProductionTest extends TestCase
         $name = 'The Scottish Play';
         $production = Production::createEmpty(' ' . $name . '   ');
 
-        $this->assertEquals($name,  $production->getName());
+        $this->assertEquals($name, $production->getName());
     }
 
     /**

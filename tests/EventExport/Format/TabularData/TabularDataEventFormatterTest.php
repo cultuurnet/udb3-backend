@@ -46,7 +46,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'terms.eventtype'
+            'terms.eventtype',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
         $formatter = new TabularDataEventFormatter($includedProperties);
@@ -65,7 +65,7 @@ class TabularDataEventFormatterTest extends TestCase
         $includedProperties = [
             'id',
             'terms.eventtype',
-            'terms.theme'
+            'terms.theme',
         ];
         $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
         $formatter = new TabularDataEventFormatter($includedProperties);
@@ -74,7 +74,7 @@ class TabularDataEventFormatterTest extends TestCase
         $expectedFormatting = array(
             "id" =>"d1f0e71d-a9a8-4069-81fb-530134502c58",
             "terms.eventtype" => "Cursus of workshop",
-            "terms.theme" => "Geschiedenis"
+            "terms.theme" => "Geschiedenis",
         );
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
@@ -109,13 +109,13 @@ class TabularDataEventFormatterTest extends TestCase
     {
         return [
             [
-                'event_with_translated_organizer.json'
+                'event_with_translated_organizer.json',
             ],
             [
-                'event_with_translated_organizer_and_main_language.json'
+                'event_with_translated_organizer_and_main_language.json',
             ],
             [
-                'event_with_untranslated_organizer.json'
+                'event_with_untranslated_organizer.json',
             ],
         ];
     }
@@ -129,7 +129,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'address'
+            'address',
         ];
         $eventWithTerms = $this->getJSONEventFromFile($sampleFile);
         $formatter = new TabularDataEventFormatter($includedProperties);
@@ -140,7 +140,7 @@ class TabularDataEventFormatterTest extends TestCase
             "address.streetAddress" => "Sint-Jorisplein 20 ",
             "address.postalCode" => "3300",
             "address.addressLocality" => "Tienen",
-            "address.addressCountry" => "BE"
+            "address.addressCountry" => "BE",
         );
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
@@ -153,13 +153,13 @@ class TabularDataEventFormatterTest extends TestCase
     {
         return [
             [
-                'event_with_terms.json'
+                'event_with_terms.json',
             ],
             [
-                'event_with_translated_address.json'
+                'event_with_translated_address.json',
             ],
             [
-                'event_with_translated_address_and_main_language.json'
+                'event_with_translated_address_and_main_language.json',
             ],
         ];
     }
@@ -288,7 +288,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'available'
+            'available',
         ];
         $eventWithAvailableDate = $this->getJSONEventFromFile('event_with_available_from.json');
         $formatter = new TabularDataEventFormatter($includedProperties);
@@ -296,7 +296,7 @@ class TabularDataEventFormatterTest extends TestCase
         $formattedEvent = $formatter->formatEvent($eventWithAvailableDate);
         $expectedFormatting = array(
             "id" =>"16744083-859a-4d3d-bd1d-16ea5bd3e2a3",
-            "available" => "2015-10-13"
+            "available" => "2015-10-13",
         );
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
@@ -309,7 +309,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'description'
+            'description',
         ];
         $eventWithUnwantedLineBreaks = $this->getJSONEventFromFile('event_with_unwanted_line_breaks.json');
 
@@ -328,7 +328,7 @@ class TabularDataEventFormatterTest extends TestCase
         $formattedEvent = $formatter->formatEvent($eventWithUnwantedLineBreaks);
         $expectedFormatting = array(
             'id' =>'ee7c4030-d69f-4584-b0f2-a700955c7df2',
-            'description' => $expectedDescription
+            'description' => $expectedDescription,
         );
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
@@ -351,7 +351,7 @@ class TabularDataEventFormatterTest extends TestCase
 
         $includedProperties = [
             'id',
-            'kansentarief'
+            'kansentarief',
         ];
 
         $event = $this->getJSONEventFromFile('event_with_price.json');
@@ -371,7 +371,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'priceInfo'
+            'priceInfo',
         ];
 
         $event = $this->getJSONEventFromFile('event_with_price.json');
@@ -396,7 +396,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'priceInfo'
+            'priceInfo',
         ];
 
         $event = $this->getJSONEventFromFile('event_without_priceinfo.json');
@@ -444,72 +444,72 @@ class TabularDataEventFormatterTest extends TestCase
                     [
                         [
                             'price' => '1.5',
-                            'cardSystem' => 'UiTPAS Regio Aalst'
-                        ]
+                            'cardSystem' => 'UiTPAS Regio Aalst',
+                        ],
                     ],
                     [
-                        EventAdvantage::KANSENTARIEF()
+                        EventAdvantage::KANSENTARIEF(),
                     ],
                     [
-                        '12 punten: Een voordeel van 12 punten.'
+                        '12 punten: Een voordeel van 12 punten.',
                     ]
                 ),
                 'expectedFormatting' => [
                     "id" => "d1f0e71d-a9a8-4069-81fb-530134502c58",
                     "kansentarief" => "UiTPAS Regio Aalst: € 1,5",
-                ]
+                ],
             ],
             'one card system , multiple tariffs' => [
                 'eventInfo' => new EventInfo(
                     [
                         [
                             'price' => '1.5',
-                            'cardSystem' => 'UiTPAS Regio Aalst'
+                            'cardSystem' => 'UiTPAS Regio Aalst',
                         ],
                         [
                             'price' => '5',
-                            'cardSystem' => 'UiTPAS Regio Aalst'
-                        ]
+                            'cardSystem' => 'UiTPAS Regio Aalst',
+                        ],
                     ],
                     [
-                        EventAdvantage::KANSENTARIEF()
+                        EventAdvantage::KANSENTARIEF(),
                     ],
                     [
-                        '12 punten: Een voordeel van 12 punten.'
+                        '12 punten: Een voordeel van 12 punten.',
                     ]
                 ),
                 'expectedFormatting' => [
                     "id" => "d1f0e71d-a9a8-4069-81fb-530134502c58",
                     "kansentarief" => "UiTPAS Regio Aalst: € 1,5 / € 5",
-                ]
+                ],
             ],
             'multiple card systems , multiple tariffs' => [
                 'eventInfo' => new EventInfo(
                     [
                         [
                             'price' => '1.5',
-                            'cardSystem' => 'UiTPAS Regio Aalst'
+                            'cardSystem' => 'UiTPAS Regio Aalst',
                         ],
                         [
                             'price' => '5',
-                            'cardSystem' => 'UiTPAS Regio Aalst'
+                            'cardSystem' => 'UiTPAS Regio Aalst',
                         ],
                         [
                             'price' => '0.50',
-                            'cardSystem' => 'UiTPAS Regio Diest'
-                        ]
+                            'cardSystem' => 'UiTPAS Regio Diest',
+                        ],
                     ],
                     [
-                        EventAdvantage::KANSENTARIEF()
+                        EventAdvantage::KANSENTARIEF(),
                     ],
                     [
-                        '12 punten: Een voordeel van 12 punten.'
+                        '12 punten: Een voordeel van 12 punten.',
                     ]
                 ),
                 'expectedFormatting' => [
                     "id" => "d1f0e71d-a9a8-4069-81fb-530134502c58",
                     "kansentarief" => "UiTPAS Regio Aalst: € 1,5 / € 5 | UiTPAS Regio Diest: € 0,5",
-                ]
+                ],
             ],
         ];
     }
@@ -521,7 +521,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'calendarSummary'
+            'calendarSummary',
         ];
 
         $event = $this->getJSONEventFromFile('event_with_dates.json');
@@ -559,52 +559,52 @@ class TabularDataEventFormatterTest extends TestCase
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
-                        'audienceType' => 'everyone'
-                    ]
+                        'audienceType' => 'everyone',
+                    ],
                     ]
                 ),
-                'toegang' => 'Voor iedereen'
+                'toegang' => 'Voor iedereen',
             ],
             'enkel voor leden' => [
                 'offerJson' => json_encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
-                        'audienceType' => 'members'
-                    ]
+                        'audienceType' => 'members',
+                    ],
                     ]
                 ),
-                'toegang' => 'Enkel voor leden'
+                'toegang' => 'Enkel voor leden',
             ],
             'specifiek voor scholen' => [
                 'offerJson' => json_encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
-                        'audienceType' => 'education'
-                    ]
+                        'audienceType' => 'education',
+                    ],
                     ]
                 ),
-                'toegang' => 'Specifiek voor scholen'
+                'toegang' => 'Specifiek voor scholen',
             ],
             'unknown audience type' => [
                 'offerJson' => json_encode(
                     [
                     '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     'audience' => [
-                        'audienceType' => 'unknown'
-                    ]
+                        'audienceType' => 'unknown',
+                    ],
                     ]
                 ),
-                'toegang' => 'Voor iedereen'
+                'toegang' => 'Voor iedereen',
             ],
             'no audience type' => [
                 'offerJson' => json_encode(
                     [
-                    '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d'
+                    '@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d',
                     ]
                 ),
-                'toegang' => 'Voor iedereen'
+                'toegang' => 'Voor iedereen',
             ],
         ];
     }
@@ -664,7 +664,7 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $includedProperties = [
             'id',
-            'calendarSummary'
+            'calendarSummary',
         ];
 
         $smallCalendarSummary = '06/12/2013 tot 25/12/2013';

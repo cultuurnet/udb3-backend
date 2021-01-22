@@ -63,7 +63,7 @@ class ProductionsWriteControllerTest extends TestCase
                 'eventIds' => [
                     $eventId1,
                     $eventId2,
-                ]
+                ],
             ]
         );
 
@@ -85,7 +85,7 @@ class ProductionsWriteControllerTest extends TestCase
         $request = $this->buildRequestWithBody(
             [
                 'name' => '',
-                'eventIds' => []
+                'eventIds' => [],
             ]
         );
 
@@ -157,7 +157,7 @@ class ProductionsWriteControllerTest extends TestCase
                 'eventIds' => [
                     $eventId1,
                     $eventId2,
-                ]
+                ],
             ]
         );
 

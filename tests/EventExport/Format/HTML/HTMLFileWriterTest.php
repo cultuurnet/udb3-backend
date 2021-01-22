@@ -71,28 +71,28 @@ class HTMLFileWriterTest extends TestCase
             [
                 'hello.html.twig',
                 [
-                    'name' => 'world'
+                    'name' => 'world',
                 ],
                 __DIR__.'/results/hello-world.html',
             ],
             [
                 'hello.html.twig',
                 [
-                    'name' => 'Belgium'
+                    'name' => 'Belgium',
                 ],
                 __DIR__.'/results/hello-belgium.html',
             ],
             [
                 'goodbye.html.twig',
                 [
-                    'name' => 'world'
+                    'name' => 'world',
                 ],
                 __DIR__.'/results/goodbye-world.html',
             ],
             [
                 'goodbye.html.twig',
                 [
-                    'name' => 'Belgium'
+                    'name' => 'Belgium',
                 ],
                 __DIR__.'/results/goodbye-belgium.html',
             ],
@@ -145,8 +145,8 @@ class HTMLFileWriterTest extends TestCase
                     "contentUrl" =>  "http://media.uitdatabank.be/20140715/p18qn74oth1uvnnpidhj1i6t1f9p1.png",
                     "thumbnailUrl" =>  "http://media.uitdatabank.be/20140715/p18qn74oth1uvnnpidhj1i6t1f9p1.png",
                     "description" =>  "De Kortste Nacht",
-                    "copyrightHolder" =>  "Rode Ridder"
-                )
+                    "copyrightHolder" =>  "Rode Ridder",
+                ),
             ),
             array(
                 'image' => 'http://media.uitdatabank.be/20130805/8d455579-2207-4643-bdaf-a514da64697b.JPG',
@@ -167,8 +167,8 @@ class HTMLFileWriterTest extends TestCase
                     "contentUrl" =>  "http://media.uitdatabank.be/20140715/p18qn74oth1uvnnpidhj1i6t1f9p1.png",
                     "thumbnailUrl" =>  "http://media.uitdatabank.be/20140715/p18qn74oth1uvnnpidhj1i6t1f9p1.png",
                     "description" =>  "familiespel",
-                    "copyrightHolder" =>  "Vliegende Hollander"
-                )
+                    "copyrightHolder" =>  "Vliegende Hollander",
+                ),
             ),
         );
 
@@ -203,7 +203,7 @@ class HTMLFileWriterTest extends TestCase
                 ],
                 'price' => 'Niet ingevoerd',
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
-                ]
+                ],
         ];
 
         $fileWriter = $this->createHTMLFileWriter(
@@ -239,7 +239,7 @@ class HTMLFileWriterTest extends TestCase
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
-            ]
+            ],
         ];
 
         $fileWriter = $this->createHTMLFileWriter(
@@ -275,7 +275,7 @@ class HTMLFileWriterTest extends TestCase
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 4,
                 'taalicoonDescription' => 'Je begrijpt veel Nederlands en spreekt het goed.',
-            ]
+            ],
         ];
 
         $fileWriter = $this->createHTMLFileWriter(
@@ -313,9 +313,9 @@ class HTMLFileWriterTest extends TestCase
                 'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
                 'brands' => [
                     'uitpas',
-                    'vlieg'
-                ]
-            ]
+                    'vlieg',
+                ],
+            ],
         ];
 
         $fileWriter = $this->createHTMLFileWriter(
@@ -352,10 +352,10 @@ class HTMLFileWriterTest extends TestCase
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
                 'brands' => [
-                    'uitpas'
+                    'uitpas',
                 ],
-                'ageFrom' => '5'
-            ]
+                'ageFrom' => '5',
+            ],
         ];
 
         $fileWriter = $this->createHTMLFileWriter(
@@ -475,7 +475,7 @@ class HTMLFileWriterTest extends TestCase
                 'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  '.'ma 30/03/15 van 13:30 tot 16:30 ',
                 'taalicoonCount' => 1,
                 'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
-            ]
+            ],
         ];
 
         $fileWriter = $this->createHTMLFileWriter(
@@ -483,7 +483,7 @@ class HTMLFileWriterTest extends TestCase
                 'brand' => 'custom',
                 'logo' => 'img/custom.svg',
                 'title' => 'customBrand',
-                'partner' => true
+                'partner' => true,
             )
         );
 

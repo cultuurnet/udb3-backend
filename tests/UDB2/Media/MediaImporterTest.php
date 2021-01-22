@@ -62,7 +62,7 @@ class MediaImporterTest extends TestCase
                     new CopyrightHolder('Zelf gemaakt'),
                     Url::fromNative('http://85.255.197.172/images/20140108/9554d6f6-bed1-4303-8d42-3fcec4601e0e.jpg'),
                     new Language('nl')
-                )
+                ),
             ]));
 
         $this->mediaManager

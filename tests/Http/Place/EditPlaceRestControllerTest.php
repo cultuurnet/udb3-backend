@@ -143,7 +143,7 @@ class EditPlaceRestControllerTest extends TestCase
         $expectedResponseContent = json_encode(
             [
                 "placeId" => "A14DD1C8-0F9C-4633-B56A-A908F009AD94",
-                "url" => "http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94"
+                "url" => "http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94",
             ]
         );
 
@@ -178,7 +178,7 @@ class EditPlaceRestControllerTest extends TestCase
         $expectedResponseContent = json_encode(
             [
                 "placeId" => "A14DD1C8-0F9C-4633-B56A-A908F009AD94",
-                "url" => "http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94"
+                "url" => "http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94",
             ]
         );
 
@@ -261,11 +261,11 @@ class EditPlaceRestControllerTest extends TestCase
                 "name" => "foo",
                 "type" => [
                     "id" => "1.8.2",
-                    "label" => "PARTY!"
+                    "label" => "PARTY!",
                 ],
                 "theme" => [
                     "id" => "6.6.6",
-                    "label" => "Pentagrams"
+                    "label" => "Pentagrams",
                 ],
                 "address" => [
                     "streetAddress" => "acmelane 12",

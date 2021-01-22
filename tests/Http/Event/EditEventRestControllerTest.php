@@ -198,7 +198,7 @@ class EditEventRestControllerTest extends TestCase
     public function it_copies_an_event()
     {
         $calendarData = json_encode([
-            'calenderType' => 'permanent'
+            'calenderType' => 'permanent',
         ]);
 
         $request = new Request([], [], [], [], [], [], $calendarData);
@@ -330,11 +330,11 @@ class EditEventRestControllerTest extends TestCase
                 "name" => "foo",
                 "type" => [
                     "id" => "1.8.2",
-                    "label" => "PARTY!"
+                    "label" => "PARTY!",
                 ],
                 "theme" => [
                     "id" => "6.6.6",
-                    "label" => "Pentagrams"
+                    "label" => "Pentagrams",
                 ],
                 "location" => [
                     "id" => "fe282e4f-35f5-480d-a90b-2720ab883b0a",

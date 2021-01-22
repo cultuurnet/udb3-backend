@@ -68,7 +68,7 @@ class EditMediaRestControllerTest extends TestCase
                     [],
                     [
                         'copyrightHolder' => ' Dwight Hooker',
-                        'description' => 'Lenna'
+                        'description' => 'Lenna',
                     ],
                     [],
                     [],

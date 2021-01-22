@@ -91,7 +91,7 @@ class UpdateStatusValidatorTest extends TestCase
                 ],
                 [
                     'reason' => 'Should be an object with language codes as properties and string values',
-                ]
+                ],
             ],
             'invalid reason language' => [
                 [
@@ -100,8 +100,8 @@ class UpdateStatusValidatorTest extends TestCase
                 ],
                 [
                     'reason.foo' => 'Language key should be a string of exactly 2 characters',
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }

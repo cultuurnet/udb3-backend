@@ -26,7 +26,7 @@ class HttpCalendarSummaryRepositoryTest extends TestCase
             'GET',
             'http://uitdatabank.io/events/D352C4E6-90C6-4120-8DBB-A09B486170CD/calsum?format=lg',
             [
-                'Accept' => 'text/plain'
+                'Accept' => 'text/plain',
             ]
         );
 
