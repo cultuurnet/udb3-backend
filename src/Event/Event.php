@@ -6,6 +6,7 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
+use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\ContactPoint;
@@ -265,8 +266,10 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         // Just clear the contact point.
         $this->contactPoint = null;
 
-        // Just clear the calendar.
-        $this->calendar = null;
+        // Correctly set the Calendar
+        // We need this for future Status updates
+        $calendarFactory = new CalendarFactory();
+        $this->calendar = $calendarFactory->createFromCdbCalendar($udb2Event->getCalendar());
 
         // Correctly set the age range to avoid issues with deleting age range.
         // after an update from UDB2.
