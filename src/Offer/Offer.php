@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractContactPointUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Events\AbstractFacilitiesUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractGeoCoordinatesUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelsImported;
@@ -155,6 +156,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected $isDeleted = false;
 
     /**
+     * @var string|null
+     */
+    private $ownerId;
+
+    /**
      * Offer constructor.
      */
     public function __construct()
@@ -169,6 +175,23 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $this->typicalAgeRange = null;
         $this->bookingInfo = null;
     }
+
+    public function changeOwner(string $newOwnerId): void
+    {
+        // Will always be true for the first call to changeOwner() since we have no way to know who the creator was
+        // inside the aggregate root. That's stored in the metadata of the DomainMessage, not the payload, and Broadway
+        // does not pass that metadata to the apply...() methods.
+        if ($this->ownerId !== $newOwnerId) {
+            $this->apply($this->createOwnerChangedEvent($newOwnerId));
+        }
+    }
+
+    protected function applyOwnerChanged(AbstractOwnerChanged $ownerChanged): void
+    {
+        $this->ownerId = $ownerChanged->getNewOwnerId();
+    }
+
+    abstract protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged;
 
     /**
      * @param EventType $type

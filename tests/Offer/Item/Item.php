@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
+use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\CalendarUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ContactPointUpdated;
@@ -36,6 +37,7 @@ use CultuurNet\UDB3\Offer\Item\Events\Moderation\Published;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Offer\Item\Events\OrganizerUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\OwnerChanged;
 use CultuurNet\UDB3\Offer\Item\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
@@ -74,6 +76,11 @@ class Item extends Offer
     protected function applyItemDeleted(ItemDeleted $event): void
     {
         $this->isDeleted = true;
+    }
+
+    protected function createOwnerChangedEvent($newOwnerId): AbstractOwnerChanged
+    {
+        return new OwnerChanged($this->id, $newOwnerId);
     }
 
     /**
