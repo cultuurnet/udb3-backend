@@ -101,7 +101,7 @@ class CalendarJSONParserTest extends TestCase
     public function it_can_get_the_status()
     {
         $status = new Status(
-            StatusType::unavailable(),
+            StatusType::temporarilyUnavailable(),
             [
                 new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
                 new StatusReason(new Language('fr'), 'Reason in het Frans'),
@@ -126,9 +126,17 @@ class CalendarJSONParserTest extends TestCase
         $endDatePeriod2 = \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00');
 
         $timestamps = [
-            new Timestamp(
+            (new Timestamp(
                 $startDatePeriod1,
                 $endDatePeriod1
+            ))->withStatus(
+                new Status(
+                    StatusType::temporarilyUnavailable(),
+                    [
+                        new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
+                        new StatusReason(new Language('fr'), 'Reason in het Frans'),
+                    ]
+                )
             ),
             (new Timestamp(
                 $startDatePeriod2,
