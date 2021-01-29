@@ -101,7 +101,7 @@ class CalendarJSONParserTest extends TestCase
     public function it_can_get_the_status()
     {
         $status = new Status(
-            StatusType::unavailable(),
+            StatusType::temporarilyUnavailable(),
             [
                 new StatusReason(new Language('nl'), 'Reason in het Nederlands'),
                 new StatusReason(new Language('fr'), 'Reason in het Frans'),
