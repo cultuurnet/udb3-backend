@@ -60,6 +60,7 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/(places|labels)$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
+            ->with(new RequestMatcher('^/uitpas/.*', null, 'GET'))
     ],
     'cors-preflight' => array(
         'pattern' => $app['cors_preflight_request_matcher'],
