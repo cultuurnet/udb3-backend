@@ -85,4 +85,13 @@ class DBALRepository implements PermissionRepositoryInterface, PermissionQueryIn
             // permission record is already in place.
         }
     }
+
+    public function markOfferEditableByNewUser(StringLiteral $eventId, StringLiteral $userId): void
+    {
+        $this->connection->update(
+            $this->tableName->toNative(),
+            ['user_id' => $userId->toNative()],
+            [$this->idField->toNative() => $eventId->toNative(),]
+        );
+    }
 }
