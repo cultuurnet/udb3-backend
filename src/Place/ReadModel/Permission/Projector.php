@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -70,6 +71,14 @@ class Projector implements EventListenerInterface
         $this->permissionRepository->markOfferEditableByUser(
             new StringLiteral($placeCreated->getPlaceId()),
             $ownerId
+        );
+    }
+
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
+    {
+        $this->permissionRepository->markOfferEditableByNewUser(
+            new StringLiteral($ownerChanged->getOfferId()),
+            new StringLiteral($ownerChanged->getNewOwnerId())
         );
     }
 }

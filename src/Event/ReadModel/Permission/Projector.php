@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
+use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -73,6 +74,14 @@ class Projector implements EventListenerInterface
         DomainMessage $domainMessage
     ) {
         $this->makeOfferEditableByUser($eventCopied->getItemId(), $domainMessage);
+    }
+
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
+    {
+        $this->permissionRepository->markOfferEditableByNewUser(
+            new StringLiteral($ownerChanged->getOfferId()),
+            new StringLiteral($ownerChanged->getNewOwnerId())
+        );
     }
 
     /**
