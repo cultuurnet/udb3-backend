@@ -122,7 +122,6 @@ $consoleApp->add(new UpdateOfferStatusCommand(OfferType::PLACE(), $app['event_co
 $consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
 $consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_permission_query']));
 
-
 try {
     $consoleApp->run();
 } catch (\Throwable $throwable) {
