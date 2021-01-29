@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
 use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
 use CultuurNet\UDB3\Silex\SentryErrorHandler;
+use CultuurNet\UDB3\Silex\UiTPAS\UiTPASControllerProvider;
 use Sentry\State\HubInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -216,6 +217,7 @@ $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvide
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
 $app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProvider());
 $app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControllerProvider());
+$app->mount('/uitpas', new UiTPASControllerProvider());
 
 $app->get(
     '/user',
