@@ -7,4 +7,4 @@
 ### Fixed
 
 ---
-Ticket:
+Ticket: https://jira.uitdatabank.be/browse/...
