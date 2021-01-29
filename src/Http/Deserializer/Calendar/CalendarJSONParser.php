@@ -54,8 +54,9 @@ class CalendarJSONParser
 
             $timestamp = new Timestamp(new \DateTime($timeSpan['start']), new \DateTime($timeSpan['end']));
 
-            if (isset($timeSpan['status'])) {
-                $timestamp = $timestamp->withStatus(Status::deserialize($timeSpan['status']));
+            $status = isset($timeSpan['status']) ? Status::deserialize($timeSpan['status']) : $this->getStatus($data);
+            if ($status) {
+                $timestamp = $timestamp->withStatus($status);
             }
 
             $timestamps[] = $timestamp;
