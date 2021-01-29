@@ -14,6 +14,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
+use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
@@ -663,6 +664,7 @@ $subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Appli
         $commandBus->subscribe($app['organizer_geocoordinates_command_handler']);
         $commandBus->subscribe($app[ProductionCommandHandler::class]);
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
+        $commandBus->subscribe($app[ChangeOwner::class]);
     };
 
     if ($commandBus instanceof LazyLoadingCommandBus) {
