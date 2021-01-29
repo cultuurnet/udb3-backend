@@ -39,6 +39,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
+use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -511,6 +512,17 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->audience = $audienceUpdated->getAudience()->serialize();
 
         return $document->withBody($jsonLD);
+    }
+
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): JsonDocument
+    {
+        return $this->loadDocumentFromRepositoryByItemId($ownerChanged->getOfferId())
+            ->applyAssoc(
+                function (array $jsonLd) use ($ownerChanged) {
+                    $jsonLd['creator'] = $ownerChanged->getNewOwnerId();
+                    return $jsonLd;
+                }
+            );
     }
 
     /**

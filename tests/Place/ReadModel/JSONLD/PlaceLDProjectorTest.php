@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\MarkedAsCanonical;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
+use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -351,6 +352,31 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertEquals($jsonLD, $actualJsonLD);
+    }
+
+    /**
+     * @test
+     */
+    public function it_changes_the_creator_if_the_owner_changes(): void
+    {
+        $eventId = '5c83ab42-1a6d-497d-8580-c85681250a94';
+        $originalOwner = 'f7a4c1d9-dd05-40e8-98fe-637265ce8530';
+        $newOwner = '55153b44-c43b-4bcc-80cd-e9beb9f3557d';
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode(['creator' => $originalOwner])
+        );
+        $this->documentRepository->save($initialDocument);
+
+        $ownerChanged = new OwnerChanged($eventId, $newOwner);
+
+        $updatedJsonLd = $this->project(
+            $ownerChanged,
+            $eventId
+        );
+
+        $this->assertEquals($updatedJsonLd->creator, $newOwner);
     }
 
     /**

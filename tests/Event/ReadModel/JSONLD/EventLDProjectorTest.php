@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
+use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
@@ -330,6 +331,31 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 '20a72430-7e3e-4b75-ab59-043156b3169c',
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_changes_the_creator_if_the_owner_changes(): void
+    {
+        $eventId = '5c83ab42-1a6d-497d-8580-c85681250a94';
+        $originalOwner = 'f7a4c1d9-dd05-40e8-98fe-637265ce8530';
+        $newOwner = '55153b44-c43b-4bcc-80cd-e9beb9f3557d';
+
+        $initialDocument = new JsonDocument(
+            $eventId,
+            json_encode(['creator' => $originalOwner])
+        );
+        $this->documentRepository->save($initialDocument);
+
+        $ownerChanged = new OwnerChanged($eventId, $newOwner);
+
+        $updatedJsonLd = $this->project(
+            $ownerChanged,
+            $eventId
+        );
+
+        $this->assertEquals($updatedJsonLd->creator, $newOwner);
     }
 
     /**
@@ -1293,17 +1319,13 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
     }
 
-    /**
-     * @param string $eventId
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     * @return EventCreated
-     */
     private function createEventCreated(
-        $eventId,
-        Calendar $calendar,
+        string $eventId,
+        Calendar $calendar = null,
         Theme $theme = null
-    ) {
+    ): EventCreated {
+        $calendar = $calendar ?? new Calendar(CalendarType::PERMANENT());
+
         return new EventCreated(
             $eventId,
             new Language('en'),
