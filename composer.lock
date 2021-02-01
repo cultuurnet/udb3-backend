@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd3f7ad4b9b81f4b85aab2b56b004ec0",
+    "content-hash": "36eeb7c0a8f2943b85dad0bc58d6eb14",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -983,23 +983,23 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "1.9.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "583c4a0c82a7f0f5a8c60df5f2d3c2b10417ecc1"
+                "reference": "dc4aa79d42801e557794834e590ec2454f9d06f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/583c4a0c82a7f0f5a8c60df5f2d3c2b10417ecc1",
-                "reference": "583c4a0c82a7f0f5a8c60df5f2d3c2b10417ecc1",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/dc4aa79d42801e557794834e590ec2454f9d06f2",
+                "reference": "dc4aa79d42801e557794834e590ec2454f9d06f2",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/cdb": "~2.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.4.0",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7"
             },
             "type": "library",
@@ -1021,33 +1021,12 @@
             ],
             "authors": [
                 {
-                    "name": "Sven Houtmeyers",
-                    "email": "sven.houtmeyers@cultuurnet.be"
-                },
-                {
-                    "name": "Luk Dens",
-                    "email": "luk.dens@cultuurnet.be"
-                },
-                {
-                    "name": "Davy Van Den Bremt"
-                },
-                {
-                    "name": "Jochen Stals"
-                },
-                {
-                    "name": "Nils Destoop"
-                },
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Hans Langouche",
-                    "email": "hans@2dotstwice.be"
+                    "name": "Publiq vwz",
+                    "email": "dev@publiq.be"
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2019-11-05T14:22:30+00:00"
+            "time": "2021-02-01T15:03:11+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -10630,6 +10609,7 @@
     "stability-flags": {
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
+        "cultuurnet/culturefeed-php": 20,
         "cultuurnet/search-v3": 20,
         "doctrine/migrations": 20
     },
