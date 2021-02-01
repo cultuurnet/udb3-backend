@@ -10,7 +10,10 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.1",
+    "php": ">=7.1",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "ext-tidy": "*",
     "2dotstwice/silex-feature-toggles-provider": "~0.1",
     "auth0/auth0-php": "^5.7",
     "broadway/broadway": "~0.10",
