@@ -68,7 +68,7 @@ class ChangeOfferOwnerInBulk extends AbstractCommand
             } catch (Error $error) {
                 $logger->error(
                     sprintf(
-                        'An error occurred while chaging owner of offer "%s": %s with message %s',
+                        'An error occurred while changing owner of offer "%s": %s with message %s',
                         $offerId,
                         get_class($error),
                         $error->getMessage()
