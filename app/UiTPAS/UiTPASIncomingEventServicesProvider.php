@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Silex\SentryErrorHandler;
 use CultuurNet\UDB3\Silex\SentryPsrLoggerDecorator;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
-use CultuurNet\UDB3\UiTPAS\Label\HttpUiTPASLabelsRepository;
-use Guzzle\Http\Client;
+use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
+use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -79,11 +79,10 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
             }
         );
 
-        $app['uitpas_label_repository'] = $app->share(
+        $app[UiTPASLabelsRepository::class] = $app->share(
             function (Application $app) {
-                return new HttpUiTPASLabelsRepository(
-                    new Client(),
-                    $app['config']['uitpas']['labels_endpoint']
+                return InMemoryUiTPASLabelsRepository::fromStrings(
+                    $app['config']['uitpas']['labels']
                 );
             }
         );
@@ -92,7 +91,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new EventProcessManager(
                     $app['event_command_bus'],
-                    $app['uitpas_label_repository'],
+                    $app[UiTPASLabelsRepository::class],
                     $app['uitpas_logger']
                 );
             }
