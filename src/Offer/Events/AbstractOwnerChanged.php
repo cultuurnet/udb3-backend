@@ -16,12 +16,12 @@ abstract class AbstractOwnerChanged implements SerializableInterface
     /**
      * @var string
      */
-    private $newCreator;
+    private $newOwnerId;
 
-    final public function __construct(string $offerId, string $newCreator)
+    final public function __construct(string $offerId, string $newOwnerId)
     {
         $this->offerId = $offerId;
-        $this->newCreator = $newCreator;
+        $this->newOwnerId = $newOwnerId;
     }
 
     public function getOfferId(): string
@@ -31,19 +31,19 @@ abstract class AbstractOwnerChanged implements SerializableInterface
 
     public function getNewOwnerId(): string
     {
-        return $this->newCreator;
+        return $this->newOwnerId;
     }
 
     public function serialize(): array
     {
         return array(
             'offer_id' => $this->offerId,
-            'new_creator' => $this->newCreator,
+            'new_owner_id' => $this->newOwnerId,
         );
     }
 
     public static function deserialize(array $data): self
     {
-        return new static($data['offer_id'], $data['new_creator']);
+        return new static($data['offer_id'], $data['new_owner_id']);
     }
 }
