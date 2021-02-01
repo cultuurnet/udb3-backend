@@ -1,0 +1,28 @@
+<weekscheme>
+    <monday opentype="open">
+        <openingtime from="09:00:00" to="12:00:00"/>
+        <openingtime from="13:00:00" to="17:00:00"/>
+    </monday>
+    <tuesday opentype="open">
+        <openingtime from="09:00:00" to="12:00:00"/>
+        <openingtime from="13:00:00" to="17:00:00"/>
+    </tuesday>
+    <wednesday opentype="open">
+        <openingtime from="09:00:00" to="12:00:00"/>
+        <openingtime from="13:00:00" to="17:00:00"/>
+    </wednesday>
+    <thursday opentype="open">
+        <openingtime from="09:00:00" to="12:00:00"/>
+        <openingtime from="13:00:00" to="17:00:00"/>
+    </thursday>
+    <friday opentype="open">
+        <openingtime from="09:00:00" to="12:00:00"/>
+        <openingtime from="13:00:00" to="17:00:00"/>
+    </friday>
+    <saturday opentype="open">
+        <openingtime from="10:00:00" to="16:00:00"/>
+    </saturday>
+    <sunday opentype="open">
+        <openingtime from="10:00:00" to="16:00:00"/>
+    </sunday>
+</weekscheme>
