@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
 use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
 use CultuurNet\UDB3\Silex\SentryErrorHandler;
+use CultuurNet\UDB3\Silex\UiTPAS\UiTPASControllerProvider;
 use Sentry\State\HubInterface;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,6 +60,7 @@ $app['security.firewalls'] = array(
             ->with(new RequestMatcher('^/(places|labels)$', null, 'GET'))
             ->with(new RequestMatcher('^/organizers/suggest/.*', null, 'GET'))
             ->with(new RequestMatcher('^/jobs/', null, 'GET'))
+            ->with(new RequestMatcher('^/uitpas/.*', null, 'GET'))
     ],
     'cors-preflight' => array(
         'pattern' => $app['cors_preflight_request_matcher'],
@@ -216,6 +218,7 @@ $app->mount('/labels', new \CultuurNet\UDB3\Silex\Labels\LabelsControllerProvide
 $app->mount('/jobs', new \CultuurNet\UDB3\Silex\Jobs\JobsControllerProvider());
 $app->mount('/contexts', new \CultuurNet\UDB3\Silex\JSONLD\ContextControllerProvider());
 $app->mount('/productions', new \CultuurNet\UDB3\Silex\Event\ProductionControllerProvider());
+$app->mount('/uitpas', new UiTPASControllerProvider());
 
 $app->get(
     '/user',
