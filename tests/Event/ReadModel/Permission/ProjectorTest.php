@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
+use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -183,5 +184,33 @@ class ProjectorTest extends TestCase
             );
 
         $this->projector->handle($msg);
+    }
+
+    /**
+     * @test
+     */
+    public function it_moves_permission_to_a_new_user_if_the_owner_changed(): void
+    {
+        $eventId = '9a18a42f-d80d-4784-8c34-8b8b36dd6080';
+        $newOwnerId = '20656964-10cd-4ca7-85f2-997137479900';
+        $ownerChanged = new OwnerChanged($eventId, $newOwnerId);
+
+        // Set user_id in the metadata to a nil uuid because it's most likely this event will be recorded when running
+        // a CLI command, which is run as the system user (= nil uuid).
+        $domainMessage = DomainMessage::recordNow(
+            $eventId,
+            1,
+            new Metadata(['user_id' => '00000000-0000-0000-0000-000000000000']),
+            $ownerChanged
+        );
+
+        $this->repository->expects($this->once())
+            ->method('markOfferEditableByNewUser')
+            ->with(
+                new StringLiteral($eventId),
+                new StringLiteral($newOwnerId)
+            );
+
+        $this->projector->handle($domainMessage);
     }
 }

@@ -107,4 +107,36 @@ class DBALRepositoryTest extends TestCase
             $this->repository->getEditableOffers($johnDoe)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_updates_the_user_id_if_explicitly_requested(): void
+    {
+        $johnDoe = new StringLiteral('abc');
+        $janeDoe = new StringLiteral('def');
+        $editableByJohnDoe = [
+            new StringLiteral('123'),
+            new StringLiteral('456'),
+            new StringLiteral('789'),
+        ];
+
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
+
+        $this->repository->markOfferEditableByNewUser(new StringLiteral('456'), $janeDoe);
+
+        $this->assertEquals(
+            [
+                new StringLiteral('456'),
+            ],
+            $this->repository->getEditableOffers($janeDoe)
+        );
+        $this->assertEquals(
+            [
+                new StringLiteral('123'),
+                new StringLiteral('789'),
+            ],
+            $this->repository->getEditableOffers($johnDoe)
+        );
+    }
 }

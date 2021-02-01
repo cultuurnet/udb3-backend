@@ -7,6 +7,8 @@ use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\ConfigWriter;
+use CultuurNet\UDB3\Silex\Console\ChangeOfferOwner;
+use CultuurNet\UDB3\Silex\Console\ChangeOfferOwnerInBulk;
 use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
 use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
@@ -117,7 +119,8 @@ $consoleApp->add(
 );
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::EVENT(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::PLACE(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
-
+$consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
+$consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_permission_query']));
 
 try {
     $consoleApp->run();

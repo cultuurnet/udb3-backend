@@ -15,4 +15,9 @@ interface PermissionRepositoryInterface
         StringLiteral $offerId,
         StringLiteral $uitId
     );
+
+    public function markOfferEditableByNewUser(
+        StringLiteral $offerId,
+        StringLiteral $userId
+    ): void;
 }

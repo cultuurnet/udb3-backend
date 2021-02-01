@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Place\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Place\Events\OrganizerUpdated;
+use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -402,6 +403,17 @@ class PlaceLDProjector extends OfferLDProjector implements EventListenerInterfac
             }
             return $placeLd;
         });
+    }
+
+    protected function applyOwnerChanged(OwnerChanged $ownerChanged): JsonDocument
+    {
+        return $this->loadDocumentFromRepositoryByItemId($ownerChanged->getOfferId())
+            ->applyAssoc(
+                function (array $jsonLd) use ($ownerChanged) {
+                    $jsonLd['creator'] = $ownerChanged->getNewOwnerId();
+                    return $jsonLd;
+                }
+            );
     }
 
     /**

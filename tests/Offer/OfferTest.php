@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Offer\Item\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\LabelsImported;
+use CultuurNet\UDB3\Offer\Item\Events\OwnerChanged;
 use CultuurNet\UDB3\Offer\Item\Events\ThemeUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\TitleTranslated;
@@ -102,6 +103,36 @@ class OfferTest extends AggregateRootScenarioTestCase
             Url::fromNative('http://foo.bar/media/my_favorite_giphy_gif.gif'),
             new Language('en')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_only_change_the_owner_with_a_check_after_the_first_change(): void
+    {
+        $itemId = '77b4df58-b7e9-40cf-979f-ec741a072282';
+
+        $newOwner1 = '8d4688f8-ef36-4a65-bac8-00dc846ed624';
+        $newOwner2 = 'abd24691-1cc7-49c7-a85f-8dc4498f8072';
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+            ])
+            ->when(
+                function (Item $item) use ($newOwner1, $newOwner2) {
+                    $item->changeOwner($newOwner1);
+                    $item->changeOwner($newOwner1);
+                    $item->changeOwner($newOwner2);
+                    $item->changeOwner($newOwner2);
+                    $item->changeOwner($newOwner1);
+                }
+            )
+            ->then([
+                new OwnerChanged($itemId, $newOwner1),
+                new OwnerChanged($itemId, $newOwner2),
+                new OwnerChanged($itemId, $newOwner1),
+            ]);
     }
 
     /**
