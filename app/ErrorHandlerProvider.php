@@ -3,6 +3,8 @@
 namespace CultuurNet\UDB3\Silex;
 
 use Crell\ApiProblem\ApiProblem;
+use CultureFeed_Exception;
+use CultureFeed_HttpException;
 use CultuurNet\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
@@ -52,6 +54,20 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         );
 
         $app->error(
+            function (CultureFeed_Exception $e) {
+                $problem = $this->createNewApiProblemFromCultureFeedException($e);
+                return new ApiProblemJsonResponse($problem);
+            }
+        );
+
+        $app->error(
+            function (CultureFeed_HttpException $e) {
+                $problem = $this->createNewApiProblemFromCultureFeedException($e);
+                return new ApiProblemJsonResponse($problem);
+            }
+        );
+
+        $app->error(
             function (Exception $e) {
                 $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
@@ -64,6 +80,29 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $problem = new ApiProblem($e->getMessage());
         $problem->setStatus($e->getCode() ?: ApiProblemJsonResponse::HTTP_BAD_REQUEST);
         return $problem;
+    }
+
+    /**
+     * Returns a new ApiProblem just like createNewApiProblem(), but also removes some internal debug info pertaining to
+     * CultureFeed from the error message.
+     *
+     * E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..." (etc)
+     * becomes "event is not known in uitpas ".
+     * The trailing space could easily be removed but it's there for backward compatibility with systems that might have
+     * implemented a comparison on the error message when this was introduced in udb3-uitpas-service in the past.
+     */
+    private function createNewApiProblemFromCultureFeedException(Exception $exception): ApiProblem
+    {
+        $apiProblem = $this->createNewApiProblem($exception);
+
+        $title = $apiProblem->getTitle();
+
+        // Remove "URL CALLED" and everything after it.
+        $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
+
+        $clonedApiProblem = clone $apiProblem;
+        $clonedApiProblem->setTitle($formattedTitle);
+        return $clonedApiProblem;
     }
 
     public function boot(Application $app): void

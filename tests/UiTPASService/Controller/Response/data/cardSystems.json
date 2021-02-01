@@ -1,0 +1,31 @@
+{
+    "1": {
+        "id": 1,
+        "name": "Card system 1",
+        "distributionKeys": {
+            "1": {
+                "id": 1,
+                "name": "Distribution key 1"
+            },
+            "2": {
+                "id": 2,
+                "name": "Distribution key 2"
+            }
+        }
+    },
+    "2": {
+        "id": 2,
+        "name": "Card system 2",
+        "distributionKeys": {
+            "3": {
+                "id": 3,
+                "name": "Distribution key 3"
+            }
+        }
+    },
+    "3": {
+        "id": 3,
+        "name": "Card system 3",
+        "distributionKeys": []
+    }
+}
