@@ -16,7 +16,7 @@ final class StatusValidator extends Validator
         $rules = [
             new ArrayType(),
             new Key('type', new StatusTypeValidator(), false),
-            new Key('reason', new TranslatedStringValidator('reason'), false)
+            new Key('reason', new TranslatedStringValidator('reason'), false),
         ];
 
         parent::__construct($rules);

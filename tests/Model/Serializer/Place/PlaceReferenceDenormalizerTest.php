@@ -69,7 +69,7 @@ class PlaceReferenceDenormalizerTest extends TestCase
                     'streetAddress' => 'Henegouwenkaai 41-43',
                     'postalCode' => '1080',
                     'addressLocality' => 'Brussel',
-                    'addressCountry' => 'BE'
+                    'addressCountry' => 'BE',
                 ],
             ],
             'terms' => [
@@ -126,7 +126,7 @@ class PlaceReferenceDenormalizerTest extends TestCase
                 'streetAddress' => 'Henegouwenkaai 41-43',
                 'postalCode' => '1080',
                 'addressLocality' => 'Brussel',
-                'addressCountry' => 'BE'
+                'addressCountry' => 'BE',
             ],
         ];
 

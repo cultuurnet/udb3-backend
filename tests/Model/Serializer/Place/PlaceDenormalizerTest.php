@@ -109,7 +109,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -174,7 +174,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -245,7 +245,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -311,7 +311,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -380,7 +380,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -463,7 +463,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -560,7 +560,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -708,7 +708,7 @@ class PlaceDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
             'description' => [
                 'nl' => 'Voorbeeld beschrijving',

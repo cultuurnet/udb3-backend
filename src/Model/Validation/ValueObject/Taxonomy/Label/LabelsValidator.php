@@ -20,7 +20,7 @@ class LabelsValidator extends Validator
                     (new LabelValidator())->setName('each label')
                 ),
                 new AlwaysValid()
-            )
+            ),
         ];
 
         parent::__construct($rules);

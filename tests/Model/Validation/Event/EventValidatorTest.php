@@ -27,7 +27,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -36,7 +36,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
         ];
 
@@ -246,7 +246,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'foobar',
             'location' => [
@@ -279,7 +279,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'single',
             'location' => [
@@ -310,7 +310,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'single',
             'startDate' => '12/01/2018',
@@ -343,7 +343,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'single',
             'startDate' => '2018-03-05T13:44:09+01:00',
@@ -374,7 +374,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'single',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -413,7 +413,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'single',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -456,7 +456,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'location' => [
@@ -488,7 +488,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -531,7 +531,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -569,7 +569,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -599,7 +599,7 @@ class EventValidatorTest extends TestCase
         $expectedErrors = [
             'Each item in subEvent must be valid',
             'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
-            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"'
+            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -614,7 +614,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -658,7 +658,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -718,7 +718,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -776,7 +776,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -842,7 +842,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'multiple',
             'startDate' => '2018-03-05T13:44:09+01:00',
@@ -885,7 +885,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'location' => [
@@ -916,7 +916,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '12/01/2018',
@@ -949,7 +949,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -997,7 +997,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -1037,7 +1037,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -1077,7 +1077,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -1122,7 +1122,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -1168,7 +1168,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -1206,7 +1206,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -1242,7 +1242,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -1280,7 +1280,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -1323,7 +1323,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1356,7 +1356,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1389,7 +1389,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1418,7 +1418,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1443,7 +1443,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1453,7 +1453,7 @@ class EventValidatorTest extends TestCase
                 [
                     'label' => 'foo',
                     'domain' => 'bar',
-                ]
+                ],
             ],
         ];
 
@@ -1473,7 +1473,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1482,7 +1482,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => 1,
-                ]
+                ],
             ],
         ];
 
@@ -1502,7 +1502,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1511,7 +1511,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'foo',
@@ -1537,7 +1537,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1546,7 +1546,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1565,7 +1565,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1574,7 +1574,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1598,7 +1598,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1607,7 +1607,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1633,7 +1633,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1642,7 +1642,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1674,7 +1674,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1683,14 +1683,14 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
             ],
             'labels' => [
                 'foo',
-                $longLabel
+                $longLabel,
             ],
         ];
 
@@ -1710,7 +1710,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1719,14 +1719,14 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
             ],
             'labels' => [
                 'foo',
-                'b;r'
+                'b;r',
             ],
         ];
 
@@ -1746,7 +1746,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1755,7 +1755,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1778,7 +1778,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1787,7 +1787,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1811,7 +1811,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1820,7 +1820,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1846,7 +1846,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1855,7 +1855,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'audience' => [
                 'audienceType' => 'everyone',
@@ -1878,7 +1878,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1887,7 +1887,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'description' => [],
         ];
@@ -1909,7 +1909,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1918,7 +1918,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'description' => [
                 'nl' => '',
@@ -1941,7 +1941,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1950,7 +1950,7 @@ class EventValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.0',
-                ]
+                ],
             ],
             'description' => [
                 'nl' => 'Test beschrijving',
@@ -2032,7 +2032,7 @@ class EventValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'status' => 'should not be a string',
             'calendarType' => 'single',
@@ -2147,7 +2147,7 @@ class EventValidatorTest extends TestCase
             'typicalAgeRange' => [
                 'from' => 8,
                 'to' => 12,
-            ]
+            ],
         ];
 
         // @codingStandardsIgnoreStart

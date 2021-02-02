@@ -304,7 +304,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'foobar',
             'location' => [
@@ -343,7 +343,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'location' => [
@@ -382,7 +382,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '12/01/2018',
@@ -423,7 +423,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -479,7 +479,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -527,7 +527,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -575,7 +575,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'periodic',
             'startDate' => '2018-02-28T13:44:09+01:00',
@@ -628,7 +628,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -682,7 +682,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -728,7 +728,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -772,7 +772,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -818,7 +818,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'openingHours' => [
@@ -869,7 +869,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -902,7 +902,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -912,7 +912,7 @@ class PlaceValidatorTest extends TestCase
                 [
                     'label' => 'foo',
                     'domain' => 'bar',
-                ]
+                ],
             ],
             'address' => [
                 'nl' => [
@@ -940,7 +940,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Example name'
+                'nl' => 'Example name',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -949,7 +949,7 @@ class PlaceValidatorTest extends TestCase
             'terms' => [
                 [
                     'id' => 1,
-                ]
+                ],
             ],
             'address' => [
                 'nl' => [
@@ -977,7 +977,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1008,7 +1008,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1044,7 +1044,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1087,7 +1087,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1120,7 +1120,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1158,7 +1158,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1198,7 +1198,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1235,7 +1235,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1273,7 +1273,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1313,7 +1313,7 @@ class PlaceValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/places/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
-                'nl' => 'Test place'
+                'nl' => 'Test place',
             ],
             'calendarType' => 'permanent',
             'location' => [
@@ -1682,7 +1682,7 @@ class PlaceValidatorTest extends TestCase
             'typicalAgeRange' => [
                 'from' => 8,
                 'to' => 12,
-            ]
+            ],
         ];
 
         // @codingStandardsIgnoreStart

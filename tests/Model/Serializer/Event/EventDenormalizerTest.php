@@ -101,7 +101,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -153,7 +153,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -211,7 +211,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -267,7 +267,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -338,7 +338,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -400,7 +400,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -474,7 +474,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -592,7 +592,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -698,7 +698,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -781,7 +781,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -876,7 +876,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -961,7 +961,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -1031,7 +1031,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -1115,7 +1115,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
         ];
 
@@ -1283,7 +1283,7 @@ class EventDenormalizerTest extends TestCase
             'terms' => [
                 [
                     'id' => '0.50.1.0.1',
-                ]
+                ],
             ],
             'description' => [
                 'nl' => 'Voorbeeld beschrijving',
