@@ -47,6 +47,7 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_uses_primary_decoder_for_parsing()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->parse($this->tokenString)->willReturn($this->token);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
@@ -57,6 +58,7 @@ class WithFallbackJwtDecoderTest extends TestCase
         $result = $withFallBackJwtDecoder->parse($this->tokenString);
         $this->assertEquals($result, $this->token);
 
+        /** @phpstan-ignore-next-line */
         $this->secondaryDecoder->parse($this->tokenString)->shouldNotHaveBeenCalled();
     }
 
@@ -65,7 +67,9 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_fall_backs_to_secondary_decoder()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->parse($this->tokenString)->willThrow(JwtParserException::class);
+        /** @phpstan-ignore-next-line */
         $this->secondaryDecoder->parse($this->tokenString)->willReturn($this->token);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
@@ -83,6 +87,7 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_uses_primary_decoder_for_validation()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->validateData($this->token)->willReturn(true);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
@@ -91,6 +96,7 @@ class WithFallbackJwtDecoderTest extends TestCase
         );
 
         $this->assertTrue($withFallBackJwtDecoder->validateData($this->token));
+        /** @phpstan-ignore-next-line */
         $this->secondaryDecoder->validateData($this->token)->shouldNotHaveBeenCalled();
     }
 
@@ -99,7 +105,9 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_fall_back_to_secondary_decoder_for_validation()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->validateData($this->token)->willReturn(false);
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->validateData($this->token)->willReturn(true);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
@@ -115,6 +123,7 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_uses_primary_decoder_to_verify_claims()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->validateRequiredClaims($this->token)->willReturn(true);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
@@ -123,6 +132,7 @@ class WithFallbackJwtDecoderTest extends TestCase
         );
 
         $this->assertTrue($withFallBackJwtDecoder->validateRequiredClaims($this->token));
+        /** @phpstan-ignore-next-line */
         $this->secondaryDecoder->validateRequiredClaims($this->token)->shouldNotHaveBeenCalled();
     }
 
@@ -131,7 +141,9 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_fall_backs_to_secondary_decoder_to_verify_claims()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->validateRequiredClaims($this->token)->willReturn(false);
+        /** @phpstan-ignore-next-line */
         $this->secondaryDecoder->validateRequiredClaims($this->token)->willReturn(true);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
@@ -147,6 +159,7 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_uses_primary_decoder_to_verify_signature()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->verifySignature($this->token)->willReturn(true);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
@@ -155,6 +168,7 @@ class WithFallbackJwtDecoderTest extends TestCase
         );
 
         $this->assertTrue($withFallBackJwtDecoder->verifySignature($this->token));
+        /** @phpstan-ignore-next-line */
         $this->secondaryDecoder->verifySignature($this->token)->shouldNotHaveBeenCalled();
     }
 
@@ -163,7 +177,9 @@ class WithFallbackJwtDecoderTest extends TestCase
      */
     public function it_fall_backs_to_secondary_decoder_to_verify_signature()
     {
+        /** @phpstan-ignore-next-line */
         $this->primaryDecoder->verifySignature($this->token)->willReturn(false);
+        /** @phpstan-ignore-next-line */
         $this->secondaryDecoder->verifySignature($this->token)->willReturn(true);
 
         $withFallBackJwtDecoder = new FallbackJwtDecoder(
