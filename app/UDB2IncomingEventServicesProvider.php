@@ -4,10 +4,10 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
-use CultuurNet\UDB2DomainEvents\ActorCreatedJSONDeserializer;
-use CultuurNet\UDB2DomainEvents\ActorUpdatedJSONDeserializer;
-use CultuurNet\UDB2DomainEvents\EventCreatedJSONDeserializer;
-use CultuurNet\UDB2DomainEvents\EventUpdatedJSONDeserializer;
+use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreatedJSONDeserializer;
+use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdatedJSONDeserializer;
+use CultuurNet\UDB3\UDB2\DomainEvents\EventCreatedJSONDeserializer;
+use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdatedJSONDeserializer;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractor;
 use CultuurNet\UDB3\Cdb\Event\Any;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
