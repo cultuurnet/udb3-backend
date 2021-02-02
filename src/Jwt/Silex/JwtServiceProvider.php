@@ -94,7 +94,7 @@ class JwtServiceProvider implements ServiceProviderInterface
                     // the entry point id
                     null,
                     // the position of the listener in the stack
-                    'pre_auth'
+                    'pre_auth',
                 ];
             }
         );

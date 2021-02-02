@@ -290,7 +290,7 @@ class JwtDecoderServiceTest extends TestCase
     public function it_checks_that_the_required_claims_are_strings()
     {
         $required = [
-            new Basic('uid', null)
+            new Basic('uid', null),
         ];
 
         $this->expectException(\InvalidArgumentException::class);
