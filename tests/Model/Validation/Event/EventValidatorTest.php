@@ -327,8 +327,8 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for calendarType single',
-            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
-            'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
+            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
+            'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -598,8 +598,8 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'Each item in subEvent must be valid',
-            'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
-            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
+            'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
+            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -933,8 +933,8 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for calendarType periodic',
-            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
-            'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
+            'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
+            'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -2302,7 +2302,7 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'availableFrom must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
+            'availableFrom must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -3129,8 +3129,8 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for bookingInfo',
-            'availabilityStarts must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
-            'availabilityEnds must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
+            'availabilityStarts must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
+            'availabilityEnds must be a valid date. Sample format: "2005-12-30T01:02:03+01:00"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
