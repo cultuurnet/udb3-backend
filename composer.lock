@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36637a71bf8a5bbfc35551c531f5437e",
+    "content-hash": "6f4202882d8eedbb84c60c4d95c225ea",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -942,7 +942,7 @@
         },
         {
             "name": "cultuurnet/clock",
-            "version": "dev-master",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/clock.git",
@@ -1411,62 +1411,6 @@
                 }
             ],
             "time": "2021-01-15T09:27:01+00:00"
-        },
-        {
-            "name": "cultuurnet/udb3-jwt",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6",
-                "reference": "97ee12eb0475a9c9e36e49d99c5dca3b2aa16cd6",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/clock": "~0.1",
-                "cultuurnet/valueobjects": "~3.0",
-                "lcobucci/jwt": "3.3.*",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "silex/silex": "^1.3",
-                "squizlabs/php_codesniffer": "~2.3",
-                "symfony/security": "~2.7.3"
-            },
-            "suggest": {
-                "silex/silex": "To use the provided JwtServiceProvider",
-                "symfony/security": "To integrate with Symfony's firewall"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\Jwt\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be"
-                }
-            ],
-            "description": "Provides JWT service classes",
-            "time": "2021-01-15T09:26:35+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
