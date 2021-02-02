@@ -18,7 +18,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php-versions }}
                   ini-values: xdebug.mode=coverage
-                  extensions: intl
+                  extensions: intl, tidy
                   tools: composer:v1
 
             - name: ✌️ Check PHP Version
