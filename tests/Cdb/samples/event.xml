@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+    <event cdbid="d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1">
+        <calendar>
+            <timestamps>
+                <timestamp>
+                    <date>2014-01-31</date>
+                    <timestart>12:00:00</timestart>
+                    <timeend>15:00:00</timeend>
+                </timestamp>
+            </timestamps>
+        </calendar>
+        <categories>
+            <category type="theme" catid="1.7.6.0.0">Griezelfilm of horror</category>
+        </categories>
+        <contactinfo>
+            <address>
+                <physical>
+                    <city>Brussel</city>
+                    <country>BE</country>
+                    <housenr>62</housenr>
+                    <street>Sint-Gislainstraat</street>
+                    <zipcode>1000</zipcode>
+                </physical>
+            </address>
+            <mail>jonas@cnet.be</mail>
+            <phone>+32 555 555</phone>
+            <url>http://www.test.com</url>
+        </contactinfo>
+        <eventdetails>
+            <eventdetail lang="nl">
+                <calendarsummary>vrij 31/01/14 van 12:00 tot 15:00 do 20/02/14 van 12:00 tot 15:00</calendarsummary>
+                <shortdescription>KB</shortdescription>
+                <title>Ruime Activiteit</title>
+            </eventdetail>
+        </eventdetails>
+        <location>
+            <address>
+                <physical>
+                    <city>Brussel</city>
+                    <country>BE</country>
+                    <housenr>62</housenr>
+                    <street>Sint-Gislainstraat</street>
+                    <zipcode>1000</zipcode>
+                </physical>
+            </address>
+        </location>
+    </event>
+</cdbxml>

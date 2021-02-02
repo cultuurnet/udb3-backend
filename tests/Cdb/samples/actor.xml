@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdbxml xmlns="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL/CdbXSD.xsd">
+    <actor cdbid="404EE8DE-E828-9C07-FE7D12DC4EB24480">
+        <actordetails>
+            <actordetail lang="nl">
+                <title>DE Studio</title>
+            </actordetail>
+        </actordetails>
+        <categories>
+            <category catid="8.11.0.0.0" type="actortype">Organisator(en)</category>
+        </categories>
+    </actor>
+</cdbxml>

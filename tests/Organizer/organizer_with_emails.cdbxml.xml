@@ -1,0 +1,52 @@
+<cdb:actor xmlns:cdb="http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL"
+           asset="true" availablefrom="2013-08-07T13:07:18" availableto="2100-01-01T00:00:00" createdby="villanella"
+           creationdate="2010-01-06T13:46:00" cdbid="404EE8DE-E828-9C07-FE7D12DC4EB24480"
+           externalid="404EE8DE-E828-9C07-FE7D12DC4EB24480" lastupdated="2013-08-07T13:07:18"
+           lastupdatedby="stan@cultuurnet.be" owner="Invoerders Algemeen ">
+    <cdb:actordetails>
+        <cdb:actordetail lang="nl">
+            <cdb:calendarsummary>ma tot zo</cdb:calendarsummary>
+            <cdb:media>
+                <cdb:file creationdate="26/04/2013 11:13:05" main="true">
+                    <cdb:copyright>DE Studio</cdb:copyright>
+                    <cdb:filename>604a9015-7297-44d0-9937-d7b7cce07e69.jpg</cdb:filename>
+                    <cdb:filetype>jpeg</cdb:filetype>
+                    <cdb:hlink>
+                        //media.uitdatabank.be/20100106/604a9015-7297-44d0-9937-d7b7cce07e69.jpg
+                    </cdb:hlink>
+                </cdb:file>
+            </cdb:media>
+            <cdb:shortdescription>
+                Met DE STUDIO vinden Laika, Theater Froe Froe, luxemburg, Muziektheater Transparant, Het Gevolg, De
+                Maan, De Spiegel en Villanella eindelijk dè ideale zaal om lange reeksen voorstellingen te spelen,
+                voor kinderen en jongeren, voor families, voor scholen. DE STUDIO biedt het kwalitatieve kinder- en
+                jongerentheater eindelijk een vaste speelplek voor Antwerpen.
+            </cdb:shortdescription>
+            <cdb:title>DE Studio</cdb:title>
+        </cdb:actordetail>
+    </cdb:actordetails>
+    <cdb:categories>
+        <cdb:category catid="8.15.0.0.0" type="actortype">Locatie</cdb:category>
+        <cdb:category catid="8.11.0.0.0" type="actortype">Organisator(en)</cdb:category>
+        <cdb:category catid="6.2.0.0.0" type="publicscope">Regionaal</cdb:category>
+    </cdb:categories>
+    <cdb:contactinfo>
+        <cdb:address>
+            <cdb:physical>
+                <cdb:city>Antwerpen</cdb:city>
+                <cdb:country>BE</cdb:country>
+                <cdb:gis>
+                    <cdb:xcoordinate>4.403666</cdb:xcoordinate>
+                    <cdb:ycoordinate>51.212489</cdb:ycoordinate>
+                </cdb:gis>
+                <cdb:housenr>4</cdb:housenr>
+                <cdb:street>Maarschalk Gerardstraat</cdb:street>
+                <cdb:zipcode>2000</cdb:zipcode>
+            </cdb:physical>
+        </cdb:address>
+        <cdb:mail reservation="true">info@villanella.be</cdb:mail>
+        <cdb:mail reservation="true">dirk@dirkinc.be</cdb:mail>
+        <cdb:phone reservation="true" type="phone">+32 3 260 96 10</cdb:phone>
+        <cdb:url main="true">http://www.destudio.com</cdb:url>
+    </cdb:contactinfo>
+</cdb:actor>

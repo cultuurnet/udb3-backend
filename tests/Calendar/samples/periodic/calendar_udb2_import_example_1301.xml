@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<calendar>
+    <periods>
+        <period>
+            <datefrom>2017-09-01</datefrom>
+            <dateto>2017-12-31</dateto>
+            <weekscheme>
+                <monday opentype="open">
+                    <openingtime from="20:30:00" to="22:30:00"/>/>
+                </monday>
+                <tuesday opentype="closed"/>
+                <wednesday opentype="closed"/>
+                <thursday opentype="open">
+                    <openingtime from="20:30:00" to="22:30:00"/>/>
+                </thursday>
+                <friday opentype="open">
+                    <openingtime from="20:30:00" to="22:30:00"/>/>
+                </friday>
+                <saturday opentype="open">
+                    <openingtime from="20:30:00" to="22:30:00"/>/>
+                </saturday>
+                <sunday opentype="open">
+                    <openingtime from="16:00:00" to="20:00:00"/>/>
+                </sunday>
+            </weekscheme>
+        </period>
+    </periods>
+</calendar>
