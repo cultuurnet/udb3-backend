@@ -18,7 +18,7 @@ trait IsString
     }
 
     /**
-     * @param IsString $other
+     * @param IsString|mixed $other
      * @return bool
      */
     public function sameAs($other)

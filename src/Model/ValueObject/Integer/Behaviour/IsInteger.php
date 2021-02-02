@@ -27,7 +27,7 @@ trait IsInteger
     }
 
     /**
-     * @param IsInteger $other
+     * @param IsInteger|mixed $other
      * @return bool
      */
     public function equals($other)
@@ -37,7 +37,7 @@ trait IsInteger
     }
 
     /**
-     * @param IsInteger $other
+     * @param IsInteger|mixed $other
      * @return bool
      */
     public function lt($other)
@@ -47,7 +47,7 @@ trait IsInteger
     }
 
     /**
-     * @param IsInteger $other
+     * @param IsInteger|mixed $other
      * @return bool
      */
     public function lte($other)
@@ -57,7 +57,7 @@ trait IsInteger
     }
 
     /**
-     * @param IsInteger $other
+     * @param IsInteger|mixed $other
      * @return bool
      */
     public function gt($other)
@@ -67,7 +67,7 @@ trait IsInteger
     }
 
     /**
-     * @param IsInteger $other
+     * @param IsInteger|mixed $other
      * @return bool
      */
     public function gte($other)
