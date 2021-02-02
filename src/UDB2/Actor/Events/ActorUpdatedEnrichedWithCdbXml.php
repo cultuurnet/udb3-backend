@@ -5,9 +5,9 @@
 
 namespace CultuurNet\UDB3\UDB2\Actor\Events;
 
-use CultuurNet\UDB2DomainEvents\ActorUpdated;
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\HasCdbXmlTrait;
+use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdated;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 

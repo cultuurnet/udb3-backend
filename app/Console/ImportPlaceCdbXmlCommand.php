@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\UDB2DomainEvents\ActorCreated;
+use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreated;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use DateTimeImmutable;
