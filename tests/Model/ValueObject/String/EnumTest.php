@@ -64,12 +64,9 @@ class EnumTest extends TestCase
      */
     public function it_should_be_constructable_by_a_static_call_to_the_enum_value_as_a_method()
     {
-        /** @phpstan-ignore-next-line */
         $foo = MockEnum::foo();
-        /** @phpstan-ignore-next-line */
         $bar = MockEnum::bar();
 
-        /** @phpstan-ignore-next-line */
         $this->assertTrue($foo->sameAs(MockEnum::foo()));
         $this->assertFalse($foo->sameAs($bar));
 

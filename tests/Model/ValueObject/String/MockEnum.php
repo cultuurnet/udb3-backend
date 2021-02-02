@@ -3,9 +3,8 @@
 namespace CultuurNet\UDB3\Model\ValueObject\String;
 
 /**
- * @method static MockEnum foo
- * @method static MockEnum bar
- * @phpstan-ignore-next-line
+ * @method static MockEnum foo()
+ * @method static MockEnum bar()
  */
 class MockEnum extends Enum
 {
