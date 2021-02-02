@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
-class ImmutablePlace extends ImmutableOffer implements Place
+final class ImmutablePlace extends ImmutableOffer implements Place
 {
     /**
      * @var TranslatedAddress
@@ -122,8 +122,7 @@ class ImmutablePlace extends ImmutableOffer implements Place
         TranslatedTitle $title,
         TranslatedAddress $address
     ) {
-        /** @phpstan-ignore-next-line */
-        $place = new static(
+        return new ImmutablePlace(
             self::getDummyLocationId(),
             $mainLanguage,
             $title,
@@ -131,8 +130,6 @@ class ImmutablePlace extends ImmutableOffer implements Place
             $address,
             new Categories()
         );
-
-        return $place;
     }
 
     /**

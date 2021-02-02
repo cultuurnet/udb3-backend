@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
-class MediaObjectReference
+final class MediaObjectReference
 {
     /**
      * @var UUID
@@ -120,21 +120,13 @@ class MediaObjectReference
         return $this->language;
     }
 
-    /**
-     * @param UUID $mediaObjectId
-     * @param Description $description
-     * @param CopyrightHolder $copyrightHolder
-     * @param Language $language
-     * @return static
-     */
     public static function createWithMediaObjectId(
         UUID $mediaObjectId,
         Description $description,
         CopyrightHolder $copyrightHolder,
         Language $language
-    ) {
-        /** @phpstan-ignore-next-line */
-        return new static(
+    ): MediaObjectReference {
+        return new self(
             $mediaObjectId,
             $description,
             $copyrightHolder,
@@ -142,21 +134,13 @@ class MediaObjectReference
         );
     }
 
-    /**
-     * @param MediaObject $mediaObject
-     * @param Description $description
-     * @param CopyrightHolder $copyrightHolder
-     * @param Language $language
-     * @return static
-     */
     public static function createWithEmbeddedMediaObject(
         MediaObject $mediaObject,
         Description $description,
         CopyrightHolder $copyrightHolder,
         Language $language
-    ) {
-        /** @phpstan-ignore-next-line */
-        return new static(
+    ): MediaObjectReference {
+        return new self(
             $mediaObject->getId(),
             $description,
             $copyrightHolder,
