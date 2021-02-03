@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "587a4de28fe1cab47466591c75acbb0a",
+    "content-hash": "aa184b6e74445d0cd47b81b3d502d48d",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -892,47 +892,6 @@
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
             "time": "2018-10-17T12:47:54+00:00"
-        },
-        {
-            "name": "cultuurnet/clock",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/clock.git",
-                "reference": "601aaf46375fffd3d3367a866253ca6bb092f584"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/clock/zipball/601aaf46375fffd3d3367a866253ca6bb092f584",
-                "reference": "601aaf46375fffd3d3367a866253ca6bb092f584",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\Clock\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                }
-            ],
-            "description": "Clock abstraction library",
-            "time": "2015-06-08T16:12:34+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",

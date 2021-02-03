@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\Clock\Clock;
+use CultuurNet\UDB3\Clock\Clock;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
