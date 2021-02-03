@@ -20,6 +20,8 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
+use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
@@ -1081,7 +1083,7 @@ $app['amqp.content_type_map'] = $app->share(
 );
 
 $app->register(
-    new \CultuurNet\SilexAMQP\AMQPConnectionServiceProvider(),
+    new AMQPConnectionServiceProvider(),
     [
         'amqp.connection.host' => $app['config']['amqp']['host'],
         'amqp.connection.port' => $app['config']['amqp']['port'],
@@ -1092,7 +1094,7 @@ $app->register(
 );
 
 $app->register(
-    new \CultuurNet\SilexAMQP\AMQPPublisherServiceProvider(),
+    new AMQPPublisherServiceProvider(),
     [
         'amqp.publisher.content_type_map' => $app['amqp.content_type_map'],
         'amqp.publisher.exchange_name' => $app['config']['amqp']['publish']['udb3']['exchange'],
