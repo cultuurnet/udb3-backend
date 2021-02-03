@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Http\Deserializer\Event\CreateEventJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Event\MajorInfoJSONDeserializer;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
-use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
+use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;

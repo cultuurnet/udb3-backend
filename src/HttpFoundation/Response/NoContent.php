@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Http\HttpFoundation;
+namespace CultuurNet\UDB3\HttpFoundation\Response;
 
 use Symfony\Component\HttpFoundation\Response;
 

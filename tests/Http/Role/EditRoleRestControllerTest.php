@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\Http\Deserializer\Role\QueryJSONDeserializer;
-use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;

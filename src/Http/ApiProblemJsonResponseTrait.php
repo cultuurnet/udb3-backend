@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Http;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\HttpFoundation\ApiProblemJsonResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 trait ApiProblemJsonResponseTrait
