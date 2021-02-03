@@ -10,7 +10,7 @@ class CompositeCommandValidator implements CommandValidatorInterface
     private $commandValidators;
 
     /**
-     * @param CommandValidatorInterface[] $commandValidators
+     * @param CommandValidatorInterface ...$commandValidators
      */
     public function __construct(CommandValidatorInterface ...$commandValidators)
     {
