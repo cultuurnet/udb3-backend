@@ -3,6 +3,7 @@
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
+use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
@@ -141,7 +142,7 @@ $app['timezone'] = $app->share(
 
 $app['clock'] = $app->share(
     function (Application $app) {
-        return new \CultuurNet\Clock\SystemClock(
+        return new SystemClock(
             $app['timezone']
         );
     }

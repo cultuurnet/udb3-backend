@@ -8,7 +8,7 @@ use CultureFeed_Uitpas_Calendar_Timestamp;
 use CultureFeed_Uitpas_Event_CultureEvent;
 use CultureFeed_Uitpas_Passholder_Query_SearchPromotionPointsOptions;
 use DateTimeImmutable;
-use CultuurNet\Clock\FrozenClock;
+use CultuurNet\UDB3\Clock\FrozenClock;
 use PHPUnit\Framework\TestCase;
 
 class EventOrganizerPromotionQueryFactoryTest extends TestCase
