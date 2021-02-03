@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Organizer;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;

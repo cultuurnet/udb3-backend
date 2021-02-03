@@ -31,7 +31,6 @@
     "cultuurnet/culturefeed-php": "dev-master",
     "cultuurnet/deserializer": "~0.1",
     "cultuurnet/entry": "~0.1",
-    "cultuurnet/geocoding": "~0.1",
     "cultuurnet/monolog-socketio": "~0.1",
     "cultuurnet/search-v3": "dev-master",
     "cultuurnet/silex-amqp": "~0.1",

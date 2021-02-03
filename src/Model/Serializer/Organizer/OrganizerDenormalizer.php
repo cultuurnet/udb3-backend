@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Organizer;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;

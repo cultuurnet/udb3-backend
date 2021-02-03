@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;

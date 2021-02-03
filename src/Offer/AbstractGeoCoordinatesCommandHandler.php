@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\RepositoryInterface;
-use CultuurNet\Geocoding\GeocodingServiceInterface;
+use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
 use CultuurNet\UDB3\Address\AddressFormatterInterface;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateGeoCoordinatesFromAddress;

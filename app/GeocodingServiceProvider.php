@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\Geocoding\CachedGeocodingService;
-use CultuurNet\Geocoding\DefaultGeocodingService;
-use CultuurNet\Geocoding\GeocodingServiceInterface;
+use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
+use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
+use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
 use Geocoder\Geocoder;
 use Geocoder\HttpAdapter\CurlHttpAdapter;
 use Geocoder\Provider\GoogleMapsProvider;
