@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Geocoding;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
-use CultuurNet\Geocoding\Coordinate\Latitude;
-use CultuurNet\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use Doctrine\Common\Cache\ArrayCache;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

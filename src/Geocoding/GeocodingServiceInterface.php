@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Geocoding;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 
 interface GeocodingServiceInterface
 {

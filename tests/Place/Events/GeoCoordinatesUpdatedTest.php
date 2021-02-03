@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
-use CultuurNet\Geocoding\Coordinate\Latitude;
-use CultuurNet\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use PHPUnit\Framework\TestCase;
 
 class GeoCoordinatesUpdatedTest extends TestCase

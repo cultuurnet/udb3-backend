@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;

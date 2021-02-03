@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;

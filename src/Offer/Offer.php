@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultureFeed_Cdb_Item_Base;
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
