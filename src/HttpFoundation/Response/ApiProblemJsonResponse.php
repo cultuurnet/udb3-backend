@@ -20,7 +20,7 @@ class ApiProblemJsonResponse extends JsonResponse
         $status = Response::HTTP_BAD_REQUEST;
         if (null !== $problem->getStatus()) {
             $headers += [
-                'X-Status-Code' => $problem->getStatus()
+                'X-Status-Code' => $problem->getStatus(),
             ];
             $status = $problem->getStatus();
         }

@@ -59,7 +59,7 @@ class AnyOfRequestMatcherTest extends TestCase
             'it should not match if the uri matches but the method does not match one of many' => [
                 'request' => Request::create('lorem/ipsum', Request::METHOD_GET),
                 'should match' => false,
-            ]
+            ],
         ];
     }
 }
