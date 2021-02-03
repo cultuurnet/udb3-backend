@@ -3,7 +3,7 @@
  * @file
  */
 
-namespace CultuurNet\Clock;
+namespace CultuurNet\UDB3\Clock;
 
 use DateTimeInterface;
 
