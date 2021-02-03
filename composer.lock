@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07e3eca189722357c5f569a1ee35c05a",
+    "content-hash": "587a4de28fe1cab47466591c75acbb0a",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1174,49 +1174,6 @@
             ],
             "description": "Cultuurnet search service for version 3",
             "time": "2020-09-04T13:39:11+00:00"
-        },
-        {
-            "name": "cultuurnet/silex-amqp",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/silex-amqp.git",
-                "reference": "4d5f4a81e0b2f0a1ce509080aae6130e6d0a3649"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/4d5f4a81e0b2f0a1ce509080aae6130e6d0a3649",
-                "reference": "4d5f4a81e0b2f0a1ce509080aae6130e6d0a3649",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/broadway-amqp": "~0.1",
-                "knplabs/console-service-provider": "~1.0",
-                "silex/silex": "~1.3"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\SilexAMQP\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "AMQP integration for Silex projects",
-            "time": "2018-06-29T14:15:23+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
