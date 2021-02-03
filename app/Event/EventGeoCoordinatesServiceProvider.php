@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Event;
 
-use CultuurNet\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;

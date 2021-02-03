@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Broadway\EventHandling;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\Broadway\Domain\DomainMessageIsReplayed;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use PHPUnit\Framework\TestCase;
 
 class ReplayFilteringEventListenerTest extends TestCase

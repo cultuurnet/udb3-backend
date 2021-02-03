@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\Broadway\Domain\DomainMessageSpecificationInterface;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 
 class FilteringEventListener implements EventListenerInterface
 {

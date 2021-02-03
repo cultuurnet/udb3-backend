@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\Broadway\EventHandling\ReplayModeEventBusInterface;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;

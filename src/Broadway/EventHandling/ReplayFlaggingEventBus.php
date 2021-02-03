@@ -8,7 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\Broadway\Domain\DomainMessageIsReplayed;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 
 class ReplayFlaggingEventBus implements ReplayModeEventBusInterface
 {

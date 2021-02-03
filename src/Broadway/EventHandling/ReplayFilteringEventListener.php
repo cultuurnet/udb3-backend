@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\Broadway\Domain\DomainMessageIsNot;
-use CultuurNet\Broadway\Domain\DomainMessageIsReplayed;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsNot;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 

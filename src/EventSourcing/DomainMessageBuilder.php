@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\EventSourcing;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\Broadway\Domain\DomainMessageIsReplayed;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use ValueObjects\Identity\UUID;
 
 /**
