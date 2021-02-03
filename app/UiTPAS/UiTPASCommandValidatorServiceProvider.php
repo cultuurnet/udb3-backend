@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\UiTPAS;
 
-use CultuurNet\Broadway\CommandHandling\Validation\CompositeCommandValidator;
+use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation\EventHasTicketSalesCommandValidator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

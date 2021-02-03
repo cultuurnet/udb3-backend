@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation;
 
-use CultuurNet\Broadway\CommandHandling\Validation\CommandValidatorInterface;
+use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CommandValidatorInterface;
 use CultuurNet\UDB3\Event\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdateOrganizer;
 use CultuurNet\UDB3\Event\Commands\UpdatePriceInfo;

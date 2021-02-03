@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Event;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
-use CultuurNet\Broadway\EventHandling\ReplayFilteringEventListener;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\EventEditingService;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;

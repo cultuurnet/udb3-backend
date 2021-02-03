@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
-use CultuurNet\Broadway\CommandHandling\Validation\CompositeCommandValidator;
-use CultuurNet\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
+use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
+use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;

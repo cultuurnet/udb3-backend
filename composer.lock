@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72e312fdcfa958e0a5737e63ab49bca2",
+    "content-hash": "07e3eca189722357c5f569a1ee35c05a",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -759,53 +759,6 @@
             ],
             "description": "AMQP integration for Broadway library",
             "time": "2021-01-14T14:02:00+00:00"
-        },
-        {
-            "name": "cultuurnet/broadway-tools",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/broadway-tools.git",
-                "reference": "5e3f2bfd64e520422eeeb8507b93f62bf91bb174"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/5e3f2bfd64e520422eeeb8507b93f62bf91bb174",
-                "reference": "5e3f2bfd64e520422eeeb8507b93f62bf91bb174",
-                "shasum": ""
-            },
-            "require": {
-                "broadway/broadway": "~0.10.",
-                "php": ">=7.1",
-                "psr/log": "^1.1"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "^7.5",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\Broadway\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "publiq vzw",
-                    "email": "info@publiq.be"
-                }
-            ],
-            "time": "2021-01-14T13:40:25+00:00"
         },
         {
             "name": "cultuurnet/calendar-summary",
