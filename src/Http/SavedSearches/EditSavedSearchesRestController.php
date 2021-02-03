@@ -6,7 +6,7 @@ use Broadway\CommandHandling\CommandBusInterface;
 use CultureFeed_User;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
-use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
+use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;

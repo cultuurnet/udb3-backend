@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Place\CreatePlaceJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Place\MajorInfoJSONDeserializer;
-use CultuurNet\UDB3\Http\HttpFoundation\NoContent;
+use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
