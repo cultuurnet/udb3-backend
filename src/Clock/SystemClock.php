@@ -1,10 +1,9 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Clock;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use DateTimeZone;
 
 /**
@@ -19,11 +18,8 @@ class SystemClock implements Clock
         $this->timezone = $timezone;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getDateTime()
+    public function getDateTime(): DateTimeInterface
     {
-        return new \DateTimeImmutable('now', $this->timezone);
+        return new DateTimeImmutable('now', $this->timezone);
     }
 }

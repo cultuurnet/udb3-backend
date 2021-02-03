@@ -1,19 +1,13 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Clock;
 
 use DateTimeInterface;
 
-/**
- * Clock of which the time has frozen.
- */
 class FrozenClock implements Clock
 {
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      */
     private $time;
 
@@ -22,14 +16,12 @@ class FrozenClock implements Clock
         $this->setTime($dateTime);
     }
 
-    protected function setTime(DateTimeInterface $dateTime) {
+    protected function setTime(DateTimeInterface $dateTime): void
+    {
         $this->time = $dateTime;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
-    public function getDateTime()
+    public function getDateTime(): DateTimeInterface
     {
         return $this->time;
     }
