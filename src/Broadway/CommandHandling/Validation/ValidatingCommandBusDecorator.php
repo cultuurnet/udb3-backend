@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\Broadway\CommandHandling\Validation;
+namespace CultuurNet\UDB3\Broadway\CommandHandling\Validation;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\CommandHandling\CommandHandlerInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\Broadway\EventHandling;
+namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\EventHandling\EventListenerInterface;
 use CultuurNet\Broadway\Domain\DomainMessageIsNot;

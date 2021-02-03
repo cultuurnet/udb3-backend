@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\Broadway\Domain;
+namespace CultuurNet\UDB3\Broadway\Domain;
 
 use Broadway\Domain\DomainMessage;
 

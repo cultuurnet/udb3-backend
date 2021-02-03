@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\Broadway\CommandHandling\Validation;
+namespace CultuurNet\UDB3\Broadway\CommandHandling\Validation;
 
 interface CommandValidatorInterface
 {
