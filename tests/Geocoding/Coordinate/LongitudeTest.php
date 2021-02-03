@@ -36,5 +36,6 @@ class LongitudeTest extends TestCase
         new Longitude(0.25);
         new Longitude(5.123456789);
         new Longitude(180.0);
+        $this->addToAssertionCount(7);
     }
 }

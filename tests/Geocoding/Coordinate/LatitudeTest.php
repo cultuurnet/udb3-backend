@@ -36,5 +36,6 @@ class LatitudeTest extends TestCase
         new Latitude(0.25);
         new Latitude(5.123456789);
         new Latitude(90.0);
+        $this->addToAssertionCount(7);
     }
 }
