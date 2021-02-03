@@ -80,6 +80,8 @@ class ConsumeCommand extends Command
                 // Ignore this one.
             }
         }
+
+        return 0;
     }
 
     /**
