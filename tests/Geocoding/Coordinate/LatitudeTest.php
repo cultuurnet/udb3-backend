@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
-class LatitudeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class LatitudeTest extends TestCase
 {
     /**
      * @test

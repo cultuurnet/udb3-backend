@@ -6,8 +6,10 @@ use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
 use Doctrine\Common\Cache\ArrayCache;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
-class CachedGeocodingServiceTest extends \PHPUnit_Framework_TestCase
+class CachedGeocodingServiceTest extends TestCase
 {
     /**
      * @var ArrayCache
@@ -15,7 +17,7 @@ class CachedGeocodingServiceTest extends \PHPUnit_Framework_TestCase
     private $cache;
 
     /**
-     * @var GeocodingServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var GeocodingServiceInterface|MockObject
      */
     private $decoratee;
 

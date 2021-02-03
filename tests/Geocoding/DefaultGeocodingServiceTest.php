@@ -8,17 +8,19 @@ use CultuurNet\Geocoding\Coordinate\Longitude;
 use Geocoder\Exception\NoResultException;
 use Geocoder\GeocoderInterface;
 use Geocoder\Result\Geocoded;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class DefaultGeocodingServiceTest extends \PHPUnit_Framework_TestCase
+class DefaultGeocodingServiceTest extends TestCase
 {
     /**
-     * @var GeocoderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var GeocoderInterface|MockObject
      */
     private $geocoder;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|MockObject
      */
     private $logger;
 
