@@ -4,58 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05cc7fcb39834acfff5d264165d9d25c",
+    "content-hash": "73eaaf3d9b6c9c5d0d21d72e830a6b3c",
     "packages": [
-        {
-            "name": "2dotstwice/collection",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2dotstwice/php-collection.git",
-                "reference": "d681e91e6441b68e6abad4f2634cda869cefafc9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2dotstwice/php-collection/zipball/d681e91e6441b68e6abad4f2634cda869cefafc9",
-                "reference": "d681e91e6441b68e6abad4f2634cda869cefafc9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/php-token-stream": "1.4.6",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "TwoDotsTwice\\Collection\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be",
-                    "homepage": "http://2dotstwice.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16T09:28:40+00:00"
-        },
         {
             "name": "auth0/auth0-php",
             "version": "5.7.0",
@@ -10312,7 +10262,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "2dotstwice/collection": 20,
         "chrisboulton/php-resque": 20,
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/culturefeed-php": 20,

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Broadway\AMQP\DomainMessage;
 
-use TwoDotsTwice\Collection\AbstractCollection;
+use CultuurNet\UDB3\Collection\AbstractCollection;
 
 class SpecificationCollection extends AbstractCollection
 {
