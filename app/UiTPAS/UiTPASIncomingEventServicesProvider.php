@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\UiTPAS;
 
-use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\SentryErrorHandler;

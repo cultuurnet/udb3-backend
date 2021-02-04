@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
-use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;

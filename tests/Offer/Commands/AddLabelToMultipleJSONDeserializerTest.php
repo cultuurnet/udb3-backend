@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Offer\Commands;
 
-use CultuurNet\Deserializer\DeserializerInterface;
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;

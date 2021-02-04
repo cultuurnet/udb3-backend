@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators\Events;
 
-use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\Deserializer\JSONDeserializer;
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Curators\PublisherName;
 use InvalidArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;

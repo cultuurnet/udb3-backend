@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\EventExport\Command;
 
-use CultuurNet\Deserializer\DeserializerInterface;
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

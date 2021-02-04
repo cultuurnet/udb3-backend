@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use PHPUnit\Framework\TestCase;
 
 class ContactPointDataValidatorTest extends TestCase

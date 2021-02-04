@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Import\Command\Deserializer;
 
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Model\Import\Command\ImportPlaceDocument;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;

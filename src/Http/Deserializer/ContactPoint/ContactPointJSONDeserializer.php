@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\ContactPoint;
 use ValueObjects\StringLiteral\StringLiteral;
 

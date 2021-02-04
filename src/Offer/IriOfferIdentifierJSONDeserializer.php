@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use CultuurNet\Deserializer\DeserializerInterface;
-use CultuurNet\Deserializer\MissingValueException;
-use CultuurNet\Deserializer\NotWellFormedException;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 

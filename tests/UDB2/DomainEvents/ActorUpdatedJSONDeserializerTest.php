@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;

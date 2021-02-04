@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Http\Productions;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;

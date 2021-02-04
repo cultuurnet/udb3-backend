@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;

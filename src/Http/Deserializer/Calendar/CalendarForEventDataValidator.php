@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\StartDateEndDateValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\ThrowIfNotEmpty;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\Validators\TimeSpanValidator;

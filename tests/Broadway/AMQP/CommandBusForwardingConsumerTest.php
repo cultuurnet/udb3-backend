@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use CultuurNet\Deserializer\DeserializerInterface;
-use CultuurNet\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Channel\AbstractChannel;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;

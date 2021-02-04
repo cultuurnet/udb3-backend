@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;

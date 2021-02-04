@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Role;
 
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use ValueObjects\StringLiteral\StringLiteral;
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 
 class QueryJSONDeserializer extends JSONDeserializer
 {

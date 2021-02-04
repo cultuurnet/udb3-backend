@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 
 class SkipEventsValidator implements DataValidatorInterface

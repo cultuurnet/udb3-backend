@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
-use CultuurNet\Deserializer\JSONDeserializer;
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
 use ValueObjects\StringLiteral\StringLiteral;
 

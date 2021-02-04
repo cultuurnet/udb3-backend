@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Silex;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;

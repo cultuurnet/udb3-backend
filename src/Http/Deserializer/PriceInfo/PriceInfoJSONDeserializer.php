@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\PriceInfo;
 
-use CultuurNet\Deserializer\JSONDeserializer;
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
