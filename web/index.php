@@ -7,6 +7,7 @@ use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
@@ -255,7 +256,7 @@ $app->get(
 /**
  * Basic REST API for feature toggles.
  */
-$app->mount('/', new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesControllerProvider());
+$app->mount('/', new FeatureTogglesControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
