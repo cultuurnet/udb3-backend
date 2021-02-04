@@ -14,7 +14,6 @@
     "ext-json": "*",
     "ext-pdo": "*",
     "ext-tidy": "*",
-    "2dotstwice/collection": "dev-master",
     "auth0/auth0-php": "^5.7",
     "broadway/broadway": "~0.10",
     "cakephp/chronos": "^1.3",
