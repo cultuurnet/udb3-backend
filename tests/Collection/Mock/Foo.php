@@ -19,7 +19,7 @@ class Foo
         $this->id = $id;
         $this->name = $name;
     }
-    
+
     public function getId(): int
     {
         return $this->id;
