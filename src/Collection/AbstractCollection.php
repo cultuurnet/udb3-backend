@@ -141,6 +141,7 @@ abstract class AbstractCollection implements CollectionInterface
      */
     public static function fromArray(array $items)
     {
+        /** @phpstan-ignore-next-line */
         $collection = new static();
         foreach ($items as $item) {
             $collection = $collection->with($item);

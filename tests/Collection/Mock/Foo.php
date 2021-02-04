@@ -14,28 +14,18 @@ class Foo
      */
     protected $name;
 
-    /**
-     * @param $id
-     * @param $name
-     */
-    public function __construct($id, $name)
+    public function __construct(int $id, string $name)
     {
         $this->id = $id;
         $this->name = $name;
     }
-
-    /**
-     * @return int
-     */
-    public function getId()
+    
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

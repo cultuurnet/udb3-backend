@@ -83,7 +83,7 @@ class CollectionTest extends TestCase
      */
     public function it_guards_the_object_type_of_new_items()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         (new FooCollection())
             ->with($this->notFoo);
@@ -94,7 +94,7 @@ class CollectionTest extends TestCase
      */
     public function it_guards_the_object_type_of_items_when_initializing_from_array()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         FooCollection::fromArray(
             [
@@ -146,7 +146,7 @@ class CollectionTest extends TestCase
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
 
-        $this->setExpectedException(CollectionItemNotFoundException::class);
+        $this->expectException(CollectionItemNotFoundException::class);
         $collection->without($this->foo2);
     }
 
@@ -177,7 +177,7 @@ class CollectionTest extends TestCase
             ->withKey('foo1', $this->foo1)
             ->withKey('foo2', $this->foo2);
 
-        $this->setExpectedException(CollectionKeyNotFoundException::class);
+        $this->expectException(CollectionKeyNotFoundException::class);
         $collection->withoutKey('foo3');
     }
 
@@ -231,7 +231,7 @@ class CollectionTest extends TestCase
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
 
-        $this->setExpectedException(CollectionKeyNotFoundException::class);
+        $this->expectException(CollectionKeyNotFoundException::class);
         $collection->getByKey('foo2');
     }
 
@@ -263,7 +263,7 @@ class CollectionTest extends TestCase
         $collection = (new FooCollection())
             ->withKey('foo1', $this->foo1);
 
-        $this->setExpectedException(CollectionItemNotFoundException::class);
+        $this->expectException(CollectionItemNotFoundException::class);
         $collection->getKeyFor($this->foo2);
     }
 
