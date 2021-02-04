@@ -4,10 +4,9 @@ namespace CultuurNet\UDB3\Media;
 
 use ArrayIterator;
 use TwoDotsTwice\Collection\AbstractCollection;
-use TwoDotsTwice\Collection\CollectionInterface;
 use ValueObjects\Identity\UUID;
 
-class ImageCollection extends AbstractCollection implements CollectionInterface
+class ImageCollection extends AbstractCollection
 {
     /**
      * @var Image|null
