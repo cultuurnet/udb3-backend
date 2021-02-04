@@ -31,7 +31,7 @@ class CollectionTest extends TestCase
      */
     protected $notFoo;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->foo1 = new Foo(1, 'Foo 1');
         $this->foo2 = new Foo(2, 'Foo 2');
