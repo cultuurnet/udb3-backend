@@ -1,6 +1,6 @@
 <?php
 
-namespace TwoDotsTwice\Collection\Exception;
+namespace CultuurNet\UDB3\Collection\Exception;
 
 class CollectionItemNotFoundException extends \Exception
 {

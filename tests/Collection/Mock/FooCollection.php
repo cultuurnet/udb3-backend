@@ -1,8 +1,8 @@
 <?php
 
-namespace TwoDotsTwice\Collection\Mock;
+namespace CultuurNet\UDB3\Collection\Mock;
 
-use TwoDotsTwice\Collection\AbstractCollection;
+use CultuurNet\UDB3\Collection\AbstractCollection;
 
 final class FooCollection extends AbstractCollection
 {

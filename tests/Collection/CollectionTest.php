@@ -1,14 +1,15 @@
 <?php
 
-namespace TwoDotsTwice\Collection;
+namespace CultuurNet\UDB3\Collection;
 
-use TwoDotsTwice\Collection\Exception\CollectionItemNotFoundException;
-use TwoDotsTwice\Collection\Exception\CollectionKeyNotFoundException;
-use TwoDotsTwice\Collection\Mock\Foo;
-use TwoDotsTwice\Collection\Mock\FooCollection;
-use TwoDotsTwice\Collection\Mock\FooExtended;
+use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
+use CultuurNet\UDB3\Collection\Exception\CollectionKeyNotFoundException;
+use CultuurNet\UDB3\Collection\Mock\Foo;
+use CultuurNet\UDB3\Collection\Mock\FooCollection;
+use CultuurNet\UDB3\Collection\Mock\FooExtended;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends TestCase
 {
     /**
      * @var Foo

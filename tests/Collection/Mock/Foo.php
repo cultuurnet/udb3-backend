@@ -1,6 +1,6 @@
 <?php
 
-namespace TwoDotsTwice\Collection\Mock;
+namespace CultuurNet\UDB3\Collection\Mock;
 
 class Foo
 {

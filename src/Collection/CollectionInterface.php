@@ -1,9 +1,9 @@
 <?php
 
-namespace TwoDotsTwice\Collection;
+namespace CultuurNet\UDB3\Collection;
 
-use TwoDotsTwice\Collection\Exception\CollectionKeyNotFoundException;
-use TwoDotsTwice\Collection\Exception\CollectionItemNotFoundException;
+use CultuurNet\UDB3\Collection\Exception\CollectionKeyNotFoundException;
+use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
 
 interface CollectionInterface extends \IteratorAggregate
 {
