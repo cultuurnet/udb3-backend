@@ -61,7 +61,7 @@ class AMQPPublisherTest extends TestCase
 
         $this->amqpPublisher = new AMQPPublisher(
             $this->amqpChannel,
-            null,
+            'exchange_name',
             $this->specification,
             $this->messageFactory
         );
@@ -92,7 +92,7 @@ class AMQPPublisherTest extends TestCase
 
         $this->amqpChannel->expects($this->once())
             ->method('basic_publish')
-            ->with($expectedMessage, null, null);
+            ->with($expectedMessage, 'exchange_name', null);
 
         $this->amqpPublisher->handle($this->domainMessage);
     }
