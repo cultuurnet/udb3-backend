@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
@@ -1145,7 +1146,7 @@ $app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 $app->register(
-    new \TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider(
+    new FeatureTogglesProvider(
         isset($app['config']['toggles']) ? $app['config']['toggles'] : []
     )
 );
