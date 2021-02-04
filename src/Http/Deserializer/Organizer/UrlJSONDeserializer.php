@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
-use CultuurNet\Deserializer\JSONDeserializer;
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 

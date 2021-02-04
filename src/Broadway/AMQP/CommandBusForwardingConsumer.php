@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use CultuurNet\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use ValueObjects\StringLiteral\StringLiteral;
 

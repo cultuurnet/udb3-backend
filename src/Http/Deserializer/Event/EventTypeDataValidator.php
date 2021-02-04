@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
 

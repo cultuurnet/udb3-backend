@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use CultuurNet\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

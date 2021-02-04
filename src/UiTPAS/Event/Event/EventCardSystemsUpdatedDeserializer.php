@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use ValueObjects\StringLiteral\StringLiteral;

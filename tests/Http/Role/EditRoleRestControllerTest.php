@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBusInterface;
-use CultuurNet\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;

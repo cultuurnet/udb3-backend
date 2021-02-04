@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;

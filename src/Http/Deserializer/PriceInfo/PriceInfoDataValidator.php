@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\PriceInfo;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 

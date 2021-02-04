@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Role;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar\Validators;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusValidator;
 
 class TimeSpanValidator

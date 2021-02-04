@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Address;
 
-use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Address\Address;
 use ValueObjects\StringLiteral\StringLiteral;
 

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;

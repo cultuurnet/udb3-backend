@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;

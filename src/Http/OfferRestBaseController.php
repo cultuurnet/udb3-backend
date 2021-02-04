@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http;
 
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;

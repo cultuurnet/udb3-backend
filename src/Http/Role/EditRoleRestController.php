@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Broadway\CommandHandling\CommandBusInterface;
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
 use CultuurNet\UDB3\Role\Commands\UpdateRoleRequestDeserializer;
 use CultuurNet\UDB3\Role\Services\RoleEditingServiceInterface;

@@ -7,7 +7,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;

@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;

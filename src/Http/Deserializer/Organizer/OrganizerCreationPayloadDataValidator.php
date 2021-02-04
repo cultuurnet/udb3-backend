@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\CompositeDataValidator;

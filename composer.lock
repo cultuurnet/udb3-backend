@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73eaaf3d9b6c9c5d0d21d72e830a6b3c",
+    "content-hash": "05cbc71034b34b80e7cf45e0dd2a8dab",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -796,53 +796,6 @@
             ],
             "description": "Culturefeed PHP library",
             "time": "2021-02-01T15:03:11+00:00"
-        },
-        {
-            "name": "cultuurnet/deserializer",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "ec7830eb860ea83f7c28c38649b0057177ade784"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/ec7830eb860ea83f7c28c38649b0057177ade784",
-                "reference": "ec7830eb860ea83f7c28c38649b0057177ade784",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/valueobjects": "~3.0"
-            },
-            "require-dev": {
-                "phing/phing": "~2.10",
-                "phpunit/phpunit": "~5.7",
-                "squizlabs/php_codesniffer": "2.6.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev",
-                    "dev-1.x": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\Deserializer\\": "src\\"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                }
-            ],
-            "description": "Internet media type deserialization library",
-            "time": "2018-06-29T14:27:41+00:00"
         },
         {
             "name": "cultuurnet/entry",

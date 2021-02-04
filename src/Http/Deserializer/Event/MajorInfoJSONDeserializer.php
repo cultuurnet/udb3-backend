@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
-use CultuurNet\Deserializer\DataValidationException;
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;

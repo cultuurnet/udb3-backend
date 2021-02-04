@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\EventExport\Command;
 
-use CultuurNet\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveTemplate;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use PHPUnit\Framework\TestCase;
 
 class UpdateSubEventsStatusValidatorTest extends TestCase

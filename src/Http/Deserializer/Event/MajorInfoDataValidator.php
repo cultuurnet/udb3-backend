@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Deserializer\Event;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForEventDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\CompositeDataValidator;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;

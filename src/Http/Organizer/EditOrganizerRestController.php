@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Organizer;
 
-use CultuurNet\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
