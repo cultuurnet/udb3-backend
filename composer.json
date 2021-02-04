@@ -21,7 +21,6 @@
     "commerceguys/intl": "^0.7",
     "crell/api-problem": "^1.7",
     "cultuurnet/auth": "~1.2",
-    "cultuurnet/broadway-amqp": "~0.1",
     "cultuurnet/calendar-summary": "~1.1",
     "cultuurnet/calendar-summary-v3": "dev-master",
     "cultuurnet/cdb": "~2.2.0",
