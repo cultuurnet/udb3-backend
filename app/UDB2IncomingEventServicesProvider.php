@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex;
 
-use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreatedJSONDeserializer;
