@@ -32,7 +32,7 @@ class DummyEvent implements SerializableInterface
      */
     public static function deserialize(array $data)
     {
-        return new static(
+        return new self(
             $data['id'],
             $data['content']
         );
