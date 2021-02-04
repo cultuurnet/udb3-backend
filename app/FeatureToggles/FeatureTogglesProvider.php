@@ -3,7 +3,7 @@
  * @file
  */
 
-namespace TwoDotsTwice\SilexFeatureToggles;
+namespace CultuurNet\UDB3\Silex\FeatureToggles;
 
 use Qandidate\Toggle\Context;
 use Qandidate\Toggle\Serializer\InMemoryCollectionSerializer;
