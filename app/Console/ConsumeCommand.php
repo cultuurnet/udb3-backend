@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\BroadwayAMQP\ConsumerInterface;
+use CultuurNet\UDB3\Broadway\AMQP\ConsumerInterface;
 use Knp\Command\Command;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;

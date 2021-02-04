@@ -2,17 +2,17 @@
 
 namespace CultuurNet\UDB3\Silex\AMQP;
 
-use CultuurNet\BroadwayAMQP\AMQPPublisher;
-use CultuurNet\BroadwayAMQP\DomainMessage\AnyOf;
-use CultuurNet\BroadwayAMQP\DomainMessage\PayloadIsInstanceOf;
-use CultuurNet\BroadwayAMQP\DomainMessage\SpecificationCollection;
-use CultuurNet\BroadwayAMQP\Message\Body\EntireDomainMessageBodyFactory;
-use CultuurNet\BroadwayAMQP\Message\DelegatingAMQPMessageFactory;
-use CultuurNet\BroadwayAMQP\Message\Properties\CompositePropertiesFactory;
-use CultuurNet\BroadwayAMQP\Message\Properties\ContentTypeLookup;
-use CultuurNet\BroadwayAMQP\Message\Properties\ContentTypePropertiesFactory;
-use CultuurNet\BroadwayAMQP\Message\Properties\CorrelationIdPropertiesFactory;
-use CultuurNet\BroadwayAMQP\Message\Properties\DeliveryModePropertiesFactory;
+use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
+use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\AnyOf;
+use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\PayloadIsInstanceOf;
+use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\SpecificationCollection;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Body\EntireDomainMessageBodyFactory;
+use CultuurNet\UDB3\Broadway\AMQP\Message\DelegatingAMQPMessageFactory;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CompositePropertiesFactory;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypeLookup;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\ContentTypePropertiesFactory;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CorrelationIdPropertiesFactory;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\DeliveryModePropertiesFactory;
 use PhpAmqpLib\Message\AMQPMessage;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

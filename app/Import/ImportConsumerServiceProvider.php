@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Silex\Import;
 
 use Broadway\CommandHandling\SimpleCommandBus;
-use CultuurNet\BroadwayAMQP\CommandBusForwardingConsumer;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\Broadway\AMQP\CommandBusForwardingConsumer;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Import\Command\Deserializer\ImportEventDocumentDeserializer;
 use CultuurNet\UDB3\Model\Import\Command\Deserializer\ImportOrganizerDocumentDeserializer;

@@ -1,0 +1,10 @@
+{
+  "id": "message-id-123",
+  "playhead": "0",
+  "metadata": {},
+  "payload": {
+    "id": "foo",
+    "content": "bla"
+  },
+  "recorded_on": "2016-03-25"
+}
