@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17d7bd42fa13e0a8d09f7e760dfae6c6",
+    "content-hash": "1dea2d0ae2320cf3210afd13df01a27f",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -55,48 +55,6 @@
             ],
             "description": " Library for creating collection classes with strict typing.",
             "time": "2015-12-16T09:28:40+00:00"
-        },
-        {
-            "name": "2dotstwice/silex-feature-toggles-provider",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2dotstwice/silex-feature-toggles-provider.git",
-                "reference": "1d90390bf037114d6c17f166022c2efa68e3cec7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2dotstwice/silex-feature-toggles-provider/zipball/1d90390bf037114d6c17f166022c2efa68e3cec7",
-                "reference": "1d90390bf037114d6c17f166022c2efa68e3cec7",
-                "shasum": ""
-            },
-            "require": {
-                "qandidate/toggle": "0.4.0",
-                "silex/silex": "~1.2"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "TwoDotsTwice\\SilexFeatureToggles\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Feature toggles for Silex",
-            "time": "2017-07-03T14:15:24+00:00"
         },
         {
             "name": "auth0/auth0-php",
@@ -4950,22 +4908,23 @@
         },
         {
             "name": "qandidate/toggle",
-            "version": "0.4.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/qandidate-labs/qandidate-toggle.git",
-                "reference": "c38b16fa252470e331475964400e466555382df1"
+                "reference": "a7f7f4e478373622f945a6e9c163adb5b50b3265"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qandidate-labs/qandidate-toggle/zipball/c38b16fa252470e331475964400e466555382df1",
-                "reference": "c38b16fa252470e331475964400e466555382df1",
+                "url": "https://api.github.com/repos/qandidate-labs/qandidate-toggle/zipball/a7f7f4e478373622f945a6e9c163adb5b50b3265",
+                "reference": "a7f7f4e478373622f945a6e9c163adb5b50b3265",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9"
             },
             "require-dev": {
+                "phpunit/phpunit": "^4.8.35",
                 "predis/predis": "~0.8",
                 "symfony/expression-language": "~2.4"
             },
@@ -5003,7 +4962,7 @@
                 "toggle",
                 "trigger"
             ],
-            "time": "2015-12-28T15:54:08+00:00"
+            "time": "2017-11-20T14:59:50+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -7984,7 +7943,7 @@
             ],
             "authors": [
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -10038,6 +9997,11 @@
                 "phpcs",
                 "standards"
             ],
+            "support": {
+                "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
+                "source": "https://github.com/squizlabs/PHP_CodeSniffer",
+                "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
+            },
             "time": "2020-10-23T02:01:07+00:00"
         },
         {
