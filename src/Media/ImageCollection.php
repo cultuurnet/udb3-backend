@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Media;
 
 use ArrayIterator;
-use TwoDotsTwice\Collection\AbstractCollection;
+use CultuurNet\UDB3\Collection\AbstractCollection;
 use ValueObjects\Identity\UUID;
 
 class ImageCollection extends AbstractCollection
