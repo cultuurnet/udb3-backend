@@ -1,8 +1,10 @@
 <?php
 
-namespace CultuurNet\Deserializer;
+namespace CultuurNet\UDB3\Deserializer;
 
-class DataValidationExceptionTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DataValidationExceptionTest extends TestCase
 {
     /**
      * @test
@@ -11,7 +13,7 @@ class DataValidationExceptionTest extends \PHPUnit_Framework_TestCase
     {
         $messages = [
             'Field foo should not be empty.',
-            'Field bar should be an integer, string given.'
+            'Field bar should be an integer, string given.',
         ];
 
         $exception = new DataValidationException();

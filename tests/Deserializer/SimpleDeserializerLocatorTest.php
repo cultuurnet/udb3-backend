@@ -1,10 +1,11 @@
 <?php
 
-namespace CultuurNet\Deserializer;
+namespace CultuurNet\UDB3\Deserializer;
 
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SimpleDeserializerLocatorTest extends \PHPUnit_Framework_TestCase
+class SimpleDeserializerLocatorTest extends TestCase
 {
     /**
      * @var SimpleDeserializerLocator

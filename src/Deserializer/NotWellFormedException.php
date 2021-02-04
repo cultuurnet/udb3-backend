@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\Deserializer;
+namespace CultuurNet\UDB3\Deserializer;
 
 class NotWellFormedException extends \RuntimeException
 {
