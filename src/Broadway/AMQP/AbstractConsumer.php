@@ -90,7 +90,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     }
 
     /**
-     * @param $deserializedMessage
+     * @param mixed $deserializedMessage
      * @param array $context
      */
     abstract protected function handle($deserializedMessage, array $context);

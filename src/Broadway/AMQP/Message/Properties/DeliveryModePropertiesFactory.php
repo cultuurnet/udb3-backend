@@ -33,7 +33,7 @@ class DeliveryModePropertiesFactory implements PropertiesFactoryInterface
     }
 
     /**
-     * @param $deliveryMode
+     * @param string $deliveryMode
      * @throws \InvalidArgumentException
      */
     private function guardDeliveryMode($deliveryMode)

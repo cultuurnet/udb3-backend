@@ -34,15 +34,9 @@ class AMQPPublisher implements EventListenerInterface
      */
     private $messageFactory;
 
-    /**
-     * @param AMQPChannel $channel
-     * @param $exchange
-     * @param SpecificationInterface $domainMessageSpecification
-     * @param AMQPMessageFactoryInterface $messageFactory
-     */
     public function __construct(
         AMQPChannel $channel,
-        $exchange,
+        string $exchange,
         SpecificationInterface $domainMessageSpecification,
         AMQPMessageFactoryInterface $messageFactory
     ) {
