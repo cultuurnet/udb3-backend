@@ -30,10 +30,10 @@ class EntireDomainMessageBodyFactoryTest extends TestCase
         $domainMessage = new DomainMessage(
             'F68E71A1-DBB0-4542-AEE5-BD937E095F74',
             2,
-            new Metadata(array(
+            new Metadata([
                 'meta' =>'data',
-                'oranges' => 'apples'
-            )),
+                'oranges' => 'apples',
+            ]),
             new DummyEvent(
                 'F68E71A1-DBB0-4542-AEE5-BD937E095F74',
                 'test 123 456'

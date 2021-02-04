@@ -21,7 +21,7 @@ class EntireDomainMessageBodyFactory implements BodyFactoryInterface
             'playhead' => $domainMessage->getPlayhead(),
             'metadata' => $domainMessage->getMetadata()->serialize(),
             'payload' => $domainMessage->getPayload()->serialize(),
-            'recorded_on' => $domainMessage->getRecordedOn()->toString()
+            'recorded_on' => $domainMessage->getRecordedOn()->toString(),
         ];
 
         return json_encode($data);

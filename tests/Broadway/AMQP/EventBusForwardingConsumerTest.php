@@ -181,7 +181,7 @@ class EventBusForwardingConsumerTest extends TestCase
 
         $messageProperties = [
             'content_type' => 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
-            'correlation_id' => 'my-correlation-id-123'
+            'correlation_id' => 'my-correlation-id-123',
         ];
 
         $messageBody = '';
@@ -232,7 +232,7 @@ class EventBusForwardingConsumerTest extends TestCase
 
         $messageProperties = [
             'content_type' => 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
-            'correlation_id' => 'my-correlation-id-123'
+            'correlation_id' => 'my-correlation-id-123',
         ];
 
         $messageBody = '';
@@ -263,7 +263,7 @@ class EventBusForwardingConsumerTest extends TestCase
 
         $messageProperties = [
             'content_type' => 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
-            'correlation_id' => 'my-correlation-id-123'
+            'correlation_id' => 'my-correlation-id-123',
         ];
 
         $messageBody = '';
@@ -318,7 +318,7 @@ class EventBusForwardingConsumerTest extends TestCase
 
         $messageProperties = [
             'content_type' => 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
-            'correlation_id' => 'my-correlation-id-123'
+            'correlation_id' => 'my-correlation-id-123',
         ];
 
         $messageBody = '';
@@ -349,7 +349,7 @@ class EventBusForwardingConsumerTest extends TestCase
 
         $messageProperties = [
             'content_type' => 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
-            'correlation_id' => 'my-correlation-id-123'
+            'correlation_id' => 'my-correlation-id-123',
         ];
 
         $messageBody = '';

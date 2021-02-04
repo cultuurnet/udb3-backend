@@ -142,7 +142,7 @@ class CommandBusForwardingConsumerTest extends TestCase
 
         $messageProperties = [
             'content_type' => 'application/vnd.cultuurnet.udb3-commands.dummy-command+json',
-            'correlation_id' => 'my-correlation-id-123'
+            'correlation_id' => 'my-correlation-id-123',
         ];
 
         $messageBody = '';
