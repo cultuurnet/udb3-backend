@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\DomainMessage;
+namespace CultuurNet\UDB3\Broadway\AMQP\DomainMessage;
 
 use PHPUnit\Framework\TestCase;
 

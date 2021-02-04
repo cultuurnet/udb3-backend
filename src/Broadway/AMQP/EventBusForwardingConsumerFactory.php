@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP;
+namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\Deserializer\DeserializerLocatorInterface;

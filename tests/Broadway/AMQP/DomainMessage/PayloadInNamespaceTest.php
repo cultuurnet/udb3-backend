@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\DomainMessage;
+namespace CultuurNet\UDB3\Broadway\AMQP\DomainMessage;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEvent;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEvent;
 use PHPUnit\Framework\TestCase;
 
 class PayloadInNamespaceTest extends TestCase
@@ -35,7 +35,7 @@ class PayloadInNamespaceTest extends TestCase
     public function it_satisfies_matching_payload_namespace()
     {
         $payloadInNamespace = new PayloadInNamespace(
-            'CultuurNet\BroadwayAMQP\Dummies'
+            'CultuurNet\UDB3\Broadway\AMQP\Dummies'
         );
 
         $this->assertTrue($payloadInNamespace->isSatisfiedBy(
@@ -49,7 +49,7 @@ class PayloadInNamespaceTest extends TestCase
     public function it_does_not_satisfy_a_payload_namespace_that_does_not_match()
     {
         $payloadInNamespace = new PayloadInNamespace(
-            'CultuurNet\BroadwayAMQP\CrashTestDummies'
+            'CultuurNet\UDB3\Broadway\AMQP\CrashTestDummies'
         );
 
         $this->assertFalse($payloadInNamespace->isSatisfiedBy(

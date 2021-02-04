@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Message;
+namespace CultuurNet\UDB3\Broadway\AMQP\Message;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\BroadwayAMQP\Message\Body\BodyFactoryInterface;
-use CultuurNet\BroadwayAMQP\Message\Properties\PropertiesFactoryInterface;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Body\BodyFactoryInterface;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\PropertiesFactoryInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface

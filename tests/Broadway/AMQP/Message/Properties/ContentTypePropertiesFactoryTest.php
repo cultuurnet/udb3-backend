@@ -1,12 +1,12 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Message\Properties;
+namespace CultuurNet\UDB3\Broadway\AMQP\Message\Properties;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEvent;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEventNotSerializable;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEvent;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEventNotSerializable;
 use PHPUnit\Framework\TestCase;
 
 class ContentTypePropertiesFactoryTest extends TestCase

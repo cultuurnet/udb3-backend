@@ -1,9 +1,9 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Dummies;
+namespace CultuurNet\UDB3\Broadway\AMQP\Dummies;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\BroadwayAMQP\DomainMessage\SpecificationInterface;
+use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\SpecificationInterface;
 
 class DummyAlwaysSatisfied implements SpecificationInterface
 {

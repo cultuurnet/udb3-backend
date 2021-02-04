@@ -1,13 +1,13 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Message;
+namespace CultuurNet\UDB3\Broadway\AMQP\Message;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEvent;
-use CultuurNet\BroadwayAMQP\Message\Body\BodyFactoryInterface;
-use CultuurNet\BroadwayAMQP\Message\Properties\PropertiesFactoryInterface;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEvent;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Body\BodyFactoryInterface;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\PropertiesFactoryInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

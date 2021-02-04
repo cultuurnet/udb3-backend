@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP;
+namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListenerInterface;
-use CultuurNet\BroadwayAMQP\DomainMessage\SpecificationInterface;
-use CultuurNet\BroadwayAMQP\Message\AMQPMessageFactoryInterface;
+use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\SpecificationInterface;
+use CultuurNet\UDB3\Broadway\AMQP\Message\AMQPMessageFactoryInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Message\Properties;
+namespace CultuurNet\UDB3\Broadway\AMQP\Message\Properties;
 
 use Broadway\Domain\DomainMessage;
 use PhpAmqpLib\Message\AMQPMessage;

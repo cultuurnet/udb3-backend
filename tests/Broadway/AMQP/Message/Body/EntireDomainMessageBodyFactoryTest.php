@@ -1,13 +1,13 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Message\Body;
+namespace CultuurNet\UDB3\Broadway\AMQP\Message\Body;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializationException;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEvent;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEventNotSerializable;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEvent;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEventNotSerializable;
 use PHPUnit\Framework\TestCase;
 
 class EntireDomainMessageBodyFactoryTest extends TestCase
@@ -59,7 +59,7 @@ class EntireDomainMessageBodyFactoryTest extends TestCase
     {
         $this->expectException(SerializationException::class);
         $this->expectExceptionMessage(
-            'Unable to serialize CultuurNet\BroadwayAMQP\Dummies\DummyEventNotSerializable'
+            'Unable to serialize ' . DummyEventNotSerializable::class
         );
 
         $domainMessage = new DomainMessage(

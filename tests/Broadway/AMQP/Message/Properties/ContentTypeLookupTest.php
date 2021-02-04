@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Message\Properties;
+namespace CultuurNet\UDB3\Broadway\AMQP\Message\Properties;
 
-use CultuurNet\BroadwayAMQP\Dummies\DummyEvent;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEvent;
 use PHPUnit\Framework\TestCase;
 
 class ContentTypeLookupTest extends TestCase

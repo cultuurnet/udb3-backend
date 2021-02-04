@@ -1,16 +1,16 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP;
+namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\BroadwayAMQP\DomainMessage\SpecificationInterface;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEvent;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEventNotSerializable;
-use CultuurNet\BroadwayAMQP\Message\Body\PayloadOnlyBodyFactory;
-use CultuurNet\BroadwayAMQP\Message\DelegatingAMQPMessageFactory;
-use CultuurNet\BroadwayAMQP\Message\Properties\CorrelationIdPropertiesFactory;
+use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\SpecificationInterface;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEvent;
+use CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEventNotSerializable;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Body\PayloadOnlyBodyFactory;
+use CultuurNet\UDB3\Broadway\AMQP\Message\DelegatingAMQPMessageFactory;
+use CultuurNet\UDB3\Broadway\AMQP\Message\Properties\CorrelationIdPropertiesFactory;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -130,7 +130,7 @@ class AMQPPublisherTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'Unable to serialize CultuurNet\BroadwayAMQP\Dummies\DummyEventNotSerializable'
+            'Unable to serialize CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEventNotSerializable'
         );
 
         $this->amqpPublisher->handle($domainMessage);
@@ -151,7 +151,7 @@ class AMQPPublisherTest extends TestCase
             ->expects($this->once())
             ->method('info')
             ->with(
-                'publishing message with event type CultuurNet\BroadwayAMQP\Dummies\DummyEvent to exchange '
+                'publishing message with event type CultuurNet\UDB3\Broadway\AMQP\Dummies\DummyEvent to exchange exchange_name'
             );
 
         $this->amqpPublisher->handle($this->domainMessage);
