@@ -1,10 +1,9 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\FeatureToggles;
 
+use Qandidate\Toggle\Toggle;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -12,21 +11,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class FeatureTogglesControllerProvider implements ControllerProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/toggles', function (Application $app) {
-            /** @var \Qandidate\Toggle\ToggleManager $toggles */
+            /** @var ToggleManager $toggles */
             $toggles = $app['toggles'];
 
             $toggleStates = [];
 
-            /** @var \Qandidate\Toggle\Toggle $toggle */
+            /** @var Toggle $toggle */
             foreach ($toggles->all() as $toggle) {
                 $toggleStates[$toggle->getName()] = $toggle->activeFor(
                     $app['toggles.context']

@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Silex\FeatureToggles;
 
@@ -18,18 +15,11 @@ class FeatureTogglesProvider implements ServiceProviderInterface
      */
     protected $config;
 
-    /**
-     * FeatureTogglesProvider constructor.
-     * @param array $config
-     */
     public function __construct(array $config)
     {
         $this->config = $config;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function register(Application $app)
     {
         $config = $this->config;
@@ -55,11 +45,7 @@ class FeatureTogglesProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function boot(Application $app)
     {
-
     }
 }
