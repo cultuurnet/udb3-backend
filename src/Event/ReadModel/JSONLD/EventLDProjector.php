@@ -521,7 +521,7 @@ class EventLDProjector extends OfferLDProjector implements
             );
     }
 
-    public function placeJSONLD($placeId): array
+    public function placeJSONLD(string $placeId): array
     {
         if (empty($placeId)) {
             return [];
