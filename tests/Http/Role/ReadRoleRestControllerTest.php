@@ -87,7 +87,7 @@ class ReadRoleRestControllerTest extends TestCase
                         case self::REMOVED_ID:
                             throw new DocumentGoneException();
                         default:
-                            return null;
+                            return '';
                     }
                 }
             );
