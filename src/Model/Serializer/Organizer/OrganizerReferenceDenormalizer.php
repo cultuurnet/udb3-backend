@@ -17,22 +17,14 @@ class OrganizerReferenceDenormalizer implements DenormalizerInterface
     private $organizerIDParser;
 
     /**
-     * @var DenormalizerInterface
+     * @var OrganizerDenormalizer
      */
     private $organizerDenormalizer;
 
     public function __construct(
-        OrganizerIDParser $organizerIDParser = null,
-        DenormalizerInterface $organizerDenormalizer = null
+        OrganizerIDParser $organizerIDParser,
+        OrganizerDenormalizer $organizerDenormalizer
     ) {
-        if (!$organizerIDParser) {
-            $organizerIDParser = new OrganizerIDParser();
-        }
-
-        if (!$organizerDenormalizer) {
-            $organizerDenormalizer = new OrganizerDenormalizer();
-        }
-
         $this->organizerIDParser = $organizerIDParser;
         $this->organizerDenormalizer = $organizerDenormalizer;
     }
