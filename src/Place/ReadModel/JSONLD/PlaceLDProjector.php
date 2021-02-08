@@ -249,11 +249,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListenerInterfac
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @param PlaceDeleted $placeDeleted
-     * @return null
-     */
-    protected function applyPlaceDeleted(PlaceDeleted $placeDeleted)
+    protected function applyPlaceDeleted(PlaceDeleted $placeDeleted): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($placeDeleted);
 
