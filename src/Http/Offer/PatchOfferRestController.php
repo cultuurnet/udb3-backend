@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -80,11 +81,7 @@ class PatchOfferRestController
         return $matches[1];
     }
 
-    /**
-     * @param Request $request
-     * @return \DateTimeInterface
-     */
-    private function getPublicationDate(Request $request)
+    private function getPublicationDate(Request $request): ?DateTime
     {
         $content = json_decode($request->getContent());
 
@@ -93,7 +90,7 @@ class PatchOfferRestController
         }
 
         try {
-            $publicationDate = new \DateTime($content->publicationDate);
+            $publicationDate = new DateTime($content->publicationDate);
         } catch (\Exception $exp) {
             throw new \InvalidArgumentException('The publication date is not a valid date format.');
         }
