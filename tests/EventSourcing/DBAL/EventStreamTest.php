@@ -11,6 +11,7 @@ use Broadway\EventStore\DBALEventStore;
 use Broadway\EventStore\EventStoreInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\TestCase;
 
 class EventStreamTest extends TestCase
@@ -429,11 +430,16 @@ class EventStreamTest extends TestCase
      */
     public function it_can_handle_an_aggregate_type()
     {
-        $aggregateTypes = ['event', 'place', 'organizer'];
+        /** @var AggregateType[] $aggregateTypes */
+        $aggregateTypes = [
+            AggregateType::EVENT(),
+            AggregateType::PLACE(),
+            AggregateType::ORGANIZER(),
+        ];
 
         $stores = [];
         foreach ($aggregateTypes as $aggregateType) {
-            $stores[$aggregateType] = $this->createAggregateAwareDBALEventStore($aggregateType);
+            $stores[$aggregateType->toNative()] = $this->createAggregateAwareDBALEventStore($aggregateType);
         }
 
         $schemaManager = $this->getConnection()->getSchemaManager();
@@ -585,11 +591,7 @@ class EventStreamTest extends TestCase
         }
     }
 
-    /**
-     * @param string $aggregateType
-     * @return AggregateAwareDBALEventStore
-     */
-    private function createAggregateAwareDBALEventStore($aggregateType)
+    private function createAggregateAwareDBALEventStore(AggregateType $aggregateType): AggregateAwareDBALEventStore
     {
         return new AggregateAwareDBALEventStore(
             $this->getConnection(),
