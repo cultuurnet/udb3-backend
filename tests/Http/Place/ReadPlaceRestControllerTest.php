@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
+use CultuurNet\SearchV3\ValueObjects\Status;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
@@ -71,6 +72,7 @@ class ReadPlaceRestControllerTest extends TestCase
         $this->calSum = 'zondag 7 oktober 2018 van 12:15 tot 18:00';
 
         $this->place = new Place();
+        $this->place->setStatus(new Status('Available'));
         $this->place->setStartDate(new \DateTime('2018-10-07 12:15:00'));
         $this->place->setEndDate(new \DateTime('2018-10-07 18:00:00'));
         $this->place->setCalendarType('single');
