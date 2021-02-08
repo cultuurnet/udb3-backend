@@ -50,7 +50,7 @@ class EventBusForwardingConsumerTest extends TestCase
     private $deserializerLocator;
 
     /**
-     * @var AbstractChannel|MockObject
+     * @var AMQPChannel|MockObject
      */
     private $channel;
 
