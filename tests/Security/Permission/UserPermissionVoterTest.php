@@ -4,13 +4,14 @@ namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionVoterTest extends TestCase
 {
     /**
-     * @var UserPermissionsReadRepositoryInterface
+     * @var UserPermissionsReadRepositoryInterface|MockObject
      */
     private $userPermissionsReadRepository;
 

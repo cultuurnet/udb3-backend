@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -9,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class AbstractUserEventTest extends TestCase
 {
     /**
-     * @var AbstractUserEvent
+     * @var AbstractUserEvent|MockObject
      */
     private $abstractUserEvent;
 
