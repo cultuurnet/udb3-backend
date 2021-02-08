@@ -16,7 +16,7 @@ class JSONLDEventFormatter
     protected $includedTerms;
 
     /**
-     * @param string|null $include A list of properties to include when
+     * @param string[]|null $include A list of properties to include when
      * formatting the events.
      */
     public function __construct($include = null)
