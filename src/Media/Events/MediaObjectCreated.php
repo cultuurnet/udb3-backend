@@ -22,12 +22,12 @@ final class MediaObjectCreated implements SerializableInterface
     protected $mimeType;
 
     /**
-     * @var String
+     * @var StringLiteral
      */
     protected $description;
 
     /**
-     * @var String
+     * @var StringLiteral
      */
     protected $copyrightHolder;
 
