@@ -150,7 +150,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param TranslatedTitle $title
-     * @return ImmutableOffer
+     * @return static
      */
     public function withTitle(TranslatedTitle $title)
     {
@@ -169,7 +169,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param TranslatedDescription $translatedDescription
-     * @return ImmutableOffer
+     * @return static
      */
     public function withDescription(TranslatedDescription $translatedDescription)
     {
@@ -179,7 +179,7 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @return ImmutableOffer
+     * @return static
      */
     public function withoutDescription()
     {
@@ -219,7 +219,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param Categories $categories
-     * @return ImmutableOffer
+     * @return static
      */
     public function withTerms(Categories $categories)
     {
@@ -238,7 +238,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param Labels $labels
-     * @return ImmutableOffer
+     * @return static
      */
     public function withLabels(Labels $labels)
     {
@@ -286,7 +286,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param AgeRange $ageRange
-     * @return ImmutableOffer
+     * @return static
      */
     public function withAgeRange(AgeRange $ageRange)
     {
@@ -296,7 +296,7 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @return ImmutableOffer
+     * @return static
      */
     public function withoutAgeRange()
     {
@@ -315,7 +315,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param PriceInfo $priceInfo
-     * @return ImmutableOffer
+     * @return static
      */
     public function withPriceInfo(PriceInfo $priceInfo)
     {
@@ -325,7 +325,7 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @return ImmutableOffer
+     * @return static
      */
     public function withoutPriceInfo()
     {
@@ -344,7 +344,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param BookingInfo $bookingInfo
-     * @return ImmutableOffer
+     * @return static
      */
     public function withBookingInfo(BookingInfo $bookingInfo)
     {
@@ -363,7 +363,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param ContactPoint $contactPoint
-     * @return ImmutableOffer
+     * @return static
      */
     public function withContactPoint(ContactPoint $contactPoint)
     {
@@ -382,7 +382,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param MediaObjectReferences $mediaObjectReferences
-     * @return ImmutableOffer
+     * @return static
      */
     public function withMediaObjectReferences(MediaObjectReferences $mediaObjectReferences)
     {
@@ -401,7 +401,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param WorkflowStatus $workflowStatus
-     * @return ImmutableOffer
+     * @return static
      */
     public function withWorkflowStatus(WorkflowStatus $workflowStatus)
     {
@@ -420,7 +420,7 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param \DateTimeImmutable $availableFrom
-     * @return ImmutableOffer
+     * @return static
      */
     public function withAvailableFrom(\DateTimeImmutable $availableFrom)
     {
@@ -430,7 +430,7 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @return ImmutableOffer
+     * @return static
      */
     public function withoutAvailableFrom()
     {
