@@ -57,7 +57,6 @@ use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
-use Symfony\Component\Serializer\Serializer;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
 
@@ -86,7 +85,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     protected $projector;
 
     /**
-     * @var Serializer|MockObject
+     * @var MediaObjectSerializer
      */
     protected $serializer;
 
