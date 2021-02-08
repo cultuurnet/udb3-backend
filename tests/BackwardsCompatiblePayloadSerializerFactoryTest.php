@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\SerializerInterface;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -40,7 +40,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 {
     /**
-     * @var SerializableInterface
+     * @var SerializerInterface
      */
     protected $serializer;
 
