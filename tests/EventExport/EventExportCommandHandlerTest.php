@@ -35,7 +35,7 @@ class EventExportCommandHandlerTest extends TestCase
     private $eventExportCommandHandler;
 
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|MockObject
      */
     private $logger;
 
