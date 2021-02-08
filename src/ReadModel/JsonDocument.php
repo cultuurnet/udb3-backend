@@ -42,11 +42,7 @@ final class JsonDocument implements ReadModelInterface
         return $this->body;
     }
 
-    /**
-     * @param stdClass $body
-     * @return static
-     */
-    public function withBody($body)
+    public function withBody(stdClass $body): self
     {
         return new self($this->id, json_encode($body));
     }
