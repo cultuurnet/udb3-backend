@@ -5,8 +5,10 @@ namespace CultuurNet\UDB3\Model\Serializer\Event;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
+use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
@@ -57,7 +59,10 @@ class EventDenormalizer extends OfferDenormalizer
         }
 
         if (!$placeReferenceDenormalizer) {
-            $placeReferenceDenormalizer = new PlaceReferenceDenormalizer();
+            $placeReferenceDenormalizer = new PlaceReferenceDenormalizer(
+                new PlaceIDParser(),
+                new PlaceDenormalizer()
+            );
         }
 
         $this->eventValidator = $eventValidator;

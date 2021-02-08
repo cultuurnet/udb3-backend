@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Model\Serializer\Place;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -18,26 +17,14 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
     private $placeIDParser;
 
     /**
-     * @var DenormalizerInterface
+     * @var PlaceDenormalizer
      */
     private $placeDenormalizer;
 
-    /**
-     * @param UUIDParser|null $placeIDParser
-     * @param DenormalizerInterface|null $placeDenormalizer
-     */
     public function __construct(
-        UUIDParser $placeIDParser = null,
-        DenormalizerInterface $placeDenormalizer = null
+        PlaceIDParser $placeIDParser,
+        PlaceDenormalizer $placeDenormalizer
     ) {
-        if (!$placeIDParser) {
-            $placeIDParser = new PlaceIDParser();
-        }
-
-        if (!$placeDenormalizer) {
-            $placeDenormalizer = new PlaceDenormalizer();
-        }
-
         $this->placeIDParser = $placeIDParser;
         $this->placeDenormalizer = $placeDenormalizer;
     }
