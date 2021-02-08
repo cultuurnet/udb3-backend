@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
 class EventImportValidatorTest extends TestCase
 {
     /**
-     * @var DocumentRepository
+     * @var DocumentRepository|MockObject
      */
     private $placeRepository;
 
     /**
-     * @var UUIDParser
+     * @var UUIDParser|MockObject
      */
     private $uuidParser;
 

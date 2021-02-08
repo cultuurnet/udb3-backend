@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class OrganizerImportValidatorTest extends TestCase
 {
     /**
-     * @var UUIDParser
+     * @var UUIDParser|MockObject
      */
     private $uuidParser;
 
