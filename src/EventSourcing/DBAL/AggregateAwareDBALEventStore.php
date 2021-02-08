@@ -12,6 +12,7 @@ use Broadway\EventStore\EventStreamNotFoundException;
 use Broadway\Serializer\SerializerInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
@@ -38,7 +39,7 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
     private $metadataSerializer;
 
     /**
-     * @var null
+     * @var Statement|null
      */
     private $loadStatement = null;
 
@@ -180,10 +181,7 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
         return $table;
     }
 
-    /**
-     * @return \Doctrine\DBAL\Driver\Statement|null
-     */
-    private function prepareLoadStatement()
+    private function prepareLoadStatement(): ?Statement
     {
         if (null === $this->loadStatement) {
             $queryBuilder = $this->connection->createQueryBuilder();
