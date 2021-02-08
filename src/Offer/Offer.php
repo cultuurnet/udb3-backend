@@ -146,7 +146,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected $typicalAgeRange;
 
     /**
-     * @var BookingInfo
+     * @var BookingInfo|null
      */
     protected $bookingInfo;
 
