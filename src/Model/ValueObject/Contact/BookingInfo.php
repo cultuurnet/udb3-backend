@@ -45,126 +45,83 @@ class BookingInfo
         $this->availability = $availability;
     }
 
-    /**
-     * @return WebsiteLink|null
-     */
-    public function getWebsite()
+    public function getWebsite(): ?WebsiteLink
     {
         return $this->website;
     }
 
-    /**
-     * @param WebsiteLink $website
-     * @return BookingInfo
-     */
-    public function withWebsite(WebsiteLink $website)
+    public function withWebsite(WebsiteLink $website): self
     {
         $c = clone $this;
         $c->website = $website;
         return $c;
     }
 
-    /**
-     * @return BookingInfo
-     */
-    public function withoutWebsite()
+    public function withoutWebsite(): self
     {
         $c = clone $this;
         $c->website = null;
         return $c;
     }
 
-    /**
-     * @return TelephoneNumber|null
-     */
-    public function getTelephoneNumber()
+    public function getTelephoneNumber(): ?TelephoneNumber
     {
         return $this->telephoneNumber;
     }
 
-    /**
-     * @param TelephoneNumber $telephoneNumber
-     * @return BookingInfo
-     */
-    public function withTelephoneNumber(TelephoneNumber $telephoneNumber)
+    public function withTelephoneNumber(TelephoneNumber $telephoneNumber): self
     {
         $c = clone $this;
         $c->telephoneNumber = $telephoneNumber;
         return $c;
     }
 
-    /**
-     * @return BookingInfo
-     */
-    public function withoutTelephoneNumber()
+    public function withoutTelephoneNumber(): self
     {
         $c = clone $this;
         $c->telephoneNumber = null;
         return $c;
     }
 
-    /**
-     * @return EmailAddress|null
-     */
-    public function getEmailAddress()
+    public function getEmailAddress(): ?EmailAddress
     {
         return $this->emailAddress;
     }
 
-    /**
-     * @param EmailAddress $emailAddress
-     * @return BookingInfo
-     */
-    public function withEmailAddress(EmailAddress $emailAddress)
+    public function withEmailAddress(EmailAddress $emailAddress): self
     {
         $c = clone $this;
         $c->emailAddress = $emailAddress;
         return $c;
     }
 
-    /**
-     * @return BookingInfo
-     */
-    public function withoutEmailAddress()
+    public function withoutEmailAddress(): self
     {
         $c = clone $this;
         $c->emailAddress = null;
         return $c;
     }
 
-    /**
-     * @return BookingAvailability|null
-     */
-    public function getAvailability()
+    public function getAvailability(): ?BookingAvailability
     {
         return $this->availability;
     }
 
-    /**
-     * @param BookingAvailability $availability
-     * @return BookingInfo
-     */
-    public function withAvailability(BookingAvailability $availability)
+    public function withAvailability(BookingAvailability $availability): self
     {
         $c = clone $this;
         $c->availability = $availability;
         return $c;
     }
 
-    /**
-     * @return BookingInfo
-     */
-    public function withoutAvailability()
+    public function withoutAvailability(): self
     {
         $c = clone $this;
         $c->availability = null;
         return $c;
     }
 
-    /**
-     * @return bool
-     */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return is_null($this->website) && is_null($this->telephoneNumber) && is_null($this->emailAddress) &&
             is_null($this->availability);
