@@ -88,7 +88,7 @@ class OrganizerCardSystemsControllerTest extends TestCase
                 'name' => 'Card system 1',
                 'distributionKeys' => (object) [
                     1 => (object) [
-                        'id' => 'distribution-key-1',
+                        'id' => 1,
                         'name' => 'Distribution key 1',
                     ],
                     2 => (object) [

@@ -52,7 +52,7 @@ class EventCardSystemsControllerTest extends TestCase
         ];
 
         $cardSystem2 = new CultureFeed_Uitpas_CardSystem();
-        $cardSystem2->id = 3;
+        $cardSystem2->id = 2;
         $cardSystem2->name = 'Card system 2';
 
         $distributionKey3 = new CultureFeed_Uitpas_DistributionKey();
