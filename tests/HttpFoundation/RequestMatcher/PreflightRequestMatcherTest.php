@@ -30,12 +30,11 @@ class PreflightRequestMatcherTest extends TestCase
     }
 
     /**
-     * /**
      * @test
      * @dataProvider unmatchedRequestMethods
      * @param string[] $requestMethod
      */
-    public function it_does_not_match_request_methods_other_then_OPTIONS($requestMethod)
+    public function it_does_not_match_request_methods_other_then_OPTIONS(array $requestMethod)
     {
         $request = Request::create('/foo', $requestMethod);
         $request->headers->set("Access-Control-Request-Method", $requestMethod);
@@ -46,9 +45,9 @@ class PreflightRequestMatcherTest extends TestCase
 
     /**
      * It's hard to test against a whitelist but these are all the methods for which Silex provides controllers
-     * @return string[]
+     * @return string[][]
      */
-    public function unmatchedRequestMethods()
+    public function unmatchedRequestMethods(): array
     {
         return [
             ['GET'],
