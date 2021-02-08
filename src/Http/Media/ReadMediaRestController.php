@@ -5,8 +5,8 @@ namespace CultuurNet\UDB3\Http\Media;
 use Broadway\Repository\AggregateNotFoundException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Media\MediaManager;
+use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\SerializerInterface;
 use ValueObjects\Identity\UUID;
 
 class ReadMediaRestController
@@ -17,13 +17,13 @@ class ReadMediaRestController
     protected $mediaManager;
 
     /**
-     * @var SerializerInterface
+     * @var MediaObjectSerializer
      */
     protected $serializer;
 
     public function __construct(
         MediaManager $mediaManager,
-        SerializerInterface $serializer
+        MediaObjectSerializer $serializer
     ) {
         $this->mediaManager = $mediaManager;
         $this->serializer = $serializer;
@@ -39,8 +39,7 @@ class ReadMediaRestController
             );
         }
 
-        $serializedMediaObject = $this->serializer
-            ->serialize($mediaObject, 'json-ld');
+        $serializedMediaObject = $this->serializer->serialize($mediaObject);
 
         return JsonResponse::create($serializedMediaObject);
     }
