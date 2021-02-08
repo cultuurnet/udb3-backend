@@ -38,7 +38,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
     private $logo;
 
     /**
-     * @var string
+     * @var Title
      */
     private $title;
 
