@@ -16,8 +16,8 @@ interface EventServiceInterface
      * @param string $id
      *   A string uniquely identifying an event.
      *
-     * @return array
-     *   An event array.
+     * @return string
+     *   An event json.
      *
      * @throws EventNotFoundException if an event can not be found for the given id
      */
