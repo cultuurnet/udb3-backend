@@ -30,20 +30,9 @@ class LocalEventService extends LocalEntityService implements EventServiceInterf
     }
 
     /**
-     * Get a single event by its id.
-     *
-     * @deprecated
-     *   Use getEntity() instead.
-     *
-     * @param string $id
-     *   A string uniquely identifying an event.
-     *
-     * @return array
-     *   An event array.
-     *
-     * @throws EventNotFoundException if an event can not be found for the given id
+     * @deprecated Use getEntity() instead.
      */
-    public function getEvent($id)
+    public function getEvent(string $id): string
     {
         try {
             return $this->getEntity($id);

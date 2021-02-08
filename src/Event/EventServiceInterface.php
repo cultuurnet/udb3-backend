@@ -21,7 +21,7 @@ interface EventServiceInterface
      *
      * @throws EventNotFoundException if an event can not be found for the given id
      */
-    public function getEvent($id);
+    public function getEvent(string $id): string;
 
     /**
      * @param string $organizerId

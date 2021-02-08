@@ -42,10 +42,7 @@ class LocalEntityService implements EntityServiceInterface
         $this->iriGenerator = $iriGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEntity($id)
+    public function getEntity(string $id): string
     {
         /** @var JsonDocument $document */
         $document = $this->documentRepository->get($id);

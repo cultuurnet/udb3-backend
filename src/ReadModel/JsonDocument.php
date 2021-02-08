@@ -37,7 +37,7 @@ final class JsonDocument implements ReadModelInterface
         return json_decode($this->body, true);
     }
 
-    public function getRawBody()
+    public function getRawBody(): string
     {
         return $this->body;
     }
