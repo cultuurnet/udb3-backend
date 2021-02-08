@@ -605,14 +605,14 @@ class EventStreamTest extends TestCase
     /**
      * @param EventStream $eventStream
      * @param DomainMessage[] $domainMessages
-     * @param string $aggregateType
+     * @param AggregateType $aggregateType
      */
     private function checkEventStream(
         EventStream $eventStream,
         array $domainMessages,
-        $aggregateType
+        AggregateType $aggregateType
     ) {
-        $eventStream = $eventStream->withAggregateType($aggregateType);
+        $eventStream = $eventStream->withAggregateType($aggregateType->toNative());
 
         $domainEventStreams = $eventStream();
         $domainEventStreams = iterator_to_array($domainEventStreams);
@@ -620,7 +620,7 @@ class EventStreamTest extends TestCase
         $expectedDomainEventStreams = [];
         foreach ($domainMessages as $key => $domainMessage) {
             $metadataAsArray = $domainMessage->getMetadata()->serialize();
-            if ($metadataAsArray['aggregate_type'] === $aggregateType) {
+            if ($metadataAsArray['aggregate_type'] === $aggregateType->toNative()) {
                 $expectedDomainEventStreams[] = new DomainEventStream([$domainMessage]);
             }
         }
