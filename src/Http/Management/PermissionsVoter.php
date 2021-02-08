@@ -11,13 +11,12 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 class PermissionsVoter implements VoterInterface
 {
     /**
-     * @var string[]
+     * @var string[][]
      */
     private $authorizationList;
 
     /**
-     * PermissionVoter constructor.
-     * @param string[] $authorizationList
+     * @param string[][] $authorizationList
      */
     public function __construct($authorizationList)
     {
