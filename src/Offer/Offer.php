@@ -79,7 +79,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected $images;
 
     /**
-     * @var string
+     * @var string|null
      *
      * Organizer ids can come from UDB2 which does not strictly use UUIDs.
      */
@@ -136,12 +136,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected $contactPoint;
 
     /**
-     * @var Calendar
+     * @var Calendar|null
      */
     protected $calendar;
 
     /**
-     * @var AgeRange
+     * @var AgeRange|null
      */
     protected $typicalAgeRange;
 
