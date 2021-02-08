@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -20,7 +21,7 @@ class AbstractDBALRepositoryTest extends TestCase
     private $tableName;
 
     /**
-     * @var AbstractDBALRepository
+     * @var AbstractDBALRepository|MockObject
      */
     private $abstractDBALRepository;
 

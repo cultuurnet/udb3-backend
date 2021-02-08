@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Label\Events;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
@@ -19,7 +20,7 @@ class AbstractEventTest extends TestCase
     protected $name;
 
     /**
-     * @var AbstractEvent
+     * @var AbstractEvent|MockObject
      */
     protected $event;
 
