@@ -1386,7 +1386,6 @@ class EventDenormalizerTest extends TestCase
             )
         );
 
-        /** @phpstan-ignore-next-line */
         $expected = $expected
             ->withDescription(
                 (new TranslatedDescription(new Language('nl'), new Description('Voorbeeld beschrijving')))
