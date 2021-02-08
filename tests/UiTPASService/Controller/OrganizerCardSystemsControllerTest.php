@@ -83,29 +83,29 @@ class OrganizerCardSystemsControllerTest extends TestCase
             ->willReturn($resultSet);
 
         $expectedResponseContent = (object) [
-            'card-system-1' => (object) [
+            1 => (object) [
                 'id' => 1,
                 'name' => 'Card system 1',
                 'distributionKeys' => (object) [
-                    'distribution-key-1' => (object) [
+                    1 => (object) [
                         'id' => 'distribution-key-1',
                         'name' => 'Distribution key 1',
                     ],
-                    'distribution-key-2' => (object) [
+                    2 => (object) [
                         'id' => 2,
                         'name' => 'Distribution key 2',
                     ],
                 ],
             ],
-            'card-system-2' => (object) [
+            2 => (object) [
                 'id' => 2,
                 'name' => 'Card system 2',
                 'distributionKeys' => (object) [
-                    'distribution-key-3' => (object) [
+                    3 => (object) [
                         'id' => 3,
                         'name' => 'Distribution key 3',
                     ],
-                    'distribution-key-4' => (object) [
+                    4 => (object) [
                         'id' => 4,
                         'name' => 'Distribution key 4',
                     ],
