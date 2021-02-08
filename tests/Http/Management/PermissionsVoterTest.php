@@ -12,7 +12,7 @@ class PermissionsVoterTest extends TestCase
     use TokenMockingTrait;
 
     /**
-     * @var UserPermissionsVoter
+     * @var PermissionsVoter
      */
     private $voter;
 
