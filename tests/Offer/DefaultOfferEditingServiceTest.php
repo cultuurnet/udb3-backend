@@ -27,6 +27,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Money\Currency;
@@ -116,7 +117,7 @@ class DefaultOfferEditingServiceTest extends TestCase
 
         $this->translateTitleCommand = $this->getMockForAbstractClass(
             AbstractUpdateTitle::class,
-            array('foo', new Language('en'), new StringLiteral('English title'))
+            array('foo', new Language('en'), new Title('English title'))
         );
 
         $this->offerEditingService = new DefaultOfferEditingService(
