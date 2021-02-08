@@ -86,7 +86,7 @@ class LabelRolesProjector extends RoleProjector
     {
         $document = new JsonDocument(
             $uuid->toNative(),
-            json_encode(new stdClass())
+            json_encode([])
         );
         return $document;
     }

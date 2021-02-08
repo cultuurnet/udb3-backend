@@ -21,7 +21,6 @@ use ValueObjects\Identity\UUID;
 
 class LabelRolesProjectorTest extends TestCase
 {
-
     /**
      * @var LabelRolesProjector
      */
