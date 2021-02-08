@@ -944,7 +944,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $currentMediaObjects = isset($offerLd->mediaObject) ? $offerLd->mediaObject : [];
         $dutchMediaObjects = array_map(
             function (Image $image) {
-                return $this->mediaObjectSerializer->serialize($image, 'json-ld');
+                return $this->mediaObjectSerializer->serialize($image);
             },
             $images->toArray()
         );
