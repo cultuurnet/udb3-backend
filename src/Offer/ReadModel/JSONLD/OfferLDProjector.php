@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -82,7 +83,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     protected $jsonDocumentMetaDataEnricher;
 
     /**
-     * @var SerializerInterface
+     * @var MediaObjectSerializer
      */
     protected $mediaObjectSerializer;
 
@@ -103,7 +104,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      * @param DocumentRepository $repository
      * @param IriGeneratorInterface $iriGenerator
      * @param EntityServiceInterface $organizerService
-     * @param SerializerInterface $mediaObjectSerializer
+     * @param MediaObjectSerializer $mediaObjectSerializer
      * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
      * @param string[] $basePriceTranslations
      */
@@ -111,7 +112,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         EntityServiceInterface $organizerService,
-        SerializerInterface $mediaObjectSerializer,
+        MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations
     ) {
@@ -476,8 +477,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd = $document->getBody();
         $offerLd->mediaObject = isset($offerLd->mediaObject) ? $offerLd->mediaObject : [];
 
-        $imageData = $this->mediaObjectSerializer
-            ->serialize($imageAdded->getImage(), 'json-ld');
+        $imageData = $this->mediaObjectSerializer->serialize($imageAdded->getImage());
         $offerLd->mediaObject[] = $imageData;
 
         if (count($offerLd->mediaObject) === 1) {
