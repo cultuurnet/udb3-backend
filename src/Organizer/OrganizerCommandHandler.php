@@ -240,14 +240,11 @@ class OrganizerCommandHandler implements CommandHandlerInterface
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * Makes it easier to type hint to Organizer.
-     *
-     * @param string $id
-     * @return Organizer
-     */
-    protected function loadOrganizer($id)
+    protected function loadOrganizer(string $id): Organizer
     {
-        return $this->organizerRepository->load($id);
+        /** @var Organizer $organizer */
+        $organizer = $this->organizerRepository->load($id);
+
+        return $organizer;
     }
 }
