@@ -5,18 +5,17 @@ namespace CultuurNet\UDB3\Http\Deserializer\Address;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 use CultuurNet\UDB3\Http\Deserializer\DataValidator\NotEmptyPropertiesDataValidator;
-use CultuurNet\UDB3\Http\Deserializer\DataValidator\RequiredPropertiesDataValidator;
 
 class AddressDataValidator implements DataValidatorInterface
 {
     /**
-     * @var RequiredPropertiesDataValidator
+     * @var NotEmptyPropertiesDataValidator
      */
-    private $requiredFieldsValidator;
+    private $notEmptyPropertiesDataValidator;
 
     public function __construct()
     {
-        $this->requiredFieldsValidator = new NotEmptyPropertiesDataValidator(
+        $this->notEmptyPropertiesDataValidator = new NotEmptyPropertiesDataValidator(
             [
                 'streetAddress',
                 'postalCode',
@@ -32,6 +31,6 @@ class AddressDataValidator implements DataValidatorInterface
      */
     public function validate(array $data)
     {
-        $this->requiredFieldsValidator->validate($data);
+        $this->notEmptyPropertiesDataValidator->validate($data);
     }
 }
