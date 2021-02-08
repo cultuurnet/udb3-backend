@@ -158,17 +158,6 @@ class MediaObjectSerializerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_when_trying_to_deserialize()
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Deserialization currently not supported.');
-
-        $this->serializer->deserialize((object) [], MediaObject::class);
-    }
-
-    /**
-     * @test
-     */
     public function it_serializes_mime_type_image_to_image_object()
     {
         /** @var MIMEType $mimeType */
