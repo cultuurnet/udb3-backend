@@ -96,7 +96,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected $rejectedReason;
 
     /**
-     * @var PriceInfo
+     * @var PriceInfo|null
      */
     protected $priceInfo;
 
@@ -131,7 +131,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected $facilities;
 
     /**
-     * @var ContactPoint
+     * @var ContactPoint|null
      */
     protected $contactPoint;
 
