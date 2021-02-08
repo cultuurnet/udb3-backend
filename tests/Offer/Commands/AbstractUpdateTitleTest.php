@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -32,7 +33,7 @@ class AbstractUpdateTitleTest extends TestCase
     public function setUp()
     {
         $this->itemId = 'Foo';
-        $this->title = new StringLiteral('This is the event title update.');
+        $this->title = new Title('This is the event title update.');
         $this->language = new Language('en');
 
         $this->updateTitleCommand = $this->getMockForAbstractClass(
@@ -47,7 +48,7 @@ class AbstractUpdateTitleTest extends TestCase
     public function it_can_return_its_properties()
     {
         $title = $this->updateTitleCommand->getTitle();
-        $expectedTitle = new StringLiteral('This is the event title update.');
+        $expectedTitle = new Title('This is the event title update.');
 
         $this->assertEquals($expectedTitle, $title);
 
