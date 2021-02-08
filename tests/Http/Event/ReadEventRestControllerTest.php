@@ -113,7 +113,7 @@ class ReadEventRestControllerTest extends TestCase
             ]
         );
 
-        $this->calSum = 'zondag 7 oktober 2018 van 12:15 tot 18:00';
+        $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00';
 
         $this->event = new Event();
         $this->event->setStatus(new Status('Available'));

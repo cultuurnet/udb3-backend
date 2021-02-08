@@ -69,7 +69,7 @@ class ReadPlaceRestControllerTest extends TestCase
             )
         );
 
-        $this->calSum = 'zondag 7 oktober 2018 van 12:15 tot 18:00';
+        $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00';
 
         $this->place = new Place();
         $this->place->setStatus(new Status('Available'));
