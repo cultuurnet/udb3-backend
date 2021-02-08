@@ -62,7 +62,7 @@ class MediaObjectSerializerTest extends TestCase
             'inLanguage' => 'en',
         ];
 
-        $jsonld = $this->serializer->serialize($mediaObject, 'json-ld');
+        $jsonld = $this->serializer->serialize($mediaObject);
 
         $this->assertEquals($expectedJsonld, $jsonld);
     }
@@ -96,7 +96,7 @@ class MediaObjectSerializerTest extends TestCase
             'inLanguage' => 'en',
         ];
 
-        $jsonld = $this->serializer->serialize($mediaObject, 'json-ld');
+        $jsonld = $this->serializer->serialize($mediaObject);
 
         $this->assertEquals($expectedJsonld, $jsonld);
     }
@@ -130,7 +130,7 @@ class MediaObjectSerializerTest extends TestCase
             'inLanguage' => 'en',
         ];
 
-        $jsonld = $this->serializer->serialize($mediaObject, 'json-ld');
+        $jsonld = $this->serializer->serialize($mediaObject);
 
         $this->assertEquals($expectedJsonld, $jsonld);
     }
@@ -152,7 +152,7 @@ class MediaObjectSerializerTest extends TestCase
         $this->expectException(UnsupportedException::class);
         $this->expectExceptionMessage('Unsupported MIME-type "video/avi"');
 
-        $this->serializer->serialize($mediaObject, 'json-ld');
+        $this->serializer->serialize($mediaObject);
     }
 
     /**
@@ -183,7 +183,7 @@ class MediaObjectSerializerTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Deserialization currently not supported.');
 
-        $this->serializer->deserialize((object) [], MediaObject::class, 'json-ld');
+        $this->serializer->deserialize((object) [], MediaObject::class);
     }
 
     /**
