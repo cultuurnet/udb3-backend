@@ -77,6 +77,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         Language $language
     ) {
         try {
+            /** @var MediaObject $existingMediaObject */
             $existingMediaObject = $this->repository->load($id);
             $this->logger->info('Trying to create media with id: ' .$id . ' but it already exists. Using existing Media Object!');
 
@@ -139,6 +140,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
     public function get(UUID $fileId)
     {
         try {
+            /** @var MediaObject $mediaObject */
             $mediaObject = $this->repository->load((string) $fileId);
         } catch (AggregateNotFoundException $e) {
             throw new MediaObjectNotFoundException(
