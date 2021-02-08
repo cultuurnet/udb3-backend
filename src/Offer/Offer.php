@@ -1162,7 +1162,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createCalendarUpdatedEvent(Calendar $calendar);
 
     /**
-     * @param string $typicalAgeRange
+     * @param AgeRange $typicalAgeRange
      * @return AbstractTypicalAgeRangeUpdated
      */
     abstract protected function createTypicalAgeRangeUpdatedEvent($typicalAgeRange);
