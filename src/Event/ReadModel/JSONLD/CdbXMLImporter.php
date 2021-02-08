@@ -180,7 +180,7 @@ class CdbXMLImporter
         $locationId = $this->cdbIdExtractor->getRelatedPlaceCdbId($event);
 
         if ($locationId) {
-            $location += (array)$placeManager->placeJSONLD($locationId);
+            $location += $placeManager->placeJSONLD($locationId);
         } else {
             $locationCdb = $event->getLocation();
             $location['mainLanguage'] = 'nl';

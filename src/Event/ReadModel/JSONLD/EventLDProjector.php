@@ -294,7 +294,7 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->name[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
         $jsonLD->location = array(
                 '@type' => 'Place',
-            ) + (array) $this->placeJSONLD(
+            ) + $this->placeJSONLD(
                 $eventCreated->getLocation()->toNative()
             );
 
@@ -407,11 +407,7 @@ class EventLDProjector extends OfferLDProjector implements
         return $newDocument;
     }
 
-    /**
-     * @param EventDeleted $eventDeleted
-     * @return null
-     */
-    protected function applyEventDeleted(EventDeleted $eventDeleted)
+    protected function applyEventDeleted(EventDeleted $eventDeleted): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($eventDeleted);
 
@@ -439,7 +435,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->location = array(
           '@type' => 'Place',
-        ) + (array) $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
+        ) + $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
 
         $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar(), $majorInfoUpdated->getEventType());
         $jsonLD->availableTo = (string) $availableTo;
@@ -477,7 +473,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->location = [
             '@type' => 'Place',
-         ] + (array) $this->placeJSONLD($locationUpdated->getLocationId()->toNative());
+         ] + $this->placeJSONLD($locationUpdated->getLocationId()->toNative());
 
         return $document->withBody($jsonLD);
     }
@@ -525,13 +521,10 @@ class EventLDProjector extends OfferLDProjector implements
             );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function placeJSONLD($placeId)
+    public function placeJSONLD($placeId): array
     {
         if (empty($placeId)) {
-            return array();
+            return [];
         }
 
         try {
@@ -539,17 +532,17 @@ class EventLDProjector extends OfferLDProjector implements
                 $placeId
             );
 
-            return json_decode($placeJSONLD);
+            return (array) json_decode($placeJSONLD);
         } catch (EntityNotFoundException $e) {
             // In case the place can not be found at the moment, just add its ID
-            return array(
+            return [
                 '@id' => $this->placeService->iri($placeId),
-            );
+            ];
         } catch (DocumentGoneException $e) {
             // In case the place can not be found at the moment, just add its ID
-            return array(
+            return [
                 '@id' => $this->placeService->iri($placeId),
-            );
+            ];
         }
     }
 

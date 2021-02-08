@@ -17,8 +17,6 @@ interface PlaceServiceInterface
      *
      * @param string $placeId
      *   Id of the Place.
-     *
-     * @return \stdClass
      */
-    public function placeJSONLD($placeId);
+    public function placeJSONLD($placeId): array;
 }
