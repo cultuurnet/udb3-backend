@@ -135,9 +135,9 @@ class ItemVisibilityProjectorTest extends TestCase
     }
 
     /**
-     * @return RelationType[]
+     * @return RelationType[][]
      */
-    public function relationTypeProvider()
+    public function relationTypeProvider(): array
     {
         return [
             [
