@@ -31,7 +31,7 @@ class WithFallbackJwtDecoderTest extends TestCase
     private $withFallBackJwtDecoder;
 
     /**
-     * @var Token
+     * @var Udb3Token
      */
     private $token;
 
