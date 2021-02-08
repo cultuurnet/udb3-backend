@@ -25,7 +25,7 @@ class JSONDeserializer implements DeserializerInterface
      * Decodes a JSON string into a generic PHP object.
      *
      * @param StringLiteral $data
-     * @return \stdClass
+     * @return object
      */
     public function deserialize(StringLiteral $data)
     {
