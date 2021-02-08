@@ -214,7 +214,7 @@ class CdbXMLImporter
         $contactInfoCdb = $event->getContactInfo();
 
         if ($organizerId) {
-            $organizer = (array)$organizerManager->organizerJSONLD($organizerId);
+            $organizer = $organizerManager->organizerJSONLD($organizerId);
         } elseif ($organizerCdb && $contactInfoCdb) {
             $organizer = array();
             $organizer['mainLanguage'] = 'nl';

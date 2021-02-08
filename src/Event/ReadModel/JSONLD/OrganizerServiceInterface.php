@@ -14,8 +14,5 @@ use stdClass;
  */
 interface OrganizerServiceInterface
 {
-    /**
-     * @return stdClass
-     */
-    public function organizerJSONLD(string $organizerId);
+    public function organizerJSONLD(string $organizerId): array;
 }

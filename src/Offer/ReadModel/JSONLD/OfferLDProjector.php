@@ -529,11 +529,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @param AbstractImageRemoved $imageRemoved
-     * @return JsonDocument
-     */
-    protected function applyImageRemoved(AbstractImageRemoved $imageRemoved)
+    protected function applyImageRemoved(AbstractImageRemoved $imageRemoved): ?JsonDocument
     {
         $document = $this->loadDocumentFromRepository($imageRemoved);
 
@@ -541,7 +537,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         // Nothing to remove if there are no media objects!
         if (!isset($offerLd->mediaObject)) {
-            return;
+            return null;
         }
 
         $imageId = (string) $imageRemoved->getImage()->getMediaObjectId();
@@ -703,7 +699,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd->organizer = array(
                 '@type' => 'Organizer',
-            ) + (array)$this->organizerJSONLD($organizerUpdated->getOrganizerId());
+            ) + $this->organizerJSONLD($organizerUpdated->getOrganizerId());
 
         return $document->withBody($offerLd);
     }
@@ -1009,19 +1005,19 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document;
     }
 
-    public function organizerJSONLD(string $organizerId)
+    public function organizerJSONLD(string $organizerId): array
     {
         try {
             $organizerJSONLD = $this->organizerService->getEntity(
                 $organizerId
             );
 
-            return json_decode($organizerJSONLD);
+            return (array) json_decode($organizerJSONLD);
         } catch (EntityNotFoundException $e) {
             // In case the place can not be found at the moment, just add its ID
-            return array(
+            return [
                 '@id' => $this->organizerService->iri($organizerId),
-            );
+            ];
         }
     }
 
