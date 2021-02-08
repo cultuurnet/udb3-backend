@@ -64,6 +64,7 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
 
         $results = $userPermissionQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
 
+        /** @var Permission[] $permissions */
         $permissions = array_map(array(Permission::class, 'fromNative'), $results);
 
         return $permissions;
