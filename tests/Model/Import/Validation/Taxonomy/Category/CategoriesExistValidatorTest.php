@@ -9,7 +9,7 @@ use Respect\Validation\Exceptions\GroupedValidationException;
 class CategoriesExistValidatorTest extends TestCase
 {
     /**
-     * @var CategoryExistsValidator
+     * @var CategoriesExistValidator
      */
     private $validator;
 
