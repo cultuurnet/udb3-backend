@@ -197,8 +197,8 @@ class DefaultOfferEditingServiceTest extends TestCase
 
         $this->commandFactory->expects($this->once())
             ->method('createUpdateTitleCommand')
-            ->with('foo', new Language('en'), new StringLiteral('English title'))
-            ->willReturn(new UpdateTitle('foo', new Language('en'), new StringLiteral('English title')));
+            ->with('foo', new Language('en'), new Title('English title'))
+            ->willReturn(new UpdateTitle('foo', new Language('en'), new Title('English title')));
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')
