@@ -32,9 +32,8 @@ class PreflightRequestMatcherTest extends TestCase
     /**
      * @test
      * @dataProvider unmatchedRequestMethods
-     * @param string[] $requestMethod
      */
-    public function it_does_not_match_request_methods_other_then_OPTIONS(array $requestMethod)
+    public function it_does_not_match_request_methods_other_then_OPTIONS(string $requestMethod)
     {
         $request = Request::create('/foo', $requestMethod);
         $request->headers->set("Access-Control-Request-Method", $requestMethod);
