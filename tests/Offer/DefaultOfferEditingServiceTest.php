@@ -40,7 +40,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $commandBus;
 
     /**
-     * @var UuidGeneratorInterface
+     * @var UuidGeneratorInterface|MockObject
      */
     private $uuidGenerator;
 
@@ -65,12 +65,12 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $offerEditingService;
 
     /**
-     * @var AbstractAddLabel
+     * @var AbstractAddLabel|MockObject
      */
     private $addLabelCommand;
 
     /**
-     * @var AbstractRemoveLabel
+     * @var AbstractRemoveLabel|MockObject
      */
     private $removeLabelCommand;
 
@@ -80,7 +80,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $expectedCommandId;
 
     /**
-     * @var AbstractUpdateTitle
+     * @var AbstractUpdateTitle|MockObject
      */
     private $translateTitleCommand;
 
