@@ -207,7 +207,7 @@ class DefaultOfferEditingServiceTest extends TestCase
         $commandId = $this->offerEditingService->updateTitle(
             'foo',
             new Language('en'),
-            new StringLiteral('English title')
+            new Title('English title')
         );
 
         $this->assertEquals($this->expectedCommandId, $commandId);
