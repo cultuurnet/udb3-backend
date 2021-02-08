@@ -8,22 +8,22 @@ use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 class BookingInfo
 {
     /**
-     * @var WebsiteLink
+     * @var WebsiteLink|null
      */
     private $website;
 
     /**
-     * @var TelephoneNumber
+     * @var TelephoneNumber|null
      */
     private $telephoneNumber;
 
     /**
-     * @var EmailAddress
+     * @var EmailAddress|null
      */
     private $emailAddress;
 
     /**
-     * @var BookingAvailability
+     * @var BookingAvailability|null
      */
     private $availability;
 
