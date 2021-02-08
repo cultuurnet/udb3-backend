@@ -47,7 +47,7 @@ class TabularDataEventFormatter
     protected $uitpas;
 
     /**
-     * @var CalendarSummaryRepositoryInterface
+     * @var CalendarSummaryRepositoryInterface|null
      */
     protected $calendarSummaryRepository;
 
@@ -74,7 +74,7 @@ class TabularDataEventFormatter
     public function __construct(
         array $include,
         EventInfoServiceInterface $uitpas = null,
-        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
     ) {
         $this->htmlFilter = new StripHtmlStringFilter();
         $this->includedProperties = $this->includedOrDefaultProperties($include);
@@ -770,7 +770,7 @@ class TabularDataEventFormatter
      *
      * @return Closure
      */
-    private function calendarSummaryFormatter(Format $format, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
+    private function calendarSummaryFormatter(Format $format, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
     {
         return function ($event) use ($calendarSummaryRepository, $format) {
             $eventId = $this->parseEventIdFromUrl($event);
