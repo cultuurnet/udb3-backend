@@ -72,7 +72,7 @@ class UserRolesProjector extends RoleProjector
         $roles = json_decode($document->getRawBody(), true);
         $roles[$roleId] = $roleDetails;
 
-        $document = $document->withBody($roles);
+        $document = $document->withAssocBody($roles);
 
         $this->repository->save($document);
     }
@@ -98,7 +98,7 @@ class UserRolesProjector extends RoleProjector
         $roles = json_decode($document->getRawBody(), true);
         unset($roles[$roleId]);
 
-        $document = $document->withBody($roles);
+        $document = $document->withAssocBody($roles);
 
         $this->repository->save($document);
     }
@@ -145,7 +145,7 @@ class UserRolesProjector extends RoleProjector
             $userRoles = json_decode($userRolesDocument->getRawBody(), true);
             $userRoles[$roleId] = $roleDetails;
 
-            $userRolesDocument = $userRolesDocument->withBody($userRoles);
+            $userRolesDocument = $userRolesDocument->withAssocBody($userRoles);
             $this->repository->save($userRolesDocument);
         }
     }

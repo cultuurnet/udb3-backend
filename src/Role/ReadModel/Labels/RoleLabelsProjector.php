@@ -56,7 +56,7 @@ class RoleLabelsProjector extends RoleProjector
 
             if ($label) {
                 $labelDetails[$label->getUuid()->toNative()] = $label;
-                $document = $document->withBody($labelDetails);
+                $document = $document->withAssocBody($labelDetails);
                 $this->repository->save($document);
             }
         }
@@ -75,7 +75,7 @@ class RoleLabelsProjector extends RoleProjector
 
             if ($label) {
                 unset($labelDetails[$label->getUuid()->toNative()]);
-                $document = $document->withBody($labelDetails);
+                $document = $document->withAssocBody($labelDetails);
                 $this->repository->save($document);
             }
         }
@@ -98,7 +98,7 @@ class RoleLabelsProjector extends RoleProjector
                 if ($role) {
                     $labelDetails = $this->getLabelDetails($role);
                     $labelDetails[$labelId] = $this->labelJsonRepository->getByUuid($labelDetailsProjectedToJSONLD->getUuid());
-                    $role = $role->withBody($labelDetails);
+                    $role = $role->withAssocBody($labelDetails);
                     $this->repository->save($role);
                 }
             }

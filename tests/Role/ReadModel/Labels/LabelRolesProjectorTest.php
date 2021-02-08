@@ -162,7 +162,7 @@ class LabelRolesProjectorTest extends TestCase
     {
         return new JsonDocument(
             $uuid,
-            json_encode(new stdClass())
+            json_encode([])
         );
     }
 
