@@ -78,7 +78,7 @@ class CombinedPermissionQueryTest extends TestCase
         $combinedPermissionQuery = new CombinedPermissionQuery(
             $permissionQueries
         );
-        
+
         $this->assertEmpty($combinedPermissionQuery->getEditableOffers(
             new StringLiteral('userId')
         ));
@@ -86,7 +86,7 @@ class CombinedPermissionQueryTest extends TestCase
 
     /**
      * @param StringLiteral[] $editableOffers
-     * @return PermissionQueryInterface
+     * @return PermissionQueryInterface|MockObject
      */
     private function createPermissionQuery(array $editableOffers)
     {
