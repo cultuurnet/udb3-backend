@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use ValueObjects\Identity\UUID;
 
 class LabelRolesProjectorTest extends TestCase
@@ -161,7 +162,7 @@ class LabelRolesProjectorTest extends TestCase
     {
         return new JsonDocument(
             $uuid,
-            json_encode([])
+            json_encode(new stdClass())
         );
     }
 

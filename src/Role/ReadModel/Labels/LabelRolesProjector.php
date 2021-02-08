@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
+use stdClass;
 use ValueObjects\Identity\UUID;
 
 class LabelRolesProjector extends RoleProjector
@@ -23,7 +24,7 @@ class LabelRolesProjector extends RoleProjector
         if ($document) {
             $roleDetails = $this->getRoleDetails($document);
             $roleDetails[$labelAdded->getUuid()->toNative()] = $labelAdded->getUuid()->toNative();
-            $document = $document->withBody($roleDetails);
+            $document = $document->withBody((object) $roleDetails);
             $this->repository->save($document);
         }
     }
@@ -38,7 +39,7 @@ class LabelRolesProjector extends RoleProjector
         if ($document) {
             $roleDetails = $this->getRoleDetails($document);
             unset($roleDetails[$labelRemoved->getUuid()->toNative()]);
-            $document = $document->withBody($roleDetails);
+            $document = $document->withBody((object) $roleDetails);
             $this->repository->save($document);
         }
     }
@@ -85,7 +86,7 @@ class LabelRolesProjector extends RoleProjector
     {
         $document = new JsonDocument(
             $uuid->toNative(),
-            json_encode([])
+            json_encode(new stdClass())
         );
         return $document;
     }
