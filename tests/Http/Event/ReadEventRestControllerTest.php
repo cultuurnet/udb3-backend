@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
+use CultuurNet\SearchV3\ValueObjects\Status;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
@@ -115,6 +116,7 @@ class ReadEventRestControllerTest extends TestCase
         $this->calSum = 'zondag 7 oktober 2018 van 12:15 tot 18:00';
 
         $this->event = new Event();
+        $this->event->setStatus(new Status('Available'));
         $tz = new DateTimeZone('Europe/Brussels');
         $this->event->setStartDate(new \DateTime('2018-10-07 12:15:00', $tz));
         $this->event->setEndDate(new \DateTime('2018-10-07 18:00:00', $tz));
