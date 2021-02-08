@@ -18,5 +18,5 @@ interface LabelServiceInterface
      * UUID of the newly created aggregate label, or null if no new label
      * aggregate was created.
      */
-    public function createLabelAggregateIfNew(LabelName $labelName, $visible);
+    public function createLabelAggregateIfNew(LabelName $labelName, bool $visible): ?UUID;
 }
