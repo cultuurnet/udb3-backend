@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\TabularData;
 
+use Closure;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\Currency\CurrencyRepositoryInterface;
 use CommerceGuys\Intl\Formatter\NumberFormatter;
@@ -704,7 +705,7 @@ class TabularDataEventFormatter
 
     /**
      * @param string $propertyName
-     * @return \Closure
+     * @return Closure
      */
     private function includeBookingInfo($propertyName)
     {
@@ -741,7 +742,7 @@ class TabularDataEventFormatter
 
     /**
      * @param string $propertyName
-     * @return \Closure
+     * @return Closure
      */
     private function includeMainImageInfo($propertyName)
     {
@@ -767,12 +768,9 @@ class TabularDataEventFormatter
      * Gives a formatter that tries to fetch a summary in plain text.
      * If the formatted summary is missing, the summary that is available on the event will be used as fallback.
      *
-     * @param Format                                  $format
-     * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
-     *
-     * @return string
+     * @return Closure
      */
-    private function calendarSummaryFormatter(Format $format, $calendarSummaryRepository)
+    private function calendarSummaryFormatter(Format $format, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
     {
         return function ($event) use ($calendarSummaryRepository, $format) {
             $eventId = $this->parseEventIdFromUrl($event);
