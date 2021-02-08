@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractUpdateOrganizerCommandTest extends TestCase
@@ -13,7 +14,7 @@ class AbstractUpdateOrganizerCommandTest extends TestCase
     private $organizerId;
 
     /**
-     * @var AbstractUpdateOrganizerCommand
+     * @var AbstractUpdateOrganizerCommand|MockObject
      */
     private $updateOrganizerCommand;
 
