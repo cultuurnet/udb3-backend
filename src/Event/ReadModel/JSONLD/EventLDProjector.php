@@ -54,6 +54,7 @@ use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
@@ -109,7 +110,7 @@ class EventLDProjector extends OfferLDProjector implements
         IriGeneratorInterface $iriGenerator,
         PlaceService $placeService,
         OrganizerService $organizerService,
-        SerializerInterface $mediaObjectSerializer,
+        MediaObjectSerializer $mediaObjectSerializer,
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory,
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,

@@ -68,7 +68,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     private $iriGenerator;
 
     /**
-     * @var SerializerInterface
+     * @var MediaObjectSerializer
      */
     private $serializer;
 
