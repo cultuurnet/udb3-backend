@@ -767,11 +767,11 @@ class TabularDataEventFormatter
     /**
      * Gives a formatter that tries to fetch a summary in plain text.
      * If the formatted summary is missing, the summary that is available on the event will be used as fallback.
-     *
-     * @return Closure
      */
-    private function calendarSummaryFormatter(Format $format, ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null)
-    {
+    private function calendarSummaryFormatter(
+        Format $format,
+        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+    ): Closure {
         return function ($event) use ($calendarSummaryRepository, $format) {
             $eventId = $this->parseEventIdFromUrl($event);
 
