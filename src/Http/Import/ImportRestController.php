@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
 use Respect\Validation\Exceptions\ValidationException;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,7 +77,9 @@ class ImportRestController
      */
     public function importWithId(Request $request, $cdbid)
     {
-        $apiKey = $this->apiKeyReader->read($request);
+        $apiKey = $this->apiKeyReader->read(
+            (new DiactorosFactory())->createRequest($request)
+        );
 
         if ($apiKey) {
             $consumer = $this->consumerReadRepository->getConsumer($apiKey);

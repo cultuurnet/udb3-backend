@@ -120,7 +120,7 @@ class EditPlaceRestControllerTest extends TestCase
      */
     public function it_should_respond_with_the_location_of_the_new_offer_when_creating_a_place()
     {
-        $request = new Request([], [], [], [], [], [], $this->getMajorInfoJson());
+        $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $this->getMajorInfoJson());
 
         $this->placeEditingService
             ->expects($this->once())
@@ -155,7 +155,15 @@ class EditPlaceRestControllerTest extends TestCase
      */
     public function it_should_create_an_approved_place_for_privileged_consumers()
     {
-        $request = new Request(['apiKey' => $this->apiKey->toNative()], [], [], [], [], [], $this->getMajorInfoJson());
+        $request = Request::create(
+            'www.uitdatabank.dev',
+            'GET',
+            ['apiKey' => $this->apiKey->toNative()],
+            [],
+            [],
+            [],
+            $this->getMajorInfoJson()
+        );
 
         $this->placeEditingService
             ->expects($this->once())
