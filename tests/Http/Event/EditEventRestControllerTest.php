@@ -114,7 +114,7 @@ class EditEventRestControllerTest extends TestCase
      */
     public function it_creates_an_event()
     {
-        $request = new Request([], [], [], [], [], [], $this->getMajorInfoJson());
+        $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $this->getMajorInfoJson());
 
         $this->eventEditor
             ->expects($this->once())
@@ -144,7 +144,7 @@ class EditEventRestControllerTest extends TestCase
      */
     public function it_will_not_create_an_event_with_invalid_location_id(): void
     {
-        $request = new Request([], [], [], [], [], [], $this->getMajorInfoJson());
+        $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $this->getMajorInfoJson());
         $invalidLocationId = new LocationId('fe282e4f-35f5-480d-a90b-2720ab883b0a');
 
         $this->eventEditor
@@ -167,7 +167,15 @@ class EditEventRestControllerTest extends TestCase
      */
     public function it_should_create_an_approved_event_for_privileged_consumers()
     {
-        $request = new Request(['apiKey' => $this->apiKey->toNative()], [], [], [], [], [], $this->getMajorInfoJson());
+        $request = Request::create(
+            'www.uitdatabank.dev',
+            'GET',
+            ['apiKey' => $this->apiKey->toNative()],
+            [],
+            [],
+            [],
+            $this->getMajorInfoJson()
+        );
 
         $this->eventEditor
             ->expects($this->once())

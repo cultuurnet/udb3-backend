@@ -100,7 +100,7 @@ class ImportRestControllerTest extends TestCase
                 ],
             ]
         );
-        $request = new Request([], [], [], [], [], [], $json);
+        $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $json);
 
         $expectedDocument = new DecodedDocument(
             $id,
@@ -137,7 +137,15 @@ class ImportRestControllerTest extends TestCase
                 ],
             ]
         );
-        $request = new Request(['apiKey' => $this->apiKey->toNative()], [], [], [], [], [], $json);
+        $request = Request::create(
+            'www.uitdatabank.dev',
+            'GET',
+            ['apiKey' => $this->apiKey->toNative()],
+            [],
+            [],
+            [],
+            $json
+        );
 
         $expectedDocument = new DecodedDocument(
             $id,
@@ -175,7 +183,7 @@ class ImportRestControllerTest extends TestCase
                 ],
             ]
         );
-        $request = new Request([], [], [], [], [], [], $json);
+        $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $json);
 
         $expectedDocument = new DecodedDocument(
             $id,
@@ -216,7 +224,7 @@ class ImportRestControllerTest extends TestCase
                 ],
             ]
         );
-        $request = new Request([], [], [], [], [], [], $json);
+        $request = Request::create('www.uitdatabank.dev', 'GET', [], [], [], [], $json);
 
         $expectedDocument = new DecodedDocument(
             $generatedId,
@@ -245,7 +253,7 @@ class ImportRestControllerTest extends TestCase
      */
     public function it_should_throw_an_exception_when_importing_with_id_and_no_json()
     {
-        $request = new Request();
+        $request = Request::create('www.uitdatabank.dev');
 
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('JSON-LD missing.');
@@ -258,7 +266,7 @@ class ImportRestControllerTest extends TestCase
      */
     public function it_should_throw_an_exception_when_importing_without_id_and_no_json()
     {
-        $request = new Request();
+        $request = Request::create('www.uitdatabank.dev');
 
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('JSON-LD missing.');
