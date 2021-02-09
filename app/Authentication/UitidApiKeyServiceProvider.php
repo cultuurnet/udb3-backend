@@ -15,6 +15,7 @@ use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -76,8 +77,11 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
                 $apiKeyAuthenticator = $app['auth.request_authenticator'];
 
+                $psr7Factory = new DiactorosFactory();
+                $psr7Request = $psr7Factory->createRequest($request);
+
                 // Also store the ApiKey for later use in the impersonator.
-                $app['auth.api_key'] = $app['auth.api_key_reader']->read($request);
+                $app['auth.api_key'] = $app['auth.api_key_reader']->read($psr7Request);
 
                 try {
                     if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -90,7 +94,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     return;
                 }
 
-                $apiKeyAuthenticator->authenticate($request);
+                $apiKeyAuthenticator->authenticate($psr7Request);
 
                 // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
                 $permissionCheck = new ConsumerIsInPermissionGroup(
