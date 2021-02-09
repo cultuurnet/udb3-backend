@@ -783,7 +783,7 @@ class TabularDataEventFormatter
                 };
             }
 
-            return isset($calendarSummary) ? $calendarSummary : $event->calendarSummary;
+            return $calendarSummary ?? $event->calendarSummary;
         };
     }
 
