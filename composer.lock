@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "05cbc71034b34b80e7cf45e0dd2a8dab",
+    "content-hash": "e39dfe0f0d0ed24ce518b579e00a712e",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -946,27 +946,28 @@
         },
         {
             "name": "cultuurnet/udb3-api-guard",
-            "version": "0.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "179f67e56d04ccd402b1291dec894ac85b6e6a80"
+                "reference": "2a9a2edf2e79a568585b4a3e9c2df389ea0ca43f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/179f67e56d04ccd402b1291dec894ac85b6e6a80",
-                "reference": "179f67e56d04ccd402b1291dec894ac85b6e6a80",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/2a9a2edf2e79a568585b4a3e9c2df389ea0ca43f",
+                "reference": "2a9a2edf2e79a568585b4a3e9c2df389ea0ca43f",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/valueobjects": "~3.0",
-                "symfony/http-foundation": "~2.7"
+                "psr/http-message": "^1.0"
             },
             "require-dev": {
                 "cultuurnet/culturefeed-php": "~1.8",
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
+                "phpunit/phpunit": "^7.5",
                 "satooshi/php-coveralls": "~0.7",
+                "slim/psr7": "^0.5.0",
                 "squizlabs/php_codesniffer": "~2.3"
             },
             "suggest": {
@@ -989,11 +990,11 @@
             ],
             "authors": [
                 {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be"
+                    "name": "Publiq vzw",
+                    "email": "info@2publiq.be"
                 }
             ],
-            "time": "2019-11-14T14:37:24+00:00"
+            "time": "2021-01-15T10:23:57+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -10219,6 +10220,7 @@
         "cultuurnet/calendar-summary-v3": 20,
         "cultuurnet/culturefeed-php": 20,
         "cultuurnet/search-v3": 20,
+        "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
