@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Deserializer\Place\MajorInfoJSONDeserializer;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Http\OfferRestBaseController;
 use InvalidArgumentException;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,7 +113,9 @@ class EditPlaceRestController extends OfferRestBaseController
             new StringLiteral($request->getContent())
         );
 
-        $apiKey = $this->apiKeyReader->read($request);
+        $apiKey = $this->apiKeyReader->read(
+            (new DiactorosFactory())->createRequest($request)
+        );
 
         $consumer = null;
         if ($apiKey) {
