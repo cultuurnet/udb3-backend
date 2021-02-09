@@ -77,8 +77,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
                 $apiKeyAuthenticator = $app['auth.request_authenticator'];
 
-                $psr7Factory = new DiactorosFactory();
-                $psr7Request = $psr7Factory->createRequest($request);
+                $psr7Request = (new DiactorosFactory())->createRequest($request);
 
                 // Also store the ApiKey for later use in the impersonator.
                 $app['auth.api_key'] = $app['auth.api_key_reader']->read($psr7Request);
