@@ -16,7 +16,7 @@ class AbstractEventStoreDecoratorTest extends TestCase
     private $eventStore;
 
     /**
-     * @var AbstractEventStoreDecorator
+     * @var AbstractEventStoreDecorator|MockObject
      */
     private $abstractEventStoreDecorator;
 

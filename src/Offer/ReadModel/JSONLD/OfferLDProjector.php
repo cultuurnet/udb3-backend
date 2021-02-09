@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -82,7 +83,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     protected $jsonDocumentMetaDataEnricher;
 
     /**
-     * @var SerializerInterface
+     * @var MediaObjectSerializer
      */
     protected $mediaObjectSerializer;
 
@@ -103,7 +104,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      * @param DocumentRepository $repository
      * @param IriGeneratorInterface $iriGenerator
      * @param EntityServiceInterface $organizerService
-     * @param SerializerInterface $mediaObjectSerializer
+     * @param MediaObjectSerializer $mediaObjectSerializer
      * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
      * @param string[] $basePriceTranslations
      */
@@ -111,7 +112,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         EntityServiceInterface $organizerService,
-        SerializerInterface $mediaObjectSerializer,
+        MediaObjectSerializer $mediaObjectSerializer,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations
     ) {
@@ -476,8 +477,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd = $document->getBody();
         $offerLd->mediaObject = isset($offerLd->mediaObject) ? $offerLd->mediaObject : [];
 
-        $imageData = $this->mediaObjectSerializer
-            ->serialize($imageAdded->getImage(), 'json-ld');
+        $imageData = $this->mediaObjectSerializer->serialize($imageAdded->getImage());
         $offerLd->mediaObject[] = $imageData;
 
         if (count($offerLd->mediaObject) === 1) {
@@ -529,11 +529,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    /**
-     * @param AbstractImageRemoved $imageRemoved
-     * @return JsonDocument
-     */
-    protected function applyImageRemoved(AbstractImageRemoved $imageRemoved)
+    protected function applyImageRemoved(AbstractImageRemoved $imageRemoved): ?JsonDocument
     {
         $document = $this->loadDocumentFromRepository($imageRemoved);
 
@@ -541,7 +537,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         // Nothing to remove if there are no media objects!
         if (!isset($offerLd->mediaObject)) {
-            return;
+            return null;
         }
 
         $imageId = (string) $imageRemoved->getImage()->getMediaObjectId();
@@ -703,7 +699,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd->organizer = array(
                 '@type' => 'Organizer',
-            ) + (array)$this->organizerJSONLD($organizerUpdated->getOrganizerId());
+            ) + $this->organizerJSONLD($organizerUpdated->getOrganizerId());
 
         return $document->withBody($offerLd);
     }
@@ -948,7 +944,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $currentMediaObjects = isset($offerLd->mediaObject) ? $offerLd->mediaObject : [];
         $dutchMediaObjects = array_map(
             function (Image $image) {
-                return $this->mediaObjectSerializer->serialize($image, 'json-ld');
+                return $this->mediaObjectSerializer->serialize($image);
             },
             $images->toArray()
         );
@@ -1009,19 +1005,19 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document;
     }
 
-    public function organizerJSONLD(string $organizerId)
+    public function organizerJSONLD(string $organizerId): array
     {
         try {
             $organizerJSONLD = $this->organizerService->getEntity(
                 $organizerId
             );
 
-            return json_decode($organizerJSONLD);
+            return (array) json_decode($organizerJSONLD);
         } catch (EntityNotFoundException $e) {
             // In case the place can not be found at the moment, just add its ID
-            return array(
+            return [
                 '@id' => $this->organizerService->iri($organizerId),
-            );
+            ];
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Role\Commands;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -9,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class AbstractUserCommandTest extends TestCase
 {
     /**
-     * @var AbstractUserCommand
+     * @var AbstractUserCommand|MockObject
      */
     private $abstractUserCommand;
 

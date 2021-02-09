@@ -34,15 +34,14 @@ abstract class OfferRestBaseController
     protected $mediaManager;
 
     /**
-     * @var BookingInfoJSONDeserializer
+     * @var JSONDeserializer
      */
     private $bookingInfoDeserializer;
 
     /**
-     * OfferRestBaseController constructor.
      * @param EventEditingServiceInterface|PlaceEditingServiceInterface $editor
      * @param MediaManagerInterface $mediaManager
-     * @param JSONDeserializer $bookingInfoDeserializer
+     * @param ?JSONDeserializer $bookingInfoDeserializer
      */
     public function __construct(
         $editor,

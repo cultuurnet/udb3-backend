@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
@@ -19,7 +20,7 @@ class AbstractPermissionCommandTest extends TestCase
     private $rolePermission;
 
     /**
-     * @var AbstractPermissionCommand
+     * @var AbstractPermissionCommand|MockObject
      */
     private $abstractPermissionCommand;
 

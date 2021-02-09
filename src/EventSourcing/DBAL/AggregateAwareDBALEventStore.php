@@ -10,8 +10,10 @@ use Broadway\EventStore\DBALEventStoreException;
 use Broadway\EventStore\EventStoreInterface;
 use Broadway\EventStore\EventStreamNotFoundException;
 use Broadway\Serializer\SerializerInterface;
+use CultuurNet\UDB3\Silex\AggregateType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 
@@ -38,7 +40,7 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
     private $metadataSerializer;
 
     /**
-     * @var null
+     * @var Statement|null
      */
     private $loadStatement = null;
 
@@ -52,19 +54,12 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
      */
     private $aggregateType;
 
-    /**
-     * @param Connection $connection
-     * @param SerializerInterface $payloadSerializer
-     * @param SerializerInterface $metadataSerializer
-     * @param string $tableName
-     * @param mixed $aggregateType
-     */
     public function __construct(
         Connection $connection,
         SerializerInterface $payloadSerializer,
         SerializerInterface $metadataSerializer,
-        $tableName,
-        $aggregateType
+        string $tableName,
+        AggregateType $aggregateType
     ) {
         $this->connection         = $connection;
         $this->payloadSerializer  = $payloadSerializer;
@@ -180,10 +175,7 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
         return $table;
     }
 
-    /**
-     * @return \Doctrine\DBAL\Driver\Statement|null
-     */
-    private function prepareLoadStatement()
+    private function prepareLoadStatement(): ?Statement
     {
         if (null === $this->loadStatement) {
             $queryBuilder = $this->connection->createQueryBuilder();

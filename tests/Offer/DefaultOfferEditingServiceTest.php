@@ -27,6 +27,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Money\Currency;
@@ -40,7 +41,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $commandBus;
 
     /**
-     * @var UuidGeneratorInterface
+     * @var UuidGeneratorInterface|MockObject
      */
     private $uuidGenerator;
 
@@ -65,12 +66,12 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $offerEditingService;
 
     /**
-     * @var AbstractAddLabel
+     * @var AbstractAddLabel|MockObject
      */
     private $addLabelCommand;
 
     /**
-     * @var AbstractRemoveLabel
+     * @var AbstractRemoveLabel|MockObject
      */
     private $removeLabelCommand;
 
@@ -80,7 +81,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $expectedCommandId;
 
     /**
-     * @var AbstractUpdateTitle
+     * @var AbstractUpdateTitle|MockObject
      */
     private $translateTitleCommand;
 
@@ -116,7 +117,7 @@ class DefaultOfferEditingServiceTest extends TestCase
 
         $this->translateTitleCommand = $this->getMockForAbstractClass(
             AbstractUpdateTitle::class,
-            array('foo', new Language('en'), new StringLiteral('English title'))
+            array('foo', new Language('en'), new Title('English title'))
         );
 
         $this->offerEditingService = new DefaultOfferEditingService(
@@ -196,8 +197,8 @@ class DefaultOfferEditingServiceTest extends TestCase
 
         $this->commandFactory->expects($this->once())
             ->method('createUpdateTitleCommand')
-            ->with('foo', new Language('en'), new StringLiteral('English title'))
-            ->willReturn(new UpdateTitle('foo', new Language('en'), new StringLiteral('English title')));
+            ->with('foo', new Language('en'), new Title('English title'))
+            ->willReturn(new UpdateTitle('foo', new Language('en'), new Title('English title')));
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')
@@ -206,7 +207,7 @@ class DefaultOfferEditingServiceTest extends TestCase
         $commandId = $this->offerEditingService->updateTitle(
             'foo',
             new Language('en'),
-            new StringLiteral('English title')
+            new Title('English title')
         );
 
         $this->assertEquals($this->expectedCommandId, $commandId);

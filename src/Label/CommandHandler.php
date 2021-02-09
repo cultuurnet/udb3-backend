@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
-use CultuurNet\UDB3\Label\Label as LabelAggregate;
 use ValueObjects\Identity\UUID;
 
 class CommandHandler extends AbstractCommandHandler
@@ -20,21 +19,15 @@ class CommandHandler extends AbstractCommandHandler
      */
     private $repository;
 
-    /**
-     * @param RepositoryInterface $repository
-     */
     public function __construct(
         RepositoryInterface $repository
     ) {
         $this->repository = $repository;
     }
 
-    /**
-     * @param Create $create
-     */
     public function handleCreate(Create $create)
     {
-        $label = LabelAggregate::create(
+        $label = Label::create(
             $create->getUuid(),
             $create->getName(),
             $create->getVisibility(),
@@ -44,12 +37,9 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    /**
-     * @param CreateCopy $createCopy
-     */
     public function handleCreateCopy(CreateCopy $createCopy)
     {
-        $label = LabelAggregate::createCopy(
+        $label = Label::createCopy(
             $createCopy->getUuid(),
             $createCopy->getName(),
             $createCopy->getVisibility(),
@@ -60,9 +50,6 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    /**
-     * @param MakeVisible $makeVisible
-     */
     public function handleMakeVisible(MakeVisible $makeVisible)
     {
         $label = $this->load($makeVisible->getUuid());
@@ -72,9 +59,6 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    /**
-     * @param MakeInvisible $makeInvisible
-     */
     public function handleMakeInvisible(MakeInvisible $makeInvisible)
     {
         $label = $this->load($makeInvisible->getUuid());
@@ -84,9 +68,6 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    /**
-     * @param MakePublic $makePublic
-     */
     public function handleMakePublic(MakePublic $makePublic)
     {
         $label = $this->load($makePublic->getUuid());
@@ -96,9 +77,6 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    /**
-     * @param MakePrivate $makePrivate
-     */
     public function handleMakePrivate(MakePrivate $makePrivate)
     {
         $label = $this->load($makePrivate->getUuid());
@@ -108,19 +86,15 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($label);
     }
 
-    /**
-     * @param UUID $uuid
-     * @return LabelAggregate
-     */
-    private function load(UUID $uuid)
+    private function load(UUID $uuid): Label
     {
-        return $this->repository->load($uuid);
+        /** @var Label $label */
+        $label =  $this->repository->load($uuid);
+
+        return $label;
     }
 
-    /**
-     * @param LabelAggregate $label
-     */
-    private function save(LabelAggregate $label)
+    private function save(Label $label)
     {
         $this->repository->save($label);
     }

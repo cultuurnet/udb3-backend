@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class UpdateTitleTest extends TestCase
 {
@@ -18,7 +18,7 @@ class UpdateTitleTest extends TestCase
         $this->updateTitle = new UpdateTitle(
             'id',
             new Language('en'),
-            new StringLiteral('The Title')
+            new Title('The Title')
         );
     }
 
@@ -30,7 +30,7 @@ class UpdateTitleTest extends TestCase
         $expectedUpdateTitle = new UpdateTitle(
             'id',
             new Language('en'),
-            new StringLiteral('The Title')
+            new Title('The Title')
         );
 
         $this->assertEquals($expectedUpdateTitle, $this->updateTitle);

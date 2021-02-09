@@ -10,6 +10,7 @@ use Broadway\EventStore\EventStreamNotFoundException;
 use Broadway\Serializer\SerializerInterface;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
@@ -51,7 +52,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
 
         $this->tableName = 'event_store';
 
-        $this->aggregateType = 'place';
+        $this->aggregateType = AggregateType::PLACE();
 
         $this->aggregateAwareDBALEventStore = new AggregateAwareDBALEventStore(
             $this->getConnection(),

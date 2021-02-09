@@ -20,10 +20,7 @@ abstract class OfferFacilityResolver implements OfferFacilityResolverInterface
         $this->facilities = $this->getFacilities();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function byId(StringLiteral $facilityId)
+    public function byId(StringLiteral $facilityId): Facility
     {
         if (!array_key_exists((string) $facilityId, $this->facilities)) {
             throw new \Exception("Unknown facility id '{$facilityId}'");

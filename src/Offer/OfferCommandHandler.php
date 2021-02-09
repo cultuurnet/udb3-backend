@@ -620,25 +620,19 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * Makes it easier to type-hint to Offer.
-     *
-     * @param string $id
-     * @return Offer
-     */
-    private function load($id)
+    private function load(string $id): Offer
     {
-        return $this->offerRepository->load($id);
+        /** @var Offer $offer */
+        $offer =  $this->offerRepository->load($id);
+
+        return $offer;
     }
 
-    /**
-     * Makes it easier to type-hint to Organizer.
-     *
-     * @param string $id
-     * @return Organizer
-     */
-    private function loadOrganizer($id)
+    private function loadOrganizer(string $id): Organizer
     {
-        return $this->organizerRepository->load($id);
+        /** @var Organizer $organizer */
+        $organizer = $this->organizerRepository->load($id);
+
+        return $organizer;
     }
 }

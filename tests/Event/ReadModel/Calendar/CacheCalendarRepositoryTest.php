@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 class CacheCalendarRepositoryTest extends TestCase
 {
     /**
-     * @var int
+     * @var string
      */
     protected $eventId;
 

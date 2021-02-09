@@ -6,11 +6,6 @@ use CultuurNet\UDB3\EventExport\EventExportResult;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use ValueObjects\Web\EmailAddress;
 
-/**
- * Class NotificationMailer
- *
- * Notification mailer implementation that uses Swift Mailer.
- */
 class NotificationMailer implements NotificationMailerInterface
 {
     /**
@@ -19,7 +14,7 @@ class NotificationMailer implements NotificationMailerInterface
     private $mailer;
 
     /**
-     * @var DefaultMessageFactory
+     * @var MessageFactoryInterface
      */
     private $messageFactory;
 

@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Offer\Mock\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Mock\Commands\UpdateTitle;
 use CultuurNet\UDB3\Security\SecurityInterface;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -85,7 +86,7 @@ class SecurityWithLabelPrivacyTest extends TestCase
         $translateTitle = new UpdateTitle(
             'cc9b975b-80e3-47db-ae77-8a930e453232',
             new Language('nl'),
-            new StringLiteral('Hallo wereld')
+            new Title('Hallo wereld')
         );
 
         $this->securityDecoratee->method('isAuthorized')

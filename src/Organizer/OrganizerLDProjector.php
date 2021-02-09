@@ -425,13 +425,8 @@ class OrganizerLDProjector implements EventListenerInterface
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @param OrganizerDeleted $organizerDeleted
-     * @return null
-     */
-    private function applyOrganizerDeleted(
-        OrganizerDeleted $organizerDeleted
-    ) {
+    private function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): JsonDocument
+    {
         $document = $this->repository->get($organizerDeleted->getOrganizerId());
 
         $jsonLD = $document->getBody();

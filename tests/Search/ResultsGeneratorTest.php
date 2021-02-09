@@ -19,7 +19,7 @@ class ResultsGeneratorTest extends TestCase
     private $searchService;
 
     /**
-     * @var string
+     * @var string[]
      */
     private $sorting;
 

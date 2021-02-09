@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\ReadModel;
 
@@ -19,10 +16,7 @@ final class JsonDocument implements ReadModelInterface
         $this->body = $rawBody;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -37,16 +31,12 @@ final class JsonDocument implements ReadModelInterface
         return json_decode($this->body, true);
     }
 
-    public function getRawBody()
+    public function getRawBody(): string
     {
         return $this->body;
     }
 
-    /**
-     * @param stdClass $body
-     * @return static
-     */
-    public function withBody($body)
+    public function withBody(stdClass $body): self
     {
         return new self($this->id, json_encode($body));
     }
@@ -56,11 +46,7 @@ final class JsonDocument implements ReadModelInterface
         return new self($this->id, json_encode($body));
     }
 
-    /**
-     * @param callable $fn
-     * @return static
-     */
-    public function apply(callable $fn)
+    public function apply(callable $fn): self
     {
         $body = $fn($this->getBody());
         return $this->withBody($body);

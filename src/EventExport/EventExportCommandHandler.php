@@ -115,7 +115,7 @@ class EventExportCommandHandler extends CommandHandler implements LoggerAwareInt
             $exportCommand->getTemplate(),
             $exportCommand->getBrand(),
             $exportCommand->getLogo(),
-            $exportCommand->getTitle(),
+            $exportCommand->getTitle()->toNative(),
             $exportCommand->getSubtitle(),
             $exportCommand->getFooter(),
             $exportCommand->getPublisher(),

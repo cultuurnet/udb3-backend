@@ -24,7 +24,7 @@ class ExternalEventService implements EventServiceInterface
         $this->httpClient = $httpClient;
     }
 
-    public function getEvent($id)
+    public function getEvent(string $id): string
     {
         $uri = new Uri($id);
         $request = new Request('GET', $uri, ["Accept" => "application/json"]);

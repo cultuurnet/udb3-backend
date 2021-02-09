@@ -16,65 +16,40 @@ class DecodedDocument
      */
     private $body;
 
-    /**
-     * @param string $id
-     * @param array $body
-     */
-    public function __construct($id, array $body)
+    public function __construct(string $id, array $body)
     {
-        $this->id = (string) $id;
+        $this->id = $id;
         $this->body = $body;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return array
-     */
-    public function getBody()
+    public function getBody(): array
     {
         return $this->body;
     }
 
-    /**
-     * @param array $body
-     * @return static
-     */
-    public function withBody(array $body)
+    public function withBody(array $body): self
     {
         $c = clone $this;
         $c->body = $body;
         return $c;
     }
 
-    /**
-     * @return string
-     */
-    public function toJson()
+    public function toJson(): string
     {
         return json_encode($this->body, JSON_UNESCAPED_SLASHES);
     }
 
-    /**
-     * @return JsonDocument
-     */
-    public function toJsonDocument()
+    public function toJsonDocument(): JsonDocument
     {
         return new JsonDocument($this->id, $this->toJson());
     }
 
-    /**
-     * @param string $id
-     * @param string $json
-     * @return self
-     */
-    public static function fromJson($id, $json)
+    public static function fromJson(string $id, string $json): self
     {
         $body = json_decode($json, true);
 
@@ -85,11 +60,7 @@ class DecodedDocument
         return new self($id, $body);
     }
 
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return static
-     */
-    public static function fromJsonDocument(JsonDocument $jsonDocument)
+    public static function fromJsonDocument(JsonDocument $jsonDocument): self
     {
         return static::fromJson($jsonDocument->getId(), $jsonDocument->getRawBody());
     }

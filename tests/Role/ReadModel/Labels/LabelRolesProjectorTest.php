@@ -16,11 +16,11 @@ use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use ValueObjects\Identity\UUID;
 
 class LabelRolesProjectorTest extends TestCase
 {
-
     /**
      * @var LabelRolesProjector
      */

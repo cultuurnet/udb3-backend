@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer\Events\Moderation;
 
-use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -19,7 +19,7 @@ class AbstractRejectedTest extends TestCase
     private $reason;
 
     /**
-     * @var AbstractRejected
+     * @var AbstractRejected|MockObject
      */
     private $abstractRejected;
 

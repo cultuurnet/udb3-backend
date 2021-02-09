@@ -34,12 +34,12 @@ class UpdateGeoCoordinatesFromAddressCommandHandler extends Udb3CommandHandler
 
 
     public function __construct(
-        RepositoryInterface $placeRepository,
+        OrganizerRepository $organizerRepository,
         AddressFormatterInterface $defaultAddressFormatter,
         AddressFormatterInterface $fallbackAddressFormatter,
         GeocodingServiceInterface $geocodingService
     ) {
-        $this->organizerRepository = $placeRepository;
+        $this->organizerRepository = $organizerRepository;
         $this->defaultAddressFormatter = $defaultAddressFormatter;
         $this->fallbackAddressFormatter = $fallbackAddressFormatter;
         $this->geocodingService = $geocodingService;

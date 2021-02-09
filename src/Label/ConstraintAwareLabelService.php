@@ -37,7 +37,7 @@ class ConstraintAwareLabelService implements LabelServiceInterface
     /**
      * @inheritdoc
      */
-    public function createLabelAggregateIfNew(LabelName $labelName, $visible)
+    public function createLabelAggregateIfNew(LabelName $labelName, bool $visible): ?UUID
     {
         try {
             $labelAggregate = Label::create(
@@ -49,7 +49,7 @@ class ConstraintAwareLabelService implements LabelServiceInterface
 
             $this->labelRepository->save($labelAggregate);
 
-            return $labelAggregate->getAggregateRootId();
+            return UUID::fromNative($labelAggregate->getAggregateRootId());
         } catch (UniqueConstraintException $exception) {
             return null;
         }

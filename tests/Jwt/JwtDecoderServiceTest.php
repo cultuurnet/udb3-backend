@@ -56,7 +56,7 @@ class JwtDecoderServiceTest extends TestCase
     private $signature;
 
     /**
-     * @var Jwt
+     * @var Udb3Token
      */
     private $token;
 

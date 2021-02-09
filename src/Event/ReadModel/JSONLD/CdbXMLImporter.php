@@ -180,7 +180,7 @@ class CdbXMLImporter
         $locationId = $this->cdbIdExtractor->getRelatedPlaceCdbId($event);
 
         if ($locationId) {
-            $location += (array)$placeManager->placeJSONLD($locationId);
+            $location += $placeManager->placeJSONLD($locationId);
         } else {
             $locationCdb = $event->getLocation();
             $location['mainLanguage'] = 'nl';
@@ -214,7 +214,7 @@ class CdbXMLImporter
         $contactInfoCdb = $event->getContactInfo();
 
         if ($organizerId) {
-            $organizer = (array)$organizerManager->organizerJSONLD($organizerId);
+            $organizer = $organizerManager->organizerJSONLD($organizerId);
         } elseif ($organizerCdb && $contactInfoCdb) {
             $organizer = array();
             $organizer['mainLanguage'] = 'nl';

@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
@@ -12,13 +9,5 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
  */
 interface PlaceServiceInterface
 {
-    /**
-     * Gets the JSON-LD structure of a place.
-     *
-     * @param string $placeId
-     *   Id of the Place.
-     *
-     * @return \stdClass
-     */
-    public function placeJSONLD($placeId);
+    public function placeJSONLD(string $placeId): array;
 }

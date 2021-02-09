@@ -13,7 +13,7 @@ class CultureFeedUserIdentification implements UserIdentificationInterface
     private $cultureFeedUser;
 
     /**
-     * @var string[]
+     * @var string[][]
      */
     private $permissionList;
 

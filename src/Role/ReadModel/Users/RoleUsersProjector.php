@@ -48,7 +48,7 @@ class RoleUsersProjector extends RoleProjector
                 $userKey = $userAdded->getUserId()->toNative();
                 $userIdentityDetails[$userKey] = $userIdentityDetail;
 
-                $document = $document->withBody($userIdentityDetails);
+                $document = $document->withAssocBody($userIdentityDetails);
 
                 $this->repository->save($document);
             }
@@ -66,7 +66,7 @@ class RoleUsersProjector extends RoleProjector
             $userIdentityDetails = $this->getUserIdentityDetails($document);
             unset($userIdentityDetails[$userRemoved->getUserId()->toNative()]);
 
-            $document = $document->withBody($userIdentityDetails);
+            $document = $document->withAssocBody($userIdentityDetails);
             $this->repository->save($document);
         }
     }

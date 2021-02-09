@@ -3,30 +3,22 @@
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Language;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\Title;
 
 abstract class AbstractUpdateTitle extends AbstractTranslatePropertyCommand
 {
     /**
-     * @var string
+     * @var Title
      */
     protected $title;
 
-    /**
-     * @param string $itemId
-     * @param Language $language
-     * @param StringLiteral $title
-     */
-    public function __construct($itemId, Language $language, StringLiteral $title)
+    public function __construct(string $itemId, Language $language, Title $title)
     {
         parent::__construct($itemId, $language);
         $this->title = $title;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }

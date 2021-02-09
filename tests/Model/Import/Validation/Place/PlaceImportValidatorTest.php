@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class PlaceImportValidatorTest extends TestCase
 {
     /**
-     * @var UUIDParser
+     * @var UUIDParser|MockObject
      */
     private $uuidParser;
 

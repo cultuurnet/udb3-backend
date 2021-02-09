@@ -47,7 +47,7 @@ class CommandBusForwardingConsumerTest extends TestCase
     private $deserializerLocator;
 
     /**
-     * @var AbstractChannel|MockObject
+     * @var AMQPChannel|MockObject
      */
     private $channel;
 
@@ -59,7 +59,7 @@ class CommandBusForwardingConsumerTest extends TestCase
     private $delay;
 
     /**
-     * @var EventBusForwardingConsumer
+     * @var CommandBusForwardingConsumer
      */
     private $commandBusForwardingConsumer;
 

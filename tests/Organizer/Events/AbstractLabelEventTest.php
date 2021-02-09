@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use CultuurNet\UDB3\Label;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractLabelEventTest extends TestCase
@@ -18,7 +19,7 @@ class AbstractLabelEventTest extends TestCase
     private $label;
 
     /**
-     * @var AbstractLabelEvent
+     * @var AbstractLabelEvent|MockObject
      */
     private $abstractLabelEvent;
 

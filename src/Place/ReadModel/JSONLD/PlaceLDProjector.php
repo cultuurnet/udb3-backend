@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Offer\AvailableTo;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
@@ -78,7 +79,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListenerInterfac
      * @param DocumentRepository $repository
      * @param IriGeneratorInterface $iriGenerator
      * @param EntityServiceInterface $organizerService
-     * @param SerializerInterface $mediaObjectSerializer
+     * @param MediaObjectSerializer $mediaObjectSerializer
      * @param CdbXMLImporter $cdbXMLImporter
      * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
      * @param string[] $basePriceTranslations
@@ -87,7 +88,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListenerInterfac
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
         EntityServiceInterface $organizerService,
-        SerializerInterface $mediaObjectSerializer,
+        MediaObjectSerializer $mediaObjectSerializer,
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         array $basePriceTranslations
@@ -249,11 +250,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListenerInterfac
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @param PlaceDeleted $placeDeleted
-     * @return null
-     */
-    protected function applyPlaceDeleted(PlaceDeleted $placeDeleted)
+    protected function applyPlaceDeleted(PlaceDeleted $placeDeleted): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($placeDeleted);
 

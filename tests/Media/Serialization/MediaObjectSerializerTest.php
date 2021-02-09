@@ -62,7 +62,7 @@ class MediaObjectSerializerTest extends TestCase
             'inLanguage' => 'en',
         ];
 
-        $jsonld = $this->serializer->serialize($mediaObject, 'json-ld');
+        $jsonld = $this->serializer->serialize($mediaObject);
 
         $this->assertEquals($expectedJsonld, $jsonld);
     }
@@ -96,7 +96,7 @@ class MediaObjectSerializerTest extends TestCase
             'inLanguage' => 'en',
         ];
 
-        $jsonld = $this->serializer->serialize($mediaObject, 'json-ld');
+        $jsonld = $this->serializer->serialize($mediaObject);
 
         $this->assertEquals($expectedJsonld, $jsonld);
     }
@@ -130,7 +130,7 @@ class MediaObjectSerializerTest extends TestCase
             'inLanguage' => 'en',
         ];
 
-        $jsonld = $this->serializer->serialize($mediaObject, 'json-ld');
+        $jsonld = $this->serializer->serialize($mediaObject);
 
         $this->assertEquals($expectedJsonld, $jsonld);
     }
@@ -152,38 +152,7 @@ class MediaObjectSerializerTest extends TestCase
         $this->expectException(UnsupportedException::class);
         $this->expectExceptionMessage('Unsupported MIME-type "video/avi"');
 
-        $this->serializer->serialize($mediaObject, 'json-ld');
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_when_trying_to_serialize_to_an_unknown_format()
-    {
-        $mediaObject = MediaObject::create(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
-            new MIMEType('video/avi'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
-            Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
-        );
-
-        $this->expectException(UnsupportedException::class);
-        $this->expectExceptionMessage('Unsupported format, only json-ld is available.');
-
-        $this->serializer->serialize($mediaObject, 'xml');
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_throw_an_exception_when_trying_to_deserialize()
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Deserialization currently not supported.');
-
-        $this->serializer->deserialize((object) [], MediaObject::class, 'json-ld');
+        $this->serializer->serialize($mediaObject);
     }
 
     /**

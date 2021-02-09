@@ -20,7 +20,7 @@ class Log implements JsonSerializable
     private $date;
 
     /**
-     * @var String
+     * @var String|null
      */
     private $author;
 

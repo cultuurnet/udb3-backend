@@ -28,16 +28,7 @@ class HttpCalendarSummaryRepository implements CalendarSummaryRepositoryInterfac
         $this->calendarSummariesLocation = $calendarSummariesLocation;
     }
 
-    /**
-     * @param string      $offerId
-     * @param ContentType $type
-     * @param Format      $format
-     *
-     * @throws SummaryUnavailableException
-     *
-     * @return string
-     */
-    public function get($offerId, ContentType $type, Format $format)
+    public function get(string $offerId, ContentType $type, Format $format): string
     {
         $summaryLocation = $this->calendarSummariesLocation
             ->withPath('/events/'.$offerId.'/calsum')

@@ -268,7 +268,7 @@ class Role extends EventSourcedAggregateRoot
      */
     public function applyConstraintRemoved(ConstraintRemoved $constraintRemoved)
     {
-        $this->queries[$constraintRemoved->getSapiVersion()->toNative()] = null;
+        unset($this->queries[$constraintRemoved->getSapiVersion()->toNative()]);
     }
 
     /**

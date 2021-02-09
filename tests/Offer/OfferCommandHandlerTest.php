@@ -59,7 +59,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var int
+     * @var string
      */
     protected $id;
 

@@ -15,7 +15,7 @@ class SecurityDecoratorBaseTest extends TestCase
     private $decoratee;
 
     /**
-     * @var SecurityDecoratorBase
+     * @var SecurityDecoratorBase|MockObject
      */
     private $decoratorBase;
 

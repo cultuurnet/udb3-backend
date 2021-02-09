@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Model\Serializer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -18,26 +17,14 @@ class OrganizerReferenceDenormalizer implements DenormalizerInterface
     private $organizerIDParser;
 
     /**
-     * @var DenormalizerInterface
+     * @var OrganizerDenormalizer
      */
     private $organizerDenormalizer;
 
-    /**
-     * @param UUIDParser|null $organizerIDParser
-     * @param DenormalizerInterface|null $organizerDenormalizer
-     */
     public function __construct(
-        UUIDParser $organizerIDParser = null,
-        DenormalizerInterface $organizerDenormalizer = null
+        OrganizerIDParser $organizerIDParser,
+        OrganizerDenormalizer $organizerDenormalizer
     ) {
-        if (!$organizerIDParser) {
-            $organizerIDParser = new OrganizerIDParser();
-        }
-
-        if (!$organizerDenormalizer) {
-            $organizerDenormalizer = new OrganizerDenormalizer();
-        }
-
         $this->organizerIDParser = $organizerIDParser;
         $this->organizerDenormalizer = $organizerDenormalizer;
     }

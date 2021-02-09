@@ -29,7 +29,7 @@ class RemovePermissionTest extends TestCase
 
         $this->permission = Permission::AANBOD_BEWERKEN();
 
-        $this->removePermission = new AddPermission(
+        $this->removePermission = new RemovePermission(
             $this->uuid,
             $this->permission
         );

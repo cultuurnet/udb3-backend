@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Role\Events;
 
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
@@ -25,7 +26,7 @@ class AbstractConstraintEventTest extends TestCase
     protected $query;
 
     /**
-     * @var AbstractConstraintEvent
+     * @var AbstractConstraintEvent|MockObject
      */
     protected $event;
 

@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 class InMemoryDocumentRepository implements DocumentRepository
 {
     /**
-     * @var JsonDocument[]
+     * @var JsonDocument[]|string[]
      */
     private $documents;
 

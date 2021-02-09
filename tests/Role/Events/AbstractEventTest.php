@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Role\Events;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
@@ -13,7 +14,7 @@ class AbstractEventTest extends TestCase
     protected $uuid;
 
     /**
-     * @var AbstractEvent
+     * @var AbstractEvent|MockObject
      */
     protected $event;
 

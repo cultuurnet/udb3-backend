@@ -47,7 +47,7 @@ class ItemCreated implements SerializableInterface
 
     /**
      * @param array $data
-     * @return static
+     * @return self
      */
     public static function deserialize(array $data)
     {

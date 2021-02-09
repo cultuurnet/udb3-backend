@@ -26,7 +26,7 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
     private $searchService;
 
     /**
-     * @var string
+     * @var array
      */
     private $sorting;
 

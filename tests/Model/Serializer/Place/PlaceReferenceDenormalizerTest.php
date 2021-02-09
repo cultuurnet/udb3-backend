@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
+use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -32,7 +33,10 @@ class PlaceReferenceDenormalizerTest extends TestCase
 
     public function setUp()
     {
-        $this->denormalizer = new PlaceReferenceDenormalizer();
+        $this->denormalizer = new PlaceReferenceDenormalizer(
+            new PlaceIDParser(),
+            new PlaceDenormalizer()
+        );
     }
 
     /**
