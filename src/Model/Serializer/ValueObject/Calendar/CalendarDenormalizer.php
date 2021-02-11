@@ -190,10 +190,14 @@ class CalendarDenormalizer implements DenormalizerInterface
     private function denormalizeStatus(array $status): Status
     {
         $statusType = new StatusType($status['type']);
-        $statusReason = $this->statusReasonDenormalizer->denormalize(
-            $status['reason'],
-            TranslatedStatusReason::class
-        );
+        $statusReason = null;
+
+        if (isset($status['reason'])) {
+            $statusReason = $this->statusReasonDenormalizer->denormalize(
+                $status['reason'],
+                TranslatedStatusReason::class
+            );
+        }
 
         return new Status($statusType, $statusReason);
     }

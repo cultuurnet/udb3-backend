@@ -57,6 +57,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
@@ -166,6 +167,58 @@ class EventDenormalizerTest extends TestCase
                 ))
                     ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
             )
+        );
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            $expectedCalendar,
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_denormalize_event_data_with_status_without_reason()
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'status' => [
+                'type' => 'Available',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ],
+            ],
+        ];
+
+        $expectedCalendar = (new PermanentCalendar(new OpeningHours()))->withStatus(
+            new Status(StatusType::Available())
         );
 
         $expected = new ImmutableEvent(
