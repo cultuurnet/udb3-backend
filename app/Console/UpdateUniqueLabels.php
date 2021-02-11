@@ -80,12 +80,34 @@ class UpdateUniqueLabels extends Command
         return 0;
     }
 
+    private function getLabelAddedClasses(): array
+    {
+        $labelAddedClasses = [
+            \CultuurNet\UDB3\Event\Events\LabelAdded::class,
+            \CultuurNet\UDB3\Place\Events\LabelAdded::class,
+            \CultuurNet\UDB3\Organizer\Events\LabelAdded::class,
+            \CultuurNet\UDB3\Role\Events\LabelAdded::class,
+        ];
+
+        return \array_map(
+            static function ($labelAddedClass) {
+                return \str_replace('\\', '.', $labelAddedClass);
+            },
+            $labelAddedClasses
+        );
+    }
+
     private function getAllLabelAddedEvents(): array
     {
-        return $this->connection->createQueryBuilder()
+        $query = $this->connection->createQueryBuilder()
             ->select('uuid, payload')
-            ->from('event_store')
-            ->where('type LIKE "%.LabelAdded"')
+            ->from('event_store');
+
+        foreach ($this->getLabelAddedClasses() as $labelAddedEventsClass) {
+            $query->orWhere('type = "' . $labelAddedEventsClass . '"');
+        }
+
+        return $query
             ->execute()
             ->fetchAll(PDO::FETCH_ASSOC);
     }
