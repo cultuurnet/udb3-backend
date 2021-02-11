@@ -100,7 +100,7 @@ class UpdateUniqueLabels extends Command
             ->insert(
                 'labels_unique',
                 [
-                    'uuid_col = ' => $labelUuid->toString(),
+                    'uuid_col' => $labelUuid->toString(),
                     'unique_col' => $labelName->toNative(),
                 ]
             );
