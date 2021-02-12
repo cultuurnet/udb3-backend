@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
@@ -103,6 +104,73 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->getEventCreated($id, $initialCalendar)])
+            ->when($command)
+            ->then([$expectedEvent]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_handle_update_sub_event_status_for_multiple_sub_events_after_major_info_update(): void
+    {
+        $id = '1';
+
+        $startDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-11-24');
+        $endDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-11-24');
+
+        $updatedStartDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-11-25');
+        $updatedEndDate = DateTimeImmutable::createFromFormat('Y-m-d', '2020-11-25');
+
+        $initialTimestamps = [
+            new Timestamp($startDate, $endDate),
+            new Timestamp($startDate, $endDate),
+            new Timestamp($startDate, $endDate),
+        ];
+        $updatedTimestamps = [
+            new Timestamp($updatedStartDate, $updatedEndDate),
+            new Timestamp($updatedStartDate, $updatedEndDate),
+            new Timestamp($updatedStartDate, $updatedEndDate),
+        ];
+        $expectedTimestamps = [
+            new Timestamp($updatedStartDate, $updatedEndDate, new Status(StatusType::available(), [])),
+            new Timestamp($updatedStartDate, $updatedEndDate, new Status(StatusType::unavailable(), [])),
+            new Timestamp($updatedStartDate, $updatedEndDate, new Status(StatusType::temporarilyUnavailable(), [])),
+        ];
+
+        $initialCalendar = new Calendar(CalendarType::SINGLE(), $startDate, $endDate, $initialTimestamps);
+        $updatedCalendar = new Calendar(CalendarType::SINGLE(), $updatedStartDate, $updatedEndDate, $updatedTimestamps);
+        $expectedCalendar = new Calendar(
+            CalendarType::SINGLE(),
+            $updatedStartDate,
+            $updatedEndDate,
+            $expectedTimestamps
+        );
+
+        $command = new UpdateSubEventsStatus($id);
+        $command = $command->withUpdatedStatus(1, new Status(StatusType::unavailable(), []));
+        $command = $command->withUpdatedStatus(2, new Status(StatusType::temporarilyUnavailable(), []));
+
+        $expectedEvent = new CalendarUpdated(
+            $id,
+            $expectedCalendar
+        );
+
+        $eventCreated = $this->getEventCreated($id, $initialCalendar);
+
+        $this->scenario
+            ->withAggregateId($id)
+            ->given(
+                [
+                    $eventCreated,
+                    new MajorInfoUpdated(
+                        $eventCreated->getEventId(),
+                        $eventCreated->getTitle(),
+                        $eventCreated->getEventType(),
+                        $eventCreated->getLocation(),
+                        $updatedCalendar
+                    ),
+                ]
+            )
             ->when($command)
             ->then([$expectedEvent]);
     }

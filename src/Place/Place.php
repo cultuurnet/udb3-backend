@@ -175,6 +175,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         $this->addresses[$this->mainLanguage->getCode()] = $majorInfoUpdated->getAddress();
+        $this->calendar = $majorInfoUpdated->getCalendar();
     }
 
     public function updateAddress(Address $address, Language $language): void

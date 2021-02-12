@@ -320,6 +320,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
     {
         $this->locationId = $majorInfoUpdated->getLocation();
+        $this->calendar = $majorInfoUpdated->getCalendar();
     }
 
     /**
