@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2870a1bf673e04a93a73c0f2d0d02659",
+    "content-hash": "989af572e093f917f9f2b468e36c82a0",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -691,51 +691,6 @@
             "time": "2015-08-24T20:22:37+00:00"
         },
         {
-            "name": "cultuurnet/calendar-summary",
-            "version": "1.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/calendar-summary.git",
-                "reference": "d81160a149e17ba0515d6300485c1a250aa9792c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/d81160a149e17ba0515d6300485c1a250aa9792c",
-                "reference": "d81160a149e17ba0515d6300485c1a250aa9792c",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/cdb": "~2.2.0",
-                "ext-intl": "*",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\CalendarSummary\\": [
-                        "src"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2018-05-03T13:39:35+00:00"
-        },
-        {
             "name": "cultuurnet/calendar-summary-v3",
             "version": "v2.0.1",
             "source": {
@@ -871,56 +826,6 @@
             ],
             "description": "Culturefeed PHP library",
             "time": "2021-02-01T15:03:11+00:00"
-        },
-        {
-            "name": "cultuurnet/entry",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "4785a631405c2387ad61e62365af146a050a1321"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/4785a631405c2387ad61e62365af146a050a1321",
-                "reference": "4785a631405c2387ad61e62365af146a050a1321",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/auth": "~1.2",
-                "cultuurnet/cdb": "~2",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "guzzle/plugin-mock": "~3.9.2",
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\Entry\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                }
-            ],
-            "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2018-11-08T13:17:43+00:00"
         },
         {
             "name": "cultuurnet/monolog-socketio",
