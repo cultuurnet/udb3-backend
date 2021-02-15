@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38664b56de0b8fcbf7d618824d8de96a",
+    "content-hash": "989af572e093f917f9f2b468e36c82a0",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -689,51 +689,6 @@
             ],
             "description": "Authentication service for CultuurNet web services",
             "time": "2015-08-24T20:22:37+00:00"
-        },
-        {
-            "name": "cultuurnet/calendar-summary",
-            "version": "1.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/calendar-summary.git",
-                "reference": "d81160a149e17ba0515d6300485c1a250aa9792c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/d81160a149e17ba0515d6300485c1a250aa9792c",
-                "reference": "d81160a149e17ba0515d6300485c1a250aa9792c",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/cdb": "~2.2.0",
-                "ext-intl": "*",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\CalendarSummary\\": [
-                        "src"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2018-05-03T13:39:35+00:00"
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
