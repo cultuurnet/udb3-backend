@@ -280,17 +280,6 @@ $app['api_key'] = $app->share(
     }
 );
 
-$app['auth_service'] = $app->share(
-    function ($app) {
-        $uitidConfig = $app['config']['uitid'];
-
-        return new CultuurNet\Auth\Guzzle\Service(
-            $uitidConfig['base_url'],
-            $app['uitid_consumer_credentials']
-        );
-    }
-);
-
 $app->register(new GeneralSecurityServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Security\OfferSecurityServiceProvider());
 $app->register(new OrganizerSecurityServiceProvider());
