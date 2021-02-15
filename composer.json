@@ -20,7 +20,6 @@
     "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",
     "commerceguys/intl": "^0.7",
     "crell/api-problem": "^1.7",
-    "cultuurnet/auth": "~1.2",
     "cultuurnet/calendar-summary-v3": "^2.0",
     "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/culturefeed-php": "dev-master",
