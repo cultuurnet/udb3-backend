@@ -165,16 +165,6 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$app['uitid_consumer_credentials'] = $app->share(
-    function ($app) {
-        $consumerConfig = $app['config']['uitid']['consumer'];
-        return new \CultuurNet\Auth\ConsumerCredentials(
-            $consumerConfig['key'],
-            $consumerConfig['secret']
-        );
-    }
-);
-
 $app['search_serializer'] = $app->share(
     function () {
         $service = new \CultuurNet\SearchV3\Serializer\Serializer();
