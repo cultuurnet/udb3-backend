@@ -587,8 +587,14 @@ $app['logger.command_bus'] = $app->share(
                         $emitter
                     );
                     break;
+
                 default:
-                    continue 2;
+                    $handler = null;
+                    break;
+            }
+
+            if (!$handler) {
+                continue;
             }
 
             $handler->setLevel($handler_config['level']);
