@@ -566,8 +566,14 @@ $app['logger.command_bus'] = $app->share(
                         $emitter
                     );
                     break;
+
                 default:
-                    continue 2;
+                    $handler = null;
+                    break;
+            }
+
+            if (!$handler) {
+                continue;
             }
 
             $handler->setLevel($handler_config['level']);
@@ -1031,7 +1037,7 @@ $app['logger.amqp.event_bus_forwarder'] = $app::share(
 
 $app['uitpas'] = $app->share(
     function (Application $app) {
-        /** @var CultureFeed $culturefeed */
+        /** @var CultureFeed $cultureFeed */
         $cultureFeed = $app['culturefeed'];
         return $cultureFeed->uitpas();
     }
