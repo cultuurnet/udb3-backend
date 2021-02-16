@@ -17,6 +17,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class UpdateUniqueLabels extends Command
 {
     private const MAX_RESULTS = 1000;
+    private const LABEL_CREATED = 'CultuurNet.UDB3.Label.Events.Created';
 
     /**
      * @var Connection
@@ -89,34 +90,12 @@ class UpdateUniqueLabels extends Command
         return 0;
     }
 
-    private function getLabelAddedClasses(): array
-    {
-        $labelAddedClasses = [
-            \CultuurNet\UDB3\Event\Events\LabelAdded::class,
-            \CultuurNet\UDB3\Place\Events\LabelAdded::class,
-            \CultuurNet\UDB3\Organizer\Events\LabelAdded::class,
-            \CultuurNet\UDB3\Role\Events\LabelAdded::class,
-        ];
-
-        return \array_map(
-            static function ($labelAddedClass) {
-                return \str_replace('\\', '.', $labelAddedClass);
-            },
-            $labelAddedClasses
-        );
-    }
-
     private function getAllLabelAddedEvents(int $offset): array
     {
-        $query = $this->connection->createQueryBuilder()
+        return $this->connection->createQueryBuilder()
             ->select('uuid, payload')
-            ->from('event_store');
-
-        foreach ($this->getLabelAddedClasses() as $labelAddedEventsClass) {
-            $query->orWhere('type = "' . $labelAddedEventsClass . '"');
-        }
-
-        return $query
+            ->from('event_store')
+            ->where('type = "' . self::LABEL_CREATED . '"')
             ->setFirstResult($offset)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
@@ -125,15 +104,10 @@ class UpdateUniqueLabels extends Command
 
     private function getAllLabelAddedEventsCount(): int
     {
-        $query = $this->connection->createQueryBuilder()
+        return $this->connection->createQueryBuilder()
             ->select('uuid')
-            ->from('event_store');
-
-        foreach ($this->getLabelAddedClasses() as $labelAddedEventsClass) {
-            $query->orWhere('type = "' . $labelAddedEventsClass . '"');
-        }
-
-        return $query
+            ->from('event_store')
+            ->where('type = "' . self::LABEL_CREATED . '"')
             ->execute()
             ->rowCount();
     }
@@ -162,6 +136,6 @@ class UpdateUniqueLabels extends Command
     private function getLabelName(array $labelAddedEvent): LabelName
     {
         $payloadArray = json_decode($labelAddedEvent['payload'], true);
-        return new LabelName($payloadArray['payload']['label']);
+        return new LabelName($payloadArray['payload']['name']);
     }
 }
