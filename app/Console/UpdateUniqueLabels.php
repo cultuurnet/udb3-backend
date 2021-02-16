@@ -46,7 +46,7 @@ class UpdateUniqueLabels extends Command
         }
 
         $helper = $this->getHelper('question');
-        $updateQuestion = new ConfirmationQuestion('Update ' . $labelAddedEventsCount . ' label(s)? [Y/n] ', false);
+        $updateQuestion = new ConfirmationQuestion('Update ' . $labelAddedEventsCount . ' label(s)? [y/N] ', false);
         if (!$helper->ask($input, $output, $updateQuestion)) {
             return 0;
         }
@@ -78,7 +78,7 @@ class UpdateUniqueLabels extends Command
         $progressBar->finish();
         $output->writeln('');
 
-        $reportQuestion = new ConfirmationQuestion('Dump update report? [Y/n] ', false);
+        $reportQuestion = new ConfirmationQuestion('Dump update report? [y/N] ', false);
         if (!$helper->ask($input, $output, $reportQuestion)) {
             return 0;
         }
