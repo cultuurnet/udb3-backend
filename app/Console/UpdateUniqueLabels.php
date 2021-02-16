@@ -83,9 +83,11 @@ class UpdateUniqueLabels extends Command
             return 0;
         }
 
+        $reportFile = fopen('update_unique_labels_report.txt', 'wb');
         foreach ($messages as $message) {
-            $output->writeln($message);
+            fwrite($reportFile, $message. \PHP_EOL);
         }
+        \fclose($reportFile);
 
         return 0;
     }
