@@ -165,16 +165,6 @@ $app['event_iri_generator'] = $app->share(
     }
 );
 
-$app['uitid_consumer_credentials'] = $app->share(
-    function ($app) {
-        $consumerConfig = $app['config']['uitid']['consumer'];
-        return new \CultuurNet\Auth\ConsumerCredentials(
-            $consumerConfig['key'],
-            $consumerConfig['secret']
-        );
-    }
-);
-
 $app['search_serializer'] = $app->share(
     function () {
         $service = new \CultuurNet\SearchV3\Serializer\Serializer();
@@ -277,17 +267,6 @@ $app['api_key'] = $app->share(
         // It is possible to work without api key then null is returned
         // and will be handled with a pass through authorizer.
         return isset($app['auth.api_key']) ? $app['auth.api_key'] : null;
-    }
-);
-
-$app['auth_service'] = $app->share(
-    function ($app) {
-        $uitidConfig = $app['config']['uitid'];
-
-        return new CultuurNet\Auth\Guzzle\Service(
-            $uitidConfig['base_url'],
-            $app['uitid_consumer_credentials']
-        );
     }
 );
 
@@ -587,8 +566,14 @@ $app['logger.command_bus'] = $app->share(
                         $emitter
                     );
                     break;
+
                 default:
-                    continue 2;
+                    $handler = null;
+                    break;
+            }
+
+            if (!$handler) {
+                continue;
             }
 
             $handler->setLevel($handler_config['level']);
@@ -1052,7 +1037,7 @@ $app['logger.amqp.event_bus_forwarder'] = $app::share(
 
 $app['uitpas'] = $app->share(
     function (Application $app) {
-        /** @var CultureFeed $culturefeed */
+        /** @var CultureFeed $cultureFeed */
         $cultureFeed = $app['culturefeed'];
         return $cultureFeed->uitpas();
     }

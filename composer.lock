@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2870a1bf673e04a93a73c0f2d0d02659",
+    "content-hash": "5074e8ff76495a36e493a751af78738e",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -644,109 +644,17 @@
             "time": "2014-10-07T17:43:34+00:00"
         },
         {
-            "name": "cultuurnet/auth",
-            "version": "1.2.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/Auth.git",
-                "reference": "0281fa71ec7d2d1026d309175066e3df9f105e99"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Auth/zipball/0281fa71ec7d2d1026d309175066e3df9f105e99",
-                "reference": "0281fa71ec7d2d1026d309175066e3df9f105e99",
-                "shasum": ""
-            },
-            "require": {
-                "guzzle/http": "~3.9",
-                "guzzle/plugin-cookie": "~3.9",
-                "guzzle/plugin-log": "~3.9",
-                "guzzle/plugin-oauth": "~3.9",
-                "justinrainbow/json-schema": "~1.3",
-                "php": ">=5.3.0",
-                "symfony/console": "~2.5"
-            },
-            "bin": [
-                "bin/cultuurnet-auth"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-develop": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "CultuurNet\\Auth": [
-                        "lib"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24T20:22:37+00:00"
-        },
-        {
-            "name": "cultuurnet/calendar-summary",
-            "version": "1.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/calendar-summary.git",
-                "reference": "d81160a149e17ba0515d6300485c1a250aa9792c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary/zipball/d81160a149e17ba0515d6300485c1a250aa9792c",
-                "reference": "d81160a149e17ba0515d6300485c1a250aa9792c",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/cdb": "~2.2.0",
-                "ext-intl": "*",
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\CalendarSummary\\": [
-                        "src"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Library to convert a cdbXML input to a readable summary",
-            "time": "2018-05-03T13:39:35+00:00"
-        },
-        {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v2.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "8de8a2d4c95b3dbfbdac212dc41cd690f98a479b"
+                "reference": "07712bdf278d2d9febde73f6a57ff1ffcb233a92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/8de8a2d4c95b3dbfbdac212dc41cd690f98a479b",
-                "reference": "8de8a2d4c95b3dbfbdac212dc41cd690f98a479b",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/07712bdf278d2d9febde73f6a57ff1ffcb233a92",
+                "reference": "07712bdf278d2d9febde73f6a57ff1ffcb233a92",
                 "shasum": ""
             },
             "require": {
@@ -781,7 +689,11 @@
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "time": "2021-02-02T15:14:47+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v2.0.1"
+            },
+            "time": "2021-02-12T07:36:53+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -867,56 +779,6 @@
             ],
             "description": "Culturefeed PHP library",
             "time": "2021-02-01T15:03:11+00:00"
-        },
-        {
-            "name": "cultuurnet/entry",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/Entry.git",
-                "reference": "4785a631405c2387ad61e62365af146a050a1321"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Entry/zipball/4785a631405c2387ad61e62365af146a050a1321",
-                "reference": "4785a631405c2387ad61e62365af146a050a1321",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/auth": "~1.2",
-                "cultuurnet/cdb": "~2",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "guzzle/plugin-mock": "~3.9.2",
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\Entry\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                }
-            ],
-            "description": "PHP library to access CultuurNet's Entry API",
-            "time": "2018-11-08T13:17:43+00:00"
         },
         {
             "name": "cultuurnet/monolog-socketio",
@@ -1110,6 +972,7 @@
                 }
             ],
             "description": "A PHP library/collection of classes aimed to help developers using and undestanding immutable objects.",
+            "abandoned": true,
             "time": "2019-08-08T14:52:13+00:00"
         },
         {
@@ -1908,102 +1771,6 @@
             "time": "2014-07-22T12:32:03+00:00"
         },
         {
-            "name": "guzzle/guzzle",
-            "version": "v3.9.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/guzzle3.git",
-                "reference": "0645b70d953bc1c067bbc8d5bc53194706b628d9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/0645b70d953bc1c067bbc8d5bc53194706b628d9",
-                "reference": "0645b70d953bc1c067bbc8d5bc53194706b628d9",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3.3",
-                "symfony/event-dispatcher": "~2.1"
-            },
-            "replace": {
-                "guzzle/batch": "self.version",
-                "guzzle/cache": "self.version",
-                "guzzle/common": "self.version",
-                "guzzle/http": "self.version",
-                "guzzle/inflection": "self.version",
-                "guzzle/iterator": "self.version",
-                "guzzle/log": "self.version",
-                "guzzle/parser": "self.version",
-                "guzzle/plugin": "self.version",
-                "guzzle/plugin-async": "self.version",
-                "guzzle/plugin-backoff": "self.version",
-                "guzzle/plugin-cache": "self.version",
-                "guzzle/plugin-cookie": "self.version",
-                "guzzle/plugin-curlauth": "self.version",
-                "guzzle/plugin-error-response": "self.version",
-                "guzzle/plugin-history": "self.version",
-                "guzzle/plugin-log": "self.version",
-                "guzzle/plugin-md5": "self.version",
-                "guzzle/plugin-mock": "self.version",
-                "guzzle/plugin-oauth": "self.version",
-                "guzzle/service": "self.version",
-                "guzzle/stream": "self.version"
-            },
-            "require-dev": {
-                "doctrine/cache": "~1.3",
-                "monolog/monolog": "~1.0",
-                "phpunit/phpunit": "3.7.*",
-                "psr/log": "~1.0",
-                "symfony/class-loader": "~2.1",
-                "zendframework/zend-cache": "2.*,<2.3",
-                "zendframework/zend-log": "2.*,<2.3"
-            },
-            "suggest": {
-                "guzzlehttp/guzzle": "Guzzle 5 has moved to a new package name. The package you have installed, Guzzle 3, is deprecated."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.9-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Guzzle": "src/",
-                    "Guzzle\\Tests": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "Guzzle Community",
-                    "homepage": "https://github.com/guzzle/guzzle/contributors"
-                }
-            ],
-            "description": "PHP HTTP client. This library is deprecated in favor of https://packagist.org/packages/guzzlehttp/guzzle",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http client",
-                "rest",
-                "web service"
-            ],
-            "abandoned": "guzzlehttp/guzzle",
-            "time": "2015-03-18T18:23:50+00:00"
-        },
-        {
             "name": "guzzlehttp/guzzle",
             "version": "6.5.5",
             "source": {
@@ -2629,72 +2396,6 @@
                 "xml"
             ],
             "time": "2020-02-22T20:59:37+00:00"
-        },
-        {
-            "name": "justinrainbow/json-schema",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "cc84765fb7317f6b07bd8ac78364747f95b86341"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/cc84765fb7317f6b07bd8ac78364747f95b86341",
-                "reference": "cc84765fb7317f6b07bd8ac78364747f95b86341",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.29"
-            },
-            "require-dev": {
-                "json-schema/json-schema-test-suite": "1.1.0",
-                "phpdocumentor/phpdocumentor": "~2",
-                "phpunit/phpunit": "~3.7"
-            },
-            "bin": [
-                "bin/validate-json"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.6.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JsonSchema\\": "src/JsonSchema/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Bruno Prieto Reis",
-                    "email": "bruno.p.reis@gmail.com"
-                },
-                {
-                    "name": "Justin Rainbow",
-                    "email": "justin.rainbow@gmail.com"
-                },
-                {
-                    "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch"
-                },
-                {
-                    "name": "Robert Schönthal",
-                    "email": "seroscho@googlemail.com"
-                }
-            ],
-            "description": "A library to validate a json schema.",
-            "homepage": "https://github.com/justinrainbow/json-schema",
-            "keywords": [
-                "json",
-                "schema"
-            ],
-            "time": "2016-01-25T15:43:01+00:00"
         },
         {
             "name": "knplabs/console-service-provider",
@@ -4932,12 +4633,12 @@
             ],
             "authors": [
                 {
-                    "name": "Ben Ramsey",
-                    "homepage": "http://benramsey.com"
-                },
-                {
                     "name": "Marijn Huizendveld",
                     "email": "marijn.huizendveld@gmail.com"
+                },
+                {
+                    "name": "Ben Ramsey",
+                    "homepage": "http://benramsey.com"
                 }
             ],
             "description": "A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
@@ -5851,20 +5552,6 @@
                 "interfaces",
                 "interoperability",
                 "standards"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-08-17T09:35:39+00:00"
         },
@@ -7462,20 +7149,6 @@
                 "interoperability",
                 "standards"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-06T13:19:58+00:00"
         },
         {
@@ -8373,6 +8046,102 @@
                 "symfony"
             ],
             "time": "2021-01-18T12:40:14+00:00"
+        },
+        {
+            "name": "guzzle/guzzle",
+            "version": "v3.9.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle3.git",
+                "reference": "0645b70d953bc1c067bbc8d5bc53194706b628d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/0645b70d953bc1c067bbc8d5bc53194706b628d9",
+                "reference": "0645b70d953bc1c067bbc8d5bc53194706b628d9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
+                "guzzle/common": "self.version",
+                "guzzle/http": "self.version",
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-error-response": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
+            },
+            "require-dev": {
+                "doctrine/cache": "~1.3",
+                "monolog/monolog": "~1.0",
+                "phpunit/phpunit": "3.7.*",
+                "psr/log": "~1.0",
+                "symfony/class-loader": "~2.1",
+                "zendframework/zend-cache": "2.*,<2.3",
+                "zendframework/zend-log": "2.*,<2.3"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Guzzle 5 has moved to a new package name. The package you have installed, Guzzle 3, is deprecated."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Guzzle": "src/",
+                    "Guzzle\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Guzzle Community",
+                    "homepage": "https://github.com/guzzle/guzzle/contributors"
+                }
+            ],
+            "description": "PHP HTTP client. This library is deprecated in favor of https://packagist.org/packages/guzzlehttp/guzzle",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "abandoned": "guzzlehttp/guzzle",
+            "time": "2015-03-18T18:23:50+00:00"
         },
         {
             "name": "mikey179/vfsstream",
@@ -10171,16 +9940,16 @@
     ],
     "aliases": [
         {
-            "package": "chrisboulton/php-resque",
-            "version": "dev-compat-1-2",
             "alias": "1.2",
-            "alias_normalized": "1.2.0.0"
+            "alias_normalized": "1.2.0.0",
+            "version": "dev-compat-1-2",
+            "package": "chrisboulton/php-resque"
         },
         {
-            "package": "jeremykendall/php-domain-parser",
-            "version": "4.0.3.0-alpha",
             "alias": "1.3.1",
-            "alias_normalized": "1.3.1.0"
+            "alias_normalized": "1.3.1.0",
+            "version": "4.0.3.0-alpha",
+            "package": "jeremykendall/php-domain-parser"
         }
     ],
     "minimum-stability": "dev",
@@ -10198,5 +9967,5 @@
         "ext-tidy": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }

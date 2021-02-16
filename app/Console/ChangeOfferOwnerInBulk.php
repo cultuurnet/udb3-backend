@@ -5,11 +5,11 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Broadway\CommandHandling\CommandBusInterface;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
-use Error;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ChangeOfferOwnerInBulk extends AbstractCommand
@@ -65,13 +65,13 @@ class ChangeOfferOwnerInBulk extends AbstractCommand
                     'Successfully changed owner of offer "' . $offerId .'" to user with id "' . $newOwnerId . '"'
                 );
                 $success++;
-            } catch (Error $error) {
+            } catch (Throwable $t) {
                 $logger->error(
                     sprintf(
                         'An error occurred while changing owner of offer "%s": %s with message %s',
                         $offerId,
-                        get_class($error),
-                        $error->getMessage()
+                        get_class($t),
+                        $t->getMessage()
                     )
                 );
                 $errors++;
