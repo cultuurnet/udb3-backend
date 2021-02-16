@@ -16,6 +16,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 class UpdateUniqueLabels extends Command
 {
+    private const MAX_RESULTS = 1000;
+
     /**
      * @var Connection
      */
@@ -35,35 +37,42 @@ class UpdateUniqueLabels extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $labelAddedEvents = $this->getAllLabelAddedEvents();
+        $labelAddedEventsCount = $this->getAllLabelAddedEventsCount();
 
-        if (count($labelAddedEvents) <= 0) {
+        if ($labelAddedEventsCount <= 0) {
             $output->writeln('No `LabelAdded` events found.');
             return 0;
         }
 
         $helper = $this->getHelper('question');
-        $updateQuestion = new ConfirmationQuestion('Update ' . count($labelAddedEvents) . ' label(s)? [Y/n] ', false);
+        $updateQuestion = new ConfirmationQuestion('Update ' . $labelAddedEventsCount . ' label(s)? [Y/n] ', false);
         if (!$helper->ask($input, $output, $updateQuestion)) {
             return 0;
         }
 
-        $progressBar = new ProgressBar($output, count($labelAddedEvents));
+        $progressBar = new ProgressBar($output, $labelAddedEventsCount);
 
         $messages = [];
-        foreach ($labelAddedEvents as $labelAddedEvent) {
-            $labelUuid = $this->getLabelUuid($labelAddedEvent);
-            $labelName = $this->getLabelName($labelAddedEvent);
+        $offset = 0;
+        do {
+            $labelAddedEvents = $this->getAllLabelAddedEvents($offset);
 
-            try {
-                $this->updateLabel($labelUuid, $labelName);
-                $messages[] = 'Added label ' . $labelName->toNative() . ' with uuid ' . $labelUuid->toString();
-            } catch (UniqueConstraintViolationException $exception) {
-                $messages[] = 'Unique exception for label ' . $labelName->toNative() . ' with uuid ' . $labelUuid->toString();
+            foreach ($labelAddedEvents as $labelAddedEvent) {
+                $labelUuid = $this->getLabelUuid($labelAddedEvent);
+                $labelName = $this->getLabelName($labelAddedEvent);
+
+                try {
+                    $this->updateLabel($labelUuid, $labelName);
+                    $messages[] = 'Added label ' . $labelName->toNative() . ' with uuid ' . $labelUuid->toString();
+                } catch (UniqueConstraintViolationException $exception) {
+                    $messages[] = 'Unique exception for label ' . $labelName->toNative() . ' with uuid ' . $labelUuid->toString();
+                }
+
+                $progressBar->advance();
             }
 
-            $progressBar->advance();
-        }
+            $offset += count($labelAddedEvents);
+        } while ($offset < $labelAddedEventsCount);
 
         $progressBar->finish();
         $output->writeln('');
@@ -97,7 +106,7 @@ class UpdateUniqueLabels extends Command
         );
     }
 
-    private function getAllLabelAddedEvents(): array
+    private function getAllLabelAddedEvents(int $offset): array
     {
         $query = $this->connection->createQueryBuilder()
             ->select('uuid, payload')
@@ -108,8 +117,25 @@ class UpdateUniqueLabels extends Command
         }
 
         return $query
+            ->setFirstResult($offset)
+            ->setMaxResults(self::MAX_RESULTS)
             ->execute()
             ->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getAllLabelAddedEventsCount(): int
+    {
+        $query = $this->connection->createQueryBuilder()
+            ->select('uuid')
+            ->from('event_store');
+
+        foreach ($this->getLabelAddedClasses() as $labelAddedEventsClass) {
+            $query->orWhere('type = "' . $labelAddedEventsClass . '"');
+        }
+
+        return $query
+            ->execute()
+            ->rowCount();
     }
 
     /**
