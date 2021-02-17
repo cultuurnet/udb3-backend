@@ -33,6 +33,7 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             function (array $json) {
                 $json = $this->polyfillStatus($json);
                 $json = $this->polyfillSubEventStatus($json);
+                $json = $this->polyfillEmbeddedPlaceStatus($json);
                 return $json;
             }
         );
@@ -75,6 +76,19 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             },
             $json['subEvent']
         );
+
+        return $json;
+    }
+
+    private function polyfillEmbeddedPlaceStatus(array $json): array
+    {
+        if (!isset($json['location']['status']) || isset($json['location']['status']['type']) {
+            return $json;
+        }
+
+        $json['location']['status'] = [
+            'type' => $json['location']['status'],
+        ];
 
         return $json;
     }
