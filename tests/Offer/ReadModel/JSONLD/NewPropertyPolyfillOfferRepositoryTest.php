@@ -170,6 +170,22 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
             ]);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_add_default_status_of_embedded_location(): void
+    {
+        $this
+            ->given(['location' => []])
+            ->assertReturnedDocumentContains([
+                'location' => [
+                    'status' => [
+                        'type' => 'Available',
+                    ],
+                ],
+            ]);
+    }
+
     private function given(array $given): self
     {
         $this->repository->save(
