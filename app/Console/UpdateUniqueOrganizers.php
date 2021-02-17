@@ -18,6 +18,7 @@ class UpdateUniqueOrganizers extends Command
 {
     private const MAX_RESULTS = 1000;
     private const ORGANIZER_CREATED = 'CultuurNet.UDB3.Organizer.Events.OrganizerCreatedWithUniqueWebsite';
+    private const ORGANIZER_WEBSITE_UPDATED = 'CultuurNet.UDB3.Organizer.Events.WebsiteUpdated';
 
     /**
      * @var Connection
@@ -33,34 +34,34 @@ class UpdateUniqueOrganizers extends Command
     protected function configure(): void
     {
         $this->setName('organizer:update-unique')
-            ->setDescription('Updates the table with organizer unique websites based on the `OrganizerCreated` events inside the event store.');
+            ->setDescription('Updates the table with organizer unique websites based on the `OrganizerCreated` and `WebsiteUpdated` events inside the event store.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $organizerCreatedEventsCount = $this->getAllOrganizerCreatedEventsCount();
+        $organizerEventsCount = $this->getAllOrganizerEventsCount();
 
-        if ($organizerCreatedEventsCount <= 0) {
-            $output->writeln('No `OrganizerCreated` events found.');
+        if ($organizerEventsCount <= 0) {
+            $output->writeln('No `OrganizerCreated` or `WebsiteUpdated` events found.');
             return 0;
         }
 
         $helper = $this->getHelper('question');
-        $updateQuestion = new ConfirmationQuestion('Update ' . $organizerCreatedEventsCount . ' organizer(s)? [y/N] ', false);
+        $updateQuestion = new ConfirmationQuestion('Update ' . $organizerEventsCount . ' organizer(s)? [y/N] ', false);
         if (!$helper->ask($input, $output, $updateQuestion)) {
             return 0;
         }
 
-        $progressBar = new ProgressBar($output, $organizerCreatedEventsCount);
+        $progressBar = new ProgressBar($output, $organizerEventsCount);
 
         $messages = [];
         $offset = 0;
         do {
-            $organizerCreatedEvents = $this->getAllOrganizerCreatedEvents($offset);
+            $organizerEvents = $this->getAllOrganizerEvents($offset);
 
-            foreach ($organizerCreatedEvents as $organizerCreatedEvent) {
-                $organizerUuid = $this->getOrganizerUuid($organizerCreatedEvent);
-                $organizerUrl = $this->getOrganizerWebsite($organizerCreatedEvent);
+            foreach ($organizerEvents as $organizerEvent) {
+                $organizerUuid = $this->getOrganizerUuid($organizerEvent);
+                $organizerUrl = $this->getOrganizerWebsite($organizerEvent);
 
                 try {
                     $this->updateOrganizer($organizerUuid, $organizerUrl);
@@ -72,8 +73,8 @@ class UpdateUniqueOrganizers extends Command
                 $progressBar->advance();
             }
 
-            $offset += count($organizerCreatedEvents);
-        } while ($offset < $organizerCreatedEventsCount);
+            $offset += count($organizerEvents);
+        } while ($offset < $organizerEventsCount);
 
         $progressBar->finish();
         $output->writeln('');
@@ -92,24 +93,26 @@ class UpdateUniqueOrganizers extends Command
         return 0;
     }
 
-    private function getAllOrganizerCreatedEvents(int $offset): array
+    private function getAllOrganizerEvents(int $offset): array
     {
         return $this->connection->createQueryBuilder()
             ->select('uuid, payload')
             ->from('event_store')
             ->where('type = "' . self::ORGANIZER_CREATED . '"')
+            ->orWhere('type = "' . self::ORGANIZER_WEBSITE_UPDATED . '"')
             ->setFirstResult($offset)
             ->setMaxResults(self::MAX_RESULTS)
             ->execute()
             ->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    private function getAllOrganizerCreatedEventsCount(): int
+    private function getAllOrganizerEventsCount(): int
     {
         return $this->connection->createQueryBuilder()
             ->select('uuid')
             ->from('event_store')
             ->where('type = "' . self::ORGANIZER_CREATED . '"')
+            ->orWhere('type = "' . self::ORGANIZER_WEBSITE_UPDATED . '"')
             ->execute()
             ->rowCount();
     }
@@ -120,12 +123,45 @@ class UpdateUniqueOrganizers extends Command
      */
     private function updateOrganizer(Uuid $organizerUuid, Url $organizerUrl): void
     {
+        // There are 3 possible states:
+        // 1. The organizer uuid is present with the correct url
+        // 2. The organizer uuid is not present
+        // 3. The organizer uuid is present with another value
+
+        $existingOrganizerUrl = $this->connection->createQueryBuilder()
+            ->select('unique_col')
+            ->from('organizer_unique_websites')
+            ->where('uuid_col = :uuid')
+            ->setParameter('uuid', $organizerUuid->toString())
+            ->execute()
+            ->fetchAll(PDO::FETCH_COLUMN);
+
+        if ($existingOrganizerUrl === (string) $organizerUrl) {
+            return;
+        }
+
+        if ($existingOrganizerUrl === null) {
+            $this->connection
+                ->insert(
+                    'organizer_unique_websites',
+                    [
+                        'uuid_col' => $organizerUuid->toString(),
+                        'unique_col' => (string) $organizerUrl,
+                    ]
+                );
+
+            return;
+        }
+
         $this->connection
-            ->insert(
+            ->update(
                 'organizer_unique_websites',
                 [
                     'uuid_col' => $organizerUuid->toString(),
                     'unique_col' => (string) $organizerUrl,
+                ],
+                [
+                    'uuid_col' => $organizerUuid->toString(),
                 ]
             );
     }
