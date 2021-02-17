@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use CultuurNet\UDB3\Silex\Console\ReindexOffersWithPopularityScore;
 use CultuurNet\UDB3\Silex\Console\ReplayCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
+use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -121,6 +122,7 @@ $consoleApp->add(new UpdateOfferStatusCommand(OfferType::EVENT(), $app['event_co
 $consoleApp->add(new UpdateOfferStatusCommand(OfferType::PLACE(), $app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES]));
 $consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
 $consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_permission_query']));
+$consoleApp->add(new UpdateUniqueLabels($app['dbal_connection']));
 
 try {
     $consoleApp->run();
