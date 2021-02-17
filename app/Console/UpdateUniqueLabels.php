@@ -33,7 +33,7 @@ class UpdateUniqueLabels extends Command
     protected function configure(): void
     {
         $this->setName('label:update-unique')
-            ->setDescription('Updates the table with unique labels based on the `LabelAdded` events inside the event store.');
+            ->setDescription('Updates the table with unique labels based on the `CultuurNet.UDB3.Label.Events.Created` events inside the event store.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
