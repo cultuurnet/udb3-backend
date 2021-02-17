@@ -154,6 +154,38 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
             );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_fix_status_of_embedded_location_if_already_set_with_wrong_format(): void
+    {
+        $this
+            ->given(['location' => ['status' => 'Unavailable']])
+            ->assertReturnedDocumentContains([
+                'location' => [
+                    'status' => [
+                        'type' => 'Unavailable',
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_add_default_status_of_embedded_location(): void
+    {
+        $this
+            ->given(['location' => []])
+            ->assertReturnedDocumentContains([
+                'location' => [
+                    'status' => [
+                        'type' => 'Available',
+                    ],
+                ],
+            ]);
+    }
+
     private function given(array $given): self
     {
         $this->repository->save(
