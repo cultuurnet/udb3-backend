@@ -476,7 +476,7 @@ class ProjectorTest extends TestCase
         return 'E4CA9DB5-DEE3-42F0-B04A-547DFC3CB2EE';
     }
 
-    private function createDomainMessage(string $id, Serializable $payload): DomainMessage
+    private function createDomainMessage($id, SerializableInterface $payload)
     {
         return new DomainMessage(
             $id,
