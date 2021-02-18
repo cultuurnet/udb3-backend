@@ -89,7 +89,7 @@ class AgeRangeTest extends TestCase
     {
         $range = AgeRange::any();
 
-        $this->assertEquals(new Age(0), $range->getFrom());
+        $this->assertNull($range->getFrom());
         $this->assertNull($range->getTo());
     }
 }

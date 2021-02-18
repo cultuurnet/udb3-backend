@@ -8,23 +8,25 @@ use ValueObjects\Person\Age;
 class AgeRange
 {
     /**
-     * @var null|Age
+     * @var ?Age
      */
     private $from;
 
     /**
-     * @var null|Age
+     * @var ?Age
      */
     private $to;
 
     /**
-     * AgeRange constructor.
-     * @param null|Age $from
-     * @param null|Age $to
+     * @throws InvalidAgeRangeException
      */
-    public function __construct(Age $from = null, Age $to = null)
+    public function __construct(?Age $from = null, ?Age $to = null)
     {
-        $from = $from ?: new Age(0);
+        // Make sure not to convert " - " which is all ages to "0- " which would apply to Vlieg
+        // So only convert " -X" to "0-X"
+        if ($from === null && $to !== null) {
+            $from = new Age(0);
+        }
 
         $this->guardValidAgeRange($from, $to);
 
@@ -33,38 +35,26 @@ class AgeRange
     }
 
     /**
-     * @param Age $from
-     * @param null|Age $to
-     *
      * @throws InvalidAgeRangeException
      */
-    private function guardValidAgeRange(Age $from, Age $to = null)
+    private function guardValidAgeRange(?Age $from, ?Age $to = null): void
     {
         if ($from && $to && $from > $to) {
             throw new InvalidAgeRangeException('"from" age should not exceed "to" age');
         }
     }
 
-    /**
-     * @return Age
-     */
-    public function getFrom()
+    public function getFrom(): ?Age
     {
         return $this->from;
     }
 
-    /**
-     * @return null|Age
-     */
-    public function getTo()
+    public function getTo(): ?Age
     {
         return $this->to;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         $from = $this->from ? (string) $this->from : '';
         $to = $this->to ? (string) $this->to : '';
@@ -73,19 +63,10 @@ class AgeRange
     }
 
     /**
-     * @param string $ageRangeString
-     * @return AgeRange
-     *
      * @throws InvalidAgeRangeException
      */
-    public static function fromString($ageRangeString)
+    public static function fromString(string $ageRangeString): AgeRange
     {
-        if (!is_string($ageRangeString)) {
-            throw new InvalidAgeRangeException(
-                'Date-range should be of type string.'
-            );
-        }
-
         $stringValues = explode('-', $ageRangeString);
 
         if (empty($stringValues) || !isset($stringValues[1])) {
@@ -100,8 +81,7 @@ class AgeRange
             );
         }
 
-        $fromString = $stringValues[0];
-        $toString = $stringValues[1];
+        [$fromString, $toString] = $stringValues;
 
         if (is_numeric($fromString) || empty($fromString)) {
             $from = is_numeric($fromString) ? new Age($fromString) : null;
@@ -122,20 +102,12 @@ class AgeRange
         return new self($from, $to);
     }
 
-    /**
-     * @param AgeRange $otherAgeRange
-     * @return bool
-     */
-    public function sameAs(AgeRange $otherAgeRange)
+    public function sameAs(AgeRange $otherAgeRange): bool
     {
-        return "$this" === "$otherAgeRange";
+        return (string) $this === (string) $otherAgeRange;
     }
 
-    /**
-     * @param Udb3ModelAgeRange $udb3ModelAgeRange
-     * @return AgeRange
-     */
-    public static function fromUbd3ModelAgeRange(Udb3ModelAgeRange $udb3ModelAgeRange)
+    public static function fromUbd3ModelAgeRange(Udb3ModelAgeRange $udb3ModelAgeRange): AgeRange
     {
         $from = null;
         if ($from = $udb3ModelAgeRange->getFrom()) {
