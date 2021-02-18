@@ -44,11 +44,6 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     private $geocodingService;
 
-    /**
-     * @param EventStoreInterface $eventStore
-     * @param EventBusInterface $eventBus
-     * @return GeoCoordinatesCommandHandler
-     */
     protected function createCommandHandler(EventStoreInterface $eventStore, EventBusInterface $eventBus)
     {
         $repository = new PlaceRepository(

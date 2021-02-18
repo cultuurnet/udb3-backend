@@ -16,10 +16,6 @@ class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
         return $this->loadCompleteStream(parent::load($id));
     }
 
-    /**
-     * @param DomainEventStreamInterface $eventStream
-     * @return DomainEventStreamInterface
-     */
     private function loadCompleteStream(DomainEventStreamInterface $eventStream)
     {
         $events = iterator_to_array($eventStream);
@@ -57,9 +53,6 @@ class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
     }
 
     /**
-     * @param DomainEventStreamInterface $eventStream
-     * @param int $playhead
-     *
      * @return DomainMessage[]
      */
     private function limitEventStreamToPlayhead(DomainEventStreamInterface $eventStream, $playhead)

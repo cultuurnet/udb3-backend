@@ -17,10 +17,6 @@ class ValidatingCommandBusDecorator implements CommandBusInterface
      */
     private $commandValidator;
 
-    /**
-     * @param CommandBusInterface $commandBus
-     * @param CommandValidatorInterface $commandValidator
-     */
     public function __construct(
         CommandBusInterface $commandBus,
         CommandValidatorInterface $commandValidator

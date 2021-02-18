@@ -26,15 +26,6 @@ class LocalRoleReadingService extends LocalEntityService implements RoleReadingS
      */
     private $userRolesReadRepository;
 
-    /**
-     * ReadRoleRestController constructor.
-     * @param DocumentRepository $roleReadRepository
-     * @param RepositoryInterface $roleWriteRepository
-     * @param IriGeneratorInterface $iriGenerator
-     * @param DocumentRepository $roleLabelsReadRepository
-     * @param DocumentRepository $roleUsersReadRepository
-     * @param DocumentRepository $userRolesReadRepository
-     */
     public function __construct(
         DocumentRepository $roleReadRepository,
         RepositoryInterface $roleWriteRepository,

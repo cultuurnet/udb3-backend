@@ -362,11 +362,6 @@ class UserRolesProjectorTest extends TestCase
         $this->userRolesProjector->handle($domainMessage);
     }
 
-    /**
-     * @param UUID $uuid
-     * @param SerializableInterface $payload
-     * @return DomainMessage
-     */
     private function createDomainMessage(
         UUID $uuid,
         SerializableInterface $payload

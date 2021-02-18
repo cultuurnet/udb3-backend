@@ -90,10 +90,6 @@ class ConstraintAwareLabelServiceTest extends TestCase
         $this->assertNull($returnValue);
     }
 
-    /**
-     * @param RepositoryInterface $repository
-     * @return ConstraintAwareLabelService
-     */
     private function createService(RepositoryInterface $repository)
     {
         return new ConstraintAwareLabelService($repository, $this->uuidGenerator);

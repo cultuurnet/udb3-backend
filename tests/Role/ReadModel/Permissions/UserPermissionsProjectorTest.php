@@ -115,10 +115,6 @@ class UserPermissionsProjectorTest extends TestCase
         $this->userPermissionsProjector->handle($domainMessage);
     }
 
-    /**
-     * @param SerializableInterface $payload
-     * @return DomainMessage
-     */
     private function createDomainMessage(SerializableInterface $payload)
     {
         return new DomainMessage(

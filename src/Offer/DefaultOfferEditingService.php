@@ -63,15 +63,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
      */
     protected $themeResolver;
 
-    /**
-     * @param CommandBusInterface $commandBus
-     * @param UuidGeneratorInterface $uuidGenerator
-     * @param DocumentRepository $readRepository
-     * @param OfferCommandFactoryInterface $commandFactory
-     * @param LabelServiceInterface $labelService
-     * @param TypeResolverInterface $typeResolver
-     * @param ThemeResolverInterface $themeResolver
-     */
     public function __construct(
         CommandBusInterface $commandBus,
         UuidGeneratorInterface $uuidGenerator,

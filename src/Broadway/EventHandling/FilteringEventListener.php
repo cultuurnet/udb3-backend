@@ -18,10 +18,6 @@ class FilteringEventListener implements EventListenerInterface
      */
     private $domainMessageSpecification;
 
-    /**
-     * @param EventListenerInterface $eventListener
-     * @param DomainMessageSpecificationInterface $domainMessageSpecification
-     */
     public function __construct(
         EventListenerInterface $eventListener,
         DomainMessageSpecificationInterface $domainMessageSpecification

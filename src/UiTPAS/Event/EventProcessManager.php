@@ -31,11 +31,6 @@ class EventProcessManager implements EventListenerInterface
      */
     private $logger;
 
-    /**
-     * @param CommandBusInterface $commandBus
-     * @param UiTPASLabelsRepository $uitPasLabelsRepository
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         CommandBusInterface $commandBus,
         UiTPASLabelsRepository $uitPasLabelsRepository,

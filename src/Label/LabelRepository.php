@@ -10,11 +10,6 @@ use Broadway\EventStore\EventStoreInterface;
 
 class LabelRepository extends EventSourcingRepository
 {
-    /**
-     * @param EventStoreInterface             $eventStore
-     * @param EventBusInterface               $eventBus
-     * @param EventStreamDecoratorInterface[] $eventStreamDecorators
-     */
     public function __construct(
         EventStoreInterface $eventStore,
         EventBusInterface $eventBus,

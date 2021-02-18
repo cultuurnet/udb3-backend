@@ -35,12 +35,6 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
      */
     private $geocodingService;
 
-    /**
-     * @param RepositoryInterface $placeRepository
-     * @param AddressFormatterInterface $defaultAddressFormatter
-     * @param AddressFormatterInterface $fallbackAddressFormatter
-     * @param GeocodingServiceInterface $geocodingService
-     */
     public function __construct(
         RepositoryInterface $placeRepository,
         AddressFormatterInterface $defaultAddressFormatter,

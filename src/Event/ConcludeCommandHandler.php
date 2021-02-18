@@ -13,11 +13,6 @@ class ConcludeCommandHandler extends Udb3CommandHandler
      */
     protected $offerRepository;
 
-    /**
-     * ConcludeCommandHandler constructor.
-     *
-     * @param RepositoryInterface $offerRepository
-     */
     public function __construct(RepositoryInterface $offerRepository)
     {
         $this->offerRepository = $offerRepository;

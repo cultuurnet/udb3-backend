@@ -41,15 +41,6 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
      */
     private $geocodingService;
 
-
-    /**
-     * Create a command handler for the given scenario test case.
-     *
-     * @param EventStoreInterface $eventStore
-     * @param EventBusInterface $eventBus
-     *
-     * @return CommandHandlerInterface
-     */
     protected function createCommandHandler(EventStoreInterface $eventStore, EventBusInterface $eventBus)
     {
         $organizerRepository = new OrganizerRepository(

@@ -25,10 +25,6 @@ class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
      */
     private $writeRepository;
 
-    /**
-     * @param \CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface $writeRepository
-     * @param \Broadway\EventHandling\EventBusInterface $eventBus
-     */
     public function __construct(WriteRepositoryInterface $writeRepository, EventBusInterface $eventBus)
     {
         $this->writeRepository = $writeRepository;

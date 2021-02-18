@@ -135,11 +135,6 @@ class LabelRolesProjectorTest extends TestCase
         $this->labelRolesProjector->handle($domainMessage);
     }
 
-    /**
-     * @param UUID $uuid
-     * @param SerializableInterface $payload
-     * @return DomainMessage
-     */
     private function createDomainMessage(
         UUID $uuid,
         SerializableInterface $payload

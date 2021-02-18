@@ -14,10 +14,6 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
      */
     private $application;
 
-    /**
-     * @param CommandBusInterface $decoratee
-     * @param Application $application
-     */
     public function __construct(
         CommandBusInterface $decoratee,
         Application $application

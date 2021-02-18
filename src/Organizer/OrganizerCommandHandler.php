@@ -37,10 +37,6 @@ class OrganizerCommandHandler implements CommandHandlerInterface
      */
     private $organizerRelationServices;
 
-    /**
-     * @param RepositoryInterface $organizerRepository
-     * @param ReadRepositoryInterface $labelRepository
-     */
     public function __construct(
         RepositoryInterface $organizerRepository,
         ReadRepositoryInterface $labelRepository

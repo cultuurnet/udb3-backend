@@ -151,14 +151,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
         parent::setUp();
     }
 
-    /**
-     * Create a command handler for the given scenario test case.
-     *
-     * @param EventStoreInterface $eventStore
-     * @param EventBusInterface $eventBus
-     *
-     * @return CommandHandlerInterface
-     */
     protected function createCommandHandler(
         EventStoreInterface $eventStore,
         EventBusInterface $eventBus

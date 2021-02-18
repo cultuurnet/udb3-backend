@@ -15,9 +15,6 @@ class ReplayFilteringEventListener extends FilteringEventListener implements Log
      */
     protected $logger;
 
-    /**
-     * @param EventListenerInterface $eventListener
-     */
     public function __construct(
         EventListenerInterface $eventListener
     ) {

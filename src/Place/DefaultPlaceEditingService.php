@@ -25,14 +25,6 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
      */
     protected $writeRepository;
 
-    /**
-     * @param CommandBusInterface $commandBus
-     * @param UuidGeneratorInterface $uuidGenerator
-     * @param DocumentRepository $readRepository
-     * @param OfferCommandFactoryInterface $commandFactory
-     * @param RepositoryInterface $writeRepository
-     * @param LabelServiceInterface $labelService
-     */
     public function __construct(
         CommandBusInterface $commandBus,
         UuidGeneratorInterface $uuidGenerator,

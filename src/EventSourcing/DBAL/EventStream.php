@@ -58,12 +58,6 @@ class EventStream
      */
     private $aggregateType;
 
-    /**
-     * @param Connection $connection
-     * @param SerializerInterface $payloadSerializer
-     * @param SerializerInterface $metadataSerializer
-     * @param string $tableName
-     */
     public function __construct(
         Connection $connection,
         SerializerInterface $payloadSerializer,
@@ -128,10 +122,6 @@ class EventStream
         return $c;
     }
 
-    /**
-     * @param EventStreamDecoratorInterface $domainEventStreamDecorator
-     * @return EventStream
-     */
     public function withDomainEventStreamDecorator(EventStreamDecoratorInterface $domainEventStreamDecorator)
     {
         $c = clone $this;

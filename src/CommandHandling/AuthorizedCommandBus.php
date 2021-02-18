@@ -28,12 +28,6 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
      */
     private $security;
 
-    /**
-     * AuthorizedCommandBus constructor.
-     * @param CommandBusInterface $decoratee
-     * @param UserIdentificationInterface $userIdentification
-     * @param SecurityInterface $security
-     */
     public function __construct(
         CommandBusInterface $decoratee,
         UserIdentificationInterface $userIdentification,

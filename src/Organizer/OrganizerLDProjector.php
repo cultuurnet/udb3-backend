@@ -86,12 +86,6 @@ class OrganizerLDProjector implements EventListenerInterface
      */
     private $cdbXMLImporter;
 
-    /**
-     * @param DocumentRepository $repository
-     * @param IriGeneratorInterface $iriGenerator
-     * @param EventBusInterface $eventBus
-     * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
-     */
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,

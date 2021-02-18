@@ -283,11 +283,6 @@ class RoleUsersProjectorTest extends TestCase
             ->willReturn($userIdentityDetails);
     }
 
-    /**
-     * @param UUID $uuid
-     * @param SerializableInterface $payload
-     * @return DomainMessage
-     */
     private function createDomainMessage(
         UUID $uuid,
         SerializableInterface $payload

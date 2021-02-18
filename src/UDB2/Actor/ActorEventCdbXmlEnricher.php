@@ -57,11 +57,6 @@ class ActorEventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInt
      */
     protected $xmlValidationService;
 
-    /**
-     * @param EventBusInterface $eventBus
-     * @param HttpClient $httpClient
-     * @param XMLValidationServiceInterface|null $xmlValidationService
-     */
     public function __construct(
         EventBusInterface $eventBus,
         HttpClient $httpClient,

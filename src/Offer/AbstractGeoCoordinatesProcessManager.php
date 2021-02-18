@@ -25,11 +25,6 @@ abstract class AbstractGeoCoordinatesProcessManager implements EventListenerInte
      */
     protected $logger;
 
-    /**
-     * @param CommandBusInterface $commandBus
-     * @param CultureFeedAddressFactoryInterface $addressFactory
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         CommandBusInterface $commandBus,
         CultureFeedAddressFactoryInterface $addressFactory,

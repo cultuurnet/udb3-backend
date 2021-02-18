@@ -43,10 +43,6 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
      */
     protected $eventDispatcher;
 
-    /**
-     * @param CommandBusInterface $decoratee
-     * @param string $queueName
-     */
     public function __construct(
         CommandBusInterface $decoratee,
         $queueName,

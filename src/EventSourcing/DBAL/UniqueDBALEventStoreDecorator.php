@@ -38,13 +38,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
      */
     private $uniqueConstraintService;
 
-    /**
-     * UniqueNameDBALEventStoreDecorator constructor.
-     * @param EventStoreInterface $dbalEventStore
-     * @param Connection $connection
-     * @param StringLiteral $uniqueTableName
-     * @param UniqueConstraintServiceInterface $uniqueConstraintService
-     */
     public function __construct(
         EventStoreInterface $dbalEventStore,
         Connection $connection,

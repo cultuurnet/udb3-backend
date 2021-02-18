@@ -301,10 +301,6 @@ class ProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider fromUdb2DataProvider
-     *
-     * @param StringLiteral $itemId
-     * @param SerializableInterface $payload
-     * @param RelationType $relationType
      */
     public function it_handles_import_and_update_events_from_udb2(
         StringLiteral $itemId,
@@ -480,12 +476,6 @@ class ProjectorTest extends TestCase
         return 'E4CA9DB5-DEE3-42F0-B04A-547DFC3CB2EE';
     }
 
-    /**
-     * @param string $id
-     * @param SerializableInterface $payload
-     * @return DomainMessage
-     */
-    private function createDomainMessage($id, SerializableInterface $payload)
     {
         return new DomainMessage(
             $id,

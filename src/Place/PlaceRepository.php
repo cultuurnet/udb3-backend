@@ -31,11 +31,6 @@ class PlaceRepository extends EventSourcingRepository
      */
     protected $protectedEventStreamDecorators;
 
-    /**
-     * @param EventStoreInterface $eventStore
-     * @param EventBusInterface $eventBus
-     * @param EventStreamDecoratorInterface[] $eventStreamDecorators
-     */
     public function __construct(
         EventStoreInterface $eventStore,
         EventBusInterface $eventBus,

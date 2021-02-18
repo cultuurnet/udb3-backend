@@ -51,10 +51,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     {
     }
 
-    /**
-     * @param ReadRepositoryInterface $labelRepository
-     * @return SerializerInterface
-     */
     public static function createSerializer(ReadRepositoryInterface $labelRepository)
     {
         $payloadManipulatingSerializer = new PayloadManipulatingSerializer(

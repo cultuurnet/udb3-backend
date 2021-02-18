@@ -25,10 +25,6 @@ class CommandHandler extends AbstractCommandHandler
      */
     private $repository;
 
-    /**
-     * CommandHandler constructor.
-     * @param RepositoryInterface $repository
-     */
     public function __construct(RepositoryInterface $repository)
     {
         $this->repository = $repository;

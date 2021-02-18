@@ -22,9 +22,6 @@ class ReplayFlaggingEventBus implements ReplayModeEventBusInterface
      */
     private $replayMode;
 
-    /**
-     * @param EventBusInterface $eventBus
-     */
     public function __construct(EventBusInterface $eventBus)
     {
         $this->eventBus = $eventBus;
@@ -63,9 +60,6 @@ class ReplayFlaggingEventBus implements ReplayModeEventBusInterface
         $this->eventBus->publish($stream);
     }
 
-    /**
-     * @param EventListenerInterface $eventListener
-     */
     public function subscribe(EventListenerInterface $eventListener)
     {
         $this->eventBus->subscribe($eventListener);

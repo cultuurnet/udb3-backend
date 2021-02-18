@@ -25,13 +25,6 @@ class LocalEntityService implements EntityServiceInterface
      */
     protected $iriGenerator;
 
-    /**
-     * Constructs the local entity service.
-     *
-     * @param DocumentRepository $documentRepository
-     * @param RepositoryInterface $entityRepository
-     * @param IriGeneratorInterface $iriGenerator
-     */
     public function __construct(
         DocumentRepository $documentRepository,
         RepositoryInterface $entityRepository,

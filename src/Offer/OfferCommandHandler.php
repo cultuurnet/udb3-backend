@@ -62,12 +62,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      */
     protected $mediaManager;
 
-    /**
-     * @param RepositoryInterface $offerRepository
-     * @param RepositoryInterface $organizerRepository
-     * @param ReadRepositoryInterface $labelRepository
-     * @param MediaManagerInterface $mediaManager
-     */
     public function __construct(
         RepositoryInterface $offerRepository,
         RepositoryInterface $organizerRepository,

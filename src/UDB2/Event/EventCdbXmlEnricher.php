@@ -57,11 +57,6 @@ class EventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInterfac
      */
     protected $cdbXmlNamespaceUri;
 
-    /**
-     * @param EventBusInterface $eventBus
-     * @param HttpClient $httpClient
-     * @param XMLValidationServiceInterface|null $xmlValidationService
-     */
     public function __construct(
         EventBusInterface $eventBus,
         HttpClient $httpClient,

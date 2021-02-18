@@ -18,10 +18,6 @@ class EnrichingEventListenerDecorator implements EventListenerInterface
      */
     private $enricher;
 
-    /**
-     * @param EventListenerInterface $decoratee
-     * @param DomainMessageEnricherInterface $enricher
-     */
     public function __construct(
         EventListenerInterface $decoratee,
         DomainMessageEnricherInterface $enricher

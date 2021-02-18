@@ -213,8 +213,6 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
      * If we let this move on without doing this DBAL will eventually
      * give us a hard time but the true reason for the problem will be
      * obfuscated.
-     *
-     * @param DomainEventStreamInterface $eventStream
      */
     private function guardStream(DomainEventStreamInterface $eventStream)
     {

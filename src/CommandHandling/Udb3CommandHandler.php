@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains CultuurNet\UDB3\Udb3CommandHandler.
- */
-
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandHandler;

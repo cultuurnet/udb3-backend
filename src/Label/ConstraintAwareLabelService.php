@@ -22,10 +22,6 @@ class ConstraintAwareLabelService implements LabelServiceInterface
      */
     private $uuidGenerator;
 
-    /**
-     * @param RepositoryInterface $labelRepository
-     * @param UuidGeneratorInterface $uuidGenerator
-     */
     public function __construct(
         RepositoryInterface $labelRepository,
         UuidGeneratorInterface $uuidGenerator

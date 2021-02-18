@@ -577,10 +577,6 @@ class EventStreamTest extends TestCase
         return $domainMessages;
     }
 
-    /**
-     * @param DomainMessage[] $domainMessages
-     * @param EventStoreInterface $eventStore
-     */
     private function appendDomainMessages(EventStoreInterface $eventStore, array $domainMessages)
     {
         foreach ($domainMessages as $domainMessage) {

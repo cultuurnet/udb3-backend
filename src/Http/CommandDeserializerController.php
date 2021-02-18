@@ -20,10 +20,6 @@ class CommandDeserializerController
      */
     private $deserializer;
 
-    /**
-     * @param DeserializerInterface $commandDeserializer
-     * @param CommandBusInterface $commandBus
-     */
     public function __construct(
         DeserializerInterface $commandDeserializer,
         CommandBusInterface $commandBus
