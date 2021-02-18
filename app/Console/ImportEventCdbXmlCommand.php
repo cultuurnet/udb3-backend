@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainEventStream;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use CultuurNet\UDB3\User\UserIdentityDetails;
@@ -21,11 +21,11 @@ class ImportEventCdbXmlCommand extends AbstractCommand
     private const URL = 'url';
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
-    public function __construct(CommandBusInterface $commandBus, EventBusInterface $eventBus)
+    public function __construct(CommandBus $commandBus, EventBus $eventBus)
     {
         parent::__construct($commandBus);
         $this->eventBus = $eventBus;

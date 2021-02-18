@@ -3,7 +3,7 @@
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;
@@ -23,7 +23,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class PatchOfferRestControllerTest extends TestCase
 {
     /**
-     * @var CommandBusInterface | MockObject
+     * @var CommandBus | MockObject
      */
     private $commandBus;
 
@@ -34,7 +34,7 @@ class PatchOfferRestControllerTest extends TestCase
 
     public function setUp()
     {
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
     }
 
     /**

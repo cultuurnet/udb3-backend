@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Organizer;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-class OrganizerProjectedToJSONLD implements SerializableInterface
+class OrganizerProjectedToJSONLD implements Serializable
 {
     /**
      * @var string

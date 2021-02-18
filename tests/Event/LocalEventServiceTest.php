@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface as RelationsRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -23,7 +23,7 @@ class LocalEventServiceTest extends TestCase
     protected $documentRepository;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     protected $eventRepository;
 
@@ -40,7 +40,7 @@ class LocalEventServiceTest extends TestCase
     public function setUp()
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
-        $this->eventRepository = $this->createMock(RepositoryInterface::class);
+        $this->eventRepository = $this->createMock(Repository::class);
         $this->eventRelationsRepository = $this->createMock(RelationsRepositoryInterface::class);
 
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);

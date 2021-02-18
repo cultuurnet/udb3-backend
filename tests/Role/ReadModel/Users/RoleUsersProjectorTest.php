@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Users;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
@@ -285,8 +285,8 @@ class RoleUsersProjectorTest extends TestCase
 
     private function createDomainMessage(
         UUID $uuid,
-        SerializableInterface $payload
-    ) {
+        Serializable $payload
+    ): DomainMessage {
         return new DomainMessage(
             $uuid,
             0,

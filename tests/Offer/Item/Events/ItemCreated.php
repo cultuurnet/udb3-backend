@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Offer\Item\Events;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 
-class ItemCreated implements SerializableInterface
+class ItemCreated implements Serializable
 {
     /**
      * @var string

@@ -2,10 +2,9 @@
 
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
-use PhpAmqpLib\Channel\AbstractChannel;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -37,7 +36,7 @@ class CommandBusForwardingConsumerTest extends TestCase
     private $consumerTag;
 
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -83,7 +82,7 @@ class CommandBusForwardingConsumerTest extends TestCase
         $this->queueName = new StringLiteral('my-queue');
         $this->exchangeName = new StringLiteral('my-exchange');
         $this->consumerTag = new StringLiteral('my-tag');
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()

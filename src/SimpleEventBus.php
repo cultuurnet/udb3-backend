@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Domain\DomainEventStreamInterface;
+use Broadway\Domain\DomainEventStream;
 
 /**
  * Extension of Broadway's SimpleEventBus with a configurable callback to be
@@ -34,7 +34,7 @@ class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
         }
     }
 
-    public function publish(DomainEventStreamInterface $domainMessages)
+    public function publish(DomainEventStream $domainMessages): void
     {
         if ($this->first) {
             $this->first = false;

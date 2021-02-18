@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
@@ -28,9 +28,9 @@ use DateTimeImmutable;
 class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus
-    ): CommandHandlerInterface {
+        EventStore $eventStore,
+        EventBus $eventBus
+    ): CommandHandler {
         $repository = new OfferRepository(
             new EventRepository($eventStore, $eventBus),
             new PlaceRepository($eventStore, $eventBus)

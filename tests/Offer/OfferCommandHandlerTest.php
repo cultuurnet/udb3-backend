@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
@@ -94,7 +94,7 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected $itemCreated;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     protected $organizerRepository;
 
@@ -132,10 +132,10 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     }
 
     protected function createCommandHandler(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus
-    ) {
-        $this->organizerRepository = $this->createMock(RepositoryInterface::class);
+        EventStore $eventStore,
+        EventBus $eventBus
+    ): ItemCommandHandler {
+        $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelRepository

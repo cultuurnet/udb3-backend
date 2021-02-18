@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Role\Services;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
@@ -26,7 +26,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class DefaultRoleEditingService implements RoleEditingServiceInterface
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -36,14 +36,14 @@ class DefaultRoleEditingService implements RoleEditingServiceInterface
     private $uuidGenerator;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $writeRepository;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        RepositoryInterface $writeRepository
+        Repository $writeRepository
     ) {
         $this->commandBus = $commandBus;
         $this->uuidGenerator = $uuidGenerator;

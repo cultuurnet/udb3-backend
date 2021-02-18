@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -16,7 +16,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -25,7 +25,7 @@ class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
      */
     private $writeRepository;
 
-    public function __construct(WriteRepositoryInterface $writeRepository, EventBusInterface $eventBus)
+    public function __construct(WriteRepositoryInterface $writeRepository, EventBus $eventBus)
     {
         $this->writeRepository = $writeRepository;
         $this->eventBus = $eventBus;

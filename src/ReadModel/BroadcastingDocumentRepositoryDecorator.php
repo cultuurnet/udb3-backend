@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\ReadModel;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 
 /**
@@ -21,13 +21,13 @@ class BroadcastingDocumentRepositoryDecorator extends DocumentRepositoryDecorato
     protected $eventFactory;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     protected $eventBus;
 
     public function __construct(
         DocumentRepository $repository,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         DocumentEventFactory $eventFactory
     ) {
         parent::__construct($repository);

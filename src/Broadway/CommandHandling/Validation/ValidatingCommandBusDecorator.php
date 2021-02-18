@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\Broadway\CommandHandling\Validation;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\CommandHandling\CommandHandler;
 
-class ValidatingCommandBusDecorator implements CommandBusInterface
+class ValidatingCommandBusDecorator implements CommandBus
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -18,7 +18,7 @@ class ValidatingCommandBusDecorator implements CommandBusInterface
     private $commandValidator;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         CommandValidatorInterface $commandValidator
     ) {
         $this->commandBus = $commandBus;
@@ -41,7 +41,7 @@ class ValidatingCommandBusDecorator implements CommandBusInterface
     /**
      * @inheritdoc
      */
-    public function subscribe(CommandHandlerInterface $handler)
+    public function subscribe(CommandHandler $handler)
     {
         $this->commandBus->subscribe($handler);
     }

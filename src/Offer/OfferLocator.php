@@ -3,13 +3,12 @@
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainEventStreamInterface;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventSourcing\EventStreamDecoratorInterface;
+use Broadway\EventSourcing\EventStreamDecorator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 
-class OfferLocator implements EventStreamDecoratorInterface
+class OfferLocator implements EventStreamDecorator
 {
     /**
      * @var IriGeneratorInterface
@@ -25,8 +24,11 @@ class OfferLocator implements EventStreamDecoratorInterface
         $this->iriGenerator = $iriGenerator;
     }
 
-    public function decorateForWrite($aggregateType, $aggregateIdentifier, DomainEventStreamInterface $eventStream)
-    {
+    public function decorateForWrite(
+        $aggregateType,
+        $aggregateIdentifier,
+        DomainEventStream $eventStream
+    ): DomainEventStream {
         $offerLocation = $this->iriGenerator->iri($aggregateIdentifier);
         $messages = array();
 

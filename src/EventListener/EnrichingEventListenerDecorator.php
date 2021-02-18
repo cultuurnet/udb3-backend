@@ -3,13 +3,13 @@
 namespace CultuurNet\UDB3\EventListener;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\DomainMessage\DomainMessageEnricherInterface;
 
-class EnrichingEventListenerDecorator implements EventListenerInterface
+class EnrichingEventListenerDecorator implements EventListener
 {
     /**
-     * @var EventListenerInterface
+     * @var EventListener
      */
     private $decoratee;
 
@@ -19,7 +19,7 @@ class EnrichingEventListenerDecorator implements EventListenerInterface
     private $enricher;
 
     public function __construct(
-        EventListenerInterface $decoratee,
+        EventListener $decoratee,
         DomainMessageEnricherInterface $enricher
     ) {
         $this->decoratee = $decoratee;

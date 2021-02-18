@@ -6,8 +6,8 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventHandling\EventListener;
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
@@ -31,14 +31,14 @@ use XMLReader;
 /**
  * Republishes incoming UDB2 events enriched with their cdbxml.
  */
-class EventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInterface
+class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use DelegateEventHandlingToSpecificMethodTrait;
     use UrlTransformingTrait;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     protected $eventBus;
 
@@ -58,7 +58,7 @@ class EventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInterfac
     protected $cdbXmlNamespaceUri;
 
     public function __construct(
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         HttpClient $httpClient,
         XMLValidationServiceInterface $xmlValidationService = null
     ) {

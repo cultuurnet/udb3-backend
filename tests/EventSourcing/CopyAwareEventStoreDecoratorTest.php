@@ -6,14 +6,14 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStore;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class CopyAwareEventStoreDecoratorTest extends TestCase
 {
     /**
-     * @var EventStoreInterface|MockObject
+     * @var EventStore|MockObject
      */
     protected $eventStore;
 
@@ -24,7 +24,7 @@ class CopyAwareEventStoreDecoratorTest extends TestCase
 
     protected function setUp()
     {
-        $this->eventStore = $this->createMock(EventStoreInterface::class);
+        $this->eventStore = $this->createMock(EventStore::class);
         $this->copyAwareEventStore = new CopyAwareEventStoreDecorator($this->eventStore);
     }
 

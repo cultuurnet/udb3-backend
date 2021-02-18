@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\Relations;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded as LabelAddedToEvent;
@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Sentry\Serializer\SerializableInterface;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -304,7 +305,7 @@ class ProjectorTest extends TestCase
      */
     public function it_handles_import_and_update_events_from_udb2(
         StringLiteral $itemId,
-        SerializableInterface $payload,
+        Serializable $payload,
         RelationType $relationType
     ) {
         $domainMessage = $this->createDomainMessage(
@@ -476,7 +477,7 @@ class ProjectorTest extends TestCase
         return 'E4CA9DB5-DEE3-42F0-B04A-547DFC3CB2EE';
     }
 
-    private function createDomainMessage($id, SerializableInterface $payload)
+    private function createDomainMessage($id, Serializable $payload): DomainMessage
     {
         return new DomainMessage(
             $id,

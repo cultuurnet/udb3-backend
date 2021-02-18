@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Label\Services;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
@@ -29,7 +29,7 @@ class WriteServiceTest extends TestCase
     private $create;
 
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -54,7 +54,7 @@ class WriteServiceTest extends TestCase
             Privacy::PRIVACY_PRIVATE()
         );
 
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->uuidGenerator->method('generate')

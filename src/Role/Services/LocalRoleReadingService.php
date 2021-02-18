@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Role\Services;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\LocalEntityService;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -28,7 +28,7 @@ class LocalRoleReadingService extends LocalEntityService implements RoleReadingS
 
     public function __construct(
         DocumentRepository $roleReadRepository,
-        RepositoryInterface $roleWriteRepository,
+        Repository $roleWriteRepository,
         IriGeneratorInterface $iriGenerator,
         DocumentRepository $roleLabelsReadRepository,
         DocumentRepository $roleUsersReadRepository,

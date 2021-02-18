@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Media;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
@@ -21,7 +21,7 @@ class ImageUploaderService implements ImageUploaderInterface
     protected $uuidGenerator;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     protected $commandBus;
 
@@ -44,7 +44,7 @@ class ImageUploaderService implements ImageUploaderInterface
 
     public function __construct(
         UuidGeneratorInterface $uuidGenerator,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         FilesystemInterface $filesystem,
         string $uploadDirectory,
         Natural $maxFileSize = null

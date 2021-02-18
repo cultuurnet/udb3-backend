@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Media;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Web\Url;
 
-final class Image implements SerializableInterface
+final class Image implements Serializable
 {
     /**
      * @var UUID

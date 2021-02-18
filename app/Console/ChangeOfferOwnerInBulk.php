@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +20,7 @@ class ChangeOfferOwnerInBulk extends AbstractCommand
     private $permissionQuery;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         PermissionQueryInterface $permissionQuery
     ) {
         parent::__construct($commandBus);

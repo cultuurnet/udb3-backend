@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\Import\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
 use CultuurNet\UDB3\BookingInfo;
@@ -73,7 +73,7 @@ use ValueObjects\Web\Url;
 class EventDocumentImporterTest extends TestCase
 {
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     private $repository;
 
@@ -109,7 +109,7 @@ class EventDocumentImporterTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(Repository::class);
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $this->commandBus = new TraceableCommandBus();
         $this->consumer = $this->createMock(ConsumerInterface::class);

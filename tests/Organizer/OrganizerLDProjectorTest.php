@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Organizer;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
@@ -59,7 +59,7 @@ class OrganizerLDProjectorTest extends TestCase
     protected $documentRepository;
 
     /**
-     * @var EventBusInterface|MockObject
+     * @var EventBus|MockObject
      */
     private $eventBus;
 
@@ -77,7 +77,7 @@ class OrganizerLDProjectorTest extends TestCase
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
 
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
 
         $this->iriGenerator = new CallableIriGenerator(
             function ($id) {

@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
-use Broadway\Domain\DomainEventStreamInterface;
+use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\EventSourcing\AbstractEventStoreDecorator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -19,7 +19,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     const UNIQUE_COLUMN = 'unique_col';
 
     /**
-     * @var EventStoreInterface
+     * @var EventStore
      */
     private $dbalEventStore;
 
@@ -39,7 +39,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     private $uniqueConstraintService;
 
     public function __construct(
-        EventStoreInterface $dbalEventStore,
+        EventStore $dbalEventStore,
         Connection $connection,
         StringLiteral $uniqueTableName,
         UniqueConstraintServiceInterface $uniqueConstraintService
@@ -56,7 +56,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
      * @inheritdoc
      * @throws UniqueConstraintException
      */
-    public function append($id, DomainEventStreamInterface $eventStream)
+    public function append($id, DomainEventStream $eventStream)
     {
         $this->connection->beginTransaction();
 

@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Organizer;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
 use CultuurNet\UDB3\Address\Address;
@@ -63,7 +63,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
     private $eventStore;
 
     /**
-     * @var EventBusInterface|MockObject
+     * @var EventBus|MockObject
      */
     private $eventBus;
 
@@ -104,7 +104,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->eventStore = new TraceableEventStore(
             new InMemoryEventStore()
         );
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
         $this->repository = new OrganizerRepository($this->eventStore, $this->eventBus);
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
@@ -152,9 +152,9 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
     }
 
     protected function createCommandHandler(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus
-    ) {
+        EventStore $eventStore,
+        EventBus $eventBus
+    ): CommandHandler {
         return new OrganizerCommandHandler(
             new OrganizerRepository(
                 $eventStore,

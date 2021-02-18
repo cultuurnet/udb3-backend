@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-abstract class AbstractOwnerChanged implements SerializableInterface
+abstract class AbstractOwnerChanged implements Serializable
 {
     /**
      * @var string

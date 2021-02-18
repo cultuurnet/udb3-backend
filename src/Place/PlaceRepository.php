@@ -5,36 +5,35 @@ namespace CultuurNet\UDB3\Place;
 use Assert\Assertion as Assert;
 use Broadway\Domain\AggregateRoot;
 use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainEventStreamInterface;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
-use Broadway\EventSourcing\EventStreamDecoratorInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventSourcing\EventStreamDecorator;
+use Broadway\EventStore\EventStore;
 
 class PlaceRepository extends EventSourcingRepository
 {
     private const AGGREGATE_CLASS = Place::class;
 
     /**
-     * @var EventStoreInterface
+     * @var EventStore
      */
     protected $protectedEventStore;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     protected $protectedEventBus;
 
     /**
-     * @var array|EventStreamDecoratorInterface[]
+     * @var array|EventStreamDecorator[]
      */
     protected $protectedEventStreamDecorators;
 
     public function __construct(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus,
-        array $eventStreamDecorators = array()
+        EventStore $eventStore,
+        EventBus $eventBus,
+        array $eventStreamDecorators = []
     ) {
         parent::__construct(
             $eventStore,
@@ -82,8 +81,8 @@ class PlaceRepository extends EventSourcingRepository
 
     protected function protectedDecorateForWrite(
         AggregateRoot $aggregate,
-        DomainEventStreamInterface $eventStream
-    ): DomainEventStreamInterface {
+        DomainEventStream $eventStream
+    ): DomainEventStream {
         $aggregateIdentifier = $aggregate->getAggregateRootId();
 
         foreach ($this->protectedEventStreamDecorators as $eventStreamDecorator) {

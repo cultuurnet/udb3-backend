@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -41,7 +41,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
      */
     private $geocodingService;
 
-    protected function createCommandHandler(EventStoreInterface $eventStore, EventBusInterface $eventBus)
+    protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateGeoCoordinatesFromAddressCommandHandler
     {
         $organizerRepository = new OrganizerRepository(
             $eventStore,

@@ -4,14 +4,14 @@ namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use PHPUnit\Framework\TestCase;
 
 class ReplayFilteringEventListenerTest extends TestCase
 {
     /**
-     * @var EventListenerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventListener|\PHPUnit_Framework_MockObject_MockObject
      */
     private $eventListener;
 
@@ -22,7 +22,7 @@ class ReplayFilteringEventListenerTest extends TestCase
 
     public function setUp()
     {
-        $this->eventListener = $this->createMock(EventListenerInterface::class);
+        $this->eventListener = $this->createMock(EventListener::class);
 
         $this->filteringEventListener = new ReplayFilteringEventListener($this->eventListener);
     }

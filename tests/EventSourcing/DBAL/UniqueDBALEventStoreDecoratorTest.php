@@ -6,8 +6,8 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventStore\DBALEventStore;
-use Broadway\Serializer\SerializerInterface;
+use Broadway\Serializer\Serializer;
+use CultuurNet\UDB3\Broadway\EventStore\DBALEventStore;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
     protected function setUp()
     {
-        $serializer = $this->createMock(SerializerInterface::class);
+        $serializer = $this->createMock(Serializer::class);
 
         /** @var DbalEventStore|MockObject $dbalEventStore */
         $dbalEventStore = $this

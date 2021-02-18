@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
@@ -50,7 +50,7 @@ class EventEditingServiceTest extends TestCase
     private $eventService;
 
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -70,7 +70,7 @@ class EventEditingServiceTest extends TestCase
     private $readRepository;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     private $writeRepository;
 
@@ -92,7 +92,7 @@ class EventEditingServiceTest extends TestCase
     protected function setUp()
     {
         $this->eventService = $this->createMock(EventServiceInterface::class);
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
         $this->readRepository = $this->createMock(DocumentRepository::class);

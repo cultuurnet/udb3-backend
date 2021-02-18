@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -13,13 +13,13 @@ use ValueObjects\StringLiteral\StringLiteral;
 class CommandBusForwardingConsumer extends AbstractConsumer
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
     public function __construct(
         AMQPStreamConnection $connection,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         DeserializerLocatorInterface $deserializerLocator,
         StringLiteral $consumerTag,
         StringLiteral $exchangeName,

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Carbon\Carbon;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -22,7 +22,7 @@ class ConcludeCommand extends AbstractConcludeCommand
      */
     private $searchService;
 
-    public function __construct(CommandBusInterface $commandBus, SearchServiceInterface $searchService)
+    public function __construct(CommandBus $commandBus, SearchServiceInterface $searchService)
     {
         parent::__construct($commandBus);
         $this->searchService = $searchService;

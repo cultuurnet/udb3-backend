@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\PriceInfo;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff as Udb3ModelTariff;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use ValueObjects\Money\Currency;
 use ValueObjects\Money\CurrencyCode;
 
-class Tariff implements SerializableInterface
+class Tariff implements Serializable
 {
     /**
      * @var MultilingualString

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Serializer\SerializerInterface;
+use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated as EventBookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated as EventContactPointUpdated;
@@ -51,7 +51,7 @@ class BackwardsCompatiblePayloadSerializerFactory
     {
     }
 
-    public static function createSerializer(ReadRepositoryInterface $labelRepository)
+    public static function createSerializer(ReadRepositoryInterface $labelRepository): Serializer
     {
         $payloadManipulatingSerializer = new PayloadManipulatingSerializer(
             new SimpleInterfaceSerializer()

@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Place\Events\MarkedAsDuplicate;
 use Psr\Log\LoggerAwareInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,19 +22,19 @@ class DispatchMarkedAsDuplicateEventCommand extends AbstractCommand
     private const CANONICAL_PLACE_ID_ARGUMENT = 'canonical_place_id';
 
     /**
-     * @var EventListenerInterface
+     * @var EventListener
      */
     private $processManager;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
     public function __construct(
-        CommandBusInterface $commandBus,
-        EventListenerInterface $processManager,
-        EventBusInterface $eventBus
+        CommandBus $commandBus,
+        EventListener $processManager,
+        EventBus $eventBus
     ) {
         parent::__construct($commandBus);
         $this->processManager = $processManager;

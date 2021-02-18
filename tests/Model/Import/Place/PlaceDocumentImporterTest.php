@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\Import\Place;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -70,7 +70,7 @@ use ValueObjects\Web\Url;
 class PlaceDocumentImporterTest extends TestCase
 {
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     private $repository;
 
@@ -121,7 +121,7 @@ class PlaceDocumentImporterTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(Repository::class);
         $this->denormalizer = new PlaceDenormalizer();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $this->commandBus = new TraceableCommandBus();

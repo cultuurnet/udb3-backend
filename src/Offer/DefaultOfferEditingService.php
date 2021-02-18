@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
@@ -24,7 +24,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class DefaultOfferEditingService implements OfferEditingServiceInterface
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     protected $commandBus;
 
@@ -64,7 +64,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     protected $themeResolver;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,

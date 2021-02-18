@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Curators;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAdded;
 use InvalidArgumentException;
 
-final class NewsArticleProcessManager implements EventListenerInterface
+final class NewsArticleProcessManager implements EventListener
 {
     /**
      * @var OfferEditingServiceInterface

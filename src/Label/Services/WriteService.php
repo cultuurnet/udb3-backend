@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Label\Services;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
@@ -17,7 +17,7 @@ use ValueObjects\Identity\UUID;
 class WriteService implements WriteServiceInterface
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -27,7 +27,7 @@ class WriteService implements WriteServiceInterface
     private $uuidGenerator;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator
     ) {
         $this->commandBus = $commandBus;

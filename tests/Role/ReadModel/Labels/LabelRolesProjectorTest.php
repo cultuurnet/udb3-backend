@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -137,8 +137,8 @@ class LabelRolesProjectorTest extends TestCase
 
     private function createDomainMessage(
         UUID $uuid,
-        SerializableInterface $payload
-    ) {
+        Serializable $payload
+    ): DomainMessage {
         return new DomainMessage(
             $uuid,
             0,

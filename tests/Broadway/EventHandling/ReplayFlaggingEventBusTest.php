@@ -4,10 +4,9 @@ namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainEventStreamInterface;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use Broadway\EventHandling\SimpleEventBus;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +23,7 @@ class ReplayFlaggingEventBusTest extends TestCase
     private $replayAwareEventBus;
 
     /**
-     * @var EventListenerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventListener|\PHPUnit_Framework_MockObject_MockObject
      */
     private $processManager;
 
@@ -45,7 +44,7 @@ class ReplayFlaggingEventBusTest extends TestCase
         $this->eventBus = new SimpleEventBus();
         $this->replayAwareEventBus = new ReplayFlaggingEventBus($this->eventBus);
 
-        $this->processManager = $this->createMock(EventListenerInterface::class);
+        $this->processManager = $this->createMock(EventListener::class);
         $this->processManager->expects($this->any())
             ->method('handle')
             ->willReturnCallback(
@@ -107,7 +106,7 @@ class ReplayFlaggingEventBusTest extends TestCase
     }
 
     /**
-     * @return DomainEventStreamInterface
+     * @return DomainEventStream
      */
     private function getMockEventStream()
     {

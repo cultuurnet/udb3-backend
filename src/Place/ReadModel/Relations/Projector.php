@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\Place\ReadModel\Relations;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Place\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Place\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 
-class Projector implements EventListenerInterface
+class Projector implements EventListener
 {
 
     use DelegateEventHandlingToSpecificMethodTrait;

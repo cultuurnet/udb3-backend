@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
@@ -14,7 +14,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class ItemVisibilityProjector implements EventListenerInterface, LoggerAwareInterface
+class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Label;
 
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use Broadway\EventStore\TraceableEventStore;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Label\Events\Created;
@@ -41,10 +41,10 @@ class ConstraintAwareLabelServiceTest extends TestCase
         $visibility = false;
         $expectedUuid = new UUID('b67d6f8b-fe08-44c9-a0a7-8e6b47dab0ff');
 
-        $traceableEventStore = new TraceableEventStore($this->createMock(EventStoreInterface::class));
+        $traceableEventStore = new TraceableEventStore($this->createMock(EventStore::class));
         $traceableEventStore->trace();
 
-        $eventBus = $this->createMock(EventBusInterface::class);
+        $eventBus = $this->createMock(EventBus::class);
 
         $repository = new LabelRepository(
             $traceableEventStore,
@@ -77,7 +77,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
     {
         $labelName = new LabelName('foo');
 
-        $repository = $this->createMock(RepositoryInterface::class);
+        $repository = $this->createMock(Repository::class);
 
         $repository->expects($this->once())
             ->method('save')
@@ -90,7 +90,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
         $this->assertNull($returnValue);
     }
 
-    private function createService(RepositoryInterface $repository)
+    private function createService(Repository $repository): ConstraintAwareLabelService
     {
         return new ConstraintAwareLabelService($repository, $this->uuidGenerator);
     }

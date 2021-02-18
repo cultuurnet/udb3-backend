@@ -3,17 +3,16 @@
 namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainEventStreamInterface;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 
 class ReplayFlaggingEventBus implements ReplayModeEventBusInterface
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -22,26 +21,26 @@ class ReplayFlaggingEventBus implements ReplayModeEventBusInterface
      */
     private $replayMode;
 
-    public function __construct(EventBusInterface $eventBus)
+    public function __construct(EventBus $eventBus)
     {
         $this->eventBus = $eventBus;
         $this->replayMode = false;
     }
 
-    public function startReplayMode()
+    public function startReplayMode(): void
     {
         $this->replayMode = true;
     }
 
-    public function stopReplayMode()
+    public function stopReplayMode(): void
     {
         $this->replayMode = false;
     }
 
     /**
-     * @param DomainEventStreamInterface|DomainMessage[] $domainMessages
+     * @param DomainEventStream|DomainMessage[] $domainMessages
      */
-    public function publish(DomainEventStreamInterface $domainMessages)
+    public function publish(DomainEventStream $domainMessages): void
     {
         $replayMetadata = new Metadata(
             [
@@ -60,7 +59,7 @@ class ReplayFlaggingEventBus implements ReplayModeEventBusInterface
         $this->eventBus->publish($stream);
     }
 
-    public function subscribe(EventListenerInterface $eventListener)
+    public function subscribe(EventListener $eventListener): void
     {
         $this->eventBus->subscribe($eventListener);
     }

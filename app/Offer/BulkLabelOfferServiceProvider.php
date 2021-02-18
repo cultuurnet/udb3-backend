@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Offer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Offer\BulkLabelCommandHandler;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -30,7 +30,7 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
         // Tie the bulk label offer command handler to the command bus.
         $app->extend(
             'bulk_label_offer_command_bus_out',
-            function (CommandBusInterface $commandBus, Application $app) {
+            function (CommandBus $commandBus, Application $app) {
                 $commandBus->subscribe($app['bulk_label_offer_command_handler']);
                 return $commandBus;
             }

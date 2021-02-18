@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-abstract class PlaceEvent implements SerializableInterface
+abstract class PlaceEvent implements Serializable
 {
     /**
      * @var string

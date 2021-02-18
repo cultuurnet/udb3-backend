@@ -5,14 +5,14 @@
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Log\ContextEnrichingLogger;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Broadway\Domain\Metadata;
-use Broadway\EventDispatcher\EventDispatcherInterface;
+use Broadway\EventDispatcher\EventDispatcher;
 
 /**
  * Command bus decorator for asynchronous processing with PHP-Resque.
@@ -24,7 +24,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     const EVENT_COMMAND_CONTEXT_SET = 'broadway.command_handling.context';
 
     /**
-     * @var CommandBusInterface|ContextAwareInterface
+     * @var CommandBus|ContextAwareInterface
      */
     protected $decoratee;
 
@@ -39,14 +39,14 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     protected $queueName;
 
     /**
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     public function __construct(
-        CommandBusInterface $decoratee,
-        $queueName,
-        EventDispatcherInterface $dispatcher
+        CommandBus $decoratee,
+        string $queueName,
+        EventDispatcher $dispatcher
     ) {
         parent::__construct($decoratee);
         $this->queueName = $queueName;

@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\Import\Place;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
 use CultuurNet\UDB3\Model\Import\DocumentImporterInterface;
@@ -34,7 +34,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class PlaceDocumentImporter implements DocumentImporterInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $aggregateRepository;
 
@@ -49,7 +49,7 @@ class PlaceDocumentImporter implements DocumentImporterInterface
     private $imageCollectionFactory;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -64,10 +64,10 @@ class PlaceDocumentImporter implements DocumentImporterInterface
     private $lockedLabelRepository;
 
     public function __construct(
-        RepositoryInterface $aggregateRepository,
+        Repository $aggregateRepository,
         DenormalizerInterface $placeDenormalizer,
         ImageCollectionFactory $imageCollectionFactory,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         ConsumerSpecificationInterface $shouldApprove,
         LockedLabelRepository $lockedLabelRepository
     ) {

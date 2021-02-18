@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Label\ReadModels;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved as OrganizerLabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
 
-abstract class AbstractProjector implements EventListenerInterface
+abstract class AbstractProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait {
         DelegateEventHandlingToSpecificMethodTrait::handle as handleSpecific;

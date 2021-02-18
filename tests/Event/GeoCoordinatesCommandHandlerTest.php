@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
@@ -46,7 +46,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     private $geocodingService;
 
-    protected function createCommandHandler(EventStoreInterface $eventStore, EventBusInterface $eventBus)
+    protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): GeoCoordinatesCommandHandler
     {
         $eventRepository = new EventRepository(
             $eventStore,

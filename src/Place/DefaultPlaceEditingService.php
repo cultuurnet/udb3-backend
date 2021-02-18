@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
@@ -21,16 +21,16 @@ use CultuurNet\UDB3\Title;
 class DefaultPlaceEditingService extends DefaultOfferEditingService implements PlaceEditingServiceInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $writeRepository;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
-        RepositoryInterface $writeRepository,
+        Repository $writeRepository,
         LabelServiceInterface $labelService
     ) {
         parent::__construct(

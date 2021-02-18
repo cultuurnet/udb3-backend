@@ -2,16 +2,16 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
 use Psr\Log\LoggerInterface;
 
-abstract class AbstractGeoCoordinatesProcessManager implements EventListenerInterface
+abstract class AbstractGeoCoordinatesProcessManager implements EventListener
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     protected $commandBus;
 
@@ -26,7 +26,7 @@ abstract class AbstractGeoCoordinatesProcessManager implements EventListenerInte
     protected $logger;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         CultureFeedAddressFactoryInterface $addressFactory,
         LoggerInterface $logger
     ) {

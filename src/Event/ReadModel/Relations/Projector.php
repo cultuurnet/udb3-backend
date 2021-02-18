@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\ReadModel\Relations;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\EventCopied;
@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 
-class Projector implements EventListenerInterface
+class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

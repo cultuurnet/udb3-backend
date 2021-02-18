@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
@@ -62,13 +62,12 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\Theme;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Projects state changes on Place entities to a JSON-LD read model in a
  * document repository.
  */
-class PlaceLDProjector extends OfferLDProjector implements EventListenerInterface
+class PlaceLDProjector extends OfferLDProjector implements EventListener
 {
     /**
      * @var CdbXMLImporter

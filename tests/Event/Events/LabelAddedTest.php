@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Label;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +18,7 @@ class LabelAddedTest extends TestCase
             new Label('label 1')
         );
 
-        $this->assertInstanceOf(SerializableInterface::class, $labelsMerged);
+        $this->assertInstanceOf(Serializable::class, $labelsMerged);
 
         $expectedSerializedEvent = [
             'item_id' => 'foo',

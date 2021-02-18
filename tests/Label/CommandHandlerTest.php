@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Label;
 
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\Commands\CreateCopy;
 use CultuurNet\UDB3\Label\Commands\MakeInvisible;
@@ -96,8 +96,8 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      * @inheritdoc
      */
     protected function createCommandHandler(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus
+        EventStore $eventStore,
+        EventBus $eventBus
     ) {
         return new CommandHandler(
             new LabelRepository($eventStore, $eventBus)

@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\Serializer\SerializerInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
@@ -38,12 +38,12 @@ class ReplayCommand extends AbstractCommand
     private $connection;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     private $payloadSerializer;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -55,7 +55,7 @@ class ReplayCommand extends AbstractCommand
     /**
      * Note that we pass $config by reference here. We need this because the replay command overrides configuration properties for active subscribers.
      */
-    public function __construct(CommandBusInterface $commandBus, Connection $connection, SerializerInterface $payloadSerializer, EventBusInterface $eventBus, ConfigWriter $configWriter)
+    public function __construct(CommandBus $commandBus, Connection $connection, Serializer $payloadSerializer, EventBus $eventBus, ConfigWriter $configWriter)
     {
         parent::__construct($commandBus);
         $this->connection = $connection;

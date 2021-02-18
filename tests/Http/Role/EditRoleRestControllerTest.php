@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Role;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
@@ -40,7 +40,7 @@ class EditRoleRestControllerTest extends TestCase
     private $editService;
 
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -70,7 +70,7 @@ class EditRoleRestControllerTest extends TestCase
         $this->labelId = (new UUID())->toNative();
 
         $this->editService = $this->createMock(RoleEditingServiceInterface::class);
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
         $this->updateRoleRequestDeserializer = $this->createMock(UpdateRoleRequestDeserializer::class);
         $this->labelService = $this->createMock(ReadServiceInterface::class);
         $this->queryJsonDeserializer = $this->createMock(DeserializerInterface::class);

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class CommandDeserializerController
 
     public function __construct(
         DeserializerInterface $commandDeserializer,
-        CommandBusInterface $commandBus
+        CommandBus $commandBus
     ) {
         $this->deserializer = $commandDeserializer;
         $this->setCommandBus($commandBus);

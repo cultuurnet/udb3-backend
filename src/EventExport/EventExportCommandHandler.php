@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\EventExport;
 
-use Broadway\CommandHandling\CommandHandler;
+use Broadway\CommandHandling\SimpleCommandHandler;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
@@ -17,7 +17,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Twig_Environment;
 
-class EventExportCommandHandler extends CommandHandler implements LoggerAwareInterface
+class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

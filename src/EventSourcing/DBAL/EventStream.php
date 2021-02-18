@@ -5,8 +5,8 @@ namespace CultuurNet\UDB3\EventSourcing\DBAL;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventSourcing\EventStreamDecoratorInterface;
-use Broadway\Serializer\SerializerInterface;
+use Broadway\EventSourcing\EventStreamDecorator;
+use Broadway\Serializer\Serializer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\DBAL\DBALException;
@@ -19,12 +19,12 @@ class EventStream
     protected $connection;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     protected $payloadSerializer;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     protected $metadataSerializer;
 
@@ -49,7 +49,7 @@ class EventStream
     protected $cdbids;
 
     /**
-     * @var EventStreamDecoratorInterface
+     * @var EventStreamDecorator
      */
     private $domainEventStreamDecorator;
 
@@ -60,9 +60,9 @@ class EventStream
 
     public function __construct(
         Connection $connection,
-        SerializerInterface $payloadSerializer,
-        SerializerInterface $metadataSerializer,
-        $tableName
+        Serializer $payloadSerializer,
+        Serializer $metadataSerializer,
+        string $tableName
     ) {
         $this->connection = $connection;
         $this->payloadSerializer = $payloadSerializer;
@@ -122,7 +122,7 @@ class EventStream
         return $c;
     }
 
-    public function withDomainEventStreamDecorator(EventStreamDecoratorInterface $domainEventStreamDecorator)
+    public function withDomainEventStreamDecorator(EventStreamDecorator $domainEventStreamDecorator): EventStream
     {
         $c = clone $this;
         $c->domainEventStreamDecorator = $domainEventStreamDecorator;

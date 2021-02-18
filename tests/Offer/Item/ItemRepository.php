@@ -2,17 +2,16 @@
 
 namespace CultuurNet\UDB3\Offer\Item;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use Broadway\EventSourcing\AggregateFactory\PublicConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
-use Broadway\EventSourcing\EventStreamDecoratorInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStore;
 
 class ItemRepository extends EventSourcingRepository
 {
     public function __construct(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus,
+        EventStore $eventStore,
+        EventBus $eventBus,
         array $eventStreamDecorators = array()
     ) {
         parent::__construct(

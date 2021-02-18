@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Organizer;
 
-use Broadway\EventStore\DBALEventStore;
+use CultuurNet\UDB3\Broadway\EventStore\DBALEventStore;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;

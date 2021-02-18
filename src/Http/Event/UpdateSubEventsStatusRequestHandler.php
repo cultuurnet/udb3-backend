@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEventsStatus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UpdateSubEventsStatusRequestHandler
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -26,7 +26,7 @@ class UpdateSubEventsStatusRequestHandler
     private $validator;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UpdateSubEventsStatusValidator $validator
     ) {
         $this->commandBus = $commandBus;

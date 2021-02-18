@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\UiTPAS\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Label;
@@ -14,10 +14,10 @@ use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Psr\Log\LoggerInterface;
 
-class EventProcessManager implements EventListenerInterface
+class EventProcessManager implements EventListener
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -32,7 +32,7 @@ class EventProcessManager implements EventListenerInterface
     private $logger;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UiTPASLabelsRepository $uitPasLabelsRepository,
         LoggerInterface $logger
     ) {

@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Organizer;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Label;
@@ -25,7 +25,7 @@ use ValueObjects\Web\Url;
 class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     protected $commandBus;
 
@@ -35,7 +35,7 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     protected $uuidGenerator;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $organizerRepository;
 
@@ -45,9 +45,9 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     protected $labelService;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        RepositoryInterface $organizerRepository,
+        Repository $organizerRepository,
         LabelServiceInterface $labelService
     ) {
         $this->commandBus = $commandBus;

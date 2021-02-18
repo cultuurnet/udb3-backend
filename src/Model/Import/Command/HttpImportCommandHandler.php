@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\Model\Import\Command;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use Guzzle\Http\ClientInterface;
 
 /**
  * Handles incoming import commands by sending them to the HTTP import API.
  */
-class HttpImportCommandHandler implements CommandHandlerInterface
+class HttpImportCommandHandler implements CommandHandler
 {
     /**
      * @var string

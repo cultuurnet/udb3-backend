@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Role\Services;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -33,7 +33,7 @@ class LocalRoleReadingServiceTest extends TestCase
     private $userRolesPermissionsReadRepository;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     private $roleWriteRepository;
 
@@ -50,7 +50,7 @@ class LocalRoleReadingServiceTest extends TestCase
     public function setUp()
     {
         $this->roleReadRepository = $this->createMock(DocumentRepository::class);
-        $this->roleWriteRepository = $this->createMock(RepositoryInterface::class);
+        $this->roleWriteRepository = $this->createMock(Repository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->roleLabelsReadRepository = $this->createMock(DocumentRepository::class);
         $this->roleUsersPermissionsReadRepository = $this->createMock(DocumentRepository::class);

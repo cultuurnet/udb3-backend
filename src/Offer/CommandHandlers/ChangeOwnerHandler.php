@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-final class ChangeOwnerHandler implements CommandHandlerInterface
+final class ChangeOwnerHandler implements CommandHandler
 {
     /**
      * @var OfferRepository

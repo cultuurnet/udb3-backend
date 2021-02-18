@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Broadway\AMQP\Dummies;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-class DummyEvent implements SerializableInterface
+class DummyEvent implements Serializable
 {
     /**
      * @var string

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Doctrine\DBAL\Connection;
@@ -17,7 +17,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
      */
     private $connection;
 
-    public function __construct(EventBusInterface $eventBus, Connection $connection, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
+    public function __construct(EventBus $eventBus, Connection $connection, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
     {
         parent::__construct($eventBus, $organizerEventFactory, $placeEventFactory);
         $this->connection = $connection;
@@ -36,7 +36,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
 
         $this->inReplayMode(
             function (
-                EventBusInterface $eventBus,
+                EventBus $eventBus,
                 InputInterface $input,
                 OutputInterface $output
             ) use ($connection) {
@@ -101,7 +101,7 @@ class FireProjectedToJSONLDForRelationsCommand extends AbstractFireProjectedToJS
         DocumentEventFactory $eventFactory,
         OutputInterface $output,
         DomainMessageBuilder $domainMessageBuilder,
-        EventBusInterface $eventBus
+        EventBus $eventBus
     ) {
         foreach ($ids as $key => $id) {
             $output->writeln($key . ': ' . $id);

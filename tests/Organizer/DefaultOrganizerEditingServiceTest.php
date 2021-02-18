@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\Organizer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -37,7 +37,7 @@ use ValueObjects\Web\Url;
 class DefaultOrganizerEditingServiceTest extends TestCase
 {
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -52,7 +52,7 @@ class DefaultOrganizerEditingServiceTest extends TestCase
     protected $eventStore;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $organizerRepository;
 
@@ -68,7 +68,7 @@ class DefaultOrganizerEditingServiceTest extends TestCase
 
     public function setUp()
     {
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->uuidGenerator->method('generate')

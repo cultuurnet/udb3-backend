@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
-class UpdateStatusHandler implements CommandHandlerInterface
+class UpdateStatusHandler implements CommandHandler
 {
     /**
      * @var OfferRepository

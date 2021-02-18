@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -27,7 +27,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
     private $documentRepository;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         SearchServiceInterface $searchService,
         DocumentRepository $documentRepository
     ) {

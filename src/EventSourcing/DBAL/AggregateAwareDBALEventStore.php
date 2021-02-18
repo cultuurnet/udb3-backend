@@ -4,12 +4,11 @@ namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainEventStreamInterface;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventStore\DBALEventStoreException;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStore;
 use Broadway\EventStore\EventStreamNotFoundException;
-use Broadway\Serializer\SerializerInterface;
+use Broadway\Serializer\Serializer;
+use CultuurNet\UDB3\Broadway\EventStore\DBALEventStoreException;
 use CultuurNet\UDB3\Silex\AggregateType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -22,7 +21,7 @@ use Doctrine\DBAL\Schema\Table;
  *
  * Based on Broadways DBALEventStore.
  */
-class AggregateAwareDBALEventStore implements EventStoreInterface
+class AggregateAwareDBALEventStore implements EventStore
 {
     /**
      * @var Connection
@@ -30,12 +29,12 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
     private $connection;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     private $payloadSerializer;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     private $metadataSerializer;
 
@@ -56,8 +55,8 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
 
     public function __construct(
         Connection $connection,
-        SerializerInterface $payloadSerializer,
-        SerializerInterface $metadataSerializer,
+        Serializer $payloadSerializer,
+        Serializer $metadataSerializer,
         string $tableName,
         AggregateType $aggregateType
     ) {
@@ -96,7 +95,15 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
     /**
      * {@inheritDoc}
      */
-    public function append($id, DomainEventStreamInterface $eventStream)
+    public function loadFromPlayhead($id, $playhead)
+    {
+        // TODO: Implement loadFromPlayhead() method.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function append($id, DomainEventStream $eventStream)
     {
         // The original Broadway DBALEventStore implementation did only check
         // the type of $id. It is better to test all UUIDs inside the event
@@ -214,7 +221,7 @@ class AggregateAwareDBALEventStore implements EventStoreInterface
      * give us a hard time but the true reason for the problem will be
      * obfuscated.
      */
-    private function guardStream(DomainEventStreamInterface $eventStream)
+    private function guardStream(DomainEventStream $eventStream): void
     {
         foreach ($eventStream as $domainMessage) {
             /** @var DomainMessage $domainMessage */

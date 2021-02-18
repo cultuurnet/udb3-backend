@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Organizer;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\CommandHandling\CommandHandler;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Organizer\Commands\AbstractLabelCommand;
@@ -20,10 +20,10 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use ValueObjects\StringLiteral\StringLiteral;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 
-class OrganizerCommandHandler implements CommandHandlerInterface
+class OrganizerCommandHandler implements CommandHandler
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $organizerRepository;
 
@@ -38,7 +38,7 @@ class OrganizerCommandHandler implements CommandHandlerInterface
     private $organizerRelationServices;
 
     public function __construct(
-        RepositoryInterface $organizerRepository,
+        Repository $organizerRepository,
         ReadRepositoryInterface $labelRepository
     ) {
         $this->organizerRepository = $organizerRepository;

@@ -5,7 +5,7 @@
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use Broadway\Domain\Metadata;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ class SimpleContextAwareCommandBusTest extends TestCase
     protected $commandBus;
 
     /**
-     * @var ContextAwareInterface|CommandHandlerInterface|MockObject
+     * @var ContextAwareInterface|CommandHandler|MockObject
      */
     protected $commandHandler;
 
@@ -86,7 +86,7 @@ class SimpleContextAwareCommandBusTest extends TestCase
     }
 }
 
-abstract class TestCommandHandler implements CommandHandlerInterface, ContextAwareInterface
+abstract class TestCommandHandler implements CommandHandler, ContextAwareInterface
 {
 
 }

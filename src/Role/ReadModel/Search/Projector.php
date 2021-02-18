@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Role\Events\RoleRenamed;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 
-class Projector implements EventListenerInterface
+class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

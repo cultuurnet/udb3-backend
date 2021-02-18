@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsCanonical;
 use CultuurNet\UDB3\Place\CannotMarkPlaceAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\MarkAsDuplicate;
@@ -19,11 +19,11 @@ class MarkPlaceAsDuplicateCommand extends AbstractCommand
     private const CANONICAL_PLACE_ID_ARGUMENT = 'canonical_place_id';
 
     /**
-     * @var EventListenerInterface
+     * @var EventListener
      */
     private $processManager;
 
-    public function __construct(CommandBusInterface $commandBus, EventListenerInterface $processManager)
+    public function __construct(CommandBus $commandBus, EventListener $processManager)
     {
         parent::__construct($commandBus);
         $this->processManager = $processManager;

@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-final class MediaObject implements SerializableInterface, JsonLdSerializableInterface
+final class MediaObject implements Serializable, JsonLdSerializableInterface
 {
     /**
      * @var string|null

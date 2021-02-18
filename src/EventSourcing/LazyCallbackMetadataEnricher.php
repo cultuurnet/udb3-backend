@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventSourcing;
 
 use Broadway\Domain\Metadata;
-use Broadway\EventSourcing\MetadataEnrichment\MetadataEnricherInterface;
+use Broadway\EventSourcing\MetadataEnrichment\MetadataEnricher;
 
-final class LazyCallbackMetadataEnricher implements MetadataEnricherInterface
+final class LazyCallbackMetadataEnricher implements MetadataEnricher
 {
     /**
      * @var callable

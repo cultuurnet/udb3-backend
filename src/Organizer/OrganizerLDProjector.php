@@ -4,8 +4,8 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
@@ -38,7 +38,7 @@ use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\Title;
 use stdClass;
 
-class OrganizerLDProjector implements EventListenerInterface
+class OrganizerLDProjector implements EventListener
 {
     use MultilingualJsonLDProjectorTrait;
     /**
@@ -72,7 +72,7 @@ class OrganizerLDProjector implements EventListenerInterface
     private $iriGenerator;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -89,7 +89,7 @@ class OrganizerLDProjector implements EventListenerInterface
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
     ) {
         $this->repository = $repository;

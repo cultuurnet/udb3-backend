@@ -7,15 +7,13 @@ use Broadway\CommandHandling\CommandHandler;
 /**
  * Abstract Command handler for Udb3.
  */
-abstract class Udb3CommandHandler extends CommandHandler
+abstract class Udb3CommandHandler implements CommandHandler
 {
-
     /**
      * {@inheritDoc}
      */
-    public function handle($command)
+    public function handle($command): void
     {
-
         $method = $this->getHandleMethod($command);
 
         if (! method_exists($this, $method)) {
@@ -25,12 +23,12 @@ abstract class Udb3CommandHandler extends CommandHandler
         $parameter = new \ReflectionParameter(array($this, $method), 0);
         $expectedClass = $parameter->getClass();
 
-        if ($expectedClass->getName() == get_class($command)) {
+        if ($expectedClass->getName() === get_class($command)) {
             $this->$method($command);
         }
     }
 
-    private function getHandleMethod($command)
+    private function getHandleMethod($command): string
     {
         $classParts = explode('\\', get_class($command));
 

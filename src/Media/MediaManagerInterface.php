@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Media;
 
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -10,7 +10,7 @@ use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-interface MediaManagerInterface extends CommandHandlerInterface
+interface MediaManagerInterface extends CommandHandler
 {
     /**
      * @param UUID $id

@@ -2,17 +2,17 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 
 abstract class AbstractCommand extends BaseCommand
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     protected $commandBus;
 
-    public function __construct(CommandBusInterface $commandBus)
+    public function __construct(CommandBus $commandBus)
     {
         parent::__construct();
         $this->commandBus = $commandBus;

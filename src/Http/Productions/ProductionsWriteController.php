@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Productions;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductionsWriteController
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -31,7 +31,7 @@ class ProductionsWriteController
     private $skipEventsValidator;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         CreateProductionValidator $createProductionValidator,
         SkipEventsValidator $skipEventsValidator
     ) {

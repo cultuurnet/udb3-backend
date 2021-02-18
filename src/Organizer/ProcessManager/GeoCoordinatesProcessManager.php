@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Organizer\ProcessManager;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\EventHandling\EventListener;
+use Broadway\CommandHandling\CommandBus;
 use CultureFeed_Cdb_Data_Address;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactoryInterface;
@@ -17,10 +17,10 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerUpdatedFromUDB2;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
-class GeoCoordinatesProcessManager implements EventListenerInterface
+class GeoCoordinatesProcessManager implements EventListener
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -35,7 +35,7 @@ class GeoCoordinatesProcessManager implements EventListenerInterface
     private $logger;
 
     public function __construct(
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         CultureFeedAddressFactoryInterface $addressFactory,
         LoggerInterface $logger
     ) {

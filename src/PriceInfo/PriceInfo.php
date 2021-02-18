@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\PriceInfo;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo as Udb3ModelPriceInfo;
 
-class PriceInfo implements SerializableInterface
+class PriceInfo implements Serializable
 {
     /**
      * @var BasePrice

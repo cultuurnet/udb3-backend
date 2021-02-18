@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\Import\Organizer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\Import\DecodedDocument;
@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class OrganizerDocumentImporter implements DocumentImporterInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $aggregateRepository;
 
@@ -33,7 +33,7 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
     private $organizerDenormalizer;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -43,9 +43,9 @@ class OrganizerDocumentImporter implements DocumentImporterInterface
     private $lockedLabelRepository;
 
     public function __construct(
-        RepositoryInterface $aggregateRepository,
+        Repository $aggregateRepository,
         DenormalizerInterface $organizerDenormalizer,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         LockedLabelRepository $lockedLabelRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;

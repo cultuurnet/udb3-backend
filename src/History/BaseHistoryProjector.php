@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\History;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
-abstract class BaseHistoryProjector implements EventListenerInterface
+abstract class BaseHistoryProjector implements EventListener
 {
     /**
      * @var DocumentRepository

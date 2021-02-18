@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\Domain\DomainEventStream;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayModeEventBusInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 abstract class AbstractFireProjectedToJSONLDCommand extends Command
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -30,7 +30,7 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
      */
     private $placeEventFactory;
 
-    public function __construct(EventBusInterface $eventBus, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
+    public function __construct(EventBus $eventBus, DocumentEventFactory $organizerEventFactory, DocumentEventFactory $placeEventFactory)
     {
         parent::__construct();
         $this->eventBus = $eventBus;
@@ -79,7 +79,7 @@ abstract class AbstractFireProjectedToJSONLDCommand extends Command
         DocumentEventFactory $eventFactory,
         OutputInterface $output,
         DomainMessageBuilder $domainMessageBuilder,
-        EventBusInterface $eventBus
+        EventBus $eventBus
     ): void {
         $event = $eventFactory->createEvent($id);
         $output->writeln($event->getIri());

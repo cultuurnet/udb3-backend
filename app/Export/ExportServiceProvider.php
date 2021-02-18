@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Export;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
@@ -81,7 +81,7 @@ class ExportServiceProvider implements ServiceProviderInterface
         // Tie the event export command handler to the command bus.
         $app->extend(
             'event_export_command_bus_out',
-            function (CommandBusInterface $commandBus, Application $app) {
+            function (CommandBus $commandBus, Application $app) {
                 $commandBus->subscribe($app['event_export_command_handler']);
                 return $commandBus;
             }

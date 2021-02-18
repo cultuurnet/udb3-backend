@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\Import\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecificationInterface;
 use CultuurNet\UDB3\Event\Commands\ImportLabels;
@@ -39,7 +39,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class EventDocumentImporter implements DocumentImporterInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $aggregateRepository;
 
@@ -54,7 +54,7 @@ class EventDocumentImporter implements DocumentImporterInterface
     private $imageCollectionFactory;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -74,10 +74,10 @@ class EventDocumentImporter implements DocumentImporterInterface
     private $logger;
 
     public function __construct(
-        RepositoryInterface $aggregateRepository,
+        Repository $aggregateRepository,
         DenormalizerInterface $eventDenormalizer,
         ImageCollectionFactory $imageCollectionFactory,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         ConsumerSpecificationInterface $shouldApprove,
         LockedLabelRepository $lockedLabelRepository,
         LoggerInterface $logger

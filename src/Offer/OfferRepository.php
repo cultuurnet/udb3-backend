@@ -7,13 +7,13 @@ namespace CultuurNet\UDB3\Offer;
 use Assert\AssertionFailedException;
 use Broadway\Domain\AggregateRoot;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Place\Place;
 use CultuurNet\UDB3\Place\PlaceRepository;
 
-class OfferRepository implements RepositoryInterface
+class OfferRepository implements Repository
 {
     /**
      * @var EventRepository

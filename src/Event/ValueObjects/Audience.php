@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-final class Audience implements SerializableInterface
+final class Audience implements Serializable
 {
     /**
      * Store the Audience enum internally as a string to make sure that PHP encode works.

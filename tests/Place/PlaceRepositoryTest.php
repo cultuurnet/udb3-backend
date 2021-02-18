@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use Broadway\Domain\DomainEventStreamInterface;
+use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\TraceableEventBus;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -32,7 +32,7 @@ class PlaceRepositoryTest extends TestCase
     private $placeRepository;
 
     /**
-     * @var EventStoreInterface|MockObject
+     * @var EventStore|MockObject
      */
     private $eventStore;
 
@@ -45,7 +45,7 @@ class PlaceRepositoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->eventStore = $this->createMock(EventStoreInterface::class);
+        $this->eventStore = $this->createMock(EventStore::class);
         $this->eventBus = new TraceableEventBus(new SimpleEventBus());
 
         $this->placeRepository = new PlaceRepository($this->eventStore, $this->eventBus);
@@ -125,7 +125,7 @@ class PlaceRepositoryTest extends TestCase
 
         $this->eventStore->expects($this->once())
             ->method('append')
-            ->willReturnCallback(function ($firstId, DomainEventStreamInterface $eventStream) use (&$actualEvents) {
+            ->willReturnCallback(function ($firstId, DomainEventStream $eventStream) use (&$actualEvents) {
                 $this->assertEquals('41c94f16-9edf-4eaf-914a-cfc01336b66e', $firstId);
 
                 $actualEvents = array_map(
