@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 class AgeRange
 {
     /**
-     * @var Age
+     * @var ?Age
      */
     private $from;
 
@@ -16,7 +16,11 @@ class AgeRange
 
     public function __construct(?Age $from = null, ?Age $to = null)
     {
-        $from = $from ?: new Age(0);
+        // Make sure not to convert " - " which is all ages to "0- " which would apply to Vlieg
+        // So only convert " -X" to "0-X"
+        if ($from === null && $to !== null) {
+            $from = new Age(0);
+        }
 
         if ($from && $to && $from->gt($to)) {
             throw new \InvalidArgumentException('"From" age should not be greater than the "to" age.');
@@ -26,7 +30,7 @@ class AgeRange
         $this->to = $to;
     }
 
-    public function getFrom(): Age
+    public function getFrom(): ?Age
     {
         return $this->from;
     }
@@ -55,7 +59,7 @@ class AgeRange
     {
         return new self($from, $to);
     }
-    
+
     public static function any(): AgeRange
     {
         return new self();
