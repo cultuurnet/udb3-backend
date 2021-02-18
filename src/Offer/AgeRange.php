@@ -83,8 +83,7 @@ class AgeRange
             );
         }
 
-        $fromString = $stringValues[0];
-        $toString = $stringValues[1];
+        [$fromString, $toString] = $stringValues;
 
         if (is_numeric($fromString) || empty($fromString)) {
             $from = is_numeric($fromString) ? new Age($fromString) : null;
