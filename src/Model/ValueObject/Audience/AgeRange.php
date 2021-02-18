@@ -31,7 +31,7 @@ class AgeRange
         return $this->from;
     }
 
-    public function getTo():? Age
+    public function getTo(): ?Age
     {
         return $this->to;
     }
