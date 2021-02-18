@@ -77,7 +77,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * {@inheritdoc}
      */
-    public function handle($command)
+    public function handle($command): void
     {
         $commandName = get_class($command);
         $commandHandlers = $this->getCommandHandlers();
