@@ -10,15 +10,11 @@ class AgeRange
     private $from;
 
     /**
-     * @var Age
+     * @var ?Age
      */
     private $to;
 
-    /**
-     * @param Age|null $from
-     * @param Age|null $to
-     */
-    public function __construct(Age $from = null, Age $to = null)
+    public function __construct(?Age $from = null, ?Age $to = null)
     {
         $from = $from ?: new Age(0);
 
@@ -30,63 +26,37 @@ class AgeRange
         $this->to = $to;
     }
 
-    /**
-     * @return Age
-     */
-    public function getFrom()
+    public function getFrom(): Age
     {
         return $this->from;
     }
 
-    /**
-     * @return Age|null
-     */
-    public function getTo()
+    public function getTo():? Age
     {
         return $this->to;
     }
 
-    /**
-     * @param Age $from
-     * @return AgeRange
-     */
-    public static function from(Age $from)
+    public static function from(Age $from): AgeRange
     {
         return new self($from, null);
     }
 
-    /**
-     * @param Age $to
-     * @return AgeRange
-     */
-    public static function to(Age $to)
+    public static function to(Age $to): AgeRange
     {
         return new self(null, $to);
     }
 
-    /**
-     * @param Age $age
-     * @return AgeRange
-     */
-    public static function exactly(Age $age)
+    public static function exactly(Age $age): AgeRange
     {
         return new self($age, $age);
     }
 
-    /**
-     * @param Age $from
-     * @param Age $to
-     * @return AgeRange
-     */
-    public static function fromTo(Age $from, Age $to)
+    public static function fromTo(Age $from, Age $to): AgeRange
     {
         return new self($from, $to);
     }
-
-    /**
-     * @return AgeRange
-     */
-    public static function any()
+    
+    public static function any(): AgeRange
     {
         return new self();
     }
