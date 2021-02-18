@@ -107,7 +107,7 @@ class AgeRange
 
     public function sameAs(AgeRange $otherAgeRange): bool
     {
-        return "$this" === "$otherAgeRange";
+        return (string) $this === (string) $otherAgeRange;
     }
 
     public static function fromUbd3ModelAgeRange(Udb3ModelAgeRange $udb3ModelAgeRange): AgeRange
