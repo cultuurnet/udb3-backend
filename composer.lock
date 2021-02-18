@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5074e8ff76495a36e493a751af78738e",
+    "content-hash": "4f9e7c39567d88d48b77ac50d01506a0",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -111,41 +111,35 @@
         },
         {
             "name": "broadway/broadway",
-            "version": "0.10.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/broadway/broadway.git",
-                "reference": "f9b3916fe0de097db588689b5f458a9cfa3dd9a7"
+                "reference": "02e0d40335df855f5f0648a95751c48dd35003af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/broadway/broadway/zipball/f9b3916fe0de097db588689b5f458a9cfa3dd9a7",
-                "reference": "f9b3916fe0de097db588689b5f458a9cfa3dd9a7",
+                "url": "https://api.github.com/repos/broadway/broadway/zipball/02e0d40335df855f5f0648a95751c48dd35003af",
+                "reference": "02e0d40335df855f5f0648a95751c48dd35003af",
                 "shasum": ""
             },
             "require": {
                 "beberlei/assert": "~2.0",
-                "broadway/uuid-generator": "~0.1.0",
-                "php": ">=5.5.9",
-                "ramsey/uuid": "~2.4"
+                "broadway/uuid-generator": "~0.4.0",
+                "php": ">=5.5.9"
             },
             "require-dev": {
-                "doctrine/dbal": "~2.4",
-                "doctrine/mongodb": "~1.0",
-                "elasticsearch/elasticsearch": "~1.0|^2.0",
                 "instaclick/base-test-bundle": "~0.5",
                 "monolog/monolog": "~1.8",
                 "phpunit/phpunit": "^4.8",
-                "symfony/console": "~2.4",
-                "symfony/proxy-manager-bridge": "~2.4"
+                "ramsey/uuid": "^3.0"
             },
             "suggest": {
-                "doctrine/dbal": "For the BroadwayBundle (to persist events)",
-                "doctrine/mongodb": "For persisting saga states (required for BroadwayBundle)",
-                "elasticsearch/elasticsearch": "For persisting read models (required for BroadwayBundle)",
-                "psr/log-implementation": "Implementation for PSR3, LoggerInterface",
-                "symfony/console": "For the BroadwayBundle",
-                "symfony/proxy-manager-bridge": "For the BroadwayBundle"
+                "broadway/broadway-bundle": "Symfony bundle for broadway/broadway",
+                "broadway/broadway-saga": "Saga component for Broadway",
+                "broadway/event-store-dbal": "Event store implementation using doctrine/dbal",
+                "broadway/read-model-elasticsearch": "Elasticsearch read model implementation",
+                "psr/log-implementation": "Implementation for PSR3, LoggerInterface"
             },
             "type": "library",
             "extra": {
@@ -195,32 +189,36 @@
                 "domain-driven design",
                 "event sourcing"
             ],
-            "time": "2016-12-07T08:03:00+00:00"
+            "time": "2017-03-06T11:33:17+00:00"
         },
         {
             "name": "broadway/uuid-generator",
-            "version": "0.1.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/qandidate-labs/broadway-uuid-generator.git",
-                "reference": "58380b723c671807131fe9ac0ff077f162be47bb"
+                "url": "https://github.com/broadway/broadway-uuid-generator.git",
+                "reference": "3c5307e62975113d370d18d36c9fcd792b21032a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qandidate-labs/broadway-uuid-generator/zipball/58380b723c671807131fe9ac0ff077f162be47bb",
-                "reference": "58380b723c671807131fe9ac0ff077f162be47bb",
+                "url": "https://api.github.com/repos/broadway/broadway-uuid-generator/zipball/3c5307e62975113d370d18d36c9fcd792b21032a",
+                "reference": "3c5307e62975113d370d18d36c9fcd792b21032a",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.5.9"
+            },
             "require-dev": {
-                "rhumsaa/uuid": "~2.4"
+                "phpunit/phpunit": "^4.8",
+                "ramsey/uuid": "^3.0"
             },
             "suggest": {
-                "rhumsaa/uuid": "Allows creating UUIDs"
+                "ramsey/uuid": "Allows creating UUIDs"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Broadway\\UuidGenerator\\": "src/"
+                "psr-4": {
+                    "Broadway\\UuidGenerator\\": "src/Broadway/UuidGenerator"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -228,7 +226,7 @@
                 "MIT"
             ],
             "description": "UUID generator for broadway/broadway.",
-            "time": "2014-09-12T14:14:07+00:00"
+            "time": "2016-12-14T10:47:27+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -9964,7 +9962,9 @@
         "php": ">=7.1",
         "ext-json": "*",
         "ext-pdo": "*",
-        "ext-tidy": "*"
+        "ext-tidy": "*",
+        "ext-dom": "*",
+        "ext-xmlreader": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
