@@ -8,7 +8,7 @@ use ValueObjects\Person\Age;
 class AgeRange
 {
     /**
-     * @var Age
+     * @var ?Age
      */
     private $from;
 
@@ -22,7 +22,11 @@ class AgeRange
      */
     public function __construct(?Age $from = null, ?Age $to = null)
     {
-        $from = $from ?: new Age(0);
+        // Make sure not to convert " - " which is all ages to "0- " which would apply to Vlieg
+        // So only convert " -X" to "0-X"
+        if ($from === null && $to !== null) {
+            $from = new Age(0);
+        }
 
         $this->guardValidAgeRange($from, $to);
 
@@ -33,14 +37,14 @@ class AgeRange
     /**
      * @throws InvalidAgeRangeException
      */
-    private function guardValidAgeRange(Age $from, ?Age $to = null): void
+    private function guardValidAgeRange(?Age $from, ?Age $to = null): void
     {
         if ($from && $to && $from > $to) {
             throw new InvalidAgeRangeException('"from" age should not exceed "to" age');
         }
     }
 
-    public function getFrom(): Age
+    public function getFrom(): ?Age
     {
         return $this->from;
     }
