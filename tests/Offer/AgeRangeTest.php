@@ -49,7 +49,7 @@ class AgeRangeTest extends TestCase
             [
                 'ageRangeString' => '-',
                 'expectedRange' => new AgeRange(),
-                'expectedRangeString' => '0-',
+                'expectedRangeString' => '-',
             ],
             'TODDLERS' =>
             [
