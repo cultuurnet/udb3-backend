@@ -61,14 +61,8 @@ class AgeRange
     /**
      * @throws InvalidAgeRangeException
      */
-    public static function fromString($ageRangeString): AgeRange
+    public static function fromString(string $ageRangeString): AgeRange
     {
-        if (!is_string($ageRangeString)) {
-            throw new InvalidAgeRangeException(
-                'Date-range should be of type string.'
-            );
-        }
-
         $stringValues = explode('-', $ageRangeString);
 
         if (empty($stringValues) || !isset($stringValues[1])) {

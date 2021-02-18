@@ -125,11 +125,6 @@ class AgeRangeTest extends TestCase
     public function invalidAgeRangeStringProvider()
     {
         return [
-            'not a string' => [
-                'ageRangeString' => 5-6,
-                'exception' => InvalidAgeRangeException::class,
-                'Date-range should be of type string.',
-            ],
             'dat boi' => [
                 'ageRangeString' => '🐸-🚲',
                 'exception' => InvalidAgeRangeException::class,
