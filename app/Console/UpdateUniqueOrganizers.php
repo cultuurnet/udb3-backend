@@ -129,7 +129,7 @@ class UpdateUniqueOrganizers extends Command
         // 2. The organizer uuid is not present
         // 3. The organizer uuid is present with another value
 
-        $existingOrganizerUrl = $this->connection->createQueryBuilder()
+        $existingOrganizerUrls = $this->connection->createQueryBuilder()
             ->select('unique_col')
             ->from('organizer_unique_websites')
             ->where('uuid_col = :uuid')
@@ -137,6 +137,7 @@ class UpdateUniqueOrganizers extends Command
             ->execute()
             ->fetchAll(PDO::FETCH_COLUMN);
 
+        $existingOrganizerUrl = \count($existingOrganizerUrls) === 1 ? $existingOrganizerUrls[0] : null;
         if ($existingOrganizerUrl === (string) $organizerUrl) {
             return;
         }
