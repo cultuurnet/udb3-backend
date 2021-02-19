@@ -113,6 +113,7 @@ class UpdateUniqueOrganizers extends Command
             ->from('event_store')
             ->where('type = "' . self::ORGANIZER_CREATED . '"')
             ->orWhere('type = "' . self::ORGANIZER_WEBSITE_UPDATED . '"')
+            ->orderBy('id')
             ->execute()
             ->rowCount();
     }
