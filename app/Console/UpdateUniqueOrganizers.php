@@ -86,9 +86,9 @@ class UpdateUniqueOrganizers extends Command
 
         $reportFile = fopen('update_unique_organizers_report.txt', 'wb');
         foreach ($messages as $message) {
-            fwrite($reportFile, $message. \PHP_EOL);
+            fwrite($reportFile, $message. PHP_EOL);
         }
-        \fclose($reportFile);
+        fclose($reportFile);
 
         return 0;
     }
@@ -136,7 +136,7 @@ class UpdateUniqueOrganizers extends Command
             ->execute()
             ->fetchAll(PDO::FETCH_COLUMN);
 
-        $existingOrganizerUrl = \count($existingOrganizerUrls) === 1 ? $existingOrganizerUrls[0] : null;
+        $existingOrganizerUrl = count($existingOrganizerUrls) === 1 ? $existingOrganizerUrls[0] : null;
 
         if ($existingOrganizerUrl === (string) $organizerUrl) {
             return false;
