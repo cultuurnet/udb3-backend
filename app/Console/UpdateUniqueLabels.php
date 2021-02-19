@@ -7,7 +7,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PDO;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -130,7 +131,7 @@ class UpdateUniqueLabels extends Command
             );
     }
 
-    private function getLabelUuid(array $labelAddedEvent): Uuid
+    private function getLabelUuid(array $labelAddedEvent): UuidInterface
     {
         return Uuid::fromString($labelAddedEvent['uuid']);
     }

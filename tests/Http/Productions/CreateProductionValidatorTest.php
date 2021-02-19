@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Http\Productions;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use PHPUnit\Framework\TestCase;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 class CreateProductionValidatorTest extends TestCase
 {
