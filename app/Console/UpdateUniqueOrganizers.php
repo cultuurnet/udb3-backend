@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PDO;
 use Rhumsaa\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
