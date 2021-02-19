@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Http\Event;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\SearchV3\ValueObjects\Status;
-use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
@@ -162,10 +161,6 @@ class ReadEventRestControllerTest extends TestCase
 
         $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
 
-        /**
-         * @var EventServiceInterface $eventServiceInterface
-         * @var DocumentRepository $documentRepositoryInterface
-         */
         $this->eventRestController = new ReadEventRestController(
             $jsonRepository,
             $documentRepositoryInterface,

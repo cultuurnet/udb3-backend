@@ -103,7 +103,6 @@ class CommandBusForwardingConsumerTest extends TestCase
             $this->delay
         );
 
-        /** @var LoggerInterface|MockObject $logger */
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->commandBusForwardingConsumer->setLogger($this->logger);
 

@@ -83,7 +83,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
 
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
 
-        /** @var DocumentRepository $repository */
         $this->readRepository = $this->createMock(DocumentRepository::class);
 
         $this->eventStore = new TraceableEventStore(
