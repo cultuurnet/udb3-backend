@@ -120,9 +120,8 @@ class UpdateUniqueOrganizers extends Command
 
     /**
      * @throws DBALException
-     * @throws UniqueConstraintViolationException
      */
-    private function updateOrganizer(Uuid $organizerUuid, Url $organizerUrl): void
+    private function updateOrganizer(Uuid $organizerUuid, Url $organizerUrl): bool
     {
         // There are 3 possible states:
         // 1. The organizer uuid is present with the correct url
@@ -138,8 +137,9 @@ class UpdateUniqueOrganizers extends Command
             ->fetchAll(PDO::FETCH_COLUMN);
 
         $existingOrganizerUrl = \count($existingOrganizerUrls) === 1 ? $existingOrganizerUrls[0] : null;
+
         if ($existingOrganizerUrl === (string) $organizerUrl) {
-            return;
+            return false;
         }
 
         if ($existingOrganizerUrl === null) {
@@ -152,7 +152,7 @@ class UpdateUniqueOrganizers extends Command
                     ]
                 );
 
-            return;
+            return true;
         }
 
         $this->connection
@@ -166,6 +166,8 @@ class UpdateUniqueOrganizers extends Command
                     'uuid_col' => $organizerUuid->toString(),
                 ]
             );
+
+        return true;
     }
 
     private function getOrganizerUuid(array $organizerEvent): Uuid
