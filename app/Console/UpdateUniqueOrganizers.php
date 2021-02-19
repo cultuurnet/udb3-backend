@@ -166,14 +166,14 @@ class UpdateUniqueOrganizers extends Command
             );
     }
 
-    private function getOrganizerUuid(array $organizerCreatedEvent): Uuid
+    private function getOrganizerUuid(array $organizerEvent): Uuid
     {
-        return Uuid::fromString($organizerCreatedEvent['uuid']);
+        return Uuid::fromString($organizerEvent['uuid']);
     }
 
-    private function getOrganizerWebsite(array $organizerCreatedEvent): Url
+    private function getOrganizerWebsite(array $organizerEvent): Url
     {
-        $payloadArray = json_decode($organizerCreatedEvent['payload'], true);
+        $payloadArray = json_decode($organizerEvent['payload'], true);
         return Url::fromNative($payloadArray['payload']['website']);
     }
 }
