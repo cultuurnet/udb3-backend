@@ -63,11 +63,11 @@ class UpdateUniqueOrganizers extends Command
                 $organizerUuid = $this->getOrganizerUuid($organizerEvent);
                 $organizerUrl = $this->getOrganizerWebsite($organizerEvent);
 
-                try {
-                    $this->updateOrganizer($organizerUuid, $organizerUrl);
-                    $messages[] = 'Added organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid->toString();
-                } catch (UniqueConstraintViolationException $exception) {
-                    $messages[] = 'Unique exception for organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid->toString();
+                $updated = $this->updateOrganizer($organizerUuid, $organizerUrl);
+                if ($updated) {
+                    $messages[] = 'Added/updated organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid->toString();
+                } else {
+                    $messages[] = 'Skipped organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid->toString();
                 }
 
                 $progressBar->advance();
