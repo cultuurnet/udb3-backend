@@ -65,7 +65,7 @@ class EventBusForwardingConsumerFactory
     public function create(
         StringLiteral $exchange,
         StringLiteral $queue
-    ):EventBusForwardingConsumer {
+    ): EventBusForwardingConsumer {
         $eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $this->connection,
             $this->eventBus,
