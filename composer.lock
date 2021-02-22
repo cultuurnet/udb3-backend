@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77c7a3342c9921cee3e5d8ce303c663c",
+    "content-hash": "f992af6d70e4f102cbcbb5dc9af07f6a",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -869,16 +869,16 @@
         },
         {
             "name": "cultuurnet/udb3-api-guard",
-            "version": "dev-feature/III-3771-value-objects-v4",
+            "version": "V2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "7fe0276b2ed33ff8e6f24d1615a9490af4dcb23a"
+                "reference": "c2271000227653e6e8b149209a17f82bc468c843"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/7fe0276b2ed33ff8e6f24d1615a9490af4dcb23a",
-                "reference": "7fe0276b2ed33ff8e6f24d1615a9490af4dcb23a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/c2271000227653e6e8b149209a17f82bc468c843",
+                "reference": "c2271000227653e6e8b149209a17f82bc468c843",
                 "shasum": ""
             },
             "require": {
@@ -917,7 +917,7 @@
                     "email": "info@2publiq.be"
                 }
             ],
-            "time": "2021-02-19T12:47:56+00:00"
+            "time": "2021-02-22T10:05:10+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -10035,7 +10035,6 @@
     "stability-flags": {
         "chrisboulton/php-resque": 20,
         "cultuurnet/culturefeed-php": 20,
-        "cultuurnet/udb3-api-guard": 20,
         "doctrine/migrations": 20
     },
     "prefer-stable": true,
