@@ -69,7 +69,7 @@
     "twig/extensions": "^1.5",
     "twig/twig": "~1.0",
     "webmozart/assert": "^1.2",
-    "willdurand/geocoder": "~2.8",
+    "willdurand/geocoder": "^3.0",
     "zendframework/zend-diactoros": "^1.3"
   },
   "require-dev": {
