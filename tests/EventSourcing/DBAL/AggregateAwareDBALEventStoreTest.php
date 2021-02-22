@@ -87,6 +87,29 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     /**
      * @test
      */
+    public function it_can_load_an_aggregate_by_its_id_and_from_a_playhead()
+    {
+        $uuid = new UUID();
+        $domainMessages = $this->createDomainMessages($uuid);
+
+        foreach ($domainMessages as $domainMessage) {
+            $this->insertDomainMessage($domainMessage);
+        }
+
+        $domainEventStream = $this->aggregateAwareDBALEventStore->loadFromPlayhead(
+            $uuid->toNative(),
+            1
+        );
+
+        $this->assertEquals(
+            new DomainEventStream([$domainMessages[1], $domainMessages[2]]),
+            $domainEventStream
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_an_exception_when_loading_a_non_existing_aggregate()
     {
         $uuid = new UUID();
@@ -154,6 +177,51 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         );
     }
 
+    /**
+     * @param UUID $uuid
+     * @return DomainMessage[]
+     */
+    private function createDomainMessages(UUID $uuid)
+    {
+        return [
+            new DomainMessage(
+                $uuid->toNative(),
+                0,
+                new Metadata([
+                    'meta' => 'meta 0',
+                ]),
+                new DummyEvent(
+                    $uuid->toNative(),
+                    'event 0'
+                ),
+                BroadwayDateTime::now()
+            ),
+            new DomainMessage(
+                $uuid->toNative(),
+                1,
+                new Metadata([
+                    'meta' => 'meta 1',
+                ]),
+                new DummyEvent(
+                    $uuid->toNative(),
+                    'event 1'
+                ),
+                BroadwayDateTime::now()
+            ),
+            new DomainMessage(
+                $uuid->toNative(),
+                2,
+                new Metadata([
+                    'meta' => 'meta 2',
+                ]),
+                new DummyEvent(
+                    $uuid->toNative(),
+                    'event 2'
+                ),
+                BroadwayDateTime::now()
+            ),
+        ];
+    }
 
     /**
      * @param DomainMessage $domainMessage
