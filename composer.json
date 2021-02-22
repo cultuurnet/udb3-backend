@@ -11,10 +11,10 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=7.1",
+    "ext-dom": "*",
     "ext-json": "*",
     "ext-pdo": "*",
     "ext-tidy": "*",
-    "ext-dom": "*",
     "ext-xmlreader": "*",
     "auth0/auth0-php": "^5.7",
     "broadway/broadway": "1.0.0",
