@@ -9,6 +9,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use stdClass;
 
 class HttpImportCommandHandlerTest extends TestCase
 {
@@ -57,7 +58,7 @@ class HttpImportCommandHandlerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         new HttpImportCommandHandler(
-            new \stdClass(),
+            stdClass::class,
             $this->iriGenerator,
             $this->httpClient
         );
