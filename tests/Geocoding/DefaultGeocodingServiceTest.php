@@ -5,9 +5,11 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use Geocoder\Exception\NoResultException;
-use Geocoder\GeocoderInterface;
-use Geocoder\Result\Geocoded;
+use Geocoder\Exception\NoResult;
+use Geocoder\Geocoder;
+use Geocoder\Model\Address;
+use Geocoder\Model\AddressCollection;
+use Geocoder\Model\Coordinates as GeocoderCoordinates;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -15,7 +17,7 @@ use Psr\Log\LoggerInterface;
 class DefaultGeocodingServiceTest extends TestCase
 {
     /**
-     * @var GeocoderInterface|MockObject
+     * @var Geocoder|MockObject
      */
     private $geocoder;
 
@@ -31,7 +33,7 @@ class DefaultGeocodingServiceTest extends TestCase
 
     public function setUp()
     {
-        $this->geocoder = $this->createMock(GeocoderInterface::class);
+        $this->geocoder = $this->createMock(Geocoder::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->service = new DefaultGeocodingService($this->geocoder, $this->logger);
@@ -47,13 +49,11 @@ class DefaultGeocodingServiceTest extends TestCase
         $latFloat = 1.07845;
         $longFloat = 2.76412;
 
-        $coordinatesArray = [
-            'latitude' => $latFloat,
-            'longitude' => $longFloat,
-        ];
-
-        $result = new Geocoded();
-        $result->fromArray($coordinatesArray);
+        $result = new AddressCollection([
+            new Address(
+                new GeocoderCoordinates($latFloat, $longFloat)
+            ),
+        ]);
 
         $this->geocoder->expects($this->once())
             ->method('geocode')
@@ -81,7 +81,7 @@ class DefaultGeocodingServiceTest extends TestCase
             ->method('geocode')
             ->with($address)
             ->willThrowException(
-                new NoResultException('Could not execute query')
+                new NoResult('Could not execute query')
             );
 
         $this->logger->expects($this->once())

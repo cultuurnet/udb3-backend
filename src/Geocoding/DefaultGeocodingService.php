@@ -5,14 +5,16 @@ namespace CultuurNet\UDB3\Geocoding;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use Geocoder\Exception\NoResultException;
-use Geocoder\GeocoderInterface;
+use Geocoder\Exception\CollectionIsEmpty;
+use Geocoder\Exception\Exception;
+use Geocoder\Exception\NoResult;
+use Geocoder\Geocoder;
 use Psr\Log\LoggerInterface;
 
 class DefaultGeocodingService implements GeocodingServiceInterface
 {
     /**
-     * @var GeocoderInterface
+     * @var Geocoder
      */
     private $geocoder;
 
@@ -21,12 +23,8 @@ class DefaultGeocodingService implements GeocodingServiceInterface
      */
     private $logger;
 
-    /**
-     * @param GeocoderInterface $geocoder
-     * @param LoggerInterface $logger
-     */
     public function __construct(
-        GeocoderInterface $geocoder,
+        Geocoder $geocoder,
         LoggerInterface $logger
     ) {
         $this->geocoder = $geocoder;
@@ -39,14 +37,18 @@ class DefaultGeocodingService implements GeocodingServiceInterface
     public function getCoordinates($address)
     {
         try {
-            $result = $this->geocoder->geocode($address);
-            $coordinates = $result->getCoordinates();
+            $addresses = $this->geocoder->geocode($address);
+            $coordinates = $addresses->first()->getCoordinates();
+
+            if ($coordinates === null) {
+                throw new CollectionIsEmpty('Coordinates from address are empty');
+            }
 
             return new Coordinates(
-                new Latitude((double)$coordinates[0]),
-                new Longitude((double)$coordinates[1])
+                new Latitude($coordinates->getLatitude()),
+                new Longitude($coordinates->getLongitude())
             );
-        } catch (NoResultException $exception) {
+        } catch (Exception|CollectionIsEmpty $exception) {
             $this->logger->error(
                 'No results for address: "' . $address . '". Exception message: ' . $exception->getMessage()
             );
