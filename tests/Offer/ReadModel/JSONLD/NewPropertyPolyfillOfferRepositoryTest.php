@@ -186,6 +186,16 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
             ]);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_not_add_default_status_of_embedded_location_if_there_is_no_location(): void
+    {
+        $this
+            ->given(['@type' => 'Place'])
+            ->assertReturnedDocumentDoesNotContainKey('location');
+    }
+
     private function given(array $given): self
     {
         $this->repository->save(
@@ -203,6 +213,14 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
         $actualFromGet = $this->repository->get(self::DOCUMENT_ID)->getAssocBody();
         $this->assertArrayContainsExpectedKeys($expected, $actualFromFetch);
         $this->assertArrayContainsExpectedKeys($expected, $actualFromGet);
+    }
+
+    private function assertReturnedDocumentDoesNotContainKey(string $key): void
+    {
+        $actualFromFetch = $this->repository->fetch(self::DOCUMENT_ID)->getAssocBody();
+        $actualFromGet = $this->repository->get(self::DOCUMENT_ID)->getAssocBody();
+        $this->assertArrayNotHasKey($key, $actualFromFetch);
+        $this->assertArrayNotHasKey($key, $actualFromGet);
     }
 
     private function assertArrayContainsExpectedKeys(array $expected, array $actual): void
