@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\Import\Command;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use Guzzle\Http\ClientInterface;
+use GuzzleHttp\Client;
 
 /**
  * Handles incoming import commands by sending them to the HTTP import API.
@@ -22,19 +22,14 @@ class HttpImportCommandHandler implements CommandHandler
     private $iriGenerator;
 
     /**
-     * @var ClientInterface
+     * @var Client
      */
     private $httpClient;
 
-    /**
-     * @param string $commandClassName
-     * @param IriGeneratorInterface $iriGenerator
-     * @param ClientInterface $httpClient
-     */
     public function __construct(
-        $commandClassName,
+        string $commandClassName,
         IriGeneratorInterface $iriGenerator,
-        ClientInterface $httpClient
+        Client $httpClient
     ) {
         if (!is_subclass_of($commandClassName, ImportDocument::class)) {
             throw new \InvalidArgumentException(
@@ -68,10 +63,9 @@ class HttpImportCommandHandler implements CommandHandler
                 [
                     'Authorization' => "Bearer {$command->getJwt()}",
                     'X-Api-Key' => $command->getApiKey(),
-                ],
-                $jsonLd
-            )
-            ->send();
+                    'body' => $jsonLd,
+                ]
+            );
     }
 
     /**
@@ -80,7 +74,7 @@ class HttpImportCommandHandler implements CommandHandler
      */
     private function fetchJsonLd($url)
     {
-        $response = $this->httpClient->get($url)->send();
-        return $response->getBody(true);
+        $response = $this->httpClient->get($url);
+        return $response->getBody();
     }
 }

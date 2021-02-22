@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\Import\Command\HttpImportCommandHandler;
 use CultuurNet\UDB3\Model\Import\Command\ImportEventDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportOrganizerDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportPlaceDocument;
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;

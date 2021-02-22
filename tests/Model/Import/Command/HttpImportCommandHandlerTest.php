@@ -4,10 +4,10 @@ namespace CultuurNet\UDB3\Model\Import\Command;
 
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use Guzzle\Http\ClientInterface;
-use Guzzle\Http\Message\RequestInterface;
+use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class HttpImportCommandHandlerTest extends TestCase
@@ -23,7 +23,7 @@ class HttpImportCommandHandlerTest extends TestCase
     private $iriGenerator;
 
     /**
-     * @var ClientInterface|MockObject
+     * @var Client|MockObject
      */
     private $httpClient;
 
@@ -40,7 +40,7 @@ class HttpImportCommandHandlerTest extends TestCase
                 return 'https://io.uitdatabank.be/events/' . $item;
             }
         );
-        $this->httpClient = $this->createMock(ClientInterface::class);
+        $this->httpClient = $this->createMock(Client::class);
 
         $this->commandHandler = new HttpImportCommandHandler(
             $this->commandClassName,
@@ -117,15 +117,12 @@ class HttpImportCommandHandlerTest extends TestCase
             ->willReturn($getRequest);
 
         $getRequest->expects($this->once())
-            ->method('send')
+            ->method('put')
             ->willReturn($getResponse);
 
         $getResponse->expects($this->once())
             ->method('getBody')
-            ->with(true)
             ->willReturn($json);
-
-        $putRequest = $this->createMock(RequestInterface::class);
 
         $this->httpClient->expects($this->once())
             ->method('put')
@@ -134,13 +131,9 @@ class HttpImportCommandHandlerTest extends TestCase
                 [
                     'Authorization' => 'Bearer ' . $jwt,
                     'X-Api-Key' => $apiKey,
-                ],
-                $json
-            )
-            ->willReturn($putRequest);
-
-        $putRequest->expects($this->once())
-            ->method('send');
+                    'body' => $json,
+                ]
+            );
 
         $this->commandHandler->handle($command);
     }
