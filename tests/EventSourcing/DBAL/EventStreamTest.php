@@ -9,7 +9,6 @@ use Broadway\Domain\Metadata;
 use Broadway\EventSourcing\EventStreamDecorator;
 use Broadway\EventStore\EventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
-use CultuurNet\UDB3\Broadway\EventStore\DBALEventStore;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +18,7 @@ class EventStreamTest extends TestCase
     use DBALTestConnectionTrait;
 
     /**
-     * @var DBALEventStore
+     * @var AggregateAwareDBALEventStore
      */
     private $eventStore;
 
@@ -34,11 +33,12 @@ class EventStreamTest extends TestCase
         $payloadSerializer = new SimpleInterfaceSerializer();
         $metadataSerializer = new SimpleInterfaceSerializer();
 
-        $this->eventStore = new DBALEventStore(
+        $this->eventStore = new AggregateAwareDBALEventStore(
             $this->getConnection(),
             $payloadSerializer,
             $metadataSerializer,
-            $table
+            $table,
+            AggregateType::EVENT()
         );
 
         $schemaManager = $this->getConnection()->getSchemaManager();

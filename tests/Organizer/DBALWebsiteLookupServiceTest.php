@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Organizer;
 
-use CultuurNet\UDB3\Broadway\EventStore\DBALEventStore;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use PHPUnit\Framework\TestCase;
@@ -26,8 +26,8 @@ class DBALWebsiteLookupServiceTest extends TestCase
 
     public function setUp()
     {
-        /* @var DBALEventStore $dbalEventStore */
-        $dbalEventStore = $this->createMock(DBALEventStore::class);
+        /* @var AggregateAwareDBALEventStore $dbalEventStore */
+        $dbalEventStore = $this->createMock(AggregateAwareDBALEventStore::class);
 
         $this->tableName = 'mock_organizer_unique_websites';
 

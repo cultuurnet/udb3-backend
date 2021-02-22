@@ -7,8 +7,8 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializer;
-use CultuurNet\UDB3\Broadway\EventStore\DBALEventStore;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -41,10 +41,10 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     {
         $serializer = $this->createMock(Serializer::class);
 
-        /** @var DbalEventStore|MockObject $dbalEventStore */
+        /** @var AggregateAwareDBALEventStore|MockObject $dbalEventStore */
         $dbalEventStore = $this
-            ->getMockBuilder(DBALEventStore::class)
-            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore'])
+            ->getMockBuilder(AggregateAwareDBALEventStore::class)
+            ->setConstructorArgs([$this->getConnection(), $serializer, $serializer, 'labelsEventStore', AggregateType::EVENT()])
             ->enableProxyingToOriginalMethods()
             ->getMock();
 
