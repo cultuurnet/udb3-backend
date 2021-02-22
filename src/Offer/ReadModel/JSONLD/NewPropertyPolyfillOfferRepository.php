@@ -82,6 +82,10 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
 
     private function polyfillEmbeddedPlaceStatus(array $json): array
     {
+        if (!isset($json['location'])) {
+            return $json;
+        }
+
         if (isset($json['location']['status']) && !isset($json['location']['status']['type'])) {
             $json['location']['status'] = [
                 'type' => $json['location']['status'],
