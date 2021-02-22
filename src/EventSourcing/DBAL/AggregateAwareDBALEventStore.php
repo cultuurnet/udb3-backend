@@ -71,8 +71,22 @@ class AggregateAwareDBALEventStore implements EventStore
      */
     public function load($id)
     {
+        return $this->loadDomainEventStream($id, 0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadFromPlayhead($id, $playhead)
+    {
+        return $this->loadDomainEventStream($id, $playhead);
+    }
+
+    private function loadDomainEventStream($id, $playhead)
+    {
         $statement = $this->prepareLoadStatement();
         $statement->bindValue('uuid', $id);
+        $statement->bindValue('playhead', $playhead);
         $statement->execute();
 
         $events = array();
@@ -89,14 +103,6 @@ class AggregateAwareDBALEventStore implements EventStore
         }
 
         return new DomainEventStream($events);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function loadFromPlayhead($id, $playhead)
-    {
-        // TODO: Implement loadFromPlayhead() method.
     }
 
     /**
@@ -191,6 +197,7 @@ class AggregateAwareDBALEventStore implements EventStore
             )
                 ->from($this->tableName)
                 ->where('uuid = :uuid')
+                ->andWhere('playhead >= :playhead')
                 ->orderBy('playhead', 'ASC');
 
             $this->loadStatement = $this->connection->prepare(
