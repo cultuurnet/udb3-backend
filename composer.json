@@ -65,6 +65,7 @@
     "symfony/psr-http-message-bridge": "~0.2.0",
     "symfony/routing": "~2.3",
     "symfony/security": "~2.8.52",
+    "symfony/yaml": "^4.4",
     "twig/extensions": "^1.5",
     "twig/twig": "~1.0",
     "webmozart/assert": "^1.2",
