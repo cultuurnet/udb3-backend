@@ -8,7 +8,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventStore\EventStore;
 use Broadway\EventStore\EventStreamNotFoundException;
 use Broadway\Serializer\Serializer;
-use CultuurNet\UDB3\Broadway\EventStore\DBALEventStoreException;
 use CultuurNet\UDB3\Silex\AggregateType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;

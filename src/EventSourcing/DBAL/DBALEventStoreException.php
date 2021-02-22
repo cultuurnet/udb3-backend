@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Broadway\EventStore;
+namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\EventStore\EventStoreException;
 use Doctrine\DBAL\DBALException;

@@ -13,6 +13,7 @@ use Broadway\EventStore\Management\Criteria;
 use Broadway\EventStore\Management\CriteriaNotSupportedException;
 use Broadway\EventStore\Management\EventStoreManagement;
 use Broadway\Serializer\Serializer;
+use CultuurNet\UDB3\EventSourcing\DBAL\DBALEventStoreException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Schema;
