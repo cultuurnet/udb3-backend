@@ -128,7 +128,10 @@ $consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection']));
 
 try {
     $consoleApp->run();
-} catch (\Throwable $throwable) {
-    $app[SentryErrorHandler::class]->handle($throwable);
-    $consoleApp->renderException($throwable, new ConsoleOutput());
+} catch (\Exception $exception) {
+    $app[SentryErrorHandler::class]->handle($exception);
+    $consoleApp->renderException($exception, new ConsoleOutput());
+} catch (\Error $error) {
+    $app[SentryErrorHandler::class]->handle($error);
+    throw $error;
 }
