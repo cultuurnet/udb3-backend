@@ -4,17 +4,9 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
-use CultuurNet\UDB3\Offer\Commands\AbstractImportLabels;
-use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
@@ -40,7 +32,6 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractPublish;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\Organizer\Organizer;
-use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class OfferCommandHandler extends Udb3CommandHandler
 {

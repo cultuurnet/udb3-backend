@@ -4,13 +4,10 @@
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Event\Commands\AddImage;
-use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Event\Commands\DeleteEvent;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
-use CultuurNet\UDB3\Event\Commands\ImportLabels;
-use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Event\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;

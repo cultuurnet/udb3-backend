@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;

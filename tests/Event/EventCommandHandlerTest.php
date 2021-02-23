@@ -9,11 +9,8 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\DeleteEvent;
-use CultuurNet\UDB3\Event\Commands\ImportLabels;
-use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateCalendar;
@@ -35,26 +32,16 @@ use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\Privacy;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManager;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
