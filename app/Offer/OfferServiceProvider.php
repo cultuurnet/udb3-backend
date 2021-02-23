@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Http\CompositePsr7RequestAuthorizer;
+use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
@@ -13,6 +14,7 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
+use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -89,6 +91,16 @@ class OfferServiceProvider implements ServiceProviderInterface
                 return new ChangeOwnerHandler(
                     $app[OfferRepository::class],
                     $app['offer_permission_query']
+                );
+            }
+        );
+
+        $app[AddLabelHandler::class] = $app->share(
+            function (Application $app) {
+                return new AddLabelHandler(
+                    $app[OfferRepository::class],
+                    $app['labels.constraint_aware_service'],
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
             }
         );

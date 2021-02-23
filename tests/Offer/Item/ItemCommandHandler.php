@@ -34,11 +34,6 @@ use CultuurNet\UDB3\Offer\OfferCommandHandler;
 
 class ItemCommandHandler extends OfferCommandHandler
 {
-    protected function getAddLabelClassName()
-    {
-        return AddLabel::class;
-    }
-
     protected function getRemoveLabelClassName()
     {
         return RemoveLabel::class;

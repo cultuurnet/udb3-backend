@@ -114,14 +114,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
     /**
      * @return string
      */
-    protected function getAddLabelClassName()
-    {
-        return AddLabel::class;
-    }
-
-    /**
-     * @return string
-     */
     protected function getRemoveLabelClassName()
     {
         return RemoveLabel::class;

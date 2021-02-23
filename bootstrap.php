@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
@@ -650,6 +651,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[ProductionCommandHandler::class]);
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
         $commandBus->subscribe($app[ChangeOwnerHandler::class]);
+        $commandBus->subscribe($app[AddLabelHandler::class]);
     };
 
     if ($commandBus instanceof LazyLoadingCommandBus) {

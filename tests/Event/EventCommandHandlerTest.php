@@ -188,36 +188,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_label_an_event()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new AddLabel($id, new Label('foo')))
-            ->then([new LabelAdded($id, new Label('foo'))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_label_an_event_with_invisible_label()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new AddLabel($id, new Label('bar')))
-            ->then([new LabelAdded($id, new Label('bar', false))]);
-    }
-
-    /**
-     * @test
-     */
     public function it_can_unlabel_an_event()
     {
         $id = '1';

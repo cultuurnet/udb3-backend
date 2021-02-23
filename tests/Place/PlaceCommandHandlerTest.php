@@ -207,21 +207,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_label_a_place()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new AddLabel($id, new Label('foo')))
-            ->then([new LabelAdded($id, new Label('foo'))]);
-    }
-
-    /**
-     * @test
-     */
     public function it_can_unlabel_a_place()
     {
         $id = '1';

@@ -126,11 +126,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * @return string
      */
-    abstract protected function getAddLabelClassName();
-
-    /**
-     * @return string
-     */
     abstract protected function getRemoveLabelClassName();
 
     /**
@@ -295,34 +290,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($updateFacilities->getItemId());
 
         $offer->updateFacilities($updateFacilities->getFacilities());
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * @param AbstractAddLabel $addLabel
-     */
-    private function handleAddLabel(AbstractAddLabel $addLabel)
-    {
-        $this->labelService->createLabelAggregateIfNew(
-            new LabelName((string) $addLabel->getLabel()),
-            $addLabel->getLabel()->isVisible()
-        );
-
-        $labelName = (string) $addLabel->getLabel();
-        $labelVisibility = $addLabel->getLabel()->isVisible();
-
-        // Load the label read model so we can determine the correct visibility.
-        $labelEntity = $this->labelRepository->getByName(new StringLiteral($labelName));
-        if ($labelEntity instanceof Label\ReadModels\JSON\Repository\Entity) {
-            $labelVisibility = $labelEntity->getVisibility() === Visibility::VISIBLE();
-        }
-
-        $offer = $this->load($addLabel->getItemId());
-
-        $offer->addLabel(
-            new Label($labelName, $labelVisibility)
-        );
 
         $this->offerRepository->save($offer);
     }
