@@ -6,6 +6,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\Http\CompositePsr7RequestAuthorizer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
@@ -109,6 +110,15 @@ class OfferServiceProvider implements ServiceProviderInterface
         $app[RemoveLabelHandler::class] = $app->share(
             function (Application $app) {
                 return new RemoveLabelHandler($app[OfferRepository::class]);
+            }
+        );
+
+        $app[ImportLabelsHandler::class] = $app->share(
+            function (Application $app) {
+                return new ImportLabelsHandler(
+                    $app[OfferRepository::class],
+                    $app['labels.constraint_aware_service']
+                );
             }
         );
     }

@@ -207,55 +207,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_import_labels()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                ]
-            )
-            ->when(
-                new ImportLabels(
-                    $id,
-                    new Labels(
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('foo'),
-                            true
-                        ),
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('bar'),
-                            true
-                        )
-                    )
-                )
-            )
-            ->then(
-                [
-                    new LabelsImported(
-                        $id,
-                        new Labels(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('foo'),
-                                true
-                            ),
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('bar'),
-                                true
-                            )
-                        )
-                    ),
-                    new LabelAdded($id, new Label('foo')),
-                    new LabelAdded($id, new Label('bar')),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
     public function it_can_translate_the_title_of_a_place_by_updating_with_a_foreign_language()
     {
         $id = '1';

@@ -126,11 +126,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * @return string
      */
-    abstract protected function getImportLabelsClassName();
-
-    /**
-     * @return string
-     */
     abstract protected function getUpdateTitleClassName();
 
     /**
@@ -285,30 +280,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($updateFacilities->getItemId());
 
         $offer->updateFacilities($updateFacilities->getFacilities());
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * @param AbstractImportLabels $importLabels
-     */
-    private function handleImportLabels(AbstractImportLabels $importLabels)
-    {
-        /** @var \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $importLabel */
-        foreach ($importLabels->getLabelsToImport() as $importLabel) {
-            $this->labelService->createLabelAggregateIfNew(
-                new LabelName($importLabel->getName()->toString()),
-                $importLabel->isVisible()
-            );
-        }
-
-        $offer = $this->load($importLabels->getItemId());
-
-        $offer->importLabels(
-            $importLabels->getLabelsToImport(),
-            $importLabels->getLabelsToKeepIfAlreadyOnOffer(),
-            $importLabels->getLabelsToRemoveWhenOnOffer()
-        );
 
         $this->offerRepository->save($offer);
     }
