@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
+use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;

@@ -599,6 +599,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
                 $app['event_repository'],
                 $app['organizer_repository'],
                 $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                $app['labels.constraint_aware_service'],
                 $app['media_manager']
             )
         );
@@ -622,6 +623,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
                 $app['place_repository'],
                 $app['organizer_repository'],
                 $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                $app['labels.constraint_aware_service'],
                 $app['media_manager']
             )
         );

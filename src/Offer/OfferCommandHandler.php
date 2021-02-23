@@ -5,7 +5,9 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -58,6 +60,11 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     protected $labelRepository;
 
     /**
+     * @var LabelServiceInterface
+     */
+    private $labelService;
+
+    /**
      * @var MediaManagerInterface|MediaManager
      */
     protected $mediaManager;
@@ -66,11 +73,13 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         Repository $offerRepository,
         Repository $organizerRepository,
         ReadRepositoryInterface $labelRepository,
+        LabelServiceInterface $labelService,
         MediaManagerInterface $mediaManager
     ) {
         $this->offerRepository = $offerRepository;
         $this->organizerRepository = $organizerRepository;
         $this->labelRepository = $labelRepository;
+        $this->labelService = $labelService;
         $this->mediaManager = $mediaManager;
     }
 
@@ -295,7 +304,10 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      */
     private function handleAddLabel(AbstractAddLabel $addLabel)
     {
-        $offer = $this->load($addLabel->getItemId());
+        $this->labelService->createLabelAggregateIfNew(
+            new LabelName((string) $addLabel->getLabel()),
+            $addLabel->getLabel()->isVisible()
+        );
 
         $labelName = (string) $addLabel->getLabel();
         $labelVisibility = $addLabel->getLabel()->isVisible();
@@ -305,6 +317,8 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         if ($labelEntity instanceof Label\ReadModels\JSON\Repository\Entity) {
             $labelVisibility = $labelEntity->getVisibility() === Visibility::VISIBLE();
         }
+
+        $offer = $this->load($addLabel->getItemId());
 
         $offer->addLabel(
             new Label($labelName, $labelVisibility)

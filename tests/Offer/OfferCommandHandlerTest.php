@@ -8,13 +8,15 @@ use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName as Udb3ModelsLabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Item\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Item\Commands\DeleteCurrentOrganizer;
@@ -104,6 +106,11 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected $labelRepository;
 
     /**
+     * @var LabelServiceInterface|MockObject
+     */
+    private $labelService;
+
+    /**
      * @var MediaManager|MockObject
      */
     protected $mediaManager;
@@ -155,12 +162,15 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
                 }
             );
 
+        $this->labelService = $this->createMock(LabelServiceInterface::class);
+
         $this->mediaManager = $this->createMock(MediaManager::class);
 
         return new ItemCommandHandler(
             new ItemRepository($eventStore, $eventBus),
             $this->organizerRepository,
             $this->labelRepository,
+            $this->labelService,
             $this->mediaManager
         );
     }
@@ -170,6 +180,13 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_add_label_commands_from_the_correct_namespace()
     {
+        $this->labelService
+            ->method('createLabelAggregateIfNew')
+            ->with(
+                new LabelName((string) $this->label),
+                $this->label->isVisible()
+            );
+
         $this->scenario
             ->withAggregateId($this->id)
             ->given(
@@ -192,6 +209,20 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_can_add_labels_that_do_not_exist_and_uses_the_labels_visibility_from_the_command_in_that_case()
     {
+        $this->labelService->expects($this->at(0))
+            ->method('createLabelAggregateIfNew')
+            ->with(
+                new LabelName('does_not_exist'),
+                true
+            );
+
+        $this->labelService->expects($this->at(1))
+            ->method('createLabelAggregateIfNew')
+            ->with(
+                new LabelName('does_not_exist_hidden'),
+                false
+            );
+
         $this->scenario
             ->withAggregateId($this->id)
             ->given(
@@ -222,6 +253,9 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_ignores_add_label_commands_from_incorrect_namespaces()
     {
+        $this->labelService->expects($this->never())
+            ->method('createLabelAggregateIfNew');
+
         $this->scenario
             ->withAggregateId($this->id)
             ->given(
@@ -320,11 +354,11 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
                     $this->id,
                     new Labels(
                         new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('foo'),
+                            new Udb3ModelsLabelName('foo'),
                             true
                         ),
                         new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('bar'),
+                            new Udb3ModelsLabelName('bar'),
                             true
                         )
                     )
@@ -336,11 +370,11 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
                         $this->id,
                         new Labels(
                             new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('foo'),
+                                new Udb3ModelsLabelName('foo'),
                                 true
                             ),
                             new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('bar'),
+                                new Udb3ModelsLabelName('bar'),
                                 true
                             )
                         )
@@ -374,14 +408,14 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
                 )->withLabelsToKeepIfAlreadyOnOffer(
                     new Labels(
                         new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('existing_private'),
+                            new Udb3ModelsLabelName('existing_private'),
                             true
                         )
                     )
                 )->withLabelsToRemoveWhenOnOffer(
                     new Labels(
                         new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('existing_to_be_removed'),
+                            new Udb3ModelsLabelName('existing_to_be_removed'),
                             true
                         )
                     )

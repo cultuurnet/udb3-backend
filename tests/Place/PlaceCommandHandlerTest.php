@@ -15,6 +15,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -449,6 +450,7 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
             $repository,
             $this->organizerRepository,
             $this->labelRepository,
+            $this->createMock(LabelServiceInterface::class),
             $this->mediaManager
         );
     }
