@@ -195,7 +195,7 @@ class ProductionRepository extends AbstractDBALRepository
         }
 
         return array_map(
-            function (array $data) use ($forEventId) {
+            static function (array $data) use ($forEventId) {
                 return new SimilarEventPair($forEventId, $data['event_id']);
             },
             $results
