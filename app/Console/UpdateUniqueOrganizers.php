@@ -5,7 +5,8 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use PDO;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -169,7 +170,7 @@ class UpdateUniqueOrganizers extends Command
         return true;
     }
 
-    private function getOrganizerUuid(array $organizerEvent): Uuid
+    private function getOrganizerUuid(array $organizerEvent): UuidInterface
     {
         return Uuid::fromString($organizerEvent['uuid']);
     }
