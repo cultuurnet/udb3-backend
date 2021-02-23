@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
@@ -56,11 +55,6 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $commandFactory;
 
     /**
-     * @var LabelServiceInterface|MockObject
-     */
-    private $labelService;
-
-    /**
      * @var DefaultOfferEditingService
      */
     private $offerEditingService;
@@ -101,7 +95,6 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->offerRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
-        $this->labelService = $this->createMock(LabelServiceInterface::class);
         $this->typeResolver = $this->createMock(TypeResolverInterface::class);
         $this->themeResolver = $this->createMock(ThemeResolverInterface::class);
 
@@ -125,7 +118,6 @@ class DefaultOfferEditingServiceTest extends TestCase
             $this->uuidGenerator,
             $this->offerRepository,
             $this->commandFactory,
-            $this->labelService,
             $this->typeResolver,
             $this->themeResolver
         );
@@ -142,10 +134,6 @@ class DefaultOfferEditingServiceTest extends TestCase
             ->method('get')
             ->with('foo')
             ->willReturn(new JsonDocument('foo'));
-
-        $this->labelService->expects($this->once())
-            ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('label1'));
 
         $this->commandFactory->expects($this->once())
             ->method('createAddLabelCommand')
