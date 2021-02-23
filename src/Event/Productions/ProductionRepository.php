@@ -93,9 +93,6 @@ class ProductionRepository extends AbstractDBALRepository
     }
 
     /**
-     * @param string $keyword
-     * @param int $start
-     * @param int $limit
      * @return Production[]
      */
     public function search(string $keyword, int $start, int $limit): array
@@ -177,9 +174,6 @@ class ProductionRepository extends AbstractDBALRepository
     }
 
     /**
-     * @param string $forEventId
-     * @param ProductionId $inProductionId
-     *
      * @return SimilarEventPair[]
      * @throws EntityNotFoundException
      */
