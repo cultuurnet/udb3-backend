@@ -47,14 +47,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
     /**
      * @return string
      */
-    protected function getRemoveLabelClassName()
-    {
-        return RemoveLabel::class;
-    }
-
-    /**
-     * @return string
-     */
     protected function getImportLabelsClassName()
     {
         return ImportLabels::class;

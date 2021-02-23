@@ -126,11 +126,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * @return string
      */
-    abstract protected function getRemoveLabelClassName();
-
-    /**
-     * @return string
-     */
     abstract protected function getImportLabelsClassName();
 
     /**
@@ -290,20 +285,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($updateFacilities->getItemId());
 
         $offer->updateFacilities($updateFacilities->getFacilities());
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * @param AbstractRemoveLabel $removeLabel
-     */
-    private function handleRemoveLabel(AbstractRemoveLabel $removeLabel)
-    {
-        $offer = $this->load($removeLabel->getItemId());
-
-        // Label visibility does not matter when removing, both the aggregate and the projectors remove the label from
-        // both the visible and hidden label lists.
-        $offer->removeLabel($removeLabel->getLabel());
 
         $this->offerRepository->save($offer);
     }

@@ -207,58 +207,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_can_unlabel_a_place()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new LabelAdded($id, new Label('foo')),
-                ]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([new LabelRemoved($id, new Label('foo'))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_label_that_is_not_present_on_a_place()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_label_from_a_place_that_has_been_unlabelled_already()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new LabelAdded($id, new Label('foo')),
-                    new LabelRemoved($id, new Label('foo')),
-                ]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_import_labels()
     {
         $id = '1';
