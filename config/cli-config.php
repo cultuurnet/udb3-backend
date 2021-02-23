@@ -1,7 +1,4 @@
 <?php
-/**
- * @file
- */
 
 $application = require __DIR__ . '/../bootstrap.php';
 
