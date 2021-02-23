@@ -19,8 +19,8 @@ $commands = [
 
 $helperSet = ConsoleRunner::createHelperSet($connection);
 $helperSet->set(
-    new \Symfony\Component\Console\Helper\DialogHelper(),
-    'dialog'
+    new QuestionHelper(),
+    'question'
 );
 
 return $helperSet;
