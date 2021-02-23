@@ -18,14 +18,14 @@ class ProductionRepository extends AbstractDBALRepository
         parent::__construct($connection, new StringLiteral(self::TABLE_NAME));
     }
 
-    public function add(Production $production)
+    public function add(Production $production): void
     {
         foreach ($production->getEventIds() as $eventId) {
             $this->addEvent($eventId, $production);
         }
     }
 
-    public function find(ProductionId $productionId)
+    public function find(ProductionId $productionId): Production
     {
         $results = $this->getConnection()->fetchAll(
             'SELECT * FROM productions WHERE production_id = :productionId',
@@ -51,7 +51,7 @@ class ProductionRepository extends AbstractDBALRepository
         return $production;
     }
 
-    public function addEvent(string $eventId, Production $production)
+    public function addEvent(string $eventId, Production $production): void
     {
         $addedAt = Chronos::now();
         $this->getConnection()->insert(
@@ -65,7 +65,7 @@ class ProductionRepository extends AbstractDBALRepository
         );
     }
 
-    public function removeEvent(string $eventId, ProductionId $productionId)
+    public function removeEvent(string $eventId, ProductionId $productionId): void
     {
         $this->getConnection()->delete(
             $this->getTableName()->toNative(),
@@ -76,7 +76,7 @@ class ProductionRepository extends AbstractDBALRepository
         );
     }
 
-    public function moveEvents(ProductionId $from, Production $to)
+    public function moveEvents(ProductionId $from, Production $to): void
     {
         $addedAt = Chronos::now();
         $this->getConnection()->update(
