@@ -342,6 +342,20 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_import_labels()
     {
+        $this->labelService->expects($this->at(0))
+            ->method('createLabelAggregateIfNew')
+            ->with(
+                new LabelName('foo'),
+                true
+            );
+
+        $this->labelService->expects($this->at(1))
+            ->method('createLabelAggregateIfNew')
+            ->with(
+                new LabelName('bar'),
+                true
+            );
+
         $this->scenario
             ->withAggregateId($this->id)
             ->given(
@@ -390,6 +404,9 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_will_not_replace_private_labels_that_are_already_on_the_offer()
     {
+        $this->labelService->expects($this->never())
+            ->method('createLabelAggregateIfNew');
+
         $this->scenario
             ->withAggregateId($this->id)
             ->given(
@@ -433,6 +450,9 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_will_not_remove_labels_that_were_added_after_import()
     {
+        $this->labelService->expects($this->never())
+            ->method('createLabelAggregateIfNew');
+
         $this->scenario
             ->withAggregateId($this->id)
             ->given(

@@ -346,6 +346,14 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      */
     private function handleImportLabels(AbstractImportLabels $importLabels)
     {
+        /** @var \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $importLabel */
+        foreach ($importLabels->getLabelsToImport() as $importLabel) {
+            $this->labelService->createLabelAggregateIfNew(
+                new LabelName($importLabel->getName()->toString()),
+                $importLabel->isVisible()
+            );
+        }
+
         $offer = $this->load($importLabels->getItemId());
 
         $offer->importLabels(
