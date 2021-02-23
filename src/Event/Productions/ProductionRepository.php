@@ -111,16 +111,24 @@ class ProductionRepository extends AbstractDBALRepository
             return [];
         }
 
-        return array_map(
-            function (array $data) {
-                return new Production(
-                    ProductionId::fromNative($data['production_id']),
-                    $data['name'],
-                    explode(',', $data['events'])
+        /** @var Production[] $productions */
+        $productions = [];
+        foreach ($results as $result) {
+            $productionId = $result['production_id'];
+
+            if (empty($productions[$productionId])) {
+                $productions[$productionId] = new Production(
+                    ProductionId::fromNative($productionId),
+                    $result['name'],
+                    [$result['event_id']]
                 );
-            },
-            $results
-        );
+                continue;
+            }
+
+            $productions[$productionId] = $productions[$productionId]->addEvent($result['event_id']);
+        }
+
+        return array_values($productions);
     }
 
     public function count(string $keyword): int
@@ -131,7 +139,7 @@ class ProductionRepository extends AbstractDBALRepository
     private function createSearchQuery(string $keyword): QueryBuilder
     {
         $query = $this->getConnection()->createQueryBuilder()
-            ->select('production_id, name, GROUP_CONCAT(event_id) as events')
+            ->select('production_id, name, event_id')
             ->from($this->getTableName()->toNative());
 
         if (!empty($keyword)) {
@@ -140,7 +148,7 @@ class ProductionRepository extends AbstractDBALRepository
                 ->setParameter(':keyword', $keyword);
         }
 
-        return $query->groupBy('production_id');
+        return $query;
     }
 
     public function findProductionForEventId(string $eventId): Production
