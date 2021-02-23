@@ -35,11 +35,6 @@ trait OfferCommandHandlerTestTrait
     protected $organizerRepository;
 
     /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    protected $labelRepository;
-
-    /**
      * @var MediaManager|MockObject
      */
     protected $mediaManager;

@@ -76,19 +76,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->organizerRepository = $this->createMock(Repository::class);
 
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository->method('getByName')
-            ->will($this->returnCallback(
-                function (StringLiteral $labelName) {
-                    return new Entity(
-                        new UUID(),
-                        $labelName,
-                        $labelName->toNative() === 'foo' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
-                    );
-                }
-            ));
-
         $this->mediaManager = $this->createMock(MediaManager::class);
 
         $this->commandFactory = new EventCommandFactory();
@@ -96,8 +83,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCommandHandler(
             $repository,
             $this->organizerRepository,
-            $this->labelRepository,
-            $this->createMock(LabelServiceInterface::class),
             $this->mediaManager
         );
     }

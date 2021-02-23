@@ -601,8 +601,6 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
             new \CultuurNet\UDB3\Event\EventCommandHandler(
                 $app['event_repository'],
                 $app['organizer_repository'],
-                $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                $app['labels.constraint_aware_service'],
                 $app['media_manager']
             )
         );
@@ -625,8 +623,6 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
             new \CultuurNet\UDB3\Place\CommandHandler(
                 $app['place_repository'],
                 $app['organizer_repository'],
-                $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                $app['labels.constraint_aware_service'],
                 $app['media_manager']
             )
         );

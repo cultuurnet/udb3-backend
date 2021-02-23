@@ -316,16 +316,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->organizerRepository = $this->createMock(Repository::class);
 
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository->method('getByName')
-            ->with(new StringLiteral('foo'))
-            ->willReturn(new Entity(
-                new UUID(),
-                new StringLiteral('foo'),
-                Visibility::VISIBLE(),
-                Privacy::PRIVACY_PUBLIC()
-            ));
-
         $this->mediaManager = $this->createMock(MediaManager::class);
 
         $this->commandFactory = new PlaceCommandFactory();
@@ -333,8 +323,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
         return new CommandHandler(
             $repository,
             $this->organizerRepository,
-            $this->labelRepository,
-            $this->createMock(LabelServiceInterface::class),
             $this->mediaManager
         );
     }

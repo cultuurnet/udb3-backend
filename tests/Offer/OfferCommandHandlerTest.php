@@ -66,11 +66,6 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected $id;
 
     /**
-     * @var Label
-     */
-    protected $label;
-
-    /**
      * @var Language
      */
     protected $language;
@@ -101,16 +96,6 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected $organizerRepository;
 
     /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    protected $labelRepository;
-
-    /**
-     * @var LabelServiceInterface|MockObject
-     */
-    private $labelService;
-
-    /**
      * @var MediaManager|MockObject
      */
     protected $mediaManager;
@@ -120,7 +105,6 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
         parent::setUp();
 
         $this->id = '123';
-        $this->label = new Label('foo');
         $this->language = new Language('en');
         $this->title = new Title('English title');
         $this->description = new StringLiteral('English description');
@@ -143,34 +127,11 @@ class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
         EventBus $eventBus
     ): ItemCommandHandler {
         $this->organizerRepository = $this->createMock(Repository::class);
-
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository
-            ->method('getByName')
-            ->willReturnCallback(
-                function (StringLiteral $name) {
-                    if ($name->sameValueAs(new StringLiteral('foo'))) {
-                        return new Entity(
-                            new UUID(),
-                            new StringLiteral('foo'),
-                            Visibility::VISIBLE(),
-                            Privacy::PRIVACY_PUBLIC()
-                        );
-                    }
-
-                    return null;
-                }
-            );
-
-        $this->labelService = $this->createMock(LabelServiceInterface::class);
-
         $this->mediaManager = $this->createMock(MediaManager::class);
 
         return new ItemCommandHandler(
             new ItemRepository($eventStore, $eventBus),
             $this->organizerRepository,
-            $this->labelRepository,
-            $this->labelService,
             $this->mediaManager
         );
     }
