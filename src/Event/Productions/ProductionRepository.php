@@ -6,7 +6,6 @@ use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Query\QueryBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
 
