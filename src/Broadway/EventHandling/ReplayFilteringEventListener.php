@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Broadway\EventHandling;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsNot;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use Psr\Log\LoggerAwareInterface;
@@ -15,12 +15,9 @@ class ReplayFilteringEventListener extends FilteringEventListener implements Log
      */
     protected $logger;
 
-    /**
-     * @param EventListenerInterface $eventListener
-     */
-    public function __construct(
-        EventListenerInterface $eventListener
-    ) {
+
+    public function __construct(EventListener $eventListener)
+    {
         parent::__construct(
             $eventListener,
             new DomainMessageIsNot(

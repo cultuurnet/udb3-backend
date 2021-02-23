@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\ReadModel;
 
-use Broadway\ReadModel\ReadModelInterface;
+use Broadway\ReadModel\Identifiable;
 use stdClass;
 
-final class JsonDocument implements ReadModelInterface
+final class JsonDocument implements Identifiable
 {
     protected $id;
     protected $body;

@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\UserIdentificationInterface;
 
-interface AuthorizedCommandBusInterface extends CommandBusInterface
+interface AuthorizedCommandBusInterface extends CommandBus
 {
     /**
      * @param AuthorizableCommandInterface $command

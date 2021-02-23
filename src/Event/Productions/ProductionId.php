@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 final class ProductionId
 {

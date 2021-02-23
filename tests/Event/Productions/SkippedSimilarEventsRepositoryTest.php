@@ -8,7 +8,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\Productions\Doctrine\SkippedSimilarEventsSchemaConfigurator;
 use PDO;
 use PHPUnit\Framework\TestCase;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 class SkippedSimilarEventsRepositoryTest extends TestCase
 {

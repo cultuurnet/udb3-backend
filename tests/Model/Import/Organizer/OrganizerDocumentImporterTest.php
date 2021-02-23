@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\Import\Organizer;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -34,7 +34,7 @@ use ValueObjects\Web\Url;
 class OrganizerDocumentImporterTest extends TestCase
 {
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     private $repository;
 
@@ -65,7 +65,7 @@ class OrganizerDocumentImporterTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(Repository::class);
         $this->denormalizer = new OrganizerDenormalizer();
         $this->commandBus = new TraceableCommandBus();
         $this->lockedLabelRepository = $this->createMock(LockedLabelRepository::class);

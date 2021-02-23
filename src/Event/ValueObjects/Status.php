@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use InvalidArgumentException;
 
-final class Status implements SerializableInterface
+final class Status implements Serializable
 {
     /**
      * @var StatusType

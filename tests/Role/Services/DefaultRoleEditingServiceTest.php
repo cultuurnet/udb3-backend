@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\Role\Services;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
@@ -31,7 +31,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class DefaultRoleEditingServiceTest extends TestCase
 {
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -46,7 +46,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     protected $eventStore;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     private $writeRepository;
 
@@ -104,7 +104,7 @@ class DefaultRoleEditingServiceTest extends TestCase
     {
         $this->uuid = new UUID('9196cb78-4381-11e6-beb8-9e71128cae77');
 
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
 
         $this->labelId = new UUID();

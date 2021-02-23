@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\Address;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\JsonLdSerializableInterface;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3ModelAddress;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 
-final class Address implements SerializableInterface, JsonLdSerializableInterface
+final class Address implements Serializable, JsonLdSerializableInterface
 {
     /**
      * @var string

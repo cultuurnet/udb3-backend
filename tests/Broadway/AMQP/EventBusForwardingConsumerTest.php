@@ -4,11 +4,10 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerNotFoundException;
-use PhpAmqpLib\Channel\AbstractChannel;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -40,7 +39,7 @@ class EventBusForwardingConsumerTest extends TestCase
     private $consumerTag;
 
     /**
-     * @var EventBusInterface|MockObject
+     * @var EventBus|MockObject
      */
     private $eventBus;
 
@@ -86,7 +85,7 @@ class EventBusForwardingConsumerTest extends TestCase
         $this->queueName = new StringLiteral('my-queue');
         $this->exchangeName = new StringLiteral('my-exchange');
         $this->consumerTag = new StringLiteral('my-tag');
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()
@@ -107,7 +106,6 @@ class EventBusForwardingConsumerTest extends TestCase
             $this->delay
         );
 
-        /** @var LoggerInterface|MockObject $logger */
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->eventBusForwardingConsumer->setLogger($this->logger);
 

@@ -1,11 +1,6 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
-
-use stdClass;
 
 /**
  * Interface for components that can provide the JSON-LD representation

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use DateTime;
@@ -15,7 +15,7 @@ class PatchOfferRestController
     const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -27,11 +27,11 @@ class PatchOfferRestController
     /**
      * PatchOfferRestController constructor.
      * @param OfferType $offerType
-     * @param CommandBusInterface $commandBus
+     * @param CommandBus $commandBus
      */
     public function __construct(
         OfferType $offerType,
-        CommandBusInterface $commandBus
+        CommandBus $commandBus
     ) {
         $this->offerType = $offerType;
         $this->commandBus = $commandBus;

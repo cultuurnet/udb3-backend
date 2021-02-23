@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\EventDispatcher\EventDispatcherInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\EventDispatcher\EventDispatcher;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -17,7 +17,7 @@ class ResqueCommandBusTest extends TestCase
 {
 
     /**
-     * @var CommandBusInterface|ContextAwareInterface|MockObject
+     * @var CommandBus|ContextAwareInterface|MockObject
      */
     protected $decoratedCommandBus;
 
@@ -27,7 +27,7 @@ class ResqueCommandBusTest extends TestCase
     protected $commandBus;
 
     /**
-     * @var EventDispatcherInterface|MockObject
+     * @var EventDispatcher|MockObject
      */
     protected $dispatcher;
 
@@ -36,7 +36,7 @@ class ResqueCommandBusTest extends TestCase
         $queueName = 'test';
 
         $this->decoratedCommandBus = $this->createMock(TestContextAwareCommandBus::class);
-        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->dispatcher = $this->createMock(EventDispatcher::class);
 
         $this->commandBus = new ResqueCommandBus(
             $this->decoratedCommandBus,
@@ -220,7 +220,7 @@ class ResqueCommandBusTest extends TestCase
     }
 }
 
-abstract class TestContextAwareCommandBus implements CommandBusInterface, ContextAwareInterface
+abstract class TestContextAwareCommandBus implements CommandBus, ContextAwareInterface
 {
 
 }

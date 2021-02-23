@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Place\ReadModel\Permission;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class Projector implements EventListenerInterface
+class Projector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\CommandBusDecoratorBase;
 use CultuurNet\UDB3\CommandHandling\ContextAwareInterface;
 use Silex\Application;
@@ -14,12 +14,8 @@ class ContextDecoratedCommandBus extends CommandBusDecoratorBase
      */
     private $application;
 
-    /**
-     * @param CommandBusInterface $decoratee
-     * @param Application $application
-     */
     public function __construct(
-        CommandBusInterface $decoratee,
+        CommandBus $decoratee,
         Application $application
     ) {
         parent::__construct($decoratee);

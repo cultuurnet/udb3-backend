@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
@@ -37,7 +37,7 @@ class EventBusForwardingConsumerFactory
     protected $deserializerLocator;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     protected $eventBus;
 
@@ -46,21 +46,12 @@ class EventBusForwardingConsumerFactory
      */
     protected $consumerTag;
 
-    /**
-     * EventBusForwardingConsumerFactory constructor.
-     * @param Natural $executionDelay
-     * @param AMQPStreamConnection $connection
-     * @param LoggerInterface $logger
-     * @param DeserializerLocatorInterface $deserializerLocator
-     * @param EventBusInterface $eventBus
-     * @param StringLiteral $consumerTag
-     */
     public function __construct(
         Natural $executionDelay,
         AMQPStreamConnection $connection,
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         StringLiteral $consumerTag
     ) {
         $this->executionDelay = $executionDelay;
@@ -71,15 +62,10 @@ class EventBusForwardingConsumerFactory
         $this->consumerTag = $consumerTag;
     }
 
-    /**
-     * @param StringLiteral $exchange
-     * @param StringLiteral $queue
-     * @return EventBusForwardingConsumer
-     */
     public function create(
         StringLiteral $exchange,
         StringLiteral $queue
-    ) {
+    ): EventBusForwardingConsumer {
         $eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $this->connection,
             $this->eventBus,

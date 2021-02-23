@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
-use Broadway\Repository\RepositoryInterface;
 use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
 use CultuurNet\UDB3\Address\AddressFormatterInterface;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;

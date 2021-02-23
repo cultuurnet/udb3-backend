@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
@@ -17,7 +17,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class LocationMarkedAsDuplicateProcessManager implements EventListenerInterface, LoggerAwareInterface
+final class LocationMarkedAsDuplicateProcessManager implements EventListener, LoggerAwareInterface
 {
     /**
      * @var LoggerInterface
@@ -30,13 +30,13 @@ final class LocationMarkedAsDuplicateProcessManager implements EventListenerInte
     private $searchResultsGenerator;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
     public function __construct(
         ResultsGeneratorInterface $searchResultsGenerator,
-        CommandBusInterface $commandBus
+        CommandBus $commandBus
     ) {
         $this->searchResultsGenerator = $searchResultsGenerator;
         $this->commandBus = $commandBus;

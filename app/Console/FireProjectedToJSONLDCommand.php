@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,7 +31,7 @@ class FireProjectedToJSONLDCommand extends AbstractFireProjectedToJSONLDCommand
     {
         $this->inReplayMode(
             function (
-                EventBusInterface $eventBus,
+                EventBus $eventBus,
                 InputInterface $input,
                 OutputInterface $output
             ) {

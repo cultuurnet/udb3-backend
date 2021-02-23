@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\UiTPAS\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Commands\AddLabel;
@@ -19,7 +19,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class EventProcessManagerTest extends TestCase
 {
     /**
-     * @var CommandBusInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var CommandBus|\PHPUnit_Framework_MockObject_MockObject
      */
     private $commandBus;
 
@@ -60,7 +60,7 @@ class EventProcessManagerTest extends TestCase
 
     public function setUp()
     {
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
         $this->uitpasLabelsRepository = $this->createMock(UiTPASLabelsRepository::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 

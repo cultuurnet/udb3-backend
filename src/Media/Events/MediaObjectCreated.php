@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\Media\Events;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-final class MediaObjectCreated implements SerializableInterface
+final class MediaObjectCreated implements Serializable
 {
     /**
      * @var UUID

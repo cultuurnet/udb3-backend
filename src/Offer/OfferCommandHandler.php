@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -43,12 +43,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 abstract class OfferCommandHandler extends Udb3CommandHandler
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $offerRepository;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $organizerRepository;
 
@@ -62,15 +62,9 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      */
     protected $mediaManager;
 
-    /**
-     * @param RepositoryInterface $offerRepository
-     * @param RepositoryInterface $organizerRepository
-     * @param ReadRepositoryInterface $labelRepository
-     * @param MediaManagerInterface $mediaManager
-     */
     public function __construct(
-        RepositoryInterface $offerRepository,
-        RepositoryInterface $organizerRepository,
+        Repository $offerRepository,
+        Repository $organizerRepository,
         ReadRepositoryInterface $labelRepository,
         MediaManagerInterface $mediaManager
     ) {
@@ -83,7 +77,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     /**
      * {@inheritdoc}
      */
-    public function handle($command)
+    public function handle($command): void
     {
         $commandName = get_class($command);
         $commandHandlers = $this->getCommandHandlers();

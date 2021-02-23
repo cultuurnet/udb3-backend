@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\UDB2\Label;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
@@ -19,7 +19,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class LabelImporter implements EventListenerInterface, LoggerAwareInterface
+class LabelImporter implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use DelegateEventHandlingToSpecificMethodTrait;

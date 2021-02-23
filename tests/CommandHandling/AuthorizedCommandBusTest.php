@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -16,7 +16,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class AuthorizedCommandBusTest extends TestCase
 {
     /**
-     * @var CommandBusInterface|ContextAwareInterface|MockObject
+     * @var CommandBus|ContextAwareInterface|MockObject
      */
     private $decoratee;
 
@@ -42,7 +42,7 @@ class AuthorizedCommandBusTest extends TestCase
 
     protected function setUp()
     {
-        $this->decoratee = $this->createMock([CommandBusInterface::class, ContextAwareInterface::class]);
+        $this->decoratee = $this->createMock([CommandBus::class, ContextAwareInterface::class]);
 
         $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
 

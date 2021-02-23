@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
@@ -30,7 +30,7 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
     protected $eventService;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $writeRepository;
 
@@ -41,11 +41,11 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
 
     public function __construct(
         EventServiceInterface $eventService,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
-        RepositoryInterface $writeRepository,
+        Repository $writeRepository,
         LabelServiceInterface $labelService,
         PlaceRepository $placeRepository
     ) {

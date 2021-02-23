@@ -1,11 +1,8 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface as RelationsRepository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -21,7 +18,7 @@ class LocalEventService extends LocalEntityService implements EventServiceInterf
 
     public function __construct(
         DocumentRepository $documentRepository,
-        RepositoryInterface $eventRepository,
+        Repository $eventRepository,
         RelationsRepository $eventRelationsRepository,
         IriGeneratorInterface $iriGenerator
     ) {

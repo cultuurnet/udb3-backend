@@ -2,19 +2,19 @@
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 
-final class RelocateEventToCanonicalPlace implements EventListenerInterface
+final class RelocateEventToCanonicalPlace implements EventListener
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -23,7 +23,7 @@ final class RelocateEventToCanonicalPlace implements EventListenerInterface
      */
     private $canonicalPlaceRepository;
 
-    public function __construct(CommandBusInterface $commandBus, CanonicalPlaceRepository $canonicalPlaceRepository)
+    public function __construct(CommandBus $commandBus, CanonicalPlaceRepository $canonicalPlaceRepository)
     {
         $this->commandBus = $commandBus;
         $this->canonicalPlaceRepository = $canonicalPlaceRepository;

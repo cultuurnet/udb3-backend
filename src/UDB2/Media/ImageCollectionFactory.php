@@ -16,7 +16,7 @@ use League\Uri\Modifiers\Normalize;
 use League\Uri\Schemes\Http;
 use Psr\Http\Message\UriInterface;
 use ValueObjects\Identity\UUID;
-use Rhumsaa\Uuid\Uuid as BaseUuid;
+use Ramsey\Uuid\Uuid as BaseUuid;
 use ValueObjects\Web\Url;
 
 class ImageCollectionFactory implements ImageCollectionFactoryInterface
@@ -141,6 +141,6 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
         }
 
         $namespace = BaseUuid::uuid5(BaseUuid::NAMESPACE_DNS, $httpUri->getHost());
-        return UUID::fromNative((string) BaseUuid::uuid5($namespace, (string) $httpUri));
+        return UUID::fromNative(BaseUuid::uuid5($namespace, (string) $httpUri)->toString());
     }
 }

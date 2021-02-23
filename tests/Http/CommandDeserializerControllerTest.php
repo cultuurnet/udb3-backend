@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ class CommandDeserializerControllerTest extends TestCase
     private $deserializer;
 
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -30,7 +30,7 @@ class CommandDeserializerControllerTest extends TestCase
     public function setUp()
     {
         $this->deserializer = $this->createMock(DeserializerInterface::class);
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->controller = new CommandDeserializerController(
             $this->deserializer,

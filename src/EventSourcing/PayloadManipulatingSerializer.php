@@ -3,14 +3,14 @@
 namespace CultuurNet\UDB3\EventSourcing;
 
 use Assert\Assertion;
-use Broadway\Serializer\SerializerInterface;
+use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 
 /**
  * Decorates a SimpleInterfaceSerializer, first maps old class names to new
  * class names.
  */
-final class PayloadManipulatingSerializer implements SerializerInterface
+final class PayloadManipulatingSerializer implements Serializer
 {
     /**
      * @var callable[]

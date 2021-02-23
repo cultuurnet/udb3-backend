@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 class ProductionTest extends TestCase
 {

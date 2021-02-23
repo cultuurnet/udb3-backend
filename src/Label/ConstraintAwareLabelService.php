@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Label;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
@@ -13,7 +13,7 @@ use ValueObjects\Identity\UUID;
 class ConstraintAwareLabelService implements LabelServiceInterface
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $labelRepository;
 
@@ -22,12 +22,8 @@ class ConstraintAwareLabelService implements LabelServiceInterface
      */
     private $uuidGenerator;
 
-    /**
-     * @param RepositoryInterface $labelRepository
-     * @param UuidGeneratorInterface $uuidGenerator
-     */
     public function __construct(
-        RepositoryInterface $labelRepository,
+        Repository $labelRepository,
         UuidGeneratorInterface $uuidGenerator
     ) {
         $this->labelRepository = $labelRepository;

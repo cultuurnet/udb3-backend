@@ -2,16 +2,15 @@
 
 namespace CultuurNet\UDB3\UDB2\Event;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\EventHandling\EventListener;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultureFeed_Cdb_Item_Event;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
 use CultuurNet\UDB3\Cdb\Event\SpecificationInterface;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
-use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Event;
@@ -36,7 +35,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  * Wether the UDB2 CdbXML event should be processed is defined by an
  * implementation of SpecificationInterface.
  */
-class EventImporter implements EventListenerInterface, LoggerAwareInterface
+class EventImporter implements EventListener, LoggerAwareInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
     use LoggerAwareTrait;
@@ -52,7 +51,7 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
     protected $mediaImporter;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $eventRepository;
 
@@ -67,17 +66,17 @@ class EventImporter implements EventListenerInterface, LoggerAwareInterface
     private $eventCdbIdExtractor;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
     public function __construct(
         SpecificationInterface $offerSpecification,
-        RepositoryInterface $eventRepository,
+        Repository $eventRepository,
         MediaImporter $mediaImporter,
         LabelApplierInterface $labelApplier,
         EventCdbIdExtractorInterface $eventCdbIdExtractor,
-        CommandBusInterface $commandBus
+        CommandBus $commandBus
     ) {
         $this->offerSpecification = $offerSpecification;
         $this->eventRepository = $eventRepository;

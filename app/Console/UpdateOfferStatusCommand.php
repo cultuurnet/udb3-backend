@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -34,7 +34,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
 
     public function __construct(
         OfferType $offerType,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         SearchServiceInterface $searchService
     ) {
         $this->searchResultsGenerator = new ResultsGenerator(

@@ -3,14 +3,14 @@
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\AMQP\DomainMessage\SpecificationInterface;
 use CultuurNet\UDB3\Broadway\AMQP\Message\AMQPMessageFactoryInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class AMQPPublisher implements EventListenerInterface
+class AMQPPublisher implements EventListener
 {
     use LoggerAwareTrait;
 

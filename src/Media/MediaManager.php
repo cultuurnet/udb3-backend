@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
@@ -34,7 +34,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
     protected $mediaDirectory;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $repository;
 
@@ -51,7 +51,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
     public function __construct(
         IriGeneratorInterface $iriGenerator,
         PathGeneratorInterface $pathGenerator,
-        RepositoryInterface $repository,
+        Repository $repository,
         FilesystemInterface $filesystem,
         $mediaDirectory
     ) {

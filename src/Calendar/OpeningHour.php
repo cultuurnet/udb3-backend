@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\Calendar;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 
 /**
  * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour.
  */
-final class OpeningHour implements SerializableInterface
+final class OpeningHour implements Serializable
 {
     /**
      * @var OpeningTime

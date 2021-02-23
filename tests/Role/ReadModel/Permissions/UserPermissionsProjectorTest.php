@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Permissions;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Role\Events\PermissionAdded;
 use CultuurNet\UDB3\Role\Events\PermissionRemoved;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
@@ -115,11 +115,7 @@ class UserPermissionsProjectorTest extends TestCase
         $this->userPermissionsProjector->handle($domainMessage);
     }
 
-    /**
-     * @param SerializableInterface $payload
-     * @return DomainMessage
-     */
-    private function createDomainMessage(SerializableInterface $payload)
+    private function createDomainMessage(Serializable $payload): DomainMessage
     {
         return new DomainMessage(
             'id',

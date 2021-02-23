@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Role\Events\RoleCreated;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -228,15 +227,10 @@ class RoleLabelsProjectorTest extends TestCase
         $this->roleLabelsProjector->handle($domainMessage);
     }
 
-    /**
-     * @param UUID $uuid
-     * @param SerializableInterface $payload
-     * @return DomainMessage
-     */
     private function createDomainMessage(
         UUID $uuid,
-        SerializableInterface $payload
-    ) {
+        Serializable $payload
+    ): DomainMessage {
         return new DomainMessage(
             $uuid,
             0,

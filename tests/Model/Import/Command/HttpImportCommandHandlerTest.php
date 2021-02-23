@@ -4,11 +4,12 @@ namespace CultuurNet\UDB3\Model\Import\Command;
 
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use Guzzle\Http\ClientInterface;
-use Guzzle\Http\Message\RequestInterface;
+use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use stdClass;
 
 class HttpImportCommandHandlerTest extends TestCase
 {
@@ -23,7 +24,7 @@ class HttpImportCommandHandlerTest extends TestCase
     private $iriGenerator;
 
     /**
-     * @var ClientInterface|MockObject
+     * @var Client|MockObject
      */
     private $httpClient;
 
@@ -40,7 +41,7 @@ class HttpImportCommandHandlerTest extends TestCase
                 return 'https://io.uitdatabank.be/events/' . $item;
             }
         );
-        $this->httpClient = $this->createMock(ClientInterface::class);
+        $this->httpClient = $this->createMock(Client::class);
 
         $this->commandHandler = new HttpImportCommandHandler(
             $this->commandClassName,
@@ -57,7 +58,7 @@ class HttpImportCommandHandlerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         new HttpImportCommandHandler(
-            new \stdClass(),
+            stdClass::class,
             $this->iriGenerator,
             $this->httpClient
         );
@@ -75,7 +76,8 @@ class HttpImportCommandHandlerTest extends TestCase
         $command->apiKey = '24b5bebe-d369-4e17-aaab-6d6b5ff6ad06';
 
         $this->httpClient->expects($this->never())
-            ->method('put');
+            ->method('__call')
+            ->with('put');
 
         $this->commandHandler->handle($command);
     }
@@ -108,39 +110,36 @@ class HttpImportCommandHandlerTest extends TestCase
             ]
         );
 
-        $getRequest = $this->createMock(RequestInterface::class);
         $getResponse = $this->createMock(ResponseInterface::class);
 
-        $this->httpClient->expects($this->once())
-            ->method('get')
-            ->with($documentUrl)
-            ->willReturn($getRequest);
-
-        $getRequest->expects($this->once())
-            ->method('send')
-            ->willReturn($getResponse);
+        $this->httpClient->expects($this->exactly(2))
+            ->method('__call')
+            ->withConsecutive(
+                [
+                    'get',
+                    [
+                        $documentUrl,
+                    ],
+                ],
+                [
+                    'put',
+                    [
+                        'https://io.uitdatabank.be/events/f9aec59a-8f70-41ac-bcd5-16020de59afd',
+                        [
+                            'Authorization' => 'Bearer ' . $jwt,
+                            'X-Api-Key' => $apiKey,
+                            'body' => $json,
+                        ],
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $getResponse
+            );
 
         $getResponse->expects($this->once())
             ->method('getBody')
-            ->with(true)
             ->willReturn($json);
-
-        $putRequest = $this->createMock(RequestInterface::class);
-
-        $this->httpClient->expects($this->once())
-            ->method('put')
-            ->with(
-                'https://io.uitdatabank.be/events/f9aec59a-8f70-41ac-bcd5-16020de59afd',
-                [
-                    'Authorization' => 'Bearer ' . $jwt,
-                    'X-Api-Key' => $apiKey,
-                ],
-                $json
-            )
-            ->willReturn($putRequest);
-
-        $putRequest->expects($this->once())
-            ->method('send');
 
         $this->commandHandler->handle($command);
     }

@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Broadway\AMQP\Message\Body;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use Broadway\Serializer\SerializationException;
 
 class PayloadOnlyBodyFactory implements BodyFactoryInterface
@@ -26,7 +26,7 @@ class PayloadOnlyBodyFactory implements BodyFactoryInterface
      */
     private function guardSerializable($object)
     {
-        if (!$object instanceof SerializableInterface) {
+        if (!$object instanceof Serializable) {
             throw new SerializationException(
                 'Unable to serialize ' . get_class($object)
             );

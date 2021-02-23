@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +18,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     private $broadcastingWriteRepositoryDecorator;
 
     /**
-     * @var EventBusInterface|MockObject
+     * @var EventBus|MockObject
      */
     private $eventBus;
 
@@ -30,7 +30,7 @@ class BroadcastingWriteRepositoryDecoratorTest extends TestCase
     public function setUp()
     {
         $this->writeRepository = $this->createMock(WriteRepositoryInterface::class);
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
 
         $this->broadcastingWriteRepositoryDecorator = new BroadcastingWriteRepositoryDecorator(
             $this->writeRepository,

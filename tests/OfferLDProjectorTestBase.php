@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -34,7 +34,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     protected $documentRepository;
 
     /**
-     * @var EventListenerInterface
+     * @var EventListener
      */
     protected $projector;
 

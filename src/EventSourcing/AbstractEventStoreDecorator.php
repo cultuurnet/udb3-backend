@@ -2,21 +2,17 @@
 
 namespace CultuurNet\UDB3\EventSourcing;
 
-use Broadway\Domain\DomainEventStreamInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\Domain\DomainEventStream;
+use Broadway\EventStore\EventStore;
 
-class AbstractEventStoreDecorator implements EventStoreInterface
+abstract class AbstractEventStoreDecorator implements EventStore
 {
     /**
-     * @var EventStoreInterface
+     * @var EventStore
      */
     private $eventStore;
 
-    /**
-     * AbstractEventStoreDecorator constructor.
-     * @param EventStoreInterface $eventStore
-     */
-    public function __construct(EventStoreInterface $eventStore)
+    public function __construct(EventStore $eventStore)
     {
         $this->eventStore = $eventStore;
     }
@@ -32,7 +28,15 @@ class AbstractEventStoreDecorator implements EventStoreInterface
     /**
      * @inheritdoc
      */
-    public function append($id, DomainEventStreamInterface $eventStream)
+    public function loadFromPlayhead($id, $playhead)
+    {
+        return $this->eventStore->loadFromPlayhead($id, $playhead);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function append($id, DomainEventStream $eventStream)
     {
         $this->eventStore->append($id, $eventStream);
     }

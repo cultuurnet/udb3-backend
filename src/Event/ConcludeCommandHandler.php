@@ -2,23 +2,18 @@
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Event\Commands\Conclude;
 
 class ConcludeCommandHandler extends Udb3CommandHandler
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $offerRepository;
 
-    /**
-     * ConcludeCommandHandler constructor.
-     *
-     * @param RepositoryInterface $offerRepository
-     */
-    public function __construct(RepositoryInterface $offerRepository)
+    public function __construct(Repository $offerRepository)
     {
         $this->offerRepository = $offerRepository;
     }

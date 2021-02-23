@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
@@ -17,7 +17,7 @@ use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
 
-final class Calendar implements CalendarInterface, JsonLdSerializableInterface, SerializableInterface
+final class Calendar implements CalendarInterface, JsonLdSerializableInterface, Serializable
 {
     /**
      * @var CalendarType

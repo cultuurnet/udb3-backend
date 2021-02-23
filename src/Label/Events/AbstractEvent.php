@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use ValueObjects\Identity\UUID;
 
-abstract class AbstractEvent implements SerializableInterface
+abstract class AbstractEvent implements Serializable
 {
     public const UUID = 'uuid';
     public const NAME = 'name';

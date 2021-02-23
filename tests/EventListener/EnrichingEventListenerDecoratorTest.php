@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\EventListener;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 use ValueObjects\Geography\Country;
 
 class EnrichingEventListenerDecoratorTest extends TestCase
@@ -32,7 +32,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
     private $enricher;
 
     /**
-     * @var EventListenerInterface|MockObject
+     * @var EventListener|MockObject
      */
     private $decoratee;
 
@@ -44,7 +44,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
     public function setUp(): void
     {
         $this->enricher = $this->createMock(DomainMessageEnricherInterface::class);
-        $this->decoratee = $this->createMock(EventListenerInterface::class);
+        $this->decoratee = $this->createMock(EventListener::class);
         $this->enrichingDecorator = new EnrichingEventListenerDecorator($this->decoratee, $this->enricher);
     }
 

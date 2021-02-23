@@ -2,12 +2,11 @@
 
 namespace CultuurNet\UDB3\UDB2\Actor;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
-use CultuurNet\UDB3\Cdb\UpdateableWithCdbXmlInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Media\Properties\UnsupportedMIMETypeException;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -35,13 +34,13 @@ use ValueObjects\StringLiteral\StringLiteral;
  * Entities targeted by the ActorEventApplier need to implement
  * UpdateableWithCdbXmlInterface.
  */
-class ActorImporter implements EventListenerInterface, LoggerAwareInterface
+class ActorImporter implements EventListener, LoggerAwareInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
     use LoggerAwareTrait;
 
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     protected $repository;
 
@@ -66,7 +65,7 @@ class ActorImporter implements EventListenerInterface, LoggerAwareInterface
     private $labelApplier;
 
     public function __construct(
-        RepositoryInterface $repository,
+        Repository $repository,
         ActorToUDB3AggregateFactoryInterface $actorFactory,
         ActorSpecificationInterface $actorSpecification,
         LabelApplierInterface $labelApplier,

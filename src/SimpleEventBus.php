@@ -1,15 +1,10 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Domain\DomainEventStreamInterface;
+use Broadway\Domain\DomainEventStream;
 
 /**
- * Class SimpleEventBus
- *
  * Extension of Broadway's SimpleEventBus with a configurable callback to be
  * executed before the first message is published. This callback can be used to
  * subscribe listeners.
@@ -39,7 +34,7 @@ class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
         }
     }
 
-    public function publish(DomainEventStreamInterface $domainMessages)
+    public function publish(DomainEventStream $domainMessages): void
     {
         if ($this->first) {
             $this->first = false;

@@ -3,13 +3,13 @@
 namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 
-class FilteringEventListener implements EventListenerInterface
+class FilteringEventListener implements EventListener
 {
     /**
-     * @var EventListenerInterface
+     * @var EventListener
      */
     protected $eventListener;
 
@@ -18,12 +18,8 @@ class FilteringEventListener implements EventListenerInterface
      */
     private $domainMessageSpecification;
 
-    /**
-     * @param EventListenerInterface $eventListener
-     * @param DomainMessageSpecificationInterface $domainMessageSpecification
-     */
     public function __construct(
-        EventListenerInterface $eventListener,
+        EventListener $eventListener,
         DomainMessageSpecificationInterface $domainMessageSpecification
     ) {
         $this->eventListener = $eventListener;

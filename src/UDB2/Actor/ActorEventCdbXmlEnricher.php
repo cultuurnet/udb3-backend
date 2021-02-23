@@ -6,8 +6,8 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\UDB2\Actor\Events\ActorCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Actor\Events\ActorUpdatedEnrichedWithCdbXml;
@@ -31,7 +31,7 @@ use XMLReader;
  * Creates new event messages based on incoming UDB2 events, enriching them with
  * cdb xml so other components do not need to take care of that themselves.
  */
-class ActorEventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInterface
+class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
     use LoggerAwareTrait;
@@ -43,7 +43,7 @@ class ActorEventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInt
     protected $httpClient;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     protected $eventBus;
 
@@ -57,13 +57,8 @@ class ActorEventCdbXmlEnricher implements EventListenerInterface, LoggerAwareInt
      */
     protected $xmlValidationService;
 
-    /**
-     * @param EventBusInterface $eventBus
-     * @param HttpClient $httpClient
-     * @param XMLValidationServiceInterface|null $xmlValidationService
-     */
     public function __construct(
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         HttpClient $httpClient,
         XMLValidationServiceInterface $xmlValidationService = null
     ) {

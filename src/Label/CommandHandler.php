@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Label;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler as AbstractCommandHandler;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\Commands\CreateCopy;
@@ -15,12 +15,12 @@ use ValueObjects\Identity\UUID;
 class CommandHandler extends AbstractCommandHandler
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $repository;
 
     public function __construct(
-        RepositoryInterface $repository
+        Repository $repository
     ) {
         $this->repository = $repository;
     }

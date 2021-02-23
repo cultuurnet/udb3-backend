@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultureFeed_User;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
@@ -19,13 +19,13 @@ class EditSavedSearchesRestController
     private $user;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
     public function __construct(
         CultureFeed_User $user,
-        CommandBusInterface $commandBus
+        CommandBus $commandBus
     ) {
         $this->user = $user;
         $this->commandBus = $commandBus;

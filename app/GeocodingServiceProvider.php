@@ -5,9 +5,8 @@ namespace CultuurNet\UDB3\Silex;
 use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
-use Geocoder\Geocoder;
-use Geocoder\HttpAdapter\CurlHttpAdapter;
-use Geocoder\Provider\GoogleMapsProvider;
+use Geocoder\Provider\GoogleMaps;
+use Ivory\HttpAdapter\CurlHttpAdapter;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -27,14 +26,12 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                 }
 
                 return new DefaultGeocodingService(
-                    new Geocoder(
-                        new GoogleMapsProvider(
-                            new CurlHttpAdapter(),
-                            null,
-                            null,
-                            true,
-                            $googleMapsApiKey
-                        )
+                    new GoogleMaps(
+                        new CurlHttpAdapter(),
+                        null,
+                        null,
+                        true,
+                        $googleMapsApiKey
                     ),
                     $app['logger.command_bus']
                 );

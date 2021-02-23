@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Role;
 
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler as AbstractCommandHandler;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
@@ -21,15 +21,11 @@ use ValueObjects\Identity\UUID;
 class CommandHandler extends AbstractCommandHandler
 {
     /**
-     * @var RepositoryInterface
+     * @var Repository
      */
     private $repository;
 
-    /**
-     * CommandHandler constructor.
-     * @param RepositoryInterface $repository
-     */
-    public function __construct(RepositoryInterface $repository)
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }

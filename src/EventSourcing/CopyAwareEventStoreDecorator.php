@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\EventSourcing;
 
 use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainEventStreamInterface;
 use Broadway\Domain\DomainMessage;
 
 class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
@@ -16,11 +15,7 @@ class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
         return $this->loadCompleteStream(parent::load($id));
     }
 
-    /**
-     * @param DomainEventStreamInterface $eventStream
-     * @return DomainEventStreamInterface
-     */
-    private function loadCompleteStream(DomainEventStreamInterface $eventStream)
+    private function loadCompleteStream(DomainEventStream $eventStream): DomainEventStream
     {
         $events = iterator_to_array($eventStream);
         /** @var DomainMessage $oldestMessage */
@@ -57,12 +52,9 @@ class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
     }
 
     /**
-     * @param DomainEventStreamInterface $eventStream
-     * @param int $playhead
-     *
      * @return DomainMessage[]
      */
-    private function limitEventStreamToPlayhead(DomainEventStreamInterface $eventStream, $playhead)
+    private function limitEventStreamToPlayhead(DomainEventStream $eventStream, int $playhead): array
     {
         return array_filter(
             iterator_to_array($eventStream),

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Offer;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -36,7 +36,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class DefaultOfferEditingServiceTest extends TestCase
 {
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -97,7 +97,7 @@ class DefaultOfferEditingServiceTest extends TestCase
 
     public function setUp()
     {
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->offerRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);

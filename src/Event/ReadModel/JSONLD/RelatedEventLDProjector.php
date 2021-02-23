@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -13,7 +13,7 @@ use CultuurNet\UDB3\PlaceService;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Web\Url;
 
-class RelatedEventLDProjector implements EventListenerInterface
+class RelatedEventLDProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

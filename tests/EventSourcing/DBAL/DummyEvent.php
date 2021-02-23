@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-final class DummyEvent implements SerializableInterface
+final class DummyEvent implements Serializable
 {
     /**
      * @var string

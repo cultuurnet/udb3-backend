@@ -6,10 +6,8 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\Doctrine\ProductionSchemaConfigurator;
 use Doctrine\DBAL\DBALException;
-use phpDocumentor\Reflection\Types\Void_;
 use PHPUnit\Framework\TestCase;
-use Rhumsaa\Uuid\Uuid;
-use ValueObjects\StringLiteral\StringLiteral;
+use Ramsey\Uuid\Uuid;
 
 class ProductionRepositoryTest extends TestCase
 {

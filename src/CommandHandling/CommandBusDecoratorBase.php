@@ -1,21 +1,18 @@
 <?php
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\CommandHandling\CommandHandler;
 
-abstract class CommandBusDecoratorBase implements CommandBusInterface
+abstract class CommandBusDecoratorBase implements CommandBus
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     protected $decoratee;
 
-    public function __construct(CommandBusInterface $decoratee)
+    public function __construct(CommandBus $decoratee)
     {
         $this->decoratee = $decoratee;
     }
@@ -33,7 +30,7 @@ abstract class CommandBusDecoratorBase implements CommandBusInterface
     /**
      * Subscribes the command handler to this CommandBus
      */
-    public function subscribe(CommandHandlerInterface $handler)
+    public function subscribe(CommandHandler $handler)
     {
         $this->decoratee->subscribe($handler);
     }

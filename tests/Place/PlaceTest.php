@@ -38,7 +38,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 use ValueObjects\Person\Age;

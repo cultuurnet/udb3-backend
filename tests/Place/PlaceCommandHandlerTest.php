@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -421,15 +421,15 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
     }
 
     protected function createCommandHandler(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus
-    ) {
+        EventStore $eventStore,
+        EventBus $eventBus
+    ): CommandHandler {
         $repository = new PlaceRepository(
             $eventStore,
             $eventBus
         );
 
-        $this->organizerRepository = $this->createMock(RepositoryInterface::class);
+        $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelRepository->method('getByName')

@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\ReadModel;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class BroadcastingDocumentRepositoryDecoratorTest extends TestCase
 {
     /**
-     * @var EventBusInterface|MockObject
+     * @var EventBus|MockObject
      */
     protected $eventBus;
 
@@ -31,7 +31,7 @@ class BroadcastingDocumentRepositoryDecoratorTest extends TestCase
     public function setUp()
     {
         $this->decoratedRepository = $this->createMock(DocumentRepository::class);
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
         $this->eventFactory = $this->createMock(DocumentEventFactory::class);
 
         $this->repository = new BroadcastingDocumentRepositoryDecorator(

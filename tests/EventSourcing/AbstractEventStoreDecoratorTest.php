@@ -3,15 +3,14 @@
 namespace CultuurNet\UDB3\EventSourcing;
 
 use Broadway\Domain\DomainEventStream;
-use Broadway\Domain\DomainEventStreamInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStore;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractEventStoreDecoratorTest extends TestCase
 {
     /**
-     * @var EventStoreInterface|MockObject
+     * @var EventStore|MockObject
      */
     private $eventStore;
 
@@ -22,7 +21,7 @@ class AbstractEventStoreDecoratorTest extends TestCase
 
     protected function setUp()
     {
-        $this->eventStore = $this->createMock(EventStoreInterface::class);
+        $this->eventStore = $this->createMock(EventStore::class);
 
         $this->abstractEventStoreDecorator = $this->getMockForAbstractClass(
             AbstractEventStoreDecorator::class,
@@ -67,8 +66,8 @@ class AbstractEventStoreDecoratorTest extends TestCase
     public function it_calls_append_on_event_store()
     {
         $id = 'id';
-        /** @var DomainEventStreamInterface $eventStream */
-        $eventStream = $this->createMock(DomainEventStreamInterface::class);
+        /** @var DomainEventStream $eventStream */
+        $eventStream = $this->createMock(DomainEventStream::class);
 
         $this->eventStore->expects($this->once())
             ->method('append')

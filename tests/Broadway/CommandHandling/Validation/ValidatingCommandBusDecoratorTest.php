@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\Broadway\CommandHandling\Validation;
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\CommandHandling\CommandHandlerInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\CommandHandling\CommandHandler;
 use PHPUnit\Framework\TestCase;
 
 class ValidatingCommandBusDecoratorTest extends TestCase
 {
     /**
-     * @var CommandBusInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var CommandBus|\PHPUnit_Framework_MockObject_MockObject
      */
     private $decoratee;
 
@@ -25,7 +25,7 @@ class ValidatingCommandBusDecoratorTest extends TestCase
 
     public function setUp()
     {
-        $this->decoratee = $this->createMock(CommandBusInterface::class);
+        $this->decoratee = $this->createMock(CommandBus::class);
         $this->validator = $this->createMock(CommandValidatorInterface::class);
 
         $this->decorator = new ValidatingCommandBusDecorator(
@@ -69,8 +69,8 @@ class ValidatingCommandBusDecoratorTest extends TestCase
      */
     public function it_should_delegate_subscriptions_to_the_decoratee()
     {
-        /* @var CommandHandlerInterface $handler */
-        $handler = $this->createMock(CommandHandlerInterface::class);
+        /* @var CommandHandler $handler */
+        $handler = $this->createMock(CommandHandler::class);
 
         $this->decoratee->expects($this->once())
             ->method('subscribe')

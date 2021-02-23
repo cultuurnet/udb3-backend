@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\CommandHandling;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
@@ -28,14 +28,8 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
      */
     private $security;
 
-    /**
-     * AuthorizedCommandBus constructor.
-     * @param CommandBusInterface $decoratee
-     * @param UserIdentificationInterface $userIdentification
-     * @param SecurityInterface $security
-     */
     public function __construct(
-        CommandBusInterface $decoratee,
+        CommandBus $decoratee,
         UserIdentificationInterface $userIdentification,
         SecurityInterface $security
     ) {

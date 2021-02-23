@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
@@ -65,15 +65,15 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
     private $commandFactory;
 
     protected function createCommandHandler(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus
+        EventStore $eventStore,
+        EventBus $eventBus
     ) {
         $repository = new EventRepository(
             $eventStore,
             $eventBus
         );
 
-        $this->organizerRepository = $this->createMock(RepositoryInterface::class);
+        $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelRepository->method('getByName')

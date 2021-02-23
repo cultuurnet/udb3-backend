@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Organizer\ProcessManager;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Address\Address;
@@ -26,7 +26,7 @@ use ValueObjects\Geography\Country;
 class GeoCoordinatesProcessManagerTest extends TestCase
 {
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     private $commandBus;
 
@@ -47,7 +47,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
 
     public function setUp()
     {
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
         $this->addressFactory = new CultureFeedAddressFactory();
         $this->logger = $this->createMock(LoggerInterface::class);
 

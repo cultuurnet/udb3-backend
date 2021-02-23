@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use Generator;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use Http\Client\Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -121,7 +121,7 @@ class EventExportService implements EventExportServiceInterface
                     0
                 );
                 $totalItemCount = $preQueryResult->getTotalItems()->toNative();
-            } catch (ClientErrorResponseException $e) {
+            } catch (Exception $e) {
                 $logger->error(
                     'not_exported',
                     array(

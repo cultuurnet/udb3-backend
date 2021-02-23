@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\Event\ReadModel\Calendar;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\EventCdbXMLInterface;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 
-class EventCalendarProjector implements EventListenerInterface
+class EventCalendarProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

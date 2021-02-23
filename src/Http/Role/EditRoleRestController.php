@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http\Role;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Label\Services\ReadServiceInterface;
@@ -28,7 +28,7 @@ class EditRoleRestController
     private $service;
 
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -49,7 +49,7 @@ class EditRoleRestController
 
     public function __construct(
         RoleEditingServiceInterface $service,
-        CommandBusInterface $commandBus,
+        CommandBus $commandBus,
         UpdateRoleRequestDeserializer $updateRoleRequestDeserializer,
         ReadServiceInterface $labelEntityService,
         DeserializerInterface $queryJsonDeserializer

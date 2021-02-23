@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
@@ -10,7 +10,7 @@ use DateTime;
 use DateTimeInterface;
 use InvalidArgumentException;
 
-final class Timestamp implements SerializableInterface
+final class Timestamp implements Serializable
 {
     /**
      * @var DateTimeInterface

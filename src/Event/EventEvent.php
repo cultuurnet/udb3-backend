@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Event;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-abstract class EventEvent implements SerializableInterface
+abstract class EventEvent implements Serializable
 {
     /**
      * @var string

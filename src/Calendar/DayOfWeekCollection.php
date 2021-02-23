@@ -2,14 +2,14 @@
 
 namespace CultuurNet\UDB3\Calendar;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 
 /**
  * @todo Replace by CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days.
  */
-class DayOfWeekCollection implements SerializableInterface
+class DayOfWeekCollection implements Serializable
 {
     /**
      * @var string[]

@@ -7,11 +7,10 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventStore\EventStreamNotFoundException;
-use Broadway\Serializer\SerializerInterface;
+use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Silex\AggregateType;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
@@ -25,12 +24,12 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     private $aggregateAwareDBALEventStore;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     private $payloadSerializer;
 
     /**
-     * @var SerializerInterface
+     * @var Serializer
      */
     private $metadataSerializer;
 
@@ -81,6 +80,29 @@ class AggregateAwareDBALEventStoreTest extends TestCase
 
         $this->assertEquals(
             new DomainEventStream([$domainMessage]),
+            $domainEventStream
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_load_an_aggregate_by_its_id_and_from_a_playhead()
+    {
+        $uuid = new UUID();
+        $domainMessages = $this->createDomainMessages($uuid);
+
+        foreach ($domainMessages as $domainMessage) {
+            $this->insertDomainMessage($domainMessage);
+        }
+
+        $domainEventStream = $this->aggregateAwareDBALEventStore->loadFromPlayhead(
+            $uuid->toNative(),
+            1
+        );
+
+        $this->assertEquals(
+            new DomainEventStream([$domainMessages[1], $domainMessages[2]]),
             $domainEventStream
         );
     }
@@ -155,6 +177,51 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         );
     }
 
+    /**
+     * @param UUID $uuid
+     * @return DomainMessage[]
+     */
+    private function createDomainMessages(UUID $uuid)
+    {
+        return [
+            new DomainMessage(
+                $uuid->toNative(),
+                0,
+                new Metadata([
+                    'meta' => 'meta 0',
+                ]),
+                new DummyEvent(
+                    $uuid->toNative(),
+                    'event 0'
+                ),
+                BroadwayDateTime::now()
+            ),
+            new DomainMessage(
+                $uuid->toNative(),
+                1,
+                new Metadata([
+                    'meta' => 'meta 1',
+                ]),
+                new DummyEvent(
+                    $uuid->toNative(),
+                    'event 1'
+                ),
+                BroadwayDateTime::now()
+            ),
+            new DomainMessage(
+                $uuid->toNative(),
+                2,
+                new Metadata([
+                    'meta' => 'meta 2',
+                ]),
+                new DummyEvent(
+                    $uuid->toNative(),
+                    'event 2'
+                ),
+                BroadwayDateTime::now()
+            ),
+        ];
+    }
 
     /**
      * @param DomainMessage $domainMessage

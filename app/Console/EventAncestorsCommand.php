@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\EventSourcing\AggregateCopiedEventInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,11 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class EventAncestorsCommand extends AbstractCommand
 {
     /**
-     * @var EventStoreInterface
+     * @var EventStore
      */
     private $eventStore;
 
-    public function __construct(CommandBusInterface $commandBus, EventStoreInterface $eventStore)
+    public function __construct(CommandBus $commandBus, EventStore $eventStore)
     {
         parent::__construct($commandBus);
         $this->eventStore = $eventStore;

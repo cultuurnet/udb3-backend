@@ -1,7 +1,7 @@
 <?php
 
-use Broadway\CommandHandling\CommandBusInterface;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\CommandHandling\CommandBus;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
@@ -45,9 +45,9 @@ use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\SentryErrorHandler;
 use CultuurNet\UDB3\Silex\SentryPsrLoggerDecorator;
 use CultuurNet\UDB3\Silex\SentryServiceProvider;
+use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
-use DerAlex\Silex\YamlConfigServiceProvider;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Silex\Application;
@@ -404,7 +404,7 @@ $app['place_relations_projector'] = $app->share(
 $app['event_bus'] = function ($app) {
     $eventBus = new \CultuurNet\UDB3\SimpleEventBus();
 
-    $eventBus->beforeFirstPublication(function (EventBusInterface $eventBus) use ($app) {
+    $eventBus->beforeFirstPublication(function (EventBus $eventBus) use ($app) {
         $subscribers = [
             'event_relations_projector',
             'place_relations_projector',
@@ -486,7 +486,7 @@ $app['event_bus'] = function ($app) {
 
 $app->extend(
     'event_bus',
-    function (EventBusInterface $eventBus) {
+    function (EventBus $eventBus) {
         return new ReplayFlaggingEventBus($eventBus);
     }
 );
@@ -588,14 +588,8 @@ $app['logger.command_bus'] = $app->share(
     }
 );
 
-/**
- * Tie command handlers to command bus.
- * @param CommandBusInterface $commandBus
- * @param Application $app
- * @return CommandBusInterface
- */
-$subscribeCoreCommandHandlers = function (CommandBusInterface $commandBus, Application $app) {
-    $subscribe = function (CommandBusInterface $commandBus) use ($app) {
+$subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $app): CommandBus {
+    $subscribe = function (CommandBus $commandBus) use ($app) {
         // The order is important because the label first needs to be created
         // before it can be added.
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);

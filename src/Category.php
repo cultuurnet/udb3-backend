@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category as Udb3ModelCategory;
 use InvalidArgumentException;
 
-class Category implements SerializableInterface, JsonLdSerializableInterface
+class Category implements Serializable, JsonLdSerializableInterface
 {
     /**
      * @var string

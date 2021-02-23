@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Media;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use League\Flysystem\FilesystemInterface;
@@ -43,7 +43,7 @@ class ImageUploaderServiceTest extends TestCase
     protected $directory = '/uploads';
 
     /**
-     * @var MockObject|CommandBusInterface
+     * @var MockObject|CommandBus
      */
     protected $commandBus;
 
@@ -53,7 +53,7 @@ class ImageUploaderServiceTest extends TestCase
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->filesystem = $this->createMock(FilesystemInterface::class);
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->uploader = new ImageUploaderService(
             $this->uuidGenerator,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Metadata;
 
 use Broadway\Domain\Metadata;
-use Broadway\EventDispatcher\EventDispatcher;
+use Broadway\EventDispatcher\CallableEventDispatcher;
 use Broadway\EventSourcing\MetadataEnrichment\MetadataEnrichingEventStreamDecorator;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\EventSourcing\LazyCallbackMetadataEnricher;
@@ -52,7 +52,7 @@ final class MetadataServiceProvider implements ServiceProviderInterface
 
         $app['command_bus_event_dispatcher'] = $app::share(
             function (Application $app) {
-                $dispatcher = new EventDispatcher();
+                $dispatcher = new CallableEventDispatcher();
                 $dispatcher->addListener(
                     ResqueCommandBus::EVENT_COMMAND_CONTEXT_SET,
                     function ($context) use ($app) {

@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -67,7 +67,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\Theme;
-use Symfony\Component\Serializer\SerializerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
@@ -78,9 +77,8 @@ use ValueObjects\StringLiteral\StringLiteral;
  * dispatch with CdbXMLImporter.
  */
 class EventLDProjector extends OfferLDProjector implements
-    EventListenerInterface,
-    PlaceServiceInterface,
-    OrganizerServiceInterface
+    EventListener,
+    PlaceServiceInterface
 {
     /**
      * @var PlaceService

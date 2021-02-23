@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\Metadata;
-use Broadway\Serializer\SerializerInterface;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultureFeed_Cdb_Data_File;

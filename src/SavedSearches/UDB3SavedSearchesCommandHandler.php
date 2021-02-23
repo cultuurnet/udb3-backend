@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\SavedSearches;
 
-use Broadway\CommandHandling\CommandHandler;
+use Broadway\CommandHandling\SimpleCommandHandler;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearch;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\SavedSearches\WriteModel\SavedSearchRepositoryInterface;
 
-class UDB3SavedSearchesCommandHandler extends CommandHandler
+class UDB3SavedSearchesCommandHandler extends SimpleCommandHandler
 {
     /**
      * @var SavedSearchRepositoryInterface

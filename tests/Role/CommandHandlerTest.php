@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Role;
 
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
-use Broadway\EventHandling\EventBusInterface;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
@@ -191,8 +191,8 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      * @inheritdoc
      */
     protected function createCommandHandler(
-        EventStoreInterface $eventStore,
-        EventBusInterface $eventBus
+        EventStore $eventStore,
+        EventBus $eventBus
     ) {
         return new CommandHandler(new RoleRepository(
             $eventStore,

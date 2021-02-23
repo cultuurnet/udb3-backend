@@ -2,13 +2,13 @@
 
 namespace CultuurNet\UDB3\Label\ReadModels\Roles;
 
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
 use CultuurNet\UDB3\Role\Events\RoleDeleted;
 
-class LabelRolesProjector implements EventListenerInterface
+class LabelRolesProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 

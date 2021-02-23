@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\Place;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventStore\InMemoryEventStore;
 use Broadway\EventStore\TraceableEventStore;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
@@ -39,7 +39,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
     protected $placeEditingService;
 
     /**
-     * @var CommandBusInterface|MockObject
+     * @var CommandBus|MockObject
      */
     protected $commandBus;
 
@@ -59,7 +59,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
     protected $readRepository;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     protected $writeRepository;
 
@@ -75,7 +75,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
 
     public function setUp()
     {
-        $this->commandBus = $this->createMock(CommandBusInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->uuidGenerator = $this->createMock(
             UuidGeneratorInterface::class
@@ -83,7 +83,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
 
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
 
-        /** @var DocumentRepository $repository */
         $this->readRepository = $this->createMock(DocumentRepository::class);
 
         $this->eventStore = new TraceableEventStore(

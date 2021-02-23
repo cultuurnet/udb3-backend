@@ -6,9 +6,8 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventSourcing\EventStreamDecoratorInterface;
-use Broadway\EventStore\DBALEventStore;
-use Broadway\EventStore\EventStoreInterface;
+use Broadway\EventSourcing\EventStreamDecorator;
+use Broadway\EventStore\EventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Silex\AggregateType;
@@ -19,7 +18,7 @@ class EventStreamTest extends TestCase
     use DBALTestConnectionTrait;
 
     /**
-     * @var DBALEventStore
+     * @var AggregateAwareDBALEventStore
      */
     private $eventStore;
 
@@ -34,11 +33,12 @@ class EventStreamTest extends TestCase
         $payloadSerializer = new SimpleInterfaceSerializer();
         $metadataSerializer = new SimpleInterfaceSerializer();
 
-        $this->eventStore = new DBALEventStore(
+        $this->eventStore = new AggregateAwareDBALEventStore(
             $this->getConnection(),
             $payloadSerializer,
             $metadataSerializer,
-            $table
+            $table,
+            AggregateType::EVENT()
         );
 
         $schemaManager = $this->getConnection()->getSchemaManager();
@@ -118,11 +118,11 @@ class EventStreamTest extends TestCase
     /**
      * @test
      * @dataProvider eventStreamDecoratorDataProvider
-     * @param EventStreamDecoratorInterface|null $eventStreamDecorator
+     * @param EventStreamDecorator|null $eventStreamDecorator
      * @param array $expectedDecoratedMetadata
      */
     public function it_retrieves_all_events_from_the_event_store(
-        EventStreamDecoratorInterface $eventStreamDecorator = null,
+        EventStreamDecorator $eventStreamDecorator = null,
         array $expectedDecoratedMetadata = []
     ) {
         $history = $this->fillHistory();
@@ -577,11 +577,7 @@ class EventStreamTest extends TestCase
         return $domainMessages;
     }
 
-    /**
-     * @param DomainMessage[] $domainMessages
-     * @param EventStoreInterface $eventStore
-     */
-    private function appendDomainMessages(EventStoreInterface $eventStore, array $domainMessages)
+    private function appendDomainMessages(EventStore $eventStore, array $domainMessages): void
     {
         foreach ($domainMessages as $domainMessage) {
             $eventStore->append(

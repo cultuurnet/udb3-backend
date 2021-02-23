@@ -6,7 +6,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use ValueObjects\Identity\UUID;
@@ -18,27 +18,18 @@ use ValueObjects\StringLiteral\StringLiteral;
 class EventBusForwardingConsumer extends AbstractConsumer
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
-    /**
-     * @param AMQPStreamConnection $connection
-     * @param EventBusInterface $eventBus
-     * @param DeserializerLocatorInterface $deserializerLocator
-     * @param StringLiteral $consumerTag
-     * @param StringLiteral $exchangeName
-     * @param StringLiteral $queueName
-     * @param int $delay
-     */
     public function __construct(
         AMQPStreamConnection $connection,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         DeserializerLocatorInterface $deserializerLocator,
         StringLiteral $consumerTag,
         StringLiteral $exchangeName,
         StringLiteral $queueName,
-        $delay = 0
+        int $delay = 0
     ) {
         $this->eventBus = $eventBus;
 

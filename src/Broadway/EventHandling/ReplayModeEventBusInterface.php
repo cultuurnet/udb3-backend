@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Broadway\EventHandling;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 
-interface ReplayModeEventBusInterface extends EventBusInterface
+interface ReplayModeEventBusInterface extends EventBus
 {
     public function startReplayMode();
 

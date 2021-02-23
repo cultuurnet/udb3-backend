@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Http;
 
-use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,14 +11,14 @@ use ValueObjects\StringLiteral\StringLiteral;
 trait CommandDeserializerControllerTrait
 {
     /**
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     private $commandBus = null;
 
     /**
-     * @param CommandBusInterface $commandBus
+     * @param CommandBus $commandBus
      */
-    private function setCommandBus(CommandBusInterface $commandBus)
+    private function setCommandBus(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
     }

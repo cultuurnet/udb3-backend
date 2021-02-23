@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use ValueObjects\Identity\UUID;
 
-abstract class AbstractEvent implements SerializableInterface
+abstract class AbstractEvent implements Serializable
 {
     public const UUID = 'uuid';
 

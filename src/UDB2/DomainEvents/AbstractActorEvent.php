@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-abstract class AbstractActorEvent implements SerializableInterface
+abstract class AbstractActorEvent implements Serializable
 {
     use HasActorIdTrait, HasAuthoringMetadataTrait, HasUrlTrait {
         HasActorIdTrait::serialize as serializeActorId;

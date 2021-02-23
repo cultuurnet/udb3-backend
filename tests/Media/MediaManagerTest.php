@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\Repository\AggregateNotFoundException;
-use Broadway\Repository\RepositoryInterface;
+use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
@@ -27,7 +27,7 @@ class MediaManagerTest extends TestCase
     protected $mediaManager;
 
     /**
-     * @var RepositoryInterface|MockObject
+     * @var Repository|MockObject
      */
     protected $repository;
 
@@ -53,7 +53,7 @@ class MediaManagerTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(RepositoryInterface::class);
+        $this->repository = $this->createMock(Repository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
         $this->pathGenerator = $this->createMock(PathGeneratorInterface::class);
         $this->filesystem = $this->createMock(FilesystemInterface::class);
