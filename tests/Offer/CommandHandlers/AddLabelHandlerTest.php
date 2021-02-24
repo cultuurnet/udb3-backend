@@ -31,11 +31,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    private $labelRepository;
-
-    /**
      * @var Entity[]
      */
     private $mockedLabelReadModels;
@@ -47,8 +42,8 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): AddLabelHandler
     {
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository
+        $labelRepository = $this->createMock(ReadRepositoryInterface::class);
+        $labelRepository
             ->method('getByName')
             ->willReturnCallback(
                 function (StringLiteral $name) {
@@ -64,7 +59,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
                 new PlaceRepository($eventStore, $eventBus)
             ),
             $this->labelService,
-            $this->labelRepository
+            $labelRepository
         );
     }
 
