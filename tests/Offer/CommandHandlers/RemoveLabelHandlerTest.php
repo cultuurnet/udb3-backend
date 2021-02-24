@@ -35,6 +35,25 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
+    public function it_should_remove_labels_previously_added_with_the_same_visibility(): void
+    {
+        $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
+
+        $this->scenario
+            ->withAggregateId($id)
+            ->given(
+                [
+                    $this->eventCreated($id),
+                    new LabelAdded($id, new Label('foo', true)),
+                ]
+            )
+            ->when(new RemoveLabel($id, new Label('foo', true)))
+            ->then([new LabelRemoved($id, new Label('foo', true))]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_remove_labels_previously_added_even_if_the_visibility_is_different(): void
     {
         $id = '4c6d4bb8-702b-49f1-b0ca-e51eb09a1c19';
