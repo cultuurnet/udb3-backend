@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
 final class RemoveLabelHandler implements CommandHandler
@@ -22,7 +22,7 @@ final class RemoveLabelHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!($command instanceof AbstractRemoveLabel)) {
+        if (!($command instanceof RemoveLabel)) {
             return;
         }
 

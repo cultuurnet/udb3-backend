@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
@@ -52,7 +52,7 @@ class PlaceCommandFactory implements OfferCommandFactoryInterface
         return new AddLabel($id, $label);
     }
 
-    public function createRemoveLabelCommand(string $id, Label $label): AbstractRemoveLabel
+    public function createRemoveLabelCommand(string $id, Label $label): RemoveLabel
     {
         return new RemoveLabel($id, $label);
     }

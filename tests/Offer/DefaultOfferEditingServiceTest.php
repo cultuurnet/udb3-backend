@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
@@ -64,7 +64,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $addLabelCommand;
 
     /**
-     * @var AbstractRemoveLabel|MockObject
+     * @var RemoveLabel|MockObject
      */
     private $removeLabelCommand;
 
@@ -100,7 +100,7 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->addLabelCommand = new AddLabel('foo', new Label('label1'));
 
         $this->removeLabelCommand = $this->getMockForAbstractClass(
-            AbstractRemoveLabel::class,
+            RemoveLabel::class,
             array('foo', new Label('label1'))
         );
 

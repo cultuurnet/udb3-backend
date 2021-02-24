@@ -28,7 +28,7 @@ interface OfferCommandFactoryInterface
 {
     public function createAddLabelCommand(string $id, Label $label): AddLabel;
 
-    public function createRemoveLabelCommand(string $id, Label $label): AbstractRemoveLabel;
+    public function createRemoveLabelCommand(string $id, Label $label): RemoveLabel;
 
     public function createAddImageCommand(string $id, UUID $imageId): AbstractAddImage;
 
