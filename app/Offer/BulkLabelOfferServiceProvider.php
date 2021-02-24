@@ -22,7 +22,7 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new BulkLabelCommandHandler(
                     $app['search_results_generator'],
-                    $app['external_offer_editing_service']
+                    $app['event_command_bus']
                 );
             }
         );
