@@ -4,30 +4,31 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators;
 
+use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAdded;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use InvalidArgumentException;
 
 final class NewsArticleProcessManager implements EventListener
 {
     /**
-     * @var OfferEditingServiceInterface
-     */
-    private $offerEditingService;
-
-    /**
      * @var LabelFactory
      */
     private $labelFactory;
 
+    /**
+     * @var CommandBus
+     */
+    private $commandBus;
+
     public function __construct(
-        OfferEditingServiceInterface $offerEditingService,
-        LabelFactory $labelFactory
+        LabelFactory $labelFactory,
+        CommandBus $commandBus
     ) {
-        $this->offerEditingService = $offerEditingService;
         $this->labelFactory = $labelFactory;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -58,9 +59,11 @@ final class NewsArticleProcessManager implements EventListener
         }
 
         if ($label) {
-            $this->offerEditingService->addLabel(
-                $newsArticleAboutEventAdded->getEventId(),
-                $label
+            $this->commandBus->dispatch(
+                new AddLabel(
+                    $newsArticleAboutEventAdded->getEventId(),
+                    $label
+                )
             );
         }
     }
