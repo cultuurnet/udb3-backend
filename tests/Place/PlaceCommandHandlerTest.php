@@ -40,9 +40,7 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class PlaceHandlerTest extends CommandHandlerScenarioTestCase
 {
