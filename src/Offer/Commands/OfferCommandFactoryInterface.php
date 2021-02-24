@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Language;
 
 interface OfferCommandFactoryInterface
 {
-    public function createAddLabelCommand(string $id, Label $label): AbstractAddLabel;
+    public function createAddLabelCommand(string $id, Label $label): AddLabel;
 
     public function createRemoveLabelCommand(string $id, Label $label): AbstractRemoveLabel;
 

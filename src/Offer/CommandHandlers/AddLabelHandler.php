@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -43,7 +43,7 @@ final class AddLabelHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!($command instanceof AbstractAddLabel)) {
+        if (!($command instanceof AddLabel)) {
             return;
         }
 

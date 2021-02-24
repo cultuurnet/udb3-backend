@@ -9,7 +9,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
@@ -59,7 +59,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $offerEditingService;
 
     /**
-     * @var AbstractAddLabel|MockObject
+     * @var AddLabel|MockObject
      */
     private $addLabelCommand;
 
@@ -97,10 +97,7 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->typeResolver = $this->createMock(TypeResolverInterface::class);
         $this->themeResolver = $this->createMock(ThemeResolverInterface::class);
 
-        $this->addLabelCommand = $this->getMockForAbstractClass(
-            AbstractAddLabel::class,
-            array('foo', new Label('label1'))
-        );
+        $this->addLabelCommand = new AddLabel('foo', new Label('label1'));
 
         $this->removeLabelCommand = $this->getMockForAbstractClass(
             AbstractRemoveLabel::class,
