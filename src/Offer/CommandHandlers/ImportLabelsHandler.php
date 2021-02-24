@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label as Udb3ModelLabel;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
@@ -36,7 +37,7 @@ final class ImportLabelsHandler implements CommandHandler
             return;
         }
 
-        /** @var \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $importLabel */
+        /** @var Udb3ModelLabel $importLabel */
         foreach ($command->getLabelsToImport() as $importLabel) {
             $this->labelService->createLabelAggregateIfNew(
                 new LabelName($importLabel->getName()->toString()),
