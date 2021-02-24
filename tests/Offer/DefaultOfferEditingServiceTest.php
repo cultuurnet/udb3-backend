@@ -7,10 +7,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
@@ -59,16 +56,6 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $offerEditingService;
 
     /**
-     * @var AddLabel|MockObject
-     */
-    private $addLabelCommand;
-
-    /**
-     * @var RemoveLabel|MockObject
-     */
-    private $removeLabelCommand;
-
-    /**
      * @var string
      */
     private $expectedCommandId;
@@ -97,13 +84,6 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->typeResolver = $this->createMock(TypeResolverInterface::class);
         $this->themeResolver = $this->createMock(ThemeResolverInterface::class);
 
-        $this->addLabelCommand = new AddLabel('foo', new Label('label1'));
-
-        $this->removeLabelCommand = $this->getMockForAbstractClass(
-            RemoveLabel::class,
-            array('foo', new Label('label1'))
-        );
-
         $this->translateTitleCommand = $this->getMockForAbstractClass(
             AbstractUpdateTitle::class,
             array('foo', new Language('en'), new Title('English title'))
@@ -119,54 +99,6 @@ class DefaultOfferEditingServiceTest extends TestCase
         );
 
         $this->expectedCommandId = '123456';
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_add_a_label()
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('get')
-            ->with('foo')
-            ->willReturn(new JsonDocument('foo'));
-
-        $this->commandFactory->expects($this->once())
-            ->method('createAddLabelCommand')
-            ->with('foo', new Label('label1'))
-            ->willReturn($this->addLabelCommand);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->willReturn($this->expectedCommandId);
-
-        $commandId = $this->offerEditingService->addLabel('foo', new Label('label1'));
-
-        $this->assertEquals($this->expectedCommandId, $commandId);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_delete_a_label()
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('get')
-            ->with('foo')
-            ->willReturn(new JsonDocument('foo'));
-
-        $this->commandFactory->expects($this->once())
-            ->method('createRemoveLabelCommand')
-            ->with('foo', new Label('label1'))
-            ->willReturn($this->removeLabelCommand);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->willReturn($this->expectedCommandId);
-
-        $commandId = $this->offerEditingService->removeLabel('foo', new Label('label1'));
-
-        $this->assertEquals($this->expectedCommandId, $commandId);
     }
 
     /**

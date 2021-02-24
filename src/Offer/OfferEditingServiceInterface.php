@@ -6,7 +6,6 @@ use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -15,20 +14,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface OfferEditingServiceInterface
 {
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function addLabel($id, Label $label);
-
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function removeLabel($id, Label $label);
-
     /**
      * @param string $id
      * @param Language $language

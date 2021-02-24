@@ -10,12 +10,9 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
-use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
-use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Identity\UUID;
@@ -85,40 +82,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $c = clone $this;
         $c->publicationDate = $publicationDate;
         return $c;
-    }
-
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function addLabel($id, Label $label)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            new AddLabel(
-                $id,
-                $label
-            )
-        );
-    }
-
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function removeLabel($id, Label $label)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            new RemoveLabel(
-                $id,
-                $label
-            )
-        );
     }
 
     /**
