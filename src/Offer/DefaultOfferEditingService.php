@@ -13,7 +13,9 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Identity\UUID;
@@ -95,7 +97,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $this->guardId($id);
 
         return $this->commandBus->dispatch(
-            $this->commandFactory->createAddLabelCommand(
+            new AddLabel(
                 $id,
                 $label
             )
@@ -112,7 +114,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $this->guardId($id);
 
         return $this->commandBus->dispatch(
-            $this->commandFactory->createRemoveLabelCommand(
+            new RemoveLabel(
                 $id,
                 $label
             )

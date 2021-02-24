@@ -11,12 +11,9 @@ use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Event\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
@@ -47,16 +44,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCommandFactory implements OfferCommandFactoryInterface
 {
-    public function createAddLabelCommand(string $id, Label $label): AddLabel
-    {
-        return new AddLabel($id, $label);
-    }
-
-    public function createRemoveLabelCommand(string $id, Label $label): RemoveLabel
-    {
-        return new RemoveLabel($id, $label);
-    }
-
     public function createUpdateTypeCommand(string $id, EventType $type): AbstractUpdateType
     {
         return new UpdateType($id, $type);
