@@ -40,30 +40,16 @@ final class SimilarEventsRepository extends AbstractDBALRepository
      */
     public function findNextSuggestion(): Suggestion
     {
-        $sql = '
-            SELECT
-                se.similarity, se.event1, se.event2, p1.production_id as production1, p2.production_id as production2
-            FROM
-                similar_events se
-            LEFT JOIN
-                productions p1 ON p1.event_id = se.event1
-            LEFT JOIN
-                productions p2 ON p2.event_id = se.event2
-            WHERE
-                ((p1.production_id IS NULL OR p2.production_id IS NULL OR p1.production_id != p2.production_id))
-                AND
-                CONCAT(LEAST(se.event1, se.event2), GREATEST(se.event1, se.event2))
-                NOT IN
-                (
-                    SELECT
-                        CONCAT(LEAST(event1, event2), GREATEST(event1, event2))
-                    FROM
-                        similar_events_skipped
-                )
-            ORDER BY
-                similarity DESC, se.event1 ASC
-        ';
-        $result = $this->getConnection()->fetchAssoc($sql);
+        $query = $this->getConnection()->createQueryBuilder()
+            ->select('se.similarity, se.event1, se.event2, p1.production_id as production1, p2.production_id as production2')
+            ->from($this->getTableName()->toNative(), 'se')
+            ->leftJoin('se', ProductionRepository::TABLE_NAME, 'p1', 'p1.event_id = se.event1')
+            ->leftJoin('se', ProductionRepository::TABLE_NAME, 'p2', 'p2.event_id = se.event2')
+            ->where('(p1.production_id IS NULL OR p2.production_id IS NULL OR p1.production_id != p2.production_id)')
+            ->andWhere('CONCAT(LEAST(se.event1, se.event2), GREATEST(se.event1, se.event2)) NOT IN (SELECT CONCAT(LEAST(event1, event2), GREATEST(event1, event2)) FROM similar_events_skipped)')
+            ->orderBy('similarity', 'DESC');
+        $results = $query->execute();
+        $result = $results->fetch();
 
         if (!$result) {
             throw new SuggestionsNotFound();
