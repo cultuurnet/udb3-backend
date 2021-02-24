@@ -593,10 +593,6 @@ $app['logger.command_bus'] = $app->share(
 
 $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $app): CommandBus {
     $subscribe = function (CommandBus $commandBus) use ($app) {
-        // The order is important because the label first needs to be created
-        // before it can be added.
-        $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
-
         $commandBus->subscribe(
             new \CultuurNet\UDB3\Event\EventCommandHandler(
                 $app['event_repository'],
@@ -652,6 +648,8 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app[AddLabelHandler::class]);
         $commandBus->subscribe($app[RemoveLabelHandler::class]);
         $commandBus->subscribe($app[ImportLabelsHandler::class]);
+
+        $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
     };
 
     if ($commandBus instanceof LazyLoadingCommandBus) {
