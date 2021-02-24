@@ -44,19 +44,6 @@ class OfferServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['external_offer_editing_service'] = $app->share(
-            function (Application $app) {
-                return new DefaultExternalOfferEditingService(
-                    $app['http.guzzle'],
-                    $app['http.guzzle_psr7_factory'],
-                    new CompositePsr7RequestAuthorizer(
-                        $app['http.jwt_request_authorizer'],
-                        $app['http.api_key_request_authorizer']
-                    )
-                );
-            }
-        );
-
         $app['iri_offer_identifier_factory'] = $app->share(
             function (Application $app) {
                 return new IriOfferIdentifierFactory(
