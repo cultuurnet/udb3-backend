@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use CultuurNet\UDB3\Offer\Commands\AbstractImportLabels;
+use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
 final class ImportLabelsHandler implements CommandHandler
@@ -32,7 +32,7 @@ final class ImportLabelsHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!($command instanceof AbstractImportLabels)) {
+        if (!($command instanceof ImportLabels)) {
             return;
         }
 
