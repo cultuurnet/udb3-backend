@@ -2,10 +2,13 @@
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoJSONDeserializer;
@@ -16,6 +19,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EditOfferRestController
 {
+    /**
+     * @var CommandBus
+     */
+    private $commandBus;
+
     /**
      * @var OfferEditingServiceInterface
      */
@@ -56,18 +64,8 @@ class EditOfferRestController
      */
     private $facilityDeserializer;
 
-    /**
-     * EditOfferRestController constructor.
-     * @param OfferEditingServiceInterface $editingServiceInterface
-     * @param MainLanguageQueryInterface $mainLanguageQuery
-     * @param DeserializerInterface $labelJsonDeserializer
-     * @param DeserializerInterface $titleJsonDeserializer
-     * @param DeserializerInterface $descriptionJsonDeserializer
-     * @param DeserializerInterface $priceInfoJsonDeserializer
-     * @param DeserializerInterface $calendarJsonDeserializer
-     * @param DeserializerInterface $facilityDeserializer
-     */
     public function __construct(
+        CommandBus $commandBus,
         OfferEditingServiceInterface $editingServiceInterface,
         MainLanguageQueryInterface $mainLanguageQuery,
         DeserializerInterface $labelJsonDeserializer,
@@ -77,6 +75,7 @@ class EditOfferRestController
         DeserializerInterface $calendarJsonDeserializer,
         DeserializerInterface $facilityDeserializer
     ) {
+        $this->commandBus = $commandBus;
         $this->editService = $editingServiceInterface;
         $this->mainLanguageQuery = $mainLanguageQuery;
         $this->labelJsonDeserializer = $labelJsonDeserializer;
@@ -89,11 +88,7 @@ class EditOfferRestController
 
     public function addLabel(string $cdbid, string $label): Response
     {
-        $this->editService->addLabel(
-            $cdbid,
-            new Label($label)
-        );
-
+        $this->commandBus->dispatch(new AddLabel($cdbid, new Label($label)));
         return new NoContent();
     }
 
@@ -105,20 +100,14 @@ class EditOfferRestController
         $json = new StringLiteral($request->getContent());
         $label = $this->labelJsonDeserializer->deserialize($json);
 
-        $this->editService->addLabel(
-            $cdbid,
-            $label
-        );
+        $this->commandBus->dispatch(new AddLabel($cdbid, $label));
 
         return new NoContent();
     }
 
     public function removeLabel(string $cdbid, string $label): Response
     {
-        $this->editService->removeLabel(
-            $cdbid,
-            new Label($label)
-        );
+        $this->commandBus->dispatch(new RemoveLabel($cdbid, new Label($label)));
 
         return new NoContent();
     }
