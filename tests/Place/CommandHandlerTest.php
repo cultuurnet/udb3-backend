@@ -42,7 +42,7 @@ use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
 use ValueObjects\Money\Currency;
 
-class PlaceHandlerTest extends CommandHandlerScenarioTestCase
+class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     use OfferCommandHandlerTestTrait;
 
