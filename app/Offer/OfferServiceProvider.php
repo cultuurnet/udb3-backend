@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
-use CultuurNet\UDB3\Http\CompositePsr7RequestAuthorizer;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
@@ -41,19 +40,6 @@ class OfferServiceProvider implements ServiceProviderInterface
                 return (new LocalOfferReadingService($app['iri_offer_identifier_factory']))
                     ->withDocumentRepository(OfferType::EVENT(), $app['event_jsonld_repository'])
                     ->withDocumentRepository(OfferType::PLACE(), $app['place_jsonld_repository']);
-            }
-        );
-
-        $app['external_offer_editing_service'] = $app->share(
-            function (Application $app) {
-                return new DefaultExternalOfferEditingService(
-                    $app['http.guzzle'],
-                    $app['http.guzzle_psr7_factory'],
-                    new CompositePsr7RequestAuthorizer(
-                        $app['http.jwt_request_authorizer'],
-                        $app['http.api_key_request_authorizer']
-                    )
-                );
             }
         );
 

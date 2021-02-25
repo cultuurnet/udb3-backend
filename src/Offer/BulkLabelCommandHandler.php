@@ -2,8 +2,10 @@
 
 namespace CultuurNet\UDB3\Offer;
 
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToQuery;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
@@ -21,24 +23,21 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
     private $resultsGenerator;
 
     /**
-     * @var ExternalOfferEditingServiceInterface
+     * @var CommandBus
      */
-    private $externalOfferEditingService;
+    private $commandBus;
 
     public function __construct(
         ResultsGeneratorInterface $resultsGenerator,
-        ExternalOfferEditingServiceInterface $externalOfferEditingService
+        CommandBus $commandBus
     ) {
         $this->resultsGenerator = $resultsGenerator;
-        $this->externalOfferEditingService = $externalOfferEditingService;
+        $this->commandBus = $commandBus;
 
         $this->setLogger(new NullLogger());
     }
 
-    /**
-     * @param AddLabelToQuery $addLabelToQuery
-     */
-    public function handleAddLabelToQuery(AddLabelToQuery $addLabelToQuery)
+    public function handleAddLabelToQuery(AddLabelToQuery $addLabelToQuery): void
     {
         $label = $addLabelToQuery->getLabel();
         $query = $addLabelToQuery->getQuery();
@@ -53,10 +52,7 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
         }
     }
 
-    /**
-     * @param AddLabelToMultiple $addLabelToMultiple
-     */
-    public function handleAddLabelToMultiple(AddLabelToMultiple $addLabelToMultiple)
+    public function handleAddLabelToMultiple(AddLabelToMultiple $addLabelToMultiple): void
     {
         $label = $addLabelToMultiple->getLabel();
 
@@ -72,19 +68,15 @@ class BulkLabelCommandHandler extends Udb3CommandHandler implements LoggerAwareI
         }
     }
 
-    /**
-     * @param IriOfferIdentifier $offerIdentifier
-     * @param Label $label
-     * @param string|null $originalCommandName
-     *   Original command name, for logging purposes if an entity is not found.
-     */
     private function label(
         IriOfferIdentifier $offerIdentifier,
         Label $label,
-        $originalCommandName = null
-    ) {
+        string $originalCommandName = null
+    ): void {
         try {
-            $this->externalOfferEditingService->addLabel($offerIdentifier, $label);
+            $this->commandBus->dispatch(
+                new AddLabel($offerIdentifier->getId(), $label)
+            );
         } catch (\Exception $e) {
             $logContext = [
                 'iri' => (string) $offerIdentifier->getIri(),
