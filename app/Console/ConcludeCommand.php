@@ -62,7 +62,7 @@ class ConcludeCommand extends AbstractConcludeCommand
 
         $output->writeln('Executing search query: ' . $query);
 
-        $finder = $this->createFinder(intval($input->getOption('page-size')));
+        $finder = $this->createFinder((int) $input->getOption('page-size'));
 
         /** @var IriOfferIdentifier[] $results */
         $results = $finder->search($query);
