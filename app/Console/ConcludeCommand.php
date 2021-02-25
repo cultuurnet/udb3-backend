@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use DateTime;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -77,8 +78,8 @@ class ConcludeCommand extends AbstractConcludeCommand
 
     private function createLuceneQuery(Carbon $lowerDateBoundary, Carbon $upperDateBoundary): string
     {
-        $from = $lowerDateBoundary ? $lowerDateBoundary->format(\DATE_ATOM) : '*';
-        $to = $upperDateBoundary->format(\DATE_ATOM);
+        $from = $lowerDateBoundary ? $lowerDateBoundary->format(DateTime::ATOM) : '*';
+        $to = $upperDateBoundary->format(DateTime::ATOM);
 
         return "_type:event AND availableRange:[{$from} TO {$to}]";
     }
