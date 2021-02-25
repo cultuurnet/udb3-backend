@@ -22,4 +22,13 @@ class OrganizerRepository extends EventSourcingRepository
             $eventStreamDecorators
         );
     }
+
+    public function load($id): Organizer
+    {
+        // Overwritten to add better return type based on the Aggregate class passed in the constructor.
+        // Docblock added for PHPStan
+        /** @var Organizer $organizer */
+        $organizer = parent::load($id);
+        return $organizer;
+    }
 }
