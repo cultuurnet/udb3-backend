@@ -80,7 +80,7 @@ class ConcludeCommand extends AbstractConcludeCommand
     {
         $sapiDateRange = $this->createSolrDateRangeString($lowerDateBoundary, $upperDateBoundary);
 
-        return "type:event AND availableto:{$sapiDateRange}";
+        return "_type:event AND availableRange:{$sapiDateRange}";
     }
 
     /**
