@@ -122,6 +122,8 @@
       "composer phpstan",
       "composer test",
       "composer phpcs"
-    ]
+    ],
+    "cs": "php-cs-fixer fix -v --diff --dry-run",
+    "cs-fix": "php-cs-fixer fix -v --diff"
   }
 }
