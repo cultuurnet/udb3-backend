@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use DateTime;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,7 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConcludeCommand extends AbstractConcludeCommand
 {
     const TIMEZONE = 'Europe/Brussels';
-    const SOLR_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     /**
      * @var SearchServiceInterface
@@ -29,7 +29,7 @@ class ConcludeCommand extends AbstractConcludeCommand
     }
 
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('event:conclude')
@@ -55,14 +55,14 @@ class ConcludeCommand extends AbstractConcludeCommand
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        list($lowerDateBoundary, $upperDateBoundary) = $this->processArguments($input);
-        $query = $this->createSolrQuery($lowerDateBoundary, $upperDateBoundary);
+        [$lowerDateBoundary, $upperDateBoundary] = $this->processArguments($input);
+        $query = $this->createLuceneQuery($lowerDateBoundary, $upperDateBoundary);
 
         $output->writeln('Executing search query: ' . $query);
 
-        $finder = $this->createFinder(intval($input->getOption('page-size')));
+        $finder = $this->createFinder((int) $input->getOption('page-size'));
 
         /** @var IriOfferIdentifier[] $results */
         $results = $finder->search($query);
@@ -76,34 +76,12 @@ class ConcludeCommand extends AbstractConcludeCommand
         return 0;
     }
 
-    private function createSolrQuery(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
+    private function createLuceneQuery(Carbon $lowerDateBoundary, Carbon $upperDateBoundary): string
     {
-        $sapiDateRange = $this->createSolrDateRangeString($lowerDateBoundary, $upperDateBoundary);
+        $from = $lowerDateBoundary ? $lowerDateBoundary->format(DateTime::ATOM) : '*';
+        $to = $upperDateBoundary->format(DateTime::ATOM);
 
-        return "type:event AND availableto:{$sapiDateRange}";
-    }
-
-    /**
-     * @param Carbon|null $lowerDateBoundary
-     * @param Carbon|null $upperDateBoundary
-     *
-     * @return string
-     */
-    private function createSolrDateRangeString(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
-    {
-        $from = $lowerDateBoundary ? $this->getSolrFormattedDateTime($lowerDateBoundary) : '*';
-        $to = $this->getSolrFormattedDateTime($upperDateBoundary);
-
-        return "[{$from} TO {$to}]";
-    }
-
-    /**
-     * @param Carbon $date
-     * @return string
-     */
-    private function getSolrFormattedDateTime(Carbon $date)
-    {
-        return $date->tz('UTC')->format(self::SOLR_DATE_TIME_FORMAT);
+        return "_type:event AND availableRange:[{$from} TO {$to}]";
     }
 
     private function createFinder(int $pageSize) : ResultsGenerator
@@ -115,11 +93,7 @@ class ConcludeCommand extends AbstractConcludeCommand
         );
     }
 
-    /**
-     * @param InputInterface $input
-     * @return array
-     */
-    private function processArguments(InputInterface $input)
+    private function processArguments(InputInterface $input): array
     {
         $lowerBoundaryInput = $input->getArgument('lower-boundary');
 
