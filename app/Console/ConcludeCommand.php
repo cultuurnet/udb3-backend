@@ -15,7 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConcludeCommand extends AbstractConcludeCommand
 {
     const TIMEZONE = 'Europe/Brussels';
-    const LUCENE_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     /**
      * @var SearchServiceInterface
@@ -78,22 +77,10 @@ class ConcludeCommand extends AbstractConcludeCommand
 
     private function createLuceneQuery(Carbon $lowerDateBoundary, Carbon $upperDateBoundary): string
     {
-        $sapiDateRange = $this->createLuceneDateRangeString($lowerDateBoundary, $upperDateBoundary);
+        $from = $lowerDateBoundary ? $lowerDateBoundary->format(\DATE_ATOM) : '*';
+        $to = $upperDateBoundary->format(\DATE_ATOM);
 
-        return "_type:event AND availableRange:{$sapiDateRange}";
-    }
-
-    private function createLuceneDateRangeString(Carbon $lowerDateBoundary, Carbon $upperDateBoundary): string
-    {
-        $from = $lowerDateBoundary ? $this->getLuceneFormattedDateTime($lowerDateBoundary) : '*';
-        $to = $this->getLuceneFormattedDateTime($upperDateBoundary);
-
-        return "[{$from} TO {$to}]";
-    }
-
-    private function getLuceneFormattedDateTime(Carbon $date): string
-    {
-        return $date->tz('UTC')->format(self::LUCENE_DATE_TIME_FORMAT);
+        return "_type:event AND availableRange:[{$from} TO {$to}]";
     }
 
     private function createFinder(int $pageSize) : ResultsGenerator
