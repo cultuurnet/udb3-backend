@@ -7,15 +7,12 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\AgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
-use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
@@ -47,16 +44,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class PlaceCommandFactory implements OfferCommandFactoryInterface
 {
-    public function createAddLabelCommand(string $id, Label $label): AbstractAddLabel
-    {
-        return new AddLabel($id, $label);
-    }
-
-    public function createRemoveLabelCommand(string $id, Label $label): AbstractRemoveLabel
-    {
-        return new RemoveLabel($id, $label);
-    }
-
     public function createAddImageCommand(string $id, UUID $imageId): AbstractAddImage
     {
         return new AddImage($id, $imageId);

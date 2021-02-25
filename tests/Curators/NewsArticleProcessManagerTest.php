@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators;
 
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumer;
 use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\SimpleEventBus;
 use InvalidArgumentException;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -26,9 +27,9 @@ final class NewsArticleProcessManagerTest extends TestCase
     private $eventBusForwardingConsumer;
 
     /**
-     * @var OfferEditingServiceInterface|MockObject
+     * @var TraceableCommandBus
      */
-    private $offerEditingService;
+    private $commandBus;
 
     /**
      * @var array
@@ -44,12 +45,12 @@ final class NewsArticleProcessManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->offerEditingService = $this->createMock(OfferEditingServiceInterface::class);
+        $this->commandBus = new TraceableCommandBus();
         $this->labelFactory = $this->createMock(LabelFactory::class);
 
         $processManager = new NewsArticleProcessManager(
-            $this->offerEditingService,
-            $this->labelFactory
+            $this->labelFactory,
+            $this->commandBus
         );
 
         $eventBus = new SimpleEventBus();
@@ -113,14 +114,14 @@ final class NewsArticleProcessManagerTest extends TestCase
             ->with(new PublisherName('bruzz'))
             ->willReturn($expectedLabel);
 
-        $this->offerEditingService->expects($this->once())
-            ->method('addLabel')
-            ->with(
-                'F8E5055F-66C4-4929-ABB9-822B9F5328F1',
-                $expectedLabel
-            );
+        $this->commandBus->record();
 
         $this->eventBusForwardingConsumer->consume($message);
+
+        $this->assertEquals(
+            [new AddLabel('F8E5055F-66C4-4929-ABB9-822B9F5328F1', $expectedLabel)],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
@@ -147,8 +148,13 @@ final class NewsArticleProcessManagerTest extends TestCase
             ->with(new PublisherName('bruzz'))
             ->willThrowException(new InvalidArgumentException());
 
-        $this->offerEditingService->expects($this->never())->method('addLabel');
+        $this->commandBus->record();
 
         $this->eventBusForwardingConsumer->consume($message);
+
+        $this->assertEquals(
+            [],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 }

@@ -4,15 +4,9 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteCurrentOrganizer;
-use CultuurNet\UDB3\Offer\Commands\AbstractImportLabels;
-use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteTypicalAgeRange;
@@ -38,7 +32,6 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractPublish;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
 use CultuurNet\UDB3\Organizer\Organizer;
-use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class OfferCommandHandler extends Udb3CommandHandler
 {
@@ -53,11 +46,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     protected $organizerRepository;
 
     /**
-     * @var ReadRepositoryInterface
-     */
-    protected $labelRepository;
-
-    /**
      * @var MediaManagerInterface|MediaManager
      */
     protected $mediaManager;
@@ -65,12 +53,10 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
     public function __construct(
         Repository $offerRepository,
         Repository $organizerRepository,
-        ReadRepositoryInterface $labelRepository,
         MediaManagerInterface $mediaManager
     ) {
         $this->offerRepository = $offerRepository;
         $this->organizerRepository = $organizerRepository;
-        $this->labelRepository = $labelRepository;
         $this->mediaManager = $mediaManager;
     }
 
@@ -113,21 +99,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
         return $commands;
     }
-
-    /**
-     * @return string
-     */
-    abstract protected function getAddLabelClassName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getRemoveLabelClassName();
-
-    /**
-     * @return string
-     */
-    abstract protected function getImportLabelsClassName();
 
     /**
      * @return string
@@ -286,59 +257,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer = $this->load($updateFacilities->getItemId());
 
         $offer->updateFacilities($updateFacilities->getFacilities());
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * @param AbstractAddLabel $addLabel
-     */
-    private function handleAddLabel(AbstractAddLabel $addLabel)
-    {
-        $offer = $this->load($addLabel->getItemId());
-
-        $labelName = (string) $addLabel->getLabel();
-        $labelVisibility = $addLabel->getLabel()->isVisible();
-
-        // Load the label read model so we can determine the correct visibility.
-        $labelEntity = $this->labelRepository->getByName(new StringLiteral($labelName));
-        if ($labelEntity instanceof Label\ReadModels\JSON\Repository\Entity) {
-            $labelVisibility = $labelEntity->getVisibility() === Visibility::VISIBLE();
-        }
-
-        $offer->addLabel(
-            new Label($labelName, $labelVisibility)
-        );
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * @param AbstractRemoveLabel $removeLabel
-     */
-    private function handleRemoveLabel(AbstractRemoveLabel $removeLabel)
-    {
-        $offer = $this->load($removeLabel->getItemId());
-
-        // Label visibility does not matter when removing, both the aggregate and the projectors remove the label from
-        // both the visible and hidden label lists.
-        $offer->removeLabel($removeLabel->getLabel());
-
-        $this->offerRepository->save($offer);
-    }
-
-    /**
-     * @param AbstractImportLabels $importLabels
-     */
-    private function handleImportLabels(AbstractImportLabels $importLabels)
-    {
-        $offer = $this->load($importLabels->getItemId());
-
-        $offer->importLabels(
-            $importLabels->getLabelsToImport(),
-            $importLabels->getLabelsToKeepIfAlreadyOnOffer(),
-            $importLabels->getLabelsToRemoveWhenOnOffer()
-        );
 
         $this->offerRepository->save($offer);
     }

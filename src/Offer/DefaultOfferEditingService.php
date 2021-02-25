@@ -10,9 +10,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
@@ -44,11 +41,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     protected $commandFactory;
 
     /**
-     * @var LabelServiceInterface
-     */
-    private $labelService;
-
-    /**
      * @var \DateTimeImmutable|null
      */
     protected $publicationDate;
@@ -68,7 +60,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
-        LabelServiceInterface $labelService,
         TypeResolverInterface $typeResolver,
         ThemeResolverInterface $themeResolver
     ) {
@@ -76,7 +67,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $this->uuidGenerator = $uuidGenerator;
         $this->readRepository = $readRepository;
         $this->commandFactory = $commandFactory;
-        $this->labelService = $labelService;
         $this->typeResolver = $typeResolver;
         $this->themeResolver = $themeResolver;
         $this->publicationDate = null;
@@ -92,45 +82,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $c = clone $this;
         $c->publicationDate = $publicationDate;
         return $c;
-    }
-
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function addLabel($id, Label $label)
-    {
-        $this->guardId($id);
-
-        $this->labelService->createLabelAggregateIfNew(
-            new LabelName((string) $label),
-            $label->isVisible()
-        );
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createAddLabelCommand(
-                $id,
-                $label
-            )
-        );
-    }
-
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function removeLabel($id, Label $label)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createRemoveLabelCommand(
-                $id,
-                $label
-            )
-        );
     }
 
     /**

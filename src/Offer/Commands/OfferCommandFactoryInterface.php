@@ -7,7 +7,6 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
@@ -26,10 +25,6 @@ use CultuurNet\UDB3\Language;
 
 interface OfferCommandFactoryInterface
 {
-    public function createAddLabelCommand(string $id, Label $label): AbstractAddLabel;
-
-    public function createRemoveLabelCommand(string $id, Label $label): AbstractRemoveLabel;
-
     public function createAddImageCommand(string $id, UUID $imageId): AbstractAddImage;
 
     public function createRemoveImageCommand(string $id, Image $image): AbstractRemoveImage;

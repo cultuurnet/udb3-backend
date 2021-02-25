@@ -7,15 +7,12 @@ use CultuurNet\UDB3\Place\Commands\AddImage;
 use CultuurNet\UDB3\Place\Commands\CreatePlace;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
-use CultuurNet\UDB3\Place\Commands\ImportLabels;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Place\Commands\RemoveImage;
-use CultuurNet\UDB3\Place\Commands\AddLabel;
-use CultuurNet\UDB3\Place\Commands\RemoveLabel;
 use CultuurNet\UDB3\Place\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeletePlace;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
@@ -43,30 +40,6 @@ use Psr\Log\LoggerAwareTrait;
 class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    /**
-     * @return string
-     */
-    protected function getAddLabelClassName()
-    {
-        return AddLabel::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRemoveLabelClassName()
-    {
-        return RemoveLabel::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getImportLabelsClassName()
-    {
-        return ImportLabels::class;
-    }
 
     /**
      * @return string

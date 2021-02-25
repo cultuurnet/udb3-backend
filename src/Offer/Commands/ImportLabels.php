@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Security\LabelSecurityInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-abstract class AbstractImportLabels extends AbstractCommand implements LabelSecurityInterface
+final class ImportLabels extends AbstractCommand implements LabelSecurityInterface
 {
     /**
      * @var Labels

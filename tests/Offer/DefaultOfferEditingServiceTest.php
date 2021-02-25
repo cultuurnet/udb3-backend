@@ -7,12 +7,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\Commands\AbstractAddLabel;
-use CultuurNet\UDB3\Offer\Commands\AbstractRemoveLabel;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdatePriceInfo;
 use CultuurNet\UDB3\Offer\Commands\AbstractUpdateTitle;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
@@ -56,24 +51,9 @@ class DefaultOfferEditingServiceTest extends TestCase
     private $commandFactory;
 
     /**
-     * @var LabelServiceInterface|MockObject
-     */
-    private $labelService;
-
-    /**
      * @var DefaultOfferEditingService
      */
     private $offerEditingService;
-
-    /**
-     * @var AbstractAddLabel|MockObject
-     */
-    private $addLabelCommand;
-
-    /**
-     * @var AbstractRemoveLabel|MockObject
-     */
-    private $removeLabelCommand;
 
     /**
      * @var string
@@ -101,19 +81,8 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->offerRepository = $this->createMock(DocumentRepository::class);
         $this->commandFactory = $this->createMock(OfferCommandFactoryInterface::class);
-        $this->labelService = $this->createMock(LabelServiceInterface::class);
         $this->typeResolver = $this->createMock(TypeResolverInterface::class);
         $this->themeResolver = $this->createMock(ThemeResolverInterface::class);
-
-        $this->addLabelCommand = $this->getMockForAbstractClass(
-            AbstractAddLabel::class,
-            array('foo', new Label('label1'))
-        );
-
-        $this->removeLabelCommand = $this->getMockForAbstractClass(
-            AbstractRemoveLabel::class,
-            array('foo', new Label('label1'))
-        );
 
         $this->translateTitleCommand = $this->getMockForAbstractClass(
             AbstractUpdateTitle::class,
@@ -125,64 +94,11 @@ class DefaultOfferEditingServiceTest extends TestCase
             $this->uuidGenerator,
             $this->offerRepository,
             $this->commandFactory,
-            $this->labelService,
             $this->typeResolver,
             $this->themeResolver
         );
 
         $this->expectedCommandId = '123456';
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_add_a_label()
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('get')
-            ->with('foo')
-            ->willReturn(new JsonDocument('foo'));
-
-        $this->labelService->expects($this->once())
-            ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('label1'));
-
-        $this->commandFactory->expects($this->once())
-            ->method('createAddLabelCommand')
-            ->with('foo', new Label('label1'))
-            ->willReturn($this->addLabelCommand);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->willReturn($this->expectedCommandId);
-
-        $commandId = $this->offerEditingService->addLabel('foo', new Label('label1'));
-
-        $this->assertEquals($this->expectedCommandId, $commandId);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_delete_a_label()
-    {
-        $this->offerRepository->expects($this->once())
-            ->method('get')
-            ->with('foo')
-            ->willReturn(new JsonDocument('foo'));
-
-        $this->commandFactory->expects($this->once())
-            ->method('createRemoveLabelCommand')
-            ->with('foo', new Label('label1'))
-            ->willReturn($this->removeLabelCommand);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->willReturn($this->expectedCommandId);
-
-        $commandId = $this->offerEditingService->removeLabel('foo', new Label('label1'));
-
-        $this->assertEquals($this->expectedCommandId, $commandId);
     }
 
     /**

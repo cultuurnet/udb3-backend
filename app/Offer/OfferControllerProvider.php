@@ -62,6 +62,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             $app[$controllerName] = $app->share(
                 function (Application $app) use ($serviceNames, $offerType) {
                     return new EditOfferRestController(
+                        $app['event_command_bus'],
                         $app[$serviceNames[0]],
                         $app[$serviceNames[1]],
                         new LabelJSONDeserializer(),
