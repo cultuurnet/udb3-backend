@@ -29,7 +29,7 @@ class ConcludeCommand extends AbstractConcludeCommand
     }
 
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('event:conclude')
@@ -55,7 +55,7 @@ class ConcludeCommand extends AbstractConcludeCommand
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         [$lowerDateBoundary, $upperDateBoundary] = $this->processArguments($input);
         $query = $this->createLuceneQuery($lowerDateBoundary, $upperDateBoundary);
@@ -76,20 +76,14 @@ class ConcludeCommand extends AbstractConcludeCommand
         return 0;
     }
 
-    private function createLuceneQuery(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
+    private function createLuceneQuery(Carbon $lowerDateBoundary, Carbon $upperDateBoundary): string
     {
         $sapiDateRange = $this->createLuceneDateRangeString($lowerDateBoundary, $upperDateBoundary);
 
         return "_type:event AND availableRange:{$sapiDateRange}";
     }
 
-    /**
-     * @param Carbon|null $lowerDateBoundary
-     * @param Carbon|null $upperDateBoundary
-     *
-     * @return string
-     */
-    private function createLuceneDateRangeString(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
+    private function createLuceneDateRangeString(Carbon $lowerDateBoundary, Carbon $upperDateBoundary): string
     {
         $from = $lowerDateBoundary ? $this->getLuceneFormattedDateTime($lowerDateBoundary) : '*';
         $to = $this->getLuceneFormattedDateTime($upperDateBoundary);
@@ -97,11 +91,7 @@ class ConcludeCommand extends AbstractConcludeCommand
         return "[{$from} TO {$to}]";
     }
 
-    /**
-     * @param Carbon $date
-     * @return string
-     */
-    private function getLuceneFormattedDateTime(Carbon $date)
+    private function getLuceneFormattedDateTime(Carbon $date): string
     {
         return $date->tz('UTC')->format(self::LUCENE_DATE_TIME_FORMAT);
     }
@@ -115,11 +105,7 @@ class ConcludeCommand extends AbstractConcludeCommand
         );
     }
 
-    /**
-     * @param InputInterface $input
-     * @return array
-     */
-    private function processArguments(InputInterface $input)
+    private function processArguments(InputInterface $input): array
     {
         $lowerBoundaryInput = $input->getArgument('lower-boundary');
 
