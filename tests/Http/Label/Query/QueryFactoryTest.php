@@ -12,10 +12,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryFactoryTest extends TestCase
 {
-    const QUERY_VALUE = 'label';
-    const USER_ID_VALUE = 'userId';
-    const START_VALUE = 5;
-    const LIMIT_VALUE = 10;
+    public const QUERY_VALUE = 'label';
+    public const USER_ID_VALUE = 'userId';
+    public const START_VALUE = 5;
+    public const LIMIT_VALUE = 10;
 
     /**
      * @var UserIdentificationInterface|MockObject

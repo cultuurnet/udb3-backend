@@ -7,7 +7,7 @@ use Twig\TwigFunction;
 
 class GoogleMapUrlGenerator extends AbstractExtension
 {
-    const STATIC_MAP_URL = 'https://maps.googleapis.com/maps/api/staticmap';
+    public const STATIC_MAP_URL = 'https://maps.googleapis.com/maps/api/staticmap';
 
     /**
      * @var string

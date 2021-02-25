@@ -18,16 +18,16 @@ class Version19700101000001 extends AbstractMigration
         // @see \Broadway\EventStore\DBALEventStore
         $table = $schema->createTable('organizers');
 
-        $table->addColumn('id', 'integer', array('autoincrement' => true));
-        $table->addColumn('uuid', 'guid', array('length' => 36));
-        $table->addColumn('playhead', 'integer', array('unsigned' => true));
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('uuid', 'guid', ['length' => 36]);
+        $table->addColumn('playhead', 'integer', ['unsigned' => true]);
         $table->addColumn('payload', 'text');
         $table->addColumn('metadata', 'text');
-        $table->addColumn('recorded_on', 'string', array('length' => 32));
+        $table->addColumn('recorded_on', 'string', ['length' => 32]);
         $table->addColumn('type', 'text');
 
-        $table->setPrimaryKey(array('id'));
-        $table->addUniqueIndex(array('uuid', 'playhead'));
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['uuid', 'playhead']);
     }
 
     /**

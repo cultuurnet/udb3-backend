@@ -41,7 +41,6 @@ class EventExportCommandHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-
         $this->eventExportService = $this->createMock(EventExportServiceInterface::class);
 
         $this->princeXMLBinaryPath = 'PrinceXML path';

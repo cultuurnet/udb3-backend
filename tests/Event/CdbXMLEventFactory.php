@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 
 class CdbXMLEventFactory
 {
-    const AN_EVENT_ID = 'someId';
+    public const AN_EVENT_ID = 'someId';
     /**
      * @var string
      */

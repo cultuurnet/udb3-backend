@@ -6,5 +6,4 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 
 class Published extends AbstractPublished
 {
-
 }

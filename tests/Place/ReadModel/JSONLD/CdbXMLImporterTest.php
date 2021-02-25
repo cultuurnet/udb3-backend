@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 class CdbXMLImporterTest extends TestCase
 {
-
     /**
      * @var CdbXMLImporter
      */

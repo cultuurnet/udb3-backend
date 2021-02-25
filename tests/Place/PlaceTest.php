@@ -108,7 +108,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $contactPoint = new ContactPoint(
-            ['016/101010',],
+            ['016/101010'],
             ['test@2dotstwice.be', 'admin@2dotstwice.be'],
             ['http://www.2dotstwice.be']
         );

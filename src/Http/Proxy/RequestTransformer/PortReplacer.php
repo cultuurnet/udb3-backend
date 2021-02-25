@@ -11,7 +11,7 @@ class PortReplacer implements RequestTransformerInterface
      * @var PortNumber
      */
     private $port;
-    
+
     public function __construct(PortNumber $port)
     {
         $this->port = $port;

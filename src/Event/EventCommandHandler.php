@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Event\Commands\AddImage;

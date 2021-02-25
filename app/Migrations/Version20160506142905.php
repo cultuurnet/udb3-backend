@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20160506142905 extends AbstractMigration
 {
-    const PLACE_RELATIONS = 'place_relations';
+    public const PLACE_RELATIONS = 'place_relations';
 
     /**
      * @param Schema $schema
@@ -22,15 +22,15 @@ class Version20160506142905 extends AbstractMigration
         $table->addColumn(
             'place',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
         $table->addColumn(
             'organizer',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
 
-        $table->setPrimaryKey(array('place'));
+        $table->setPrimaryKey(['place']);
     }
 
     /**

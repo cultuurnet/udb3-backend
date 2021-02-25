@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Storage\PurgeServiceManager;
  */
 class PurgeServiceProvider implements ServiceProviderInterface
 {
-    const PURGE_SERVICE_MANAGER = 'purgeServiceManager';
+    public const PURGE_SERVICE_MANAGER = 'purgeServiceManager';
 
     /**
      * @inheritdoc

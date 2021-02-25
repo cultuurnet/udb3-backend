@@ -7,7 +7,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class AcceptFilter implements FilterInterface
 {
-    const ACCEPT = 'Accept';
+    public const ACCEPT = 'Accept';
 
     /**
      * @var StringLiteral

@@ -35,7 +35,7 @@ class CdbXmlProxy extends Proxy
         ClientInterface $client
     ) {
         $cdbXmlFilter = $this->createFilter($accept);
-        
+
         $requestTransformer = $this->createTransformer($domain, $port);
 
         parent::__construct(
@@ -69,9 +69,9 @@ class CdbXmlProxy extends Proxy
         PortNumber $port
     ) {
         $domainReplacer = new DomainReplacer($domain);
-        
+
         $portReplacer = new PortReplacer($port);
-        
+
         return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 }

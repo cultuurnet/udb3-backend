@@ -6,13 +6,13 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\OfferIdentifierCollection;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
-use function http_build_query;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use ValueObjects\Number\Integer;
 use ValueObjects\Web\Url;
+use function http_build_query;
 
 class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
 {

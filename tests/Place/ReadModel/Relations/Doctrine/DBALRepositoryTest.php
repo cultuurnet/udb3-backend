@@ -56,7 +56,7 @@ class DBALRepositoryTest extends TestCase
     public function it_removes_a_relation_based_on_place_id()
     {
         $storedRelations = $this->seedPlaceRelations($this->repository);
-        
+
         $this->repository->removeRelations('placeId5');
 
         $actualRelations = $this->getAll($this->connection);

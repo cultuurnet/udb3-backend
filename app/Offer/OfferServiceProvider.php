@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
-use CultuurNet\UDB3\Offer\DefaultExternalOfferEditingService;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\LocalOfferReadingService;
 use CultuurNet\UDB3\Offer\OfferRepository;

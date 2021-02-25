@@ -2089,7 +2089,7 @@ class EventValidatorTest extends TestCase
 
         // @codingStandardsIgnoreStart
         $expectedErrors = [
-            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"'
+            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"',
         ];
         // @codingStandardsIgnoreEnd
 

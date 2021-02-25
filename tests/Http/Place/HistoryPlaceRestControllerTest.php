@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
@@ -11,9 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HistoryPlaceRestControllerTest extends TestCase
 {
-    const EXISTING_ID = 'existingId';
-    const NON_EXISTING_ID = 'nonExistingId';
-    const REMOVED_ID = 'removedId';
+    public const EXISTING_ID = 'existingId';
+    public const NON_EXISTING_ID = 'nonExistingId';
+    public const REMOVED_ID = 'removedId';
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|UserIdentificationInterface

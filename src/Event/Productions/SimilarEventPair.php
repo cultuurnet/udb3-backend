@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
@@ -20,7 +22,7 @@ class SimilarEventPair
         $this->eventTwo = $eventTwo;
     }
 
-    public static function fromArray(array $eventIds) : SimilarEventPair
+    public static function fromArray(array $eventIds): SimilarEventPair
     {
         if (!array_key_exists(0, $eventIds) || !array_key_exists(1, $eventIds)) {
             throw new \InvalidArgumentException();

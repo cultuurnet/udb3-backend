@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event;
 
-use \CultureFeed_Uitpas_Event_CultureEvent as Event;
+use CultureFeed_Uitpas_Event_CultureEvent as Event;
 use PHPUnit\Framework\TestCase;
 
 class PointCollectingSpecificationTest extends TestCase

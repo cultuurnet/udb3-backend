@@ -9,9 +9,9 @@ use Doctrine\DBAL\Types\Type;
 
 class Version20160808143623 extends AbstractMigration
 {
-    const USER_ID_COLUMN = 'user_id';
-    const ROLE_ID_COLUMN = 'role_id';
-    const PERMISSION_COLUMN = 'permission';
+    public const USER_ID_COLUMN = 'user_id';
+    public const ROLE_ID_COLUMN = 'role_id';
+    public const PERMISSION_COLUMN = 'permission';
 
     /**
      * @param Schema $schema
@@ -28,7 +28,7 @@ class Version20160808143623 extends AbstractMigration
             ->setLength(36)
             ->setNotnull(true);
 
-        $userRoleTable->setPrimaryKey(array(self::USER_ID_COLUMN, self::ROLE_ID_COLUMN));
+        $userRoleTable->setPrimaryKey([self::USER_ID_COLUMN, self::ROLE_ID_COLUMN]);
 
 
         $rolePermissionTable = $schema->createTable(UserPermissionsServiceProvider::ROLE_PERMISSIONS_TABLE);
@@ -41,7 +41,7 @@ class Version20160808143623 extends AbstractMigration
             ->setLength(255)
             ->setNotnull(true);
 
-        $rolePermissionTable->setPrimaryKey(array(self::ROLE_ID_COLUMN, self::PERMISSION_COLUMN));
+        $rolePermissionTable->setPrimaryKey([self::ROLE_ID_COLUMN, self::PERMISSION_COLUMN]);
     }
 
     /**

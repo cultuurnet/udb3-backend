@@ -30,7 +30,7 @@ class AbstractTranslatePropertyCommandTest extends TestCase
 
         $this->translatePropertyCommand = $this->getMockForAbstractClass(
             AbstractTranslatePropertyCommand::class,
-            array($this->itemId, $this->language)
+            [$this->itemId, $this->language]
         );
     }
 

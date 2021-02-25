@@ -8,7 +8,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ContentTypeFilterTest extends TestCase
 {
-    const APPLICATION_XML = 'application/xml';
+    public const APPLICATION_XML = 'application/xml';
 
     /**
      * @var Request

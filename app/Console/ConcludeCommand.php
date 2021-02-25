@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ConcludeCommand extends AbstractConcludeCommand
 {
-    const TIMEZONE = 'Europe/Brussels';
+    public const TIMEZONE = 'Europe/Brussels';
 
     /**
      * @var SearchServiceInterface
@@ -84,7 +84,7 @@ class ConcludeCommand extends AbstractConcludeCommand
         return "_type:event AND availableRange:[{$from} TO {$to}]";
     }
 
-    private function createFinder(int $pageSize) : ResultsGenerator
+    private function createFinder(int $pageSize): ResultsGenerator
     {
         return new ResultsGenerator(
             $this->searchService,
@@ -124,6 +124,6 @@ class ConcludeCommand extends AbstractConcludeCommand
             );
         }
 
-        return array($lowerDateBoundary, $upperDateBoundary);
+        return [$lowerDateBoundary, $upperDateBoundary];
     }
 }

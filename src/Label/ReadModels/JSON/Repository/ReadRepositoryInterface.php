@@ -26,7 +26,7 @@ interface ReadRepositoryInterface
      * @return bool
      */
     public function canUseLabel(StringLiteral $userId, StringLiteral $name);
-    
+
     /**
      * @param Query $query
      * @return Entity[]|null

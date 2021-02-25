@@ -254,19 +254,19 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = UUID::generateAsString();
 
         $contactPoint = new ContactPoint(
-            ['016/101010',],
+            ['016/101010'],
             ['test@2dotstwice.be', 'admin@2dotstwice.be'],
             ['http://www.2dotstwice.be']
         );
 
         $sameContactPoint = new ContactPoint(
-            ['016/101010',],
+            ['016/101010'],
             ['test@2dotstwice.be', 'admin@2dotstwice.be'],
             ['http://www.2dotstwice.be']
         );
 
         $otherContactPoint = new ContactPoint(
-            ['02/101010',],
+            ['02/101010'],
             ['admin@public.be', 'test@public.be'],
             ['http://www.public.be']
         );

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\StringFilter;
 
 /**
@@ -8,7 +7,6 @@ namespace CultuurNet\UDB3\StringFilter;
  */
 interface StringFilterInterface
 {
-
     /**
      * @param string $string
      * @return string

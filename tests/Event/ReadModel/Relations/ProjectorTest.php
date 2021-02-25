@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProjectorTest extends TestCase
 {
-    const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    public const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
      * @var RepositoryInterface|MockObject

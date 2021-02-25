@@ -20,14 +20,14 @@ use ValueObjects\Enum\Enum;
  */
 class Permission extends Enum
 {
-    const AANBOD_BEWERKEN = 'Aanbod bewerken';
-    const AANBOD_MODEREREN = 'Aanbod modereren';
-    const AANBOD_VERWIJDEREN = 'Aanbod verwijderen';
-    const ORGANISATIES_BEHEREN = 'Organisaties beheren';
-    const ORGANISATIES_BEWERKEN = 'Organisaties bewerken';
-    const GEBRUIKERS_BEHEREN = 'Gebruikers beheren';
-    const LABELS_BEHEREN = 'Labels beheren';
-    const MEDIA_UPLOADEN = 'Media uploaden';
-    const VOORZIENINGEN_BEWERKEN = 'Voorzieningen bewerken';
-    const PRODUCTIES_AANMAKEN = 'Producties aanmaken';
+    public const AANBOD_BEWERKEN = 'Aanbod bewerken';
+    public const AANBOD_MODEREREN = 'Aanbod modereren';
+    public const AANBOD_VERWIJDEREN = 'Aanbod verwijderen';
+    public const ORGANISATIES_BEHEREN = 'Organisaties beheren';
+    public const ORGANISATIES_BEWERKEN = 'Organisaties bewerken';
+    public const GEBRUIKERS_BEHEREN = 'Gebruikers beheren';
+    public const LABELS_BEHEREN = 'Labels beheren';
+    public const MEDIA_UPLOADEN = 'Media uploaden';
+    public const VOORZIENINGEN_BEWERKEN = 'Voorzieningen bewerken';
+    public const PRODUCTIES_AANMAKEN = 'Producties aanmaken';
 }

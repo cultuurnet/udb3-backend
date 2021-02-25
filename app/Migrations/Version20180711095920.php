@@ -17,12 +17,12 @@ class Version20180711095920 extends AbstractMigration
         $table->addColumn(
             'organizer_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'user_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->setPrimaryKey(['organizer_id', 'user_id']);

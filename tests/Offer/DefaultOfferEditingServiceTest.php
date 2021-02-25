@@ -86,7 +86,7 @@ class DefaultOfferEditingServiceTest extends TestCase
 
         $this->translateTitleCommand = $this->getMockForAbstractClass(
             AbstractUpdateTitle::class,
-            array('foo', new Language('en'), new Title('English title'))
+            ['foo', new Language('en'), new Title('English title')]
         );
 
         $this->offerEditingService = new DefaultOfferEditingService(
@@ -174,7 +174,7 @@ class DefaultOfferEditingServiceTest extends TestCase
 
         $updatePriceInfoCommand = $this->getMockForAbstractClass(
             AbstractUpdatePriceInfo::class,
-            array($aggregateId, $priceInfo)
+            [$aggregateId, $priceInfo]
         );
 
         $this->commandFactory->expects($this->once())

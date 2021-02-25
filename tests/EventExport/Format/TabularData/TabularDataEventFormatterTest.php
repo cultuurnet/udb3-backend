@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 
 class TabularDataEventFormatterTest extends TestCase
 {
-
     private function getJSONEventFromFile($fileName)
     {
         $jsonEvent = file_get_contents(
@@ -71,11 +70,11 @@ class TabularDataEventFormatterTest extends TestCase
         $formatter = new TabularDataEventFormatter($includedProperties);
 
         $formattedEvent = $formatter->formatEvent($eventWithTerms);
-        $expectedFormatting = array(
+        $expectedFormatting = [
             "id" =>"d1f0e71d-a9a8-4069-81fb-530134502c58",
             "terms.eventtype" => "Cursus of workshop",
             "terms.theme" => "Geschiedenis",
-        );
+        ];
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
     }
@@ -135,13 +134,13 @@ class TabularDataEventFormatterTest extends TestCase
         $formatter = new TabularDataEventFormatter($includedProperties);
 
         $formattedEvent = $formatter->formatEvent($eventWithTerms);
-        $expectedFormatting = array(
+        $expectedFormatting = [
             "id" =>"d1f0e71d-a9a8-4069-81fb-530134502c58",
             "address.streetAddress" => "Sint-Jorisplein 20 ",
             "address.postalCode" => "3300",
             "address.addressLocality" => "Tienen",
             "address.addressCountry" => "BE",
-        );
+        ];
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
     }
@@ -247,7 +246,7 @@ class TabularDataEventFormatterTest extends TestCase
     public function it_can_format_an_empty_image()
     {
         $event = $this->getJSONEventFromFile('event_without_image.json');
-        $formatter = new TabularDataEventFormatter(array('image'));
+        $formatter = new TabularDataEventFormatter(['image']);
         $formattedEvent = $formatter->formatEvent($event);
 
         $this->assertTrue(isset($formattedEvent['image.url']));
@@ -271,12 +270,12 @@ class TabularDataEventFormatterTest extends TestCase
 
         $formattedEvent = $formatter->formatEvent($eventWithContactPoints);
 
-        $expectedFormatting = array(
+        $expectedFormatting = [
             "id" =>"16744083-859a-4d3d-bd1d-16ea5bd3e2a3",
             "contactPoint.email" => "nicolas.leroy+test@gmail.com;jane.doe@example.com",
             "contactPoint.phone" => "016 66 69 99;016 99 96 66",
             "contactPoint.url" => "http://contact.example.com;https://contact.example.com",
-        );
+        ];
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
     }
@@ -294,10 +293,10 @@ class TabularDataEventFormatterTest extends TestCase
         $formatter = new TabularDataEventFormatter($includedProperties);
 
         $formattedEvent = $formatter->formatEvent($eventWithAvailableDate);
-        $expectedFormatting = array(
+        $expectedFormatting = [
             "id" =>"16744083-859a-4d3d-bd1d-16ea5bd3e2a3",
             "available" => "2015-10-13",
-        );
+        ];
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
     }
@@ -326,10 +325,10 @@ class TabularDataEventFormatterTest extends TestCase
         /* @codingStandardsIgnoreEnd */
 
         $formattedEvent = $formatter->formatEvent($eventWithUnwantedLineBreaks);
-        $expectedFormatting = array(
+        $expectedFormatting = [
             'id' =>'ee7c4030-d69f-4584-b0f2-a700955c7df2',
             'description' => $expectedDescription,
-        );
+        ];
 
         $this->assertEquals($expectedFormatting, $formattedEvent);
     }

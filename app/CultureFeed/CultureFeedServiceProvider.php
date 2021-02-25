@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Silex\CultureFeed;
 
-use CultuurNet\UitidCredentials\UitidCredentialsFetcher;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

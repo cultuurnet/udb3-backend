@@ -24,7 +24,7 @@ class Version20181106123049 extends AbstractMigration
         $table->addColumn(
             SchemaConfigurator::UUID_COLUMN,
             Type::GUID,
-            array('length' => 36)
+            ['length' => 36]
         );
 
         $table->addColumn(
@@ -39,12 +39,12 @@ class Version20181106123049 extends AbstractMigration
         )
             ->setNotnull(false);
 
-        $table->setPrimaryKey(array(SchemaConfigurator::UUID_COLUMN));
+        $table->setPrimaryKey([SchemaConfigurator::UUID_COLUMN]);
         $table->addUniqueIndex(
-            array(
+            [
                 SchemaConfigurator::UUID_COLUMN,
                 SchemaConfigurator::NAME_COLUMN,
-            )
+            ]
         );
     }
 

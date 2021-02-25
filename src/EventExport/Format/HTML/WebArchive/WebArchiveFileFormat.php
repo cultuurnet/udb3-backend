@@ -39,7 +39,7 @@ abstract class WebArchiveFileFormat
             'subtitle' => $subtitle,
             'footer' => $footer,
             'publisher' => $publisher,
-            'partner' => !in_array($brand, array('uit', 'vlieg', 'uitpas', 'paspartoe')),
+            'partner' => !in_array($brand, ['uit', 'vlieg', 'uitpas', 'paspartoe']),
         ];
         $this->htmlFileWriter = new HTMLFileWriter("export.{$template->getValue()}.html.twig", $variables, $twig);
     }

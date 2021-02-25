@@ -22,15 +22,15 @@ class HeaderFilter implements FilterInterface
         $this->header = $header;
         $this->expectedValue = $expectedValue;
     }
-    
+
     public function matches(RequestInterface $request)
     {
         $value = new StringLiteral('');
-        
+
         if ($request->getHeaderLine($this->header)) {
             $value = new StringLiteral($request->getHeaderLine($this->header));
         }
-        
+
         return $this->expectedValue->sameValueAs($value);
     }
 }

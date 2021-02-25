@@ -53,12 +53,12 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
 
             $connection->delete(
                 $this->userRoleTableName,
-                array(SchemaConfigurator::ROLE_ID_COLUMN => (string)$roleId)
+                [SchemaConfigurator::ROLE_ID_COLUMN => (string)$roleId]
             );
 
             $connection->delete(
                 $this->rolePermissionTableName,
-                array(SchemaConfigurator::ROLE_ID_COLUMN => (string)$roleId)
+                [SchemaConfigurator::ROLE_ID_COLUMN => (string)$roleId]
             );
 
             $connection->commit();
@@ -75,10 +75,10 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     {
         $this->connection->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
-            )
+            ]
         );
     }
 
@@ -89,10 +89,10 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     {
         $this->connection->delete(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => (string) $permission,
-            )
+            ]
         );
     }
 
@@ -103,10 +103,10 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     {
         $this->connection->insert(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
-            )
+            ]
         );
     }
 
@@ -117,10 +117,10 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
     {
         $this->connection->delete(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::USER_ID_COLUMN => (string) $userId,
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-            )
+            ]
         );
     }
 }

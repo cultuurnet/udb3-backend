@@ -10,7 +10,7 @@ class Language
     use IsString;
     use MatchesRegexPattern;
 
-    const REGEX = '/^[a-z]{2}$/';
+    public const REGEX = '/^[a-z]{2}$/';
 
     /**
      * @param string $code

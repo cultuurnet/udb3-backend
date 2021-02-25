@@ -52,7 +52,6 @@ use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
 use CultuurNet\UDB3\ReadModel\MultilingualJsonLDProjectorTrait;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\SluggerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use ValueObjects\Identity\UUID;
 
 abstract class OfferLDProjector implements OrganizerServiceInterface
@@ -138,7 +137,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         if (isset($eventHandlers[$eventName])) {
             $handler = $eventHandlers[$eventName];
-            $jsonDocuments = call_user_func(array($this, $handler), $event, $domainMessage);
+            $jsonDocuments = call_user_func([$this, $handler], $event, $domainMessage);
         } elseif ($methodName = $this->getHandleMethodName($event)) {
             $jsonDocuments = $this->{$methodName}($event, $domainMessage);
         } else {
@@ -177,7 +176,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 $classNameMethod = 'get' . $event . 'ClassName';
 
                 if (method_exists($this, $classNameMethod)) {
-                    $eventFullClassName = call_user_func(array($this, $classNameMethod));
+                    $eventFullClassName = call_user_func([$this, $classNameMethod]);
                     $events[$eventFullClassName] = $method;
                 }
             }
@@ -385,7 +384,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $terms = isset($offerLd->terms) ? $offerLd->terms : array();
+        $terms = isset($offerLd->terms) ? $offerLd->terms : [];
 
         // Remove all old facilities + get numeric keys.
         $terms = array_values(array_filter(
@@ -697,9 +696,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $offerLd->organizer = array(
+        $offerLd->organizer = [
                 '@type' => 'Organizer',
-            ) + $this->organizerJSONLD($organizerUpdated->getOrganizerId());
+            ] + $this->organizerJSONLD($organizerUpdated->getOrganizerId());
 
         return $document->withBody($offerLd);
     }

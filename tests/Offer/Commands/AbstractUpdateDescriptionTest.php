@@ -37,7 +37,7 @@ class AbstractUpdateDescriptionTest extends TestCase
 
         $this->updateDescriptionCommand = $this->getMockForAbstractClass(
             AbstractUpdateDescription::class,
-            array($this->itemId, $this->language, $this->description)
+            [$this->itemId, $this->language, $this->description]
         );
     }
 

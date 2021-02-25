@@ -120,15 +120,15 @@ class CalendarConverter implements CalendarConverterInterface
             $weekScheme = new CultureFeed_Cdb_Data_Calendar_Weekscheme();
 
             // Multiple opening times can happen on same day. Store them in array.
-            $openingTimesPerDay = array(
-                'monday' => array(),
-                'tuesday' => array(),
-                'wednesday' => array(),
-                'thursday' => array(),
-                'friday' => array(),
-                'saturday' => array(),
-                'sunday' => array(),
-            );
+            $openingTimesPerDay = [
+                'monday' => [],
+                'tuesday' => [],
+                'wednesday' => [],
+                'thursday' => [],
+                'friday' => [],
+                'saturday' => [],
+                'sunday' => [],
+            ];
 
             foreach ($openingHours as $openingHour) {
                 // In CDB2 every day needs to be a seperate entry.

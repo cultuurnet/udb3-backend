@@ -59,7 +59,7 @@ class DBALRepository implements PermissionRepositoryInterface, PermissionQueryIn
 
         $results = $q->execute();
 
-        $events = array();
+        $events = [];
         while ($id = $results->fetchColumn(0)) {
             $events[] = new StringLiteral($id);
         }
@@ -91,7 +91,7 @@ class DBALRepository implements PermissionRepositoryInterface, PermissionQueryIn
         $this->connection->update(
             $this->tableName->toNative(),
             ['user_id' => $userId->toNative()],
-            [$this->idField->toNative() => $eventId->toNative(),]
+            [$this->idField->toNative() => $eventId->toNative()]
         );
     }
 }

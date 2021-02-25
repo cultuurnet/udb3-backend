@@ -82,7 +82,7 @@ class ProductionsSearchControllerTest extends TestCase
             Uuid::uuid4()->toString(),
         ];
 
-        $productions = [new Production($productionId, $name, $events),];
+        $productions = [new Production($productionId, $name, $events)];
         $this->repository->expects($this->once())->method('count')->with('foo')->willReturn(43);
         $this->repository->expects($this->once())->method('search')->with('foo', 30, 15)->willReturn($productions);
 

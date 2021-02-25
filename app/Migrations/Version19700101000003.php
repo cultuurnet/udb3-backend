@@ -21,20 +21,20 @@ class Version19700101000003 extends AbstractMigration
         $table->addColumn(
             'event',
             'string',
-            array('length' => 32, 'notnull' => false)
+            ['length' => 32, 'notnull' => false]
         );
         $table->addColumn(
             'organizer',
             'string',
-            array('length' => 32, 'notnull' => false)
+            ['length' => 32, 'notnull' => false]
         );
         $table->addColumn(
             'place',
             'string',
-            array('length' => 32, 'notnull' => false)
+            ['length' => 32, 'notnull' => false]
         );
 
-        $table->setPrimaryKey(array('event'));
+        $table->setPrimaryKey(['event']);
     }
 
     /**

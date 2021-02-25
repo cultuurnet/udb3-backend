@@ -10,8 +10,8 @@ use Silex\ControllerProviderInterface;
 
 class LabelsControllerProvider implements ControllerProviderInterface
 {
-    const READ_REST_CONTROLLER = 'labels.read_rest_controller';
-    const EDIT_REST_CONTROLLER = 'labels.edit_rest_controller';
+    public const READ_REST_CONTROLLER = 'labels.read_rest_controller';
+    public const EDIT_REST_CONTROLLER = 'labels.edit_rest_controller';
 
     /**
      * @inheritdoc

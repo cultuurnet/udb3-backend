@@ -11,10 +11,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    const ID = 'id';
-    const USER = 'user_id';
-    const NAME = 'name';
-    const QUERY = 'query';
+    public const ID = 'id';
+    public const USER = 'user_id';
+    public const NAME = 'name';
+    public const QUERY = 'query';
 
     /**
      * @var StringLiteral

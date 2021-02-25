@@ -89,14 +89,14 @@ final class MediaObjectCreated implements Serializable
 
     public function serialize(): array
     {
-        return array(
+        return [
             'media_object_id' => $this->getMediaObjectId()->toNative(),
             'mime_type' => $this->getMimeType()->toNative(),
             'description' => $this->getDescription()->toNative(),
             'copyright_holder' => $this->getCopyrightHolder()->toNative(),
             'source_location' => (string) $this->getSourceLocation(),
             'language' => (string) $this->getLanguage(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): MediaObjectCreated

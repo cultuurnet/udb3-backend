@@ -30,7 +30,7 @@ class OfferLocator implements EventStreamDecorator
         DomainEventStream $eventStream
     ): DomainEventStream {
         $offerLocation = $this->iriGenerator->iri($aggregateIdentifier);
-        $messages = array();
+        $messages = [];
 
         /** @var DomainMessage $message */
         foreach ($eventStream as $message) {

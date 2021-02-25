@@ -515,7 +515,6 @@ class OrganizerLDProjector implements EventListener
 
     public function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
     {
-
         $document = $this->repository->get($geoCoordinatesUpdated->getOrganizerId());
 
         $jsonLD = $document->getBody();

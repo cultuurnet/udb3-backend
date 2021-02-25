@@ -128,7 +128,6 @@ class ExportEventsAsPDF implements ExportEventsInterface
      */
     public function withSubtitle(Subtitle $subtitle)
     {
-
         $exportEvents = clone $this;
         $exportEvents->setSubtitle($subtitle);
 

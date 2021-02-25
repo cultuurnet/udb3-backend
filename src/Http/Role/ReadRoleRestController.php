@@ -205,11 +205,11 @@ class ReadRoleRestController
 
         $result = $this->roleSearchRepository->search($query, $itemsPerPage, $start);
 
-        $data = (object) array(
+        $data = (object) [
             'itemsPerPage' => $result->getItemsPerPage(),
             'member' => $result->getMember(),
             'totalItems' => $result->getTotalItems(),
-        );
+        ];
 
         return (new JsonResponse())
             ->setData($data)

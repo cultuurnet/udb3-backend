@@ -62,7 +62,7 @@ use ValueObjects\DateTime\Minute;
 
 class EventLDProjectorTest extends OfferLDProjectorTestBase
 {
-    const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    public const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
      * @var PlaceService|MockObject
@@ -106,7 +106,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @param array  $data
      * @param string $dataName
      */
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName, 'CultuurNet\\UDB3\\Event');
     }
@@ -1293,7 +1293,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $importedDate = '2015-03-01T10:17:19.176169+02:00';
 
-        $metadata = array();
+        $metadata = [];
         $metadata['user_nick'] = 'Jantest';
         $metadata['consumer']['name'] = 'UiTDatabank';
 

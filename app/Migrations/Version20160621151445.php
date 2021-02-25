@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20160621151445 extends AbstractMigration
 {
-    const ROLES = 'roles';
+    public const ROLES = 'roles';
 
     /**
      * @param Schema $schema
@@ -19,16 +19,16 @@ class Version20160621151445 extends AbstractMigration
     {
         $table = $schema->createTable(self::ROLES);
 
-        $table->addColumn('id', 'integer', array('autoincrement' => true));
-        $table->addColumn('uuid', 'guid', array('length' => 36));
-        $table->addColumn('playhead', 'integer', array('unsigned' => true));
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('uuid', 'guid', ['length' => 36]);
+        $table->addColumn('playhead', 'integer', ['unsigned' => true]);
         $table->addColumn('payload', 'text');
         $table->addColumn('metadata', 'text');
-        $table->addColumn('recorded_on', 'string', array('length' => 32));
+        $table->addColumn('recorded_on', 'string', ['length' => 32]);
         $table->addColumn('type', 'text');
 
-        $table->setPrimaryKey(array('id'));
-        $table->addUniqueIndex(array('uuid', 'playhead'));
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['uuid', 'playhead']);
     }
 
     /**

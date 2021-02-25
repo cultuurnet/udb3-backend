@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Label;

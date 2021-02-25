@@ -90,7 +90,7 @@ class TabularDataEventFormatter
 
     public function formatHeader()
     {
-        $columns = array();
+        $columns = [];
         foreach ($this->includedProperties as $property) {
             $columns[] = $this->columns()[$property]['name'];
         }
@@ -157,7 +157,7 @@ class TabularDataEventFormatter
 
     public function emptyRow()
     {
-        $row = array();
+        $row = [];
 
         foreach ($this->includedProperties as $property) {
             $row[$property] = '';
@@ -587,7 +587,7 @@ class TabularDataEventFormatter
                 'name' => 'externe ids',
                 'include' => function ($event) {
                     if (property_exists($event, 'sameAs')) {
-                        $ids = array();
+                        $ids = [];
 
                         foreach ($event->sameAs as $externalId) {
                             $ids[] = $externalId;
@@ -638,7 +638,7 @@ class TabularDataEventFormatter
             'contactPoint.reservations.telephone' => [
                 'name' => 'telefoon reservaties',
                 'include' => function () {
-                        return '';
+                    return '';
                 },
                 'property' => 'contactPoint',
             ],

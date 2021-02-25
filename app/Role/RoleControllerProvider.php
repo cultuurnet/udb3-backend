@@ -13,7 +13,6 @@ use Silex\ControllerProviderInterface;
 
 class RoleControllerProvider implements ControllerProviderInterface
 {
-
     /**
      * Returns routes to connect to the given application.
      *

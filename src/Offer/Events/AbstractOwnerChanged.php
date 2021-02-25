@@ -36,10 +36,10 @@ abstract class AbstractOwnerChanged implements Serializable
 
     public function serialize(): array
     {
-        return array(
+        return [
             'offer_id' => $this->offerId,
             'new_owner_id' => $this->newOwnerId,
-        );
+        ];
     }
 
     public static function deserialize(array $data): self

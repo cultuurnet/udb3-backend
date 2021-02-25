@@ -89,7 +89,7 @@ class AggregateAwareDBALEventStore implements EventStore
         $statement->bindValue('playhead', $playhead);
         $statement->execute();
 
-        $events = array();
+        $events = [];
         while ($row = $statement->fetch()) {
             // Drop events that do not match the aggregate type.
             if ($row['aggregate_type'] !== $this->aggregateType) {
@@ -133,7 +133,7 @@ class AggregateAwareDBALEventStore implements EventStore
      */
     private function insertMessage(Connection $connection, DomainMessage $domainMessage)
     {
-        $data = array(
+        $data = [
             'uuid'           => (string) $domainMessage->getId(),
             'playhead'       => $domainMessage->getPlayhead(),
             'metadata'       => json_encode($this->metadataSerializer->serialize($domainMessage->getMetadata())),
@@ -141,7 +141,7 @@ class AggregateAwareDBALEventStore implements EventStore
             'recorded_on'    => $domainMessage->getRecordedOn()->toString(),
             'type'           => $domainMessage->getType(),
             'aggregate_type' => $this->aggregateType,
-        );
+        ];
 
         $connection->insert($this->tableName, $data);
     }
@@ -168,18 +168,18 @@ class AggregateAwareDBALEventStore implements EventStore
 
         $table = $schema->createTable($this->tableName);
 
-        $table->addColumn('id', 'integer', array('autoincrement' => true));
-        $table->addColumn('uuid', 'guid', array('length' => 36,));
-        $table->addColumn('playhead', 'integer', array('unsigned' => true));
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('uuid', 'guid', ['length' => 36]);
+        $table->addColumn('playhead', 'integer', ['unsigned' => true]);
         $table->addColumn('payload', 'text');
         $table->addColumn('metadata', 'text');
-        $table->addColumn('recorded_on', 'string', array('length' => 32));
-        $table->addColumn('type', 'string', array('length' => 128));
-        $table->addColumn('aggregate_type', 'string', array('length' => 128));
+        $table->addColumn('recorded_on', 'string', ['length' => 32]);
+        $table->addColumn('type', 'string', ['length' => 128]);
+        $table->addColumn('aggregate_type', 'string', ['length' => 128]);
 
-        $table->setPrimaryKey(array('id'));
+        $table->setPrimaryKey(['id']);
 
-        $table->addUniqueIndex(array('uuid', 'playhead'));
+        $table->addUniqueIndex(['uuid', 'playhead']);
 
         $table->addIndex(['type']);
         $table->addIndex(['aggregate_type']);

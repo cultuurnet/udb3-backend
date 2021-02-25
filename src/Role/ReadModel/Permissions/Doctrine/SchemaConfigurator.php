@@ -9,9 +9,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    const USER_ID_COLUMN = 'user_id';
-    const ROLE_ID_COLUMN = 'role_id';
-    const PERMISSION_COLUMN = 'permission';
+    public const USER_ID_COLUMN = 'user_id';
+    public const ROLE_ID_COLUMN = 'role_id';
+    public const PERMISSION_COLUMN = 'permission';
 
     /**
      * @var StringLiteral
@@ -53,7 +53,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
                 ->setNotnull(true);
 
 
-            $userRoleTable->setPrimaryKey(array(self::USER_ID_COLUMN, self::ROLE_ID_COLUMN));
+            $userRoleTable->setPrimaryKey([self::USER_ID_COLUMN, self::ROLE_ID_COLUMN]);
 
             $schemaManager->createTable($userRoleTable);
         }
@@ -69,7 +69,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
                 ->setLength(255)
                 ->setNotnull(true);
 
-            $rolePermissionTable->setPrimaryKey(array(self::ROLE_ID_COLUMN, self::PERMISSION_COLUMN));
+            $rolePermissionTable->setPrimaryKey([self::ROLE_ID_COLUMN, self::PERMISSION_COLUMN]);
 
             $schemaManager->createTable($rolePermissionTable);
         }

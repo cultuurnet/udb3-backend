@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;

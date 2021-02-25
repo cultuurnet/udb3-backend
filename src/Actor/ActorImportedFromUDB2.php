@@ -36,17 +36,17 @@ class ActorImportedFromUDB2 extends ActorEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'cdbxml' => $this->cdbXml,
             'cdbXmlNamespaceUri' => $this->cdbXmlNamespaceUri,
-        );
+        ];
     }
 
     public static function deserialize(array $data): ActorImportedFromUDB2
     {
-        $data += array(
+        $data += [
             'cdbXmlNamespaceUri' => \CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2'),
-        );
+        ];
         return new static(
             $data['actor_id'],
             $data['cdbxml'],

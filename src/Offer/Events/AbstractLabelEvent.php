@@ -25,10 +25,10 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'label' => (string) $this->label,
             'visibility' => $this->label->isVisible(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractLabelEvent

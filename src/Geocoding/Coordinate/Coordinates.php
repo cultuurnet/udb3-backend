@@ -62,8 +62,8 @@ class Coordinates
             throw new \InvalidArgumentException("Lat lon string is not in the expected format (lat,lon).");
         }
 
-        $lat = new Latitude((double) $split[0]);
-        $lon = new Longitude((double) $split[1]);
+        $lat = new Latitude((float) $split[0]);
+        $lon = new Longitude((float) $split[1]);
 
         return new Coordinates($lat, $lon);
     }

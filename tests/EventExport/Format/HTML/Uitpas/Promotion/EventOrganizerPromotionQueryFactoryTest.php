@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion;
 
 use CultureFeed_Uitpas_Calendar;

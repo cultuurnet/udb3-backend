@@ -291,9 +291,9 @@ class EventLDProjector extends OfferLDProjector implements
         $this->setMainLanguage($jsonLD, $eventCreated->getMainLanguage());
 
         $jsonLD->name[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
-        $jsonLD->location = array(
+        $jsonLD->location = [
                 '@type' => 'Place',
-            ) + $this->placeJSONLD(
+            ] + $this->placeJSONLD(
                 $eventCreated->getLocation()->toNative()
             );
 
@@ -432,9 +432,9 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->name->{$this->getMainLanguage($jsonLD)->getCode()} = $majorInfoUpdated->getTitle();
 
-        $jsonLD->location = array(
+        $jsonLD->location = [
           '@type' => 'Place',
-        ) + $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
+        ] + $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
 
         $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar(), $majorInfoUpdated->getEventType());
         $jsonLD->availableTo = (string) $availableTo;
@@ -548,9 +548,9 @@ class EventLDProjector extends OfferLDProjector implements
     private function generateSameAs($eventId, $name)
     {
         $eventSlug = $this->slugger->slug($name);
-        return array(
+        return [
             'http://www.uitinvlaanderen.be/agenda/e/' . $eventSlug . '/' . $eventId,
-        );
+        ];
     }
 
     /**

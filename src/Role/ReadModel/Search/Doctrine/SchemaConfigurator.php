@@ -11,9 +11,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    const UUID_COLUMN = 'uuid';
-    const NAME_COLUMN = 'name';
-    const CONSTRAINT_COLUMN = 'constraint_query';
+    public const UUID_COLUMN = 'uuid';
+    public const NAME_COLUMN = 'name';
+    public const CONSTRAINT_COLUMN = 'constraint_query';
 
     /**
      * @var StringLiteral

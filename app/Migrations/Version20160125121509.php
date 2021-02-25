@@ -20,12 +20,12 @@ class Version20160125121509 extends AbstractMigration
         $table->addColumn(
             'place_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'user_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->setPrimaryKey(['place_id', 'user_id']);

@@ -12,8 +12,8 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20160817112023 extends AbstractMigration
 {
-    const LABEL_ID_COLUMN = 'label_id';
-    const ROLE_ID_COLUMN = 'role_id';
+    public const LABEL_ID_COLUMN = 'label_id';
+    public const ROLE_ID_COLUMN = 'role_id';
 
     /**
      * @param Schema $schema

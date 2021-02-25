@@ -16,7 +16,7 @@ use Zend\Diactoros\Uri;
 
 class CdbXmlProxyTest extends TestCase
 {
-    const APPLICATION_XML = 'application/xml';
+    public const APPLICATION_XML = 'application/xml';
 
     /**
      * @var CdbXmlProxy

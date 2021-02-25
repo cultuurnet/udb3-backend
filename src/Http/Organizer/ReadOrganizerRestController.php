@@ -8,10 +8,9 @@ use CultuurNet\UDB3\Http\JsonLdResponse;
 
 class ReadOrganizerRestController
 {
-    const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
-    const GET_ERROR_GONE = 'An error occurred while getting the event with id %s which was removed!';
-
     use ApiProblemJsonResponseTrait;
+    public const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
+    public const GET_ERROR_GONE = 'An error occurred while getting the event with id %s which was removed!';
 
     /**
      * @var EntityServiceInterface

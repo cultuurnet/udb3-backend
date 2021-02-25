@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 class JSONLDEventFormatter

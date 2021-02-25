@@ -67,7 +67,7 @@ class DayOfWeekCollection implements Serializable
         return array_reduce(
             $data,
             function (DayOfWeekCollection $collection, $dayOfWeek) {
-                 return $collection->addDayOfWeek(DayOfWeek::fromNative($dayOfWeek));
+                return $collection->addDayOfWeek(DayOfWeek::fromNative($dayOfWeek));
             },
             new DayOfWeekCollection()
         );

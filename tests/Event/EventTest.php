@@ -53,8 +53,8 @@ use ValueObjects\Web\Url;
 
 class EventTest extends AggregateRootScenarioTestCase
 {
-    const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
-    const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+    public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
      * @inheritdoc
@@ -216,7 +216,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $contactPoint = new ContactPoint(
-            ['016/101010',],
+            ['016/101010'],
             ['test@2dotstwice.be', 'admin@2dotstwice.be'],
             ['http://www.2dotstwice.be']
         );

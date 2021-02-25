@@ -70,7 +70,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
         if (isset($commandHandlers[$commandName])) {
             $handler = $commandHandlers[$commandName];
-            call_user_func(array($this, $handler), $command);
+            call_user_func([$this, $handler], $command);
         } else {
             parent::handle($command);
         }
@@ -91,7 +91,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
                 $classNameMethod = 'get' . $command . 'ClassName';
 
                 if (method_exists($this, $classNameMethod)) {
-                    $commandFullClassName = call_user_func(array($this, $classNameMethod));
+                    $commandFullClassName = call_user_func([$this, $classNameMethod]);
                     $commands[$commandFullClassName] = $method;
                 }
             }

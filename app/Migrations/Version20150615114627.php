@@ -21,31 +21,31 @@ class Version20150615114627 extends AbstractMigration
         $table->addColumn(
             'id',
             'string',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'event',
             'text',
-            array('notnull' => true)
+            ['notnull' => true]
         );
         $table->addColumn(
             'owner',
             'string',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'purpose',
             'text',
-            array('notnull' => true)
+            ['notnull' => true]
         );
 
         $table->addColumn(
             'inserted',
             'integer',
-            array('notnull' => true, 'unsigned' => true)
+            ['notnull' => true, 'unsigned' => true]
         );
 
-        $table->setPrimaryKey(array('id'));
+        $table->setPrimaryKey(['id']);
 
         $table->addIndex(['inserted']);
     }

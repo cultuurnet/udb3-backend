@@ -2,9 +2,7 @@
 
 namespace CultuurNet\UDB3\Event\Productions\Doctrine;
 
-use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use CultuurNet\UDB3\Event\Productions\SkippedSimilarEventsRepository;
-use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;

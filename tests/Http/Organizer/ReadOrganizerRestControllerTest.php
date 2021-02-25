@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReadOrganizerRestControllerTest extends TestCase
 {
-    const EXISTING_ID = 'existingId';
-    const NON_EXISTING_ID = 'nonExistingId';
-    const REMOVED_ID = 'removedId';
+    public const EXISTING_ID = 'existingId';
+    public const NON_EXISTING_ID = 'nonExistingId';
+    public const REMOVED_ID = 'removedId';
 
     /**
      * @var EntityServiceInterface|MockObject

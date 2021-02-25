@@ -7,7 +7,6 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use Geocoder\Exception\CollectionIsEmpty;
 use Geocoder\Exception\Exception;
-use Geocoder\Exception\NoResult;
 use Geocoder\Geocoder;
 use Psr\Log\LoggerInterface;
 

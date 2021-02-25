@@ -104,26 +104,26 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->repository->removeRolePermission($roleId, $permission);
@@ -155,34 +155,34 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::USER_ID_COLUMN => $userId,
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-            )
+            ]
         );
 
         $this->repository->removeRole($roleId);
@@ -212,18 +212,18 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->getConnection()->insert(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::USER_ID_COLUMN => $otherUserId,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::USER_ID_COLUMN => $userId,
-            )
+            ]
         );
 
         $this->repository->removeUserRole($userId, $roleId);

@@ -93,7 +93,7 @@ class HTMLEventFormatterTest extends TestCase
             ],
             'type' => 'Cursus of workshop',
             'price' => 'Gratis',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedFreeEvent, $freeEvent);
@@ -125,7 +125,7 @@ class HTMLEventFormatterTest extends TestCase
             ],
             'type' => 'Cursus of workshop',
             'price' => 'Gratis',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedFreeEvent, $freeEvent);
@@ -152,7 +152,7 @@ class HTMLEventFormatterTest extends TestCase
                 'isDummyAddress' => false,
             ],
             'price' => 'Niet ingevoerd',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'van 01/09/14 tot 29/06/15',
         ];
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutBookingInfo);
@@ -177,7 +177,7 @@ class HTMLEventFormatterTest extends TestCase
                 'isDummyAddress' => false,
             ],
             'price' => 'Gratis',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutDescription);
@@ -203,7 +203,7 @@ class HTMLEventFormatterTest extends TestCase
                 'isDummyAddress' => false,
             ],
             'price' => 'Niet ingevoerd',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutImage);
@@ -216,7 +216,7 @@ class HTMLEventFormatterTest extends TestCase
             'title' => 'Koran, kaliefen en kruistochten - De fundamenten van de islam',
             'description' => 'De islam is niet meer weg te denken uit onze maatschappij. '.'Aan de hand van boeiende anekdotes doet Urbain Vermeulen de ontstaansgeschiedenis '.'van de godsdienst uit de doeken...',
             'price' => 'Gratis',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
 
@@ -293,7 +293,7 @@ class HTMLEventFormatterTest extends TestCase
                 'isDummyAddress' => false,
             ],
             'price' => 'Gratis',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
         $this->assertEventFormatting($expectedFormattedEvent, $eventWithoutEventType);
@@ -443,7 +443,7 @@ class HTMLEventFormatterTest extends TestCase
                 'isDummyAddress' => false,
             ],
             'price' => 'Niet ingevoerd',
-            'brands' => array(),
+            'brands' => [],
             'dates' => 'ma 02/03/15 van 13:30 tot 16:30  ma 09/03/15 van 13:30 tot 16:30  '.'ma 16/03/15 van 13:30 tot 16:30  ma 23/03/15 van 13:30 tot 16:30  ma 30/03/15 van 13:30 tot 16:30 ',
         ];
 

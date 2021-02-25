@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\Silex\Authentication;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;

@@ -124,11 +124,11 @@ class EventExportService implements EventExportServiceInterface
             } catch (Exception $e) {
                 $logger->error(
                     'not_exported',
-                    array(
+                    [
                         'query' => (string) $query,
                         'error' => $e->getMessage(),
                         'exception_class' => get_class($e),
-                    )
+                    ]
                 );
 
                 throw $e;

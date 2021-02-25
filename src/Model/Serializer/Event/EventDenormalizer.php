@@ -113,7 +113,7 @@ class EventDenormalizer extends OfferDenormalizer
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("EventDenormalizer does not support {$class}.");

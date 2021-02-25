@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Http\Label;
 
-use CultuurNet\UDB3\Label\Services\WriteResult;
 use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;

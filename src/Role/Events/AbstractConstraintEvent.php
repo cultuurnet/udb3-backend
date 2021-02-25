@@ -55,9 +55,9 @@ abstract class AbstractConstraintEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'sapiVersion' => $this->sapiVersion->toNative(),
             'query' => $this->query->toNative(),
-        );
+        ];
     }
 }

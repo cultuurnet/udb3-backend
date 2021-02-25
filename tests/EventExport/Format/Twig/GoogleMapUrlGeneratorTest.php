@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class GoogleMapUrlGeneratorTest extends TestCase
 {
-    const TEST_API_KEY = 'MY_API_KEY';
+    public const TEST_API_KEY = 'MY_API_KEY';
 
     /**
      * @var GoogleMapUrlGenerator

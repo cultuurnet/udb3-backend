@@ -26,11 +26,11 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class ReplayCommand extends AbstractCommand
 {
-    const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
-    const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
-    const OPTION_START_ID = 'start-id';
-    const OPTION_DELAY = 'delay';
-    const OPTION_CDBID = 'cdbid';
+    public const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
+    public const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
+    public const OPTION_START_ID = 'start-id';
+    public const OPTION_DELAY = 'delay';
+    public const OPTION_CDBID = 'cdbid';
 
     /**
      * @var Connection

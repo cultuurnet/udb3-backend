@@ -17,7 +17,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface EventEditingServiceInterface
 {
-
     /**
      * Update the title of an event.
      *

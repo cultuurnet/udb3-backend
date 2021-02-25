@@ -8,8 +8,8 @@ use ValueObjects\Web\PortNumber;
 
 class PortReplacerTest extends TestCase
 {
-    const ORIGINAL_PORT = '8080';
-    const REPLACED_PORT = '666';
+    public const ORIGINAL_PORT = '8080';
+    public const REPLACED_PORT = '666';
 
     /**
      * @var Request
@@ -39,7 +39,7 @@ class PortReplacerTest extends TestCase
     public function it_replaces_the_port_of_a_request()
     {
         $transformedRequest = $this->portReplacer->transform($this->request);
-        
+
         $this->assertEquals(
             self::REPLACED_PORT,
             $transformedRequest->getUri()->getPort()

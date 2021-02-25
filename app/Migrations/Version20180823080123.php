@@ -17,22 +17,22 @@ class Version20180823080123 extends AbstractMigration
         $table->addColumn(
             'id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'uid',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'created',
             'string',
-            array('length' => 32, 'notnull' => true)
+            ['length' => 32, 'notnull' => true]
         );
         $table->addColumn(
             'updated',
             'string',
-            array('length' => 32, 'notnull' => true)
+            ['length' => 32, 'notnull' => true]
         );
 
         $table->setPrimaryKey(['id']);

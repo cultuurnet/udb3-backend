@@ -32,7 +32,7 @@ class CalendarForEventDataValidatorTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function fileDataProvider():array
+    public function fileDataProvider(): array
     {
         return [
             'single_time_span' => [

@@ -32,7 +32,7 @@ trait DelegateEventHandlingToSpecificMethodTrait
         }
 
         try {
-            $parameter = new \ReflectionParameter(array($this, $methodName), 0);
+            $parameter = new \ReflectionParameter([$this, $methodName], 0);
         } catch (\ReflectionException $e) {
             // No parameter for the method, so we ignore it.
             return null;

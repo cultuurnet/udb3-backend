@@ -23,9 +23,9 @@ class PurgeServiceManager
      */
     public function __construct()
     {
-        $this->readModelPurgeServices = array();
+        $this->readModelPurgeServices = [];
 
-        $this->writeModelPurgeServices = array();
+        $this->writeModelPurgeServices = [];
     }
 
     /**

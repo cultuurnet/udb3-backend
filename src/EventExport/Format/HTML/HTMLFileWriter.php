@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
-use \Twig_Environment;
+use Twig_Environment;
 
 class HTMLFileWriter implements FileWriterInterface
 {

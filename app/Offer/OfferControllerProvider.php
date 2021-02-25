@@ -95,11 +95,11 @@ class OfferControllerProvider implements ControllerProviderInterface
                     if (!is_null($app['current_user'])) {
                         $currentUserId = new StringLiteral($app['current_user']->id);
                     }
-                    $permissionsToCheck = array(
+                    $permissionsToCheck = [
                         Permission::AANBOD_BEWERKEN(),
                         Permission::AANBOD_MODEREREN(),
                         Permission::AANBOD_VERWIJDEREN(),
-                    );
+                    ];
                     return new OfferPermissionsController(
                         $permissionsToCheck,
                         $app['offer_permission_voter'],

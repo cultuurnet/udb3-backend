@@ -20,9 +20,9 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 class ReadRoleRestControllerTest extends TestCase
 {
-    const EXISTING_ID = 'existingId';
-    const NON_EXISTING_ID = 'nonExistingId';
-    const REMOVED_ID = 'removedId';
+    public const EXISTING_ID = 'existingId';
+    public const NON_EXISTING_ID = 'nonExistingId';
+    public const REMOVED_ID = 'removedId';
 
     /**
      * @var ReadRoleRestController
@@ -260,12 +260,12 @@ class ReadRoleRestControllerTest extends TestCase
     public function it_can_search()
     {
         $request = new Request();
-        $results = new Results('10', array(), 0);
-        $expectedResults = json_encode((object) array(
+        $results = new Results('10', [], 0);
+        $expectedResults = json_encode((object) [
             'itemsPerPage' => "10",
-            'member' => array(),
+            'member' => [],
             'totalItems' => 0,
-        ));
+        ]);
 
         $this->roleSearchRepository
             ->expects($this->once())

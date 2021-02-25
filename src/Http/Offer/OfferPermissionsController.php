@@ -1,4 +1,5 @@
 <?php
+
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
@@ -75,7 +76,7 @@ class OfferPermissionsController
      */
     private function getPermissions(StringLiteral $offerId, StringLiteral $userId)
     {
-        $permissionsToReturn = array();
+        $permissionsToReturn = [];
         foreach ($this->permissions as $permission) {
             $hasPermission = $this->permissionVoter->isAllowed(
                 $permission,

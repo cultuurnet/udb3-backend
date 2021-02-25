@@ -22,7 +22,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EditOrganizerRestController
 {
-
     /** @var OrganizerEditingServiceInterface */
     private $editingService;
 

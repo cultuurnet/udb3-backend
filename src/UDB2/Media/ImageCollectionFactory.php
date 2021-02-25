@@ -21,7 +21,7 @@ use ValueObjects\Web\Url;
 
 class ImageCollectionFactory implements ImageCollectionFactoryInterface
 {
-    const SUPPORTED_UDB2_MEDIA_TYPES = [
+    public const SUPPORTED_UDB2_MEDIA_TYPES = [
         CultureFeed_Cdb_Data_File::MEDIA_TYPE_PHOTO,
         CultureFeed_Cdb_Data_File::MEDIA_TYPE_IMAGEWEB,
     ];

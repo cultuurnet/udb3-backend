@@ -21,7 +21,7 @@ class Version20160224221541 extends AbstractMigration
         // column.
         $table->changeColumn(
             'origin_url',
-            array('notnull' => true)
+            ['notnull' => true]
         );
 
         $table->dropColumn(
@@ -38,7 +38,7 @@ class Version20160224221541 extends AbstractMigration
 
         $table->changeColumn(
             'origin_url',
-            array('notnull' => false)
+            ['notnull' => false]
         );
 
         $table->addColumn(

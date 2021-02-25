@@ -13,7 +13,7 @@ class DefaultAddressFormatterTest extends TestCase
     public function it_formats_addresses()
     {
         $formatter = new DefaultAddressFormatter();
-        
+
         $address = new Address(
             new Street('Martelarenlaan 1'),
             new PostalCode('3000'),
@@ -22,7 +22,7 @@ class DefaultAddressFormatterTest extends TestCase
         );
 
         $expectedString = 'Martelarenlaan 1, 3000 Leuven, BE';
-        
+
         $this->assertEquals($expectedString, $formatter->format($address));
     }
 }

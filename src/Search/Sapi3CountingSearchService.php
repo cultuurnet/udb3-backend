@@ -4,8 +4,8 @@ namespace CultuurNet\UDB3\Search;
 
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
-use function http_build_query;
 use Psr\Http\Message\UriInterface;
+use function http_build_query;
 
 class Sapi3CountingSearchService implements CountingSearchServiceInterface
 {

@@ -15,8 +15,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 {
-    const UUID_COLUMN = 'uuid_col';
-    const UNIQUE_COLUMN = 'unique_col';
+    public const UUID_COLUMN = 'uuid_col';
+    public const UNIQUE_COLUMN = 'unique_col';
 
     /**
      * @var EventStore

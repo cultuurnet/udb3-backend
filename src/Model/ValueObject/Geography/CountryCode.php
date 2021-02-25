@@ -10,7 +10,7 @@ class CountryCode
     use IsString;
     use MatchesRegexPattern;
 
-    const REGEX = '/^[A-Z]{2}$/';
+    public const REGEX = '/^[A-Z]{2}$/';
 
     /**
      * @param string $code

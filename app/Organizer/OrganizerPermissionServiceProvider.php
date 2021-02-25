@@ -10,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OrganizerPermissionServiceProvider implements ServiceProviderInterface
 {
-    const PERMISSION_PROJECTOR = 'organizer_permission.projector';
+    public const PERMISSION_PROJECTOR = 'organizer_permission.projector';
     /**
      * @inheritdoc
      */

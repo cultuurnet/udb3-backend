@@ -174,7 +174,7 @@ class CdbXMLImporter
      */
     private function importLocation(\CultureFeed_Cdb_Item_Event $event, PlaceServiceInterface $placeManager, $jsonLD)
     {
-        $location = array();
+        $location = [];
         $location['@type'] = 'Place';
 
         $locationId = $this->cdbIdExtractor->getRelatedPlaceCdbId($event);
@@ -187,12 +187,12 @@ class CdbXMLImporter
             $location['name']['nl'] = $locationCdb->getLabel();
             $address = $locationCdb->getAddress()->getPhysicalAddress();
             if ($address) {
-                $location['address']['nl'] = array(
+                $location['address']['nl'] = [
                     'addressCountry' => $address->getCountry(),
                     'addressLocality' => $address->getCity(),
                     'postalCode' => $address->getZip(),
                     'streetAddress' => $address->getStreet() . ' ' . $address->getHouseNumber(),
-                );
+                ];
             }
         }
         $jsonLD->location = $location;
@@ -216,13 +216,13 @@ class CdbXMLImporter
         if ($organizerId) {
             $organizer = $organizerManager->organizerJSONLD($organizerId);
         } elseif ($organizerCdb && $contactInfoCdb) {
-            $organizer = array();
+            $organizer = [];
             $organizer['mainLanguage'] = 'nl';
             $organizer['name']['nl'] = $organizerCdb->getLabel();
 
             $emailsCdb = $contactInfoCdb->getMails();
             if (count($emailsCdb) > 0) {
-                $organizer['email'] = array();
+                $organizer['email'] = [];
                 foreach ($emailsCdb as $email) {
                     $organizer['email'][] = $email->getMailAddress();
                 }
@@ -231,7 +231,7 @@ class CdbXMLImporter
             /** @var \CultureFeed_Cdb_Data_Phone[] $phonesCdb */
             $phonesCdb = $contactInfoCdb->getPhones();
             if (count($phonesCdb) > 0) {
-                $organizer['phone'] = array();
+                $organizer['phone'] = [];
                 foreach ($phonesCdb as $phone) {
                     $organizer['phone'][] = $phone->getNumber();
                 }
@@ -255,15 +255,15 @@ class CdbXMLImporter
             'Meerder kunstvormen',
             'Meerdere filmgenres',
         ];
-        $categories = array();
+        $categories = [];
         foreach ($event->getCategories() as $category) {
             /* @var \Culturefeed_Cdb_Data_Category $category */
             if ($category && !in_array($category->getName(), $themeBlacklist)) {
-                $categories[] = array(
+                $categories[] = [
                     'label' => $category->getName(),
                     'domain' => $category->getType(),
                     'id' => $category->getId(),
-                );
+                ];
             }
         }
         $jsonLD->terms = $categories;

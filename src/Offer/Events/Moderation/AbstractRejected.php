@@ -25,9 +25,9 @@ abstract class AbstractRejected extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'reason' => $this->reason->toNative(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractRejected

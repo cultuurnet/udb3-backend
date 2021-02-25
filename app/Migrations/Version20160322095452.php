@@ -20,13 +20,13 @@ class Version20160322095452 extends AbstractMigration
         $table->addColumn(
             'updated',
             'text',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->addColumn(
             'owning_domain',
             'text',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->addColumn(

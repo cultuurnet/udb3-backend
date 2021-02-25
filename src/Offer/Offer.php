@@ -65,8 +65,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggregateRoot
 {
-    const DUPLICATE_REASON = 'duplicate';
-    const INAPPROPRIATE_REASON = 'inappropriate';
+    public const DUPLICATE_REASON = 'duplicate';
+    public const INAPPROPRIATE_REASON = 'inappropriate';
 
     /**
      * @var LabelCollection

@@ -47,7 +47,7 @@ class PriceDescriptionParser
      */
     public function parse($description)
     {
-        $prices = array();
+        $prices = [];
 
         $possiblePriceDescriptions = preg_split('/\s*;\s*/', $description);
 
@@ -57,7 +57,7 @@ class PriceDescriptionParser
                 $prices += $price;
             }
         } catch (RuntimeException $e) {
-            $prices = array();
+            $prices = [];
         }
 
         return $prices;

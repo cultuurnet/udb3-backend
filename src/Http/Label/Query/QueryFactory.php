@@ -10,9 +10,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryFactory implements QueryFactoryInterface
 {
-    const QUERY = 'query';
-    const START = 'start';
-    const LIMIT = 'limit';
+    public const QUERY = 'query';
+    public const START = 'start';
+    public const LIMIT = 'limit';
 
     /**
      * @var UserIdentificationInterface

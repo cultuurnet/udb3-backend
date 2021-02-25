@@ -93,7 +93,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
      * @param array  $data
      * @param string $dataName
      */
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName, 'CultuurNet\\UDB3\\Place');
     }
@@ -599,11 +599,11 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
      */
     public function descriptionSamplesProvider()
     {
-        $samples = array(
+        $samples = [
             ['place_with_short_description.cdbxml.xml', 'Korte beschrijving.'],
             ['place_with_long_description.cdbxml.xml', 'Lange beschrijving.'],
             ['place_with_short_and_long_description.cdbxml.xml', "Korte beschrijving.\n\nLange beschrijving."],
-        );
+        ];
 
         return $samples;
     }

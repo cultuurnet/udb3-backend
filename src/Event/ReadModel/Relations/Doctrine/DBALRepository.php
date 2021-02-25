@@ -174,7 +174,7 @@ class DBALRepository implements RepositoryInterface
 
         $results = $q->execute();
 
-        $events = array();
+        $events = [];
         while ($id = $results->fetchColumn(0)) {
             $events[] = $id;
         }
@@ -193,7 +193,7 @@ class DBALRepository implements RepositoryInterface
 
         $results = $q->execute();
 
-        $events = array();
+        $events = [];
         while ($id = $results->fetchColumn(0)) {
             $events[] = $id;
         }
@@ -270,20 +270,20 @@ class DBALRepository implements RepositoryInterface
         $table->addColumn(
             'event',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
         $table->addColumn(
             'organizer',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
         $table->addColumn(
             'place',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
 
-        $table->setPrimaryKey(array('event'));
+        $table->setPrimaryKey(['event']);
 
         return $table;
     }

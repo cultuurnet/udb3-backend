@@ -12,7 +12,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class PatchOfferRestController
 {
-    const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';
+    public const DOMAIN_MODEL_REGEX = '/.*domain-model=([a-zA-Z]*)/';
 
     /**
      * @var CommandBus

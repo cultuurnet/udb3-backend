@@ -12,6 +12,6 @@ use MabeEnum\Enum;
  */
 final class WorkflowStatus extends Enum
 {
-    const ACTIVE = 'active';
-    const DELETED = 'deleted';
+    public const ACTIVE = 'active';
+    public const DELETED = 'deleted';
 }

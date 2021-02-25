@@ -13,7 +13,7 @@ class CardSystemsJsonResponse extends Response
      * @param int $status
      * @param array $headers
      */
-    public function __construct(array $cardSystems, int $status = 200, array $headers = array())
+    public function __construct(array $cardSystems, int $status = 200, array $headers = [])
     {
         $data = [];
         foreach ($cardSystems as $cardSystem) {

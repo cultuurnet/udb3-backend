@@ -2,6 +2,7 @@
 /**
  * @file
  */
+
 namespace CultuurNet\UDB3;
 
 /**

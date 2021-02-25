@@ -8,7 +8,7 @@ use ValueObjects\Web\Url;
 
 class ContextController
 {
-    const DEFAULT_BASE_PATH = 'https://io.uitdatabank.be';
+    public const DEFAULT_BASE_PATH = 'https://io.uitdatabank.be';
 
     /**
      * @var Url

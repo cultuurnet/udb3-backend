@@ -7,7 +7,6 @@ use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Timestamp;
 use DateTime;
 use PHPUnit\Framework\TestCase;

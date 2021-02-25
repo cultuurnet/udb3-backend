@@ -1,5 +1,7 @@
 <?php
+
 /** @deprecated */
+
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
