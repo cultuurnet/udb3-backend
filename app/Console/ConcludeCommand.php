@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConcludeCommand extends AbstractConcludeCommand
 {
     const TIMEZONE = 'Europe/Brussels';
-    const SOLR_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
+    const LUCENE_DATE_TIME_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     /**
      * @var SearchServiceInterface
@@ -57,8 +57,8 @@ class ConcludeCommand extends AbstractConcludeCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        list($lowerDateBoundary, $upperDateBoundary) = $this->processArguments($input);
-        $query = $this->createSolrQuery($lowerDateBoundary, $upperDateBoundary);
+        [$lowerDateBoundary, $upperDateBoundary] = $this->processArguments($input);
+        $query = $this->createLuceneQuery($lowerDateBoundary, $upperDateBoundary);
 
         $output->writeln('Executing search query: ' . $query);
 
@@ -76,9 +76,9 @@ class ConcludeCommand extends AbstractConcludeCommand
         return 0;
     }
 
-    private function createSolrQuery(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
+    private function createLuceneQuery(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
     {
-        $sapiDateRange = $this->createSolrDateRangeString($lowerDateBoundary, $upperDateBoundary);
+        $sapiDateRange = $this->createLuceneDateRangeString($lowerDateBoundary, $upperDateBoundary);
 
         return "_type:event AND availableRange:{$sapiDateRange}";
     }
@@ -89,10 +89,10 @@ class ConcludeCommand extends AbstractConcludeCommand
      *
      * @return string
      */
-    private function createSolrDateRangeString(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
+    private function createLuceneDateRangeString(Carbon $lowerDateBoundary = null, Carbon $upperDateBoundary = null)
     {
-        $from = $lowerDateBoundary ? $this->getSolrFormattedDateTime($lowerDateBoundary) : '*';
-        $to = $this->getSolrFormattedDateTime($upperDateBoundary);
+        $from = $lowerDateBoundary ? $this->getLuceneFormattedDateTime($lowerDateBoundary) : '*';
+        $to = $this->getLuceneFormattedDateTime($upperDateBoundary);
 
         return "[{$from} TO {$to}]";
     }
@@ -101,9 +101,9 @@ class ConcludeCommand extends AbstractConcludeCommand
      * @param Carbon $date
      * @return string
      */
-    private function getSolrFormattedDateTime(Carbon $date)
+    private function getLuceneFormattedDateTime(Carbon $date)
     {
-        return $date->tz('UTC')->format(self::SOLR_DATE_TIME_FORMAT);
+        return $date->tz('UTC')->format(self::LUCENE_DATE_TIME_FORMAT);
     }
 
     private function createFinder(int $pageSize) : ResultsGenerator
