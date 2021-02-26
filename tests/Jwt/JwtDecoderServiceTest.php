@@ -326,6 +326,6 @@ class JwtDecoderServiceTest extends TestCase
             '\\r\\n'
         ), 2);
 
-        $this->decoderService->parse($this->tokenString);
+        $this->decoderService->parse(new StringLiteral($this->tokenString));
     }
 }
