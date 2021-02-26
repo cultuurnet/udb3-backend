@@ -26,6 +26,6 @@ class PathFilter implements FilterInterface
     {
         $requestedPath = new FilterPathRegex($request->getUri()->getPath());
         $pathPattern = '/' . $this->path->toNative() . '/';
-        return !!preg_match($pathPattern, $requestedPath);
+        return !!preg_match($pathPattern, $requestedPath->toNative());
     }
 }
