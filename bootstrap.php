@@ -654,6 +654,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
 
         // Organizer command handlers
         $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\Commands\AddLabel::class]);
+        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\Commands\RemoveLabel::class]);
 
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
     };
