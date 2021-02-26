@@ -107,7 +107,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
      */
     public function handleUploadImage(UploadImage $uploadImage)
     {
-        $pathParts = explode('/', $uploadImage->getFilePath());
+        $pathParts = explode('/', $uploadImage->getFilePath()->toNative());
         $fileName = array_pop($pathParts);
         $fileNameParts = explode('.', $fileName);
         $extension = StringLiteral::fromNative(array_pop($fileNameParts));
