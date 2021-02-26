@@ -20,7 +20,7 @@ final class ProductionId
 
     public static function generate(): self
     {
-        return new self(Uuid::uuid4());
+        return new self(Uuid::uuid4()->toString());
     }
 
     public static function fromNative(string $id): self
