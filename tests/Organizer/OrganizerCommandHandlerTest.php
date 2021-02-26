@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -369,57 +368,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                     ),
                 ]
             );
-    }
-
-    /**
-     * @test
-     */
-    public function it_removes_an_attached_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo', true);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([
-                $this->organizerCreated,
-                new LabelAdded($organizerId, $label),
-            ])
-            ->when(new RemoveLabel($organizerId, $label))
-            ->then([new LabelRemoved($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_removes_an_attached_invisible_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('bar', false);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([
-                $this->organizerCreated,
-                new LabelAdded($organizerId, $label),
-            ])
-            ->when(new RemoveLabel($organizerId, $label))
-            ->then([new LabelRemoved($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_missing_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo');
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new RemoveLabel($organizerId, $label))
-            ->then([]);
     }
 
     /**

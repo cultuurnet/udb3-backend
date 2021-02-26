@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -68,7 +67,6 @@ class OrganizerCommandHandler implements CommandHandler
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
             DeleteOrganizer::class => 'deleteOrganizer',
-            RemoveLabel::class => 'removeLabel',
             ImportLabels::class => 'importLabels',
         ];
     }
@@ -148,15 +146,6 @@ class OrganizerCommandHandler implements CommandHandler
         $organizer = $this->loadOrganizer($updateContactPoint->getOrganizerId());
 
         $organizer->updateContactPoint($updateContactPoint->getContactPoint());
-
-        $this->organizerRepository->save($organizer);
-    }
-
-    protected function removeLabel(RemoveLabel $removeLabel)
-    {
-        $organizer = $this->loadOrganizer($removeLabel->getOrganizerId());
-
-        $organizer->removeLabel($this->createLabel($removeLabel));
 
         $this->organizerRepository->save($organizer);
     }
