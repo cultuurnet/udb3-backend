@@ -101,7 +101,7 @@ class ProductionsWriteControllerTest extends TestCase
     public function it_can_add_an_event_to_an_existing_production(): void
     {
         $productionId = ProductionId::generate();
-        $eventId = Uuid::uuid4();
+        $eventId = Uuid::uuid4()->toString();
 
         $this->commandBus->record();
         $this->controller->addEventToProduction($productionId->toNative(), $eventId);
@@ -118,7 +118,7 @@ class ProductionsWriteControllerTest extends TestCase
     public function it_can_remove_an_event_from_an_existing_production(): void
     {
         $productionId = ProductionId::generate();
-        $eventId = Uuid::uuid4();
+        $eventId = Uuid::uuid4()->toString();
 
         $this->commandBus->record();
         $this->controller->removeEventFromProduction($productionId->toNative(), $eventId);

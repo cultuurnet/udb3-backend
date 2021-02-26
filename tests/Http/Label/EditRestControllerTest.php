@@ -84,7 +84,7 @@ class EditRestControllerTest extends TestCase
         $this->writeService->expects($this->once())
             ->method($method);
 
-        $response = $this->editRestController->patch($request, $this->uuid);
+        $response = $this->editRestController->patch($request, $this->uuid->toNative());
 
         $this->assertEquals(204, $response->getStatusCode());
     }
