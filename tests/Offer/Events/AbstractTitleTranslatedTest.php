@@ -27,7 +27,7 @@ class AbstractTitleTranslatedTest extends TestCase
     protected $language;
 
     /**
-     * @var String
+     * @var Title
      */
     protected $title;
 

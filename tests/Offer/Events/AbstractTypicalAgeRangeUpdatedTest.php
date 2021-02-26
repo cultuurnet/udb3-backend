@@ -22,7 +22,7 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
     protected $itemId;
 
     /**
-     * @var string
+     * @var AgeRange
      */
     protected $typicalAgeRange;
 

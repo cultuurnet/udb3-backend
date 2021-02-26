@@ -22,7 +22,7 @@ class AbstractUpdateTitleTest extends TestCase
     protected $itemId;
 
     /**
-     * @var string
+     * @var Title
      */
     protected $title;
 

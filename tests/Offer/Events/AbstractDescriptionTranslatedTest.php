@@ -27,7 +27,7 @@ class AbstractDescriptionTranslatedTest extends TestCase
     protected $language;
 
     /**
-     * @var String
+     * @var Description
      */
     protected $description;
 
