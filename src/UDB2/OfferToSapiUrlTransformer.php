@@ -28,8 +28,8 @@ class OfferToSapiUrlTransformer implements UrlTransformerInterface
      */
     public function transform(Url $url)
     {
-        $lastSlashPosition = strrpos($url, '/') + 1;
-        $cdbid = substr($url, $lastSlashPosition, strlen($url) - $lastSlashPosition);
+        $lastSlashPosition = strrpos((string) $url, '/') + 1;
+        $cdbid = substr((string) $url, $lastSlashPosition, strlen((string) $url) - $lastSlashPosition);
 
         return  Url::fromNative(sprintf($this->urlFormat, $cdbid));
     }
