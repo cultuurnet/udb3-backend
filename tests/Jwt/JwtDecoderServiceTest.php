@@ -28,7 +28,7 @@ class JwtDecoderServiceTest extends TestCase
     private $publicKeyString;
 
     /**
-     * @var string
+     * @var StringLiteral
      */
     private $tokenString;
 
