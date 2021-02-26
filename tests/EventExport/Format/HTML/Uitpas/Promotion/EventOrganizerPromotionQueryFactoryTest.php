@@ -30,7 +30,7 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
             new FrozenClock(
                 DateTimeImmutable::createFromFormat(
                     'U',
-                    $this->unixTime,
+                    (string) $this->unixTime,
                     new \DateTimeZone('Europe/Brussels')
                 )
             )
