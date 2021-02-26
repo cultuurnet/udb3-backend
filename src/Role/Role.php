@@ -55,12 +55,9 @@ class Role extends EventSourcedAggregateRoot
      */
     private $userIds = [];
 
-    /**
-     * @return string
-     */
-    public function getAggregateRootId()
+    public function getAggregateRootId(): string
     {
-        return $this->uuid;
+        return $this->uuid->toNative();
     }
 
     /**
