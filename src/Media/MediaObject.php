@@ -83,12 +83,9 @@ class MediaObject extends EventSourcedAggregateRoot
         return $mediaObject;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAggregateRootId()
+    public function getAggregateRootId(): string
     {
-        return $this->mediaObjectId;
+        return $this->mediaObjectId->toNative();
     }
 
     protected function applyMediaObjectCreated(MediaObjectCreated $mediaObjectCreated)
