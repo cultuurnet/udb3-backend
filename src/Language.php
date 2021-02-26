@@ -13,10 +13,7 @@ class Language
 {
     protected $code;
 
-    /**
-     * @param string $code
-     */
-    public function __construct($code)
+    public function __construct(string $code)
     {
         if (!preg_match('/^[a-z]{2}$/', $code)) {
             throw new \InvalidArgumentException(
