@@ -41,7 +41,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     private $tableName;
 
     /**
-     * @var string
+     * @var AggregateType
      */
     private $aggregateType;
 
