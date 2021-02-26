@@ -9338,16 +9338,16 @@
         },
         {
             "name": "publiq/php-cs-fixer-config",
-            "version": "v1.3",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/php-cs-fixer-config.git",
-                "reference": "2a4b8cd9b2de3b109e52e10695d8c55c80b51f56"
+                "reference": "1f90b8a9da8d6d58d5278db9a4b0290d42e92c96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/2a4b8cd9b2de3b109e52e10695d8c55c80b51f56",
-                "reference": "2a4b8cd9b2de3b109e52e10695d8c55c80b51f56",
+                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/1f90b8a9da8d6d58d5278db9a4b0290d42e92c96",
+                "reference": "1f90b8a9da8d6d58d5278db9a4b0290d42e92c96",
                 "shasum": ""
             },
             "require": {
@@ -9373,9 +9373,9 @@
             "description": "Configuration for PHP Coding Standards Fixer to be used on all PHP projects at Publiq",
             "support": {
                 "issues": "https://github.com/cultuurnet/php-cs-fixer-config/issues",
-                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v1.3"
+                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v1.3.1"
             },
-            "time": "2021-02-26T12:00:09+00:00"
+            "time": "2021-02-26T12:16:58+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
