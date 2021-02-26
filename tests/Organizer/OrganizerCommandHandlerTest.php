@@ -171,7 +171,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_create_organizer()
     {
-        $id = new UUID();
+        $id = (new UUID())->toNative();
 
         $this->scenario
             ->withAggregateId($id)
