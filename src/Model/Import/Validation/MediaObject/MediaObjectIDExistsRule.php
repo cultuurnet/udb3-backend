@@ -45,7 +45,7 @@ class MediaObjectIDExistsRule extends AbstractRule
 
         try {
             $id = $this->mediaIdParser->fromUrl(new Url($input));
-            $this->mediaManager->get((new UUID($id->toString()))->toNative());
+            $this->mediaManager->get(new UUID($id->toString()));
         } catch (\Exception $e) {
             return false;
         }
