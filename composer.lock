@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94e0d71c9f03597f89fc1be7a8df13b3",
+    "content-hash": "3599259ce607c3ab189e9e89e85dcecd",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -9338,16 +9338,16 @@
         },
         {
             "name": "publiq/php-cs-fixer-config",
-            "version": "dev-final-and-strict",
+            "version": "v1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/php-cs-fixer-config.git",
-                "reference": "14770bdca708ae2d80563f5874d9623afb5d4d6f"
+                "reference": "2a4b8cd9b2de3b109e52e10695d8c55c80b51f56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/14770bdca708ae2d80563f5874d9623afb5d4d6f",
-                "reference": "14770bdca708ae2d80563f5874d9623afb5d4d6f",
+                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/2a4b8cd9b2de3b109e52e10695d8c55c80b51f56",
+                "reference": "2a4b8cd9b2de3b109e52e10695d8c55c80b51f56",
                 "shasum": ""
             },
             "require": {
@@ -9373,9 +9373,9 @@
             "description": "Configuration for PHP Coding Standards Fixer to be used on all PHP projects at Publiq",
             "support": {
                 "issues": "https://github.com/cultuurnet/php-cs-fixer-config/issues",
-                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/final-and-strict"
+                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v1.3"
             },
-            "time": "2021-02-26T11:50:03+00:00"
+            "time": "2021-02-26T12:00:09+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -10177,8 +10177,7 @@
     "stability-flags": {
         "chrisboulton/php-resque": 20,
         "cultuurnet/culturefeed-php": 20,
-        "doctrine/migrations": 20,
-        "publiq/php-cs-fixer-config": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
