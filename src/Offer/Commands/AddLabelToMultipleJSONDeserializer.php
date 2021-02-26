@@ -26,6 +26,7 @@ class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
 
     public function __construct(DeserializerInterface $offerIdentifierDeserializer)
     {
+        parent::__construct();
         $this->offerIdentifierDeserializer = $offerIdentifierDeserializer;
     }
 
