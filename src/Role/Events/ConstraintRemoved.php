@@ -35,8 +35,8 @@ final class ConstraintRemoved extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
                 'sapiVersion' => $this->sapiVersion->toNative(),
-            );
+            ];
     }
 }

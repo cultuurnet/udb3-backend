@@ -49,7 +49,7 @@ class CalendarForPlaceDataValidator implements DataValidatorInterface
             $messages,
             (new TimeSpanValidator())->validate($data)
         );
-        
+
         // All other combinations are valid:
         // - No data at all
         // - Start date and end date

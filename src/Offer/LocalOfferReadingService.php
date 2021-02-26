@@ -25,8 +25,6 @@ class LocalOfferReadingService implements OfferReadingServiceInterface
     }
 
     /**
-     * @param OfferType $offerType
-     * @param DocumentRepository $documentRepository
      * @return static
      */
     public function withDocumentRepository(
@@ -57,7 +55,6 @@ class LocalOfferReadingService implements OfferReadingServiceInterface
     }
 
     /**
-     * @param OfferType $offerType
      * @return DocumentRepository
      */
     private function getDocumentRepository(OfferType $offerType)

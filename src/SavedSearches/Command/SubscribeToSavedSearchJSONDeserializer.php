@@ -14,13 +14,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @var StringLiteral $userId
+     * @var StringLiteral
      */
     protected $userId;
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     public function __construct(
         StringLiteral $userId
     ) {
@@ -29,7 +27,6 @@ class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return SubscribeToSavedSearch|\stdClass
      */
     public function deserialize(StringLiteral $data)

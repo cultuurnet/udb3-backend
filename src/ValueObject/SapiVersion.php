@@ -10,6 +10,6 @@ use ValueObjects\Enum\Enum;
  */
 class SapiVersion extends Enum
 {
-    const V2 = 'v2';
-    const V3 = 'v3';
+    public const V2 = 'v2';
+    public const V3 = 'v3';
 }

@@ -76,7 +76,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
                         OfferType::EVENT()
                     )
                 ),
-            new Label("foo")
+            new Label('foo')
         );
 
         $actual = $this->deserializer->deserialize($json);

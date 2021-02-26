@@ -7,7 +7,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ContentTypeFilter implements FilterInterface
 {
-    const CONTENT_TYPE = 'Content-Type';
+    public const CONTENT_TYPE = 'Content-Type';
     /**
      * @var StringLiteral
      */

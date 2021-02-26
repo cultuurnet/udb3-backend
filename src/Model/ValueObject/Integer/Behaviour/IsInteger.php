@@ -77,7 +77,6 @@ trait IsInteger
     }
 
     /**
-     * @param mixed $other
      * @throws \InvalidArgumentException
      */
     private function guardSameType($other)
@@ -91,7 +90,6 @@ trait IsInteger
     }
 
     /**
-     * @param mixed $value
      * @throws \InvalidArgumentException
      */
     private function guardInteger($value)

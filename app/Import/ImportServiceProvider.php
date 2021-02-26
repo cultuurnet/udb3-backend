@@ -12,9 +12,7 @@ class ImportServiceProvider implements ServiceProviderInterface
      */
     private $subscribeHandlersCallback;
 
-    /**
-     * @param callable $subscribeHandlersCallback
-     */
+
     public function __construct(callable $subscribeHandlersCallback)
     {
         $this->subscribeHandlersCallback = $subscribeHandlersCallback;

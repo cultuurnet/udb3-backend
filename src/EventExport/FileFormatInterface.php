@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\EventExport;
 
 interface FileFormatInterface
 {
-
     /**
      * Gets the file name extension applicable to the file format.
      *

@@ -6,7 +6,6 @@ interface RepositoryInterface
 {
     /**
      * @param string $uuid
-     * @return mixed
      */
     public function remove($uuid);
 

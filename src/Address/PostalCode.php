@@ -10,5 +10,4 @@ use ValueObjects\StringLiteral\StringLiteral;
  */
 class PostalCode extends StringLiteral
 {
-
 }

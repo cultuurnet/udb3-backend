@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Model\Import\Event;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
-use CultuurNet\UDB3\Model\Import\Offer\Udb3ModelToLegacyOfferAdapter;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;

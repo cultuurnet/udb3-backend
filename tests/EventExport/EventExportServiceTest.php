@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\EventExport;
 
-use ArrayIterator;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
@@ -28,7 +27,7 @@ use ValueObjects\Web\Url;
 
 class EventExportServiceTest extends TestCase
 {
-    const AMOUNT = 19;
+    public const AMOUNT = 19;
 
     /**
      * @var EventExportService
@@ -158,9 +157,7 @@ class EventExportServiceTest extends TestCase
             );
     }
 
-    /**
-     * @param array $unavailableEventIds
-     */
+
     private function setUpEventService(array $unavailableEventIds = [])
     {
         $this->eventService->expects($this->any())
@@ -497,7 +494,6 @@ class EventExportServiceTest extends TestCase
      */
     public function it_throws_exception_if_number_of_items_for_query_is_greater_than_allowed()
     {
-
         $query = new EventExportQuery('city:Leuven');
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -531,7 +527,6 @@ class EventExportServiceTest extends TestCase
      */
     public function it_throws_exception_if_number_of_selection_is_greater_than_allowed()
     {
-
         $query = new EventExportQuery('city:Leuven');
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -557,18 +552,18 @@ class EventExportServiceTest extends TestCase
     {
         return [
             [
-                "fileFormat" => $this->getFileFormat('txt'),
-                "query" => new EventExportQuery('city:Leuven'),
-                "selection" => [
+                'fileFormat' => $this->getFileFormat('txt'),
+                'query' => new EventExportQuery('city:Leuven'),
+                'selection' => [
                     'http://example.com/event/4',
                     'http://example.com/event/7',
                     'http://example.com/event/16',
                 ],
             ],
             [
-                "fileFormat" => $this->getFileFormat('txt'),
-                "query" => new EventExportQuery('city:Leuven'),
-                "selection" => null,
+                'fileFormat' => $this->getFileFormat('txt'),
+                'query' => new EventExportQuery('city:Leuven'),
+                'selection' => null,
             ],
         ];
     }

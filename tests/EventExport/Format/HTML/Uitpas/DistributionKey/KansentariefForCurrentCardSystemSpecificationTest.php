@@ -82,7 +82,6 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
     /**
      * @test
      * @dataProvider satisfyingDistributionKeysProvider
-     * @param CultureFeed_Uitpas_DistributionKey $key
      */
     public function it_is_satisfied_by_a_kansarm_in_my_cardsystem_condition(
         CultureFeed_Uitpas_DistributionKey $key
@@ -147,7 +146,6 @@ class KansentariefForCurrentCardSystemSpecificationTest extends TestCase
     /**
      * @test
      * @dataProvider nonSatisfyingDistributionKeysProvider
-     * @param CultureFeed_Uitpas_DistributionKey $key
      */
     public function it_is_not_satisfied_by_other_distribution_key_conditions(
         CultureFeed_Uitpas_DistributionKey $key

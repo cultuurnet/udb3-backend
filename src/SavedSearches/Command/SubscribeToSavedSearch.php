@@ -17,11 +17,7 @@ class SubscribeToSavedSearch extends SavedSearchCommand
      */
     protected $query;
 
-    /**
-     * @param StringLiteral $userId
-     * @param StringLiteral $name
-     * @param QueryString $query
-     */
+
     public function __construct(
         StringLiteral $userId,
         StringLiteral $name,

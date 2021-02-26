@@ -24,7 +24,6 @@ class DeliveryModePropertiesFactory implements PropertiesFactoryInterface
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return array
      */
     public function createProperties(DomainMessage $domainMessage)

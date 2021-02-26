@@ -13,7 +13,6 @@ class DateRange extends DateTimeImmutableRange
     }
 
     /**
-     * @param DateRange $dateRange
      * @return int
      *   Negative if this date range is less than the given date range.
      *   Positive if this date range is greater than the given date range.

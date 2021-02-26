@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Http\Label;
 
-use CultuurNet\UDB3\Label\Services\WriteResult;
 use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -73,8 +72,6 @@ class EditRestControllerTest extends TestCase
     /**
      * @test
      * @dataProvider patchProvider
-     * @param array $contentAsArray
-     * @param string $method
      */
     public function it_handles_patch(
         array $contentAsArray,
@@ -104,7 +101,6 @@ class EditRestControllerTest extends TestCase
     }
 
     /**
-     * @param array $contentAsArray
      * @return Request
      */
     private function createRequestWithContent(array $contentAsArray)

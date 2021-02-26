@@ -11,10 +11,7 @@ class UnsubscribeFromSavedSearch extends SavedSearchCommand
      */
     protected $searchId;
 
-    /**
-     * @param StringLiteral $userId
-     * @param StringLiteral $searchId
-     */
+
     public function __construct(
         StringLiteral $userId,
         StringLiteral $searchId

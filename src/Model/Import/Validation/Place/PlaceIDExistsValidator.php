@@ -11,10 +11,6 @@ use Respect\Validation\Rules\Callback;
 
 class PlaceIDExistsValidator extends Callback
 {
-    /**
-     * @param UUIDParser $placeIDParser
-     * @param DocumentRepository $placeDocumentRepository
-     */
     public function __construct(
         UUIDParser $placeIDParser,
         DocumentRepository $placeDocumentRepository

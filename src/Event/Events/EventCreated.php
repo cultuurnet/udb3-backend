@@ -114,7 +114,7 @@ final class EventCreated extends EventEvent
         if (!is_null($this->getPublicationDate())) {
             $publicationDate = $this->getPublicationDate()->format(\DateTime::ATOM);
         }
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
             'title' => (string)$this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
@@ -122,7 +122,7 @@ final class EventCreated extends EventEvent
             'location' => $this->getLocation()->toNative(),
             'calendar' => $this->getCalendar()->serialize(),
             'publication_date' => $publicationDate,
-        );
+        ];
     }
 
     public static function deserialize(array $data): EventCreated

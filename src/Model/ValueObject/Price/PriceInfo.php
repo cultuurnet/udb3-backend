@@ -14,10 +14,7 @@ class PriceInfo
      */
     private $tariffs;
 
-    /**
-     * @param Tariff $basePrice
-     * @param Tariffs $tariffs
-     */
+
     public function __construct(Tariff $basePrice, Tariffs $tariffs)
     {
         $this->basePrice = $basePrice;
@@ -33,7 +30,6 @@ class PriceInfo
     }
 
     /**
-     * @param Tariff $basePrice
      * @return PriceInfo
      */
     public function withBasePrice(Tariff $basePrice)
@@ -52,7 +48,6 @@ class PriceInfo
     }
 
     /**
-     * @param Tariffs $tariffs
      * @return PriceInfo
      */
     public function withTariffs(Tariffs $tariffs)

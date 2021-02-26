@@ -35,9 +35,6 @@ class DefaultMessageFactory implements MessageFactoryInterface
     private $senderName;
 
     /**
-     * @param BodyFactoryInterface    $plainTextBodyFactory
-     * @param BodyFactoryInterface    $htmlBodyFactory
-     * @param SubjectFactoryInterface $subjectFactory
      * @param string                  $senderAddress
      * @param string                  $senderName
      */
@@ -56,8 +53,6 @@ class DefaultMessageFactory implements MessageFactoryInterface
     }
 
     /**
-     * @param EmailAddress      $address
-     * @param EventExportResult $eventExportResult
      * @return \Swift_Message
      */
     public function createMessageFor(EmailAddress $address, EventExportResult $eventExportResult)

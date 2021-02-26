@@ -13,7 +13,6 @@ abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Address $address
      */
     public function __construct($itemId, Address $address)
     {

@@ -23,7 +23,6 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
 
     /**
      * @param string $organizerId
-     * @param Labels $label
      */
     public function __construct(
         $organizerId,

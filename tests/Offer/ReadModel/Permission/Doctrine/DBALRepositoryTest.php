@@ -77,9 +77,7 @@ class DBALRepositoryTest extends TestCase
     }
 
     /**
-     * @param StringLiteral $eventId
      * @param string $key
-     * @param StringLiteral $userId
      */
     private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId)
     {

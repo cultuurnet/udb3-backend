@@ -15,7 +15,6 @@ class Label
     private $visible;
 
     /**
-     * @param LabelName $name
      * @param bool $visible
      */
     public function __construct(LabelName $name, $visible = true)

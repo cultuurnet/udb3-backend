@@ -10,10 +10,8 @@ class CardSystemsJsonResponse extends Response
 {
     /**
      * @param CultureFeed_Uitpas_CardSystem[] $cardSystems
-     * @param int $status
-     * @param array $headers
      */
-    public function __construct(array $cardSystems, int $status = 200, array $headers = array())
+    public function __construct(array $cardSystems, int $status = 200, array $headers = [])
     {
         $data = [];
         foreach ($cardSystems as $cardSystem) {

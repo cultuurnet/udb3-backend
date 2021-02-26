@@ -13,18 +13,13 @@ class RoleConstraintVoter implements PermissionVoterInterface
      */
     private $userPermissionMatcher;
 
-    /**
-     * @param UserPermissionMatcherInterface $userPermissionMatcher
-     */
+
     public function __construct(UserPermissionMatcherInterface $userPermissionMatcher)
     {
         $this->userPermissionMatcher = $userPermissionMatcher;
     }
 
     /**
-     * @param Permission $permission
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return bool
      */
     public function isAllowed(

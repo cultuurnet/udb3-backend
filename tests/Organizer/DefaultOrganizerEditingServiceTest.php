@@ -78,7 +78,7 @@ class DefaultOrganizerEditingServiceTest extends TestCase
 
         $this->organizerRepository = new OrganizerRepository(
             $this->eventStore,
-            new SimpleEventBus
+            new SimpleEventBus()
         );
 
         $this->labelService = $this->createMock(LabelServiceInterface::class);

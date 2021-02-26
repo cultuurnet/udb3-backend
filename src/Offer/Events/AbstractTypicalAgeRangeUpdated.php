@@ -24,9 +24,9 @@ abstract class AbstractTypicalAgeRangeUpdated extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'typicalAgeRange' => (string) $this->typicalAgeRange,
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractTypicalAgeRangeUpdated

@@ -42,11 +42,6 @@ class UpdateMajorInfo extends AbstractCommand
     /**
      * UpdateMajorInfo constructor.
      * @param string $eventId
-     * @param Title $title
-     * @param EventType $eventType
-     * @param LocationId $location
-     * @param Calendar $calendar
-     * @param Theme|null $theme
      */
     public function __construct(
         $eventId,

@@ -36,10 +36,6 @@ class JwtDecoderService implements JwtDecoderServiceInterface
     private $requiredClaims;
 
     /**
-     * @param Parser $parser
-     * @param ValidationData $validationData
-     * @param Signer $signer
-     * @param Key $publicKey
      * @param string[] $requiredClaims
      */
     public function __construct(
@@ -57,7 +53,7 @@ class JwtDecoderService implements JwtDecoderServiceInterface
 
         if (count($requiredClaims) !== count(array_filter($this->requiredClaims, 'is_string'))) {
             throw new \InvalidArgumentException(
-                "All required claims should be strings."
+                'All required claims should be strings.'
             );
         }
     }

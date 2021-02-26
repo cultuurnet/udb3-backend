@@ -12,6 +12,6 @@ use ValueObjects\Enum\Enum;
  */
 class Privacy extends Enum
 {
-    const PRIVACY_PUBLIC = 'public';
-    const PRIVACY_PRIVATE = 'private';
+    public const PRIVACY_PUBLIC = 'public';
+    public const PRIVACY_PRIVATE = 'private';
 }

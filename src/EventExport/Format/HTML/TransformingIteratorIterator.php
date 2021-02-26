@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
-use \Traversable;
-use \IteratorIterator;
+use Traversable;
+use IteratorIterator;
 
 /**
  * Iterator iterator that uses a callable to transform the current item.

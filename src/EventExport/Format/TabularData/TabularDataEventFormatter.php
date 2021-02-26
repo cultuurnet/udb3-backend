@@ -68,8 +68,6 @@ class TabularDataEventFormatter
 
     /**
      * @param string[]                                $include                   A list of properties to include
-     * @param EventInfoServiceInterface|null          $uitpas
-     * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
         array $include,
@@ -90,7 +88,7 @@ class TabularDataEventFormatter
 
     public function formatHeader()
     {
-        $columns = array();
+        $columns = [];
         foreach ($this->includedProperties as $property) {
             $columns[] = $this->columns()[$property]['name'];
         }
@@ -157,7 +155,7 @@ class TabularDataEventFormatter
 
     public function emptyRow()
     {
-        $row = array();
+        $row = [];
 
         foreach ($this->includedProperties as $property) {
             $row[$property] = '';
@@ -308,8 +306,8 @@ class TabularDataEventFormatter
                                     ? $cardSystems[$tariff['cardSystem']]
                                     : '';
                                 $cardSystem = empty($cardSystem)
-                                    ? $tariff['cardSystem'].': € '.$tariff['price']
-                                    : $cardSystem.' / € '.$tariff['price'];
+                                    ? $tariff['cardSystem'] . ': € ' . $tariff['price']
+                                    : $cardSystem . ' / € ' . $tariff['price'];
 
                                 $cardSystems[$tariff['cardSystem']] = $cardSystem;
                                 return $cardSystems;
@@ -320,7 +318,7 @@ class TabularDataEventFormatter
                         $formattedTariffs = array_reduce(
                             $cardSystems,
                             function ($tariffs, $cardSystemPrices) {
-                                return $tariffs ? $tariffs.' | '.$cardSystemPrices : $cardSystemPrices;
+                                return $tariffs ? $tariffs . ' | ' . $cardSystemPrices : $cardSystemPrices;
                             }
                         );
 
@@ -587,7 +585,7 @@ class TabularDataEventFormatter
                 'name' => 'externe ids',
                 'include' => function ($event) {
                     if (property_exists($event, 'sameAs')) {
-                        $ids = array();
+                        $ids = [];
 
                         foreach ($event->sameAs as $externalId) {
                             $ids[] = $externalId;
@@ -638,7 +636,7 @@ class TabularDataEventFormatter
             'contactPoint.reservations.telephone' => [
                 'name' => 'telefoon reservaties',
                 'include' => function () {
-                        return '';
+                    return '';
                 },
                 'property' => 'contactPoint',
             ],
@@ -737,7 +735,7 @@ class TabularDataEventFormatter
 
         $tariffName = $tariff->name->{$language};
 
-        return $tariffName.': '.$tariffPrice;
+        return $tariffName . ': ' . $tariffPrice;
     }
 
     /**

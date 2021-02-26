@@ -12,9 +12,7 @@ interface ExportEventsInterface
      */
     public function getQuery(): EventExportQuery;
 
-    /**
-     * @return null|EmailAddress
-     */
+
     public function getAddress(): ?EmailAddress;
 
     /**

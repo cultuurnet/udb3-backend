@@ -42,11 +42,6 @@ class JwtEncoderService implements JwtEncoderServiceInterface
     private $nbf;
 
     /**
-     * @param Builder $builder
-     * @param Signer $signer
-     * @param Key $key
-     * @param Clock $clock
-     * @param IntegerLiteral $exp
      * @param IntegerLiteral $nbf
      */
     public function __construct(

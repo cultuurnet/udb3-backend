@@ -32,12 +32,7 @@ class DocumentLabelPermissionRule extends AbstractRule
      */
     private $labelRelationsRepository;
 
-    /**
-     * @param UUIDParser $uuidParser
-     * @param UserIdentificationInterface $userIdentification
-     * @param LabelsRepository $labelsRepository
-     * @param LabelRelationsRepository $labelsRelationsRepository
-     */
+
     public function __construct(
         UUIDParser $uuidParser,
         UserIdentificationInterface $userIdentification,
@@ -106,7 +101,6 @@ class DocumentLabelPermissionRule extends AbstractRule
     }
 
     /**
-     * @param LabelPermissionRule $labelPermissionRule
      * @param string[] $labels
      * @return string[] $invalidLabels
      */

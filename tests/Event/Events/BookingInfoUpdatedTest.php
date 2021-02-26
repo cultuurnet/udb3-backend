@@ -14,7 +14,6 @@ class BookingInfoUpdatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param BookingInfoUpdated $bookingInfoUpdated
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -30,7 +29,6 @@ class BookingInfoUpdatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param BookingInfoUpdated $expectedBookingInfoUpdated
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

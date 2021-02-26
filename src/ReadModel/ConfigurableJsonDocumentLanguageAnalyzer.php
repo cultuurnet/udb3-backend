@@ -22,7 +22,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param JsonDocument $jsonDocument
      * @return Language[]
      */
     public function determineAvailableLanguages(JsonDocument $jsonDocument)
@@ -45,7 +44,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param JsonDocument $jsonDocument
      * @return Language[]
      */
     public function determineCompletedLanguages(JsonDocument $jsonDocument)
@@ -76,7 +74,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param \stdClass $json
      * @param string $propertyName
      * @return string[]
      */
@@ -90,7 +87,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param \stdClass $json
      * @param string $propertyName
      * @return string[]
      */
@@ -106,7 +102,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param \stdClass $json
      * @param string $propertyName
      * @return string[]
      */

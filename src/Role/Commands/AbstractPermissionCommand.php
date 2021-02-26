@@ -12,10 +12,7 @@ abstract class AbstractPermissionCommand extends AbstractCommand
      */
     private $rolePermission;
 
-    /**
-     * @param UUID $uuid
-     * @param Permission $rolePermission
-     */
+
     public function __construct(
         UUID $uuid,
         Permission $rolePermission

@@ -13,9 +13,7 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
      */
     private $place;
 
-    /**
-     * @param Place $place
-     */
+
     public function __construct(Place $place)
     {
         parent::__construct($place);

@@ -15,7 +15,6 @@ class UitpasInfoFormatter
     /**
      * UitpasInfoFormatter constructor.
      *
-     * @param PriceFormatter $priceFormatter
      */
     public function __construct(PriceFormatter $priceFormatter)
     {
@@ -23,7 +22,6 @@ class UitpasInfoFormatter
     }
 
     /**
-     * @param EventInfo $uitpasInfo
      * @return array
      */
     public function format(EventInfo $uitpasInfo)

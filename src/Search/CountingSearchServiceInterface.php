@@ -14,7 +14,6 @@ interface CountingSearchServiceInterface
      * @param string $query
      *   An arbitrary query
      *
-     * @return int
      */
     public function search(string $query): int;
 }

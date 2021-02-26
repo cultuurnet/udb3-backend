@@ -66,7 +66,6 @@ class JSONLDMainLanguageQueryTest extends TestCase
 
     /**
      * @param string $cdbid
-     * @param array $data
      */
     private function expectDocumentWithJsonLd($cdbid, array $data)
     {

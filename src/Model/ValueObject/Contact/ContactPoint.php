@@ -46,7 +46,6 @@ class ContactPoint
     }
 
     /**
-     * @param TelephoneNumbers $telephoneNumbers
      * @return ContactPoint
      */
     public function withTelephoneNumbers(TelephoneNumbers $telephoneNumbers)
@@ -65,7 +64,6 @@ class ContactPoint
     }
 
     /**
-     * @param EmailAddresses $emailAddresses
      * @return ContactPoint
      */
     public function withEmailAddresses(EmailAddresses $emailAddresses)
@@ -84,7 +82,6 @@ class ContactPoint
     }
 
     /**
-     * @param Urls $urls
      * @return ContactPoint
      */
     public function withUrls(Urls $urls)

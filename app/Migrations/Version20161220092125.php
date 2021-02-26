@@ -13,9 +13,6 @@ use ValueObjects\StringLiteral\StringLiteral;
  */
 class Version20161220092125 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->getTable('events');
@@ -23,17 +20,12 @@ class Version20161220092125 extends AbstractMigration
         $this->removeEventsByType($table, new StringLiteral('CultuurNet.UDB3.UsedLabelsMemory.LabelUsed'));
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
     }
 
-    /**
-     * @param Table $table
-     * @param StringLiteral $eventType
-     */
+
     private function removeEventsByType(Table $table, StringLiteral $eventType)
     {
         $builder = new QueryBuilder($this->connection);

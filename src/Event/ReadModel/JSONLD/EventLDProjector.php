@@ -147,7 +147,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param EventImportedFromUDB2 $eventImportedFromUDB2
      * @return JsonDocument
      */
     protected function applyEventImportedFromUDB2(
@@ -161,7 +160,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param EventUpdatedFromUDB2 $eventUpdatedFromUDB2
      * @return JsonDocument
      */
     protected function applyEventUpdatedFromUDB2(
@@ -198,7 +196,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param \stdClass $jsonLd
      * @param string $eventId
      * @param string $cdbXmlNamespaceUri
      * @param string $cdbXml
@@ -273,8 +270,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param EventCreated $eventCreated
-     * @param DomainMessage $domainMessage
      * @return JsonDocument
      */
     protected function applyEventCreated(
@@ -291,9 +286,9 @@ class EventLDProjector extends OfferLDProjector implements
         $this->setMainLanguage($jsonLD, $eventCreated->getMainLanguage());
 
         $jsonLD->name[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
-        $jsonLD->location = array(
+        $jsonLD->location = [
                 '@type' => 'Place',
-            ) + $this->placeJSONLD(
+            ] + $this->placeJSONLD(
                 $eventCreated->getLocation()->toNative()
             );
 
@@ -340,8 +335,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param EventCopied $eventCopied
-     * @param DomainMessage $domainMessage
      * @return JsonDocument
      */
     protected function applyEventCopied(
@@ -419,7 +412,6 @@ class EventLDProjector extends OfferLDProjector implements
 
     /**
      * Apply the major info updated command to the projector.
-     * @param MajorInfoUpdated $majorInfoUpdated
      * @return JsonDocument
      */
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
@@ -432,9 +424,9 @@ class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->name->{$this->getMainLanguage($jsonLD)->getCode()} = $majorInfoUpdated->getTitle();
 
-        $jsonLD->location = array(
+        $jsonLD->location = [
           '@type' => 'Place',
-        ) + $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
+        ] + $this->placeJSONLD($majorInfoUpdated->getLocation()->toNative());
 
         $availableTo = AvailableTo::createFromCalendar($majorInfoUpdated->getCalendar(), $majorInfoUpdated->getEventType());
         $jsonLD->availableTo = (string) $availableTo;
@@ -460,7 +452,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param LocationUpdated $locationUpdated
      *
      * @return JsonDocument
      */
@@ -478,7 +469,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param GeoCoordinatesUpdated $geoCoordinatesUpdated
      * @return JsonDocument
      */
     protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
@@ -496,7 +486,6 @@ class EventLDProjector extends OfferLDProjector implements
     }
 
     /**
-     * @param AudienceUpdated $audienceUpdated
      * @return JsonDocument
      */
     protected function applyAudienceUpdated(AudienceUpdated $audienceUpdated)
@@ -548,15 +537,12 @@ class EventLDProjector extends OfferLDProjector implements
     private function generateSameAs($eventId, $name)
     {
         $eventSlug = $this->slugger->slug($name);
-        return array(
+        return [
             'http://www.uitinvlaanderen.be/agenda/e/' . $eventSlug . '/' . $eventId,
-        );
+        ];
     }
 
-    /**
-     * @param Metadata $metadata
-     * @return null|StringLiteral
-     */
+
     private function getAuthorFromMetadata(Metadata $metadata): ?StringLiteral
     {
         $properties = $metadata->serialize();

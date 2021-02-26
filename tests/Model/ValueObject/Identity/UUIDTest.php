@@ -33,7 +33,6 @@ class UUIDTest extends TestCase
     /**
      * @test
      * @dataProvider invalidUUIDDataProvider
-     * @param mixed $invalidUuid
      */
     public function it_should_throw_an_exception_if_an_invalid_uuid_is_given($invalidUuid)
     {

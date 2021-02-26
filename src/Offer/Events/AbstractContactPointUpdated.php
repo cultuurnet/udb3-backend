@@ -24,9 +24,9 @@ abstract class AbstractContactPointUpdated extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'contactPoint' => $this->contactPoint->serialize(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractContactPointUpdated

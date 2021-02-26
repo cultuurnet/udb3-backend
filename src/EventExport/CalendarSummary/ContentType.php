@@ -10,6 +10,6 @@ use ValueObjects\Enum\Enum;
  */
 class ContentType extends Enum
 {
-    const HTML = 'text/html';
-    const PLAIN = 'text/plain';
+    public const HTML = 'text/html';
+    public const PLAIN = 'text/plain';
 }

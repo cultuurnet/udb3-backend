@@ -11,32 +11,32 @@ final class BookingInfo implements JsonLdSerializableInterface
     /**
      * @var string|null
      */
-    protected $phone;
+    private $phone;
 
     /**
      * @var string|null
      */
-    protected $email;
+    private $email;
 
     /**
      * @var string|null
      */
-    protected $url;
+    private $url;
 
     /**
      * @var MultilingualString|null
      */
-    protected $urlLabel;
+    private $urlLabel;
 
     /**
      * @var DateTimeImmutable|null
      */
-    protected $availabilityStarts;
+    private $availabilityStarts;
 
     /**
      * @var DateTimeImmutable|null
      */
-    protected $availabilityEnds;
+    private $availabilityEnds;
 
     public function __construct(
         ?string $url = null,

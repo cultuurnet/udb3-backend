@@ -62,7 +62,6 @@ class JwtListenerTest extends TestCase
      * @test
      * @dataProvider irrelevantRequestProvider
      *
-     * @param Request $request
      */
     public function it_ignores_irrelevant_requests(Request $request)
     {

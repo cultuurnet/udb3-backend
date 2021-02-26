@@ -444,7 +444,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     }
 
     /**
-     * @param array $serializedObject
      * @return array
      */
     private static function replaceEventIdWithItemId(array $serializedObject)
@@ -453,7 +452,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     }
 
     /**
-     * @param array $serializedObject
      * @return array
      */
     private static function replacePlaceIdWithItemId(array $serializedObject)
@@ -479,7 +477,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     }
 
     /**
-     * @param array $serializedObject
      * @return array
      */
     private static function replaceKeywordWithLabel(array $serializedObject)
@@ -492,8 +489,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     }
 
     /**
-     * @param array $serializedObject
-     * @param ReadRepositoryInterface $labelRepository
      * @return array
      */
     private static function addLabelName(
@@ -511,8 +506,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     }
 
     /**
-     * @param array $serializedObject
-     * @param ReadRepositoryInterface $labelRepository
      * @return array
      */
     private static function fixOrganizerLabelEvent(
@@ -532,7 +525,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     }
 
     /**
-     * @param array $serializedObject
      * @return array
      */
     private static function removeLocationNameAndAddress(array $serializedObject)
@@ -553,7 +545,6 @@ class BackwardsCompatiblePayloadSerializerFactory
     }
 
     /**
-     * @param array $serializedObject
      * @return array
      */
     private static function addDefaultMainLanguage(array $serializedObject)

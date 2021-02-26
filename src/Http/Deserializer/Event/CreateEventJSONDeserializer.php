@@ -30,7 +30,6 @@ class CreateEventJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return CreateEvent
      * @throws DataValidationException
      */

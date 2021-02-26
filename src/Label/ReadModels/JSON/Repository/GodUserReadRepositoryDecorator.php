@@ -17,10 +17,7 @@ class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
      */
     private $godUserIds;
 
-    /**
-     * @param ReadRepositoryInterface $readRepository
-     * @param array $godUserIds
-     */
+
     public function __construct(ReadRepositoryInterface $readRepository, array $godUserIds)
     {
         $this->repository = $readRepository;

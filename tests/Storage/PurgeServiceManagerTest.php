@@ -49,18 +49,14 @@ class PurgeServiceManagerTest extends TestCase
         $this->assertCount(2, $this->purgeServiceManager->getWriteModelPurgeServices());
     }
 
-    /**
-     * @param PurgeServiceManager $purgeServiceManager
-     */
+
     private function addReadModel_PurgeServiceInterfaces(PurgeServiceManager $purgeServiceManager)
     {
         $purgeServiceManager->addReadModelPurgeService($this->createMockedPurgeService());
         $purgeServiceManager->addReadModelPurgeService($this->createMockedPurgeService());
     }
 
-    /**
-     * @param PurgeServiceManager $purgeServiceManager
-     */
+
     private function addWriteModel_PurgeServiceInterfaces(PurgeServiceManager $purgeServiceManager)
     {
         $purgeServiceManager->addWriteModelPurgeService($this->createMockedPurgeService());

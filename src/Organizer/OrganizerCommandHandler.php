@@ -47,7 +47,6 @@ class OrganizerCommandHandler implements CommandHandler
     }
 
     /**
-     * @param OrganizerRelationServiceInterface $relationService
      * @return OrganizerCommandHandler
      */
     public function withOrganizerRelationService(OrganizerRelationServiceInterface $relationService)
@@ -76,9 +75,7 @@ class OrganizerCommandHandler implements CommandHandler
         ];
     }
 
-    /**
-     * @param mixed $command
-     */
+
     public function handle($command)
     {
         $class = get_class($command);
@@ -102,9 +99,7 @@ class OrganizerCommandHandler implements CommandHandler
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * @param UpdateWebsite $updateWebsite
-     */
+
     protected function updateWebsite(UpdateWebsite $updateWebsite)
     {
         $organizer = $this->loadOrganizer($updateWebsite->getOrganizerId());
@@ -114,9 +109,7 @@ class OrganizerCommandHandler implements CommandHandler
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * @param UpdateTitle $updateTitle
-     */
+
     protected function updateTitle(UpdateTitle $updateTitle)
     {
         $organizer = $this->loadOrganizer($updateTitle->getOrganizerId());
@@ -129,9 +122,7 @@ class OrganizerCommandHandler implements CommandHandler
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * @param UpdateAddress $updateAddress
-     */
+
     protected function updateAddress(UpdateAddress $updateAddress)
     {
         $organizer = $this->loadOrganizer($updateAddress->getOrganizerId());
@@ -153,9 +144,7 @@ class OrganizerCommandHandler implements CommandHandler
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * @param UpdateContactPoint $updateContactPoint
-     */
+
     protected function updateContactPoint(UpdateContactPoint $updateContactPoint)
     {
         $organizer = $this->loadOrganizer($updateContactPoint->getOrganizerId());
@@ -165,9 +154,6 @@ class OrganizerCommandHandler implements CommandHandler
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * @param RemoveLabel $removeLabel
-     */
     protected function removeLabel(RemoveLabel $removeLabel)
     {
         $organizer = $this->loadOrganizer($removeLabel->getOrganizerId());
@@ -177,9 +163,7 @@ class OrganizerCommandHandler implements CommandHandler
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * @param ImportLabels $importLabels
-     */
+
     protected function importLabels(ImportLabels $importLabels)
     {
         $organizer = $this->loadOrganizer($importLabels->getOrganizerId());
@@ -190,7 +174,6 @@ class OrganizerCommandHandler implements CommandHandler
     }
 
     /**
-     * @param AbstractLabelCommand $labelCommand
      * @return Label
      */
     private function createLabel(AbstractLabelCommand $labelCommand)
@@ -204,9 +187,7 @@ class OrganizerCommandHandler implements CommandHandler
         );
     }
 
-    /**
-     * @param DeleteOrganizer $deleteOrganizer
-     */
+
     public function deleteOrganizer(DeleteOrganizer $deleteOrganizer)
     {
         $id = $deleteOrganizer->getOrganizerId();

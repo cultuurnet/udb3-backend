@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 interface QueryFactoryInterface
 {
     /**
-     * @param Request $request
      * @return Query
      */
     public function createFromRequest(Request $request);

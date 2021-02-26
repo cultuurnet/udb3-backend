@@ -21,8 +21,6 @@ class OpeningTime
     /**
      * Custom value object for opening times without seconds.
      *
-     * @param Hour $hour
-     * @param Minute $minute
      */
     public function __construct(Hour $hour, Minute $minute)
     {
@@ -31,13 +29,12 @@ class OpeningTime
     }
 
     /**
-     * @param \DateTimeInterface $dateTime
      * @return OpeningTime
      */
     public static function fromNativeDateTime(\DateTimeInterface $dateTime)
     {
-        $hour = new Hour(\intval($dateTime->format('H')));
-        $minute = new Minute(\intval($dateTime->format('i')));
+        $hour = new Hour((int) ($dateTime->format('H')));
+        $minute = new Minute((int) ($dateTime->format('i')));
 
         return new OpeningTime($hour, $minute);
     }
@@ -80,7 +77,6 @@ class OpeningTime
     }
 
     /**
-     * @param OpeningTime $time
      * @return bool
      */
     public function sameValueAs(OpeningTime $time)
@@ -112,7 +108,6 @@ class OpeningTime
     }
 
     /**
-     * @param Time $time
      * @return self
      */
     public static function fromUdb3ModelTime(Time $time)

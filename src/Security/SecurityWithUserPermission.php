@@ -23,12 +23,7 @@ class SecurityWithUserPermission extends SecurityDecoratorBase
      */
     private $commandFilter;
 
-    /**
-     * @param SecurityInterface $decoratee
-     * @param UserIdentificationInterface $userIdentification
-     * @param PermissionVoterInterface $permissionVoter
-     * @param CommandFilterInterface $commandFilter
-     */
+
     public function __construct(
         SecurityInterface $decoratee,
         UserIdentificationInterface $userIdentification,

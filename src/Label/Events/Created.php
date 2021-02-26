@@ -45,7 +45,6 @@ class Created extends AbstractEvent
     }
 
     /**
-     * @param array $data
      * @return Created
      */
     public static function deserialize(array $data)

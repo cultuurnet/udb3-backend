@@ -96,20 +96,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
      */
     private $mediaObjectReferencesDenormalizer;
 
-    /**
-     * @param UUIDParser $idParser
-     * @param DenormalizerInterface|null $titleDenormalizer
-     * @param DenormalizerInterface|null $descriptionDenormalizer
-     * @param DenormalizerInterface|null $calendarDenormalizer
-     * @param DenormalizerInterface|null $categoriesDenormalizer
-     * @param DenormalizerInterface|null $labelsDenormalizer
-     * @param DenormalizerInterface|null $organizerReferenceDenormalizer
-     * @param DenormalizerInterface|null $ageRangeDenormalizer
-     * @param DenormalizerInterface|null $priceInfoDenormalizer
-     * @param DenormalizerInterface|null $bookingInfoDenormalizer
-     * @param DenormalizerInterface|null $contactPointDenormalizer
-     * @param DenormalizerInterface|null $mediaObjectReferencesDenormalizer
-     */
+
     public function __construct(
         UUIDParser $idParser,
         DenormalizerInterface $titleDenormalizer = null,
@@ -186,12 +173,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $originalData
-     * @param UUID $id
-     * @param Language $mainLanguage
-     * @param TranslatedTitle $title
-     * @param Calendar $calendar
-     * @param Categories $categories
      * @return ImmutableOffer
      */
     abstract protected function createOffer(
@@ -238,8 +219,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeDescription(array $data, ImmutableOffer $offer)
@@ -260,8 +239,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeLabels(array $data, ImmutableOffer $offer)
@@ -271,8 +248,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeOrganizerReference(array $data, ImmutableOffer $offer)
@@ -290,8 +265,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeAgeRange(array $data, ImmutableOffer $offer)
@@ -305,8 +278,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizePriceInfo(array $data, ImmutableOffer $offer)
@@ -325,8 +296,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeBookingInfo(array $data, ImmutableOffer $offer)
@@ -345,8 +314,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeContactPoint(array $data, ImmutableOffer $offer)
@@ -365,8 +332,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeMediaObjectReferences(array $data, ImmutableOffer $offer)
@@ -386,8 +351,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeWorkflowStatus(array $data, ImmutableOffer $offer)
@@ -401,8 +364,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOffer $offer
      * @return ImmutableOffer
      */
     protected function denormalizeAvailableFrom(array $data, ImmutableOffer $offer)

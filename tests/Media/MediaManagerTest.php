@@ -20,7 +20,6 @@ use ValueObjects\Web\Url;
 
 class MediaManagerTest extends TestCase
 {
-
     /**
      * @var MediaManager
      */

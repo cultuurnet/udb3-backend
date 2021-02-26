@@ -25,11 +25,7 @@ class Tariff implements Serializable
      */
     private $currencyCodeString;
 
-    /**
-     * @param MultilingualString $name
-     * @param Price $price
-     * @param Currency $currency
-     */
+
     public function __construct(
         MultilingualString $name,
         Price $price,
@@ -77,7 +73,6 @@ class Tariff implements Serializable
     }
 
     /**
-     * @param array $data
      * @return Tariff
      */
     public static function deserialize(array $data)
@@ -90,7 +85,6 @@ class Tariff implements Serializable
     }
 
     /**
-     * @param Udb3ModelTariff $udb3ModelTariff
      * @return Tariff
      */
     public static function fromUdb3ModelTariff(Udb3ModelTariff $udb3ModelTariff)

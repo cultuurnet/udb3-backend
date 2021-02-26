@@ -24,9 +24,9 @@ abstract class AbstractDescriptionUpdated extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'description' => $this->description->toNative(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractDescriptionUpdated

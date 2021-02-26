@@ -14,10 +14,7 @@ abstract class TranslatedValueObject
      */
     private $translations;
 
-    /**
-     * @param Language $originalLanguage
-     * @param mixed $originalValueObject
-     */
+
     public function __construct(Language $originalLanguage, $originalValueObject)
     {
         $this->guardValueObjectClassName($originalValueObject);
@@ -33,8 +30,6 @@ abstract class TranslatedValueObject
     abstract protected function getValueObjectClassName();
 
     /**
-     * @param Language $language
-     * @param mixed $translation
      * @return static
      */
     public function withTranslation(Language $language, $translation)
@@ -47,7 +42,6 @@ abstract class TranslatedValueObject
     }
 
     /**
-     * @param Language $language
      * @return static
      */
     public function withoutTranslation(Language $language)
@@ -62,8 +56,6 @@ abstract class TranslatedValueObject
     }
 
     /**
-     * @param Language $language
-     * @return mixed
      * @throws \OutOfBoundsException
      */
     public function getTranslation(Language $language)
@@ -114,9 +106,7 @@ abstract class TranslatedValueObject
         );
     }
 
-    /**
-     * @param mixed $valueObject
-     */
+
     private function guardValueObjectClassName($valueObject)
     {
         $className = $this->getValueObjectClassName();

@@ -11,10 +11,7 @@ class SimpleDeserializerLocator implements DeserializerLocatorInterface
      */
     protected $deserializers = [];
 
-    /**
-     * @param StringLiteral $contentType
-     * @param DeserializerInterface $deserializer
-     */
+
     public function registerDeserializer(
         StringLiteral $contentType,
         DeserializerInterface $deserializer
@@ -23,7 +20,6 @@ class SimpleDeserializerLocator implements DeserializerLocatorInterface
     }
 
     /**
-     * @param StringLiteral $contentType
      * @return DeserializerInterface
      */
     public function getDeserializerForContentType(StringLiteral $contentType)

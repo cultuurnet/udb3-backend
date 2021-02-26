@@ -24,7 +24,7 @@ class DescriptionJSONDeserializerTest extends TestCase
     public function it_can_deserialize_a_valid_description()
     {
         $json = new StringLiteral('{"description": "Lorem ipsum."}');
-        $expected = new Description("Lorem ipsum.");
+        $expected = new Description('Lorem ipsum.');
         $actual = $this->deserializer->deserialize($json);
         $this->assertEquals($expected, $actual);
     }

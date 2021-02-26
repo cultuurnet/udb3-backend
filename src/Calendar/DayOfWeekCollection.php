@@ -29,7 +29,6 @@ class DayOfWeekCollection implements Serializable
      * Keeps the collection of days of week unique.
      * Makes sure that the objects are stored as strings to allow PHP serialize method.
      *
-     * @param DayOfWeek $dayOfWeek
      * @return DayOfWeekCollection
      */
     public function addDayOfWeek(DayOfWeek $dayOfWeek)
@@ -67,7 +66,7 @@ class DayOfWeekCollection implements Serializable
         return array_reduce(
             $data,
             function (DayOfWeekCollection $collection, $dayOfWeek) {
-                 return $collection->addDayOfWeek(DayOfWeek::fromNative($dayOfWeek));
+                return $collection->addDayOfWeek(DayOfWeek::fromNative($dayOfWeek));
             },
             new DayOfWeekCollection()
         );
@@ -82,7 +81,6 @@ class DayOfWeekCollection implements Serializable
     }
 
     /**
-     * @param Days $days
      * @return self
      */
     public static function fromUdb3ModelDays(Days $days)

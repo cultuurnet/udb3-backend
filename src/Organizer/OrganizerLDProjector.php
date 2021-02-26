@@ -123,7 +123,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param OrganizerImportedFromUDB2 $organizerImportedFromUDB2
      * @return JsonDocument
      * @throws \CultureFeed_Cdb_ParseException
      */
@@ -149,8 +148,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param OrganizerCreated $organizerCreated
-     * @param DomainMessage $domainMessage
      * @return JsonDocument
      */
     private function applyOrganizerCreated(OrganizerCreated $organizerCreated, DomainMessage $domainMessage)
@@ -206,8 +203,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param OrganizerCreatedWithUniqueWebsite $organizerCreated
-     * @param DomainMessage $domainMessage
      * @return JsonDocument
      */
     private function applyOrganizerCreatedWithUniqueWebsite(
@@ -244,7 +239,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param WebsiteUpdated $websiteUpdated
      * @return JsonDocument
      */
     private function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated)
@@ -260,7 +254,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param TitleUpdated $titleUpdated
      * @return JsonDocument
      */
     private function applyTitleUpdated(TitleUpdated $titleUpdated)
@@ -269,7 +262,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param TitleTranslated $titleTranslated
      * @return JsonDocument
      */
     private function applyTitleTranslated(TitleTranslated $titleTranslated)
@@ -282,7 +274,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param AddressUpdated $addressUpdated
      * @return JsonDocument
      */
     private function applyAddressUpdated(AddressUpdated $addressUpdated)
@@ -291,7 +282,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param AddressTranslated $addressTranslated
      * @return JsonDocument
      */
     private function applyAddressTranslated(AddressTranslated $addressTranslated)
@@ -311,7 +301,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param ContactPointUpdated $contactPointUpdated
      * @return JsonDocument
      */
     private function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated)
@@ -328,7 +317,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
      * @return JsonDocument
      * @throws \CultureFeed_Cdb_ParseException
      */
@@ -361,7 +349,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param LabelAdded $labelAdded
      * @return JsonDocument
      */
     private function applyLabelAdded(LabelAdded $labelAdded)
@@ -383,7 +370,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param LabelRemoved $labelRemoved
      * @return JsonDocument
      */
     private function applyLabelRemoved(LabelRemoved $labelRemoved)
@@ -450,9 +436,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param OrganizerEvent $organizerEvent
-     * @param Title $title
-     * @param Language|null $language
      * @return JsonDocument
      */
     private function applyTitle(
@@ -487,7 +470,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param AddressUpdated $addressUpdated
      * @param Language $language
      * @return JsonDocument|null
      */
@@ -515,7 +497,6 @@ class OrganizerLDProjector implements EventListener
 
     public function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
     {
-
         $document = $this->repository->get($geoCoordinatesUpdated->getOrganizerId());
 
         $jsonLD = $document->getBody();
@@ -529,7 +510,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param ActorEvent $actor
      * @return JsonDocument
      */
     private function loadDocumentFromRepository(ActorEvent $actor)
@@ -544,8 +524,6 @@ class OrganizerLDProjector implements EventListener
     }
 
     /**
-     * @param JsonDocument $jsonDocument
-     * @param DomainMessage $domainMessage
      * @return JsonDocument
      */
     private function updateModified(JsonDocument $jsonDocument, DomainMessage $domainMessage)

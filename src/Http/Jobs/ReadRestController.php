@@ -17,7 +17,6 @@ class ReadRestController
 
     /**
      * ReadRestController constructor.
-     * @param JobsStatusFactoryInterface $jobStatusFactory
      */
     public function __construct(JobsStatusFactoryInterface $jobStatusFactory)
     {

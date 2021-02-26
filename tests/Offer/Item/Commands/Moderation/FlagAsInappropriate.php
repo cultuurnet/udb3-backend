@@ -6,5 +6,4 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 
 class FlagAsInappropriate extends AbstractFlagAsInappropriate
 {
-
 }

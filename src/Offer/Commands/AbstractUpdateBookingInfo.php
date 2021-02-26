@@ -14,7 +14,6 @@ abstract class AbstractUpdateBookingInfo extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param BookingInfo $bookingInfo
      */
     public function __construct($itemId, BookingInfo $bookingInfo)
     {

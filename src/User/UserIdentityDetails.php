@@ -24,11 +24,7 @@ class UserIdentityDetails implements \JsonSerializable
      */
     private $emailAddress;
 
-    /**
-     * @param StringLiteral $userId
-     * @param StringLiteral $userName
-     * @param EmailAddress $emailAddress
-     */
+
     public function __construct(
         StringLiteral $userId,
         StringLiteral $userName,

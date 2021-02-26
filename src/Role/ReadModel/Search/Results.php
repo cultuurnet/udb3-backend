@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
 class Results
 {
-
     /**
      * @var int
      */

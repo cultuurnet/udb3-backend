@@ -12,7 +12,6 @@ use Respect\Validation\Validator;
 class CategoryCountValidator extends Validator
 {
     /**
-     * @param CategoryDomain $domain
      * @param int $min
      * @param int|null $max
      * @param string $name

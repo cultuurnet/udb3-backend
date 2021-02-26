@@ -22,9 +22,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
     private $type;
 
     /**
-     * @param Url $iri
      * @param string $id
-     * @param OfferType $type
      */
     public function __construct(
         Url $iri,

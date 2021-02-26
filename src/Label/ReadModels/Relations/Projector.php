@@ -44,9 +44,6 @@ class Projector extends AbstractProjector
 
     /**
      * Projector constructor.
-     * @param WriteRepositoryInterface $writeRepository
-     * @param ReadRepositoryInterface $readRepository
-     * @param LabelEventRelationTypeResolverInterface $labelEventOfferTypeResolver
      */
     public function __construct(
         WriteRepositoryInterface $writeRepository,
@@ -114,9 +111,7 @@ class Projector extends AbstractProjector
         }
     }
 
-    /**
-     * @param EventImportedFromUDB2 $eventImportedFromUDB2
-     */
+
     public function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
     ) {
@@ -128,9 +123,7 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($event, RelationType::EVENT());
     }
 
-    /**
-     * @param PlaceImportedFromUDB2 $placeImportedFromUDB2
-     */
+
     public function applyPlaceImportedFromUDB2(
         PlaceImportedFromUDB2 $placeImportedFromUDB2
     ) {
@@ -142,9 +135,7 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($place, RelationType::PLACE());
     }
 
-    /**
-     * @param OrganizerImportedFromUDB2 $organizerImportedFromUDB2
-     */
+
     public function applyOrganizerImportedFromUDB2(
         OrganizerImportedFromUDB2 $organizerImportedFromUDB2
     ) {
@@ -156,9 +147,7 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($organizer, RelationType::ORGANIZER());
     }
 
-    /**
-     * @param EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-     */
+
     public function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
     ) {
@@ -170,9 +159,7 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($event, RelationType::EVENT());
     }
 
-    /**
-     * @param PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
-     */
+
     public function applyPlaceUpdatedFromUDB2(
         PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
     ) {
@@ -184,9 +171,7 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($place, RelationType::PLACE());
     }
 
-    /**
-     * @param OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
-     */
+
     public function applyOrganizerUpdatedFromUDB2(
         OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
     ) {
@@ -198,10 +183,7 @@ class Projector extends AbstractProjector
         $this->updateLabelRelationFromCdbItem($organizer, RelationType::ORGANIZER());
     }
 
-    /**
-     * @param \CultureFeed_Cdb_Item_Base $cdbItem
-     * @param RelationType $relationType
-     */
+
     private function updateLabelRelationFromCdbItem(
         \CultureFeed_Cdb_Item_Base $cdbItem,
         RelationType $relationType
@@ -239,7 +221,6 @@ class Projector extends AbstractProjector
     }
 
     /**
-     * @param LabelEventInterface $labelEvent
      * @return LabelRelation
      */
     private function createLabelRelation(LabelEventInterface $labelEvent)

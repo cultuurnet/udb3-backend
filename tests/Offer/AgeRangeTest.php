@@ -11,7 +11,6 @@ class AgeRangeTest extends TestCase
      * @test
      * @dataProvider ageRangeStringProvider
      * @param string $ageRangeString
-     * @param AgeRange $expectedRange
      */
     public function it_should_create_ranges_from_strings(
         $ageRangeString,
@@ -25,9 +24,6 @@ class AgeRangeTest extends TestCase
     /**
      * @test
      * @dataProvider ageRangeStringProvider
-     * @param string $ageRangeString
-     * @param AgeRange $expectedRange
-     * @param string $expectedAgeRangeString
      */
     public function it_should_return_a_string_representation_when_casted_to_string(
         string $ageRangeString,

@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 class AvailableTo
 {
     /**
-     * @param Calendar $calendar
      * @return \DateTimeImmutable
      */
     public static function createFromCalendar(Calendar $calendar)

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  **/
 class ApiProblemJsonResponse extends JsonResponse
 {
-    public function __construct(ApiProblem $problem, $headers = array())
+    public function __construct(ApiProblem $problem, $headers = [])
     {
         $headers += ['Content-Type' => 'application/problem+json'];
 

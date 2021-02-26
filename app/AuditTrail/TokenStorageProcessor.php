@@ -16,7 +16,6 @@ class TokenStorageProcessor implements ProcessorInterface
     }
 
     /**
-     * @param array $records
      * @return array The processed records
      */
     public function __invoke(array $records)

@@ -40,14 +40,7 @@ class UploadImage implements AuthorizableCommandInterface
      * @var StringLiteral
      */
     protected $filePath;
-    /**
-     * @param UUID $fileId
-     * @param MIMEType $mimeType
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
-     * @param StringLiteral $filePath
-     * @param Language $language
-     */
+
     public function __construct(
         UUID $fileId,
         MIMEType $mimeType,

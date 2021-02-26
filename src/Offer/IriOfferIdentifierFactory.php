@@ -30,7 +30,6 @@ class IriOfferIdentifierFactory implements IriOfferIdentifierFactoryInterface
     }
 
     /**
-     * @param Url $iri
      * @return IriOfferIdentifier
      */
     public function fromIri(Url $iri)

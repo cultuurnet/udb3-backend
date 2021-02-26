@@ -29,9 +29,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         ];
     }
 
-    /**
-     * @param PlaceCreated $placeCreated
-     */
+
     protected function handlePlaceCreated(PlaceCreated $placeCreated)
     {
         $command = new UpdateGeoCoordinatesFromAddress(
@@ -42,9 +40,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         $this->commandBus->dispatch($command);
     }
 
-    /**
-     * @param MajorInfoUpdated $majorInfoUpdated
-     */
+
     protected function handleMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
     {
         // We don't know if the address has actually been updated because
@@ -59,9 +55,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         $this->commandBus->dispatch($command);
     }
 
-    /**
-     * @param AddressUpdated $addressUpdated
-     */
+
     protected function handleAddressUpdated(AddressUpdated $addressUpdated)
     {
         $command = new UpdateGeoCoordinatesFromAddress(
@@ -73,7 +67,6 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     }
 
     /**
-     * @param ActorImportedFromUDB2 $actorImportedFromUDB2
      * @throws \CultureFeed_Cdb_ParseException
      */
     protected function handleActorImportedFromUDB2(ActorImportedFromUDB2 $actorImportedFromUDB2)

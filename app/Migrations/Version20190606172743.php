@@ -10,17 +10,12 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20190606172743 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $schema->dropTable('index_readmodel');
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
     }

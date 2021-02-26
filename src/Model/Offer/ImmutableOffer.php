@@ -95,13 +95,7 @@ abstract class ImmutableOffer implements Offer
      */
     private $availableFrom;
 
-    /**
-     * @param UUID $id
-     * @param Language $mainLanguage
-     * @param TranslatedTitle $title
-     * @param Calendar $calendar
-     * @param Categories $categories
-     */
+
     public function __construct(
         UUID $id,
         Language $mainLanguage,
@@ -149,7 +143,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param TranslatedTitle $title
      * @return static
      */
     public function withTitle(TranslatedTitle $title)
@@ -168,7 +161,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param TranslatedDescription $translatedDescription
      * @return static
      */
     public function withDescription(TranslatedDescription $translatedDescription)
@@ -197,7 +189,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param Calendar $calendar
      * @return static
      */
     public function withCalendar(Calendar $calendar)
@@ -218,7 +209,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param Categories $categories
      * @return static
      */
     public function withTerms(Categories $categories)
@@ -237,7 +227,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param Labels $labels
      * @return static
      */
     public function withLabels(Labels $labels)
@@ -256,7 +245,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param OrganizerReference $organizerReference
      * @return static
      */
     public function withOrganizerReference(OrganizerReference $organizerReference)
@@ -285,7 +273,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param AgeRange $ageRange
      * @return static
      */
     public function withAgeRange(AgeRange $ageRange)
@@ -314,7 +301,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param PriceInfo $priceInfo
      * @return static
      */
     public function withPriceInfo(PriceInfo $priceInfo)
@@ -343,7 +329,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param BookingInfo $bookingInfo
      * @return static
      */
     public function withBookingInfo(BookingInfo $bookingInfo)
@@ -362,7 +347,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param ContactPoint $contactPoint
      * @return static
      */
     public function withContactPoint(ContactPoint $contactPoint)
@@ -381,7 +365,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param MediaObjectReferences $mediaObjectReferences
      * @return static
      */
     public function withMediaObjectReferences(MediaObjectReferences $mediaObjectReferences)
@@ -400,7 +383,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param WorkflowStatus $workflowStatus
      * @return static
      */
     public function withWorkflowStatus(WorkflowStatus $workflowStatus)
@@ -419,7 +401,6 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @param \DateTimeImmutable $availableFrom
      * @return static
      */
     public function withAvailableFrom(\DateTimeImmutable $availableFrom)
@@ -454,7 +435,6 @@ abstract class ImmutableOffer implements Offer
      * Liskov substitution principle, so we provide an abstract method that will
      * be called wherever a calendar is injected.
      *
-     * @param Calendar $calendar
      * @throws \InvalidArgumentException
      */
     abstract protected function guardCalendarType(Calendar $calendar);

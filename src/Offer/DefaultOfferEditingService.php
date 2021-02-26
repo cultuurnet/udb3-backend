@@ -73,7 +73,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     }
 
     /**
-     * @param \DateTimeImmutable $publicationDate
      * @return static
      */
     public function withFixedPublicationDateForNewOffers(
@@ -86,7 +85,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param StringLiteral $typeId
      * @return string
      */
     public function updateType($id, StringLiteral $typeId)
@@ -101,7 +99,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param StringLiteral $themeId
      * @return string
      */
     public function updateTheme($id, StringLiteral $themeId)
@@ -116,7 +113,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param array $facilities
      * @return string
      */
     public function updateFacilities($id, array $facilities)
@@ -130,8 +126,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Language $language
-     * @param StringLiteral $title
      * @return string
      */
     public function updateTitle($id, Language $language, StringLiteral $title)
@@ -149,8 +143,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Language $language
-     * @param Description $description
      * @return string
      */
     public function updateDescription($id, Language $language, Description $description)
@@ -183,7 +175,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param UUID $imageId
      * @return string
      */
     public function addImage($id, UUID $imageId)
@@ -197,9 +188,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Image $image
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
      * @return string
      */
     public function updateImage(
@@ -240,7 +228,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Image $image
      * @return string
      */
     public function selectMainImage($id, Image $image)
@@ -254,7 +241,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param AgeRange $ageRange
      * @return string
      */
     public function updateTypicalAgeRange($id, AgeRange $ageRange)
@@ -309,7 +295,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param ContactPoint $contactPoint
      * @return string
      */
     public function updateContactPoint($id, ContactPoint $contactPoint)
@@ -323,7 +308,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param BookingInfo $bookingInfo
      * @return string
      */
     public function updateBookingInfo($id, BookingInfo $bookingInfo)

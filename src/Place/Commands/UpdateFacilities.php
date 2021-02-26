@@ -6,5 +6,4 @@ use CultuurNet\UDB3\Offer\Commands\AbstractUpdateFacilities;
 
 class UpdateFacilities extends AbstractUpdateFacilities
 {
-
 }

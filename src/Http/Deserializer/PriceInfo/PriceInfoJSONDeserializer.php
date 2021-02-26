@@ -20,9 +20,7 @@ class PriceInfoJSONDeserializer extends JSONDeserializer
      */
     private $validator;
 
-    /**
-     * @param PriceInfoDataValidator $validator
-     */
+
     public function __construct(PriceInfoDataValidator $validator)
     {
         $this->validator = $validator;
@@ -32,7 +30,6 @@ class PriceInfoJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param Language $language
      * @return PriceInfoJSONDeserializer
      */
     public function forMainLanguage(Language $language)
@@ -43,7 +40,6 @@ class PriceInfoJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return PriceInfo
      *
      * @throws MissingValueException

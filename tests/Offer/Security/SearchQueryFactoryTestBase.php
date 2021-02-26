@@ -54,8 +54,6 @@ abstract class SearchQueryFactoryTestBase extends TestCase
     }
 
     /**
-     * @param StringLiteral $constraint
-     * @param StringLiteral $offerId
      * @return string
      */
     abstract protected function createQueryString(

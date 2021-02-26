@@ -39,7 +39,6 @@ class OrganizerCreationPayloadJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return OrganizerCreationPayload
      */
     public function deserialize(StringLiteral $data)

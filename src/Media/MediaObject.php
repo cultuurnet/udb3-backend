@@ -55,12 +55,6 @@ class MediaObject extends EventSourcedAggregateRoot
     protected $language;
 
     /**
-     * @param UUID $id
-     * @param MIMEType $mimeType
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
-     * @param Url $sourceLocation
-     * @param Language $language
      *
      * @return MediaObject
      */

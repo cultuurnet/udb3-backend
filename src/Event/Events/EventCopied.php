@@ -45,9 +45,7 @@ final class EventCopied extends AbstractEvent implements AggregateCopiedEventInt
         return $this->originalEventId;
     }
 
-    /**
-     * @return Calendar
-     */
+
     public function getCalendar(): Calendar
     {
         return $this->calendar;

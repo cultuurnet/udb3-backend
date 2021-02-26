@@ -9,7 +9,6 @@ use CultuurNet\UDB3\LabelEventInterface;
 class LabelEventIsOfEventType implements LabelEventSpecificationInterface
 {
     /**
-     * @param LabelEventInterface $labelEvent
      * @return bool
      */
     public function isSatisfiedBy(LabelEventInterface $labelEvent)

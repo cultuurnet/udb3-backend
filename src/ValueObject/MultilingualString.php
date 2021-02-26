@@ -48,8 +48,6 @@ class MultilingualString
     }
 
     /**
-     * @param Language $language
-     * @param StringLiteral $translation
      * @return MultilingualString
      */
     public function withTranslation(Language $language, StringLiteral $translation)
@@ -85,7 +83,6 @@ class MultilingualString
     }
 
     /**
-     * @param Language $preferredLanguage
      * @param Language[] ...$fallbackLanguages
      *   One or more accept languages.
      * @return StringLiteral|null
@@ -121,7 +118,6 @@ class MultilingualString
     }
 
     /**
-     * @param array $data
      * @param string|null $originalLanguage
      * @return MultilingualString
      */
@@ -146,7 +142,6 @@ class MultilingualString
     }
 
     /**
-     * @param TranslatedValueObject $udb3Model
      * @return MultilingualString
      */
     public static function fromUdb3ModelTranslatedValueObject(TranslatedValueObject $udb3Model)

@@ -8,9 +8,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface UserPermissionMatcherInterface
 {
     /**
-     * @param StringLiteral $userId
-     * @param Permission $permission
-     * @param StringLiteral $offerId
      * @return bool
      */
     public function itMatchesOffer(

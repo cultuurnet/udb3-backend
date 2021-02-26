@@ -16,7 +16,6 @@ class OrganizerCreatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param OrganizerCreated $organizerCreated
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -32,7 +31,6 @@ class OrganizerCreatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param OrganizerCreated $expectedOrganizerCreated
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,
@@ -72,17 +70,17 @@ class OrganizerCreatedTest extends TestCase
                 new OrganizerCreated(
                     'organizer_id',
                     new Title('title'),
-                    array(
+                    [
                         new Address(
                             new Street('Kerkstraat 69'),
                             new PostalCode('3000'),
                             new Locality('Leuven'),
                             Country::fromNative('BE')
                         ),
-                    ),
-                    array('0123456789'),
-                    array('foo@bar.com'),
-                    array('http://foo.bar')
+                    ],
+                    ['0123456789'],
+                    ['foo@bar.com'],
+                    ['http://foo.bar']
                 ),
             ],
         ];

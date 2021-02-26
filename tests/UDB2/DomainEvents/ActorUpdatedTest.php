@@ -84,13 +84,13 @@ class ActorUpdatedTest extends TestCase
 
     public function testSerialization()
     {
-        $time = new \DateTimeImmutable("2016-04-15T16:06:11+0200");
+        $time = new \DateTimeImmutable('2016-04-15T16:06:11+0200');
         $eventCreated = $this->createActorUpdated($time);
         $expectedData = [
-            "actorId" => "123",
-            "time" => "2016-04-15T16:06:11+0200",
-            "author" => "me@example.com",
-            "url" => "http://foo.bar/event/foo",
+            'actorId' => '123',
+            'time' => '2016-04-15T16:06:11+0200',
+            'author' => 'me@example.com',
+            'url' => 'http://foo.bar/event/foo',
         ];
 
         $this->assertEquals(

@@ -38,12 +38,7 @@ class CdbXMLImporter
      */
     private $cdbXmlContactInfoImporter;
 
-    /**
-     * @param CdbXMLItemBaseImporter $cdbXMLItemBaseImporter
-     * @param EventCdbIdExtractorInterface $cdbIdExtractor
-     * @param CalendarFactoryInterface $calendarFactory
-     * @param CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter
-     */
+
     public function __construct(
         CdbXMLItemBaseImporter $cdbXMLItemBaseImporter,
         EventCdbIdExtractorInterface $cdbIdExtractor,
@@ -168,13 +163,11 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param PlaceServiceInterface $placeManager
      * @param \stdClass $jsonLD
      */
     private function importLocation(\CultureFeed_Cdb_Item_Event $event, PlaceServiceInterface $placeManager, $jsonLD)
     {
-        $location = array();
+        $location = [];
         $location['@type'] = 'Place';
 
         $locationId = $this->cdbIdExtractor->getRelatedPlaceCdbId($event);
@@ -187,20 +180,18 @@ class CdbXMLImporter
             $location['name']['nl'] = $locationCdb->getLabel();
             $address = $locationCdb->getAddress()->getPhysicalAddress();
             if ($address) {
-                $location['address']['nl'] = array(
+                $location['address']['nl'] = [
                     'addressCountry' => $address->getCountry(),
                     'addressLocality' => $address->getCity(),
                     'postalCode' => $address->getZip(),
                     'streetAddress' => $address->getStreet() . ' ' . $address->getHouseNumber(),
-                );
+                ];
             }
         }
         $jsonLD->location = $location;
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param OrganizerServiceInterface $organizerManager
      * @param \stdClass $jsonLD
      */
     private function importOrganizer(
@@ -216,13 +207,13 @@ class CdbXMLImporter
         if ($organizerId) {
             $organizer = $organizerManager->organizerJSONLD($organizerId);
         } elseif ($organizerCdb && $contactInfoCdb) {
-            $organizer = array();
+            $organizer = [];
             $organizer['mainLanguage'] = 'nl';
             $organizer['name']['nl'] = $organizerCdb->getLabel();
 
             $emailsCdb = $contactInfoCdb->getMails();
             if (count($emailsCdb) > 0) {
-                $organizer['email'] = array();
+                $organizer['email'] = [];
                 foreach ($emailsCdb as $email) {
                     $organizer['email'][] = $email->getMailAddress();
                 }
@@ -231,7 +222,7 @@ class CdbXMLImporter
             /** @var \CultureFeed_Cdb_Data_Phone[] $phonesCdb */
             $phonesCdb = $contactInfoCdb->getPhones();
             if (count($phonesCdb) > 0) {
-                $organizer['phone'] = array();
+                $organizer['phone'] = [];
                 foreach ($phonesCdb as $phone) {
                     $organizer['phone'][] = $phone->getNumber();
                 }
@@ -245,7 +236,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
      * @param \stdClass $jsonLD
      */
     private function importTerms(\CultureFeed_Cdb_Item_Event $event, $jsonLD)
@@ -255,22 +245,21 @@ class CdbXMLImporter
             'Meerder kunstvormen',
             'Meerdere filmgenres',
         ];
-        $categories = array();
+        $categories = [];
         foreach ($event->getCategories() as $category) {
             /* @var \Culturefeed_Cdb_Data_Category $category */
             if ($category && !in_array($category->getName(), $themeBlacklist)) {
-                $categories[] = array(
+                $categories[] = [
                     'label' => $category->getName(),
                     'domain' => $category->getType(),
                     'id' => $category->getId(),
-                );
+                ];
             }
         }
         $jsonLD->terms = $categories;
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
      * @param \stdClass $jsonLD
      */
     private function importTypicalAgeRange(\CultureFeed_Cdb_Item_Event $event, $jsonLD)
@@ -286,7 +275,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Data_EventDetail $detail
      * @param \stdClass $jsonLD
      */
     private function importPerformers(\CultureFeed_Cdb_Data_EventDetail $detail, $jsonLD)
@@ -304,10 +292,7 @@ class CdbXMLImporter
         }
     }
 
-    /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param \stdClass $jsonLD
-     */
+
     private function importSeeAlso(
         \CultureFeed_Cdb_Item_Event $event,
         \stdClass $jsonLD
@@ -331,8 +316,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param SluggerInterface $slugger
      * @param \stdClass $jsonLD
      */
     private function importUitInVlaanderenReference(
@@ -363,10 +346,7 @@ class CdbXMLImporter
         }
     }
 
-    /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param \stdClass $jsonLD
-     */
+
     private function importAudience(\CultureFeed_Cdb_Item_Event $event, \stdClass $jsonLD)
     {
         $eventIsPrivate = (bool) $event->isPrivate();

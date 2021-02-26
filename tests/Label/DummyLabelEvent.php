@@ -6,5 +6,4 @@ use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 
 class DummyLabelEvent extends AbstractLabelEvent
 {
-
 }

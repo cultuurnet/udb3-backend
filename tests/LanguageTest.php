@@ -39,7 +39,6 @@ class LanguageTest extends TestCase
     /**
      * @test
      * @dataProvider invalidCodes
-     * @param mixed $invalid_code
      */
     public function it_refuses_something_that_does_not_look_like_a_iso_639_1_code(
         $invalid_code

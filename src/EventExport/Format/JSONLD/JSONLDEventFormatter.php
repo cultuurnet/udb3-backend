@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 class JSONLDEventFormatter
@@ -65,7 +64,7 @@ class JSONLDEventFormatter
         );
         $terms = array_map(
             function ($term) use ($termPrefix) {
-                return str_replace($termPrefix, "", $term);
+                return str_replace($termPrefix, '', $term);
             },
             $prefixedTerms
         );

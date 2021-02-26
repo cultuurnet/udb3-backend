@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AuditTrailLogger
 {
-
     /**
      * @var LoggerInterface
      */
@@ -34,7 +33,6 @@ abstract class AuditTrailLogger
     protected function addToContextBasedOnContentType(
         Request $request
     ): array {
-
         $contextValues = [];
 
         if (in_array($request->getContentType(), ['json', 'jsonld', 'txt'])) {

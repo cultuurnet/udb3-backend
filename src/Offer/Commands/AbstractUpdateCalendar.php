@@ -13,7 +13,6 @@ abstract class AbstractUpdateCalendar extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Calendar $calendar
      */
     public function __construct($itemId, Calendar $calendar)
     {

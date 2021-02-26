@@ -14,9 +14,7 @@ class Version20181106123049 extends AbstractMigration
 {
     private const ROLES_SEARCH_V3 = 'roles_search_v3';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $table = $schema->createTable(self::ROLES_SEARCH_V3);
@@ -24,7 +22,7 @@ class Version20181106123049 extends AbstractMigration
         $table->addColumn(
             SchemaConfigurator::UUID_COLUMN,
             Type::GUID,
-            array('length' => 36)
+            ['length' => 36]
         );
 
         $table->addColumn(
@@ -39,18 +37,16 @@ class Version20181106123049 extends AbstractMigration
         )
             ->setNotnull(false);
 
-        $table->setPrimaryKey(array(SchemaConfigurator::UUID_COLUMN));
+        $table->setPrimaryKey([SchemaConfigurator::UUID_COLUMN]);
         $table->addUniqueIndex(
-            array(
+            [
                 SchemaConfigurator::UUID_COLUMN,
                 SchemaConfigurator::NAME_COLUMN,
-            )
+            ]
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::ROLES_SEARCH_V3);

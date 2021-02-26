@@ -11,10 +11,7 @@ abstract class AbstractLabelCommand extends AbstractCommand
      */
     private $labelId;
 
-    /**
-     * @param UUID $uuid
-     * @param UUID $labelId
-     */
+
     public function __construct(
         UUID $uuid,
         UUID $labelId

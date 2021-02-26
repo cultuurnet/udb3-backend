@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Storage\PurgeServiceManager;
  */
 class PurgeServiceProvider implements ServiceProviderInterface
 {
-    const PURGE_SERVICE_MANAGER = 'purgeServiceManager';
+    public const PURGE_SERVICE_MANAGER = 'purgeServiceManager';
 
     /**
      * @inheritdoc
@@ -37,7 +37,6 @@ class PurgeServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param Application $application
      * @return PurgeServiceManager
      */
     private function createPurgeServiceManager(Application $application)
@@ -51,10 +50,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
         return $purgerServiceManager;
     }
 
-    /**
-     * @param PurgeServiceManager $purgeServiceManager
-     * @param Connection          $connection
-     */
+
     private function addReadModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
     {
         $dbalReadModels = [
@@ -81,10 +77,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
         }
     }
 
-    /**
-     * @param PurgeServiceManager $purgeServiceManager
-     * @param Connection          $connection
-     */
+
     private function addWriteModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
     {
         $dbalWriteModels = [

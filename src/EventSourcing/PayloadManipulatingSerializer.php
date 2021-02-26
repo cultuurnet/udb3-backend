@@ -37,7 +37,7 @@ final class PayloadManipulatingSerializer implements Serializer
         if (isset($this->manipulations[$className])) {
             throw new \RuntimeException(
                 "Manipulation on events of class {$className} already added, " .
-                "can add only one."
+                'can add only one.'
             );
         }
         $this->manipulations[$className] = $callback;

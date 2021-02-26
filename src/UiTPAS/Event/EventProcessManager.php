@@ -42,7 +42,6 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param DomainMessage $domainMessage
      *
      * @uses handleEventCardSystemsUpdated
      */
@@ -60,9 +59,7 @@ class EventProcessManager implements EventListener
         }
     }
 
-    /**
-     * @param EventCardSystemsUpdated $eventCardSystemsUpdated
-     */
+
     private function handleEventCardSystemsUpdated(EventCardSystemsUpdated $eventCardSystemsUpdated)
     {
         $eventId = $eventCardSystemsUpdated->getId()->toNative();
@@ -138,8 +135,6 @@ class EventProcessManager implements EventListener
 
     /**
      * @param Label[] $haystack
-     * @param Label $needle
-     * @return bool
      */
     private function labelsContain(array $haystack, Label $needle): bool
     {

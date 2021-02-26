@@ -11,7 +11,7 @@ use ValueObjects\Enum\Enum;
  */
 class CreatedByQueryMode extends Enum
 {
-    const UUID = 'uuid';
-    const EMAIL = 'email';
-    const MIXED = 'mixed';
+    public const UUID = 'uuid';
+    public const EMAIL = 'email';
+    public const MIXED = 'mixed';
 }

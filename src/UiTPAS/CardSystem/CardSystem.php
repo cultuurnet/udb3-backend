@@ -17,10 +17,7 @@ class CardSystem
      */
     private $name;
 
-    /**
-     * @param Id $id
-     * @param StringLiteral $name
-     */
+
     public function __construct(
         Id $id,
         StringLiteral $name

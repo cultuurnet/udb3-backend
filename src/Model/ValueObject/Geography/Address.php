@@ -24,12 +24,7 @@ class Address
      */
     private $countryCode;
 
-    /**
-     * @param Street $street
-     * @param PostalCode $postalCode
-     * @param Locality $locality
-     * @param CountryCode $countryCode
-     */
+
     public function __construct(
         Street $street,
         PostalCode $postalCode,
@@ -51,7 +46,6 @@ class Address
     }
 
     /**
-     * @param Street $street
      * @return Address
      */
     public function withStreet(Street $street)
@@ -70,7 +64,6 @@ class Address
     }
 
     /**
-     * @param PostalCode $postalCode
      * @return Address
      */
     public function withPostalCode(PostalCode $postalCode)
@@ -89,7 +82,6 @@ class Address
     }
 
     /**
-     * @param Locality $locality
      * @return Address
      */
     public function withLocality(Locality $locality)
@@ -108,7 +100,6 @@ class Address
     }
 
     /**
-     * @param CountryCode $countryCode
      * @return Address
      */
     public function withCountryCode(CountryCode $countryCode)

@@ -86,7 +86,7 @@ class DefaultGeocodingServiceTest extends TestCase
 
         $this->logger->expects($this->once())
             ->method('error')
-            ->with('No results for address: "'. $address . '". Exception message: Could not execute query');
+            ->with('No results for address: "' . $address . '". Exception message: Could not execute query');
 
         $actualCoordinates = $this->service->getCoordinates($address);
 

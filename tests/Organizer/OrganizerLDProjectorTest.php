@@ -763,7 +763,6 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider labelRemovedDataProvider
-     * @param Label $label
      * @param string $originalFile
      * @param string $finalFile
      */

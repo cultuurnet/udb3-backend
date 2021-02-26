@@ -27,10 +27,7 @@ class PriceDescriptionParser
      */
     private $currencyFormatter;
 
-    /**
-     * @param \CommerceGuys\Intl\NumberFormat\NumberFormatRepositoryInterface $numberFormatRepository
-     * @param \CommerceGuys\Intl\Currency\CurrencyRepositoryInterface $currencyRepository
-     */
+
     public function __construct(
         NumberFormatRepositoryInterface $numberFormatRepository,
         CurrencyRepositoryInterface $currencyRepository
@@ -47,7 +44,7 @@ class PriceDescriptionParser
      */
     public function parse($description)
     {
-        $prices = array();
+        $prices = [];
 
         $possiblePriceDescriptions = preg_split('/\s*;\s*/', $description);
 
@@ -57,7 +54,7 @@ class PriceDescriptionParser
                 $prices += $price;
             }
         } catch (RuntimeException $e) {
-            $prices = array();
+            $prices = [];
         }
 
         return $prices;
@@ -99,7 +96,7 @@ class PriceDescriptionParser
             throw new RuntimeException();
         }
 
-        return [ $priceName => floatval($priceValue) ];
+        return [ $priceName => (float) $priceValue ];
     }
 
     private function getCurrencyFormatter()

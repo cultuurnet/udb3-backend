@@ -24,9 +24,6 @@ class SecurityWithLabelPrivacy extends SecurityDecoratorBase
     /**
      * SecurityWithLabelPrivacy constructor.
      *
-     * @param SecurityInterface $decoratee
-     * @param UserIdentificationInterface $userIdentification
-     * @param ReadRepositoryInterface $labelReadRepository
      */
     public function __construct(
         SecurityInterface $decoratee,
@@ -54,7 +51,6 @@ class SecurityWithLabelPrivacy extends SecurityDecoratorBase
     }
 
     /**
-     * @param AuthorizableCommandInterface $command
      * @return bool
      */
     private function isLabelCommand(AuthorizableCommandInterface $command)
@@ -63,7 +59,6 @@ class SecurityWithLabelPrivacy extends SecurityDecoratorBase
     }
 
     /**
-     * @param LabelSecurityInterface $command
      * @return bool
      * @throws \InvalidArgumentException
      */

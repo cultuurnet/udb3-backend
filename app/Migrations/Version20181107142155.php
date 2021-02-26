@@ -14,9 +14,7 @@ class Version20181107142155 extends AbstractMigration
 {
     private const SAVED_SEARCHES_SAPI3 = 'saved_searches_sapi3';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $table = $schema->createTable(self::SAVED_SEARCHES_SAPI3);
@@ -40,9 +38,7 @@ class Version20181107142155 extends AbstractMigration
         $table->addIndex([SchemaConfigurator::USER]);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::SAVED_SEARCHES_SAPI3);

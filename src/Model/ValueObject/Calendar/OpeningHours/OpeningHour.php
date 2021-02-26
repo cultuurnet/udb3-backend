@@ -19,11 +19,7 @@ class OpeningHour
      */
     private $closingTime;
 
-    /**
-     * @param Days $days
-     * @param Time $openingTime
-     * @param Time $closingTime
-     */
+
     public function __construct(Days $days, Time $openingTime, Time $closingTime)
     {
         $this->days = $days;

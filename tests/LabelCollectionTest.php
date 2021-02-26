@@ -24,7 +24,6 @@ class LabelCollectionTest extends TestCase
     /**
      * @test
      * @dataProvider notALabelProvider
-     * @param mixed $notALabel
      */
     public function it_can_only_contain_labels($notALabel)
     {

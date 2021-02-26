@@ -115,7 +115,7 @@ class ImageUploaderService implements ImageUploaderInterface
 
         if ($this->maxFileSize && $fileSize > $this->maxFileSize->toNative()) {
             throw new FileSizeExceededException(
-                "The file size of the uploaded image is too big."
+                'The file size of the uploaded image is too big.'
             );
         }
     }

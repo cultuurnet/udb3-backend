@@ -9,7 +9,6 @@ interface FilterInterface
     /**
      * Check if the request matches a certain pattern.
      *
-     * @param RequestInterface $request
      * @return bool
      */
     public function matches(RequestInterface $request);

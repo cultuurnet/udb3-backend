@@ -85,10 +85,6 @@ abstract class OfferLDProjectorTestBase extends TestCase
 
     /**
      * @param object $event
-     * @param string $entityId
-     * @param Metadata|null $metadata
-     * @param DateTime|null $dateTime
-     * @return stdClass
      */
     protected function project(
         $event,

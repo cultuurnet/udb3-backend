@@ -16,7 +16,7 @@ class UpdateRoleRequestDeserializer
         $body_content = json_decode($request->getContent());
 
         if (empty($contentType)) {
-            throw new MissingContentTypeException;
+            throw new MissingContentTypeException();
         }
 
         switch ($contentType) {
@@ -28,7 +28,7 @@ class UpdateRoleRequestDeserializer
                 break;
 
             default:
-                throw new UnknownContentTypeException;
+                throw new UnknownContentTypeException();
                 break;
         }
     }

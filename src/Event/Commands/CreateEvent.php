@@ -50,13 +50,6 @@ class CreateEvent extends AbstractCreateCommand
 
     /**
      * @param string $eventId
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param LocationId $location
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     * @param DateTimeImmutable|null $publicationDate
      */
     public function __construct(
         $eventId,

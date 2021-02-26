@@ -18,9 +18,7 @@ class DBALRepository implements RepositoryInterface
      */
     protected $connection;
 
-    /**
-     * @param Connection $connection
-     */
+
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -79,7 +77,6 @@ class DBALRepository implements RepositoryInterface
     }
 
     /**
-     * @param Connection $connection
      * @param string $eventId
      * @param string $relationType
      * @param string $itemId
@@ -106,7 +103,6 @@ class DBALRepository implements RepositoryInterface
     }
 
     /**
-     * @param Connection $connection
      * @param string $eventId
      * @param string $relationType
      * @param string $itemId
@@ -129,7 +125,6 @@ class DBALRepository implements RepositoryInterface
     }
 
     /**
-     * @param Connection $connection
      * @param string $id
      * @return bool
      */
@@ -174,7 +169,7 @@ class DBALRepository implements RepositoryInterface
 
         $results = $q->execute();
 
-        $events = array();
+        $events = [];
         while ($id = $results->fetchColumn(0)) {
             $events[] = $id;
         }
@@ -193,7 +188,7 @@ class DBALRepository implements RepositoryInterface
 
         $results = $q->execute();
 
-        $events = array();
+        $events = [];
         while ($id = $results->fetchColumn(0)) {
             $events[] = $id;
         }
@@ -249,7 +244,6 @@ class DBALRepository implements RepositoryInterface
     }
 
     /**
-     * @param Schema $schema
      * @return \Doctrine\DBAL\Schema\Table|null
      */
     public function configureSchema(Schema $schema)
@@ -270,20 +264,20 @@ class DBALRepository implements RepositoryInterface
         $table->addColumn(
             'event',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
         $table->addColumn(
             'organizer',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
         $table->addColumn(
             'place',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
 
-        $table->setPrimaryKey(array('event'));
+        $table->setPrimaryKey(['event']);
 
         return $table;
     }

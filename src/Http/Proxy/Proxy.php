@@ -39,11 +39,6 @@ class Proxy
 
     /**
      * Proxy constructor.
-     * @param FilterInterface $filter
-     * @param RequestTransformerInterface $requestTransformer
-     * @param DiactorosFactory $diactorosFactory
-     * @param HttpFoundationFactory $httpFoundationFactory
-     * @param ClientInterface $client
      */
     public function __construct(
         FilterInterface $filter,
@@ -60,7 +55,6 @@ class Proxy
     }
 
     /**
-     * @param Request $request
      * @return null|Response
      */
     public function handle(Request $request)

@@ -9,9 +9,6 @@ use Silex\ServiceProviderInterface;
 
 class HttpServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['http.guzzle'] = $app->share(
@@ -23,9 +20,7 @@ class HttpServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

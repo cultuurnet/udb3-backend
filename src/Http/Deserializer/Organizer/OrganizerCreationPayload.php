@@ -35,13 +35,7 @@ class OrganizerCreationPayload
      */
     private $contactPoint;
 
-    /**
-     * @param Language $mainLanguage
-     * @param Url $website
-     * @param Title $title
-     * @param Address|null $address
-     * @param ContactPoint|null $contactPoint
-     */
+
     public function __construct(
         Language $mainLanguage,
         Url $website,

@@ -14,10 +14,7 @@ class WebsiteLink
      */
     private $label;
 
-    /**
-     * @param Url $url
-     * @param TranslatedWebsiteLabel $label
-     */
+
     public function __construct(Url $url, TranslatedWebsiteLabel $label)
     {
         $this->url = $url;
@@ -33,7 +30,6 @@ class WebsiteLink
     }
 
     /**
-     * @param Url $url
      * @return WebsiteLink
      */
     public function withUrl(Url $url)
@@ -52,7 +48,6 @@ class WebsiteLink
     }
 
     /**
-     * @param TranslatedWebsiteLabel $label
      * @return WebsiteLink
      */
     public function withLabel(TranslatedWebsiteLabel $label)

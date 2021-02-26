@@ -31,7 +31,6 @@ final class InMemoryUiTPASLabelsRepository implements UiTPASLabelsRepository
     /**
      * @param string[] $labels
      *   Associative array of card system ids as keys and corresponding Label objects as values.
-     * @return self
      */
     public static function fromStrings(array $labels): self
     {

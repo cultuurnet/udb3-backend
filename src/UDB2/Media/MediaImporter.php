@@ -24,9 +24,7 @@ class MediaImporter implements LoggerAwareInterface
      */
     private $mediaManager;
 
-    /**
-     * @param MediaManagerInterface $mediaManager
-     */
+
     public function __construct(
         MediaManagerInterface $mediaManager,
         ImageCollectionFactoryInterface $imageCollectionFactory
@@ -37,7 +35,6 @@ class MediaImporter implements LoggerAwareInterface
     }
 
     /**
-     * @param CultureFeed_Cdb_Item_Base $cdbItem
      * @return ImageCollection
      */
     public function importImages(CultureFeed_Cdb_Item_Base $cdbItem)
@@ -52,9 +49,7 @@ class MediaImporter implements LoggerAwareInterface
         return $imageCollection;
     }
 
-    /**
-     * @param Image $image
-     */
+
     private function importImage(Image $image)
     {
         $this->mediaManager->create(

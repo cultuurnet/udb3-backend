@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved;
 class LabelEventIsOfPlaceType implements LabelEventSpecificationInterface
 {
     /**
-     * @param LabelEventInterface $labelEvent
      * @return bool
      */
     public function isSatisfiedBy(LabelEventInterface $labelEvent)

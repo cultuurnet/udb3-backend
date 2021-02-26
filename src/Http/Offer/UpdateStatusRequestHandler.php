@@ -49,7 +49,6 @@ class UpdateStatusRequestHandler
     }
 
     /**
-     * @param array $data
      * @return StatusReason[]
      */
     private function parseReason(array $data): array

@@ -21,16 +21,13 @@ class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
      */
     private $offerIdentifierDeserializer;
 
-    /**
-     * @param DeserializerInterface $offerIdentifierDeserializer
-     */
+
     public function __construct(DeserializerInterface $offerIdentifierDeserializer)
     {
         $this->offerIdentifierDeserializer = $offerIdentifierDeserializer;
     }
 
     /**
-     * @param StringLiteral $data
      *
      * @return AddLabelToMultiple
      *

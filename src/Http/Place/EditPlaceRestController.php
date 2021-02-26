@@ -70,13 +70,6 @@ class EditPlaceRestController extends OfferRestBaseController
     /**
      * Constructs a RestController.
      *
-     * @param PlaceEditingServiceInterface $placeEditor
-     * @param RepositoryInterface $eventRelationsRepository
-     * @param MediaManagerInterface $mediaManager
-     * @param IriGeneratorInterface $iriGenerator
-     * @param ApiKeyReaderInterface $apiKeyReader
-     * @param ConsumerReadRepositoryInterface $consumerReadRepository
-     * @param ConsumerSpecificationInterface $shouldApprove
      */
     public function __construct(
         PlaceEditingServiceInterface $placeEditor,

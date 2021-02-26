@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Http\Event;
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
 use CultuurNet\SearchV3\ValueObjects\Event;
 use CultuurNet\SearchV3\ValueObjects\Status;
-use CultuurNet\UDB3\Event\EventServiceInterface;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -19,9 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReadEventRestControllerTest extends TestCase
 {
-    const EXISTING_ID = 'existingId';
-    const NON_EXISTING_ID = 'nonExistingId';
-    const REMOVED_ID = 'removedId';
+    public const EXISTING_ID = 'existingId';
+    public const NON_EXISTING_ID = 'nonExistingId';
+    public const REMOVED_ID = 'removedId';
 
     /**
      * @var ReadEventRestController
@@ -254,7 +253,7 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_a_calendar_summary_for_an_event(): void
     {
-        $request = new Request(array('style' => 'text', 'format' => 'lg'));
+        $request = new Request(['style' => 'text', 'format' => 'lg']);
         $calSumResponse = $this->eventRestController->getCalendarSummary(self::EXISTING_ID, $request);
 
         $this->assertEquals($this->calSum, $calSumResponse);
@@ -267,7 +266,7 @@ class ReadEventRestControllerTest extends TestCase
     {
         $this->expectException(DocumentDoesNotExist::class);
 
-        $request = new Request(array('style' => 'text', 'format' => 'lg'));
+        $request = new Request(['style' => 'text', 'format' => 'lg']);
         $this->eventRestController->getCalendarSummary(self::NON_EXISTING_ID, $request);
     }
 

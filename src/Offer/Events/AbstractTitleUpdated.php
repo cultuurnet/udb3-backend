@@ -24,9 +24,9 @@ abstract class AbstractTitleUpdated extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'title' => (string) $this->title,
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractTitleUpdated

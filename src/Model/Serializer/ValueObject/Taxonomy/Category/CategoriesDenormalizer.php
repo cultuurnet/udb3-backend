@@ -15,7 +15,7 @@ class CategoriesDenormalizer implements DenormalizerInterface
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("CategoriesDenormalizer does not support {$class}.");
@@ -39,7 +39,6 @@ class CategoriesDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate CategoryDenormalizer
-     * @param array $categoryData
      * @return Category
      */
     private function denormalizeCategory(array $categoryData)

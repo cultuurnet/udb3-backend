@@ -31,7 +31,7 @@ abstract class AbstractModerationCommandTestBase extends TestCase
         $abstractModerationCommand = $this->getMockForAbstractClass(
             $this->getModerationCommandClass(),
             [],
-            "",
+            '',
             false
         );
 

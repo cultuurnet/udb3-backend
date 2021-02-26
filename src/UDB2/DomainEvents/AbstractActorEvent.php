@@ -14,12 +14,7 @@ abstract class AbstractActorEvent implements Serializable
         HasUrlTrait::serialize as serializeUrl;
     }
 
-    /**
-     * @param StringLiteral $actorId
-     * @param \DateTimeImmutable $time
-     * @param StringLiteral $author
-     * @param Url $url
-     */
+
     public function __construct(
         StringLiteral $actorId,
         \DateTimeImmutable $time,
@@ -43,7 +38,6 @@ abstract class AbstractActorEvent implements Serializable
     }
 
     /**
-     * @param array $data
      * @return static
      */
     public static function deserialize(array $data)

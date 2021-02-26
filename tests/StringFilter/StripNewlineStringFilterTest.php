@@ -18,7 +18,7 @@ class StripNewlineStringFilterTest extends StringFilterTest
     public function it_strips_newlines()
     {
         $original = "\nHello\n world!\n Goodbye!\n";
-        $expected = "Hello world! Goodbye!";
+        $expected = 'Hello world! Goodbye!';
         $this->assertFilterValue($expected, $original);
     }
 

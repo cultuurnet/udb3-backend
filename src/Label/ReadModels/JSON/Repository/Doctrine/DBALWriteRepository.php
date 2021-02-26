@@ -12,13 +12,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
-    /**
-     * @param UUID $uuid
-     * @param StringLiteral $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
-     * @param UUID|null $parentUuid
-     */
     public function save(
         UUID $uuid,
         StringLiteral $name,
@@ -46,9 +39,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $queryBuilder->execute();
     }
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateVisible(UUID $uuid)
     {
         $this->executeUpdate(
@@ -58,9 +49,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateInvisible(UUID $uuid)
     {
         $this->executeUpdate(
@@ -70,9 +59,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updatePublic(UUID $uuid)
     {
         $this->executeUpdate(
@@ -82,9 +69,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updatePrivate(UUID $uuid)
     {
         $this->executeUpdate(
@@ -94,9 +79,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateCountIncrement(UUID $uuid)
     {
         $this->executeCountUpdate(
@@ -105,9 +88,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         );
     }
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateCountDecrement(UUID $uuid)
     {
         $this->executeCountUpdate(
@@ -119,7 +100,6 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
     /**
      * @param string $column
      * @param bool $value
-     * @param UUID $uuid
      */
     private function executeUpdate(
         $column,
@@ -138,10 +118,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $queryBuilder->execute();
     }
 
-    /**
-     * @param IntegerValue $value
-     * @param UUID $uuid
-     */
+
     private function executeCountUpdate(
         IntegerValue $value,
         UUID $uuid

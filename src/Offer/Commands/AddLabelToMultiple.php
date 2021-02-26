@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Label;
@@ -18,10 +17,7 @@ class AddLabelToMultiple
      */
     protected $label;
 
-    /**
-     * @param OfferIdentifierCollection $offerIdentifiers
-     * @param Label $label
-     */
+
     public function __construct(OfferIdentifierCollection $offerIdentifiers, Label $label)
     {
         $this->offerIdentifiers = $offerIdentifiers;

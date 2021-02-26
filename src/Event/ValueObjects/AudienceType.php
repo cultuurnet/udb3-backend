@@ -14,7 +14,7 @@ use ValueObjects\Enum\Enum;
  */
 class AudienceType extends Enum
 {
-    const EVERYONE = 'everyone';
-    const MEMBERS = 'members';
-    const EDUCATION = 'education';
+    public const EVERYONE = 'everyone';
+    public const MEMBERS = 'members';
+    public const EDUCATION = 'education';
 }

@@ -8,7 +8,6 @@ class SimilaritySorter
 {
     /**
      * @param Entity[] $entities
-     * @param StringLiteral $value
      * @return bool
      */
     public function sort(array &$entities, StringLiteral $value)
@@ -33,8 +32,6 @@ class SimilaritySorter
     }
 
     /**
-     * @param Entity $entity
-     * @param StringLiteral $value
      * @return int
      */
     private function getWeight(Entity $entity, StringLiteral $value)
@@ -56,8 +53,6 @@ class SimilaritySorter
     }
 
     /**
-     * @param StringLiteral $str1
-     * @param StringLiteral $str2
      * @return int
      */
     private function calculateLevenshtein(
@@ -68,8 +63,6 @@ class SimilaritySorter
     }
 
     /**
-     * @param StringLiteral $str1
-     * @param StringLiteral $str2
      * @return int
      */
     private function calculateSimilarText(

@@ -70,7 +70,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
         if (isset($commandHandlers[$commandName])) {
             $handler = $commandHandlers[$commandName];
-            call_user_func(array($this, $handler), $command);
+            call_user_func([$this, $handler], $command);
         } else {
             parent::handle($command);
         }
@@ -91,7 +91,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
                 $classNameMethod = 'get' . $command . 'ClassName';
 
                 if (method_exists($this, $classNameMethod)) {
-                    $commandFullClassName = call_user_func(array($this, $classNameMethod));
+                    $commandFullClassName = call_user_func([$this, $classNameMethod]);
                     $commands[$commandFullClassName] = $method;
                 }
             }
@@ -225,9 +225,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
      */
     abstract protected function getUpdateFacilitiesClassName();
 
-    /**
-     * @param AbstractUpdateType $updateType
-     */
+
     public function handleUpdateType(AbstractUpdateType $updateType)
     {
         $offer = $this->load($updateType->getItemId());
@@ -237,9 +235,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractUpdateTheme $updateTheme
-     */
+
     public function handleUpdateTheme(AbstractUpdateTheme $updateTheme)
     {
         $offer = $this->load($updateTheme->getItemId());
@@ -249,9 +245,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractUpdateFacilities $updateFacilities
-     */
+
     public function handleUpdateFacilities(AbstractUpdateFacilities $updateFacilities)
     {
         $offer = $this->load($updateFacilities->getItemId());
@@ -261,9 +255,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractUpdateTitle $translateTitle
-     */
+
     private function handleUpdateTitle(AbstractUpdateTitle $translateTitle)
     {
         $offer = $this->load($translateTitle->getItemId());
@@ -273,7 +265,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle an add image command.
-     * @param AbstractAddImage $addImage
      */
     public function handleAddImage(AbstractAddImage $addImage)
     {
@@ -285,9 +276,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractRemoveImage $removeImage
-     */
+
     public function handleRemoveImage(AbstractRemoveImage $removeImage)
     {
         $offer = $this->load($removeImage->getItemId());
@@ -295,9 +284,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractUpdateImage $updateImage
-     */
+
     public function handleUpdateImage(AbstractUpdateImage $updateImage)
     {
         $offer = $this->load($updateImage->getItemId());
@@ -309,9 +296,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractSelectMainImage $selectMainImage
-     */
+
     public function handleSelectMainImage(AbstractSelectMainImage $selectMainImage)
     {
         $offer = $this->load($selectMainImage->getItemId());
@@ -319,9 +304,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractImportImages $importImages
-     */
+
     public function handleImportImages(AbstractImportImages $importImages)
     {
         $offer = $this->load($importImages->getItemId());
@@ -331,7 +314,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle the update of description on a place.
-     * @param AbstractUpdateDescription $updateDescription
      */
     public function handleUpdateDescription(AbstractUpdateDescription $updateDescription)
     {
@@ -345,9 +327,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractUpdateCalendar $updateCalendar
-     */
+
     public function handleUpdateCalendar(AbstractUpdateCalendar $updateCalendar)
     {
         $offer = $this->load($updateCalendar->getItemId());
@@ -359,7 +339,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle the update of typical age range on a place.
-     * @param AbstractUpdateTypicalAgeRange $updateTypicalAgeRange
      */
     public function handleUpdateTypicalAgeRange(AbstractUpdateTypicalAgeRange $updateTypicalAgeRange)
     {
@@ -374,7 +353,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle the deletion of typical age range on a place.
-     * @param AbstractDeleteTypicalAgeRange $deleteTypicalAgeRange
      */
     public function handleDeleteTypicalAgeRange(AbstractDeleteTypicalAgeRange $deleteTypicalAgeRange)
     {
@@ -387,7 +365,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle an update command to update organizer of a place.
-     * @param AbstractUpdateOrganizer $updateOrganizer
      */
     public function handleUpdateOrganizer(AbstractUpdateOrganizer $updateOrganizer)
     {
@@ -403,7 +380,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle an update command to delete the organizer.
-     * @param AbstractDeleteOrganizer $deleteOrganizer
      */
     public function handleDeleteOrganizer(AbstractDeleteOrganizer $deleteOrganizer)
     {
@@ -416,9 +392,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractDeleteCurrentOrganizer $deleteCurrentOrganizer
-     */
+
     public function handleDeleteCurrentOrganizer(AbstractDeleteCurrentOrganizer $deleteCurrentOrganizer)
     {
         $offer = $this->load($deleteCurrentOrganizer->getItemId());
@@ -430,7 +404,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle an update command to updated the contact point.
-     * @param AbstractUpdateContactPoint $updateContactPoint
      */
     public function handleUpdateContactPoint(AbstractUpdateContactPoint $updateContactPoint)
     {
@@ -445,7 +418,6 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
 
     /**
      * Handle an update command to updated the booking info.
-     * @param AbstractUpdateBookingInfo $updateBookingInfo
      */
     public function handleUpdateBookingInfo(AbstractUpdateBookingInfo $updateBookingInfo)
     {
@@ -458,9 +430,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractUpdatePriceInfo $updatePriceInfo
-     */
+
     private function handleUpdatePriceInfo(AbstractUpdatePriceInfo $updatePriceInfo)
     {
         $offer = $this->load($updatePriceInfo->getItemId());
@@ -472,9 +442,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractDeleteOffer $deleteOffer
-     */
+
     private function handleDeleteOffer(AbstractDeleteOffer $deleteOffer)
     {
         $offer = $this->load($deleteOffer->getItemId());
@@ -482,9 +450,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractPublish $publish
-     */
+
     private function handlePublish(AbstractPublish $publish)
     {
         $offer = $this->load($publish->getItemId());
@@ -492,9 +458,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractApprove $approve
-     */
+
     private function handleApprove(AbstractApprove $approve)
     {
         $offer = $this->load($approve->getItemId());
@@ -502,9 +466,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractReject $reject
-     */
+
     private function handleReject(AbstractReject $reject)
     {
         $offer = $this->load($reject->getItemId());
@@ -512,9 +474,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractFlagAsDuplicate $flagAsDuplicate
-     */
+
     private function handleFlagAsDuplicate(AbstractFlagAsDuplicate $flagAsDuplicate)
     {
         $offer = $this->load($flagAsDuplicate->getItemId());
@@ -522,9 +482,7 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    /**
-     * @param AbstractFlagAsInappropriate $flagAsInappropriate
-     */
+
     private function handleFlagAsInappropriate(AbstractFlagAsInappropriate $flagAsInappropriate)
     {
         $offer = $this->load($flagAsInappropriate->getItemId());

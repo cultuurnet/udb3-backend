@@ -7,7 +7,6 @@ use Broadway\Domain\DomainMessage;
 class CorrelationIdPropertiesFactory implements PropertiesFactoryInterface
 {
     /**
-     * @param DomainMessage $domainMessage
      * @return array
      */
     public function createProperties(DomainMessage $domainMessage)

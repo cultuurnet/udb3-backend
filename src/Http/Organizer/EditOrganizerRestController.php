@@ -22,7 +22,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EditOrganizerRestController
 {
-
     /** @var OrganizerEditingServiceInterface */
     private $editingService;
 
@@ -36,8 +35,6 @@ class EditOrganizerRestController
 
     /**
      * EditOrganizerRestController constructor.
-     * @param OrganizerEditingServiceInterface $organizerEditingService
-     * @param IriGeneratorInterface            $organizerIriGenerator
      */
     public function __construct(
         OrganizerEditingServiceInterface $organizerEditingService,

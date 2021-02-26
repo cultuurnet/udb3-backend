@@ -29,7 +29,7 @@ class AbstractOrganizerCommandTest extends TestCase
 
         $this->organizerCommand = $this->getMockForAbstractClass(
             AbstractOrganizerCommand::class,
-            array($this->itemId, $this->organizerId)
+            [$this->itemId, $this->organizerId]
         );
     }
 

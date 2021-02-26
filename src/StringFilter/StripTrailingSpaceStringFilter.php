@@ -14,6 +14,6 @@ class StripTrailingSpaceStringFilter implements StringFilterInterface
             throw new \InvalidArgumentException('Argument should be string, got ' . gettype($string) . ' instead.');
         }
 
-        return preg_replace('/[ \t]+$/m', "", $string);
+        return preg_replace('/[ \t]+$/m', '', $string);
     }
 }

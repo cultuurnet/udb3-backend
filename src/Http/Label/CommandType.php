@@ -10,10 +10,10 @@ use ValueObjects\Enum\Enum;
  */
 class CommandType extends Enum
 {
-    const MAKE_VISIBLE = 'MakeVisible';
-    const MAKE_INVISIBLE = 'MakeInvisible';
-    const MAKE_PUBLIC = 'MakePublic';
-    const MAKE_PRIVATE = 'MakePrivate';
+    public const MAKE_VISIBLE = 'MakeVisible';
+    public const MAKE_INVISIBLE = 'MakeInvisible';
+    public const MAKE_PUBLIC = 'MakePublic';
+    public const MAKE_PRIVATE = 'MakePrivate';
 
     public static function makeVisible(): self
     {

@@ -27,12 +27,7 @@ class BookingInfo
      */
     private $availability;
 
-    /**
-     * @param WebsiteLink|null $website
-     * @param TelephoneNumber|null $telephoneNumber
-     * @param EmailAddress|null $emailAddress
-     * @param BookingAvailability|null $availability
-     */
+
     public function __construct(
         WebsiteLink $website = null,
         TelephoneNumber $telephoneNumber = null,

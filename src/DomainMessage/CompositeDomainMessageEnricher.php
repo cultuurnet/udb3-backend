@@ -17,7 +17,6 @@ class CompositeDomainMessageEnricher implements DomainMessageEnricherInterface
     }
 
     /**
-     * @param DomainMessageEnricherInterface $domainMessageEnricher
      * @return CompositeDomainMessageEnricher
      */
     public function withEnricher(DomainMessageEnricherInterface $domainMessageEnricher)
@@ -28,7 +27,6 @@ class CompositeDomainMessageEnricher implements DomainMessageEnricherInterface
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return bool
      */
     public function supports(DomainMessage $domainMessage)
@@ -46,7 +44,6 @@ class CompositeDomainMessageEnricher implements DomainMessageEnricherInterface
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return DomainMessage
      */
     public function enrich(DomainMessage $domainMessage)

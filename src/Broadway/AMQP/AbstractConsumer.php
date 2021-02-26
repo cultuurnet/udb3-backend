@@ -57,11 +57,6 @@ abstract class AbstractConsumer implements ConsumerInterface
     private $messageHandlerName = 'message handler';
 
     /**
-     * @param AMQPStreamConnection $connection
-     * @param DeserializerLocatorInterface $deserializerLocator
-     * @param StringLiteral $consumerTag
-     * @param StringLiteral $exchangeName
-     * @param StringLiteral $queueName
      * @param int $delay
      * @param string $messageHandlerName
      */
@@ -89,10 +84,7 @@ abstract class AbstractConsumer implements ConsumerInterface
         $this->registerConsumeCallback();
     }
 
-    /**
-     * @param mixed $deserializedMessage
-     * @param array $context
-     */
+
     abstract protected function handle($deserializedMessage, array $context);
 
     private function delayIfNecessary()
@@ -102,9 +94,7 @@ abstract class AbstractConsumer implements ConsumerInterface
         }
     }
 
-    /**
-     * @param AMQPMessage $message
-     */
+
     public function consume(AMQPMessage $message)
     {
         $context = [];

@@ -35,7 +35,6 @@ class CoordinatesTest extends TestCase
      * @dataProvider validLatLonStringProvider
      *
      * @param string $latLonString
-     * @param Coordinates $expectedCoordinates
      */
     public function it_can_be_created_from_a_valid_lat_lon_string(
         $latLonString,
@@ -64,70 +63,70 @@ class CoordinatesTest extends TestCase
     {
         return [
             [
-                "-90,-180",
+                '-90,-180',
                 new Coordinates(
                     new Latitude(-90.0),
                     new Longitude(-180.0)
                 ),
             ],
             [
-                "-90, -180",
+                '-90, -180',
                 new Coordinates(
                     new Latitude(-90.0),
                     new Longitude(-180.0)
                 ),
             ],
             [
-                "90,180",
+                '90,180',
                 new Coordinates(
                     new Latitude(90.0),
                     new Longitude(180.0)
                 ),
             ],
             [
-                "90, 180",
+                '90, 180',
                 new Coordinates(
                     new Latitude(90.0),
                     new Longitude(180.0)
                 ),
             ],
             [
-                "+90,+180",
+                '+90,+180',
                 new Coordinates(
                     new Latitude(90.0),
                     new Longitude(180.0)
                 ),
             ],
             [
-                "+90, +180",
+                '+90, +180',
                 new Coordinates(
                     new Latitude(90.0),
                     new Longitude(180.0)
                 ),
             ],
             [
-                "-90,+180",
+                '-90,+180',
                 new Coordinates(
                     new Latitude(-90.0),
                     new Longitude(180.0)
                 ),
             ],
             [
-                "-90, +180",
+                '-90, +180',
                 new Coordinates(
                     new Latitude(-90.0),
                     new Longitude(180.0)
                 ),
             ],
             [
-                " -90 , +180 ",
+                ' -90 , +180 ',
                 new Coordinates(
                     new Latitude(-90.0),
                     new Longitude(180.0)
                 ),
             ],
             [
-                " 18.555 , -45.5789 ",
+                ' 18.555 , -45.5789 ',
                 new Coordinates(
                     new Latitude(18.555),
                     new Longitude(-45.5789)

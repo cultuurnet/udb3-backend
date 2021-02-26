@@ -33,13 +33,7 @@ final class MediaObjectReference
      */
     private $language;
 
-    /**
-     * @param UUID $mediaObjectId
-     * @param Description $description
-     * @param CopyrightHolder $copyrightHolder
-     * @param Language $language
-     * @param MediaObject|null $mediaObject
-     */
+
     private function __construct(
         UUID $mediaObjectId,
         Description $description,
@@ -83,7 +77,6 @@ final class MediaObjectReference
     }
 
     /**
-     * @param Description $description
      * @return MediaObjectReference
      */
     public function withDescription(Description $description)
@@ -102,7 +95,6 @@ final class MediaObjectReference
     }
 
     /**
-     * @param CopyrightHolder $copyrightHolder
      * @return MediaObjectReference
      */
     public function withCopyrightHolder(CopyrightHolder $copyrightHolder)

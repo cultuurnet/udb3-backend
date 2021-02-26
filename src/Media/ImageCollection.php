@@ -19,7 +19,6 @@ class ImageCollection extends AbstractCollection
     }
 
     /**
-     * @param Image $image
      * @return ImageCollection
      */
     public function withMain(Image $image)
@@ -52,7 +51,6 @@ class ImageCollection extends AbstractCollection
     }
 
     /**
-     * @param UUID $uuid
      * @return Image|null
      */
     public function findImageByUUID(UUID $uuid)

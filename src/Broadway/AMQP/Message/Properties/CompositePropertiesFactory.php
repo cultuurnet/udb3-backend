@@ -17,7 +17,6 @@ class CompositePropertiesFactory implements PropertiesFactoryInterface
     }
 
     /**
-     * @param PropertiesFactoryInterface $factory
      * @return CompositePropertiesFactory
      */
     public function with(PropertiesFactoryInterface $factory)
@@ -28,7 +27,6 @@ class CompositePropertiesFactory implements PropertiesFactoryInterface
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return array
      */
     public function createProperties(DomainMessage $domainMessage)

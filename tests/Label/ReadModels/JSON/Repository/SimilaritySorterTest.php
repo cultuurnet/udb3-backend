@@ -74,7 +74,6 @@ class SimilaritySorterTest extends TestCase
     }
 
     /**
-     * @param StringLiteral $name
      * @return Entity
      */
     private function createEntity(StringLiteral $name)

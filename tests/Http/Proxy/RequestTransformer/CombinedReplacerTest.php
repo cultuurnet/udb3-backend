@@ -9,11 +9,11 @@ use ValueObjects\Web\PortNumber;
 
 class CombinedReplacerTest extends TestCase
 {
-    const ORIGINAL_DOMAIN = 'www.original.be';
-    const REPLACED_DOMAIN = 'www.replaced.be';
+    public const ORIGINAL_DOMAIN = 'www.original.be';
+    public const REPLACED_DOMAIN = 'www.replaced.be';
 
-    const ORIGINAL_PORT = 80;
-    const REPLACED_PORT = 666;
+    public const ORIGINAL_PORT = 80;
+    public const REPLACED_PORT = 666;
 
     /**
      * @var Request

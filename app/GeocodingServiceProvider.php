@@ -12,9 +12,6 @@ use Silex\ServiceProviderInterface;
 
 class GeocodingServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['geocoding_service'] = $app->share(
@@ -49,9 +46,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

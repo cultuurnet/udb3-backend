@@ -102,8 +102,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             'organizer_edit_controller:removeLabel'
         );
 
-        $controllers->get("{offerId}/permissions/", "organizer_permissions_controller:getPermissionsForCurrentUser");
-        $controllers->get("{offerId}/permissions/{userId}", "organizer_permissions_controller:getPermissionsForGivenUser");
+        $controllers->get('{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
+        $controllers->get('{offerId}/permissions/{userId}', 'organizer_permissions_controller:getPermissionsForGivenUser');
 
         return $controllers;
     }

@@ -11,9 +11,7 @@ trait HasActorIdTrait
      */
     private $actorId;
 
-    /**
-     * @param StringLiteral $actorId
-     */
+
     private function setActorId(StringLiteral $actorId)
     {
         if ($actorId->isEmpty()) {

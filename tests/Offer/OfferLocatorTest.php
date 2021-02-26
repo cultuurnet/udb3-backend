@@ -26,7 +26,6 @@ class OfferLocatorTest extends TestCase
      */
     public function it_should_add_the_location_of_an_offer_to_its_metadata_as_id()
     {
-
         $this->iriGenerator
             ->method('iri')
             ->with('9B750422-A090-4DCD-AF8F-1C94F0329E3C')
@@ -42,7 +41,7 @@ class OfferLocatorTest extends TestCase
 
         $this->assertCount(2, $messages);
 
-        $expectedMetadata = new Metadata(array('bar' => 1337, 'id' => 'https://du.de/offer/9B750422-A090-4DCD-AF8F-1C94F0329E3C'));
+        $expectedMetadata = new Metadata(['bar' => 1337, 'id' => 'https://du.de/offer/9B750422-A090-4DCD-AF8F-1C94F0329E3C']);
 
         foreach ($messages as $message) {
             $this->assertEquals($expectedMetadata, $message->getMetadata());
@@ -54,6 +53,6 @@ class OfferLocatorTest extends TestCase
         $m1 = DomainMessage::recordNow('id', 42, Metadata::kv('bar', 1337), 'payload');
         $m2 = DomainMessage::recordNow('id', 42, Metadata::kv('bar', 1337), 'payload');
 
-        return new DomainEventStream(array($m1, $m2));
+        return new DomainEventStream([$m1, $m2]);
     }
 }

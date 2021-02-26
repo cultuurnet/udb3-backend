@@ -23,7 +23,6 @@ class EventTypeJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return EventType
      * @throws DataValidationException
      */

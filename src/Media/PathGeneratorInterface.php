@@ -10,8 +10,6 @@ interface PathGeneratorInterface
     /**
      * Returns the path where a file is stored
      *
-     * @param UUID $fileId
-     * @param StringLiteral $extension
      *
      * @return string
      */

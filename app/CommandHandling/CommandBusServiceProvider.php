@@ -115,7 +115,6 @@ class CommandBusServiceProvider implements ServiceProviderInterface
         $app['resque_command_bus_factory'] = $app->protect(
             function ($queueName) use ($app) {
                 $app[$queueName . '_command_bus_factory'] = function () use ($app, $queueName) {
-
                     $commandBus = new ResqueCommandBus(
                         $app['authorized_command_bus'],
                         $queueName,

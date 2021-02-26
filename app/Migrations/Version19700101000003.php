@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version19700101000003 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         // @see \CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository
@@ -21,25 +18,23 @@ class Version19700101000003 extends AbstractMigration
         $table->addColumn(
             'event',
             'string',
-            array('length' => 32, 'notnull' => false)
+            ['length' => 32, 'notnull' => false]
         );
         $table->addColumn(
             'organizer',
             'string',
-            array('length' => 32, 'notnull' => false)
+            ['length' => 32, 'notnull' => false]
         );
         $table->addColumn(
             'place',
             'string',
-            array('length' => 32, 'notnull' => false)
+            ['length' => 32, 'notnull' => false]
         );
 
-        $table->setPrimaryKey(array('event'));
+        $table->setPrimaryKey(['event']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('event_relations');

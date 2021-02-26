@@ -32,12 +32,7 @@ class LabelPermissionRule extends AbstractRule
      */
     private $labelRelationsRepository;
 
-    /**
-     * @param UUID $documentId
-     * @param UserIdentificationInterface $userIdentification
-     * @param LabelsRepository $labelsRepository
-     * @param LabelRelationsRepository $labelsRelationsRepository
-     */
+
     public function __construct(
         UUID $documentId,
         UserIdentificationInterface $userIdentification,

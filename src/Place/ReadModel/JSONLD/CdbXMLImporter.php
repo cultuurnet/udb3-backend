@@ -32,11 +32,7 @@ class CdbXMLImporter
      */
     private $cdbXmlContactInfoImporter;
 
-    /**
-     * @param CdbXMLItemBaseImporter $dbXMLItemBaseImporter
-     * @param CalendarFactoryInterface $calendarFactory
-     * @param CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter
-     */
+
     public function __construct(
         CdbXMLItemBaseImporter $dbXMLItemBaseImporter,
         CalendarFactoryInterface $calendarFactory,
@@ -117,14 +113,14 @@ class CdbXMLImporter
                         $jsonLD->address = new \stdClass();
                     }
 
-                    $jsonLD->address->nl = array(
+                    $jsonLD->address->nl = [
                         'addressCountry' => $address->getCountry(),
                         'addressLocality' => $address->getCity(),
                         'postalCode' => $address->getZip(),
                         'streetAddress' =>
                             $address->getStreet() . ' ' .
                             $address->getHouseNumber(),
-                    );
+                    ];
 
                     break;
                 }
@@ -170,21 +166,20 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Base $actor
      * @param \stdClass $jsonLD
      */
     private function importTerms(\CultureFeed_Cdb_Item_Base $actor, $jsonLD)
     {
         $themeBlacklist = [];
-        $categories = array();
+        $categories = [];
         foreach ($actor->getCategories() as $category) {
             /* @var \Culturefeed_Cdb_Data_Category $category */
             if ($category && !in_array($category->getName(), $themeBlacklist)) {
-                $categories[] = array(
+                $categories[] = [
                     'label' => $category->getName(),
                     'domain' => $category->getType(),
                     'id' => $category->getId(),
-                );
+                ];
             }
         }
         $jsonLD->terms = $categories;

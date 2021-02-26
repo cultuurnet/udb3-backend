@@ -61,9 +61,7 @@ class AMQPPublisher implements EventListener
         }
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     private function publishWithAMQP(DomainMessage $domainMessage)
     {
         $payload = $domainMessage->getPayload();
