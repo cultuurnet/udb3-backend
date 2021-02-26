@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "445f7cba7af516e1eed1f56ac2f86b26",
+    "content-hash": "a16cc65589072dc229e22da4ae202548",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -9338,23 +9338,22 @@
         },
         {
             "name": "publiq/php-cs-fixer-config",
-            "version": "dev-main",
+            "version": "v1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/php-cs-fixer-config.git",
-                "reference": "7eae49161abd98c95c9bd5737ca5e2ac3b48a7bc"
+                "reference": "312be666efafeeeae23328c9e70ad98b735d5c6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/7eae49161abd98c95c9bd5737ca5e2ac3b48a7bc",
-                "reference": "7eae49161abd98c95c9bd5737ca5e2ac3b48a7bc",
+                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/312be666efafeeeae23328c9e70ad98b735d5c6c",
+                "reference": "312be666efafeeeae23328c9e70ad98b735d5c6c",
                 "shasum": ""
             },
             "require": {
                 "friendsofphp/php-cs-fixer": "^2.18",
                 "php": "^7.1 || ^8.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -9374,9 +9373,9 @@
             "description": "Configuration for PHP Coding Standards Fixer to be used on all PHP projects at Publiq",
             "support": {
                 "issues": "https://github.com/cultuurnet/php-cs-fixer-config/issues",
-                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/main"
+                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v1.0"
             },
-            "time": "2021-02-25T20:32:43+00:00"
+            "time": "2021-02-26T08:30:16+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -10178,8 +10177,7 @@
     "stability-flags": {
         "chrisboulton/php-resque": 20,
         "cultuurnet/culturefeed-php": 20,
-        "doctrine/migrations": 20,
-        "publiq/php-cs-fixer-config": 20
+        "doctrine/migrations": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
