@@ -39,7 +39,6 @@ class CategoriesDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate CategoryDenormalizer
-     * @param array $categoryData
      * @return Category
      */
     private function denormalizeCategory(array $categoryData)

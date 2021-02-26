@@ -37,7 +37,6 @@ class Label
     }
 
     /**
-     * @param Label $label
      * @return bool
      */
     public function equals(Label $label)

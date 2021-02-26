@@ -19,10 +19,7 @@ class TabularDataFileWriter implements FileWriterInterface
     protected $tabularDataFileWriterFactory;
 
     /**
-     * @param TabularDataFileWriterFactoryInterface   $tabularDataFileWriterFactory
      * @param string[] $include
-     * @param EventInfoServiceInterface|null $uitpas
-     * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
         TabularDataFileWriterFactoryInterface $tabularDataFileWriterFactory,
@@ -34,9 +31,7 @@ class TabularDataFileWriter implements FileWriterInterface
         $this->eventFormatter = new TabularDataEventFormatter($include, $uitpas, $calendarSummaryRepository);
     }
 
-    /**
-     * @param TabularDataFileWriterInterface $tabularDataFileWriter
-     */
+
     protected function writeHeader(TabularDataFileWriterInterface $tabularDataFileWriter)
     {
         $headerRow = $this->eventFormatter->formatHeader();
@@ -58,7 +53,6 @@ class TabularDataFileWriter implements FileWriterInterface
     }
 
     /**
-     * @param TabularDataFileWriterInterface $tabularDataFileWriter
      * @param \Traversable                   $events
      */
     protected function writeEvents(

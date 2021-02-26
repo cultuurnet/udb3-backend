@@ -20,7 +20,6 @@ use ValueObjects\Web\EmailAddress;
 class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $data
      * @return ExportEventsAsPDF
      */
     public function deserialize(StringLiteral $data)

@@ -43,7 +43,7 @@ class AcceptFilterTest extends TestCase
     public function it_does_not_match_for_different_accept_header()
     {
         $acceptFilter = new AcceptFilter(
-            new StringLiteral("application/xmls")
+            new StringLiteral('application/xmls')
         );
 
         $this->assertFalse($acceptFilter->matches($this->request));

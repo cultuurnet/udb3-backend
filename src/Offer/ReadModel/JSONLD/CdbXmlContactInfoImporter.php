@@ -28,7 +28,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
             }
             if ($price->getValue() !== null) {
                 $bookingInfo['priceCurrency'] = 'EUR';
-                $bookingInfo['price'] = floatval($price->getValue());
+                $bookingInfo['price'] = (float) ($price->getValue());
             }
             if ($bookingPeriod) {
                 $startDate = $this->dateFromUdb2UnixTime($bookingPeriod->getDateFrom());

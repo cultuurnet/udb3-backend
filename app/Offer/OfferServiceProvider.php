@@ -21,9 +21,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app[PopularityRepository::class] = $app->share(
@@ -108,9 +105,7 @@ class OfferServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

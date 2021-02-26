@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Security\UserIdentificationInterface;
 interface AuthorizedCommandBusInterface extends CommandBus
 {
     /**
-     * @param AuthorizableCommandInterface $command
      * @return bool
      */
     public function isAuthorized(AuthorizableCommandInterface $command);

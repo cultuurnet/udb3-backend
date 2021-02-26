@@ -15,9 +15,7 @@ class Version20160817112023 extends AbstractMigration
     public const LABEL_ID_COLUMN = 'label_id';
     public const ROLE_ID_COLUMN = 'role_id';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $userRoleTable = $schema->createTable(
@@ -40,9 +38,7 @@ class Version20160817112023 extends AbstractMigration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(LabelServiceProvider::LABEL_ROLES_TABLE);

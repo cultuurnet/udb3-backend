@@ -47,10 +47,6 @@ class Entity implements \JsonSerializable
 
     /**
      * LabelEntity constructor.
-     * @param UUID $uuid
-     * @param StringLiteral $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
      * @param UUID $parentUuid
      * @param Natural $count
      */

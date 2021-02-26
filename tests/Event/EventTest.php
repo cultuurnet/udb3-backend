@@ -180,8 +180,8 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $facilities = [
-            new Facility("3.27.0.0.0", "Rolstoeltoegankelijk"),
-            new Facility("3.30.0.0.0", "Rolstoelpodium"),
+            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
+            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
         ];
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
@@ -572,8 +572,6 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @dataProvider unlabelDataProvider
      * @param string $id
-     * @param Label $label
-     * @param array $givens
      */
     public function it_can_be_unlabelled(
         $id,
@@ -654,8 +652,6 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider unlabelIgnoredDataProvider
-     * @param Label $label
-     * @param array $givens
      */
     public function it_silently_ignores_unlabel_request_if_label_is_not_present(
         Label $label,
@@ -1114,7 +1110,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $event->getUncommittedEvents();
 
-        $newPublicationDate = new \DateTimeImmutable("+3 days");
+        $newPublicationDate = new \DateTimeImmutable('+3 days');
 
         $this->scenario
             ->when(function () use ($event, $newEventId, $calendar, $newPublicationDate) {

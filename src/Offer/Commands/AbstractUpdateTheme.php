@@ -13,7 +13,6 @@ abstract class AbstractUpdateTheme extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Theme $theme
      */
     public function __construct($itemId, Theme $theme)
     {

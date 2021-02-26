@@ -108,9 +108,7 @@ class MultilingualStringTest extends TestCase
      * @test
      * @dataProvider stringForLanguageDataProvider
      *
-     * @param Language $preferredLanguage
      * @param Language[] $fallbackLanguages
-     * @param StringLiteral|null $expected
      */
     public function it_can_return_the_value_for_a_given_language_or_a_fallback_language(
         Language $preferredLanguage,

@@ -59,14 +59,14 @@ class ExportEventsJSONDeserializerTest extends TestCase
                 new EventExportQuery('city:leuven'),
                 new EmailAddress('foo@bar.com'),
                 [
-                    "8102d369-47c5-4ded-ad03-e12ef7b246c3",
-                    "b5f6f86b-6e81-439b-b93d-68a95a356756",
-                    "eb59c69c-2e29-4cbc-901f-d9076b38ca59",
+                    '8102d369-47c5-4ded-ad03-e12ef7b246c3',
+                    'b5f6f86b-6e81-439b-b93d-68a95a356756',
+                    'eb59c69c-2e29-4cbc-901f-d9076b38ca59',
                 ],
                 [
-                    "name",
-                    "image",
-                    "address",
+                    'name',
+                    'image',
+                    'address',
                 ]
             )
             ->willReturn(new \stdClass());
@@ -88,7 +88,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
      * @test
      * @dataProvider commandDataProvider
      *
-     * @param DeserializerInterface $deserializer
      * @param string                $expectedCommandType
      */
     public function it_can_create_different_command_types(
@@ -105,14 +104,14 @@ class ExportEventsJSONDeserializerTest extends TestCase
             new EventExportQuery('city:leuven'),
             new EmailAddress('foo@bar.com'),
             [
-                "8102d369-47c5-4ded-ad03-e12ef7b246c3",
-                "b5f6f86b-6e81-439b-b93d-68a95a356756",
-                "eb59c69c-2e29-4cbc-901f-d9076b38ca59",
+                '8102d369-47c5-4ded-ad03-e12ef7b246c3',
+                'b5f6f86b-6e81-439b-b93d-68a95a356756',
+                'eb59c69c-2e29-4cbc-901f-d9076b38ca59',
             ],
             [
-                "name",
-                "image",
-                "address",
+                'name',
+                'image',
+                'address',
             ]
         );
 
@@ -146,6 +145,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
      */
     private function getJsonData($fileName)
     {
-        return file_get_contents(__DIR__.'/'.$fileName);
+        return file_get_contents(__DIR__ . '/' . $fileName);
     }
 }

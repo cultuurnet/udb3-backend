@@ -29,9 +29,6 @@ class Sapi3UserPermissionMatcher implements UserPermissionMatcherInterface
 
     /**
      * ConstraintsOfferFilter constructor.
-     * @param UserConstraintsReadRepositoryInterface $userConstraintsReadRepository
-     * @param SearchQueryFactoryInterface $searchQueryFactory
-     * @param CountingSearchServiceInterface $searchService
      */
     public function __construct(
         UserConstraintsReadRepositoryInterface $userConstraintsReadRepository,

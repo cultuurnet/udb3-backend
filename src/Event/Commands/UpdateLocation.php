@@ -15,7 +15,6 @@ class UpdateLocation extends AbstractCommand
     /**
      * UpdateLocation constructor.
      * @param string $itemId
-     * @param LocationId $locationId
      */
     public function __construct(
         $itemId,

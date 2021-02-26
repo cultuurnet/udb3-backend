@@ -14,10 +14,7 @@ class Coordinates
      */
     private $long;
 
-    /**
-     * @param Latitude $lat
-     * @param Longitude $long
-     */
+
     public function __construct(Latitude $lat, Longitude $long)
     {
         $this->lat = $lat;
@@ -41,7 +38,6 @@ class Coordinates
     }
 
     /**
-     * @param Coordinates $coordinates
      * @return bool
      */
     public function sameAs(Coordinates $coordinates)
@@ -59,7 +55,7 @@ class Coordinates
         $split = explode(',', $latLon);
 
         if (count($split) !== 2) {
-            throw new \InvalidArgumentException("Lat lon string is not in the expected format (lat,lon).");
+            throw new \InvalidArgumentException('Lat lon string is not in the expected format (lat,lon).');
         }
 
         $lat = new Latitude((float) $split[0]);

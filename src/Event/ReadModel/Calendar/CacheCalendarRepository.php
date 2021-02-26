@@ -12,9 +12,7 @@ class CacheCalendarRepository implements CalendarRepositoryInterface
      */
     protected $cache;
 
-    /**
-     * @param Cache $cache
-     */
+
     public function __construct(Cache $cache)
     {
         $this->cache = $cache;

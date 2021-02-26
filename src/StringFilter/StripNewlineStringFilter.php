@@ -14,6 +14,6 @@ class StripNewlineStringFilter implements StringFilterInterface
             throw new \InvalidArgumentException('Argument should be string, got ' . gettype($string) . ' instead.');
         }
 
-        return preg_replace("/[\\r\\n]+/", "", $string);
+        return preg_replace('/[\\r\\n]+/', '', $string);
     }
 }

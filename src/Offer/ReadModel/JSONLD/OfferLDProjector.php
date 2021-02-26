@@ -100,11 +100,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     protected $slugger;
 
     /**
-     * @param DocumentRepository $repository
-     * @param IriGeneratorInterface $iriGenerator
-     * @param EntityServiceInterface $organizerService
-     * @param MediaObjectSerializer $mediaObjectSerializer
-     * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
      * @param string[] $basePriceTranslations
      */
     public function __construct(
@@ -326,7 +321,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     abstract protected function getFacilitiesUpdatedClassName();
 
     /**
-     * @param AbstractTypeUpdated $typeUpdated
      * @return JsonDocument
      */
     protected function applyTypeUpdated(AbstractTypeUpdated $typeUpdated)
@@ -337,7 +331,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractThemeUpdated $themeUpdated
      * @return JsonDocument
      */
     protected function applyThemeUpdated(AbstractThemeUpdated $themeUpdated)
@@ -348,8 +341,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param JsonDocument $document
-     * @param Category $category
      *
      * @return JsonDocument
      */
@@ -375,7 +366,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractFacilitiesUpdated $facilitiesUpdated
      * @return JsonDocument
      */
     protected function applyFacilitiesUpdated(AbstractFacilitiesUpdated $facilitiesUpdated)
@@ -405,7 +395,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractLabelAdded $labelAdded
      * @return JsonDocument
      */
     protected function applyLabelAdded(AbstractLabelAdded $labelAdded)
@@ -427,7 +416,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractLabelRemoved $labelRemoved
      * @return JsonDocument
      */
     protected function applyLabelRemoved(AbstractLabelRemoved $labelRemoved)
@@ -466,7 +454,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     /**
      * Apply the imageAdded event to the item repository.
      *
-     * @param AbstractImageAdded $imageAdded
      * @return JsonDocument
      */
     protected function applyImageAdded(AbstractImageAdded $imageAdded)
@@ -489,7 +476,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     /**
      * Apply the ImageUpdated event to the item repository.
      *
-     * @param AbstractImageUpdated $imageUpdated
      * @return JsonDocument
      * @throws \Exception
      */
@@ -563,7 +549,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         // Unset the main image if it matches the removed image
         if (isset($offerLd->image) && strpos($offerLd->{'image'}, $imageId)) {
-            unset($offerLd->{"image"});
+            unset($offerLd->{'image'});
         }
 
         if (!isset($offerLd->image) && count($filteredMediaObjects) > 0) {
@@ -572,7 +558,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         // If no media objects are left remove the attribute.
         if (empty($filteredMediaObjects)) {
-            unset($offerLd->{"mediaObject"});
+            unset($offerLd->{'mediaObject'});
         } else {
             $offerLd->mediaObject = array_values($filteredMediaObjects);
         }
@@ -581,7 +567,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractMainImageSelected $mainImageSelected
      * @return JsonDocument
      */
     protected function applyMainImageSelected(AbstractMainImageSelected $mainImageSelected)
@@ -608,7 +593,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * @param Object $mediaObject
-     * @param UUID $mediaObjectId
      *
      * @return bool
      */
@@ -618,7 +602,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractTitleTranslated $titleTranslated
      * @return JsonDocument
      */
     protected function applyTitleTranslated(AbstractTitleTranslated $titleTranslated)
@@ -633,7 +616,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractTitleUpdated $titleUpdated
      * @return JsonDocument
      */
     protected function applyTitleUpdated(AbstractTitleUpdated $titleUpdated)
@@ -648,7 +630,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractDescriptionTranslated $descriptionTranslated
      * @return JsonDocument
      */
     protected function applyDescriptionTranslated(
@@ -668,7 +649,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractCalendarUpdated $calendarUpdated
      *
      * @return JsonDocument
      */
@@ -687,7 +667,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * Apply the organizer updated event to the offer repository.
-     * @param AbstractOrganizerUpdated $organizerUpdated
      * @return JsonDocument
      */
     protected function applyOrganizerUpdated(AbstractOrganizerUpdated $organizerUpdated)
@@ -705,7 +684,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * Apply the organizer delete event to the offer repository.
-     * @param AbstractOrganizerDeleted $organizerDeleted
      * @return JsonDocument
      */
     protected function applyOrganizerDeleted(AbstractOrganizerDeleted $organizerDeleted)
@@ -721,7 +699,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * Apply the booking info updated event to the offer repository.
-     * @param AbstractBookingInfoUpdated $bookingInfoUpdated
      * @return JsonDocument
      */
     protected function applyBookingInfoUpdated(AbstractBookingInfoUpdated $bookingInfoUpdated)
@@ -736,7 +713,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractPriceInfoUpdated $priceInfoUpdated
      * @return JsonDocument
      */
     protected function applyPriceInfoUpdated(AbstractPriceInfoUpdated $priceInfoUpdated)
@@ -769,7 +745,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * Apply the contact point updated event to the offer repository.
-     * @param AbstractContactPointUpdated $contactPointUpdated
      * @return JsonDocument
      */
     protected function applyContactPointUpdated(AbstractContactPointUpdated $contactPointUpdated)
@@ -784,7 +759,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * Apply the description updated event to the offer repository.
-     * @param AbstractDescriptionUpdated $descriptionUpdated
      * @return JsonDocument
      */
     protected function applyDescriptionUpdated(
@@ -805,7 +779,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * Apply the typical age range updated event to the offer repository.
-     * @param AbstractTypicalAgeRangeUpdated $typicalAgeRangeUpdated
      * @return JsonDocument
      */
     protected function applyTypicalAgeRangeUpdated(
@@ -821,7 +794,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     /**
      * Apply the typical age range deleted event to the offer repository.
-     * @param AbstractTypicalAgeRangeDeleted $typicalAgeRangeDeleted
      * @return JsonDocument
      */
     protected function applyTypicalAgeRangeDeleted(
@@ -837,7 +809,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractPublished $published
      * @return JsonDocument
      */
     protected function applyPublished(AbstractPublished $published)
@@ -855,7 +826,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractApproved $approved
      * @return JsonDocument
      */
     protected function applyApproved(AbstractApproved $approved)
@@ -867,7 +837,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractRejected $rejected
      * @return JsonDocument
      */
     protected function applyRejected(AbstractRejected $rejected)
@@ -879,7 +848,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractFlaggedAsDuplicate $flaggedAsDuplicate
      * @return JsonDocument
      */
     protected function applyFlaggedAsDuplicate(
@@ -892,7 +860,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractFlaggedAsInappropriate $flaggedAsInappropriate
      * @return JsonDocument
      */
     protected function applyFlaggedAsInappropriate(
@@ -905,7 +872,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractImagesImportedFromUDB2 $imagesImportedFromUDB2
      * @return JsonDocument
      */
     protected function applyImagesImportedFromUdb2(AbstractImagesImportedFromUDB2 $imagesImportedFromUDB2)
@@ -917,7 +883,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractImagesUpdatedFromUDB2 $imagesUpdatedFromUDB2
      * @return JsonDocument
      */
     protected function applyImagesUpdatedFromUdb2(AbstractImagesUpdatedFromUDB2 $imagesUpdatedFromUDB2)
@@ -934,8 +899,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      * @see https://github.com/cultuurnet/udb3-udb2-bridge/blob/db0a7ab2444f55bb3faae3d59b82b39aaeba253b/test/Media/ImageCollectionFactoryTest.php#L79-L103
      * Because of this we have to make sure translated images are left in place.
      *
-     * @param \stdClass $offerLd
-     * @param AbstractImagesEvent $imagesEvent
      */
     private function applyUdb2ImagesEvent(\stdClass $offerLd, AbstractImagesEvent $imagesEvent)
     {
@@ -981,7 +944,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param AbstractEvent $event
      * @return JsonDocument
      */
     protected function loadDocumentFromRepository(AbstractEvent $event)
@@ -1021,8 +983,6 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     /**
-     * @param JsonDocument $jsonDocument
-     * @param DomainMessage $domainMessage
      * @return JsonDocument
      */
     private function updateModified(JsonDocument $jsonDocument, DomainMessage $domainMessage)

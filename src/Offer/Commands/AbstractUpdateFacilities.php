@@ -14,7 +14,6 @@ abstract class AbstractUpdateFacilities extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param array $facilities
      */
     public function __construct($itemId, array $facilities)
     {

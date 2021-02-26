@@ -38,12 +38,7 @@ class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface
      */
     private $apiKey;
 
-    /**
-     * @param UriInterface $searchLocation
-     * @param HttpClient $httpClient
-     * @param IriOfferIdentifierFactoryInterface $offerIdentifier
-     * @param string|null $apiKey
-     */
+
     public function __construct(
         UriInterface $searchLocation,
         HttpClient $httpClient,

@@ -21,9 +21,6 @@ class GodUserVoter implements PermissionVoterInterface
     }
 
     /**
-     * @param Permission $permission
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return bool
      */
     public function isAllowed(

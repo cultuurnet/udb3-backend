@@ -8,8 +8,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface UserConstraintsReadRepositoryInterface
 {
     /**
-     * @param StringLiteral $userId
-     * @param Permission $permission
      * @return StringLiteral[]
      */
     public function getByUserAndPermission(

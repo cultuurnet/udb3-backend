@@ -20,8 +20,6 @@ class UpdateAddress extends AbstractUpdateOrganizerCommand
     /**
      * UpdateAddress constructor.
      * @param string $organizerId
-     * @param Address $address
-     * @param Language $language
      */
     public function __construct(
         $organizerId,
@@ -33,17 +31,13 @@ class UpdateAddress extends AbstractUpdateOrganizerCommand
         $this->language = $language;
     }
 
-    /**
-     * @return Address
-     */
+
     public function getAddress(): Address
     {
         return $this->address;
     }
 
-    /**
-     * @return Language
-     */
+
     public function getLanguage(): Language
     {
         return $this->language;

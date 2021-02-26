@@ -28,12 +28,7 @@ class EventDetailController
      */
     private $eventCardSystemsRouteName;
 
-    /**
-     * @param CultureFeed_Uitpas $uitpas
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param string $eventDetailRouteName
-     * @param string $eventCardSystemsRouteName
-     */
+
     public function __construct(
         CultureFeed_Uitpas $uitpas,
         UrlGeneratorInterface $urlGenerator,

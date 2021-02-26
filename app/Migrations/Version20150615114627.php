@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150615114627 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         // @see \CultuurNet\UDB3\Variations\ReadModel\Search\Doctrine\DBALRepository
@@ -50,9 +47,7 @@ class Version20150615114627 extends AbstractMigration
         $table->addIndex(['inserted']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('event_variation_search_index');

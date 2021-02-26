@@ -40,7 +40,6 @@ class ContentTypePropertiesFactoryTest extends TestCase
      * @test
      * @dataProvider contentTypeDataProvider
      *
-     * @param mixed $payload
      * @param string $expectedContentType
      */
     public function it_determines_content_type_by_payload_class($payload, $expectedContentType)

@@ -14,9 +14,7 @@ class MediaObjectSerializer
      */
     protected $iriGenerator;
 
-    /**
-     * @param IriGeneratorInterface $iriGenerator
-     */
+
     public function __construct(
         IriGeneratorInterface $iriGenerator
     ) {
@@ -57,6 +55,6 @@ class MediaObjectSerializer
             return 'schema:mediaObject';
         }
 
-        throw new UnsupportedException('Unsupported MIME-type "'. $mimeType .'"');
+        throw new UnsupportedException('Unsupported MIME-type "' . $mimeType . '"');
     }
 }

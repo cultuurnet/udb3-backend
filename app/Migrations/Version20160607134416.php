@@ -24,9 +24,7 @@ class Version20160607134416 extends AbstractMigration
     public const RELATION_TYPE_COLUMN = 'relationType';
     public const RELATION_ID_COLUMN = 'relationId';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $this->createJsonRepository($schema);
@@ -34,9 +32,7 @@ class Version20160607134416 extends AbstractMigration
         $this->createRelationsRepository($schema);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::LABELS_JSON_TABLE);
@@ -44,9 +40,7 @@ class Version20160607134416 extends AbstractMigration
         $schema->dropTable(self::LABELS_RELATIONS_TABLE);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createJsonRepository(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_JSON_TABLE);
@@ -80,9 +74,7 @@ class Version20160607134416 extends AbstractMigration
         $table->addUniqueIndex([self::NAME_COLUMN]);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createRelationsRepository(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_RELATIONS_TABLE);

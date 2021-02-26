@@ -27,11 +27,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
      */
     private $logger;
 
-    /**
-     * @param LabelsRelationsRepositoryInterface $labelsRelationsRepository
-     * @param LabelsRepositoryInterface $labelsRepository
-     * @param LoggerInterface $logger
-     */
+
     public function __construct(
         LabelsRelationsRepositoryInterface $labelsRelationsRepository,
         LabelsRepositoryInterface $labelsRepository,

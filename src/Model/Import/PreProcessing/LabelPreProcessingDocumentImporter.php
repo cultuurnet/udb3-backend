@@ -28,11 +28,7 @@ class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
      */
     private $labelRelationsRepository;
 
-    /**
-     * @param DocumentImporterInterface $jsonImporter
-     * @param LabelRepository $labelsRepository
-     * @param LabelRelationsRepository $labelRelationsRepository
-     */
+
     public function __construct(
         DocumentImporterInterface $jsonImporter,
         LabelRepository $labelsRepository,
@@ -43,10 +39,7 @@ class LabelPreProcessingDocumentImporter implements DocumentImporterInterface
         $this->labelRelationsRepository = $labelRelationsRepository;
     }
 
-    /**
-     * @param DecodedDocument $decodedDocument
-     * @param ConsumerInterface|null $consumer
-     */
+
     public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
     {
         $data = $decodedDocument->getBody();

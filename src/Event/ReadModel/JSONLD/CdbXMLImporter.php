@@ -38,12 +38,7 @@ class CdbXMLImporter
      */
     private $cdbXmlContactInfoImporter;
 
-    /**
-     * @param CdbXMLItemBaseImporter $cdbXMLItemBaseImporter
-     * @param EventCdbIdExtractorInterface $cdbIdExtractor
-     * @param CalendarFactoryInterface $calendarFactory
-     * @param CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter
-     */
+
     public function __construct(
         CdbXMLItemBaseImporter $cdbXMLItemBaseImporter,
         EventCdbIdExtractorInterface $cdbIdExtractor,
@@ -168,8 +163,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param PlaceServiceInterface $placeManager
      * @param \stdClass $jsonLD
      */
     private function importLocation(\CultureFeed_Cdb_Item_Event $event, PlaceServiceInterface $placeManager, $jsonLD)
@@ -199,8 +192,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param OrganizerServiceInterface $organizerManager
      * @param \stdClass $jsonLD
      */
     private function importOrganizer(
@@ -245,7 +236,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
      * @param \stdClass $jsonLD
      */
     private function importTerms(\CultureFeed_Cdb_Item_Event $event, $jsonLD)
@@ -270,7 +260,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
      * @param \stdClass $jsonLD
      */
     private function importTypicalAgeRange(\CultureFeed_Cdb_Item_Event $event, $jsonLD)
@@ -286,7 +275,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Data_EventDetail $detail
      * @param \stdClass $jsonLD
      */
     private function importPerformers(\CultureFeed_Cdb_Data_EventDetail $detail, $jsonLD)
@@ -304,10 +292,7 @@ class CdbXMLImporter
         }
     }
 
-    /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param \stdClass $jsonLD
-     */
+
     private function importSeeAlso(
         \CultureFeed_Cdb_Item_Event $event,
         \stdClass $jsonLD
@@ -331,8 +316,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param SluggerInterface $slugger
      * @param \stdClass $jsonLD
      */
     private function importUitInVlaanderenReference(
@@ -363,10 +346,7 @@ class CdbXMLImporter
         }
     }
 
-    /**
-     * @param \CultureFeed_Cdb_Item_Event $event
-     * @param \stdClass $jsonLD
-     */
+
     private function importAudience(\CultureFeed_Cdb_Item_Event $event, \stdClass $jsonLD)
     {
         $eventIsPrivate = (bool) $event->isPrivate();

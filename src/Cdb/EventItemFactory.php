@@ -63,7 +63,6 @@ class EventItemFactory implements EventItemFactoryInterface
 
     /**
      * UDB2 contained a bug that allowed for a keyword to have a semicolon.
-     * @param CultureFeed_Cdb_Item_Event $event
      * @return CultureFeed_Cdb_Item_Event
      */
     private static function splitKeywordTagOnSemiColon(
@@ -96,7 +95,6 @@ class EventItemFactory implements EventItemFactoryInterface
     }
 
     /**
-     * @param CultureFeed_Cdb_Item_Event $event
      * @return bool
      */
     private static function isEventOlderThanSplitKeywordFix(

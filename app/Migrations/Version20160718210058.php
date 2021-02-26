@@ -12,9 +12,7 @@ class Version20160718210058 extends AbstractMigration
 {
     public const ROLES_SEARCH = 'roles_search';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $table = $schema->createTable(self::ROLES_SEARCH);
@@ -26,9 +24,7 @@ class Version20160718210058 extends AbstractMigration
         $table->addUniqueIndex(['uuid', 'name']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::ROLES_SEARCH);

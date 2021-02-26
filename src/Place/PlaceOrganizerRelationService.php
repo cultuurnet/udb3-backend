@@ -17,10 +17,7 @@ class PlaceOrganizerRelationService implements OrganizerRelationServiceInterface
      */
     private $relationsRepository;
 
-    /**
-     * @param PlaceEditingServiceInterface $editingService
-     * @param RepositoryInterface $relationsRepository
-     */
+
     public function __construct(
         PlaceEditingServiceInterface $editingService,
         RepositoryInterface $relationsRepository

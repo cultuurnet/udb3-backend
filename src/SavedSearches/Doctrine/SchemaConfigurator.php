@@ -23,7 +23,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
 
     /**
      * SchemaConfigurator constructor.
-     * @param StringLiteral $tableName
      */
     public function __construct(StringLiteral $tableName)
     {
@@ -45,8 +44,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     }
 
     /**
-     * @param Schema $schema
-     * @param StringLiteral $tableName
      * @return Table
      */
     private function createTable(Schema $schema, StringLiteral $tableName)

@@ -22,10 +22,7 @@ class MediaObjectIDExistsRule extends AbstractRule
      */
     private $mediaIdParser;
 
-    /**
-     * @param MediaManagerInterface $mediaManager
-     * @param UUIDParser|null $mediaIdParser
-     */
+
     public function __construct(MediaManagerInterface $mediaManager, UUIDParser $mediaIdParser = null)
     {
         if (is_null($mediaIdParser)) {
@@ -59,6 +56,6 @@ class MediaObjectIDExistsRule extends AbstractRule
     protected function createException()
     {
         return (new ValidationException())
-            ->setTemplate("mediaObject with @id {{name}} does not exist");
+            ->setTemplate('mediaObject with @id {{name}} does not exist');
     }
 }

@@ -68,7 +68,6 @@ class RelatedUDB3LabelApplierTest extends TestCase
      * @test aggregateDataProvider
      * @dataProvider aggregateDataProvider
      * @param AggregateRoot|Event|Place|Organizer $aggregateRoot
-     * @param RelationType $relationType
      */
     public function it_can_apply_labels(
         AggregateRoot $aggregateRoot,

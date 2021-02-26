@@ -14,7 +14,7 @@ final class UpdateSubEventsStatusHandler implements CommandHandler
     /**
      * @var Repository
      */
-    protected $offerRepository;
+    private $offerRepository;
 
     public function __construct(Repository $offerRepository)
     {

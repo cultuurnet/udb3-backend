@@ -133,8 +133,6 @@ class EventDenormalizer extends OfferDenormalizer
     }
 
     /**
-     * @param array $data
-     * @param ImmutableEvent $event
      * @return ImmutableEvent
      */
     private function denormalizeAudienceType(array $data, ImmutableEvent $event)

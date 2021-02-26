@@ -7,9 +7,6 @@ use Silex\ServiceProviderInterface;
 
 class CultureFeedServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['culturefeed'] = $app->share(
@@ -31,9 +28,7 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

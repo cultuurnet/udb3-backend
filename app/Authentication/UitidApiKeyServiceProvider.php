@@ -22,9 +22,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UitidApiKeyServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['auth.api_key_reader'] = $app->share(
@@ -114,9 +111,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

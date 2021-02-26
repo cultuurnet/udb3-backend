@@ -25,11 +25,7 @@ class UserRolesProjector extends RoleProjector
      */
     private $roleUsersDocumentRepository;
 
-    /**
-     * @param DocumentRepository $userRolesDocumentRepository
-     * @param DocumentRepository $roleDetailsDocumentRepository
-     * @param DocumentRepository $roleUsersDocumentRepository
-     */
+
     public function __construct(
         DocumentRepository $userRolesDocumentRepository,
         DocumentRepository $roleDetailsDocumentRepository,
@@ -40,9 +36,7 @@ class UserRolesProjector extends RoleProjector
         $this->roleUsersDocumentRepository = $roleUsersDocumentRepository;
     }
 
-    /**
-     * @param UserAdded $userAdded
-     */
+
     public function applyUserAdded(UserAdded $userAdded)
     {
         $userId = $userAdded->getUserId()->toNative();
@@ -77,9 +71,7 @@ class UserRolesProjector extends RoleProjector
         $this->repository->save($document);
     }
 
-    /**
-     * @param UserRemoved $userRemoved
-     */
+
     public function applyUserRemoved(UserRemoved $userRemoved)
     {
         $userId = $userRemoved->getUserId()->toNative();
@@ -103,9 +95,7 @@ class UserRolesProjector extends RoleProjector
         $this->repository->save($document);
     }
 
-    /**
-     * @param RoleDetailsProjectedToJSONLD $roleDetailsProjectedToJSONLD
-     */
+
     public function applyRoleDetailsProjectedToJSONLD(RoleDetailsProjectedToJSONLD $roleDetailsProjectedToJSONLD)
     {
         $roleId = $roleDetailsProjectedToJSONLD->getUuid()->toNative();

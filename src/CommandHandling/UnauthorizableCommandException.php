@@ -11,15 +11,10 @@ class UnauthorizableCommandException extends \Exception
      */
     private $userId;
 
-    /**
-     * @var mixed
-     */
+
     private $command;
 
-    /**
-     * @param StringLiteral $userId
-     * @param mixed $command
-     */
+
     public function __construct(StringLiteral $userId, $command)
     {
         parent::__construct('User with id: ' . $userId->toNative() .
@@ -38,9 +33,7 @@ class UnauthorizableCommandException extends \Exception
         return $this->userId;
     }
 
-    /**
-     * @return mixed
-     */
+
     public function getCommand()
     {
         return $this->command;

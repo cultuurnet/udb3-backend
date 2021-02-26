@@ -12,9 +12,7 @@ class JsonDocumentLanguageEnricher implements JsonDocumentMetaDataEnricherInterf
      */
     private $languageAnalyzer;
 
-    /**
-     * @param JsonDocumentLanguageAnalyzerInterface $languageAnalyzer
-     */
+
     public function __construct(
         JsonDocumentLanguageAnalyzerInterface $languageAnalyzer
     ) {

@@ -8,9 +8,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface PermissionVoterInterface
 {
     /**
-     * @param Permission $permission
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return bool
      */
     public function isAllowed(

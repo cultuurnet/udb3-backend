@@ -44,10 +44,7 @@ class EventBusForwardingConsumer extends AbstractConsumer
         );
     }
 
-    /**
-     * @param mixed $deserializedMessage
-     * @param array $context
-     */
+
     protected function handle($deserializedMessage, array $context)
     {
         // If the deserializer did not return a DomainMessage yet, then

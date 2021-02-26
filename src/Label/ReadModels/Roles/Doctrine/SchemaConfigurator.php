@@ -19,7 +19,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
 
     /**
      * SchemaConfigurator constructor.
-     * @param StringLiteral $labelRolesTableName
      */
     public function __construct(StringLiteral $labelRolesTableName)
     {

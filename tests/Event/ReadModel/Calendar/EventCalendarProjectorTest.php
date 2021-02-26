@@ -127,7 +127,6 @@ class EventCalendarProjectorTest extends TestCase
 
     /**
      * @param string $id
-     * @param Calendar $calendar
      */
     private function repositoryExpectsCalendarToBeSaved($id, Calendar $calendar)
     {

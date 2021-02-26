@@ -115,12 +115,12 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $placeJSONLD = json_encode(
             [
-                'name' => "t,arsenaal mechelen",
+                'name' => 't,arsenaal mechelen',
                 'address' => [
-                    'addressCountry' => "BE",
-                    'addressLocality' => "Mechelen",
-                    'postalCode' => "2800",
-                    'streetAddress' => "Hanswijkstraat 63",
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Mechelen',
+                    'postalCode' => '2800',
+                    'streetAddress' => 'Hanswijkstraat 63',
                 ],
             ]
         );
@@ -157,12 +157,12 @@ class RelatedEventLDProjectorTest extends TestCase
         $expectedEventBody = (object)[
             'labels' => ['test 1', 'test 2'],
             'location' => (object)[
-                'name' => "t,arsenaal mechelen",
+                'name' => 't,arsenaal mechelen',
                 'address' => (object)[
-                    'addressCountry' => "BE",
-                    'addressLocality' => "Mechelen",
-                    'postalCode' => "2800",
-                    'streetAddress' => "Hanswijkstraat 63",
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Mechelen',
+                    'postalCode' => '2800',
+                    'streetAddress' => 'Hanswijkstraat 63',
                 ],
             ],
             'modified' => '2018-09-23T17:51:06+00:00',
@@ -175,12 +175,12 @@ class RelatedEventLDProjectorTest extends TestCase
             'languages' => ['nl'],
             'completedLanguages' => ['nl'],
             'location' => (object)[
-                'name' => "t,arsenaal mechelen",
+                'name' => 't,arsenaal mechelen',
                 'address' => (object)[
-                    'addressCountry' => "BE",
-                    'addressLocality' => "Mechelen",
-                    'postalCode' => "2800",
-                    'streetAddress' => "Hanswijkstraat 63",
+                    'addressCountry' => 'BE',
+                    'addressLocality' => 'Mechelen',
+                    'postalCode' => '2800',
+                    'streetAddress' => 'Hanswijkstraat 63',
                 ],
             ],
             'modified' => '2018-09-23T17:51:06+00:00',

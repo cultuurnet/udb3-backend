@@ -13,7 +13,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 class DescriptionJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $data
      * @return Description
      */
     public function deserialize(StringLiteral $data)

@@ -28,10 +28,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
      */
     private $relationRepository;
 
-    /**
-     * @param DocumentRepository $itemRepository
-     * @param ReadRepositoryInterface $relationRepository
-     */
+
     public function __construct(
         DocumentRepository $itemRepository,
         ReadRepositoryInterface $relationRepository
@@ -41,9 +38,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     public function handle(DomainMessage $domainMessage)
     {
         $event = $domainMessage->getPayload();
@@ -55,24 +50,19 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
         }
     }
 
-    /**
-     * @param MadeVisible $madeVisible
-     */
+
     public function applyMadeVisible(MadeVisible $madeVisible)
     {
         $this->updateLabels($madeVisible->getName(), true);
     }
 
-    /**
-     * @param MadeInvisible $madeInvisible
-     */
+
     public function applyMadeInvisible(MadeInvisible $madeInvisible)
     {
         $this->updateLabels($madeInvisible->getName(), false);
     }
 
     /**
-     * @param LabelName $labelName
      * @param bool $madeVisible
      */
     private function updateLabels(LabelName $labelName, $madeVisible)
@@ -105,7 +95,6 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @param LabelName $labelName
      * @return \CultuurNet\UDB3\ReadModel\JsonDocument[]|\Generator
      */
     private function getRelatedItems(LabelName $labelName)
@@ -121,7 +110,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
                 }
             } catch (DocumentGoneException $exception) {
                 $this->logger->alert(
-                    'Can not update visibility of label: "'. $labelRelation->getLabelName() . '"'
+                    'Can not update visibility of label: "' . $labelRelation->getLabelName() . '"'
                     . ' for the relation with id: "' . $labelRelation->getRelationId() . '"'
                     . ' because the document could not be retrieved.'
                 );

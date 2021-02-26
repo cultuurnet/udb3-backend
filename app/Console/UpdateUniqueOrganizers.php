@@ -88,7 +88,7 @@ class UpdateUniqueOrganizers extends Command
 
         $reportFile = fopen('update_unique_organizers_report.txt', 'wb');
         foreach ($messages as $message) {
-            fwrite($reportFile, $message. PHP_EOL);
+            fwrite($reportFile, $message . PHP_EOL);
         }
         fclose($reportFile);
 

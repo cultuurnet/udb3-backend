@@ -207,7 +207,6 @@ class XSDAwareXMLValidationServiceTest extends TestCase
     }
 
     /**
-     * @param array $xmlValidationErrors
      * @return string[]
      */
     private function getErrorMessages(array $xmlValidationErrors)

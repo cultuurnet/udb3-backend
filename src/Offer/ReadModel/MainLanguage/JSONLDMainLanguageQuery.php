@@ -18,10 +18,7 @@ class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
      */
     private $fallbackLanguage;
 
-    /**
-     * @param DocumentRepository $documentRepository
-     * @param Language $fallbackLanguage
-     */
+
     public function __construct(
         DocumentRepository $documentRepository,
         Language $fallbackLanguage

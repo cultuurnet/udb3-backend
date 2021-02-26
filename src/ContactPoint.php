@@ -13,17 +13,17 @@ final class ContactPoint implements Serializable, JsonLdSerializableInterface
     /**
      * @var array
      */
-    protected $phones = [];
+    private $phones = [];
 
     /**
      * @var array
      */
-    protected $emails = [];
+    private $emails = [];
 
     /**
      * @var array
      */
-    protected $urls = [];
+    private $urls = [];
 
     public function __construct(array $phones = [], array $emails = [], array $urls = [])
     {

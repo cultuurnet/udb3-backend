@@ -39,7 +39,7 @@ class ContactPointJSONDeserializerTest extends TestCase
         $phone1 = '{"type":"phone","value":"0123456789"}';
         $phone2 = '{"type":"phone","value":"9876543210"}';
         $email = '{"type":"email","value":"user@company.be"}';
-        $data = new StringLiteral('[' . $phone1 . ', ' . $phone2 . ', ' . $email .']');
+        $data = new StringLiteral('[' . $phone1 . ', ' . $phone2 . ', ' . $email . ']');
 
         $expectedContactPoint = new ContactPoint(
             ['0123456789', '9876543210'],

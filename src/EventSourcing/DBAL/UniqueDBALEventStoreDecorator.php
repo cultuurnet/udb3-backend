@@ -89,7 +89,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     }
 
     /**
-     * @param StringLiteral $tableName
      * @return Table
      */
     private function createUniqueTable(
@@ -115,7 +114,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @throws UniqueConstraintException
      */
     private function processUniqueConstraint(
@@ -150,7 +148,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 
     /**
      * @param string $id
-     * @param StringLiteral $uniqueValue
      * @throws UniqueConstraintException
      */
     private function updateUniqueConstraint(

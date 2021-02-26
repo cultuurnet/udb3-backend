@@ -21,8 +21,6 @@ interface EventEditingServiceInterface
      * Update the title of an event.
      *
      * @param string $id
-     * @param Language $language
-     * @param StringLiteral $title
      */
     public function updateTitle($id, Language $language, StringLiteral $title);
 
@@ -30,8 +28,6 @@ interface EventEditingServiceInterface
      * Update the description of an event.
      *
      * @param string $id
-     * @param Language $language
-     * @param Description $description
      */
     public function updateDescription($id, Language $language, Description $description);
 
@@ -39,7 +35,6 @@ interface EventEditingServiceInterface
      * Update the typical age range of an event.
      *
      * @param string $id
-     * @param AgeRange $ageRange
      */
     public function updateTypicalAgeRange($id, AgeRange $ageRange);
 
@@ -70,7 +65,6 @@ interface EventEditingServiceInterface
      * Update the contact point of an event.
      *
      * @param string $id
-     * @param ContactPoint $contactPoint
      */
     public function updateContactPoint($id, ContactPoint $contactPoint);
 
@@ -78,7 +72,6 @@ interface EventEditingServiceInterface
      * Add an image to the event.
      *
      * @param string $id
-     * @param UUID $imageId
      */
     public function addImage($id, UUID $imageId);
 
@@ -86,9 +79,6 @@ interface EventEditingServiceInterface
      * Update an image of the event.
      *
      * @param string $id
-     * @param Image $image
-     * @param \ValueObjects\StringLiteral\StringLiteral $description
-     * @param \ValueObjects\StringLiteral\StringLiteral $copyrightHolder
      *
      * @return string
      *  The command id for this task.
@@ -104,16 +94,10 @@ interface EventEditingServiceInterface
      * Remove an image from an event.
      *
      * @param string $id
-     * @param Image $image
      */
     public function removeImage($id, Image $image);
 
     /**
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param LocationId $location
-     * @param Calendar $calendar
      * @param Theme|null $theme
      *
      * @return string $eventId
@@ -128,12 +112,6 @@ interface EventEditingServiceInterface
     );
 
     /**
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param LocationId $location
-     * @param Calendar $calendar
-     * @param Theme|null $theme
      * @return string $eventId
      */
     public function createApprovedEvent(
@@ -147,7 +125,6 @@ interface EventEditingServiceInterface
 
     /**
      * @param string $originalEventId
-     * @param Calendar $calendar
      * @return string $eventId
      *
      * @throws \InvalidArgumentException
@@ -156,10 +133,6 @@ interface EventEditingServiceInterface
 
     /**
      * @param string $eventId
-     * @param Title $title
-     * @param EventType $eventType
-     * @param LocationId $location
-     * @param Calendar $calendar
      * @param Theme|null $theme
      *
      * @return string $commandId
@@ -168,7 +141,6 @@ interface EventEditingServiceInterface
 
     /**
      * @param string $eventId
-     * @param LocationId $locationId
      *
      * @return string $commandId
      */
@@ -176,7 +148,6 @@ interface EventEditingServiceInterface
 
     /**
      * @param string $eventId
-     * @param Audience $audience
      * @return string $commandId
      */
     public function updateAudience($eventId, Audience $audience);

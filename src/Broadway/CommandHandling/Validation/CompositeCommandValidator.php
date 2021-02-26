@@ -18,7 +18,6 @@ class CompositeCommandValidator implements CommandValidatorInterface
     }
 
     /**
-     * @param CommandValidatorInterface $commandValidator
      * @return void
      */
     public function register(CommandValidatorInterface $commandValidator)

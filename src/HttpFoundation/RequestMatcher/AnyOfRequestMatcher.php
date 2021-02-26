@@ -18,7 +18,6 @@ class AnyOfRequestMatcher implements RequestMatcherInterface
     }
 
     /**
-     * @param RequestMatcherInterface $requestMatcher
      * @return AnyOfRequestMatcher
      */
     public function with(RequestMatcherInterface $requestMatcher)
@@ -29,7 +28,6 @@ class AnyOfRequestMatcher implements RequestMatcherInterface
     }
 
     /**
-     * @param Request $request
      * @return bool
      */
     public function matches(Request $request)

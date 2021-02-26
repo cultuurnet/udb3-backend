@@ -11,9 +11,7 @@ abstract class SavedSearchCommand
      */
     protected $userId;
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     public function __construct(
         StringLiteral $userId
     ) {

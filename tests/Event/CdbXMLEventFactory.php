@@ -45,7 +45,6 @@ class CdbXMLEventFactory
     /**
      * @param string $fileName
      * @param string $eventClass
-     * @return mixed
      */
     private function eventFromFile($fileName, $eventClass)
     {

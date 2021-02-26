@@ -375,7 +375,6 @@ class UserRolesProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @param string $roleName
      * @return JsonDocument
      */

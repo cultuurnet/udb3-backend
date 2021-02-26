@@ -19,8 +19,6 @@ class CommandAuthorizationException extends \Exception
 
     /**
      * CommandAuthorizationException constructor.
-     * @param StringLiteral $userId
-     * @param AuthorizableCommandInterface $command
      */
     public function __construct(
         StringLiteral $userId,

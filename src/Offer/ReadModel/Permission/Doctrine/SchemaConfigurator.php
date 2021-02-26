@@ -21,10 +21,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
      */
     protected $idField;
 
-    /**
-     * @param StringLiteral $tableName
-     * @param StringLiteral $idField
-     */
+
     public function __construct(StringLiteral $tableName, StringLiteral $idField)
     {
         $this->tableName = $tableName;

@@ -8,9 +8,6 @@ use CultuurNet\UDB3\Model\Import\Offer\LegacyOffer;
 
 interface LegacyEvent extends LegacyOffer
 {
-    /**
-     * @return LocationId
-     */
     public function getLocation(): LocationId;
 
     /**

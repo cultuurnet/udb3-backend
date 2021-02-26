@@ -256,7 +256,6 @@ class EventCdbXmlEnricherTest extends TestCase
     }
 
     /**
-     * @param \DateTimeImmutable $time
      * @return EventCreated
      */
     private function newEventCreated(\DateTimeImmutable $time)
@@ -274,7 +273,6 @@ class EventCdbXmlEnricherTest extends TestCase
     }
 
     /**
-     * @param \DateTimeImmutable $time
      * @return EventUpdated
      */
     private function newEventUpdated(\DateTimeImmutable $time)

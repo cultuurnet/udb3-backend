@@ -34,9 +34,9 @@ class CalendarFactoryTest extends TestCase
         $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
         $cdbCalendar->add(
             new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                "2016-12-16",
-                "21:00:00",
-                "05:00:00"
+                '2016-12-16',
+                '21:00:00',
+                '05:00:00'
             )
         );
 
@@ -118,8 +118,6 @@ class CalendarFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider timestampListDataProvider
-     * @param CultureFeed_Cdb_Data_Calendar_TimestampList $cdbCalendar
-     * @param Calendar $expectedCalendar
      */
     public function it_creates_calendars_with_timestamps_from_a_cdb_timestamp_list(
         CultureFeed_Cdb_Data_Calendar_TimestampList $cdbCalendar,
@@ -139,9 +137,9 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-05-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     return $cdbCalendar;
@@ -175,9 +173,9 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "10:00:00",
-                            "10:00:00"
+                            '2017-05-21',
+                            '10:00:00',
+                            '10:00:00'
                         )
                     );
                     return $cdbCalendar;
@@ -211,9 +209,9 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "10:00:00",
-                            "11:00:00"
+                            '2017-05-21',
+                            '10:00:00',
+                            '11:00:00'
                         )
                     );
                     return $cdbCalendar;
@@ -247,23 +245,23 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-05-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-06-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-06-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-07-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-07-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     return $cdbCalendar;
@@ -317,23 +315,23 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-07-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-07-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-05-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-06-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-06-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     return $cdbCalendar;
@@ -387,16 +385,16 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "10:00:00",
-                            "10:00:00"
+                            '2017-05-21',
+                            '10:00:00',
+                            '10:00:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-06-21",
-                            "10:00:00",
-                            "10:00:00"
+                            '2017-06-21',
+                            '10:00:00',
+                            '10:00:00'
                         )
                     );
                     return $cdbCalendar;
@@ -440,16 +438,16 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "10:00:00",
-                            "11:30:00"
+                            '2017-05-21',
+                            '10:00:00',
+                            '11:30:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-06-21",
-                            "10:00:00",
-                            "11:30:00"
+                            '2017-06-21',
+                            '10:00:00',
+                            '11:30:00'
                         )
                     );
                     return $cdbCalendar;
@@ -493,23 +491,23 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "00:00:00",
-                            "23:59:00"
+                            '2017-05-21',
+                            '00:00:00',
+                            '23:59:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-06-21",
-                            "10:00:00",
-                            "10:00:00"
+                            '2017-06-21',
+                            '10:00:00',
+                            '10:00:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-07-21",
-                            "10:00:00",
-                            "11:30:00"
+                            '2017-07-21',
+                            '10:00:00',
+                            '11:30:00'
                         )
                     );
                     return $cdbCalendar;
@@ -563,23 +561,23 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "10:00:01",
+                            '2017-05-21',
+                            '10:00:01',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-22",
-                            "00:00:01",
+                            '2017-05-22',
+                            '00:00:01',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-23",
-                            "00:00:01",
-                            "16:00:00"
+                            '2017-05-23',
+                            '00:00:01',
+                            '16:00:00'
                         )
                     );
                     return $cdbCalendar;
@@ -613,44 +611,44 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "10:00:01",
+                            '2017-05-21',
+                            '10:00:01',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-22",
-                            "00:00:01",
+                            '2017-05-22',
+                            '00:00:01',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-23",
-                            "00:00:01",
-                            "16:00:00"
+                            '2017-05-23',
+                            '00:00:01',
+                            '16:00:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-24",
-                            "10:00:02",
+                            '2017-05-24',
+                            '10:00:02',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-25",
-                            "00:00:02",
+                            '2017-05-25',
+                            '00:00:02',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-26",
-                            "00:00:02",
-                            "16:00:00"
+                            '2017-05-26',
+                            '00:00:02',
+                            '16:00:00'
                         )
                     );
                     return $cdbCalendar;
@@ -694,37 +692,37 @@ class CalendarFactoryTest extends TestCase
                     $cdbCalendar = new CultureFeed_Cdb_Data_Calendar_TimestampList();
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "10:00:00",
-                            "16:00:00"
+                            '2017-05-21',
+                            '10:00:00',
+                            '16:00:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-21",
-                            "20:00:00",
-                            "01:00:00"
+                            '2017-05-21',
+                            '20:00:00',
+                            '01:00:00'
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-23",
-                            "10:00:01",
+                            '2017-05-23',
+                            '10:00:01',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-24",
-                            "00:00:01",
+                            '2017-05-24',
+                            '00:00:01',
                             null
                         )
                     );
                     $cdbCalendar->add(
                         new CultureFeed_Cdb_Data_Calendar_Timestamp(
-                            "2017-05-25",
-                            "00:00:01",
-                            "16:00:00"
+                            '2017-05-25',
+                            '00:00:01',
+                            '16:00:00'
                         )
                     );
                     return $cdbCalendar;
@@ -851,8 +849,6 @@ class CalendarFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider periodListDataProvider
-     * @param \CultureFeed_Cdb_Data_Calendar_PeriodList $cdbCalendar
-     * @param Calendar $expectedCalendar
      */
     public function it_creates_a_periodic_calendar_from_cdb_calendar_with_period_list(
         \CultureFeed_Cdb_Data_Calendar_PeriodList $cdbCalendar,
@@ -984,8 +980,6 @@ class CalendarFactoryTest extends TestCase
     /**
      * @test
      * @dataProvider permanentCalendarDataProvider
-     * @param \CultureFeed_Cdb_Data_Calendar_Permanent $cdbCalendar
-     * @param Calendar $expectedCalendar
      */
     public function it_creates_a_permanent_calendar_from_cdb_calendar(
         \CultureFeed_Cdb_Data_Calendar_Permanent $cdbCalendar,

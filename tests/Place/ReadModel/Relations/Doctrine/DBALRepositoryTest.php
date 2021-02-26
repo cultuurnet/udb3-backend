@@ -80,7 +80,6 @@ class DBALRepositoryTest extends TestCase
     }
 
     /**
-     * @param RepositoryInterface $repository
      * @return array
      */
     private function seedPlaceRelations(RepositoryInterface $repository)
@@ -104,7 +103,6 @@ class DBALRepositoryTest extends TestCase
     }
 
     /**
-     * @param Connection $connection
      * @return array
      */
     private function getAll(Connection $connection)

@@ -86,7 +86,6 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     /**
      * Dispatches the command $command to a queue.
      *
-     * @param mixed $command
      * @return string the command id
      *
      * @throws CommandAuthorizationException
@@ -115,7 +114,6 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
      * Really dispatches the command to the proper handler to be executed.
      *
      * @param string $jobId
-     * @param mixed $command
      *
      * @throws \Exception
      */

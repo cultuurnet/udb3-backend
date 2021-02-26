@@ -26,10 +26,7 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
      */
     protected $createdByQueryMode;
 
-    /**
-     * @param \CultureFeed_User $user
-     * @param CreatedByQueryMode $createdByQueryMode
-     */
+
     public function __construct(
         \CultureFeed_User $user,
         CreatedByQueryMode $createdByQueryMode

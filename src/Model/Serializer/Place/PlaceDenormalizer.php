@@ -143,8 +143,6 @@ class PlaceDenormalizer extends OfferDenormalizer
     }
 
     /**
-     * @param array $data
-     * @param ImmutablePlace $place
      * @return ImmutablePlace
      */
     private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place)

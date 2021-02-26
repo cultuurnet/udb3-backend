@@ -101,9 +101,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpReadModels(Application $app)
     {
         $app[self::JSON_READ_REPOSITORY] = $app->share(
@@ -168,9 +166,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpServices(Application $app)
     {
         $app['labels.constraint_aware_service'] = $app->share(
@@ -200,9 +196,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpEventStore(Application $app)
     {
         $app[self::UNIQUE_EVENT_STORE] = $app->share(
@@ -221,9 +215,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpCommandHandler(Application $app)
     {
         $app[self::REPOSITORY] = $app->share(
@@ -245,9 +237,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpProjectors(Application $app)
     {
         $app[self::JSON_PROJECTOR] = $app->share(
@@ -331,9 +321,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpLogger(Application $app)
     {
         $app[self::LOGGER] = $app->share(

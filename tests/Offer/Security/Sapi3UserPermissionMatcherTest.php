@@ -56,8 +56,6 @@ class Sapi3UserPermissionMatcherTest extends TestCase
     /**
      * @test
      * @dataProvider totalItemsDataProvider()
-     * @param int $totalItems
-     * @param bool $expected
      */
     public function it_does_match_offer_based_on_total_items_count_of_one(
         int $totalItems,
@@ -106,9 +104,7 @@ class Sapi3UserPermissionMatcherTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
+
     public function totalItemsDataProvider(): array
     {
         return [

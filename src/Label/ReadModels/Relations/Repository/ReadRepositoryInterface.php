@@ -8,13 +8,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface ReadRepositoryInterface
 {
     /**
-     * @param LabelName $labelName
      * @return \Generator|LabelRelation[]
      */
     public function getLabelRelations(LabelName $labelName);
 
     /**
-     * @param StringLiteral $relationId
      * @return LabelRelation[]
      */
     public function getLabelRelationsForItem(StringLiteral $relationId);

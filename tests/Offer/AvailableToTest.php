@@ -14,8 +14,6 @@ class AvailableToTest extends TestCase
     /**
      * @test
      * @dataProvider calendarsDateProvider
-     * @param Calendar $calendar
-     * @param \DateTimeInterface $expectedAvailableTo
      */
     public function it_creates_available_to_from_calendars(
         Calendar $calendar,

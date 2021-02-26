@@ -19,7 +19,6 @@ class ReadOrganizerRestController
 
     /**
      * OrganizerController constructor.
-     * @param EntityServiceInterface           $service
      */
     public function __construct(
         EntityServiceInterface $service

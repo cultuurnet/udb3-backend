@@ -13,22 +13,22 @@ final class Address implements Serializable, JsonLdSerializableInterface
     /**
      * @var string
      */
-    protected $countryCode;
+    private $countryCode;
 
     /**
      * @var Locality
      */
-    protected $locality;
+    private $locality;
 
     /**
      * @var PostalCode
      */
-    protected $postalCode;
+    private $postalCode;
 
     /**
      * @var Street
      */
-    protected $streetAddress;
+    private $streetAddress;
 
     public function __construct(
         Street $streetAddress,

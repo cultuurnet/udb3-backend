@@ -17,10 +17,7 @@ class AddLabelToMultiple
      */
     protected $label;
 
-    /**
-     * @param OfferIdentifierCollection $offerIdentifiers
-     * @param Label $label
-     */
+
     public function __construct(OfferIdentifierCollection $offerIdentifiers, Label $label)
     {
         $this->offerIdentifiers = $offerIdentifiers;

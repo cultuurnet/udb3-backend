@@ -30,7 +30,6 @@ class CreatePlaceJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return CreatePlace
      * @throws DataValidationException
      */

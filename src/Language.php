@@ -41,7 +41,6 @@ class Language
     }
 
     /**
-     * @param Udb3ModelLanguage $language
      * @return self
      */
     public static function fromUdb3ModelLanguage(Udb3ModelLanguage $language)

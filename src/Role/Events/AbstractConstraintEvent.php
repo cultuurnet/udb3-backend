@@ -20,9 +20,6 @@ abstract class AbstractConstraintEvent extends AbstractEvent
 
     /**
      * AbstractPermissionEvent constructor.
-     * @param UUID $uuid
-     * @param SapiVersion $sapiVersion
-     * @param Query $query
      */
     final public function __construct(
         UUID $uuid,

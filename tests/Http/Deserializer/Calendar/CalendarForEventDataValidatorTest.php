@@ -57,7 +57,7 @@ class CalendarForEventDataValidatorTest extends TestCase
 
         try {
             $this->calendarForEventDataValidator->validate($data);
-            $this->fail("No DataValidationException was thrown.");
+            $this->fail('No DataValidationException was thrown.');
         } catch (DataValidationException $exception) {
             $this->assertEquals(
                 $expectedException->getValidationMessages(),

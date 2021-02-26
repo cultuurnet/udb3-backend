@@ -103,7 +103,6 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate OpeningHoursDenormalizer
-     * @param array $openingHoursData
      * @return OpeningHours
      */
     private function denormalizeOpeningHours(array $openingHoursData)
@@ -114,7 +113,6 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate OpeningHourDenormalizer
-     * @param array $openingHourData
      * @return OpeningHour
      */
     private function denormalizeOpeningHour(array $openingHourData)
@@ -127,7 +125,6 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate DaysDenormalizer
-     * @param array $daysData
      * @return Days
      */
     private function denormalizeDays(array $daysData)

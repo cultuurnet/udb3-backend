@@ -47,11 +47,6 @@ class ImportRestController
     private $idProperty;
 
     /**
-     * @param ApiKeyReaderInterface $apiKeyReader
-     * @param ConsumerReadRepositoryInterface $consumerReadRepository
-     * @param DocumentImporterInterface $documentImporter
-     * @param UuidGeneratorInterface $uuidGenerator
-     * @param IriGeneratorInterface $iriGenerator
      * @param string $idProperty
      */
     public function __construct(
@@ -71,7 +66,6 @@ class ImportRestController
     }
 
     /**
-     * @param Request $request
      * @param string $cdbid
      * @return Response
      */
@@ -102,7 +96,6 @@ class ImportRestController
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function importWithoutId(Request $request)

@@ -17,9 +17,7 @@ class Version20160607132920 extends AbstractMigration
     public const UUID_COLUMN = 'uuid_col';
     public const UNIQUE_COLUMN = 'unique_col';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $this->createLabelStore($schema);
@@ -27,9 +25,7 @@ class Version20160607132920 extends AbstractMigration
         $this->createUniqueLabelStore($schema);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::LABELS_TABLE);
@@ -37,9 +33,7 @@ class Version20160607132920 extends AbstractMigration
         $schema->dropTable(self::LABELS_UNIQUE_TABLE);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createLabelStore(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_TABLE);
@@ -56,9 +50,7 @@ class Version20160607132920 extends AbstractMigration
         $table->addUniqueIndex(['uuid', 'playhead']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createUniqueLabelStore(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_UNIQUE_TABLE);

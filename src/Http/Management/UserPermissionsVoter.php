@@ -19,7 +19,6 @@ class UserPermissionsVoter implements VoterInterface
 
     /**
      * PermissionVoter constructor.
-     * @param UserPermissionsReadRepositoryInterface $permissionsRepository
      */
     public function __construct(UserPermissionsReadRepositoryInterface $permissionsRepository)
     {

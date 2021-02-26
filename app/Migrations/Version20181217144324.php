@@ -18,9 +18,7 @@ class Version20181217144324 extends AbstractMigration
         'variations',
     ];
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {
@@ -28,9 +26,7 @@ class Version20181217144324 extends AbstractMigration
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {

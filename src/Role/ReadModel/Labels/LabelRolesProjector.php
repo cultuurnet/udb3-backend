@@ -13,9 +13,6 @@ use ValueObjects\Identity\UUID;
 
 class LabelRolesProjector extends RoleProjector
 {
-    /**
-     * @param LabelAdded $labelAdded
-     */
     public function applyLabelAdded(LabelAdded $labelAdded)
     {
         $document = $this->getDocument($labelAdded->getLabelId());
@@ -28,9 +25,7 @@ class LabelRolesProjector extends RoleProjector
         }
     }
 
-    /**
-     * @param LabelRemoved $labelRemoved
-     */
+
     public function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
         $document = $this->getDocument($labelRemoved->getLabelId());
@@ -43,9 +38,7 @@ class LabelRolesProjector extends RoleProjector
         }
     }
 
-    /**
-     * @param LabelCreated $labelCreated
-     */
+
     public function applyCreated(LabelCreated $labelCreated)
     {
         $document = $this->createNewDocument($labelCreated->getUuid());
@@ -53,7 +46,6 @@ class LabelRolesProjector extends RoleProjector
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument|null
      */
     private function getDocument(UUID $uuid)
@@ -69,7 +61,6 @@ class LabelRolesProjector extends RoleProjector
     }
 
     /**
-     * @param JsonDocument $document
      * @return Entity[]
      */
     private function getRoleDetails(JsonDocument $document)
@@ -78,7 +69,6 @@ class LabelRolesProjector extends RoleProjector
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument
      */
     private function createNewDocument(UUID $uuid)

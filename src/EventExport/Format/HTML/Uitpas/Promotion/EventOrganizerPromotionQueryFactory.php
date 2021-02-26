@@ -14,9 +14,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
      */
     private $clock;
 
-    /**
-     * @param Clock $clock
-     */
+
     public function __construct(Clock $clock)
     {
         $this->clock = $clock;
@@ -49,7 +47,6 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
     }
 
     /**
-     * @param CultureFeed_Uitpas_Calendar $uitpasCalendar
      * @return CultureFeed_Uitpas_Calendar_Period
      */
     private function getDateRangeFromUitpasCalendar(CultureFeed_Uitpas_Calendar $uitpasCalendar)

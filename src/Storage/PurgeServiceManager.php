@@ -28,9 +28,7 @@ class PurgeServiceManager
         $this->writeModelPurgeServices = [];
     }
 
-    /**
-     * @param PurgeServiceInterface $purgeService
-     */
+
     public function addReadModelPurgeService(PurgeServiceInterface $purgeService)
     {
         $this->readModelPurgeServices[] = $purgeService;
@@ -44,9 +42,7 @@ class PurgeServiceManager
         return $this->readModelPurgeServices;
     }
 
-    /**
-     * @param PurgeServiceInterface $purgeService
-     */
+
     public function addWriteModelPurgeService(PurgeServiceInterface $purgeService)
     {
         $this->writeModelPurgeServices[] = $purgeService;

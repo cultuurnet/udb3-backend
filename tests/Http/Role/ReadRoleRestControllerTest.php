@@ -262,7 +262,7 @@ class ReadRoleRestControllerTest extends TestCase
         $request = new Request();
         $results = new Results('10', [], 0);
         $expectedResults = json_encode((object) [
-            'itemsPerPage' => "10",
+            'itemsPerPage' => '10',
             'member' => [],
             'totalItems' => 0,
         ]);
@@ -288,14 +288,14 @@ class ReadRoleRestControllerTest extends TestCase
         $responseJson = $response->getContent();
 
         $expectedResponseJson = json_encode([
-            "AANBOD_BEWERKEN",
-            "AANBOD_MODEREREN",
-            "AANBOD_VERWIJDEREN",
-            "ORGANISATIES_BEHEREN",
-            "ORGANISATIES_BEWERKEN",
-            "GEBRUIKERS_BEHEREN",
-            "LABELS_BEHEREN",
-            "MEDIA_UPLOADEN",
+            'AANBOD_BEWERKEN',
+            'AANBOD_MODEREREN',
+            'AANBOD_VERWIJDEREN',
+            'ORGANISATIES_BEHEREN',
+            'ORGANISATIES_BEWERKEN',
+            'GEBRUIKERS_BEHEREN',
+            'LABELS_BEHEREN',
+            'MEDIA_UPLOADEN',
             'VOORZIENINGEN_BEWERKEN',
             'PRODUCTIES_AANMAKEN',
         ]);
@@ -324,7 +324,7 @@ class ReadRoleRestControllerTest extends TestCase
         $responseJson = $response->getContent();
 
         $expectedResponseJson = json_encode([
-            "AANBOD_MODEREREN",
+            'AANBOD_MODEREREN',
         ]);
 
         $this->jsonEquals->assert($expectedResponseJson, $responseJson);

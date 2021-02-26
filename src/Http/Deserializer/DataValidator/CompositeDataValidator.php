@@ -35,7 +35,6 @@ class CompositeDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param DataValidatorInterface $validator
      * @param string[] $depth
      * @return CompositeDataValidator
      */
@@ -50,7 +49,6 @@ class CompositeDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)
@@ -86,7 +84,6 @@ class CompositeDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @param array $depth
      * @return array|null
      */

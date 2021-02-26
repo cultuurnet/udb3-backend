@@ -50,7 +50,6 @@ class ProjectorTest extends TestCase
      * @dataProvider cdbXmlDataProvider
      *
      * @param string $aggregateId
-     * @param mixed $event
      * @param string $expectedEventId
      * @param string $expectedPlaceId
      * @param string $expectedOrganizerId

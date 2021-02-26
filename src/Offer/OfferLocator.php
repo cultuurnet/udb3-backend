@@ -17,7 +17,6 @@ class OfferLocator implements EventStreamDecorator
 
     /**
      * OfferLocator constructor.
-     * @param IriGeneratorInterface $iriGenerator
      */
     public function __construct(IriGeneratorInterface $iriGenerator)
     {

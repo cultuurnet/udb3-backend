@@ -74,8 +74,6 @@ class AudienceTest extends TestCase
     /**
      * @test
      * @dataProvider audienceDataProvider
-     * @param Audience $audience
-     * @param Audience $otherAudience
      * @param bool $equal
      */
     public function it_can_check_for_equality(

@@ -28,11 +28,7 @@ class OfferPermissionController
      */
     private $currentUserId;
 
-    /**
-     * @param Permission $permission
-     * @param PermissionVoterInterface $permissionVoter
-     * @param StringLiteral|null $currentUserId
-     */
+
     public function __construct(
         Permission $permission,
         PermissionVoterInterface $permissionVoter,

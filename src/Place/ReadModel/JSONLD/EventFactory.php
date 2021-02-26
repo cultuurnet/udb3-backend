@@ -13,9 +13,7 @@ class EventFactory implements DocumentEventFactory
      */
     private $iriGenerator;
 
-    /**
-     * @param IriGeneratorInterface $iriGenerator
-     */
+
     public function __construct(IriGeneratorInterface $iriGenerator)
     {
         $this->iriGenerator = $iriGenerator;

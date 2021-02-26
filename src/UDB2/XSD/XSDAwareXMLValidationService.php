@@ -18,7 +18,6 @@ class XSDAwareXMLValidationService implements XMLValidationServiceInterface
     private $minimumReportLevel;
 
     /**
-     * @param XSDReaderInterface $xsdReader
      *
      * @param int $minimumReportLevel
      *   One of LIBXML_ERR_WARNING, LIBXML_ERR_ERROR, LIBXML_ERR_FATAL

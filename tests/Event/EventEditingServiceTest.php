@@ -533,9 +533,7 @@ class EventEditingServiceTest extends TestCase
         $this->assertEquals($expectedCommandId, $commandId);
     }
 
-    /**
-     * @param mixed $id
-     */
+
     private function setUpEventNotFound($id)
     {
         $this->readRepository->expects($this->once())

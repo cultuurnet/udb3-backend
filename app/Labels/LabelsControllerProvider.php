@@ -24,9 +24,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
         return $this->setControllerPaths($app['controllers_factory']);
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpReadRestController(Application $app)
     {
         $app[self::READ_REST_CONTROLLER] = $app->share(
@@ -39,9 +37,7 @@ class LabelsControllerProvider implements ControllerProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpEditRestController(Application $app)
     {
         $app[self::EDIT_REST_CONTROLLER] = $app->share(
@@ -54,7 +50,6 @@ class LabelsControllerProvider implements ControllerProviderInterface
     }
 
     /**
-     * @param ControllerCollection $controllers
      * @return ControllerCollection
      */
     private function setControllerPaths(ControllerCollection $controllers)

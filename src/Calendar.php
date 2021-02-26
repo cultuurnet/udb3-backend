@@ -22,37 +22,34 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     /**
      * @var CalendarType
      */
-    protected $type;
+    private $type;
 
     /**
      * @var DateTimeInterface
      */
-    protected $startDate;
+    private $startDate;
 
     /**
      * @var DateTimeInterface
      */
-    protected $endDate;
+    private $endDate;
 
     /**
      * @var Timestamp[]
      */
-    protected $timestamps = [];
+    private $timestamps = [];
 
     /**
      * @var OpeningHour[]
      */
-    protected $openingHours = [];
+    private $openingHours = [];
 
     /**
      * @var Status
      */
-    protected $status;
+    private $status;
 
     /**
-     * @param CalendarType $type
-     * @param DateTimeInterface|null $startDate
-     * @param DateTimeInterface|null $endDate
      * @param Timestamp[] $timestamps
      * @param OpeningHour[] $openingHours
      */

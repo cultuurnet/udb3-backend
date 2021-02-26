@@ -20,13 +20,6 @@ use Respect\Validation\Rules\Key;
 
 class EventImportValidator extends EventValidator
 {
-    /**
-     * @param DocumentRepository $placeRepository
-     * @param UUIDParser $uuidParser
-     * @param UserIdentificationInterface $userIdentification
-     * @param LabelsRepository $labelsRepository
-     * @param LabelRelationsRepository $labelRelationsRepository
-     */
     public function __construct(
         DocumentRepository $placeRepository,
         UUIDParser $uuidParser,

@@ -8,8 +8,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface SearchQueryFactoryInterface
 {
     /**
-     * @param StringLiteral $constraint
-     * @param StringLiteral $offerId
      * @return Query
      */
     public function createFromConstraint(
@@ -19,7 +17,6 @@ interface SearchQueryFactoryInterface
 
     /**
      * @param StringLiteral[] $constraints
-     * @param StringLiteral $offerId
      * @return Query
      */
     public function createFromConstraints(

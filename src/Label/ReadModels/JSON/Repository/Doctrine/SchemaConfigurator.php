@@ -22,9 +22,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
      */
     private $tableName;
 
-    /**
-     * @param StringLiteral $tableName
-     */
+
     public function __construct(StringLiteral $tableName)
     {
         $this->tableName = $tableName;
@@ -45,8 +43,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     }
 
     /**
-     * @param Schema $schema
-     * @param StringLiteral $tableName
      * @return \Doctrine\DBAL\Schema\Table
      */
     private function createTable(Schema $schema, StringLiteral $tableName)

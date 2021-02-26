@@ -21,7 +21,6 @@ class EditRestController
 
     /**
      * EditRestController constructor.
-     * @param WriteServiceInterface $writeService
      */
     public function __construct(WriteServiceInterface $writeService)
     {
@@ -29,7 +28,6 @@ class EditRestController
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function create(Request $request)

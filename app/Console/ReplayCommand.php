@@ -190,9 +190,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param DomainEventStream $eventStream
-     * @param OutputInterface $output
-     * @param EventStream $stream
      * @param string $marker
      */
     private function logStream(
@@ -208,9 +205,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param OutputInterface $output
-     * @param EventStream $stream
-     * @param DomainMessage $message
      * @param string $marker
      */
     private function logMessage(
@@ -289,8 +283,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return AggregateType|null
      */
     private function getAggregateType(
@@ -309,7 +301,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param InputInterface $input
      * @return bool
      */
     private function isPublishDisabled(InputInterface $input)

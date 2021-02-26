@@ -42,9 +42,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
 {
     use LoggerAwareTrait;
 
-    /**
-     * @param CreateEvent $command
-     */
+
     protected function handleCreateEvent(CreateEvent $command)
     {
         $event = Event::create(
@@ -63,7 +61,6 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
 
     /**
      * Handle an update the major info command.
-     * @param UpdateMajorInfo $updateMajorInfo
      */
     public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo)
     {
@@ -81,9 +78,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
         $this->offerRepository->save($event);
     }
 
-    /**
-     * @param UpdateLocation $updateLocation
-     */
+
     public function handleUpdateLocation(UpdateLocation $updateLocation)
     {
         /** @var Event $event */
@@ -94,9 +89,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
         $this->offerRepository->save($event);
     }
 
-    /**
-     * @param UpdateAudience $updateAudience
-     */
+
     public function handleUpdateAudience(UpdateAudience $updateAudience)
     {
         /** @var Event $event */

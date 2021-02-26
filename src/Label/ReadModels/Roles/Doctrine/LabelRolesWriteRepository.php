@@ -21,8 +21,6 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
 
     /**
      * LabelRolesWriteRepository constructor.
-     * @param Connection $connection
-     * @param StringLiteral $labelRolesTableName
      */
     public function __construct(
         Connection $connection,
@@ -32,10 +30,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         $this->labelRolesTableName = $labelRolesTableName;
     }
 
-    /**
-     * @param UUID $labelId
-     * @param UUID $roleId
-     */
+
     public function insertLabelRole(UUID $labelId, UUID $roleId)
     {
         $this->connection->insert(
@@ -47,10 +42,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         );
     }
 
-    /**
-     * @param UUID $labelId
-     * @param UUID $roleId
-     */
+
     public function removeLabelRole(UUID $labelId, UUID $roleId)
     {
         $this->connection->delete(
@@ -62,9 +54,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         );
     }
 
-    /**
-     * @param UUID $roleId
-     */
+
     public function removeRole(UUID $roleId)
     {
         $this->connection->delete(

@@ -23,7 +23,6 @@ class AddressJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return Address
      * @throws DataValidationException
      */

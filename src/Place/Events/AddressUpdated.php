@@ -23,9 +23,7 @@ final class AddressUpdated extends PlaceEvent
         return $this->address;
     }
 
-    /**
-     * @return array
-     */
+
     public function serialize(): array
     {
         return parent::serialize() + [

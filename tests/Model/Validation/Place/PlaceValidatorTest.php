@@ -3190,10 +3190,7 @@ class PlaceValidatorTest extends TestCase
         $this->assertTrue($this->validator->validate($place));
     }
 
-    /**
-     * @param mixed $data
-     * @param array $expectedMessages
-     */
+
     private function assertValidationErrors($data, array $expectedMessages)
     {
         try {

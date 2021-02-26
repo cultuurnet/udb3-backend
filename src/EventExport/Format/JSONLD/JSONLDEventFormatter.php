@@ -64,7 +64,7 @@ class JSONLDEventFormatter
         );
         $terms = array_map(
             function ($term) use ($termPrefix) {
-                return str_replace($termPrefix, "", $term);
+                return str_replace($termPrefix, '', $term);
             },
             $prefixedTerms
         );

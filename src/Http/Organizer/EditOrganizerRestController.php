@@ -35,8 +35,6 @@ class EditOrganizerRestController
 
     /**
      * EditOrganizerRestController constructor.
-     * @param OrganizerEditingServiceInterface $organizerEditingService
-     * @param IriGeneratorInterface            $organizerIriGenerator
      */
     public function __construct(
         OrganizerEditingServiceInterface $organizerEditingService,

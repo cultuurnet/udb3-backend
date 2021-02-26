@@ -12,7 +12,7 @@ class AgeTest extends TestCase
     public function it_should_never_be_lower_than_zero()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("Given integer should be greater or equal to zero. Got -1 instead.");
+        $this->expectExceptionMessage('Given integer should be greater or equal to zero. Got -1 instead.');
 
         new Age(-1);
     }

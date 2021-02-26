@@ -12,7 +12,6 @@ abstract class AbstractPublish extends AbstractModerationCommand
     /**
      * AbstractPublish constructor.
      * @param string $itemId
-     * @param \DateTimeInterface|null $publicationDate
      */
     public function __construct($itemId, \DateTimeInterface $publicationDate = null)
     {

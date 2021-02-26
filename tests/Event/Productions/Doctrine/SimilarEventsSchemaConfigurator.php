@@ -11,7 +11,6 @@ class SimilarEventsSchemaConfigurator
     private const TABLE = 'similar_events';
 
     /**
-     * @param Schema $schema
      * @return Table
      */
     public static function getTableDefinition(Schema $schema)

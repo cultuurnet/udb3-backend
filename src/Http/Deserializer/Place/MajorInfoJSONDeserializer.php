@@ -57,7 +57,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return MajorInfo
      * @throws DataValidationException
      */

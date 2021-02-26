@@ -10,7 +10,6 @@ use Doctrine\DBAL\Types\Type;
 class ProductionSchemaConfigurator
 {
     /**
-     * @param Schema $schema
      * @return Table
      */
     public static function getTableDefinition(Schema $schema)

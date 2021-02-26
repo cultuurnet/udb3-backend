@@ -50,13 +50,6 @@ final class PlaceCreated extends PlaceEvent
 
     /**
      * @param string $placeId
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     * @param DateTimeImmutable|null $publicationDate
      */
     public function __construct(
         $placeId,

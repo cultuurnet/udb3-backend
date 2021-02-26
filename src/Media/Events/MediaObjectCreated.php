@@ -14,32 +14,32 @@ final class MediaObjectCreated implements Serializable
     /**
      * @var UUID
      */
-    protected $mediaObjectId;
+    private $mediaObjectId;
 
     /**
      * @var MIMEType
      */
-    protected $mimeType;
+    private $mimeType;
 
     /**
      * @var StringLiteral
      */
-    protected $description;
+    private $description;
 
     /**
      * @var StringLiteral
      */
-    protected $copyrightHolder;
+    private $copyrightHolder;
 
     /**
      * @var Url
      */
-    protected $sourceLocation;
+    private $sourceLocation;
 
     /**
      * @var Language
      */
-    protected $language;
+    private $language;
 
     public function __construct(
         UUID $id,

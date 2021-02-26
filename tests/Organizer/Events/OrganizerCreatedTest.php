@@ -16,7 +16,6 @@ class OrganizerCreatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param OrganizerCreated $organizerCreated
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -32,7 +31,6 @@ class OrganizerCreatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param OrganizerCreated $expectedOrganizerCreated
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

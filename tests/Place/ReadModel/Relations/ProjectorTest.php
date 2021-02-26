@@ -145,7 +145,6 @@ class ProjectorTest extends TestCase
 
     /**
      * @param string $placeId
-     * @param mixed $payload
      * @return DomainMessage
      */
     private function createDomainMessage($placeId, $payload)

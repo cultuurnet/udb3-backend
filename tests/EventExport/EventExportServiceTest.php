@@ -157,9 +157,7 @@ class EventExportServiceTest extends TestCase
             );
     }
 
-    /**
-     * @param array $unavailableEventIds
-     */
+
     private function setUpEventService(array $unavailableEventIds = [])
     {
         $this->eventService->expects($this->any())
@@ -554,18 +552,18 @@ class EventExportServiceTest extends TestCase
     {
         return [
             [
-                "fileFormat" => $this->getFileFormat('txt'),
-                "query" => new EventExportQuery('city:Leuven'),
-                "selection" => [
+                'fileFormat' => $this->getFileFormat('txt'),
+                'query' => new EventExportQuery('city:Leuven'),
+                'selection' => [
                     'http://example.com/event/4',
                     'http://example.com/event/7',
                     'http://example.com/event/16',
                 ],
             ],
             [
-                "fileFormat" => $this->getFileFormat('txt'),
-                "query" => new EventExportQuery('city:Leuven'),
-                "selection" => null,
+                'fileFormat' => $this->getFileFormat('txt'),
+                'query' => new EventExportQuery('city:Leuven'),
+                'selection' => null,
             ],
         ];
     }

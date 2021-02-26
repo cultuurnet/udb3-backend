@@ -29,7 +29,6 @@ class CommandDeserializerController
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function handle(Request $request)

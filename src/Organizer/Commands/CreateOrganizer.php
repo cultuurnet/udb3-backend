@@ -25,9 +25,6 @@ class CreateOrganizer extends AbstractOrganizerCommand
 
     /**
      * @param string $id
-     * @param Language $mainLanguage
-     * @param Url $website
-     * @param Title $title
      */
     public function __construct(
         $id,

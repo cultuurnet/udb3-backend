@@ -39,8 +39,6 @@ class FilterPathMethodProxy extends Proxy
     }
 
     /**
-     * @param FilterPathRegex $path
-     * @param StringLiteral $method
      * @return FilterInterface
      */
     private function createFilter(FilterPathRegex $path, StringLiteral $method)
@@ -61,8 +59,6 @@ class FilterPathMethodProxy extends Proxy
     }
 
     /**
-     * @param Domain $domain
-     * @param PortNumber $port
      * @return CombinedReplacer
      */
     private function createTransformer(

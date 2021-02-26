@@ -652,7 +652,6 @@ class ProjectorTest extends TestCase
     }
 
     /**
-     * @param Permission $permission
      * @return JsonDocument
      */
     private function documentWithPermission(Permission $permission)
@@ -669,11 +668,7 @@ class ProjectorTest extends TestCase
         return $document;
     }
 
-    /**
-     * @param SapiVersion $sapiVersion
-     * @param Query|null $query
-     * @return JsonDocument
-     */
+
     private function documentWithConstraint(SapiVersion $sapiVersion, ?Query $query): JsonDocument
     {
         $document = new JsonDocument($this->uuid->toNative());
@@ -691,21 +686,13 @@ class ProjectorTest extends TestCase
         return $document;
     }
 
-    /**
-     * @param SapiVersion $sapiVersion
-     * @return JsonDocument
-     */
+
     private function documentWithEmptyConstraint(SapiVersion $sapiVersion): JsonDocument
     {
         return $this->documentWithConstraint($sapiVersion, null);
     }
 
-    /**
-     * @param JsonDocument $document
-     * @param SapiVersion $sapiVersion
-     * @param Query $query
-     * @return JsonDocument
-     */
+
     private function documentWithExtraConstraint(
         JsonDocument $document,
         SapiVersion $sapiVersion,

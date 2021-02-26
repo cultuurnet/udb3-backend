@@ -27,12 +27,7 @@ class MediaObject
      */
     private $thumbnailUrl;
 
-    /**
-     * @param UUID $id
-     * @param MediaObjectType $type
-     * @param Url $contentUrl
-     * @param Url $thumbnailUrl
-     */
+
     public function __construct(
         UUID $id,
         MediaObjectType $type,

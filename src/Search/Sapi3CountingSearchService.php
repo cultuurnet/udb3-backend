@@ -29,11 +29,7 @@ class Sapi3CountingSearchService implements CountingSearchServiceInterface
      */
     private $queryParameters;
 
-    /**
-     * @param UriInterface $searchLocation
-     * @param HttpClient $httpClient
-     * @param string|null $apiKey
-     */
+
     public function __construct(
         UriInterface $searchLocation,
         HttpClient $httpClient,

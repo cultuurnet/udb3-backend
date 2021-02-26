@@ -13,7 +13,6 @@ class TypicalAgeRangeUpdatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param TypicalAgeRangeUpdated $typicalAgeRangeUpdated
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -29,7 +28,6 @@ class TypicalAgeRangeUpdatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param TypicalAgeRangeUpdated $expectedTypicalAgeRangeUpdated
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

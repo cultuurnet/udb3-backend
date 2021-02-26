@@ -20,7 +20,6 @@ abstract class CommandBusDecoratorBase implements CommandBus
     /**
      * Dispatches the command $command to the proper CommandHandler
      *
-     * @param mixed $command
      */
     public function dispatch($command)
     {

@@ -27,7 +27,6 @@ class Title extends TrimmedString implements \JsonSerializable
     }
 
     /**
-     * @param Udb3ModelTitle $title
      * @return Title
      */
     public static function fromUdb3ModelTitle(Udb3ModelTitle $title)

@@ -19,12 +19,6 @@ class CdbXmlProxy extends Proxy
 {
     /**
      * CdbXmlProxy constructor.
-     * @param StringLiteral $accept
-     * @param Domain $domain
-     * @param PortNumber $port
-     * @param DiactorosFactory $diactorosFactory
-     * @param HttpFoundationFactory $httpFoundationFactory
-     * @param ClientInterface $client
      */
     public function __construct(
         StringLiteral $accept,
@@ -48,7 +42,6 @@ class CdbXmlProxy extends Proxy
     }
 
     /**
-     * @param StringLiteral $accept
      * @return AndFilter
      */
     private function createFilter(StringLiteral $accept)
@@ -60,8 +53,6 @@ class CdbXmlProxy extends Proxy
     }
 
     /**
-     * @param Domain $domain
-     * @param PortNumber $port
      * @return CombinedReplacer
      */
     private function createTransformer(

@@ -42,13 +42,7 @@ class RelatedEventLDProjector implements EventListener
      */
     protected $iriOfferIdentifierFactory;
 
-    /**
-     * @param DocumentRepository $repository
-     * @param EventServiceInterface $eventService
-     * @param PlaceService $placeService
-     * @param OrganizerService $organizerService
-     * @param IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
-     */
+
     public function __construct(
         DocumentRepository $repository,
         EventServiceInterface $eventService,

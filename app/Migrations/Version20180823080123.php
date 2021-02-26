@@ -7,9 +7,6 @@ use Doctrine\DBAL\Schema\Schema;
 
 class Version20180823080123 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->createTable('my_organizers');
@@ -40,9 +37,7 @@ class Version20180823080123 extends AbstractMigration
         $table->addIndex(['uid']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('my_organizers');

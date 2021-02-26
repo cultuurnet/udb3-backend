@@ -7,8 +7,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface PermissionRepositoryInterface
 {
     /**
-     * @param StringLiteral $offerId
-     * @param StringLiteral $uitId
      * @return void
      */
     public function markOfferEditableByUser(

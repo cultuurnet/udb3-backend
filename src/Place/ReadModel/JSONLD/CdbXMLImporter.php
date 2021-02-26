@@ -32,11 +32,7 @@ class CdbXMLImporter
      */
     private $cdbXmlContactInfoImporter;
 
-    /**
-     * @param CdbXMLItemBaseImporter $dbXMLItemBaseImporter
-     * @param CalendarFactoryInterface $calendarFactory
-     * @param CdbXmlContactInfoImporterInterface $cdbXmlContactInfoImporter
-     */
+
     public function __construct(
         CdbXMLItemBaseImporter $dbXMLItemBaseImporter,
         CalendarFactoryInterface $calendarFactory,
@@ -170,7 +166,6 @@ class CdbXMLImporter
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Base $actor
      * @param \stdClass $jsonLD
      */
     private function importTerms(\CultureFeed_Cdb_Item_Base $actor, $jsonLD)

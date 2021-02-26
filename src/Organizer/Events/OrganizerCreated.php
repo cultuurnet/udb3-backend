@@ -38,8 +38,6 @@ final class OrganizerCreated extends OrganizerEvent
     public $urls;
 
     /**
-     * @param string $id
-     * @param Title $title
      * @param Address[] $addresses
      * @param string[] $phones
      * @param string[] $emails

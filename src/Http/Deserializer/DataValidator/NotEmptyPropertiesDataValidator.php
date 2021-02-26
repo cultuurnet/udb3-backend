@@ -20,7 +20,6 @@ class NotEmptyPropertiesDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)
@@ -29,7 +28,7 @@ class NotEmptyPropertiesDataValidator implements DataValidatorInterface
 
         foreach ($this->requiredFields as $requiredField) {
             if (empty($data[$requiredField])) {
-                $errors[$requiredField] = "Should not be empty.";
+                $errors[$requiredField] = 'Should not be empty.';
             }
         }
 

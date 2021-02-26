@@ -167,8 +167,8 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_only_change_the_type_when_updating_with_another_id()
     {
         $itemId = UUID::generateAsString();
-        $filmType = new EventType("0.50.6.0.0", "Film");
-        $concertType = new EventType("0.50.4.0.0", "Concert");
+        $filmType = new EventType('0.50.6.0.0', 'Film');
+        $concertType = new EventType('0.50.4.0.0', 'Concert');
 
         $this->scenario
             ->given([
@@ -195,28 +195,28 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = UUID::generateAsString();
 
         $facilities = [
-            new Facility("3.27.0.0.0", "Rolstoeltoegankelijk"),
-            new Facility("3.30.0.0.0", "Rolstoelpodium"),
+            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
+            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
         ];
 
         $sameFacilities = [
-            new Facility("3.30.0.0.0", "Rolstoelpodium"),
-            new Facility("3.27.0.0.0", "Rolstoeltoegankelijk"),
+            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
+            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
         ];
 
         $otherFacilities = [
-            new Facility("3.34.0.0.0", "Vereenvoudigde informatie"),
-            new Facility("3.38.0.0.0", "Inter-assistentie"),
+            new Facility('3.34.0.0.0', 'Vereenvoudigde informatie'),
+            new Facility('3.38.0.0.0', 'Inter-assistentie'),
         ];
 
         $moreFacilities = [
-            new Facility("3.34.0.0.0", "Vereenvoudigde informatie"),
-            new Facility("3.38.0.0.0", "Inter-assistentie"),
-            new Facility("3.40.0.0.0", "Inter-events"),
+            new Facility('3.34.0.0.0', 'Vereenvoudigde informatie'),
+            new Facility('3.38.0.0.0', 'Inter-assistentie'),
+            new Facility('3.40.0.0.0', 'Inter-events'),
         ];
 
         $lessFacilities = [
-            new Facility("3.34.0.0.0", "Vereenvoudigde informatie"),
+            new Facility('3.34.0.0.0', 'Vereenvoudigde informatie'),
         ];
 
         $this->scenario
@@ -1479,8 +1479,6 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider imageCollectionDataProvider
-     * @param Image $image
-     * @param ImageCollection $imageCollection
      */
     public function it_should_import_images_from_udb2_as_media_object_and_main_image(
         Image $image,
@@ -1504,7 +1502,6 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider imageCollectionDataProvider
-     * @param Image $image
      */
     public function it_should_keep_images_translated_in_ubd3_when_updating_images_from_udb2(
         Image $image
@@ -1554,8 +1551,6 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider imageCollectionDataProvider
-     * @param Image $image
-     * @param ImageCollection $imageCollection
      */
     public function it_should_update_images_from_udb2_as_media_object_and_main_image(
         Image $image,

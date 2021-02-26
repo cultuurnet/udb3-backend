@@ -39,9 +39,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         return $this->tableName;
     }
 
-    /**
-     * @param Entity $entity
-     */
+
     protected function saveEntity(Entity $entity)
     {
         $values = $this->entityToValues($entity);
@@ -52,7 +50,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
     }
 
     /**
-     * @param Entity $entity
      * @return array
      */
     protected function entityToValues(Entity $entity)
@@ -83,7 +80,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
     }
 
     /**
-     * @param array $row
      * @return Entity
      */
     protected function rowToEntity(array $row)

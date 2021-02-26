@@ -25,7 +25,6 @@ class PlaceJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLanguage
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
-     * @param JsonDocument $jsonDocument
      * @return \CultuurNet\UDB3\Language[]
      */
     public function determineAvailableLanguages(JsonDocument $jsonDocument)
@@ -39,7 +38,6 @@ class PlaceJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLanguage
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
-     * @param JsonDocument $jsonDocument
      * @return \CultuurNet\UDB3\Language[]
      */
     public function determineCompletedLanguages(JsonDocument $jsonDocument)
@@ -53,7 +51,6 @@ class PlaceJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLanguage
      * @replay_i18n
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
-     * @param JsonDocument $jsonDocument
      * @return JsonDocument
      */
     private function polyFillMultilingualFields(JsonDocument $jsonDocument)

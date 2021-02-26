@@ -14,6 +14,6 @@ use ValueObjects\Enum\Enum;
  */
 class EventAdvantage extends Enum
 {
-    public const POINT_COLLECTING = "POINT_COLLECTING";
-    public const KANSENTARIEF = "KANSENTARIEF";
+    public const POINT_COLLECTING = 'POINT_COLLECTING';
+    public const KANSENTARIEF = 'KANSENTARIEF';
 }

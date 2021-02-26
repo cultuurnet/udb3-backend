@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 class ContactPointDataValidator implements DataValidatorInterface
 {
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)

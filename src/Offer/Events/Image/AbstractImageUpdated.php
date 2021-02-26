@@ -35,9 +35,7 @@ abstract class AbstractImageUpdated extends AbstractEvent
         $this->copyrightHolder = $copyrightHolder;
     }
 
-    /**
-     * @return UUID
-     */
+
     public function getMediaObjectId(): UUID
     {
         return $this->mediaObjectId;

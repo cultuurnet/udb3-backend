@@ -90,7 +90,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
      * Constructs a test case with the given name.
      *
      * @param string $name
-     * @param array  $data
      * @param string $dataName
      */
     public function __construct($name = null, array $data = [], $dataName = '')

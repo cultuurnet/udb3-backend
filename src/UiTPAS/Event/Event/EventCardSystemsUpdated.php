@@ -18,7 +18,6 @@ class EventCardSystemsUpdated
     private $cardSystems;
 
     /**
-     * @param Id $id
      * @param CardSystem[] $cardSystems
      */
     public function __construct(

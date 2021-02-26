@@ -14,7 +14,6 @@ use Silex\ControllerProviderInterface;
 class ExportControllerProvider implements ControllerProviderInterface
 {
     /**
-     * @param Application $app
      * @return ControllerCollection
      */
     public function connect(Application $app)

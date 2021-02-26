@@ -95,7 +95,7 @@ class ImageUploaderServiceTest extends TestCase
     public function it_should_move_an_uploaded_file_to_the_upload_directory()
     {
         $file = new UploadedFile(
-            __DIR__.'/files/my-image.png',
+            __DIR__ . '/files/my-image.png',
             'my-image.png',
             'image/png',
             null,
@@ -107,7 +107,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new StringLiteral('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory.'/'. $this->fileId .'.png';
+        $expectedDestination = $this->directory . '/' . $this->fileId . '.png';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator
@@ -135,7 +135,7 @@ class ImageUploaderServiceTest extends TestCase
     public function it_should_throw_an_exception_when_the_upload_was_not_successful()
     {
         $file = new UploadedFile(
-            __DIR__.'/files/my-image.png',
+            __DIR__ . '/files/my-image.png',
             'my-image.png',
             'image/png'
         );
@@ -245,7 +245,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new StringLiteral('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory.'/'. $this->fileId .'.jpg';
+        $expectedDestination = $this->directory . '/' . $this->fileId . '.jpg';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator

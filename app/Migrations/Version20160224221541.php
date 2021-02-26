@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20160224221541 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->getTable('event_variation_search_index');
@@ -29,9 +26,7 @@ class Version20160224221541 extends AbstractMigration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $table = $schema->getTable('event_variation_search_index');
@@ -47,11 +42,9 @@ class Version20160224221541 extends AbstractMigration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function postDown(Schema $schema)
     {
-        $this->connection->executeQuery("UPDATE event_variation_search_index SET event = origin_url");
+        $this->connection->executeQuery('UPDATE event_variation_search_index SET event = origin_url');
     }
 }

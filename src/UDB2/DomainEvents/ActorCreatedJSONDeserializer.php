@@ -9,7 +9,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ActorCreatedJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $json
      * @return ActorCreated
      */
     public function deserialize(StringLiteral $json)

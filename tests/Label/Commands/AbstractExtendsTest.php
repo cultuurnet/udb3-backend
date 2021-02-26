@@ -36,7 +36,6 @@ abstract class AbstractExtendsTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return AbstractCommand
      */
     abstract public function createCommand(UUID $uuid);

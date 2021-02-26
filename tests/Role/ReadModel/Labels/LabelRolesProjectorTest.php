@@ -148,7 +148,6 @@ class LabelRolesProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument
      */
     private function createEmptyJsonDocument(UUID $uuid)
@@ -160,8 +159,6 @@ class LabelRolesProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $labelId
-     * @param UUID $roleId
      * @return JsonDocument
      */
     public function createJsonDocument(UUID $labelId, UUID $roleId)
@@ -172,10 +169,7 @@ class LabelRolesProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param \ValueObjects\Identity\UUID $labelId
-     * @param \CultuurNet\UDB3\ReadModel\JsonDocument $jsonDocument
-     */
+
     private function mockLabelRolesGet(UUID $labelId, JsonDocument $jsonDocument)
     {
         $this->labelRolesRepository

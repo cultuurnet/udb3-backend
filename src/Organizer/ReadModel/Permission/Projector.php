@@ -81,10 +81,7 @@ class Projector implements EventListener
         );
     }
 
-    /**
-     * @param string $organizerId
-     * @param DomainMessage $domainMessage
-     */
+
     private function makeOrganizerEditableByUser(
         string $organizerId,
         DomainMessage $domainMessage

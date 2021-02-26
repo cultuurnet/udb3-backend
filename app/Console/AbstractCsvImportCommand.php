@@ -30,9 +30,7 @@ abstract class AbstractCsvImportCommand extends AbstractCommand
             );
     }
 
-    /**
-     * @return string
-     */
+
     abstract public function getColumnHeaders(): string;
 
     /**
@@ -63,9 +61,7 @@ abstract class AbstractCsvImportCommand extends AbstractCommand
         return 0;
     }
 
-    /**
-     * @param array $record
-     */
+
     abstract public function processRecord(
         InputInterface $input,
         OutputInterface $output,

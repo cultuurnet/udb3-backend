@@ -170,17 +170,13 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
             ->then([]);
     }
 
-    /**
-     * @return string
-     */
+
     public function aUuid(): string
     {
         return 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
     }
 
-    /**
-     * @return Address
-     */
+
     public function anAddress(): Address
     {
         return new Address(
@@ -191,9 +187,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         );
     }
 
-    /**
-     * @return Coordinates
-     */
+
     public function someCoordinates(): Coordinates
     {
         return new Coordinates(

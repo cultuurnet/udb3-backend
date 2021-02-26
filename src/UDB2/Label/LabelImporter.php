@@ -29,9 +29,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
      */
     private $labelService;
 
-    /**
-     * @param LabelServiceInterface $labelService
-     */
+
     public function __construct(
         LabelServiceInterface $labelService
     ) {
@@ -39,9 +37,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @param EventImportedFromUDB2 $eventImportedFromUDB2
-     */
+
     public function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
     ) {
@@ -53,9 +49,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($event);
     }
 
-    /**
-     * @param PlaceImportedFromUDB2 $placeImportedFromUDB2
-     */
+
     public function applyPlaceImportedFromUDB2(
         PlaceImportedFromUDB2 $placeImportedFromUDB2
     ) {
@@ -67,9 +61,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($place);
     }
 
-    /**
-     * @param OrganizerImportedFromUDB2 $organizerImportedFromUDB2
-     */
+
     public function applyOrganizerImportedFromUDB2(
         OrganizerImportedFromUDB2 $organizerImportedFromUDB2
     ) {
@@ -81,9 +73,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($organizer);
     }
 
-    /**
-     * @param EventUpdatedFromUDB2 $eventUpdatedFromUDB2
-     */
+
     public function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdatedFromUDB2
     ) {
@@ -95,9 +85,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($event);
     }
 
-    /**
-     * @param PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
-     */
+
     public function applyPlaceUpdatedFromUDB2(
         PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
     ) {
@@ -109,9 +97,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($place);
     }
 
-    /**
-     * @param OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
-     */
+
     public function applyOrganizerUpdatedFromUDB2(
         OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
     ) {
@@ -123,9 +109,7 @@ class LabelImporter implements EventListener, LoggerAwareInterface
         $this->createLabelAggregatesFromCdbItem($organizer);
     }
 
-    /**
-     * @param \CultureFeed_Cdb_Item_Base $cdbItem
-     */
+
     private function createLabelAggregatesFromCdbItem(\CultureFeed_Cdb_Item_Base $cdbItem)
     {
         $labelCollection = LabelCollection::fromKeywords(

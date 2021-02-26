@@ -23,8 +23,6 @@ class QueryJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
-     * @return Query
      * @throws DataValidationException
      */
     public function deserialize(StringLiteral $data): Query

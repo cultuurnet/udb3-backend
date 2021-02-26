@@ -10,7 +10,6 @@ class EventDeletedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param EventDeleted $eventDeleted
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -26,7 +25,6 @@ class EventDeletedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param EventDeleted $expectedEventDeleted
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

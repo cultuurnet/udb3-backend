@@ -75,11 +75,6 @@ class EditEventRestController extends OfferRestBaseController
      *
      * @param EventEditingServiceInterface $eventEditor
      *   The event editor.
-     * @param MediaManagerInterface $mediaManager
-     * @param IriGeneratorInterface $iriGenerator
-     * @param ApiKeyReaderInterface $apiKeyReader
-     * @param ConsumerReadRepositoryInterface $consumerReadRepository
-     * @param ConsumerSpecificationInterface $shouldApprove
      */
     public function __construct(
         EventEditingServiceInterface $eventEditor,

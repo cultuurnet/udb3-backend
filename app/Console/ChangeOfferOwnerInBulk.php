@@ -62,7 +62,7 @@ class ChangeOfferOwnerInBulk extends AbstractCommand
                     )
                 );
                 $logger->info(
-                    'Successfully changed owner of offer "' . $offerId .'" to user with id "' . $newOwnerId . '"'
+                    'Successfully changed owner of offer "' . $offerId . '" to user with id "' . $newOwnerId . '"'
                 );
                 $success++;
             } catch (Throwable $t) {

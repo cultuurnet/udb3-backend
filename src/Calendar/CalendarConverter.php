@@ -94,7 +94,6 @@ class CalendarConverter implements CalendarConverterInterface
     }
 
     /**
-     * @param CultureFeed_Cdb_Data_Calendar_TimestampList $timestamps
      * @return int
      */
     private function countTimestamps(CultureFeed_Cdb_Data_Calendar_TimestampList $timestamps)
@@ -106,7 +105,6 @@ class CalendarConverter implements CalendarConverterInterface
     }
 
     /**
-     * @param \CultuurNet\UDB3\CalendarInterface $itemCalendar
      * @return CultureFeed_Cdb_Data_Calendar_Weekscheme|null
      * @throws \Exception
      */
@@ -169,9 +167,6 @@ class CalendarConverter implements CalendarConverterInterface
     }
 
     /**
-     * @param DateTimeInterface $startDate
-     * @param DateTimeInterface $endDate
-     * @param CultureFeed_Cdb_Data_Calendar_TimestampList $calendar
      * @param Integer|null $index
      *
      * @return CultureFeed_Cdb_Data_Calendar_TimestampList
@@ -245,7 +240,6 @@ class CalendarConverter implements CalendarConverterInterface
     }
 
     /**
-     * @param DateTimeInterface $timestamp
      * @param integer|null $index
      * @return null|string
      */
@@ -275,7 +269,6 @@ class CalendarConverter implements CalendarConverterInterface
      * DateTimeInterface has no setTimezone() method, so we need to convert it to a DateTimeImmutable object
      * first using Chronos.
      *
-     * @param DateTimeInterface $dateTime
      * @return DateTimeInterface
      */
     private function configureCdbTimezone(\DateTimeInterface $dateTime)

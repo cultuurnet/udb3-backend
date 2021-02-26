@@ -33,12 +33,7 @@ class UDB3SavedSearchRepository implements SavedSearchReadModelRepositoryInterfa
      */
     private $userId;
 
-    /**
-     * @param Connection $connection
-     * @param StringLiteral $tableName
-     * @param UuidGeneratorInterface $uuidGenerator
-     * @param StringLiteral $userId
-     */
+
     public function __construct(
         Connection $connection,
         StringLiteral $tableName,

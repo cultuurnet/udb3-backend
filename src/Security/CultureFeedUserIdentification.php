@@ -18,7 +18,6 @@ class CultureFeedUserIdentification implements UserIdentificationInterface
     private $permissionList;
 
     /**
-     * @param CultureFeed_User $cultureFeedUser
      * @param string[][] $permissionList
      */
     public function __construct(

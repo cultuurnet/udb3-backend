@@ -14,7 +14,6 @@ class PriceInfoDataValidator implements DataValidatorInterface
     private $mainLanguage = null;
 
     /**
-     * @param Language $language
      * @return PriceInfoDataValidator
      */
     public function forMainLanguage(Language $language)

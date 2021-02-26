@@ -11,7 +11,6 @@ class LabelRemovedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param LabelRemoved $labelRemoved
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -27,7 +26,6 @@ class LabelRemovedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param LabelRemoved $expectedLabelRemovedEvent
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

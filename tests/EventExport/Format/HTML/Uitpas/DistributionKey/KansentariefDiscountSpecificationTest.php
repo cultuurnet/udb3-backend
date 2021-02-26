@@ -36,7 +36,6 @@ class KansentariefDiscountSpecificationTest extends TestCase
     /**
      * @test
      * @dataProvider satisfyingDistributionKeyProvider
-     * @param CultureFeed_Uitpas_DistributionKey $key
      */
     public function it_is_satisfied_by_a_key_with_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key)
     {
@@ -107,7 +106,6 @@ class KansentariefDiscountSpecificationTest extends TestCase
     /**
      * @test
      * @dataProvider unsatisfyingDistributionKeyProvider
-     * @param CultureFeed_Uitpas_DistributionKey $key
      */
     public function it_is_unsatisfied_by_a_key_without_kansarm_condition(CultureFeed_Uitpas_DistributionKey $key)
     {

@@ -10,7 +10,6 @@ use Doctrine\DBAL\Types\Type;
 class SkippedSimilarEventsSchemaConfigurator
 {
     /**
-     * @param Schema $schema
      * @return Table
      */
     public static function getTableDefinition(Schema $schema)

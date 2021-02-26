@@ -68,8 +68,6 @@ class TabularDataEventFormatter
 
     /**
      * @param string[]                                $include                   A list of properties to include
-     * @param EventInfoServiceInterface|null          $uitpas
-     * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
         array $include,
@@ -308,8 +306,8 @@ class TabularDataEventFormatter
                                     ? $cardSystems[$tariff['cardSystem']]
                                     : '';
                                 $cardSystem = empty($cardSystem)
-                                    ? $tariff['cardSystem'].': € '.$tariff['price']
-                                    : $cardSystem.' / € '.$tariff['price'];
+                                    ? $tariff['cardSystem'] . ': € ' . $tariff['price']
+                                    : $cardSystem . ' / € ' . $tariff['price'];
 
                                 $cardSystems[$tariff['cardSystem']] = $cardSystem;
                                 return $cardSystems;
@@ -320,7 +318,7 @@ class TabularDataEventFormatter
                         $formattedTariffs = array_reduce(
                             $cardSystems,
                             function ($tariffs, $cardSystemPrices) {
-                                return $tariffs ? $tariffs.' | '.$cardSystemPrices : $cardSystemPrices;
+                                return $tariffs ? $tariffs . ' | ' . $cardSystemPrices : $cardSystemPrices;
                             }
                         );
 
@@ -737,7 +735,7 @@ class TabularDataEventFormatter
 
         $tariffName = $tariff->name->{$language};
 
-        return $tariffName.': '.$tariffPrice;
+        return $tariffName . ': ' . $tariffPrice;
     }
 
     /**

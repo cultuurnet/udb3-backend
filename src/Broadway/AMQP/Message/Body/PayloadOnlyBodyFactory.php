@@ -21,7 +21,6 @@ class PayloadOnlyBodyFactory implements BodyFactoryInterface
     }
 
     /**
-     * @param mixed $object
      * @throws SerializationException
      */
     private function guardSerializable($object)

@@ -31,7 +31,6 @@ class LabelCollection implements \Countable
     }
 
     /**
-     * @param Label $label
      * @return LabelCollection
      */
     public function with(Label $label)
@@ -46,7 +45,6 @@ class LabelCollection implements \Countable
     }
 
     /**
-     * @param Label $label
      * @return LabelCollection
      */
     public function without(Label $label)
@@ -70,7 +68,6 @@ class LabelCollection implements \Countable
     }
 
     /**
-     * @param Label $label
      * @return bool
      */
     public function contains(Label $label)
@@ -94,7 +91,6 @@ class LabelCollection implements \Countable
     }
 
     /**
-     * @param LabelCollection $labelCollectionToMerge
      * @return LabelCollection
      */
     public function merge(LabelCollection $labelCollectionToMerge)
@@ -117,7 +113,6 @@ class LabelCollection implements \Countable
     }
 
     /**
-     * @param LabelCollection $labelCollection
      * @return LabelCollection
      */
     public function intersect(LabelCollection $labelCollection)
@@ -133,7 +128,6 @@ class LabelCollection implements \Countable
     }
 
     /**
-     * @param callable $filterFunction
      * @return LabelCollection
      */
     public function filter(callable $filterFunction)

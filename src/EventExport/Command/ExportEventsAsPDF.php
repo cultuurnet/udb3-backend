@@ -62,13 +62,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
      */
     private $template;
 
-    /**
-     * @param EventExportQuery   $query
-     * @param string             $brand
-     * @param string             $logo
-     * @param Title              $title
-     * @param WebArchiveTemplate $template
-     */
+
     public function __construct(
         EventExportQuery $query,
         string $brand,
@@ -84,7 +78,6 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
     /**
-     * @param EmailAddress $address
      * @return ExportEventsAsPDF
      */
     public function withEmailNotificationTo(EmailAddress $address)
@@ -94,9 +87,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-    /**
-     * @param EmailAddress $address
-     */
+
     private function setAddress(EmailAddress $address)
     {
         $this->address = $address;
@@ -123,7 +114,6 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
     /**
-     * @param Subtitle $subtitle
      * @return ExportEventsAsPDF
      */
     public function withSubtitle(Subtitle $subtitle)
@@ -134,16 +124,13 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-    /**
-     * @param Subtitle $subtitle
-     */
+
     private function setSubtitle(Subtitle $subtitle)
     {
         $this->subtitle = $subtitle;
     }
 
     /**
-     * @param Footer $footer
      * @return ExportEventsAsPDF
      */
     public function withFooter(Footer $footer)
@@ -155,7 +142,6 @@ class ExportEventsAsPDF implements ExportEventsInterface
     }
 
     /**
-     * @param Publisher $publisher
      * @return ExportEventsAsPDF
      */
     public function withPublisher(Publisher $publisher)
@@ -166,17 +152,13 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $exportEvents;
     }
 
-    /**
-     * @param Publisher $publisher
-     */
+
     private function setPublisher(Publisher $publisher)
     {
         $this->publisher = $publisher;
     }
 
-    /**
-     * @param Footer $footer
-     */
+
     private function setFooter(Footer $footer)
     {
         $this->footer = $footer;
@@ -246,9 +228,7 @@ class ExportEventsAsPDF implements ExportEventsInterface
         return $this->query;
     }
 
-    /**
-     * @return null|EmailAddress
-     */
+
     public function getAddress(): ?EmailAddress
     {
         return $this->address;

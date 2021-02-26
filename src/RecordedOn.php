@@ -14,7 +14,6 @@ class RecordedOn
 
     /**
      * ModifiedDateTime constructor.
-     * @param DateTime $recorded
      */
     private function __construct(DateTime $recorded)
     {
@@ -22,7 +21,6 @@ class RecordedOn
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return RecordedOn
      */
     public static function fromDomainMessage(DomainMessage $domainMessage)
@@ -31,7 +29,6 @@ class RecordedOn
     }
 
     /**
-     * @param DateTime $dateTime
      * @return RecordedOn
      */
     public static function fromBroadwayDateTime(DateTime $dateTime)

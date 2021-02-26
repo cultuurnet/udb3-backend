@@ -26,9 +26,7 @@ class ActorImportedFromUDB2 extends ActorEvent
         return $this->cdbXml;
     }
 
-    /**
-     * @return string
-     */
+
     public function getCdbXmlNamespaceUri(): string
     {
         return $this->cdbXmlNamespaceUri;

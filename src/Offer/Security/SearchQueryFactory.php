@@ -10,8 +10,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 class SearchQueryFactory extends SearchQueryFactoryBase
 {
     /**
-     * @param StringLiteral $constraint
-     * @param StringLiteral $offerId
      * @return string
      */
     protected function createQueryString(

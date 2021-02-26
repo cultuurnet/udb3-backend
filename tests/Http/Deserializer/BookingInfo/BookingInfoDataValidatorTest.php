@@ -131,10 +131,7 @@ class BookingInfoDataValidatorTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @param array $data
-     * @param array $expectedMessages
-     */
+
     private function assertValidationMessages(array $data, array $expectedMessages)
     {
         try {

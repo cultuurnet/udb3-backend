@@ -235,7 +235,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     {
         $expectedCommandId = 'f42802e4-c1f1-4aa6-9909-a08cfc66f355';
         $offerId = '2D015370-7CBA-4CB9-B0E4-07D2DEAAB2FF';
-        $type = new EventType("0.15.0.0.0", "Natuur, park of tuin");
+        $type = new EventType('0.15.0.0.0', 'Natuur, park of tuin');
         $this->expectPlaceholderDocument($offerId);
 
         $this->commandFactory->expects($this->once())

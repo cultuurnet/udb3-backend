@@ -11,7 +11,6 @@ use Doctrine\DBAL\Schema\Schema;
 class Version20200122131812 extends AbstractMigration
 {
     /**
-     * @param Schema $schema
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     public function up(Schema $schema)
@@ -24,9 +23,7 @@ class Version20200122131812 extends AbstractMigration
         $this->addSql('ALTER TABLE user_roles MODIFY COLUMN user_id VARCHAR(255) NOT NULL');
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
     }

@@ -19,10 +19,7 @@ class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface
      */
     private $propertiesFactory;
 
-    /**
-     * @param BodyFactoryInterface $bodyFactory
-     * @param PropertiesFactoryInterface $propertiesFactory
-     */
+
     public function __construct(
         BodyFactoryInterface $bodyFactory,
         PropertiesFactoryInterface $propertiesFactory
@@ -32,7 +29,6 @@ class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return AMQPMessage
      */
     public function createAMQPMessage(DomainMessage $domainMessage)

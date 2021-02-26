@@ -42,7 +42,7 @@ class AddressJSONDeserializerTest extends TestCase
 
         try {
             $this->deserializer->deserialize($data);
-            $this->fail("No DataValidationException was thrown.");
+            $this->fail('No DataValidationException was thrown.');
         } catch (DataValidationException $e) {
             $this->assertEquals($expectedException->getValidationMessages(), $e->getValidationMessages());
         }

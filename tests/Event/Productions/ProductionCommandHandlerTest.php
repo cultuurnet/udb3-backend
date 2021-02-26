@@ -283,7 +283,7 @@ class ProductionCommandHandlerTest extends TestCase
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
 
         $event1 = Uuid::uuid4()->toString();
-        $name = "I know what you did last Midsummer Night";
+        $name = 'I know what you did last Midsummer Night';
         $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);
         $this->commandHandler->handle($fromProductionCommand);
 
@@ -312,7 +312,7 @@ class ProductionCommandHandlerTest extends TestCase
         $this->eventRepository->method('get')->willReturn(new JsonDocument('foo'));
 
         $event1 = Uuid::uuid4()->toString();
-        $name = "I know what you did last Midsummer Night";
+        $name = 'I know what you did last Midsummer Night';
         $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);
         $this->commandHandler->handle($fromProductionCommand);
 

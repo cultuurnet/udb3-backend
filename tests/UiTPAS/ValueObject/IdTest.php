@@ -46,7 +46,6 @@ class IdTest extends TestCase
      * @test
      * @dataProvider emptyScalarValueDataProvider
      *
-     * @param mixed $emptyValue
      */
     public function it_should_throw_an_exception_for_a_casted_variable_that_evaluates_to_an_empty_string($emptyValue)
     {

@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version19700101000003 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         // @see \CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALRepository
@@ -37,9 +34,7 @@ class Version19700101000003 extends AbstractMigration
         $table->setPrimaryKey(['event']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('event_relations');

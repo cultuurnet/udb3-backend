@@ -12,9 +12,7 @@ class Version20160506142905 extends AbstractMigration
 {
     public const PLACE_RELATIONS = 'place_relations';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $table = $schema->createTable(self::PLACE_RELATIONS);
@@ -33,9 +31,7 @@ class Version20160506142905 extends AbstractMigration
         $table->setPrimaryKey(['place']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::PLACE_RELATIONS);

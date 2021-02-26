@@ -27,9 +27,6 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
 
     /**
      * UserPermissionsWriteRepository constructor.
-     * @param Connection $connection
-     * @param StringLiteral $userRoleTableName
-     * @param StringLiteral $rolePermissionTableName
      */
     public function __construct(
         Connection $connection,

@@ -20,8 +20,6 @@ abstract class AbstractUpdateDescription extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Description $description
-     * @param Language $language
      */
     public function __construct($itemId, Language $language, Description $description)
     {

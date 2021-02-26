@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150612151318 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         // @see \Broadway\EventStore\DBALEventStore
@@ -30,9 +27,7 @@ class Version20150612151318 extends AbstractMigration
         $table->addUniqueIndex(['uuid', 'playhead']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('variations');

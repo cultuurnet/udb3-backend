@@ -21,10 +21,7 @@ class CachedGeocodingService implements GeocodingServiceInterface
      */
     private $cache;
 
-    /**
-     * @param GeocodingServiceInterface $geocodingService
-     * @param Cache $cache
-     */
+
     public function __construct(GeocodingServiceInterface $geocodingService, Cache $cache)
     {
         $this->geocodingService = $geocodingService;

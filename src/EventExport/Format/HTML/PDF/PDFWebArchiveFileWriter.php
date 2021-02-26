@@ -20,9 +20,6 @@ class PDFWebArchiveFileWriter extends WebArchiveFileWriter
 
     /**
      * @param string                                  $princeXMLBinaryPath
-     * @param HTMLFileWriter                          $htmlFileWriter
-     * @param EventInfoServiceInterface|null          $uitpas
-     * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
      */
     public function __construct(
         $princeXMLBinaryPath,
@@ -40,7 +37,7 @@ class PDFWebArchiveFileWriter extends WebArchiveFileWriter
     public function write($filePath, $events)
     {
         $originDirectory = $this->createWebArchiveDirectory($events);
-        $originFile = $this->expandTmpPath($originDirectory).'/index.html';
+        $originFile = $this->expandTmpPath($originDirectory) . '/index.html';
 
         $messages = [];
         $result = $this->prince->convert_file_to_file($originFile, $filePath, $messages);

@@ -334,28 +334,28 @@ class EditEventRestControllerTest extends TestCase
     {
         return json_encode(
             [
-                "mainLanguage" => "en",
-                "name" => "foo",
-                "type" => [
-                    "id" => "1.8.2",
-                    "label" => "PARTY!",
+                'mainLanguage' => 'en',
+                'name' => 'foo',
+                'type' => [
+                    'id' => '1.8.2',
+                    'label' => 'PARTY!',
                 ],
-                "theme" => [
-                    "id" => "6.6.6",
-                    "label" => "Pentagrams",
+                'theme' => [
+                    'id' => '6.6.6',
+                    'label' => 'Pentagrams',
                 ],
-                "location" => [
-                    "id" => "fe282e4f-35f5-480d-a90b-2720ab883b0a",
-                    "name" => "P-P-Partyzone",
-                    "address" => [
-                        "streetAddress" => "acmelane 12",
-                        "postalCode" => "3000",
-                        "addressLocality" => "Leuven",
-                        "addressCountry" => "BE",
+                'location' => [
+                    'id' => 'fe282e4f-35f5-480d-a90b-2720ab883b0a',
+                    'name' => 'P-P-Partyzone',
+                    'address' => [
+                        'streetAddress' => 'acmelane 12',
+                        'postalCode' => '3000',
+                        'addressLocality' => 'Leuven',
+                        'addressCountry' => 'BE',
                     ],
                 ],
-                "calendar" => [
-                    "type" => "permanent",
+                'calendar' => [
+                    'type' => 'permanent',
                 ],
             ]
         );

@@ -26,8 +26,6 @@ class PatchOfferRestController
 
     /**
      * PatchOfferRestController constructor.
-     * @param OfferType $offerType
-     * @param CommandBus $commandBus
      */
     public function __construct(
         OfferType $offerType,
@@ -65,7 +63,6 @@ class PatchOfferRestController
     }
 
     /**
-     * @param Request $request
      * @return string
      * @throws \Exception
      */

@@ -9,7 +9,6 @@ class DomainMessageIsReplayed implements DomainMessageSpecificationInterface
     public const METADATA_REPLAY_KEY = 'replayed';
 
     /**
-     * @param DomainMessage $domainMessage
      * @return bool
      */
     public function isSatisfiedBy(DomainMessage $domainMessage)

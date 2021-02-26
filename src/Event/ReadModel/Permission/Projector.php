@@ -86,7 +86,6 @@ class Projector implements EventListener
 
     /**
      * @param string $offerId
-     * @param DomainMessage $domainMessage
      */
     private function makeOfferEditableByUser(
         $offerId,

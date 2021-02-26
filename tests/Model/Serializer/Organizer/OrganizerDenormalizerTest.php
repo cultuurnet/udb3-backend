@@ -190,8 +190,8 @@ class OrganizerDenormalizerTest extends TestCase
                 ],
             ],
             'geo' => [
-                "latitude" => 50.8793916,
-                "longitude" => 4.7019674,
+                'latitude' => 50.8793916,
+                'longitude' => 4.7019674,
             ],
         ];
 

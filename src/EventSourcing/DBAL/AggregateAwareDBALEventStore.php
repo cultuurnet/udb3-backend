@@ -127,10 +127,7 @@ class AggregateAwareDBALEventStore implements EventStore
         });
     }
 
-    /**
-     * @param Connection $connection
-     * @param DomainMessage $domainMessage
-     */
+
     private function insertMessage(Connection $connection, DomainMessage $domainMessage)
     {
         $data = [
@@ -147,7 +144,6 @@ class AggregateAwareDBALEventStore implements EventStore
     }
 
     /**
-     * @param Schema $schema
      * @return Table|null
      */
     public function configureSchema(Schema $schema)
@@ -159,9 +155,7 @@ class AggregateAwareDBALEventStore implements EventStore
         return $this->configureTable();
     }
 
-    /**
-     * @return mixed
-     */
+
     public function configureTable()
     {
         $schema = new Schema();

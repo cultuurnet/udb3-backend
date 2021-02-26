@@ -17,7 +17,6 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
 
     /**
      * @param string $organizerId
-     * @param Label $label
      */
     public function __construct(
         $organizerId,

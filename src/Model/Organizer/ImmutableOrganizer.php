@@ -54,9 +54,6 @@ class ImmutableOrganizer implements Organizer
     private $contactPoint;
 
     /**
-     * @param UUID $id
-     * @param Language $mainLanguage
-     * @param TranslatedTitle $name
      * @param Url|null $url
      *  When creating a new organizer a url is required.
      *  But for older organizers the url was not required.
@@ -102,7 +99,6 @@ class ImmutableOrganizer implements Organizer
     }
 
     /**
-     * @param TranslatedTitle $name
      * @return ImmutableOrganizer
      */
     public function withName(TranslatedTitle $name)
@@ -122,7 +118,6 @@ class ImmutableOrganizer implements Organizer
     }
 
     /**
-     * @param Url $url
      * @return ImmutableOrganizer
      */
     public function withUrl(Url $url)
@@ -141,7 +136,6 @@ class ImmutableOrganizer implements Organizer
     }
 
     /**
-     * @param TranslatedAddress $address
      * @return ImmutableOrganizer
      */
     public function withAddress(TranslatedAddress $address)
@@ -170,7 +164,6 @@ class ImmutableOrganizer implements Organizer
     }
 
     /**
-     * @param Coordinates $coordinates
      * @return ImmutableOrganizer
      */
     public function withGeoCoordinates(Coordinates $coordinates)
@@ -199,7 +192,6 @@ class ImmutableOrganizer implements Organizer
     }
 
     /**
-     * @param Labels $labels
      * @return ImmutableOrganizer
      */
     public function withLabels(Labels $labels)
@@ -218,7 +210,6 @@ class ImmutableOrganizer implements Organizer
     }
 
     /**
-     * @param ContactPoint $contactPoint
      * @return ImmutableOrganizer
      */
     public function withContactPoint(ContactPoint $contactPoint)

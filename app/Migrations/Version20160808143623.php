@@ -13,9 +13,7 @@ class Version20160808143623 extends AbstractMigration
     public const ROLE_ID_COLUMN = 'role_id';
     public const PERMISSION_COLUMN = 'permission';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $userRoleTable = $schema->createTable(UserPermissionsServiceProvider::USER_ROLES_TABLE);
@@ -44,9 +42,7 @@ class Version20160808143623 extends AbstractMigration
         $rolePermissionTable->setPrimaryKey([self::ROLE_ID_COLUMN, self::PERMISSION_COLUMN]);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(UserPermissionsServiceProvider::USER_ROLES_TABLE);

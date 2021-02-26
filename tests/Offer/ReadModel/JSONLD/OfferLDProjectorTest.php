@@ -132,7 +132,6 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @param object $event
      * @param string $entityId
-     * @param Metadata|null $metadata
      * @param DateTime $dateTime
      * @return \stdClass
      */
@@ -1076,7 +1075,6 @@ class OfferLDProjectorTest extends TestCase
      * @test
      * @dataProvider rejectionEventsDataProvider
      * @param string $itemId
-     * @param AbstractEvent $rejectionEvent
      */
     public function it_should_update_the_workflow_status_when_an_offer_is_rejected(
         $itemId,
@@ -1163,7 +1161,6 @@ class OfferLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider imageCollectionDataProvider
-     * @param ImageCollection $images
      */
     public function it_should_project_the_main_udb2_picture_as_image(
         ImageCollection $images

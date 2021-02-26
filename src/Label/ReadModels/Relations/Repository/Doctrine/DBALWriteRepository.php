@@ -86,9 +86,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
+
     private function executeTransactional(QueryBuilder $queryBuilder)
     {
         $this->getConnection()->transactional(function () use ($queryBuilder) {

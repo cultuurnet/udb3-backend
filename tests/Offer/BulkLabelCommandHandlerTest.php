@@ -171,9 +171,7 @@ class BulkLabelCommandHandlerTest extends TestCase
         ];
     }
 
-    /**
-     * @param Label $label
-     */
+
     private function expectEventAndPlaceToBeLabelledWith(Label $label): void
     {
         $this->commandBus->expects($this->exactly(2))

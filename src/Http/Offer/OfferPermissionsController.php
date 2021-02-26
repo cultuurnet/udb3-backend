@@ -27,8 +27,6 @@ class OfferPermissionsController
 
     /**
      * @param Permission[] $permissions
-     * @param PermissionVoterInterface $permissionVoter
-     * @param StringLiteral|null $currentUserId
      */
     public function __construct(
         array $permissions,
@@ -70,8 +68,6 @@ class OfferPermissionsController
     }
 
     /**
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return Response
      */
     private function getPermissions(StringLiteral $offerId, StringLiteral $userId)

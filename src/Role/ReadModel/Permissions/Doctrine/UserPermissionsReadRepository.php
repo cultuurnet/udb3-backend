@@ -26,9 +26,6 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
 
     /**
      * UserPermissionsReadRepository constructor.
-     * @param Connection $connection
-     * @param StringLiteral $userRoleTableName
-     * @param StringLiteral $rolePermissionTableName
      */
     public function __construct(
         Connection $connection,
@@ -41,7 +38,6 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     }
 
     /**
-     * @param StringLiteral $userId
      * @return Permission[]
      */
     public function getPermissions(StringLiteral $userId)
@@ -58,7 +54,7 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
                 'rp',
                 sprintf('(%s)', $userRoleQuery->getSQL()),
                 'up',
-                'rp.' . SchemaConfigurator::ROLE_ID_COLUMN .' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
+                'rp.' . SchemaConfigurator::ROLE_ID_COLUMN . ' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
             )
             ->setParameter('userId', (string) $userId);
 

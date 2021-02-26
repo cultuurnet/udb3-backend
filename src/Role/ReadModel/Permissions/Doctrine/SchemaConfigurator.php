@@ -25,8 +25,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
 
     /**
      * SchemaConfigurator constructor.
-     * @param StringLiteral $userRoleTableName
-     * @param StringLiteral $rolePermissionTableName
      */
     public function __construct(StringLiteral $userRoleTableName, StringLiteral $rolePermissionTableName)
     {
@@ -34,9 +32,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         $this->rolePermissionTableName = $rolePermissionTableName;
     }
 
-    /**
-     * @param AbstractSchemaManager $schemaManager
-     */
+
     public function configure(AbstractSchemaManager $schemaManager)
     {
         $schema = $schemaManager->createSchema();

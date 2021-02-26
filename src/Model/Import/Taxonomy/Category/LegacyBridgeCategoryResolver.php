@@ -28,11 +28,7 @@ class LegacyBridgeCategoryResolver implements CategoryResolverInterface
      */
     private $facilityResolver;
 
-    /**
-     * @param TypeResolverInterface $typeResolver
-     * @param ThemeResolverInterface $themeResolver
-     * @param OfferFacilityResolverInterface $facilityResolver
-     */
+
     public function __construct(
         TypeResolverInterface $typeResolver,
         ThemeResolverInterface $themeResolver,
