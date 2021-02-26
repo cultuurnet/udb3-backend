@@ -31,7 +31,7 @@ class UitpasInfoFormatter
         // Format prices.
         $prices = $uitpasInfo->getPrices();
         foreach ($prices as &$price) {
-            $price['price'] = $this->priceFormatter->format($price['price']);
+            $price['price'] = $this->priceFormatter->format((float) $price['price']);
         }
 
         // Format advantage labels. Start from a list of all known

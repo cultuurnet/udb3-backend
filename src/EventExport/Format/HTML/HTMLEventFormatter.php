@@ -281,7 +281,7 @@ class HTMLEventFormatter
         }
 
         $formattedEvent['price'] =
-            $basePrice ? $this->priceFormatter->format($basePrice->price) : 'Niet ingevoerd';
+            $basePrice ? $this->priceFormatter->format((float) $basePrice->price) : 'Niet ingevoerd';
     }
 
     /**
