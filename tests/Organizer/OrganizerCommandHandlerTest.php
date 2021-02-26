@@ -375,54 +375,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
-    public function it_handles_add_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo', true);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new AddLabel($organizerId, $label))
-            ->then([new LabelAdded($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_add_invisible_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('bar', false);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new AddLabel($organizerId, $label))
-            ->then([new LabelAdded($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_add_the_same_label_twice()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo', true);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([
-                $this->organizerCreated,
-                new LabelAdded($organizerId, $label),
-            ])
-            ->when(new AddLabel($organizerId, $label))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
     public function it_removes_an_attached_label()
     {
         $organizerId = $this->organizerCreated->getOrganizerId();
@@ -469,32 +421,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$this->organizerCreated])
             ->when(new RemoveLabel($organizerId, $label))
             ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_handle_complex_label_scenario()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $labelFoo = new Label('foo', true);
-        $labelBar = new Label('bar', false);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new AddLabel($organizerId, $labelFoo))
-            ->when(new AddLabel($organizerId, $labelBar))
-            ->when(new AddLabel($organizerId, $labelBar))
-            ->when(new RemoveLabel($organizerId, $labelFoo))
-            ->when(new RemoveLabel($organizerId, $labelBar))
-            ->when(new RemoveLabel($organizerId, $labelBar))
-            ->then([
-                new LabelAdded($organizerId, $labelFoo),
-                new LabelAdded($organizerId, $labelBar),
-                new LabelRemoved($organizerId, $labelFoo),
-                new LabelRemoved($organizerId, $labelBar),
-            ]);
     }
 
     /**

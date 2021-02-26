@@ -166,18 +166,6 @@ class OrganizerCommandHandler implements CommandHandler
     }
 
     /**
-     * @param AddLabel $addLabel
-     */
-    protected function addLabel(AddLabel $addLabel)
-    {
-        $organizer = $this->loadOrganizer($addLabel->getOrganizerId());
-
-        $organizer->addLabel($this->createLabel($addLabel));
-
-        $this->organizerRepository->save($organizer);
-    }
-
-    /**
      * @param RemoveLabel $removeLabel
      */
     protected function removeLabel(RemoveLabel $removeLabel)
