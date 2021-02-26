@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Validation\Place;
 
 use PHPUnit\Framework\TestCase;

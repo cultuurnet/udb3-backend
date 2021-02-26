@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Export;
 
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSVJSONDeserializer;

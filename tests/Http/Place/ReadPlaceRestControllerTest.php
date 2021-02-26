@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;

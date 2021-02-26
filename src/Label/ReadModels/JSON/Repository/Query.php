@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use ValueObjects\Number\Natural;

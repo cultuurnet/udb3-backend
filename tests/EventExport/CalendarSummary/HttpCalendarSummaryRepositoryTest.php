@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CalendarSummary;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;

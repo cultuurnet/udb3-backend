@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultureFeed_Cdb_Item_Base;

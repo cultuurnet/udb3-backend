@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Events\Image;
 
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImagesImportedFromUDB2;

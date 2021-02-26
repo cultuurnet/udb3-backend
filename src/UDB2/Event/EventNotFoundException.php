@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Event;
 
 use CultuurNet\UDB3\Event\EventNotFoundException as UDB3EventNotFoundException;

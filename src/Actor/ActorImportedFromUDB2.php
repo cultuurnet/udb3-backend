@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Actor;
 
 class ActorImportedFromUDB2 extends ActorEvent

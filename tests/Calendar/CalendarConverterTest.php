@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Calendar;
 
 use CultureFeed_Cdb_Data_Calendar_Period;
