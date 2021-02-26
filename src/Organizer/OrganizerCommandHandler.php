@@ -160,21 +160,6 @@ class OrganizerCommandHandler implements CommandHandler
         $this->organizerRepository->save($organizer);
     }
 
-    /**
-     * @return Label
-     */
-    private function createLabel(AbstractLabelCommand $labelCommand)
-    {
-        $labelName = new StringLiteral((string) $labelCommand->getLabel());
-        $label = $this->labelRepository->getByName($labelName);
-
-        return new Label(
-            $labelName->toNative(),
-            $label->getVisibility() === Visibility::VISIBLE()
-        );
-    }
-
-
     public function deleteOrganizer(DeleteOrganizer $deleteOrganizer)
     {
         $id = $deleteOrganizer->getOrganizerId();
