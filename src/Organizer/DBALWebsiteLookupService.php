@@ -19,7 +19,6 @@ class DBALWebsiteLookupService implements WebsiteLookupServiceInterface
     private $tableName;
 
     /**
-     * @param Connection $connection
      * @param string $tableName
      */
     public function __construct(

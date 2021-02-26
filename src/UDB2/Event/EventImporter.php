@@ -89,7 +89,6 @@ class EventImporter implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @param CultureFeed_Cdb_Item_Event $event
      * @return bool
      */
     private function isSatisfiedBy(CultureFeed_Cdb_Item_Event $event)

@@ -16,11 +16,6 @@ class CreateCopy extends Create
 
     /**
      * CreateCopy constructor.
-     * @param UUID $uuid
-     * @param LabelName $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
-     * @param UUID $parentUuid
      */
     public function __construct(
         UUID $uuid,

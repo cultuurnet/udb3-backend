@@ -29,8 +29,8 @@ abstract class AbstractEvent implements Serializable
 
     public function serialize(): array
     {
-        return array(
+        return [
             'item_id' => $this->itemId,
-        );
+        ];
     }
 }

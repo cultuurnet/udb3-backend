@@ -24,8 +24,7 @@ abstract class AbstractFacilitiesUpdated extends AbstractEvent
 
     public static function deserialize(array $data): AbstractFacilitiesUpdated
     {
-
-        $facilities = array();
+        $facilities = [];
         foreach ($data['facilities'] as $facility) {
             $facilities[] = Facility::deserialize($facility);
         }
@@ -35,7 +34,7 @@ abstract class AbstractFacilitiesUpdated extends AbstractEvent
 
     public function serialize(): array
     {
-        $facilities = array();
+        $facilities = [];
         foreach ($this->facilities as $facility) {
             $facilities[] = $facility->serialize();
         }

@@ -22,9 +22,9 @@ abstract class AbstractEventWithIri extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'iri' => $this->iri,
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractEventWithIri

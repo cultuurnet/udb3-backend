@@ -32,7 +32,7 @@ class CalendarForEventDataValidatorTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    public function fileDataProvider():array
+    public function fileDataProvider(): array
     {
         return [
             'single_time_span' => [
@@ -57,7 +57,7 @@ class CalendarForEventDataValidatorTest extends TestCase
 
         try {
             $this->calendarForEventDataValidator->validate($data);
-            $this->fail("No DataValidationException was thrown.");
+            $this->fail('No DataValidationException was thrown.');
         } catch (DataValidationException $exception) {
             $this->assertEquals(
                 $expectedException->getValidationMessages(),

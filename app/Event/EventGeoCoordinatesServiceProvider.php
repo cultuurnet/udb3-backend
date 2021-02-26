@@ -14,9 +14,6 @@ use Silex\ServiceProviderInterface;
 
 class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['event_geocoordinates_command_handler'] = $app->share(
@@ -47,9 +44,7 @@ class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

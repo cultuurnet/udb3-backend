@@ -9,8 +9,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    const LABEL_ID_COLUMN = 'label_id';
-    const ROLE_ID_COLUMN = 'role_id';
+    public const LABEL_ID_COLUMN = 'label_id';
+    public const ROLE_ID_COLUMN = 'role_id';
 
     /**
      * @var StringLiteral
@@ -19,7 +19,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
 
     /**
      * SchemaConfigurator constructor.
-     * @param StringLiteral $labelRolesTableName
      */
     public function __construct(StringLiteral $labelRolesTableName)
     {

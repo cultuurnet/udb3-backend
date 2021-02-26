@@ -22,9 +22,7 @@ class MediaObjectReferencesDenormalizer implements DenormalizerInterface
      */
     private $mediaObjectIdParser;
 
-    /**
-     * @param UUIDParser|null $mediaObjectIdParser
-     */
+
     public function __construct(UUIDParser $mediaObjectIdParser = null)
     {
         if (!$mediaObjectIdParser) {
@@ -37,7 +35,7 @@ class MediaObjectReferencesDenormalizer implements DenormalizerInterface
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("MediaObjectReferencesDenormalizer does not support {$class}.");
@@ -61,7 +59,6 @@ class MediaObjectReferencesDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate MediaObjectReferenceDenormalizer
-     * @param array $referenceData
      * @return MediaObjectReference
      */
     private function denormalizeMediaObjectReference(array $referenceData)

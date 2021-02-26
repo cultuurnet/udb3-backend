@@ -15,9 +15,6 @@ use Silex\ServiceProviderInterface;
 
 class JwtServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['security.authentication_listener.factory.jwt'] = $app->protect(
@@ -100,9 +97,7 @@ class JwtServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

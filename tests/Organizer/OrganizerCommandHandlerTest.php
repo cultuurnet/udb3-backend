@@ -602,7 +602,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
      * @test
      * @dataProvider deleteFromOfferDataProvider
      *
-     * @param AbstractDeleteOrganizer $deleteOrganizer
      */
     public function it_ignores_delete_from_offer_commands(AbstractDeleteOrganizer $deleteOrganizer)
     {

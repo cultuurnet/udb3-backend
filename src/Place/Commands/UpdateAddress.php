@@ -20,8 +20,6 @@ class UpdateAddress extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Address $address
-     * @param Language $language
      */
     public function __construct($itemId, Address $address, Language $language)
     {

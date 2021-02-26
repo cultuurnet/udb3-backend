@@ -9,9 +9,6 @@ use Silex\ServiceProviderInterface;
 
 class EventReadServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['event_main_language_query'] = $app->share(
@@ -26,9 +23,7 @@ class EventReadServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

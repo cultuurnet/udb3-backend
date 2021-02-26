@@ -76,7 +76,6 @@ interface LegacyOffer
     public function getContactPoint();
 
     /**
-     * @param \DateTimeImmutable|null $default
      * @return \DateTimeImmutable|null
      */
     public function getAvailableFrom(\DateTimeImmutable $default = null);

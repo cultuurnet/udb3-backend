@@ -201,7 +201,6 @@ class ReadRestControllerTest extends TestCase
     }
 
     /**
-     * @param Entity $entity
      * @return array
      */
     private function entityToArray(Entity $entity)

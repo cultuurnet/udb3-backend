@@ -16,9 +16,7 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
      */
     private $organizer;
 
-    /**
-     * @param Organizer $organizer
-     */
+
     public function __construct(Organizer $organizer)
     {
         if (is_null($organizer->getUrl())) {

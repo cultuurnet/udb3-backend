@@ -20,8 +20,6 @@ class UpdateTitle extends AbstractUpdateOrganizerCommand
     /**
      * UpdateTitle constructor.
      * @param string $organizerId
-     * @param Title $title
-     * @param Language $language
      */
     public function __construct(
         $organizerId,

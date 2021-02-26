@@ -31,7 +31,7 @@ class PlaceFacilityResolverTest extends TestCase
         $resolver = new PlaceFacilityResolver();
 
         $facility = $resolver->byId(new StringLiteral('3.23.3.0.0'));
-        $expectedFacility = new Facility("3.23.3.0.0", "Rolstoel ter beschikking");
+        $expectedFacility = new Facility('3.23.3.0.0', 'Rolstoel ter beschikking');
 
         $this->assertEquals($expectedFacility, $facility);
     }

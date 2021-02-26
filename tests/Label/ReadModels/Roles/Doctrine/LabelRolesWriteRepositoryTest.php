@@ -121,10 +121,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
         $this->assertEquals($expectedRows, $actualRows);
     }
 
-    /**
-     * @param UUID $labelId
-     * @param UUID $roleId
-     */
+
     private function insertLabelRole(UUID $labelId, UUID $roleId)
     {
         $this->connection->insert(

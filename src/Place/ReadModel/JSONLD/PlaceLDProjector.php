@@ -75,12 +75,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected $cdbXMLImporter;
 
     /**
-     * @param DocumentRepository $repository
-     * @param IriGeneratorInterface $iriGenerator
-     * @param EntityServiceInterface $organizerService
-     * @param MediaObjectSerializer $mediaObjectSerializer
-     * @param CdbXMLImporter $cdbXMLImporter
-     * @param JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher
      * @param string[] $basePriceTranslations
      */
     public function __construct(
@@ -105,7 +99,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     }
 
     /**
-     * @param PlaceImportedFromUDB2 $placeImportedFromUDB2
      * @return JsonDocument
      */
     protected function applyPlaceImportedFromUDB2(
@@ -117,7 +110,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     }
 
     /**
-     * @param PlaceUpdatedFromUDB2 $placeUpdatedFromUDB2
      * @return JsonDocument
      */
     protected function applyPlaceUpdatedFromUDB2(
@@ -129,7 +121,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     }
 
     /**
-     * @param ActorImportedFromUDB2 $actorImportedFromUDB2
      * @return JsonDocument
      * @throws \CultureFeed_Cdb_ParseException
      */
@@ -189,8 +180,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     }
 
     /**
-     * @param PlaceCreated $placeCreated
-     * @param DomainMessage $domainMessage
      * @return JsonDocument
      */
     protected function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage)
@@ -262,7 +251,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
 
     /**
      * Apply the major info updated command to the projector.
-     * @param MajorInfoUpdated $majorInfoUpdated
      * @return JsonDocument
      */
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
@@ -311,7 +299,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     }
 
     /**
-     * @param AddressUpdated $addressUpdated
      * @return JsonDocument
      */
     protected function applyAddressUpdated(AddressUpdated $addressUpdated)
@@ -323,7 +310,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     }
 
     /**
-     * @param AddressTranslated $addressTranslated
      * @return JsonDocument
      */
     protected function applyAddressTranslated(AddressTranslated $addressTranslated)
@@ -334,11 +320,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @param \stdClass $jsonLd
-     * @param Address $address
-     * @param Language $language
-     */
+
     protected function setAddress(\stdClass $jsonLd, Address $address, Language $language)
     {
         if (!isset($jsonLd->address)) {
@@ -361,7 +343,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     }
 
     /**
-     * @param GeoCoordinatesUpdated $geoCoordinatesUpdated
      * @return JsonDocument
      */
     protected function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)

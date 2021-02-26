@@ -11,7 +11,7 @@ use ValueObjects\Web\Url;
 
 class ContextControllerProvider implements ControllerProviderInterface
 {
-    const JSONLD_CONTEXT_CONTROLLER = 'json_ld_controller';
+    public const JSONLD_CONTEXT_CONTROLLER = 'json_ld_controller';
 
     public function connect(Application $app)
     {

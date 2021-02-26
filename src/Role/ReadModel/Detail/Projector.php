@@ -14,9 +14,6 @@ use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 
 class Projector extends RoleProjector
 {
-    /**
-     * @param RoleCreated $roleCreated
-     */
     protected function applyRoleCreated(RoleCreated $roleCreated)
     {
         $this->saveNewDocument(
@@ -30,9 +27,7 @@ class Projector extends RoleProjector
         );
     }
 
-    /**
-     * @param RoleRenamed $roleRenamed
-     */
+
     protected function applyRoleRenamed(RoleRenamed $roleRenamed)
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
@@ -45,17 +40,13 @@ class Projector extends RoleProjector
         $this->repository->save($document->withBody($json));
     }
 
-    /**
-     * @param RoleDeleted $roleDeleted
-     */
+
     protected function applyRoleDeleted(RoleDeleted $roleDeleted)
     {
         $this->repository->remove($roleDeleted->getUuid());
     }
 
-    /**
-     * @param ConstraintAdded $constraintAdded
-     */
+
     protected function applyConstraintAdded(
         ConstraintAdded $constraintAdded
     ) {
@@ -73,9 +64,7 @@ class Projector extends RoleProjector
         $this->repository->save($document->withBody($json));
     }
 
-    /**
-     * @param ConstraintUpdated $constraintUpdated
-     */
+
     protected function applyConstraintUpdated(
         ConstraintUpdated $constraintUpdated
     ) {
@@ -89,9 +78,7 @@ class Projector extends RoleProjector
         $this->repository->save($document->withBody($json));
     }
 
-    /**
-     * @param ConstraintRemoved $constraintRemoved
-     */
+
     protected function applyConstraintRemoved(
         ConstraintRemoved $constraintRemoved
     ) {
@@ -105,9 +92,7 @@ class Projector extends RoleProjector
         $this->repository->save($document->withBody($json));
     }
 
-    /**
-     * @param PermissionAdded $permissionAdded
-     */
+
     public function applyPermissionAdded(PermissionAdded $permissionAdded)
     {
         $document = $this->loadDocumentFromRepositoryByUuid(
@@ -126,9 +111,7 @@ class Projector extends RoleProjector
         $this->repository->save($document->withBody($json));
     }
 
-    /**
-     * @param PermissionRemoved $permissionRemoved
-     */
+
     public function applyPermissionRemoved(PermissionRemoved $permissionRemoved)
     {
         $document = $this->loadDocumentFromRepositoryByUuid(

@@ -13,7 +13,7 @@ class LabelsDenormalizer implements DenormalizerInterface
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("LabelsDenormalizer does not support {$class}.");

@@ -14,7 +14,6 @@ class UpdateContactPoint extends AbstractUpdateOrganizerCommand
     /**
      * UpdateContactPoint constructor.
      * @param string $organizerId
-     * @param ContactPoint $contactPoint
      */
     public function __construct(
         $organizerId,

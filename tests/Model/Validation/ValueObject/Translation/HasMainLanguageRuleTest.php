@@ -234,10 +234,7 @@ class HasMainLanguageRuleTest extends TestCase
         );
     }
 
-    /**
-     * @param Validatable $rule
-     * @param mixed $input
-     */
+
     private function assertValid(Validatable $rule, $input)
     {
         $rule->assert($input);
@@ -245,11 +242,7 @@ class HasMainLanguageRuleTest extends TestCase
         $this->assertTrue($rule->validate($input));
     }
 
-    /**
-     * @param Validatable $rule
-     * @param mixed $input
-     * @param array $expectedMessages
-     */
+
     private function assertValidationException(Validatable $rule, $input, array $expectedMessages)
     {
         try {

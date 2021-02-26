@@ -12,7 +12,7 @@ class JSONLDEventFormatterTest extends TestCase
     private function getJSONEventFromFile($fileName)
     {
         $jsonEvent = file_get_contents(
-            __DIR__.'/../../samples/'.$fileName
+            __DIR__ . '/../../samples/' . $fileName
         );
 
         return $jsonEvent;

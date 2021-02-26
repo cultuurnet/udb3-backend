@@ -83,7 +83,6 @@ class DBALWebsiteLookupServiceTest extends TestCase
 
     /**
      * @param string $uuid
-     * @param Url $url
      */
     private function insertOrganizerWebsite($uuid, Url $url)
     {

@@ -29,7 +29,7 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
         $this->placeDenormalizer = $placeDenormalizer;
     }
 
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("PlaceReferenceDenormalizer does not support {$class}.");

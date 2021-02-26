@@ -7,7 +7,6 @@ use ValueObjects\Web\Url;
 interface UrlTransformerInterface
 {
     /**
-     * @param Url $url
      * @return Url
      */
     public function transform(Url $url);

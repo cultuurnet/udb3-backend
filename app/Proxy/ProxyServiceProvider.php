@@ -16,9 +16,6 @@ use ValueObjects\Web\PortNumber;
 
 class ProxyServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['cdbxml_proxy'] = $app->share(
@@ -70,9 +67,7 @@ class ProxyServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

@@ -14,7 +14,7 @@ class CSVFileWriter implements TabularDataFileWriterInterface
     {
         $this->f = fopen($filePath, 'w');
         if (false === $this->f) {
-            throw new \RuntimeException('Unable to open file for writing: '.$filePath);
+            throw new \RuntimeException('Unable to open file for writing: ' . $filePath);
         }
 
         $this->delimiter = ',';

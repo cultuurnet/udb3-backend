@@ -1,4 +1,5 @@
 <?php
+
 namespace CultuurNet\UDB3\UDB2\Actor\Events;
 
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;

@@ -8,7 +8,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface UserPermissionsReadRepositoryInterface
 {
     /**
-     * @param StringLiteral $userId
      * @return Permission[]
      */
     public function getPermissions(StringLiteral $userId);

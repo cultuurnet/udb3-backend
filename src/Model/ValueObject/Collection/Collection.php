@@ -35,7 +35,6 @@ abstract class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param mixed $value
      * @return static
      */
     public function with($value)
@@ -47,7 +46,6 @@ abstract class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param callable $callback
      * @return static
      * @see array_filter
      */
@@ -59,7 +57,6 @@ abstract class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param mixed $value
      * @return bool
      * @see array_search
      */
@@ -139,7 +136,6 @@ abstract class Collection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param array $values
      * @return static
      */
     public static function fromArray(array $values)

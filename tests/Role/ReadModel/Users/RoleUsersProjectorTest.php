@@ -258,7 +258,6 @@ class RoleUsersProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @param JsonDocument $jsonDocument
      */
     private function mockGet(UUID $uuid, JsonDocument $jsonDocument = null)
@@ -270,7 +269,6 @@ class RoleUsersProjectorTest extends TestCase
     }
 
     /**
-     * @param StringLiteral $userId
      * @param UserIdentityDetails $userIdentityDetails
      */
     private function mockGetUserById(
@@ -297,7 +295,6 @@ class RoleUsersProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument
      */
     private function createEmptyJsonDocument(UUID $uuid)
@@ -309,8 +306,6 @@ class RoleUsersProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
-     * @param UserIdentityDetails $userIdentityDetail
      * @return JsonDocument
      */
     private function createJsonDocumentWithUserIdentityDetail(

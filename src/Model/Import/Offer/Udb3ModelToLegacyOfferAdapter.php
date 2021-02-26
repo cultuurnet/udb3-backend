@@ -23,9 +23,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
      */
     private $offer;
 
-    /**
-     * @param Offer $offer
-     */
+
     public function __construct(Offer $offer)
     {
         $this->offer = $offer;

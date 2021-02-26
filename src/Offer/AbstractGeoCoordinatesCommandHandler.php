@@ -48,9 +48,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @param AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates
-     */
+
     protected function updateGeoCoordinatesFromAddress(AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates)
     {
         $offerId = $updateGeoCoordinates->getItemId();

@@ -18,13 +18,13 @@ use ValueObjects\Enum\Enum;
  */
 final class DayOfWeek extends Enum
 {
-    const MONDAY = 'monday';
-    const TUESDAY = 'tuesday';
-    const WEDNESDAY = 'wednesday';
-    const THURSDAY = 'thursday';
-    const FRIDAY = 'friday';
-    const SATURDAY = 'saturday';
-    const SUNDAY = 'sunday';
+    public const MONDAY = 'monday';
+    public const TUESDAY = 'tuesday';
+    public const WEDNESDAY = 'wednesday';
+    public const THURSDAY = 'thursday';
+    public const FRIDAY = 'friday';
+    public const SATURDAY = 'saturday';
+    public const SUNDAY = 'sunday';
 
     public static function fromUdb3ModelDay(Day $day): DayOfWeek
     {

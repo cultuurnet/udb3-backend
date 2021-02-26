@@ -50,13 +50,6 @@ final class PlaceCreated extends PlaceEvent
 
     /**
      * @param string $placeId
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     * @param DateTimeImmutable|null $publicationDate
      */
     public function __construct(
         $placeId,
@@ -124,7 +117,7 @@ final class PlaceCreated extends PlaceEvent
         if (!is_null($this->getPublicationDate())) {
             $publicationDate = $this->getPublicationDate()->format(\DateTime::ATOM);
         }
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'main_language' => $this->mainLanguage->getCode(),
             'title' => (string) $this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
@@ -132,7 +125,7 @@ final class PlaceCreated extends PlaceEvent
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),
             'publication_date' => $publicationDate,
-        );
+        ];
     }
 
     public static function deserialize(array $data): PlaceCreated

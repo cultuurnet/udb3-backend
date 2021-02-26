@@ -7,8 +7,8 @@ use stdClass;
 
 final class JsonDocument implements Identifiable
 {
-    protected $id;
-    protected $body;
+    private $id;
+    private $body;
 
     public function __construct($id, $rawBody = '{}')
     {

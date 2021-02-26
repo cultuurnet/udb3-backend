@@ -21,7 +21,6 @@ class IriOfferIdentifierJSONDeserializer implements DeserializerInterface
 
     /**
      * IriOfferIdentifierJSONDeserializer constructor.
-     * @param IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
      */
     public function __construct(IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory)
     {
@@ -29,7 +28,6 @@ class IriOfferIdentifierJSONDeserializer implements DeserializerInterface
     }
 
     /**
-     * @param StringLiteral $data
      * @return IriOfferIdentifier
      */
     public function deserialize(StringLiteral $data)

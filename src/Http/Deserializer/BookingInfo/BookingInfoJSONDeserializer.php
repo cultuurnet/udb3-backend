@@ -15,9 +15,7 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
      */
     private $validator;
 
-    /**
-     * @param DataValidatorInterface|null $validator
-     */
+
     public function __construct(DataValidatorInterface $validator = null)
     {
         if (!$validator) {

@@ -19,17 +19,17 @@ class EventImportedFromUDB2 extends EventEvent implements EventCdbXMLInterface
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'cdbxml' => $this->getCdbXml(),
             'cdbXmlNamespaceUri' => $this->getCdbXmlNamespaceUri(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): EventImportedFromUDB2
     {
-        $data += array(
+        $data += [
             'cdbXmlNamespaceUri' => CultureFeed_Cdb_Xml::namespaceUriForVersion('3.2'),
-        );
+        ];
         return new self(
             $data['event_id'],
             $data['cdbxml'],

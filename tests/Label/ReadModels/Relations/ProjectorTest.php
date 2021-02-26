@@ -107,7 +107,6 @@ class ProjectorTest extends TestCase
      *
      * @param string $relationId
      * @param AbstractLabelAdded|LabelAdded $labelAdded
-     * @param RelationType $relationType
      */
     public function it_handles_label_added_events(
         $relationId,
@@ -221,7 +220,6 @@ class ProjectorTest extends TestCase
      * @dataProvider labelsImportedDataProvider
      *
      * @param string $relationId
-     * @param RelationType $relationType
      * @param AbstractLabelsImported|ImportLabels $labelsImported
      */
     public function it_handles_import_labels_events(

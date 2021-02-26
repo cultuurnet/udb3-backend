@@ -22,9 +22,9 @@ abstract class AbstractOrganizerEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'organizerId' => $this->organizerId,
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractOrganizerEvent

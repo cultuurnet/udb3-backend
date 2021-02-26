@@ -25,7 +25,7 @@ class MatchesRegexPatternTest extends \PHPUnit_Framework_TestCase
         $value = 'ab10';
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage("The given value is not a digit.");
+        $this->expectExceptionMessage('The given value is not a digit.');
 
         new MockDigitsRegexPattern($value);
     }

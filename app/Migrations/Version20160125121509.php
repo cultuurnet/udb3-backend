@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20160125121509 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->createTable('place_permission_readmodel');
@@ -20,20 +17,18 @@ class Version20160125121509 extends AbstractMigration
         $table->addColumn(
             'place_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'user_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->setPrimaryKey(['place_id', 'user_id']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
     }

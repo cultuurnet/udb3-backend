@@ -6,5 +6,4 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsInappropriate;
 
 class FlaggedAsInappropriate extends AbstractFlaggedAsInappropriate
 {
-
 }

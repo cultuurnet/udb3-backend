@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
@@ -56,7 +58,7 @@ class ReindexOffersWithPopularityScore extends Command
     protected function configure(): void
     {
         $this
-            ->setName($this->type.':reindex-offers-with-popularity')
+            ->setName($this->type . ':reindex-offers-with-popularity')
             ->setDescription('Reindex events or places that have a popularity score.')
             ->addOption(
                 'force',

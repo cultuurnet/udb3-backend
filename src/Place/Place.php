@@ -382,7 +382,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Label $label
      * @return LabelAdded
      */
     protected function createLabelAddedEvent(Label $label)
@@ -391,7 +390,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Label $label
      * @return LabelRemoved
      */
     protected function createLabelRemovedEvent(Label $label)
@@ -444,7 +442,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Title $title
      * @return TitleUpdated
      */
     protected function createTitleUpdatedEvent(Title $title)
@@ -512,7 +509,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param ContactPoint $contactPoint
      * @return ContactPointUpdated
      */
     protected function createContactPointUpdatedEvent(ContactPoint $contactPoint)
@@ -529,7 +525,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param BookingInfo $bookingInfo
      * @return BookingInfoUpdated
      */
     protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo)
@@ -538,7 +533,6 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param PriceInfo $priceInfo
      * @return PriceInfoUpdated
      */
     protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo)

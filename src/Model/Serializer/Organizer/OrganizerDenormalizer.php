@@ -109,7 +109,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("OrganizerDenormalizer does not support {$class}.");
@@ -156,8 +156,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOrganizer $organizer
      * @return ImmutableOrganizer
      */
     private function denormalizeAddress(array $data, ImmutableOrganizer $organizer)
@@ -172,8 +170,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOrganizer $organizer
      * @return ImmutableOrganizer
      */
     private function denormalizeLabels(array $data, ImmutableOrganizer $organizer)
@@ -183,8 +179,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOrganizer $organizer
      * @return ImmutableOrganizer
      */
     private function denormalizeGeoCoordinates(array $data, ImmutableOrganizer $organizer)
@@ -202,8 +196,6 @@ class OrganizerDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * @param array $data
-     * @param ImmutableOrganizer $organizer
      * @return ImmutableOrganizer
      */
     protected function denormalizeContactPoint(array $data, ImmutableOrganizer $organizer)

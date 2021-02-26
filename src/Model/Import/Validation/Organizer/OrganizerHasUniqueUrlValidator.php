@@ -11,10 +11,6 @@ use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerHasUniqueUrlValidator extends Callback
 {
-    /**
-     * @param OrganizerIDParser $organizerIDParser
-     * @param WebsiteLookupServiceInterface $websiteLookupService
-     */
     public function __construct(
         OrganizerIDParser $organizerIDParser,
         WebsiteLookupServiceInterface $websiteLookupService

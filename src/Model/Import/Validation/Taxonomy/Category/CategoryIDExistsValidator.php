@@ -9,9 +9,6 @@ use Respect\Validation\Rules\Callback;
 
 class CategoryIDExistsValidator extends Callback
 {
-    /**
-     * @param CategoryResolverInterface $categoryResolver
-     */
     public function __construct(CategoryResolverInterface $categoryResolver)
     {
         $callback = function ($id) use ($categoryResolver) {

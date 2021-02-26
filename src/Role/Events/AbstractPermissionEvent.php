@@ -30,8 +30,8 @@ abstract class AbstractPermissionEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'permission' => $this->permission->toNative(),
-        );
+        ];
     }
 }

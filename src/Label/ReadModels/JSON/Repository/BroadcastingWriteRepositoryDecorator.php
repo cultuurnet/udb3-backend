@@ -102,9 +102,7 @@ class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    /**
-     * @param \ValueObjects\Identity\UUID $uuid
-     */
+
     protected function broadcastDocumentUpdated(UUID $uuid)
     {
         $event = new LabelDetailsProjectedToJSONLD($uuid);

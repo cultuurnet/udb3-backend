@@ -18,7 +18,7 @@ class NewlineToSpaceStringFilterTest extends StringFilterTest
     public function it_converts_newlines_to_spaces()
     {
         $original = "Hello\nworld!\nGoodbye!";
-        $expected = "Hello world! Goodbye!";
+        $expected = 'Hello world! Goodbye!';
         $this->assertFilterValue($expected, $original);
     }
 
@@ -28,7 +28,7 @@ class NewlineToSpaceStringFilterTest extends StringFilterTest
     public function it_converts_consecutive_newlines_to_a_single_space()
     {
         $original = "Hello\n\nworld!";
-        $expected = "Hello world!";
+        $expected = 'Hello world!';
         $this->assertFilterValue($expected, $original);
     }
 

@@ -12,9 +12,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20170731151814 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $this->getIndexTable($schema)
@@ -63,9 +60,7 @@ class Version20170731151814 extends AbstractMigration
             );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $this->getIndexTable($schema)
@@ -113,7 +108,6 @@ class Version20170731151814 extends AbstractMigration
     }
 
     /**
-     * @param Schema $schema
      * @return Table
      */
     private function getIndexTable(Schema $schema)

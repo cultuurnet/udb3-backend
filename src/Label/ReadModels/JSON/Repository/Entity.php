@@ -10,10 +10,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Entity implements \JsonSerializable
 {
-    const ID = 'uuid';
-    const NAME = 'name';
-    const VISIBILITY = 'visibility';
-    const PRIVACY = 'privacy';
+    public const ID = 'uuid';
+    public const NAME = 'name';
+    public const VISIBILITY = 'visibility';
+    public const PRIVACY = 'privacy';
 
     /**
      * @var UUID
@@ -47,10 +47,6 @@ class Entity implements \JsonSerializable
 
     /**
      * LabelEntity constructor.
-     * @param UUID $uuid
-     * @param StringLiteral $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
      * @param UUID $parentUuid
      * @param Natural $count
      */

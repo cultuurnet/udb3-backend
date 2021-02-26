@@ -38,8 +38,6 @@ final class OrganizerCreated extends OrganizerEvent
     public $urls;
 
     /**
-     * @param string $id
-     * @param Title $title
      * @param Address[] $addresses
      * @param string[] $phones
      * @param string[] $emails
@@ -101,23 +99,23 @@ final class OrganizerCreated extends OrganizerEvent
 
     public function serialize(): array
     {
-        $addresses = array();
+        $addresses = [];
         foreach ($this->getAddresses() as $address) {
             $addresses[] = $address->serialize();
         }
 
-        return parent::serialize() + array(
+        return parent::serialize() + [
           'title' => (string) $this->getTitle(),
           'addresses' => $addresses,
           'phones' => $this->getPhones(),
           'emails' => $this->getEmails(),
           'urls' => $this->getUrls(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): OrganizerCreated
     {
-        $addresses = array();
+        $addresses = [];
         foreach ($data['addresses'] as $address) {
             $addresses[] = Address::deserialize($address);
         }

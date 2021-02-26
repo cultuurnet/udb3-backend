@@ -188,9 +188,7 @@ class SecurityTest extends TestCase
         $this->assertTrue($allowsUpdate);
     }
 
-    /**
-     * @param StringLiteral|null $userId
-     */
+
     private function mockGetId(StringLiteral $userId = null)
     {
         $this->userIdentification->method('getId')

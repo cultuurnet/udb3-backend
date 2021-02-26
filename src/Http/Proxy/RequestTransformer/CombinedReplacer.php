@@ -17,7 +17,6 @@ class CombinedReplacer implements RequestTransformerInterface
     }
 
     /**
-     * @param RequestInterface $request
      * @return RequestInterface
      */
     public function transform(RequestInterface $request)

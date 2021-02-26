@@ -19,9 +19,7 @@ class UserIdentityController
      */
     private $userIdentityResolver;
 
-    /**
-     * @param UserIdentityResolverInterface $userIdentityResolver
-     */
+
     public function __construct(
         UserIdentityResolverInterface $userIdentityResolver
     ) {

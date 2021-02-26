@@ -22,7 +22,6 @@ class ContactPointJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return ContactPoint
      */
     public function deserialize(StringLiteral $data)

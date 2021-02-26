@@ -62,7 +62,7 @@ use ValueObjects\DateTime\Minute;
 
 class EventLDProjectorTest extends OfferLDProjectorTestBase
 {
-    const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    public const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
      * @var PlaceService|MockObject
@@ -103,10 +103,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * Constructs a test case with the given name.
      *
      * @param string $name
-     * @param array  $data
      * @param string $dataName
      */
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName, 'CultuurNet\\UDB3\\Event');
     }
@@ -254,7 +253,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @test
      * @dataProvider eventCreatorDataProvider
      *
-     * @param Metadata $metadata
      * @param string $expectedCreator
      */
     public function it_handles_new_events_with_creator(Metadata $metadata, $expectedCreator)
@@ -465,7 +463,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
         $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
-        $eventType = new EventType("0.3.1.0.0", "Cursus of workshop");
+        $eventType = new EventType('0.3.1.0.0', 'Cursus of workshop');
 
         $calendar = new Calendar(
             CalendarType::SINGLE(),
@@ -502,7 +500,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $startDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T12:00:00+01:00');
         $endDate = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2020-01-01T12:00:00+01:00');
-        $eventType = new EventType("1.50.0.0.0", "Eten en drinken");
+        $eventType = new EventType('1.50.0.0.0', 'Eten en drinken');
 
         $calendar = new Calendar(
             CalendarType::SINGLE(),
@@ -691,17 +689,17 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $body = $this->project($event, $event->getEventId());
         // asset the location is still a place object
-        $this->assertEquals("Place", $body->location->{'@type'});
+        $this->assertEquals('Place', $body->location->{'@type'});
         $this->assertArrayNotHasKey(
-            "@id",
+            '@id',
             (array) $body->location
         );
         $this->assertArrayHasKey(
-            "name",
+            'name',
             (array) $body->location
         );
         $this->assertArrayHasKey(
-            "address",
+            'address',
             (array) $body->location
         );
     }
@@ -1293,7 +1291,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $importedDate = '2015-03-01T10:17:19.176169+02:00';
 
-        $metadata = array();
+        $metadata = [];
         $metadata['user_nick'] = 'Jantest';
         $metadata['consumer']['name'] = 'UiTDatabank';
 
@@ -1338,13 +1336,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
     /**
      * @param string $eventId
-     * @param Language $mainLanguage
      * @return stdClass
      */
     private function createJsonLD($eventId, Language $mainLanguage)
     {
         $jsonLD = new stdClass();
-        $jsonLD->{'@id'} = 'http://example.com/entity/'. $eventId;
+        $jsonLD->{'@id'} = 'http://example.com/entity/' . $eventId;
         $jsonLD->{'@context'} = '/contexts/event';
         $jsonLD->mainLanguage = $mainLanguage->getCode();
         $jsonLD->name = (object)[
@@ -1392,9 +1389,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             );
     }
 
-    /**
-     * @return Calendar
-     */
+
     protected function aPeriodicCalendarWithWorkScheme(): Calendar
     {
         return new Calendar(

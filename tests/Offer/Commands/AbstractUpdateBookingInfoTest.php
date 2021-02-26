@@ -40,7 +40,7 @@ class AbstractUpdateBookingInfoTest extends TestCase
 
         $this->updateBookingInfo = $this->getMockForAbstractClass(
             AbstractUpdateBookingInfo::class,
-            array($this->itemId, $this->bookingInfo)
+            [$this->itemId, $this->bookingInfo]
         );
     }
 

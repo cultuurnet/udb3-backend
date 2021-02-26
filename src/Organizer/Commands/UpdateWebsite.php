@@ -14,7 +14,6 @@ class UpdateWebsite extends AbstractUpdateOrganizerCommand
     /**
      * UpdateUrl constructor.
      * @param string $organizerId
-     * @param Url $website
      */
     public function __construct(
         $organizerId,

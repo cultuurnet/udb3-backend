@@ -38,11 +38,11 @@ class DBALRepositoryTest extends TestCase
             $this->getTableName()
         );
 
-        $this->role = array(
+        $this->role = [
             'uuid' => '8d17cffe-6f28-459c-8627-1f6345f8b296',
             'name' => 'Leuven validatoren',
             'constraint_query' => 'city:Leuven',
-        );
+        ];
     }
 
     /**
@@ -146,11 +146,11 @@ class DBALRepositoryTest extends TestCase
             'name' => 'foo validator',
         ];
 
-        $expectedRoles = array(
+        $expectedRoles = [
             $expectedRole1,
             $expectedRole2,
             $expectedRole3,
-        );
+        ];
 
         foreach ($expectedRoles as $role) {
             $this->dbalRepository->save(
@@ -166,11 +166,11 @@ class DBALRepositoryTest extends TestCase
         $this->connection->rollBack();
 
         $this->assertEquals(
-            array(
+            [
                 $expectedRole1,
                 $expectedRole2,
                 $expectedRole3,
-            ),
+            ],
             $actualResults->getMember()
         );
 
@@ -190,10 +190,10 @@ class DBALRepositoryTest extends TestCase
         $this->connection->rollBack();
 
         $this->assertEquals(
-            array(
+            [
                 $expectedRole2,
                 $expectedRole3,
-            ),
+            ],
             $actualResults->getMember()
         );
 

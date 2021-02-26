@@ -16,7 +16,6 @@ class ReadService implements ReadServiceInterface
 
     /**
      * ReadService constructor.
-     * @param ReadRepositoryInterface $readRepository
      */
     public function __construct(ReadRepositoryInterface $readRepository)
     {

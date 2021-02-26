@@ -26,7 +26,6 @@ final class ImportLabels extends AbstractCommand implements LabelSecurityInterfa
 
     /**
      * @param string $itemId
-     * @param Labels $labels
      */
     public function __construct($itemId, Labels $labels)
     {

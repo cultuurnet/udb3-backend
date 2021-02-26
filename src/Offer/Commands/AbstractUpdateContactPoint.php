@@ -14,7 +14,6 @@ abstract class AbstractUpdateContactPoint extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param ContactPoint $contactPoint
      */
     public function __construct($itemId, ContactPoint $contactPoint)
     {

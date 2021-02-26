@@ -37,7 +37,7 @@ class AbstractLabelCommandTest extends TestCase
 
         $this->labelCommand = $this->getMockForAbstractClass(
             AbstractLabelCommand::class,
-            array($this->itemId, $this->label)
+            [$this->itemId, $this->label]
         );
     }
 

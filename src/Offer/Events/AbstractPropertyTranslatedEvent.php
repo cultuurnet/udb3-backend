@@ -24,8 +24,8 @@ abstract class AbstractPropertyTranslatedEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'language' => (string)$this->language->getCode(),
-        );
+        ];
     }
 }

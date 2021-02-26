@@ -29,7 +29,6 @@ class MajorInfoDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)

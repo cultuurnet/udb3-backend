@@ -86,7 +86,7 @@ class AMQPPublisherTest extends TestCase
         $this->expectSpecificationIsSatisfied();
 
         $expectedBody = '{"id":"F68E71A1-DBB0-4542-AEE5-BD937E095F74","content":"test 123 456"}';
-        $expectedProperties = ["correlation_id" => "F68E71A1-DBB0-4542-AEE5-BD937E095F74-2"];
+        $expectedProperties = ['correlation_id' => 'F68E71A1-DBB0-4542-AEE5-BD937E095F74-2'];
 
         $expectedMessage = new AMQPMessage($expectedBody, $expectedProperties);
 

@@ -23,7 +23,7 @@ final class ContextFactory
         ?Request $request = null,
         ?ConsumerInterface $consumer = null
     ): Metadata {
-        $contextValues = array();
+        $contextValues = [];
 
         if ($user) {
             $contextValues['user_id'] = $user->id;

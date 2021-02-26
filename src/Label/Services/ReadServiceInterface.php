@@ -11,25 +11,21 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface ReadServiceInterface
 {
     /**
-     * @param UUID $uuid
      * @return Entity|null
      */
     public function getByUuid(UUID $uuid);
 
     /**
-     * @param StringLiteral $identifier
      * @return Entity|null
      */
     public function getByName(StringLiteral $identifier);
 
     /**
-     * @param Query $query
      * @return Entity[]|null
      */
     public function search(Query $query);
 
     /**
-     * @param Query $query
      * @return Natural
      */
     public function searchTotalLabels(Query $query);

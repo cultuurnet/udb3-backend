@@ -9,9 +9,6 @@ use Silex\ServiceProviderInterface;
 
 class PlaceReadServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['place_main_language_query'] = $app->share(
@@ -26,9 +23,7 @@ class PlaceReadServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

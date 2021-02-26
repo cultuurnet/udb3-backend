@@ -77,10 +77,7 @@ class CultureFeedUserIdentityResolver implements UserIdentityResolverInterface
         }
     }
 
-    /**
-     * @param \CultureFeed_SearchUsersQuery $query
-     * @return UserIdentityDetails|null
-     */
+
     private function searchSingleUser(\CultureFeed_SearchUsersQuery $query): ?UserIdentityDetails
     {
         /** @var \CultureFeed_ResultSet $results */

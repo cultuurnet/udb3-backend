@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 class CdbXMLImporterTest extends TestCase
 {
-
     /**
      * @var CdbXMLImporter
      */
@@ -301,7 +300,7 @@ class CdbXMLImporterTest extends TestCase
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_email_and_phone_number.cdbxml.xml');
 
         $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
-        $this->assertEquals(array('0475 82 21 36'), $jsonEvent->contactPoint['phone']);
+        $this->assertEquals(['0475 82 21 36'], $jsonEvent->contactPoint['phone']);
     }
 
     /**
@@ -324,7 +323,7 @@ class CdbXMLImporterTest extends TestCase
 
         $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
         $this->assertEquals(
-            array('kgielens@stichtingtegenkanker.be'),
+            ['kgielens@stichtingtegenkanker.be'],
             $jsonEvent->contactPoint['email']
         );
     }
@@ -383,11 +382,11 @@ class CdbXMLImporterTest extends TestCase
     public function it_does_not_add_reservation_info_to_contact_point()
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_all_kinds_of_contact_info.cdbxml.xml');
-        $expectedContactPoint = array(
-            'email' => array('john@doe.be'),
-            'phone' => array('1234 82 21 36'),
-            'url' => array('http://www.rekanto.be'),
-        );
+        $expectedContactPoint = [
+            'email' => ['john@doe.be'],
+            'phone' => ['1234 82 21 36'],
+            'url' => ['http://www.rekanto.be'],
+        ];
 
         $this->assertObjectHasAttribute('contactPoint', $jsonEvent);
         $this->assertEquals($expectedContactPoint, $jsonEvent->contactPoint);
@@ -1059,44 +1058,44 @@ class CdbXMLImporterTest extends TestCase
      */
     public function descriptionsProvider()
     {
-        return array(
-            'merge short description and long description when short description is not repeated in long description for events' => array(
+        return [
+            'merge short description and long description when short description is not repeated in long description for events' => [
                 'event_with_short_and_long_description.cdbxml.xml',
                 'description.txt',
-            ),
-            'use long description when there is no short description in UDB2' => array(
+            ],
+            'use long description when there is no short description in UDB2' => [
                 'event_without_short_description.cdbxml.xml',
                 'description_from_only_long_description.txt',
-            ),
-            'remove repetition of short description in long description for events when complete short description is equal to the first part of long description' => array(
+            ],
+            'remove repetition of short description in long description for events when complete short description is equal to the first part of long description' => [
                 'event_with_short_description_included_in_long_description.cdbxml.xml',
                 'description.txt',
-            ),
-            'remove repetition of short description in long description for events when complete short description is equal to the first part of long description and keep HTML of long description' => array(
+            ],
+            'remove repetition of short description in long description for events when complete short description is equal to the first part of long description and keep HTML of long description' => [
                 'event_vertelavond_jan_gabriels.cdbxml.xml',
                 'description_vertelavond_jan_gabriels.txt',
                 '3.3',
-            ),
-            'take ellipsis into consideration when merging short and long description' => array(
+            ],
+            'take ellipsis into consideration when merging short and long description' => [
                 'event_with_short_description_and_ellipsis_included_in_long_description.cdbxml.xml',
                 'description.txt',
-            ),
-            'newlines, leading & trailing whitespace are removed from longdescription' => array(
+            ],
+            'newlines, leading & trailing whitespace are removed from longdescription' => [
                 'event_brussels_buzzing.cdbxml.xml',
                 'description_brussels_buzzing.txt',
                 '3.3',
-            ),
-            'newlines, leading & trailing whitespace are removed from shortdescription' => array(
+            ],
+            'newlines, leading & trailing whitespace are removed from shortdescription' => [
                 'event_54695180-3ff5-4db0-a020-d54b5bdc08e9.cdbxml.xml',
                 'description_54695180-3ff5-4db0-a020-d54b5bdc08e9.txt',
                 '3.3',
-            ),
-            'short description is used when long description is absent' => array(
+            ],
+            'short description is used when long description is absent' => [
                 'event_0001da4c-abef-4450-b37a-5a4bfb9d35f4.cdbxml.xml',
                 'description_0001da4c-abef-4450-b37a-5a4bfb9d35f4.txt',
                 '3.3',
-            ),
-        );
+            ],
+        ];
     }
 
     /**

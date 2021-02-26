@@ -59,10 +59,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
     {
     }
 
-    /**
-     * @param Application $app
-     * @return CreatedByQueryMode
-     */
+
     private function getCreatedByQueryMode(Application $app): CreatedByQueryMode
     {
         $createdByQueryMode = CreatedByQueryMode::UUID();

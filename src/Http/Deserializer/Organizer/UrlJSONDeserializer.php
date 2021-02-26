@@ -10,7 +10,6 @@ use ValueObjects\Web\Url;
 class UrlJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $data
      * @return Url
      */
     public function deserialize(StringLiteral $data)

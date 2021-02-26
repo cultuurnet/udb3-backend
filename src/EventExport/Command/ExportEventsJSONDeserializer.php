@@ -15,7 +15,6 @@ use ValueObjects\Web\EmailAddress;
 abstract class ExportEventsJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $data
      * @return ExportEvents
      */
     public function deserialize(StringLiteral $data)
@@ -50,8 +49,6 @@ abstract class ExportEventsJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param EventExportQuery  $query
-     * @param EmailAddress|null $address
      * @param string[]|null     $selection
      * @param string[]|null     $include
      * @return ExportEvents

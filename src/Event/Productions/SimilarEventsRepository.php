@@ -35,7 +35,6 @@ final class SimilarEventsRepository extends AbstractDBALRepository
      * Note that the order of values in event1 and event2 in similar_events and similar_events_skipped tables is not guaranteed to be the same.
      * The productions table does not have an event1 and event2 column, but rows of events instead. (Since a production can have more than 2 events)
      *
-     * @return Suggestion
      * @throws SuggestionsNotFound
      */
     public function findNextSuggestion(): Suggestion
@@ -52,7 +51,7 @@ final class SimilarEventsRepository extends AbstractDBALRepository
             ->leftJoin('se', ProductionRepository::TABLE_NAME, 'p1', 'p1.event_id = se.event1')
             ->leftJoin('se', ProductionRepository::TABLE_NAME, 'p2', 'p2.event_id = se.event2')
             ->where('(p1.production_id IS NULL OR p2.production_id IS NULL OR p1.production_id != p2.production_id)')
-            ->andWhere('CONCAT(LEAST(se.event1, se.event2), GREATEST(se.event1, se.event2)) NOT IN (' . $skippedEvents->getSQL() .')')
+            ->andWhere('CONCAT(LEAST(se.event1, se.event2), GREATEST(se.event1, se.event2)) NOT IN (' . $skippedEvents->getSQL() . ')')
             ->orderBy('similarity', 'DESC');
         $results = $query->execute();
         $result = $results->fetch();

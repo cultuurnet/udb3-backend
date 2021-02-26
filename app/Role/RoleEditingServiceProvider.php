@@ -9,7 +9,6 @@ use Silex\ServiceProviderInterface;
 
 class RoleEditingServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * Registers services on the given app.
      *

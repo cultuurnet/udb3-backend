@@ -16,9 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReadPlaceRestController
 {
-    private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
-
     use ApiProblemJsonResponseTrait;
+    private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     /**
      * @var DocumentRepository
@@ -52,7 +51,7 @@ class ReadPlaceRestController
         $response = JsonLdResponse::create()
             ->setContent($place->getRawBody());
 
-            $response->headers->set('Vary', 'Origin');
+        $response->headers->set('Vary', 'Origin');
 
         return $response;
     }

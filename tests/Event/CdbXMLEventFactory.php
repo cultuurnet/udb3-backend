@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 
 class CdbXMLEventFactory
 {
-    const AN_EVENT_ID = 'someId';
+    public const AN_EVENT_ID = 'someId';
     /**
      * @var string
      */
@@ -45,7 +45,6 @@ class CdbXMLEventFactory
     /**
      * @param string $fileName
      * @param string $eventClass
-     * @return mixed
      */
     private function eventFromFile($fileName, $eventClass)
     {

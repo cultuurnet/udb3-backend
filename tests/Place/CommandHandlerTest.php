@@ -118,7 +118,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      * @test
      * @dataProvider updateAddressDataProvider
      *
-     * @param Address $updatedAddress
      */
     public function it_should_handle_an_update_address_command_for_the_main_language(
         Address $updatedAddress
@@ -138,7 +137,6 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
      * @test
      * @dataProvider updateAddressDataProvider
      *
-     * @param Address $updatedAddress
      */
     public function it_should_handle_an_update_address_command_for_any_language_other_than_the_language(
         Address $updatedAddress

@@ -30,10 +30,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
 
     /**
      * DBALReadRepository constructor.
-     * @param Connection $connection
-     * @param StringLiteral $tableName
-     * @param StringLiteral $labelRolesTableName
-     * @param StringLiteral $userRolesTableName
      */
     public function __construct(
         Connection $connection,
@@ -48,7 +44,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param UUID $uuid
      * @return Entity|null
      */
     public function getByUuid(UUID $uuid)
@@ -65,7 +60,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param StringLiteral $name
      * @return Entity|null
      */
     public function getByName(StringLiteral $name)
@@ -89,8 +83,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param StringLiteral $userId
-     * @param StringLiteral $name
      * @return bool
      */
     public function canUseLabel(StringLiteral $userId, StringLiteral $name)
@@ -124,7 +116,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param Query $query
      * @return Entity[]|null
      */
     public function search(Query $query)
@@ -149,7 +140,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param Query $query
      * @return Natural
      */
     public function searchTotalLabels(Query $query)
@@ -164,7 +154,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param Query $query
      * @return QueryBuilder
      */
     private function createSearchQuery(Query $query)
@@ -209,7 +198,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param Query $query
      * @return QueryBuilder
      */
     private function createUserLabelsSubQuery(Query $query)
@@ -242,7 +230,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
      * @return string
      */
     private function createLike(QueryBuilder $queryBuilder)
@@ -254,7 +241,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param Query $query
      * @return string
      */
     private function createLikeParameter(Query $query)
@@ -263,7 +249,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
      * @return Entity|null
      */
     private function getResult(QueryBuilder $queryBuilder)
@@ -280,7 +265,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
      * @return Entity[]|null
      */
     private function getResults(QueryBuilder $queryBuilder)
@@ -297,7 +281,6 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
     }
 
     /**
-     * @param array $row
      * @return Entity
      */
     private function rowToEntity(array $row)

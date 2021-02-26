@@ -10,21 +10,19 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    const UUID_COLUMN = 'uuid_col';
-    const NAME_COLUMN = 'name';
-    const VISIBLE_COLUMN = 'visible';
-    const PRIVATE_COLUMN = 'private';
-    const PARENT_UUID_COLUMN = 'parentUuid';
-    const COUNT_COLUMN = 'count_col';
+    public const UUID_COLUMN = 'uuid_col';
+    public const NAME_COLUMN = 'name';
+    public const VISIBLE_COLUMN = 'visible';
+    public const PRIVATE_COLUMN = 'private';
+    public const PARENT_UUID_COLUMN = 'parentUuid';
+    public const COUNT_COLUMN = 'count_col';
 
     /**
      * @var StringLiteral
      */
     private $tableName;
 
-    /**
-     * @param StringLiteral $tableName
-     */
+
     public function __construct(StringLiteral $tableName)
     {
         $this->tableName = $tableName;
@@ -45,8 +43,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     }
 
     /**
-     * @param Schema $schema
-     * @param StringLiteral $tableName
      * @return \Doctrine\DBAL\Schema\Table
      */
     private function createTable(Schema $schema, StringLiteral $tableName)

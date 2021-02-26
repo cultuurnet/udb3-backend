@@ -15,7 +15,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ResqueCommandBusTest extends TestCase
 {
-
     /**
      * @var CommandBus|ContextAwareInterface|MockObject
      */
@@ -222,5 +221,4 @@ class ResqueCommandBusTest extends TestCase
 
 abstract class TestContextAwareCommandBus implements CommandBus, ContextAwareInterface
 {
-
 }

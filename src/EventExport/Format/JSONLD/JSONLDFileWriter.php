@@ -25,7 +25,7 @@ class JSONLDFileWriter implements FileWriterInterface
         $file = fopen($filePath, 'w');
         if (false === $file) {
             throw new \RuntimeException(
-                'Unable to open file for writing: '.$filePath
+                'Unable to open file for writing: ' . $filePath
             );
         }
 

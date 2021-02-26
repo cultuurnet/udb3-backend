@@ -14,7 +14,6 @@ class SecurityDecoratorBase implements SecurityInterface
 
     /**
      * SecurityDecoratorBase constructor.
-     * @param SecurityInterface $decoratee
      */
     public function __construct(SecurityInterface $decoratee)
     {

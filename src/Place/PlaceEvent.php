@@ -23,8 +23,8 @@ abstract class PlaceEvent implements Serializable
 
     public function serialize(): array
     {
-        return array(
+        return [
             'place_id' => $this->placeId,
-        );
+        ];
     }
 }

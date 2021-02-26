@@ -29,10 +29,6 @@ class Query
 
     /**
      * Query constructor.
-     * @param StringLiteral $value
-     * @param StringLiteral|null $userId
-     * @param Natural|null $offset
-     * @param Natural|null $limit
      */
     public function __construct(
         StringLiteral $value,

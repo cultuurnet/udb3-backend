@@ -19,11 +19,7 @@ class Category
      */
     protected $domain;
 
-    /**
-     * @param CategoryID $id
-     * @param CategoryLabel|null $label
-     * @param CategoryDomain|null $domain
-     */
+
     public function __construct(
         CategoryID $id,
         CategoryLabel $label = null,

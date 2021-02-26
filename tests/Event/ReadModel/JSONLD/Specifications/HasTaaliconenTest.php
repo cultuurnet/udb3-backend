@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 class HasTaaliconenTest extends TestCase
 {
-
     use EventSpecificationTestTrait;
 
     /**
@@ -21,7 +20,7 @@ class HasTaaliconenTest extends TestCase
         $this->assertTrue((new Has4Taaliconen())->isSatisfiedBy($event));
 
 
-        $event->labels = array('some_random_label');
+        $event->labels = ['some_random_label'];
         $this->assertFalse((new Has1Taalicoon())->isSatisfiedBy($event));
         $this->assertFalse((new Has2Taaliconen())->isSatisfiedBy($event));
         $this->assertFalse((new Has3Taaliconen())->isSatisfiedBy($event));

@@ -12,6 +12,6 @@ use ValueObjects\Enum\Enum;
  */
 final class WebArchiveTemplate extends Enum
 {
-    const TIPS = 'tips';
-    const MAP = 'map';
+    public const TIPS = 'tips';
+    public const MAP = 'map';
 }

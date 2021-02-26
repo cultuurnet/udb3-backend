@@ -31,7 +31,7 @@ class EventFacilityResolverTest extends TestCase
         $resolver = new EventFacilityResolver();
 
         $facility = $resolver->byId(new StringLiteral('3.13.2.0.0'));
-        $expectedFacility = new Facility("3.13.2.0.0", "Audiodescriptie");
+        $expectedFacility = new Facility('3.13.2.0.0', 'Audiodescriptie');
 
         $this->assertEquals($expectedFacility, $facility);
     }

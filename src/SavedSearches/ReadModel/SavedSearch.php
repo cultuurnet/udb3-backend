@@ -23,8 +23,6 @@ class SavedSearch implements \JsonSerializable
     protected $query;
 
     /**
-     * @param StringLiteral $name
-     * @param QueryString $query
      * @param StringLiteral $id
      */
     public function __construct(StringLiteral $name, QueryString $query, StringLiteral $id = null)

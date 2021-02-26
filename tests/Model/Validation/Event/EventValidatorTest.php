@@ -824,7 +824,7 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'Each item in { "Should be keyed by language", "Invalid language": "Invalid language key", "nl": "" } ' .
-                "must be valid",
+                'must be valid',
             '0 must validate against "/^[a-z]{2}$/"',
             '"Invalid language" must validate against "/^[a-z]{2}$/"',
             'reason value must not be empty',
@@ -2089,7 +2089,7 @@ class EventValidatorTest extends TestCase
 
         // @codingStandardsIgnoreStart
         $expectedErrors = [
-            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"'
+            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"',
         ];
         // @codingStandardsIgnoreEnd
 
@@ -3383,10 +3383,7 @@ class EventValidatorTest extends TestCase
         $this->assertTrue($this->validator->validate($event));
     }
 
-    /**
-     * @param mixed $data
-     * @param array $expectedMessages
-     */
+
     private function assertValidationErrors($data, array $expectedMessages)
     {
         try {

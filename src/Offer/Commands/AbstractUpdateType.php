@@ -13,7 +13,6 @@ abstract class AbstractUpdateType extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param EventType $type
      */
     public function __construct($itemId, EventType $type)
     {

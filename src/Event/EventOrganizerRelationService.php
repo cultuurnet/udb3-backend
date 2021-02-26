@@ -17,10 +17,7 @@ class EventOrganizerRelationService implements OrganizerRelationServiceInterface
      */
     private $relationsRepository;
 
-    /**
-     * @param EventEditingServiceInterface $editingService
-     * @param RepositoryInterface $relationsRepository
-     */
+
     public function __construct(
         EventEditingServiceInterface $editingService,
         RepositoryInterface $relationsRepository

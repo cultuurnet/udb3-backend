@@ -28,16 +28,12 @@ class PDFWebArchiveFileFormat extends WebArchiveFileFormat implements FileFormat
 
     /**
      * @param string                                  $princeXMLBinaryPath
-     * @param WebArchiveTemplate                      $template
      * @param string                                  $brand
      * @param string                                  $logo
      * @param string                                  $title
      * @param string|null                             $subTitle
      * @param string|null                             $footer
      * @param string|null                             $publisher
-     * @param EventInfoServiceInterface|null          $uitpas
-     * @param CalendarSummaryRepositoryInterface|null $calendarSummaryRepository
-     * @param Twig_Environment|null                   $twig
      */
     public function __construct(
         $princeXMLBinaryPath,

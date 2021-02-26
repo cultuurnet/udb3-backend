@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\RegexUUIDParser;
 class OrganizerIDParser extends RegexUUIDParser
 {
     // @codingStandardsIgnoreStart
-    const REGEX = '/\\/organizer[s]?\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\/]?/';
+    public const REGEX = '/\\/organizer[s]?\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\/]?/';
     // @codingStandardsIgnoreEnd
 
     public function __construct()

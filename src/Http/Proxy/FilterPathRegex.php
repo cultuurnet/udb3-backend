@@ -6,5 +6,4 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class FilterPathRegex extends StringLiteral
 {
-
 }

@@ -28,11 +28,11 @@ class PriceDescriptionParserTest extends TestCase
     {
         $description = 'Basistarief: 12,50 €; Met kinderen: 20,00 €; Senioren: 30,00 €';
 
-        $expectedPrices = array(
+        $expectedPrices = [
             'Basistarief' => 12.5,
             'Met kinderen' => 20,
             'Senioren' => 30,
-        );
+        ];
 
         $prices = $this->parser->parse($description);
 
@@ -46,7 +46,7 @@ class PriceDescriptionParserTest extends TestCase
     {
         $description = 'Met kinderen € 20, Gratis voor grootouders';
 
-        $this->assertSame(array(), $this->parser->parse($description));
+        $this->assertSame([], $this->parser->parse($description));
     }
 
     /**
@@ -56,7 +56,7 @@ class PriceDescriptionParserTest extends TestCase
     {
         $description = 'Met kinderen: € 0,20,0';
 
-        $this->assertSame(array(), $this->parser->parse($description));
+        $this->assertSame([], $this->parser->parse($description));
     }
 
     /**
@@ -67,6 +67,6 @@ class PriceDescriptionParserTest extends TestCase
         // Only the last price is invalid.
         $description = 'Basistarief: 12,50 €; Met kinderen: 20,00 €; Senioren 30,00 €';
 
-        $this->assertSame(array(), $this->parser->parse($description));
+        $this->assertSame([], $this->parser->parse($description));
     }
 }

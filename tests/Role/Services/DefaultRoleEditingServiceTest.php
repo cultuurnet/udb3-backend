@@ -113,7 +113,7 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->writeRepository = new RoleRepository(
             $this->eventStore,
-            new SimpleEventBus
+            new SimpleEventBus()
         );
 
         $this->createRole = new CreateRole(

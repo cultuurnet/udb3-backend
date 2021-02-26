@@ -9,12 +9,12 @@ final class DummyEvent implements Serializable
     /**
      * @var string
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      */
-    protected $content;
+    private $content;
 
     final public function __construct($id, $content)
     {

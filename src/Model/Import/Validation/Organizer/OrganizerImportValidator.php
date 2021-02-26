@@ -14,11 +14,6 @@ use CultuurNet\UDB3\Security\UserIdentificationInterface;
 class OrganizerImportValidator extends OrganizerValidator
 {
     /**
-     * @param WebsiteLookupServiceInterface $websiteLookupService
-     * @param UUIDParser $uuidParser
-     * @param UserIdentificationInterface $userIdentification
-     * @param LabelsRepository $labelsRepository
-     * @param LabelRelationsRepository $labelRelationsRepository
      * @param bool $urlRequired
      */
     public function __construct(

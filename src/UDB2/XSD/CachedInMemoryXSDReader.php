@@ -14,9 +14,7 @@ class CachedInMemoryXSDReader implements XSDReaderInterface
      */
     private $cachedXSD;
 
-    /**
-     * @param XSDReaderInterface $xsdReader
-     */
+
     public function __construct(XSDReaderInterface $xsdReader)
     {
         $this->decoratedReader = $xsdReader;

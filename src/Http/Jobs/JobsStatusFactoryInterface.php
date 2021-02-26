@@ -7,7 +7,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface JobsStatusFactoryInterface
 {
     /**
-     * @param StringLiteral $jobId
      * @return JobStatus|null
      */
     public function createFromJobId(StringLiteral $jobId);

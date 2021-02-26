@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20150403111222 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         foreach (['event', 'place', 'organizer'] as $column) {
@@ -22,9 +19,7 @@ class Version20150403111222 extends AbstractMigration
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         foreach (['event', 'place', 'organizer'] as $column) {

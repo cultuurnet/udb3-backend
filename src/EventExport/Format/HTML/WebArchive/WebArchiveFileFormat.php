@@ -13,14 +13,12 @@ abstract class WebArchiveFileFormat
     protected $htmlFileWriter;
 
     /**
-     * @param WebArchiveTemplate    $template
      * @param string                $brand
      * @param string                $logo
      * @param string                $title
      * @param string|null           $subtitle
      * @param string|null           $footer
      * @param string|null           $publisher
-     * @param Twig_Environment|null $twig
      */
     public function __construct(
         WebArchiveTemplate $template,
@@ -39,7 +37,7 @@ abstract class WebArchiveFileFormat
             'subtitle' => $subtitle,
             'footer' => $footer,
             'publisher' => $publisher,
-            'partner' => !in_array($brand, array('uit', 'vlieg', 'uitpas', 'paspartoe')),
+            'partner' => !in_array($brand, ['uit', 'vlieg', 'uitpas', 'paspartoe']),
         ];
         $this->htmlFileWriter = new HTMLFileWriter("export.{$template->getValue()}.html.twig", $variables, $twig);
     }

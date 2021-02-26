@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Media\ImageCollection;
 interface ImageCollectionFactoryInterface
 {
     /**
-     * @param CultureFeed_Cdb_Item_Base $item
      * @return ImageCollection
      */
     public function fromUdb2Item(CultureFeed_Cdb_Item_Base $item);

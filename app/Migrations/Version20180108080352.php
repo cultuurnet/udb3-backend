@@ -10,9 +10,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20180108080352 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $this->getLabelsRelationsTable($schema)
@@ -24,9 +21,7 @@ class Version20180108080352 extends AbstractMigration
             );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $this->getLabelsRelationsTable($schema)
@@ -34,7 +29,6 @@ class Version20180108080352 extends AbstractMigration
     }
 
     /**
-     * @param Schema $schema
      * @return \Doctrine\DBAL\Schema\Table
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */

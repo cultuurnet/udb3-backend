@@ -12,8 +12,6 @@ class Sapi3SearchQueryFactoryTest extends SearchQueryFactoryTestBase
     }
 
     /**
-     * @param StringLiteral $constraint
-     * @param StringLiteral $offerId
      * @return string
      */
     public function createQueryString(

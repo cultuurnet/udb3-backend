@@ -18,7 +18,6 @@ class RoleProjector implements EventListener
 
     /**
      * Projector constructor.
-     * @param DocumentRepository $repository
      */
     public function __construct(DocumentRepository $repository)
     {
@@ -27,7 +26,6 @@ class RoleProjector implements EventListener
 
     /**
      * @param string $uuid
-     * @param callable $fn
      */
     protected function saveNewDocument($uuid, callable $fn)
     {

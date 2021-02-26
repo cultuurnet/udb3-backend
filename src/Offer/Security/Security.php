@@ -24,8 +24,6 @@ class Security implements SecurityInterface
 
     /**
      * Security constructor.
-     * @param UserIdentificationInterface $userIdentification
-     * @param PermissionVoterInterface $permissionVoter
      */
     public function __construct(
         UserIdentificationInterface $userIdentification,
@@ -57,8 +55,6 @@ class Security implements SecurityInterface
     }
 
     /**
-     * @param StringLiteral $offerId
-     * @param AuthorizableCommandInterface $command
      * @return bool
      */
     private function currentUiTIDUserCanEditOffer(

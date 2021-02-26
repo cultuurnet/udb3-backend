@@ -29,7 +29,7 @@ class AbstractUpdateTypicalAgeRangeTest extends TestCase
 
         $this->updateTypicalAgeRange = $this->getMockForAbstractClass(
             AbstractUpdateTypicalAgeRange::class,
-            array($this->itemId, $this->typicalAgeRange)
+            [$this->itemId, $this->typicalAgeRange]
         );
     }
 

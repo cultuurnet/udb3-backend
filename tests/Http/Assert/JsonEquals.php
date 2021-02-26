@@ -11,9 +11,7 @@ class JsonEquals
      */
     private $testCase;
 
-    /**
-     * @param TestCase $testCase
-     */
+
     public function __construct(TestCase $testCase)
     {
         $this->testCase = $testCase;

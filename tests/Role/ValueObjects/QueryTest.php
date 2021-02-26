@@ -8,7 +8,6 @@ class QueryTest extends TestCase
 {
     /**
      * @test
-     * @param string $value
      * @dataProvider invalidDataProvider
      */
     public function it_should_throw_an_exception_when_query_is_empty(string $value): void

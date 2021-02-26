@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
@@ -172,9 +171,7 @@ class BulkLabelCommandHandlerTest extends TestCase
         ];
     }
 
-    /**
-     * @param Label $label
-     */
+
     private function expectEventAndPlaceToBeLabelledWith(Label $label): void
     {
         $this->commandBus->expects($this->exactly(2))

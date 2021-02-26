@@ -37,7 +37,6 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
     }
 
     /**
-     * @param LabelEventInterface $labelEvent
      * @return RelationType
      * @throws \InvalidArgumentException
      */
@@ -58,7 +57,6 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
     }
 
     /**
-     * @param LabelsImportedEventInterface $labelsImported
      * @return RelationType
      */
     public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported)

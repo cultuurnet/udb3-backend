@@ -12,7 +12,6 @@ use Respect\Validation\Validator;
 class CategoriesExistValidator extends Validator
 {
     /**
-     * @param CategoryResolverInterface $categoryResolver
      * @param string $documentType
      * @param string $propertyName
      */

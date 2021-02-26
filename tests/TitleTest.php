@@ -2,18 +2,18 @@
 
 namespace CultuurNet\UDB3;
 
-use \CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
 use PHPUnit\Framework\TestCase;
 
 class TitleTest extends TestCase
 {
     public function emptyStringValues()
     {
-        return array(
-            array(''),
-            array(' '),
-            array('   '),
-        );
+        return [
+            [''],
+            [' '],
+            ['   '],
+        ];
     }
 
     /**

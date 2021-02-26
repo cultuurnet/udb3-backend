@@ -12,9 +12,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20170413075617 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $this->getLabelsRelationsTable($schema)
@@ -23,9 +20,7 @@ class Version20170413075617 extends AbstractMigration
             ->setDefault(false);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $this->getLabelsRelationsTable($schema)

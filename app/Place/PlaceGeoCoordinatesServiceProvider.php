@@ -15,9 +15,6 @@ use Silex\ServiceProviderInterface;
 
 class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['place_geocoordinates_command_handler'] = $app->share(
@@ -62,9 +59,7 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

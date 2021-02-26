@@ -14,7 +14,6 @@ class AbstractImportImages extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param ImageCollection $imageCollection
      */
     public function __construct($itemId, ImageCollection $imageCollection)
     {

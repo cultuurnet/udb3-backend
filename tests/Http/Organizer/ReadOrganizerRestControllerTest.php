@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReadOrganizerRestControllerTest extends TestCase
 {
-    const EXISTING_ID = 'existingId';
-    const NON_EXISTING_ID = 'nonExistingId';
-    const REMOVED_ID = 'removedId';
+    public const EXISTING_ID = 'existingId';
+    public const NON_EXISTING_ID = 'nonExistingId';
+    public const REMOVED_ID = 'removedId';
 
     /**
      * @var EntityServiceInterface|MockObject
@@ -69,9 +69,7 @@ class ReadOrganizerRestControllerTest extends TestCase
         $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
     }
 
-    /**
-     *
-     */
+
     public function it_returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_organizer()
     {
         $jsonResponse = $this->organizerController->get(self::NON_EXISTING_ID);

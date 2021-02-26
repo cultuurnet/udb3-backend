@@ -12,10 +12,6 @@ use Respect\Validation\Validator;
 
 class MediaObjectsExistValidator extends Validator
 {
-    /**
-     * @param MediaManagerInterface $mediaManager
-     * @param UUIDParser|null $mediaIdParser
-     */
     public function __construct(MediaManagerInterface $mediaManager, UUIDParser $mediaIdParser = null)
     {
         // Only check that the mediaObjects exist if they are in the expected format.

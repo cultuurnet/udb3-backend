@@ -13,9 +13,7 @@ class Version20200909165220 extends AbstractMigration
             ->changeColumn('similarity', ['scale' => 2]);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->getTable('similar_events')

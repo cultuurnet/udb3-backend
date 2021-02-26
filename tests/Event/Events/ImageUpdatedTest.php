@@ -12,7 +12,6 @@ class ImageUpdatedTest extends TestCase
      * @test
      * @dataProvider eventDataProvider
      * @param array $expectedSerializedValue
-     * @param ImageUpdated $imageUpdated
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -28,7 +27,6 @@ class ImageUpdatedTest extends TestCase
      * @test
      * @dataProvider eventDataProvider
      * @param array $serializedValue
-     * @param ImageUpdated $expectedImageUpdated
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

@@ -23,7 +23,6 @@ class ThemeJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return Theme
      * @throws DataValidationException
      */

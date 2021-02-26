@@ -11,16 +11,13 @@ class ContentTypePropertiesFactory implements PropertiesFactoryInterface
      */
     private $contentTypeLookup;
 
-    /**
-     * @param ContentTypeLookupInterface $contentTypeLookup
-     */
+
     public function __construct(ContentTypeLookupInterface $contentTypeLookup)
     {
         $this->contentTypeLookup = $contentTypeLookup;
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return array
      */
     public function createProperties(DomainMessage $domainMessage)

@@ -31,7 +31,6 @@ use ValueObjects\Geography\Country;
 
 class DefaultPlaceEditingServiceTest extends TestCase
 {
-
     /**
      * @var DefaultPlaceEditingService
      */

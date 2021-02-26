@@ -12,7 +12,6 @@ namespace CultuurNet\UDB3;
  */
 interface JsonLdSerializableInterface
 {
-
     /**
      * Convert the object to json ld.
      */

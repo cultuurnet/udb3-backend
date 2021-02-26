@@ -24,7 +24,6 @@ class JobsControllerProvider implements ControllerProviderInterface
     }
 
     /**
-     * @param Application $app
      * @return bool
      */
     private function isJobsEndpointEnabled(Application $app)
@@ -34,9 +33,7 @@ class JobsControllerProvider implements ControllerProviderInterface
         return $toggles->active('jobs-endpoint', $app['toggles.context']);
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpReadRestController(Application $app)
     {
         $app['jobs.read_rest_controller'] = $app->share(
@@ -47,7 +44,6 @@ class JobsControllerProvider implements ControllerProviderInterface
     }
 
     /**
-     * @param ControllerCollection $controllers
      * @return ControllerCollection
      */
     private function setUpEndpoints(ControllerCollection $controllers)

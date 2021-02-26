@@ -121,7 +121,6 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     }
 
     /**
-     * @param AbstractEvent $event
      * @return DomainMessage
      */
     private function createDomainMessage(AbstractEvent $event)

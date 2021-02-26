@@ -82,9 +82,7 @@ class MediaObjectsExistValidatorTest extends TestCase
         $this->assertEquals($expected, $errors);
     }
 
-    /**
-     * @param array $ids
-     */
+
     private function expectIdsToExist(array $ids)
     {
         $this->mediaManager->expects($this->any())

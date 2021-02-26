@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour;
 trait HasUniqueValues
 {
     /**
-     * @param array $values
      * @throws \InvalidArgumentException
      */
     private function guardUniqueValues(array $values)

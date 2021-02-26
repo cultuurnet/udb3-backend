@@ -16,14 +16,7 @@ class CreateEvent extends MajorInfo
      */
     private $mainLanguage;
 
-    /**
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $type
-     * @param LocationId $location
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     */
+
     public function __construct(
         Language $mainLanguage,
         Title $title,

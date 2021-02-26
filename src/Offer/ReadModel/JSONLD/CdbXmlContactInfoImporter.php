@@ -17,7 +17,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
         \CultureFeed_Cdb_Data_Price $price = null,
         \CultureFeed_Cdb_Data_Calendar_BookingPeriod $bookingPeriod = null
     ) {
-        $bookingInfo = array();
+        $bookingInfo = [];
 
         if ($price) {
             if ($price->getDescription()) {
@@ -28,7 +28,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
             }
             if ($price->getValue() !== null) {
                 $bookingInfo['priceCurrency'] = 'EUR';
-                $bookingInfo['price'] = floatval($price->getValue());
+                $bookingInfo['price'] = (float) ($price->getValue());
             }
             if ($bookingPeriod) {
                 $startDate = $this->dateFromUdb2UnixTime($bookingPeriod->getDateFrom());
@@ -87,7 +87,7 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
             return !$item->isForReservations();
         };
 
-        $contactPoint = array();
+        $contactPoint = [];
 
         $emails = array_filter($contactInfo->getMails(), $notForReservations);
 

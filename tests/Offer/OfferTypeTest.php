@@ -47,7 +47,6 @@ class OfferTypeTest extends TestCase
      * @dataProvider offerTypeDataProvider
      *
      * @param string $enumValue
-     * @param OfferType $expectedOfferType
      */
     public function it_can_be_created_from_a_value_with_incorrect_casing(
         $enumValue,

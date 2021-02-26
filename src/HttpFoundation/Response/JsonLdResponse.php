@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JsonLdResponse extends JsonResponse
 {
-    public function __construct($data = null, $status = 200, $headers = array())
+    public function __construct($data = null, $status = 200, $headers = [])
     {
         $headers += ['Content-Type' => 'application/ld+json'];
 

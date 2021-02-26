@@ -39,7 +39,7 @@ class ChangeOfferOwner extends AbstractCommand
                 $newOwnerId
             )
         );
-        $logger->info('Successfully changed owner of offer "' . $offerId .'" to user with id "' . $newOwnerId . '"');
+        $logger->info('Successfully changed owner of offer "' . $offerId . '" to user with id "' . $newOwnerId . '"');
 
         return 0;
     }

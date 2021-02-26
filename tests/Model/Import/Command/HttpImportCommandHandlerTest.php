@@ -7,7 +7,6 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 

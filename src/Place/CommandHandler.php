@@ -202,9 +202,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         return FlagAsInappropriate::class;
     }
 
-    /**
-     * @param CreatePlace $command
-     */
+
     protected function handleCreatePlace(CreatePlace $command)
     {
         $place = Place::createPlace(
@@ -221,9 +219,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         $this->offerRepository->save($place);
     }
 
-    /**
-     * @param UpdateAddress $updateAddress
-     */
+
     protected function handleUpdateAddress(UpdateAddress $updateAddress)
     {
         /** @var Place $place */
@@ -234,7 +230,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 
     /**
      * Handle an update the major info command.
-     * @param UpdateMajorInfo $updateMajorInfo
      */
     public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo)
     {

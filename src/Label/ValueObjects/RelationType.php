@@ -13,7 +13,7 @@ use ValueObjects\Enum\Enum;
  */
 class RelationType extends Enum
 {
-    const EVENT = 'Event';
-    const PLACE = 'Place';
-    const ORGANIZER = 'Organizer';
+    public const EVENT = 'Event';
+    public const PLACE = 'Place';
+    public const ORGANIZER = 'Organizer';
 }

@@ -14,10 +14,7 @@ class Time
      */
     private $minute;
 
-    /**
-     * @param Hour $hour
-     * @param Minute $minute
-     */
+
     public function __construct(Hour $hour, Minute $minute)
     {
         $this->hour = $hour;

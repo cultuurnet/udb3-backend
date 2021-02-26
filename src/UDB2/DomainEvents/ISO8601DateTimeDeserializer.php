@@ -9,7 +9,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ISO8601DateTimeDeserializer
 {
     /**
-     * @param StringLiteral $timeString
      *
      * @return \DateTimeImmutable
      */

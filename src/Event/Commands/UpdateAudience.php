@@ -15,7 +15,6 @@ class UpdateAudience extends AbstractCommand
     /**
      * UpdateAudience constructor.
      * @param string $itemId
-     * @param Audience $audience
      */
     public function __construct(
         $itemId,

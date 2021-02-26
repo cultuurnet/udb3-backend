@@ -175,11 +175,7 @@ class UpdateSubEventStatusHandlerTest extends CommandHandlerScenarioTestCase
             ->then([$expectedEvent]);
     }
 
-    /**
-     * @param string $id
-     * @param Calendar $calendar
-     * @return EventCreated
-     */
+
     private function getEventCreated(string $id, Calendar $calendar): EventCreated
     {
         return new EventCreated(

@@ -60,10 +60,10 @@ class SimpleContextAwareCommandBusTest extends TestCase
     public function on_dispatch_it_passes_its_context_to_context_aware_command_handlers()
     {
         $context = new Metadata(
-            array(
+            [
                 'user_id' => 1,
                 'user_nick' => 'admin',
-            )
+            ]
         );
 
         $this->commandHandler->expects($this->exactly(3))
@@ -88,5 +88,4 @@ class SimpleContextAwareCommandBusTest extends TestCase
 
 abstract class TestCommandHandler implements CommandHandler, ContextAwareInterface
 {
-
 }

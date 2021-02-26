@@ -38,8 +38,6 @@ abstract class SearchQueryFactoryBase implements SearchQueryFactoryInterface
     }
 
     /**
-     * @param StringLiteral $constraint
-     * @param StringLiteral $offerId
      * @return string
      */
     abstract protected function createQueryString(

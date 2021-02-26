@@ -6,10 +6,9 @@ use Broadway\Domain\DomainMessage;
 
 class DomainMessageIsReplayed implements DomainMessageSpecificationInterface
 {
-    const METADATA_REPLAY_KEY = 'replayed';
+    public const METADATA_REPLAY_KEY = 'replayed';
 
     /**
-     * @param DomainMessage $domainMessage
      * @return bool
      */
     public function isSatisfiedBy(DomainMessage $domainMessage)

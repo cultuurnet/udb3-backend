@@ -124,9 +124,9 @@ class AbstractContactPointUpdatedTest extends TestCase
                 new ContactPointUpdated(
                     'madId',
                     new ContactPoint(
-                        array('0123456789'),
-                        array('foo@bar.com'),
-                        array('http://foo.bar')
+                        ['0123456789'],
+                        ['foo@bar.com'],
+                        ['http://foo.bar']
                     )
                 ),
             ],

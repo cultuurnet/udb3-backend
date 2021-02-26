@@ -20,7 +20,6 @@ class RequiredPropertiesDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)
@@ -29,7 +28,7 @@ class RequiredPropertiesDataValidator implements DataValidatorInterface
 
         foreach ($this->requiredFields as $requiredField) {
             if (!isset($data[$requiredField])) {
-                $errors[$requiredField] = "Required but could not be found.";
+                $errors[$requiredField] = 'Required but could not be found.';
             }
         }
 

@@ -11,15 +11,13 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20160607132920 extends AbstractMigration
 {
-    const LABELS_TABLE = 'labels';
-    const LABELS_UNIQUE_TABLE = 'labels_unique';
+    public const LABELS_TABLE = 'labels';
+    public const LABELS_UNIQUE_TABLE = 'labels_unique';
 
-    const UUID_COLUMN = 'uuid_col';
-    const UNIQUE_COLUMN = 'unique_col';
+    public const UUID_COLUMN = 'uuid_col';
+    public const UNIQUE_COLUMN = 'unique_col';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $this->createLabelStore($schema);
@@ -27,9 +25,7 @@ class Version20160607132920 extends AbstractMigration
         $this->createUniqueLabelStore($schema);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::LABELS_TABLE);
@@ -37,28 +33,24 @@ class Version20160607132920 extends AbstractMigration
         $schema->dropTable(self::LABELS_UNIQUE_TABLE);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createLabelStore(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_TABLE);
 
-        $table->addColumn('id', 'integer', array('autoincrement' => true));
-        $table->addColumn('uuid', 'guid', array('length' => 36));
-        $table->addColumn('playhead', 'integer', array('unsigned' => true));
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('uuid', 'guid', ['length' => 36]);
+        $table->addColumn('playhead', 'integer', ['unsigned' => true]);
         $table->addColumn('payload', 'text');
         $table->addColumn('metadata', 'text');
-        $table->addColumn('recorded_on', 'string', array('length' => 32));
+        $table->addColumn('recorded_on', 'string', ['length' => 32]);
         $table->addColumn('type', 'text');
 
-        $table->setPrimaryKey(array('id'));
-        $table->addUniqueIndex(array('uuid', 'playhead'));
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['uuid', 'playhead']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createUniqueLabelStore(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_UNIQUE_TABLE);

@@ -13,7 +13,6 @@ abstract class AbstractUpdatePriceInfo extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param PriceInfo $priceInfo
      */
     public function __construct($itemId, PriceInfo $priceInfo)
     {

@@ -10,29 +10,24 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20151214154130 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         // @see \Broadway\EventStore\DBALEventStore
         $table = $schema->createTable('media_objects');
 
-        $table->addColumn('id', 'integer', array('autoincrement' => true));
-        $table->addColumn('uuid', 'guid', array('length' => 36));
-        $table->addColumn('playhead', 'integer', array('unsigned' => true));
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('uuid', 'guid', ['length' => 36]);
+        $table->addColumn('playhead', 'integer', ['unsigned' => true]);
         $table->addColumn('payload', 'text');
         $table->addColumn('metadata', 'text');
-        $table->addColumn('recorded_on', 'string', array('length' => 32));
+        $table->addColumn('recorded_on', 'string', ['length' => 32]);
         $table->addColumn('type', 'text');
 
-        $table->setPrimaryKey(array('id'));
-        $table->addUniqueIndex(array('uuid', 'playhead'));
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['uuid', 'playhead']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('media_objects');

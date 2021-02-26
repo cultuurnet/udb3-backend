@@ -19,10 +19,7 @@ class DBALRepository implements RepositoryInterface
      */
     protected $tableName;
 
-    /**
-     * @param Connection $connection
-     * @param StringLiteral $tableName
-     */
+
     public function __construct(Connection $connection, StringLiteral $tableName)
     {
         $this->connection = $connection;

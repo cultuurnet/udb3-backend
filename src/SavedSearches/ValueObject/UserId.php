@@ -6,5 +6,4 @@ use ValueObjects\Identity\UUID;
 
 class UserId extends UUID
 {
-
 }

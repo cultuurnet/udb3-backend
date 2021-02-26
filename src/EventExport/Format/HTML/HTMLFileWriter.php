@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
-use \Twig_Environment;
+use Twig_Environment;
 
 class HTMLFileWriter implements FileWriterInterface
 {
@@ -38,15 +38,13 @@ class HTMLFileWriter implements FileWriterInterface
         $this->initializeTwig($twig);
     }
 
-    /**
-     * @param Twig_Environment|null $twig
-     */
+
     protected function initializeTwig(
         Twig_Environment $twig = null
     ) {
         if (!$twig) {
             $loader = new \Twig_Loader_Filesystem(
-                __DIR__.'/templates'
+                __DIR__ . '/templates'
             );
             $twig = new Twig_Environment($loader);
         }
@@ -54,9 +52,7 @@ class HTMLFileWriter implements FileWriterInterface
         $this->setTwig($twig);
     }
 
-    /**
-     * @param Twig_Environment $twig
-     */
+
     protected function setTwig(Twig_Environment $twig)
     {
         $this->twig = $twig;

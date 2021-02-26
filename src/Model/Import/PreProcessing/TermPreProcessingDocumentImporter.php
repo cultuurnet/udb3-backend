@@ -20,10 +20,7 @@ class TermPreProcessingDocumentImporter implements DocumentImporterInterface
      */
     private $categoryResolver;
 
-    /**
-     * @param DocumentImporterInterface $jsonImporter
-     * @param CategoryResolverInterface $categoryResolver
-     */
+
     public function __construct(
         DocumentImporterInterface $jsonImporter,
         CategoryResolverInterface $categoryResolver
@@ -35,8 +32,6 @@ class TermPreProcessingDocumentImporter implements DocumentImporterInterface
     /**
      * Pre-processes the JSON to polyfill missing term properties if possible.
      *
-     * @param DecodedDocument $decodedDocument
-     * @param ConsumerInterface|null $consumer
      */
     public function import(DecodedDocument $decodedDocument, ConsumerInterface $consumer = null)
     {

@@ -31,8 +31,6 @@ class Projector extends AbstractProjector
 
     /**
      * Projector constructor.
-     * @param WriteRepositoryInterface $writeRepository
-     * @param ReadRepositoryInterface $readRepository
      */
     public function __construct(
         WriteRepositoryInterface $writeRepository,
@@ -42,9 +40,7 @@ class Projector extends AbstractProjector
         $this->readRepository = $readRepository;
     }
 
-    /**
-     * @param Created $created
-     */
+
     public function applyCreated(Created $created)
     {
         $entity = $this->readRepository->getByUuid($created->getUuid());
@@ -59,9 +55,7 @@ class Projector extends AbstractProjector
         }
     }
 
-    /**
-     * @param CopyCreated $copyCreated
-     */
+
     public function applyCopyCreated(CopyCreated $copyCreated)
     {
         $entity = $this->readRepository->getByUuid($copyCreated->getUuid());
@@ -77,33 +71,25 @@ class Projector extends AbstractProjector
         }
     }
 
-    /**
-     * @param MadeVisible $madeVisible
-     */
+
     public function applyMadeVisible(MadeVisible $madeVisible)
     {
         $this->writeRepository->updateVisible($madeVisible->getUuid());
     }
 
-    /**
-     * @param MadeInvisible $madeInvisible
-     */
+
     public function applyMadeInvisible(MadeInvisible $madeInvisible)
     {
         $this->writeRepository->updateInvisible($madeInvisible->getUuid());
     }
 
-    /**
-     * @param MadePublic $madePublic
-     */
+
     public function applyMadePublic(MadePublic $madePublic)
     {
         $this->writeRepository->updatePublic($madePublic->getUuid());
     }
 
-    /**
-     * @param MadePrivate $madePrivate
-     */
+
     public function applyMadePrivate(MadePrivate $madePrivate)
     {
         $this->writeRepository->updatePrivate($madePrivate->getUuid());
@@ -142,7 +128,6 @@ class Projector extends AbstractProjector
     }
 
     /**
-     * @param LabelEventInterface $labelEvent
      * @return UUID|null
      */
     private function getUuid(LabelEventInterface $labelEvent)

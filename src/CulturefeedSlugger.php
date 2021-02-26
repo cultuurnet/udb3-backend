@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3;
 
 /**
@@ -81,7 +80,7 @@ class CulturefeedSlugger implements SluggerInterface
     {
         static $charMap;
         if (!$charMap) {
-            $charMap = array(
+            $charMap = [
                 // Decompositions for Latin-1 Supplement
                 chr(195) . chr(128) => 'A',
                 chr(195) . chr(129) => 'A',
@@ -269,7 +268,7 @@ class CulturefeedSlugger implements SluggerInterface
                 chr(197) . chr(191) => 's',
                 // Euro Sign
                 chr(226) . chr(130) . chr(172) => 'E',
-            );
+            ];
         }
 
         // transliterate

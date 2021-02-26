@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResponseLogger extends AuditTrailLogger
 {
-
     /**
      * @var LoggerInterface
      */

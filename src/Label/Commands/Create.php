@@ -26,10 +26,6 @@ class Create extends AbstractCommand
 
     /**
      * Create constructor.
-     * @param UUID $uuid
-     * @param LabelName $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
      */
     public function __construct(
         UUID $uuid,

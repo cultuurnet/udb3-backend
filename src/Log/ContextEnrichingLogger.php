@@ -25,10 +25,7 @@ class ContextEnrichingLogger implements LoggerInterface
      */
     protected $context;
 
-    /**
-     * @param LoggerInterface $decoratee
-     * @param array $context
-     */
+
     public function __construct(LoggerInterface $decoratee, array $context)
     {
         $this->decoratee = $decoratee;
@@ -38,7 +35,7 @@ class ContextEnrichingLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         $enrichedContext = $this->context + $context;
 

@@ -10,8 +10,8 @@ use ValueObjects\Web\Hostname;
 
 class DomainReplacerTest extends TestCase
 {
-    const ORIGINAL_DOMAIN = 'www.original.be';
-    const REPLACED_DOMAIN = 'www.replaced.be';
+    public const ORIGINAL_DOMAIN = 'www.original.be';
+    public const REPLACED_DOMAIN = 'www.replaced.be';
 
     /**
      * @var Request

@@ -13,18 +13,13 @@ class OwnerVoter implements PermissionVoterInterface
      */
     private $permissionRepository;
 
-    /**
-     * @param PermissionQueryInterface $permissionRepository
-     */
+
     public function __construct(PermissionQueryInterface $permissionRepository)
     {
         $this->permissionRepository = $permissionRepository;
     }
 
     /**
-     * @param Permission $permission
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return bool
      */
     public function isAllowed(

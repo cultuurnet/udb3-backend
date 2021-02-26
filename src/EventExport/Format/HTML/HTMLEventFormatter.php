@@ -64,7 +64,6 @@ class HTMLEventFormatter
     protected $calendarSummaryRepository;
 
     /**
-     * @param EventInfoServiceInterface|null     $uitpas
      * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
      */
     public function __construct(
@@ -193,8 +192,6 @@ class HTMLEventFormatter
      * If the large formatted summary is missing, the summary that is available on the event will be used as fallback.
      *
      * @param string   $eventId
-     * @param stdClass $event
-     * @param array    $formattedEvent
      */
     private function addCalendarInfo($eventId, stdClass $event, array &$formattedEvent)
     {
@@ -213,7 +210,6 @@ class HTMLEventFormatter
 
     /**
      * @param string $eventId
-     * @param array  $formattedEvent
      */
     private function addUitpasInfo($eventId, array &$formattedEvent)
     {

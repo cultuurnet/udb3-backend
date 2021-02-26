@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CultuurNet\UDB3\StringFilter;
 
 class StripSourceStringFilter implements StringFilterInterface

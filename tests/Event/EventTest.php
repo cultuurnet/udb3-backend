@@ -53,8 +53,8 @@ use ValueObjects\Web\Url;
 
 class EventTest extends AggregateRootScenarioTestCase
 {
-    const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
-    const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+    public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
      * @inheritdoc
@@ -180,8 +180,8 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $facilities = [
-            new Facility("3.27.0.0.0", "Rolstoeltoegankelijk"),
-            new Facility("3.30.0.0.0", "Rolstoelpodium"),
+            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
+            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
         ];
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
@@ -216,7 +216,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $createEvent = $this->getCreationEvent();
 
         $contactPoint = new ContactPoint(
-            ['016/101010',],
+            ['016/101010'],
             ['test@2dotstwice.be', 'admin@2dotstwice.be'],
             ['http://www.2dotstwice.be']
         );
@@ -572,8 +572,6 @@ class EventTest extends AggregateRootScenarioTestCase
      * @test
      * @dataProvider unlabelDataProvider
      * @param string $id
-     * @param Label $label
-     * @param array $givens
      */
     public function it_can_be_unlabelled(
         $id,
@@ -654,8 +652,6 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      * @dataProvider unlabelIgnoredDataProvider
-     * @param Label $label
-     * @param array $givens
      */
     public function it_silently_ignores_unlabel_request_if_label_is_not_present(
         Label $label,
@@ -1114,7 +1110,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $event->getUncommittedEvents();
 
-        $newPublicationDate = new \DateTimeImmutable("+3 days");
+        $newPublicationDate = new \DateTimeImmutable('+3 days');
 
         $this->scenario
             ->when(function () use ($event, $newEventId, $calendar, $newPublicationDate) {

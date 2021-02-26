@@ -72,8 +72,8 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $facilities = [
-            new Facility("3.27.0.0.0", "Rolstoeltoegankelijk"),
-            new Facility("3.30.0.0.0", "Rolstoelpodium"),
+            new Facility('3.27.0.0.0', 'Rolstoeltoegankelijk'),
+            new Facility('3.30.0.0.0', 'Rolstoelpodium'),
         ];
 
         $cdbXml = $this->getCdbXML('/ReadModel/JSONLD/place_with_long_description.cdbxml.xml');
@@ -108,7 +108,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $placeId = $placeCreated->getPlaceId();
 
         $contactPoint = new ContactPoint(
-            ['016/101010',],
+            ['016/101010'],
             ['test@2dotstwice.be', 'admin@2dotstwice.be'],
             ['http://www.2dotstwice.be']
         );
@@ -215,8 +215,6 @@ class PlaceTest extends AggregateRootScenarioTestCase
      * @test
      * @dataProvider updateAddressDataProvider
      *
-     * @param Address $originalAddress
-     * @param Address $updatedAddress
      */
     public function it_should_update_the_address_in_the_main_language(
         Address $originalAddress,
@@ -440,8 +438,6 @@ class PlaceTest extends AggregateRootScenarioTestCase
      * @test
      * @dataProvider updateAddressDataProvider
      *
-     * @param Address $originalAddress
-     * @param Address $updatedAddress
      */
     public function it_should_translate_the_address_in_any_other_language_than_the_main_language(
         Address $originalAddress,

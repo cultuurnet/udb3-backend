@@ -8,10 +8,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryTest extends TestCase
 {
-    const NAME = 'name';
-    const USER_ID = 'userId';
-    const OFFSET = 5;
-    const LIMIT = 10;
+    public const NAME = 'name';
+    public const USER_ID = 'userId';
+    public const OFFSET = 5;
+    public const LIMIT = 10;
 
     /**
      * @var Query
