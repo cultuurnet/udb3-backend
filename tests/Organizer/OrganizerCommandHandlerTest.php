@@ -135,7 +135,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withOrganizerRelationService($this->placeOrganizerRelationService);
 
         $this->organizerCreated = new OrganizerCreated(
-            new UUID(),
+            (new UUID())->toNative(),
             new Title('Organizer Title'),
             [
                 new Address(

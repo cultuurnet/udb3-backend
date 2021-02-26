@@ -20,9 +20,9 @@ class UserPermissionsWriteRepositoryTest extends TestCase
      */
     private $repository;
 
-    /*
-    * @var StringLiteral
-    */
+    /**
+     * @var StringLiteral
+     */
     private $userRoleTableName;
 
     /**
@@ -61,7 +61,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->addUserRole($userId, $roleId);
 
-        $rows = $this->getTableRows($this->userRoleTableName);
+        $rows = $this->getTableRows($this->userRoleTableName->toNative());
 
         $expectedRows = [
             [
@@ -83,7 +83,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->addRolePermission($roleId, $permission);
 
-        $rows = $this->getTableRows($this->rolePermissionTableName);
+        $rows = $this->getTableRows($this->rolePermissionTableName->toNative());
 
         $expectedRows = [
             [
@@ -130,7 +130,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->removeRolePermission($roleId, $permission);
 
-        $rows = $this->getTableRows($this->rolePermissionTableName);
+        $rows = $this->getTableRows($this->rolePermissionTableName->toNative());
 
         $expectedRows = [
             [
@@ -189,8 +189,8 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->removeRole($roleId);
 
-        $rolePermissions = $this->getTableRows($this->rolePermissionTableName);
-        $userRoles = $this->getTableRows($this->userRoleTableName);
+        $rolePermissions = $this->getTableRows($this->rolePermissionTableName->toNative());
+        $userRoles = $this->getTableRows($this->userRoleTableName->toNative());
 
         $expectedRolePermissions = [
             [
@@ -230,7 +230,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->removeUserRole($userId, $roleId);
 
-        $rows = $this->getTableRows($this->userRoleTableName);
+        $rows = $this->getTableRows($this->userRoleTableName->toNative());
 
 
         $expectedRows = [
