@@ -302,7 +302,7 @@ class ImageUploaderServiceTest extends TestCase
      */
     private function getMockImage($imageSize)
     {
-       $image = $this->getMockFile($imageSize);
+        $image = $this->getMockFile($imageSize);
 
         $image
             ->expects($this->once())
