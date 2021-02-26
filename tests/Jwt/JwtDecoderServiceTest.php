@@ -321,10 +321,10 @@ class JwtDecoderServiceTest extends TestCase
             $this->publicKey
         );
 
-        $this->tokenString = new StringLiteral(str_repeat(rtrim(
+        $this->tokenString = str_repeat(rtrim(
             file_get_contents(__DIR__ . '/samples/token.txt'),
             '\\r\\n'
-        ), 2));
+        ), 2);
 
         $this->decoderService->parse($this->tokenString);
     }
