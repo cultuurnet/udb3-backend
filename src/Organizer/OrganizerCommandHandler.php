@@ -7,7 +7,6 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Organizer\Commands\AbstractLabelCommand;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
@@ -69,7 +68,6 @@ class OrganizerCommandHandler implements CommandHandler
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
             DeleteOrganizer::class => 'deleteOrganizer',
-            AddLabel::class => 'addLabel',
             RemoveLabel::class => 'removeLabel',
             ImportLabels::class => 'importLabels',
         ];
