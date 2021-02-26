@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
