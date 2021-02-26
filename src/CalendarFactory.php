@@ -212,7 +212,7 @@ class CalendarFactory implements CalendarFactoryInterface
                     );
                     $closes = \DateTime::createFromFormat(
                         'H:i:s',
-                        $openingTime->getOpenTill()
+                        (string) $openingTime->getOpenTill()
                     );
 
                     $openingHour = new OpeningHour(
