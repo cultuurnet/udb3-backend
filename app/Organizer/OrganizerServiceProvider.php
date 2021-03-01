@@ -36,7 +36,10 @@ final class OrganizerServiceProvider implements ServiceProviderInterface
 
         $app[ImportLabelsHandler::class] = $app->share(
             function (Application $app) {
-                return new ImportLabelsHandler($app['organizer_repository']);
+                return new ImportLabelsHandler(
+                    $app['organizer_repository'],
+                    $app['labels.constraint_aware_service']
+                );
             }
         );
     }
