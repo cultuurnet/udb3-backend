@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\CommandHandling\CommandHandler;
@@ -133,7 +135,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             ->withOrganizerRelationService($this->placeOrganizerRelationService);
 
         $this->organizerCreated = new OrganizerCreated(
-            new UUID(),
+            (new UUID())->toNative(),
             new Title('Organizer Title'),
             [
                 new Address(
@@ -169,7 +171,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
      */
     public function it_handles_create_organizer()
     {
-        $id = new UUID();
+        $id = (new UUID())->toNative();
 
         $this->scenario
             ->withAggregateId($id)

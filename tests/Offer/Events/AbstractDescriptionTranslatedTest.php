@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Description;
@@ -25,7 +27,7 @@ class AbstractDescriptionTranslatedTest extends TestCase
     protected $language;
 
     /**
-     * @var String
+     * @var Description
      */
     protected $description;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Language;
@@ -20,7 +22,7 @@ class AbstractUpdateTitleTest extends TestCase
     protected $itemId;
 
     /**
-     * @var string
+     * @var Title
      */
     protected $title;
 

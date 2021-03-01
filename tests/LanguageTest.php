@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language as Udb3ModelLanguage;
@@ -28,9 +30,6 @@ class LanguageTest extends TestCase
         return [
             ['eng'],
             ['dut'],
-            [false],
-            [true],
-            [null],
             ['09'],
             ['whatever'],
         ];
@@ -41,7 +40,7 @@ class LanguageTest extends TestCase
      * @dataProvider invalidCodes
      */
     public function it_refuses_something_that_does_not_look_like_a_iso_639_1_code(
-        $invalid_code
+        string $invalid_code
     ) {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid language code: ' . $invalid_code);

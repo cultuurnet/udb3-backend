@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "293854fa79c3acb9c3183f5389b4292e",
+    "content-hash": "3599259ce607c3ab189e9e89e85dcecd",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -9338,16 +9338,16 @@
         },
         {
             "name": "publiq/php-cs-fixer-config",
-            "version": "v1.2",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/php-cs-fixer-config.git",
-                "reference": "a578091d22e8e8c622dda54715f75bb032c0804a"
+                "reference": "1f90b8a9da8d6d58d5278db9a4b0290d42e92c96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/a578091d22e8e8c622dda54715f75bb032c0804a",
-                "reference": "a578091d22e8e8c622dda54715f75bb032c0804a",
+                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/1f90b8a9da8d6d58d5278db9a4b0290d42e92c96",
+                "reference": "1f90b8a9da8d6d58d5278db9a4b0290d42e92c96",
                 "shasum": ""
             },
             "require": {
@@ -9373,9 +9373,9 @@
             "description": "Configuration for PHP Coding Standards Fixer to be used on all PHP projects at Publiq",
             "support": {
                 "issues": "https://github.com/cultuurnet/php-cs-fixer-config/issues",
-                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v1.2"
+                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v1.3.1"
             },
-            "time": "2021-02-26T09:26:54+00:00"
+            "time": "2021-02-26T12:16:58+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
 use CultuurNet\UDB3\CalendarType;
@@ -279,7 +281,7 @@ class HTMLEventFormatter
         }
 
         $formattedEvent['price'] =
-            $basePrice ? $this->priceFormatter->format($basePrice->price) : 'Niet ingevoerd';
+            $basePrice ? $this->priceFormatter->format((float) $basePrice->price) : 'Niet ingevoerd';
     }
 
     /**

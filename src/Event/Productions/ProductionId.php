@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Productions;
 
 use Ramsey\Uuid\Uuid;
@@ -18,7 +20,7 @@ final class ProductionId
 
     public static function generate(): self
     {
-        return new self(Uuid::uuid4());
+        return new self(Uuid::uuid4()->toString());
     }
 
     public static function fromNative(string $id): self

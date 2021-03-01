@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -39,7 +41,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     private $tableName;
 
     /**
-     * @var string
+     * @var AggregateType
      */
     private $aggregateType;
 

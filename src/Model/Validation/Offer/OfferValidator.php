@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Validation\Offer;
 
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerReferenceValidator;

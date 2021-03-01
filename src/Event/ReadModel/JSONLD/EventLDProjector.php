@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
 use Broadway\Domain\DomainMessage;
@@ -303,7 +305,7 @@ class EventLDProjector extends OfferLDProjector implements
         // Same as.
         $jsonLD->sameAs = $this->generateSameAs(
             $eventCreated->getEventId(),
-            reset($jsonLD->name)
+            (string) reset($jsonLD->name)
         );
 
         $eventType = $eventCreated->getEventType();

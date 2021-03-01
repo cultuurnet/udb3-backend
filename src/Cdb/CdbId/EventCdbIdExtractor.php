@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Cdb\CdbId;
 
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\SearchV3\Serializer\SerializerInterface;
@@ -122,7 +124,7 @@ class ReadPlaceRestControllerTest extends TestCase
      */
     public function it_returns_a_http_response_with_json_including_metadata_for_an_event(): void
     {
-        $request = new Request(['includeMetadata' => 'true']);
+        $request = new Request(['includeMetadata' => true]);
         $jsonResponse = $this->placeRestController->get(self::EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Productions\Doctrine;
 
 use Doctrine\DBAL\Schema\Schema;

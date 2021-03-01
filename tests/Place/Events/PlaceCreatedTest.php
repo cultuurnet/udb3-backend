@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace test\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;

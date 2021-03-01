@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\AuditTrail;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;

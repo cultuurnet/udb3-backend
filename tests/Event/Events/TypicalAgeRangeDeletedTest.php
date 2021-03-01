@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace test\Event\Events;
 
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;

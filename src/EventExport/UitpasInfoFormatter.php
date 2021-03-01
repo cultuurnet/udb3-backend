@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport;
 
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
@@ -29,7 +31,7 @@ class UitpasInfoFormatter
         // Format prices.
         $prices = $uitpasInfo->getPrices();
         foreach ($prices as &$price) {
-            $price['price'] = $this->priceFormatter->format($price['price']);
+            $price['price'] = $this->priceFormatter->format((float) $price['price']);
         }
 
         // Format advantage labels. Start from a list of all known

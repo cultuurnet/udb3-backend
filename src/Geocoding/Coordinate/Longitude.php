@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
 class Longitude extends Coordinate

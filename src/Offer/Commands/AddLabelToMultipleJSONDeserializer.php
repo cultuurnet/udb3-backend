@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
@@ -24,6 +26,7 @@ class AddLabelToMultipleJSONDeserializer extends JSONDeserializer
 
     public function __construct(DeserializerInterface $offerIdentifierDeserializer)
     {
+        parent::__construct();
         $this->offerIdentifierDeserializer = $offerIdentifierDeserializer;
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;

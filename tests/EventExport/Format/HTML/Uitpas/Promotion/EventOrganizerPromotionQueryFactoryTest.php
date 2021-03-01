@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion;
 
 use CultureFeed_Uitpas_Calendar;
@@ -28,7 +30,7 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
             new FrozenClock(
                 DateTimeImmutable::createFromFormat(
                     'U',
-                    $this->unixTime,
+                    (string) $this->unixTime,
                     new \DateTimeZone('Europe/Brussels')
                 )
             )

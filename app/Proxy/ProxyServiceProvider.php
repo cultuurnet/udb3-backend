@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\CdbXmlProxy;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Cake\Chronos\Chronos;
@@ -210,7 +212,7 @@ class CalendarFactory implements CalendarFactoryInterface
                     );
                     $closes = \DateTime::createFromFormat(
                         'H:i:s',
-                        $openingTime->getOpenTill()
+                        (string) $openingTime->getOpenTill()
                     );
 
                     $openingHour = new OpeningHour(
