@@ -757,8 +757,7 @@ $app['organizer_editing_service'] = $app->share(
         return new \CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService(
             $app['event_command_bus'],
             $app['uuid_generator'],
-            $app['organizer_repository'],
-            $app['labels.constraint_aware_service']
+            $app['organizer_repository']
         );
     }
 );

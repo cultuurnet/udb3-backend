@@ -39,21 +39,14 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
      */
     protected $organizerRepository;
 
-    /**
-     * @var LabelServiceInterface
-     */
-    protected $labelService;
-
     public function __construct(
         CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        Repository $organizerRepository,
-        LabelServiceInterface $labelService
+        Repository $organizerRepository
     ) {
         $this->commandBus = $commandBus;
         $this->uuidGenerator = $uuidGenerator;
         $this->organizerRepository = $organizerRepository;
-        $this->labelService = $labelService;
     }
 
     public function create(
@@ -122,11 +115,6 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
      */
     public function addLabel(string $organizerId, Label $label): void
     {
-        $this->labelService->createLabelAggregateIfNew(
-            new LabelName((string) $label),
-            $label->isVisible()
-        );
-
         $this->commandBus->dispatch(
             new AddLabel($organizerId, $label)
         );

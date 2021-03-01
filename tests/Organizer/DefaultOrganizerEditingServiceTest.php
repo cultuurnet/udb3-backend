@@ -57,11 +57,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
     private $organizerRepository;
 
     /**
-     * @var LabelServiceInterface|MockObject
-     */
-    private $labelService;
-
-    /**
      * @var DefaultOrganizerEditingService
      */
     private $service;
@@ -81,13 +76,10 @@ class DefaultOrganizerEditingServiceTest extends TestCase
             new SimpleEventBus()
         );
 
-        $this->labelService = $this->createMock(LabelServiceInterface::class);
-
         $this->service = new DefaultOrganizerEditingService(
             $this->commandBus,
             $this->uuidGenerator,
-            $this->organizerRepository,
-            $this->labelService
+            $this->organizerRepository
         );
     }
 
@@ -289,10 +281,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
         $label = new Label('foo');
 
         $expectedAddLabel = new AddLabel($organizerId, $label);
-
-        $this->labelService->expects($this->once())
-            ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'));
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')
