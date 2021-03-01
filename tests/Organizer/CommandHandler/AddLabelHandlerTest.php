@@ -10,13 +10,16 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use CultuurNet\UDB3\Title;
+use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -27,6 +30,11 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
      * @var Entity[]
      */
     private $mockedLabelReadModels;
+
+    /**
+     * @var LabelServiceInterface|MockObject
+     */
+    private $labelService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): AddLabelHandler
     {
@@ -39,12 +47,15 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
                 }
             );
 
+        $this->labelService = $this->createMock(LabelServiceInterface::class);
+
         return new AddLabelHandler(
             new OrganizerRepository(
                 $eventStore,
                 $eventBus
             ),
-            $labelRepository
+            $labelRepository,
+            $this->labelService
         );
     }
 
@@ -55,6 +66,10 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
         $label = new Label('foo', true);
+
+        $this->labelService
+            ->method('createLabelAggregateIfNew')
+            ->with(new LabelName('foo'), true);
 
         $this->scenario
             ->withAggregateId($id)
@@ -71,6 +86,10 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
         $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
         $label = new Label('bar', false);
 
+        $this->labelService
+            ->method('createLabelAggregateIfNew')
+            ->with(new LabelName('bar'), false);
+
         $this->scenario
             ->withAggregateId($id)
             ->given([$this->organizerCreated($id)])
@@ -85,6 +104,10 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '5e360b25-fd85-4dac-acf4-0571e0b57dce';
         $label = new Label('foo', true);
+
+        $this->labelService
+            ->method('createLabelAggregateIfNew')
+            ->with(new LabelName('foo'), true);
 
         $this->scenario
             ->withAggregateId($id)

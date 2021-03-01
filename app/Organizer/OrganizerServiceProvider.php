@@ -19,7 +19,8 @@ final class OrganizerServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new AddLabelHandler(
                     $app['organizer_repository'],
-                    $app[LabelServiceProvider::JSON_READ_REPOSITORY]
+                    $app[LabelServiceProvider::JSON_READ_REPOSITORY],
+                    $app['labels.constraint_aware_service']
                 );
             }
         );

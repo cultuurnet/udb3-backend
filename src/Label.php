@@ -55,6 +55,11 @@ class Label
         return $this->visible;
     }
 
+    public function getName(): LabelName
+    {
+        return $this->labelName;
+    }
+
     /**
      * @return string
      */
