@@ -6,13 +6,10 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -105,26 +102,6 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     {
         $this->commandBus->dispatch(
             new UpdateContactPoint($organizerId, $contactPoint)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function addLabel(string $organizerId, Label $label): void
-    {
-        $this->commandBus->dispatch(
-            new AddLabel($organizerId, $label)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function removeLabel(string $organizerId, Label $label): void
-    {
-        $this->commandBus->dispatch(
-            new RemoveLabel($organizerId, $label)
         );
     }
 
