@@ -123,8 +123,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             new OrganizerRepository(
                 $eventStore,
                 $eventBus
-            ),
-            $this->labelRepository
+            )
         );
     }
 
