@@ -627,10 +627,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe(new MarkAsDuplicateCommandHandler($app['place_repository']));
 
         $commandBus->subscribe(
-            (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler(
-                $app['organizer_repository'],
-                $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-            ))
+            (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler($app['organizer_repository']))
                 ->withOrganizerRelationService($app['place_organizer_relation_service'])
                 ->withOrganizerRelationService($app['event_organizer_relation_service'])
         );

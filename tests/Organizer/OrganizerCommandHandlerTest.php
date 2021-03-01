@@ -13,10 +13,6 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\Privacy;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
@@ -64,11 +60,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
     private $repository;
 
     /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    private $labelRepository;
-
-    /**
      * @var OrganizerRelationServiceInterface|MockObject
      */
     private $eventOrganizerRelationService;
@@ -98,28 +89,10 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->eventBus = $this->createMock(EventBus::class);
         $this->repository = new OrganizerRepository($this->eventStore, $this->eventBus);
 
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository->method('getByName')
-            ->will($this->returnCallback(
-                function (StringLiteral $labelName) {
-                    return new Entity(
-                        new UUID(),
-                        $labelName,
-                        $labelName->toNative() === 'foo' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
-                    );
-                }
-            ));
-
         $this->eventOrganizerRelationService = $this->createMock(OrganizerRelationServiceInterface::class);
         $this->placeOrganizerRelationService = $this->createMock(OrganizerRelationServiceInterface::class);
 
-        $this->commandHandler = (
-            new OrganizerCommandHandler(
-                $this->repository,
-                $this->labelRepository
-            )
-        )
+        $this->commandHandler = (new OrganizerCommandHandler($this->repository))
             ->withOrganizerRelationService($this->eventOrganizerRelationService)
             ->withOrganizerRelationService($this->placeOrganizerRelationService);
 

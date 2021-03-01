@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 
 class OrganizerCommandHandler implements CommandHandler
 {
@@ -21,21 +20,13 @@ class OrganizerCommandHandler implements CommandHandler
     private $organizerRepository;
 
     /**
-     * @var ReadRepositoryInterface
-     */
-    private $labelRepository;
-
-    /**
      * @var OrganizerRelationServiceInterface[]
      */
     private $organizerRelationServices;
 
-    public function __construct(
-        Repository $organizerRepository,
-        ReadRepositoryInterface $labelRepository
-    ) {
+    public function __construct(Repository $organizerRepository)
+    {
         $this->organizerRepository = $organizerRepository;
-        $this->labelRepository = $labelRepository;
         $this->organizerRelationServices = [];
     }
 
