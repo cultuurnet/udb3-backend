@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
@@ -29,6 +30,12 @@ final class OrganizerServiceProvider implements ServiceProviderInterface
                     $app['organizer_repository'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
+            }
+        );
+
+        $app[ImportLabelsHandler::class] = $app->share(
+            function (Application $app) {
+                return new ImportLabelsHandler($app['organizer_repository']);
             }
         );
     }
