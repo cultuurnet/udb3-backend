@@ -8,11 +8,9 @@ use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class AddLabelHandler implements CommandHandler
 {
