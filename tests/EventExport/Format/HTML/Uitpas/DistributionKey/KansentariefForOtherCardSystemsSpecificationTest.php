@@ -1,9 +1,6 @@
 <?php
 
 declare(strict_types=1);
-/**
- * @file
- */
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\DistributionKey;
 

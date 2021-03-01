@@ -11,9 +11,6 @@ use DateTimeImmutable;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-/**
- * @file
- */
 class EventCreatedEnrichedWithCdbXml extends EventCreated implements CdbXmlContainerInterface
 {
     use HasCdbXmlTrait;
