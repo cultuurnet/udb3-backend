@@ -26,7 +26,7 @@ final class OrganizerServiceProvider implements ServiceProviderInterface
 
         $app[RemoveLabelHandler::class] = $app->share(
             function (Application $app) {
-                return new AddLabelHandler(
+                return new RemoveLabelHandler(
                     $app['organizer_repository'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
