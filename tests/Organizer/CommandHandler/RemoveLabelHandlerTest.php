@@ -86,10 +86,10 @@ final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->then([]);
     }
 
-    private function organizerCreated($id): OrganizerCreated
+    private function organizerCreated(string $id): OrganizerCreated
     {
         return new OrganizerCreated(
-            UUID::fromNative($id),
+            $id,
             new Title('Organizer Title'),
             [
                 new Address(

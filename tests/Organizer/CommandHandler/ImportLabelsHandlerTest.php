@@ -143,10 +143,10 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             );
     }
 
-    private function organizerCreated($id): OrganizerCreated
+    private function organizerCreated(string $id): OrganizerCreated
     {
         return new OrganizerCreated(
-            UUID::fromNative($id),
+            $id,
             new Title('Organizer Title'),
             [
                 new Address(
