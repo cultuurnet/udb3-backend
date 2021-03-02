@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SavedSearches\ReadModel;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
@@ -23,8 +25,6 @@ class SavedSearch implements \JsonSerializable
     protected $query;
 
     /**
-     * @param StringLiteral $name
-     * @param QueryString $query
      * @param StringLiteral $id
      */
     public function __construct(StringLiteral $name, QueryString $query, StringLiteral $id = null)

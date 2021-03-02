@@ -1,7 +1,7 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 /**

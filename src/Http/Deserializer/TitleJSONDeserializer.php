@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -17,7 +19,6 @@ class TitleJSONDeserializer extends JSONDeserializer
     /**
      * TitleJSONDeserializer constructor.
      * @param bool $assoc
-     * @param StringLiteral|null $propertyName
      */
     public function __construct(
         $assoc = false,
@@ -33,7 +34,6 @@ class TitleJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return Title
      */
     public function deserialize(StringLiteral $data)

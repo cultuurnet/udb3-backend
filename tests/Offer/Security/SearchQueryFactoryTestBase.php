@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Security;
 
 use CultuurNet\SearchV3\Parameter\Query;
@@ -54,8 +56,6 @@ abstract class SearchQueryFactoryTestBase extends TestCase
     }
 
     /**
-     * @param StringLiteral $constraint
-     * @param StringLiteral $offerId
      * @return string
      */
     abstract protected function createQueryString(

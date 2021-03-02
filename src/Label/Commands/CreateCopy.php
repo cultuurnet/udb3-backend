@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -16,11 +18,6 @@ class CreateCopy extends Create
 
     /**
      * CreateCopy constructor.
-     * @param UUID $uuid
-     * @param LabelName $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
-     * @param UUID $parentUuid
      */
     public function __construct(
         UUID $uuid,

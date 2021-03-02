@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
@@ -12,7 +11,7 @@ class JSONLDEventFormatterTest extends TestCase
     private function getJSONEventFromFile($fileName)
     {
         $jsonEvent = file_get_contents(
-            __DIR__.'/../../samples/'.$fileName
+            __DIR__ . '/../../samples/' . $fileName
         );
 
         return $jsonEvent;

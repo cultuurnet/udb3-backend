@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -13,9 +15,7 @@ class Version20200909165220 extends AbstractMigration
             ->changeColumn('similarity', ['scale' => 2]);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->getTable('similar_events')

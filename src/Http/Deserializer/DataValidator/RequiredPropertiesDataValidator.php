@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\DataValidator;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -20,7 +22,6 @@ class RequiredPropertiesDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)
@@ -29,7 +30,7 @@ class RequiredPropertiesDataValidator implements DataValidatorInterface
 
         foreach ($this->requiredFields as $requiredField) {
             if (!isset($data[$requiredField])) {
-                $errors[$requiredField] = "Required but could not be found.";
+                $errors[$requiredField] = 'Required but could not be found.';
             }
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Labels;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
@@ -36,33 +38,33 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelServiceProvider implements ServiceProviderInterface
 {
-    const JSON_TABLE = 'labels_json';
-    const RELATIONS_TABLE = 'labels_relations';
-    const LABEL_ROLES_TABLE = 'label_roles';
+    public const JSON_TABLE = 'labels_json';
+    public const RELATIONS_TABLE = 'labels_relations';
+    public const LABEL_ROLES_TABLE = 'label_roles';
 
-    const JSON_READ_REPOSITORY = 'labels.json_read_repository';
-    const JSON_WRITE_REPOSITORY = 'labels.json_write_repository';
-    const RELATIONS_READ_REPOSITORY = 'labels.relations_read_repository';
-    const RELATIONS_WRITE_REPOSITORY = 'labels.relations_write_repository';
-    const LABEL_ROLES_WRITE_REPOSITORY = 'labels.label_roles_write_repository';
+    public const JSON_READ_REPOSITORY = 'labels.json_read_repository';
+    public const JSON_WRITE_REPOSITORY = 'labels.json_write_repository';
+    public const RELATIONS_READ_REPOSITORY = 'labels.relations_read_repository';
+    public const RELATIONS_WRITE_REPOSITORY = 'labels.relations_write_repository';
+    public const LABEL_ROLES_WRITE_REPOSITORY = 'labels.label_roles_write_repository';
 
-    const READ_SERVICE = 'labels.read_service';
-    const WRITE_SERVICE = 'labels.write_service';
+    public const READ_SERVICE = 'labels.read_service';
+    public const WRITE_SERVICE = 'labels.write_service';
 
-    const UNIQUE_EVENT_STORE = 'labels.unique_event_store';
-    const REPOSITORY = 'labels.repository';
-    const COMMAND_HANDLER = 'labels.command_handler';
+    public const UNIQUE_EVENT_STORE = 'labels.unique_event_store';
+    public const REPOSITORY = 'labels.repository';
+    public const COMMAND_HANDLER = 'labels.command_handler';
 
-    const JSON_PROJECTOR = 'labels.json_projector';
-    const RELATIONS_PROJECTOR = 'labels.relations_projector';
-    const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
-    const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
-    const ORGANIZER_LABEL_PROJECTOR = 'labels.organizer_label_projector';
-    const LABEL_ROLES_PROJECTOR = 'labels.label_roles_projector';
+    public const JSON_PROJECTOR = 'labels.json_projector';
+    public const RELATIONS_PROJECTOR = 'labels.relations_projector';
+    public const PLACE_LABEL_PROJECTOR = 'labels.place_label_projector';
+    public const EVENT_LABEL_PROJECTOR = 'labels.event_label_projector';
+    public const ORGANIZER_LABEL_PROJECTOR = 'labels.organizer_label_projector';
+    public const LABEL_ROLES_PROJECTOR = 'labels.label_roles_projector';
 
-    const QUERY_FACTORY = 'label.query_factory';
+    public const QUERY_FACTORY = 'label.query_factory';
 
-    const LOGGER = 'labels.logger';
+    public const LOGGER = 'labels.logger';
 
     /**
      * @inheritdoc
@@ -101,9 +103,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpReadModels(Application $app)
     {
         $app[self::JSON_READ_REPOSITORY] = $app->share(
@@ -168,9 +168,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpServices(Application $app)
     {
         $app['labels.constraint_aware_service'] = $app->share(
@@ -200,9 +198,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpEventStore(Application $app)
     {
         $app[self::UNIQUE_EVENT_STORE] = $app->share(
@@ -221,9 +217,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpCommandHandler(Application $app)
     {
         $app[self::REPOSITORY] = $app->share(
@@ -245,9 +239,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpProjectors(Application $app)
     {
         $app[self::JSON_PROJECTOR] = $app->share(
@@ -331,9 +323,7 @@ class LabelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     private function setUpLogger(Application $app)
     {
         $app[self::LOGGER] = $app->share(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy\RequestTransformer;
 
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
@@ -10,8 +12,8 @@ use ValueObjects\Web\Hostname;
 
 class DomainReplacerTest extends TestCase
 {
-    const ORIGINAL_DOMAIN = 'www.original.be';
-    const REPLACED_DOMAIN = 'www.replaced.be';
+    public const ORIGINAL_DOMAIN = 'www.original.be';
+    public const REPLACED_DOMAIN = 'www.replaced.be';
 
     /**
      * @var Request

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Domain\DomainEventStream;
@@ -17,7 +19,6 @@ class OfferLocator implements EventStreamDecorator
 
     /**
      * OfferLocator constructor.
-     * @param IriGeneratorInterface $iriGenerator
      */
     public function __construct(IriGeneratorInterface $iriGenerator)
     {
@@ -30,7 +31,7 @@ class OfferLocator implements EventStreamDecorator
         DomainEventStream $eventStream
     ): DomainEventStream {
         $offerLocation = $this->iriGenerator->iri($aggregateIdentifier);
-        $messages = array();
+        $messages = [];
 
         /** @var DomainMessage $message */
         foreach ($eventStream as $message) {

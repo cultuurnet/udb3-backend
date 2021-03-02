@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\ContactPoint;
@@ -27,14 +29,14 @@ class AbstractUpdateContactPointTest extends TestCase
     {
         $this->itemId = 'Foo';
         $this->contactPoint = new ContactPoint(
-            array('0123456789'),
-            array('foo@bar.com'),
-            array('http://foo.bar')
+            ['0123456789'],
+            ['foo@bar.com'],
+            ['http://foo.bar']
         );
 
         $this->updateContactPoint = $this->getMockForAbstractClass(
             AbstractUpdateContactPoint::class,
-            array($this->itemId, $this->contactPoint)
+            [$this->itemId, $this->contactPoint]
         );
     }
 
@@ -45,9 +47,9 @@ class AbstractUpdateContactPointTest extends TestCase
     {
         $contactPoint = $this->updateContactPoint->getContactPoint();
         $expectedContactPoint = new ContactPoint(
-            array('0123456789'),
-            array('foo@bar.com'),
-            array('http://foo.bar')
+            ['0123456789'],
+            ['foo@bar.com'],
+            ['http://foo.bar']
         );
 
         $this->assertEquals($expectedContactPoint, $contactPoint);

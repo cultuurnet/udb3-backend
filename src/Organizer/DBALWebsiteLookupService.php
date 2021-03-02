@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
@@ -19,7 +21,6 @@ class DBALWebsiteLookupService implements WebsiteLookupServiceInterface
     private $tableName;
 
     /**
-     * @param Connection $connection
      * @param string $tableName
      */
     public function __construct(

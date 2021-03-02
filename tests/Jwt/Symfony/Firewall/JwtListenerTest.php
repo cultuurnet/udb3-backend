@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
@@ -62,7 +64,6 @@ class JwtListenerTest extends TestCase
      * @test
      * @dataProvider irrelevantRequestProvider
      *
-     * @param Request $request
      */
     public function it_ignores_irrelevant_requests(Request $request)
     {

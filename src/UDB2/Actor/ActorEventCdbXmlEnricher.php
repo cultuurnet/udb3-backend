@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Actor;
 
 use Broadway\Domain\DateTime;
@@ -68,9 +70,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     private function setLogContextFromDomainMessage(
         DomainMessage $domainMessage
     ) {
@@ -82,10 +82,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
         }
     }
 
-    /**
-     * @param ActorCreated $actorCreated
-     * @param DomainMessage $message
-     */
+
     private function applyActorCreated(
         ActorCreated $actorCreated,
         DomainMessage $message
@@ -108,10 +105,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
         );
     }
 
-    /**
-     * @param ActorUpdated $actorUpdated
-     * @param DomainMessage $message
-     */
+
     private function applyActorUpdated(
         ActorUpdated $actorUpdated,
         DomainMessage $message
@@ -136,7 +130,6 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
 
     /**
      * @param object $payload
-     * @param Metadata $metadata
      */
     private function publish($payload, Metadata $metadata)
     {
@@ -153,7 +146,6 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @param Url $url
      * @return StringLiteral
      * @throws ActorNotFoundException
      * @throws XMLValidationException
@@ -185,7 +177,6 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @param Url $url
      * @return \Psr\Http\Message\ResponseInterface
      * @throws ActorNotFoundException
      */
@@ -252,7 +243,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
         $this->logger->error('no actor found in cdbxml!');
 
         throw new \RuntimeException(
-            "Actor could not be found in the Entry API response body."
+            'Actor could not be found in the Entry API response body.'
         );
     }
 

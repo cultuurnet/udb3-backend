@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
 class LabelNameTest extends \PHPUnit_Framework_TestCase

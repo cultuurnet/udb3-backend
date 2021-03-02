@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use Broadway\CommandHandling\CommandBus;
@@ -22,7 +24,7 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new BulkLabelCommandHandler(
                     $app['search_results_generator'],
-                    $app['external_offer_editing_service']
+                    $app['event_command_bus']
                 );
             }
         );

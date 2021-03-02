@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Services;
 
 use Broadway\CommandHandling\CommandBus;
@@ -113,7 +115,7 @@ class DefaultRoleEditingServiceTest extends TestCase
 
         $this->writeRepository = new RoleRepository(
             $this->eventStore,
-            new SimpleEventBus
+            new SimpleEventBus()
         );
 
         $this->createRole = new CreateRole(

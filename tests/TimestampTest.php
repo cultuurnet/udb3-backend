@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Event\ValueObjects\Status;
@@ -11,11 +13,11 @@ use PHPUnit\Framework\TestCase;
 
 class TimestampTest extends TestCase
 {
-    const START_DATE_KEY = 'startDate';
-    const END_DATE_KEY = 'endDate';
+    public const START_DATE_KEY = 'startDate';
+    public const END_DATE_KEY = 'endDate';
 
-    const START_DATE = '2016-01-03T01:01:01+01:00';
-    const END_DATE = '2016-01-07T01:01:01+01:00';
+    public const START_DATE = '2016-01-03T01:01:01+01:00';
+    public const END_DATE = '2016-01-07T01:01:01+01:00';
 
     /**
      * @var Timestamp

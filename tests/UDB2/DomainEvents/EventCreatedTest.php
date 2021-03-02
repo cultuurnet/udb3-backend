@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use PHPUnit\Framework\TestCase;
@@ -84,13 +86,13 @@ class EventCreatedTest extends TestCase
 
     public function testSerialization()
     {
-        $time = new \DateTimeImmutable("2016-04-15T16:06:11+0200");
+        $time = new \DateTimeImmutable('2016-04-15T16:06:11+0200');
         $eventCreated = $this->createEventCreated($time);
         $expectedData = [
-            "eventId" => "123",
-            "time" => "2016-04-15T16:06:11+0200",
-            "author" => "me@example.com",
-            "url" => "http://foo.bar/event/foo",
+            'eventId' => '123',
+            'time' => '2016-04-15T16:06:11+0200',
+            'author' => 'me@example.com',
+            'url' => 'http://foo.bar/event/foo',
         ];
 
         $this->assertEquals(

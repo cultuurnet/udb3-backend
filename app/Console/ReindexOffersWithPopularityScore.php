@@ -1,9 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use Broadway\Domain\DomainEventStream;
-use CultuurNet\UDB3\Broadway\EventHandling\ReplayModeEventBusInterface;
+use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
@@ -28,9 +29,9 @@ class ReindexOffersWithPopularityScore extends Command
     private $connection;
 
     /**
-     * @var ReplayModeEventBusInterface
+     * @var AMQPPublisher
      */
-    private $eventBus;
+    private $amqpPublisher;
 
     /**
      * @var DocumentEventFactory
@@ -40,12 +41,12 @@ class ReindexOffersWithPopularityScore extends Command
     public function __construct(
         OfferType $type,
         Connection $connection,
-        ReplayModeEventBusInterface $eventBus,
+        AMQPPublisher $AMQPPublisher,
         DocumentEventFactory $eventFactoryForEvents
     ) {
         $this->type = \strtolower($type->toNative());
         $this->connection = $connection;
-        $this->eventBus = $eventBus;
+        $this->amqpPublisher = $AMQPPublisher;
         $this->eventFactoryForEvents = $eventFactoryForEvents;
 
         // It's important to call the parent constructor after setting the properties.
@@ -57,7 +58,7 @@ class ReindexOffersWithPopularityScore extends Command
     protected function configure(): void
     {
         $this
-            ->setName($this->type.':reindex-offers-with-popularity')
+            ->setName($this->type . ':reindex-offers-with-popularity')
             ->setDescription('Reindex events or places that have a popularity score.')
             ->addOption(
                 'force',
@@ -79,13 +80,9 @@ class ReindexOffersWithPopularityScore extends Command
             return 0;
         }
 
-        $this->eventBus->startReplayMode();
-
         foreach ($offerIds as $offerId) {
-            $this->dispatchEvent($offerId);
+            $this->handleEvent($offerId);
         }
-
-        $this->eventBus->stopReplayMode();
 
         return 0;
     }
@@ -116,14 +113,12 @@ class ReindexOffersWithPopularityScore extends Command
             );
     }
 
-    private function dispatchEvent(string $id): void
+    private function handleEvent(string $id): void
     {
         $projectedEvent = $this->eventFactoryForEvents->createEvent($id);
 
-        $this->eventBus->publish(
-            new DomainEventStream([
-                (new DomainMessageBuilder())->create($projectedEvent),
-            ])
+        $this->amqpPublisher->handle(
+            (new DomainMessageBuilder())->create($projectedEvent)
         );
     }
 }

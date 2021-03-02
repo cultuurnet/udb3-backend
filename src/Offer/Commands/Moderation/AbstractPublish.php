@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
 use Cake\Chronos\Chronos;
@@ -12,7 +14,6 @@ abstract class AbstractPublish extends AbstractModerationCommand
     /**
      * AbstractPublish constructor.
      * @param string $itemId
-     * @param \DateTimeInterface|null $publicationDate
      */
     public function __construct($itemId, \DateTimeInterface $publicationDate = null)
     {

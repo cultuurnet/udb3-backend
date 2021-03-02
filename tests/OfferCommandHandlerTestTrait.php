@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManager;
@@ -32,11 +33,6 @@ trait OfferCommandHandlerTestTrait
      * @var Repository|MockObject
      */
     protected $organizerRepository;
-
-    /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    protected $labelRepository;
 
     /**
      * @var MediaManager|MockObject

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -26,6 +28,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $app['organizer_edit_controller'] = $app->share(
             function (Application $app) {
                 return new EditOrganizerRestController(
+                    $app['event_command_bus'],
                     $app['organizer_editing_service'],
                     $app['organizer_iri_generator']
                 );
@@ -102,8 +105,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             'organizer_edit_controller:removeLabel'
         );
 
-        $controllers->get("{offerId}/permissions/", "organizer_permissions_controller:getPermissionsForCurrentUser");
-        $controllers->get("{offerId}/permissions/{userId}", "organizer_permissions_controller:getPermissionsForGivenUser");
+        $controllers->get('{offerId}/permissions/', 'organizer_permissions_controller:getPermissionsForCurrentUser');
+        $controllers->get('{offerId}/permissions/{userId}', 'organizer_permissions_controller:getPermissionsForGivenUser');
 
         return $controllers;
     }

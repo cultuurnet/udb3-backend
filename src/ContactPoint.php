@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializable;
@@ -13,17 +15,17 @@ final class ContactPoint implements Serializable, JsonLdSerializableInterface
     /**
      * @var array
      */
-    protected $phones = array();
+    private $phones = [];
 
     /**
      * @var array
      */
-    protected $emails = array();
+    private $emails = [];
 
     /**
      * @var array
      */
-    protected $urls = array();
+    private $urls = [];
 
     public function __construct(array $phones = [], array $emails = [], array $urls = [])
     {

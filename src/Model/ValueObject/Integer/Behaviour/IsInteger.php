@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Integer\Behaviour;
 
 trait IsInteger
@@ -77,7 +79,6 @@ trait IsInteger
     }
 
     /**
-     * @param mixed $other
      * @throws \InvalidArgumentException
      */
     private function guardSameType($other)
@@ -91,7 +92,6 @@ trait IsInteger
     }
 
     /**
-     * @param mixed $value
      * @throws \InvalidArgumentException
      */
     private function guardInteger($value)

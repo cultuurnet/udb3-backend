@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
@@ -37,8 +39,8 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
         $json = new StringLiteral('{"@id":"http://du.de/event/1","@type":"Event"}');
 
         $expected = new IriOfferIdentifier(
-            Url::fromNative("http://du.de/event/1"),
-            "1",
+            Url::fromNative('http://du.de/event/1'),
+            '1',
             OfferType::EVENT()
         );
 

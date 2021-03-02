@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -15,7 +17,6 @@ class UpdateLocation extends AbstractCommand
     /**
      * UpdateLocation constructor.
      * @param string $itemId
-     * @param LocationId $locationId
      */
     public function __construct(
         $itemId,

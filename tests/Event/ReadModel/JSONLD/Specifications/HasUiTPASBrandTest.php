@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD\Specifications;
 
 use PHPUnit\Framework\TestCase;
@@ -16,13 +18,13 @@ class HasUiTPASBrandTest extends TestCase
         $event = $this->getEventLdFromFile('event_with_all_icon_labels.json');
         $this->assertFalse((new HasUiTPASBrand())->isSatisfiedBy($event));
 
-        $event->labels = array('UiTPAS Regio Aalst');
+        $event->labels = ['UiTPAS Regio Aalst'];
         $this->assertTrue((new HasUiTPASBrand())->isSatisfiedBy($event));
 
-        $event->labels = array('UiTPAS Gent');
+        $event->labels = ['UiTPAS Gent'];
         $this->assertTrue((new HasUiTPASBrand())->isSatisfiedBy($event));
 
-        $event->labels = array('Paspartoe');
+        $event->labels = ['Paspartoe'];
         $this->assertTrue((new HasUiTPASBrand())->isSatisfiedBy($event));
     }
 }

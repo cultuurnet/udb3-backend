@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
@@ -124,9 +126,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
      * Factory method to create a new Organizer.
      *
      * @param string $id
-     * @param Language $mainLanguage
-     * @param Url $website
-     * @param Title $title
      * @return Organizer
      */
     public static function create(
@@ -158,9 +157,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    /**
-     * @param Url $website
-     */
+
     public function updateWebsite(Url $website)
     {
         if (is_null($this->website) || !$this->website->sameValueAs($website)) {
@@ -173,10 +170,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    /**
-     * @param Title $title
-     * @param Language $language
-     */
+
     public function updateTitle(
         Title $title,
         Language $language
@@ -199,10 +193,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    /**
-     * @param Address $address
-     * @param Language $language
-     */
+
     public function updateAddress(
         Address $address,
         Language $language
@@ -236,9 +227,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         );
     }
 
-    /**
-     * @param ContactPoint $contactPoint
-     */
+
     public function updateContactPoint(ContactPoint $contactPoint)
     {
         if (!$this->contactPoint->sameAs($contactPoint)) {
@@ -278,9 +267,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    /**
-     * @param Labels $labels
-     */
+
     public function importLabels(Labels $labels, Labels $labelsToKeepIfAlreadyOnOrganizer)
     {
         $convertLabelClass = function (\CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label $label) {
@@ -350,7 +337,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     /**
      * Apply the organizer created event.
-     * @param OrganizerCreated $organizerCreated
      */
     protected function applyOrganizerCreated(OrganizerCreated $organizerCreated)
     {
@@ -363,7 +349,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
 
     /**
      * Apply the organizer created event.
-     * @param OrganizerCreatedWithUniqueWebsite $organizerCreated
      */
     protected function applyOrganizerCreatedWithUniqueWebsite(OrganizerCreatedWithUniqueWebsite $organizerCreated)
     {
@@ -377,7 +362,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     }
 
     /**
-     * @param OrganizerImportedFromUDB2 $organizerImported
      * @throws \CultureFeed_Cdb_ParseException
      */
     protected function applyOrganizerImportedFromUDB2(
@@ -399,7 +383,6 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     }
 
     /**
-     * @param OrganizerUpdatedFromUDB2 $organizerUpdatedFromUDB2
      * @throws \CultureFeed_Cdb_ParseException
      */
     protected function applyOrganizerUpdatedFromUDB2(
@@ -417,80 +400,61 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         $this->labels = LabelCollection::fromKeywords($actor->getKeywords(true));
     }
 
-    /**
-     * @param WebsiteUpdated $websiteUpdated
-     */
+
     protected function applyWebsiteUpdated(WebsiteUpdated $websiteUpdated)
     {
         $this->website = $websiteUpdated->getWebsite();
     }
 
-    /**
-     * @param TitleUpdated $titleUpdated
-     */
+
     protected function applyTitleUpdated(TitleUpdated $titleUpdated)
     {
         $this->setTitle($titleUpdated->getTitle(), $this->mainLanguage);
     }
 
-    /**
-     * @param TitleTranslated $titleTranslated
-     */
+
     protected function applyTitleTranslated(TitleTranslated $titleTranslated)
     {
         $this->setTitle($titleTranslated->getTitle(), $titleTranslated->getLanguage());
     }
 
-    /**
-     * @param AddressUpdated $addressUpdated
-     */
+
     protected function applyAddressUpdated(AddressUpdated $addressUpdated)
     {
         $this->setAddress($addressUpdated->getAddress(), $this->mainLanguage);
     }
 
-    /**
-     * @param AddressRemoved $addressRemoved
-     */
+
     protected function applyAddressRemoved(AddressRemoved $addressRemoved)
     {
         $this->addresses = null;
     }
 
-    /**
-     * @param AddressTranslated $addressTranslated
-     */
+
     protected function applyAddressTranslated(AddressTranslated $addressTranslated)
     {
         $this->setAddress($addressTranslated->getAddress(), $addressTranslated->getLanguage());
     }
 
-    /**
-     * @param ContactPointUpdated $contactPointUpdated
-     */
+
     protected function applyContactPointUpdated(ContactPointUpdated $contactPointUpdated)
     {
         $this->contactPoint = $contactPointUpdated->getContactPoint();
     }
 
-    /**
-     * @param LabelAdded $labelAdded
-     */
+
     protected function applyLabelAdded(LabelAdded $labelAdded)
     {
         $this->labels = $this->labels->with($labelAdded->getLabel());
     }
 
-    /**
-     * @param LabelRemoved $labelRemoved
-     */
+
     protected function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
         $this->labels = $this->labels->without($labelRemoved->getLabel());
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Actor $actor
      * @return null|Title
      */
     private function getTitle(\CultureFeed_Cdb_Item_Actor $actor)
@@ -508,18 +472,13 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
         }
     }
 
-    /**
-     * @param Title $title
-     * @param Language $language
-     */
+
     private function setTitle(Title $title, Language $language)
     {
         $this->titles[$language->getCode()] = $title;
     }
 
     /**
-     * @param Title $title
-     * @param Language $language
      * @return bool
      */
     private function isTitleChanged(Title $title, Language $language)
@@ -528,18 +487,13 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
             !$title->sameValueAs($this->titles[$language->getCode()]);
     }
 
-    /**
-     * @param Address $address
-     * @param Language $language
-     */
+
     private function setAddress(Address $address, Language $language)
     {
         $this->addresses[$language->getCode()] = $address;
     }
 
     /**
-     * @param Address $address
-     * @param Language $language
      * @return bool
      */
     private function isAddressChanged(Address $address, Language $language)

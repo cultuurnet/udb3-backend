@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -22,7 +24,6 @@ class ContactPointJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return ContactPoint
      */
     public function deserialize(StringLiteral $data)

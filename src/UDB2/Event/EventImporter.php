@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Event;
 
 use Broadway\CommandHandling\CommandBus;
@@ -89,7 +91,6 @@ class EventImporter implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @param CultureFeed_Cdb_Item_Event $event
      * @return bool
      */
     private function isSatisfiedBy(CultureFeed_Cdb_Item_Event $event)

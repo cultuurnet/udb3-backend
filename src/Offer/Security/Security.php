@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Security;
 
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
@@ -24,8 +26,6 @@ class Security implements SecurityInterface
 
     /**
      * Security constructor.
-     * @param UserIdentificationInterface $userIdentification
-     * @param PermissionVoterInterface $permissionVoter
      */
     public function __construct(
         UserIdentificationInterface $userIdentification,
@@ -57,8 +57,6 @@ class Security implements SecurityInterface
     }
 
     /**
-     * @param StringLiteral $offerId
-     * @param AuthorizableCommandInterface $command
      * @return bool
      */
     private function currentUiTIDUserCanEditOffer(

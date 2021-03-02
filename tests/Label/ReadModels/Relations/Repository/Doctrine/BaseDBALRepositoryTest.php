@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
@@ -35,9 +37,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         return $this->tableName;
     }
 
-    /**
-     * @param LabelRelation $labelRelation
-     */
+
     protected function saveLabelRelation(LabelRelation $labelRelation)
     {
         $values = $this->labelRelationToValues($labelRelation);
@@ -48,7 +48,6 @@ abstract class BaseDBALRepositoryTest extends TestCase
     }
 
     /**
-     * @param LabelRelation $offerLabelRelation
      * @return array
      */
     protected function labelRelationToValues(LabelRelation $offerLabelRelation)

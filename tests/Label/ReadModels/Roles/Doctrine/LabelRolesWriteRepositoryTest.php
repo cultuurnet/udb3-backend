@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
@@ -121,10 +123,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
         $this->assertEquals($expectedRows, $actualRows);
     }
 
-    /**
-     * @param UUID $labelId
-     * @param UUID $roleId
-     */
+
     private function insertLabelRole(UUID $labelId, UUID $roleId)
     {
         $this->connection->insert(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -9,7 +11,7 @@ use Doctrine\Common\Cache\Cache;
 
 class CachedGeocodingService implements GeocodingServiceInterface
 {
-    const NO_COORDINATES_FOUND = 'NO_COORDINATES_FOUND';
+    public const NO_COORDINATES_FOUND = 'NO_COORDINATES_FOUND';
 
     /**
      * @var GeocodingServiceInterface
@@ -21,10 +23,7 @@ class CachedGeocodingService implements GeocodingServiceInterface
      */
     private $cache;
 
-    /**
-     * @param GeocodingServiceInterface $geocodingService
-     * @param Cache $cache
-     */
+
     public function __construct(GeocodingServiceInterface $geocodingService, Cache $cache)
     {
         $this->geocodingService = $geocodingService;
@@ -49,8 +48,8 @@ class CachedGeocodingService implements GeocodingServiceInterface
 
             if (isset($cacheData['lat']) && isset($cacheData['long'])) {
                 return new Coordinates(
-                    new Latitude((double) $cacheData['lat']),
-                    new Longitude((double) $cacheData['long'])
+                    new Latitude((float) $cacheData['lat']),
+                    new Longitude((float) $cacheData['long'])
                 );
             }
         }

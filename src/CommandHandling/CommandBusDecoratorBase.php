@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
@@ -20,7 +22,6 @@ abstract class CommandBusDecoratorBase implements CommandBus
     /**
      * Dispatches the command $command to the proper CommandHandler
      *
-     * @param mixed $command
      */
     public function dispatch($command)
     {

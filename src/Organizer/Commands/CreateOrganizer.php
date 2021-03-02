@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Language;
@@ -25,9 +27,6 @@ class CreateOrganizer extends AbstractOrganizerCommand
 
     /**
      * @param string $id
-     * @param Language $mainLanguage
-     * @param Url $website
-     * @param Title $title
      */
     public function __construct(
         $id,

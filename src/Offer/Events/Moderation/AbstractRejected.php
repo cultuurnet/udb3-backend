@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events\Moderation;
 
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
@@ -25,9 +27,9 @@ abstract class AbstractRejected extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'reason' => $this->reason->toNative(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractRejected

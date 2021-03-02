@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel;
 
 use Broadway\EventHandling\EventListener;
@@ -18,7 +20,6 @@ class RoleProjector implements EventListener
 
     /**
      * Projector constructor.
-     * @param DocumentRepository $repository
      */
     public function __construct(DocumentRepository $repository)
     {
@@ -27,7 +28,6 @@ class RoleProjector implements EventListener
 
     /**
      * @param string $uuid
-     * @param callable $fn
      */
     protected function saveNewDocument($uuid, callable $fn)
     {

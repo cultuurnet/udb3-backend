@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use CommerceGuys\Intl\Currency\CurrencyRepository;
@@ -14,7 +16,6 @@ use PHPUnit\Framework\TestCase;
 
 class CdbXMLImporterTest extends TestCase
 {
-
     /**
      * @var CdbXMLImporter
      */

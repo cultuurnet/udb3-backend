@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Calendar\DayOfWeek;
@@ -32,15 +34,15 @@ use ValueObjects\DateTime\Minute;
 
 class CalendarTest extends TestCase
 {
-    const START_DATE = '2016-03-06T10:00:00+01:00';
-    const END_DATE = '2016-03-13T12:00:00+01:00';
+    public const START_DATE = '2016-03-06T10:00:00+01:00';
+    public const END_DATE = '2016-03-13T12:00:00+01:00';
 
-    const TIMESTAMP_1 = '1457254800';
-    const TIMESTAMP_1_START_DATE = '2016-03-06T10:00:00+01:00';
-    const TIMESTAMP_1_END_DATE = '2016-03-06T10:00:00+01:00';
-    const TIMESTAMP_2 = '1457859600';
-    const TIMESTAMP_2_START_DATE = '2016-03-13T10:00:00+01:00';
-    const TIMESTAMP_2_END_DATE = '2016-03-13T12:00:00+01:00';
+    public const TIMESTAMP_1 = '1457254800';
+    public const TIMESTAMP_1_START_DATE = '2016-03-06T10:00:00+01:00';
+    public const TIMESTAMP_1_END_DATE = '2016-03-06T10:00:00+01:00';
+    public const TIMESTAMP_2 = '1457859600';
+    public const TIMESTAMP_2_START_DATE = '2016-03-13T10:00:00+01:00';
+    public const TIMESTAMP_2_END_DATE = '2016-03-13T12:00:00+01:00';
 
     /**
      * @var Calendar

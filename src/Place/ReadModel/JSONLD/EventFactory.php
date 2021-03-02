@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -13,9 +15,7 @@ class EventFactory implements DocumentEventFactory
      */
     private $iriGenerator;
 
-    /**
-     * @param IriGeneratorInterface $iriGenerator
-     */
+
     public function __construct(IriGeneratorInterface $iriGenerator)
     {
         $this->iriGenerator = $iriGenerator;

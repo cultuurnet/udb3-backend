@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Collection;
 
 use CultuurNet\UDB3\Collection\Exception\CollectionItemNotFoundException;
@@ -14,7 +16,7 @@ abstract class AbstractCollection implements CollectionInterface
 
     public function __construct()
     {
-        $this->items = array();
+        $this->items = [];
     }
 
     /**

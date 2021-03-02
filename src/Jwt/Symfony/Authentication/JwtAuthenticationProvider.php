@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
@@ -14,9 +16,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     private $decoderService;
 
-    /**
-     * @param JwtDecoderServiceInterface $decoderService
-     */
+
     public function __construct(
         JwtDecoderServiceInterface $decoderService
     ) {
@@ -39,7 +39,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
         /* @var JwtUserToken $token */
         if (!$this->supports($token)) {
             throw new AuthenticationException(
-                "Token type " . get_class($token) . " not supported."
+                'Token type ' . get_class($token) . ' not supported.'
             );
         }
 
@@ -47,19 +47,19 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         if (!$this->decoderService->verifySignature($jwt)) {
             throw new AuthenticationException(
-                "Token signature verification failed. The token is likely forged or manipulated."
+                'Token signature verification failed. The token is likely forged or manipulated.'
             );
         }
 
         if (!$this->decoderService->validateData($jwt)) {
             throw new AuthenticationException(
-                "Token claims validation failed. This most likely means the token is expired."
+                'Token claims validation failed. This most likely means the token is expired.'
             );
         }
 
         if (!$this->decoderService->validateRequiredClaims($jwt)) {
             throw new AuthenticationException(
-                "Token is missing one of its required claims."
+                'Token is missing one of its required claims.'
             );
         }
 

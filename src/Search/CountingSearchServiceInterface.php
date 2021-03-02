@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 /**
@@ -14,7 +16,6 @@ interface CountingSearchServiceInterface
      * @param string $query
      *   An arbitrary query
      *
-     * @return int
      */
     public function search(string $query): int;
 }

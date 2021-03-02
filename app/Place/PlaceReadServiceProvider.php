@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\UDB3\Language;
@@ -9,9 +11,6 @@ use Silex\ServiceProviderInterface;
 
 class PlaceReadServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['place_main_language_query'] = $app->share(
@@ -26,9 +25,7 @@ class PlaceReadServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

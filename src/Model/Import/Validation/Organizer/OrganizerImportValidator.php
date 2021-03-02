@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\Organizer;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepository;
@@ -14,11 +16,6 @@ use CultuurNet\UDB3\Security\UserIdentificationInterface;
 class OrganizerImportValidator extends OrganizerValidator
 {
     /**
-     * @param WebsiteLookupServiceInterface $websiteLookupService
-     * @param UUIDParser $uuidParser
-     * @param UserIdentificationInterface $userIdentification
-     * @param LabelsRepository $labelsRepository
-     * @param LabelRelationsRepository $labelRelationsRepository
      * @param bool $urlRequired
      */
     public function __construct(

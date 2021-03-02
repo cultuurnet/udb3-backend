@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\Services;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
@@ -16,7 +18,6 @@ class ReadService implements ReadServiceInterface
 
     /**
      * ReadService constructor.
-     * @param ReadRepositoryInterface $readRepository
      */
     public function __construct(ReadRepositoryInterface $readRepository)
     {

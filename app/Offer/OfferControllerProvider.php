@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Offer;
 
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
@@ -62,6 +64,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             $app[$controllerName] = $app->share(
                 function (Application $app) use ($serviceNames, $offerType) {
                     return new EditOfferRestController(
+                        $app['event_command_bus'],
                         $app[$serviceNames[0]],
                         $app[$serviceNames[1]],
                         new LabelJSONDeserializer(),
@@ -94,11 +97,11 @@ class OfferControllerProvider implements ControllerProviderInterface
                     if (!is_null($app['current_user'])) {
                         $currentUserId = new StringLiteral($app['current_user']->id);
                     }
-                    $permissionsToCheck = array(
+                    $permissionsToCheck = [
                         Permission::AANBOD_BEWERKEN(),
                         Permission::AANBOD_MODEREREN(),
                         Permission::AANBOD_VERWIJDEREN(),
-                    );
+                    ];
                     return new OfferPermissionsController(
                         $permissionsToCheck,
                         $app['offer_permission_voter'],

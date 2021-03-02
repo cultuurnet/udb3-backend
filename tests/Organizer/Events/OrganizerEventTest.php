@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use PHPUnit\Framework\TestCase;
@@ -10,7 +12,6 @@ class OrganizerEventTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param MockOrganizerEvent $organizerEvent
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,

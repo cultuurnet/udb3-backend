@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Address;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -42,7 +44,7 @@ class AddressJSONDeserializerTest extends TestCase
 
         try {
             $this->deserializer->deserialize($data);
-            $this->fail("No DataValidationException was thrown.");
+            $this->fail('No DataValidationException was thrown.');
         } catch (DataValidationException $e) {
             $this->assertEquals($expectedException->getValidationMessages(), $e->getValidationMessages());
         }

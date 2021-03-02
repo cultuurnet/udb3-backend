@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Events;
 
 use CultuurNet\UDB3\ValueObject\SapiVersion;
@@ -35,8 +37,8 @@ final class ConstraintRemoved extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
                 'sapiVersion' => $this->sapiVersion->toNative(),
-            );
+            ];
     }
 }

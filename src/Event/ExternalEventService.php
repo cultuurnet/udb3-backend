@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use Exception;
@@ -17,7 +19,6 @@ class ExternalEventService implements EventServiceInterface
 
     /**
      * ExternalEventService constructor.
-     * @param HttpClient $httpClient
      */
     public function __construct(HttpClient $httpClient)
     {
@@ -27,7 +28,7 @@ class ExternalEventService implements EventServiceInterface
     public function getEvent(string $id): string
     {
         $uri = new Uri($id);
-        $request = new Request('GET', $uri, ["Accept" => "application/json"]);
+        $request = new Request('GET', $uri, ['Accept' => 'application/json']);
 
         try {
             $response = $this->httpClient->sendRequest($request);

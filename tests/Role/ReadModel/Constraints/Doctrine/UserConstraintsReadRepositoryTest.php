@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
@@ -158,10 +160,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->insertRole($this->roleIds[3], new StringLiteral('Geen constraint'), null);
     }
 
-    /**
-     * @param StringLiteral $userId
-     * @param UUID $roleId
-     */
+
     private function insertUserRole(StringLiteral $userId, UUID $roleId)
     {
         $this->getConnection()->insert(
@@ -173,10 +172,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @param UUID $roleId
-     * @param Permission $permission
-     */
+
     private function insertUserPermission(UUID $roleId, Permission $permission)
     {
         $this->getConnection()->insert(
@@ -189,8 +185,6 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
     /**
-     * @param UUID $roleId
-     * @param StringLiteral $roleName
      * @param StringLiteral $constraint
      */
     private function insertRole(

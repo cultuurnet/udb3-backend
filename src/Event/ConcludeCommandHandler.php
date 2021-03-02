@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\Repository\Repository;
@@ -18,9 +20,7 @@ class ConcludeCommandHandler extends Udb3CommandHandler
         $this->offerRepository = $offerRepository;
     }
 
-    /**
-     * @param Conclude $conclude
-     */
+
     public function handleConclude(Conclude $conclude)
     {
         /** @var Event $event */

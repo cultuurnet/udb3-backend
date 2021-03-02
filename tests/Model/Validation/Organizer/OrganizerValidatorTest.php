@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Validation\Organizer;
 
 use PHPUnit\Framework\TestCase;
@@ -702,11 +704,7 @@ class OrganizerValidatorTest extends TestCase
         $this->assertTrue($this->validator->validate($organizer));
     }
 
-    /**
-     * @param mixed $data
-     * @param array $expectedMessages
-     * @param Validator|null $validator
-     */
+
     private function assertValidationErrors($data, array $expectedMessages, Validator $validator = null)
     {
         $validator = $validator ? $validator : $this->getValidator();

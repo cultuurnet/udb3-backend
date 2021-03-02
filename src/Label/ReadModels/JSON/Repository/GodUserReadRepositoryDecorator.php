@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use ValueObjects\Identity\UUID;
@@ -17,10 +19,7 @@ class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
      */
     private $godUserIds;
 
-    /**
-     * @param ReadRepositoryInterface $readRepository
-     * @param array $godUserIds
-     */
+
     public function __construct(ReadRepositoryInterface $readRepository, array $godUserIds)
     {
         $this->repository = $readRepository;

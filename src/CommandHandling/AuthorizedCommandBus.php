@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
@@ -83,9 +85,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         }
     }
 
-    /**
-     * @param Metadata|null $context
-     */
+
     public function setContext(Metadata $context = null)
     {
         $this->metadata = $context;

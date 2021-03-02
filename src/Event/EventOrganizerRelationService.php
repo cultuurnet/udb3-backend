@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
@@ -17,10 +19,7 @@ class EventOrganizerRelationService implements OrganizerRelationServiceInterface
      */
     private $relationsRepository;
 
-    /**
-     * @param EventEditingServiceInterface $editingService
-     * @param RepositoryInterface $relationsRepository
-     */
+
     public function __construct(
         EventEditingServiceInterface $editingService,
         RepositoryInterface $relationsRepository

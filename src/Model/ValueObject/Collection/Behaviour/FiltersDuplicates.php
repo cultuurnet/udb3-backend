@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour;
 
 trait FiltersDuplicates
 {
     /**
-     * @param array $values
      * @return array
      */
     private function filterDuplicateValues(array $values)

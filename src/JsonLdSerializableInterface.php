@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @file
  * Contains CultuurNet\UDB3\JsonLdObjectInterface.
@@ -12,7 +14,6 @@ namespace CultuurNet\UDB3;
  */
 interface JsonLdSerializableInterface
 {
-
     /**
      * Convert the object to json ld.
      */

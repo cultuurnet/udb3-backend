@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Security\Permission;
 
 use CultuurNet\UDB3\Offer\Security\UserPermissionMatcherInterface;
@@ -13,18 +15,13 @@ class RoleConstraintVoter implements PermissionVoterInterface
      */
     private $userPermissionMatcher;
 
-    /**
-     * @param UserPermissionMatcherInterface $userPermissionMatcher
-     */
+
     public function __construct(UserPermissionMatcherInterface $userPermissionMatcher)
     {
         $this->userPermissionMatcher = $userPermissionMatcher;
     }
 
     /**
-     * @param Permission $permission
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return bool
      */
     public function isAllowed(

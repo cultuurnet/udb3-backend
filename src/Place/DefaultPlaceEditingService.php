@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\CommandHandling\CommandBus;
@@ -8,7 +10,6 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
@@ -30,15 +31,13 @@ class DefaultPlaceEditingService extends DefaultOfferEditingService implements P
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
-        Repository $writeRepository,
-        LabelServiceInterface $labelService
+        Repository $writeRepository
     ) {
         parent::__construct(
             $commandBus,
             $uuidGenerator,
             $readRepository,
             $commandFactory,
-            $labelService,
             new PlaceTypeResolver(),
             new PlaceThemeResolver()
         );

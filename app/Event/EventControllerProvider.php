@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Http\Event\EditEventRestController;
@@ -58,7 +60,7 @@ class EventControllerProvider implements ControllerProviderInterface
         /* @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
-        $controllers->post('/', "event_editing_controller:createEvent");
+        $controllers->post('/', 'event_editing_controller:createEvent');
         $controllers->get('/{cdbid}', 'event_controller:get');
         $controllers->delete('/{cdbid}', 'event_editing_controller:deleteEvent');
 

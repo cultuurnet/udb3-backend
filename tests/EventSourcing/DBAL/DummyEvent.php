@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Serializer\Serializable;
@@ -9,12 +11,12 @@ final class DummyEvent implements Serializable
     /**
      * @var string
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      */
-    protected $content;
+    private $content;
 
     final public function __construct($id, $content)
     {

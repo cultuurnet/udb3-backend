@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Media;
 
 use stdClass;
@@ -14,7 +16,6 @@ class MediaFinder
     /**
      * MediaFinder constructor.
      *
-     * @param MediaSpecificationInterface $specification
      */
     public function __construct(MediaSpecificationInterface $specification)
     {

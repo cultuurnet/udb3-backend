@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Security\LabelSecurityInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-abstract class AbstractImportLabels extends AbstractCommand implements LabelSecurityInterface
+final class ImportLabels extends AbstractCommand implements LabelSecurityInterface
 {
     /**
      * @var Labels
@@ -26,7 +28,6 @@ abstract class AbstractImportLabels extends AbstractCommand implements LabelSecu
 
     /**
      * @param string $itemId
-     * @param Labels $labels
      */
     public function __construct($itemId, Labels $labels)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
@@ -144,7 +146,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
 
     /**
      * @param string $newEventId
-     * @param Calendar $calendar
      *
      * @return Event
      */
@@ -214,9 +215,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
-    /**
-     * @param EventCopied $eventCopied
-     */
+
     protected function applyEventCopied(EventCopied $eventCopied)
     {
         $this->eventId = $eventCopied->getItemId();
@@ -233,9 +232,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->setUDB2Data($eventImported);
     }
 
-    /**
-     * @param EventUpdatedFromUDB2 $eventUpdated
-     */
+
     protected function applyEventUpdatedFromUDB2(
         EventUpdatedFromUDB2 $eventUpdated
     ) {
@@ -248,9 +245,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->isDeleted = true;
     }
 
-    /**
-     * @param EventCdbXMLInterface $eventCdbXML
-     */
+
     protected function setUDB2Data(
         EventCdbXMLInterface $eventCdbXML
     ) {
@@ -293,11 +288,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     /**
      * Update the major info.
      *
-     * @param Title $title
-     * @param EventType $eventType
-     * @param LocationId $location
-     * @param Calendar $calendar
-     * @param Theme|null $theme
      */
     public function updateMajorInfo(
         Title $title,
@@ -323,9 +313,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $this->calendar = $majorInfoUpdated->getCalendar();
     }
 
-    /**
-     * @param LocationId $locationId
-     */
+
     public function updateLocation(LocationId $locationId)
     {
         if (!is_null($this->locationId) && $this->locationId->sameValueAs($locationId)) {
@@ -343,9 +331,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-    /**
-     * @param LocationUpdated $locationUpdated
-     */
+
     public function applyLocationUpdated(LocationUpdated $locationUpdated)
     {
         $this->locationId = $locationUpdated->getLocationId();
@@ -414,9 +400,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-    /**
-     * @param AudienceUpdated $audienceUpdated
-     */
+
     public function applyAudienceUpdated(AudienceUpdated $audienceUpdated)
     {
         $this->audience= $audienceUpdated->getAudience();
@@ -460,7 +444,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Label $label
      * @return LabelAdded
      */
     protected function createLabelAddedEvent(Label $label)
@@ -469,7 +452,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Label $label
      * @return LabelRemoved
      */
     protected function createLabelRemovedEvent(Label $label)
@@ -486,7 +468,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Image $image
      * @return ImageAdded
      */
     protected function createImageAddedEvent(Image $image)
@@ -495,7 +476,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Image $image
      * @return ImageRemoved
      */
     protected function createImageRemovedEvent(Image $image)
@@ -504,9 +484,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param UUID $mediaObjectId
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
      * @return ImageUpdated
      */
     protected function createImageUpdatedEvent(
@@ -523,7 +500,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Image $image
      * @return MainImageSelected
      */
     protected function createMainImageSelectedEvent(Image $image)
@@ -540,7 +516,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param Title $title
      * @return TitleUpdated
      */
     protected function createTitleUpdatedEvent(Title $title)
@@ -608,7 +583,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param ContactPoint $contactPoint
      * @return ContactPointUpdated
      */
     protected function createContactPointUpdatedEvent(ContactPoint $contactPoint)
@@ -625,7 +599,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param BookingInfo $bookingInfo
      * @return BookingInfoUpdated
      */
     protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo)
@@ -634,7 +607,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     }
 
     /**
-     * @param PriceInfo $priceInfo
      * @return PriceInfoUpdated
      */
     protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo)
@@ -736,9 +708,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         }
     }
 
-    /**
-     * @param Concluded $concluded
-     */
+
     protected function applyConcluded(Concluded $concluded)
     {
         $this->concluded = true;

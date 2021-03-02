@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
@@ -13,7 +15,6 @@ use ValueObjects\StringLiteral\StringLiteral;
  */
 class FallbackJwtDecoder implements JwtDecoderServiceInterface
 {
-
     /**
      * @var JwtDecoderServiceInterface
      */
@@ -32,7 +33,7 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
         $this->fallbackDecoder = $newDecoderService;
     }
 
-    public function parse(StringLiteral $tokenString) : Udb3Token
+    public function parse(StringLiteral $tokenString): Udb3Token
     {
         try {
             return $this->primary->parse($tokenString);
@@ -41,7 +42,7 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
         }
     }
 
-    public function validateData(Udb3Token $jwt) : bool
+    public function validateData(Udb3Token $jwt): bool
     {
         if ($this->primary->validateData($jwt)) {
             return true;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -344,24 +346,19 @@ class ProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param AbstractLabelAdded $labelAdded
-     */
+
     private function handleAdding(AbstractLabelAdded $labelAdded)
     {
         $this->handleLabelMovement($labelAdded, 'updateCountIncrement');
     }
 
-    /**
-     * @param AbstractLabelRemoved $labelRemoved
-     */
+
     private function handleDeleting(AbstractLabelRemoved $labelRemoved)
     {
         $this->handleLabelMovement($labelRemoved, 'updateCountDecrement');
     }
 
     /**
-     * @param AbstractLabelEvent $labelEvent
      * @param string $expectedMethod
      */
     private function handleLabelMovement(

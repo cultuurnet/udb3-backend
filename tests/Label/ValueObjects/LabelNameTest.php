@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ValueObjects;
 
 use InvalidArgumentException;
@@ -11,7 +13,6 @@ class LabelNameTest extends TestCase
     /**
      * @dataProvider labelNameValues
      * @test
-     * @param mixed $value
      */
     public function it_refuses_value_that_are_not_strings($value)
     {

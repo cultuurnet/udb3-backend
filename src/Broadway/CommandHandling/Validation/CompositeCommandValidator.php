@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\CommandHandling\Validation;
 
 class CompositeCommandValidator implements CommandValidatorInterface
@@ -18,7 +20,6 @@ class CompositeCommandValidator implements CommandValidatorInterface
     }
 
     /**
-     * @param CommandValidatorInterface $commandValidator
      * @return void
      */
     public function register(CommandValidatorInterface $commandValidator)

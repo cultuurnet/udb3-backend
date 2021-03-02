@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
@@ -14,7 +16,6 @@ class SecurityDecoratorBase implements SecurityInterface
 
     /**
      * SecurityDecoratorBase constructor.
-     * @param SecurityInterface $decoratee
      */
     public function __construct(SecurityInterface $decoratee)
     {

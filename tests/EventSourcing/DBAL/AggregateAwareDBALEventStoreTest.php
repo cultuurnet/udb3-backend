@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -39,7 +41,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     private $tableName;
 
     /**
-     * @var string
+     * @var AggregateType
      */
     private $aggregateType;
 
@@ -158,7 +160,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return DomainMessage
      */
     private function createDomainMessage(UUID $uuid)
@@ -178,7 +179,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return DomainMessage[]
      */
     private function createDomainMessages(UUID $uuid)
@@ -224,7 +224,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return array
      */
     private function domainMessageToRow(DomainMessage $domainMessage)
@@ -240,9 +239,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         ];
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     private function insertDomainMessage(DomainMessage $domainMessage)
     {
         $this->connection->insert(
@@ -252,7 +249,6 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return array
      */
     private function selectDomainMessage(UUID $uuid)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use PHPUnit\Framework\TestCase;
@@ -47,7 +49,6 @@ class OfferTypeTest extends TestCase
      * @dataProvider offerTypeDataProvider
      *
      * @param string $enumValue
-     * @param OfferType $expectedOfferType
      */
     public function it_can_be_created_from_a_value_with_incorrect_casing(
         $enumValue,

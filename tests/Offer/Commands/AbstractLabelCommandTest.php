@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Label;
@@ -37,7 +39,7 @@ class AbstractLabelCommandTest extends TestCase
 
         $this->labelCommand = $this->getMockForAbstractClass(
             AbstractLabelCommand::class,
-            array($this->itemId, $this->label)
+            [$this->itemId, $this->label]
         );
     }
 

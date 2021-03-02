@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events\Image;
 
 use CultuurNet\UDB3\Media\Image;
@@ -26,14 +28,14 @@ abstract class AbstractImagesEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        $serializedData =  parent::serialize() + array(
+        $serializedData =  parent::serialize() + [
             'images' => array_map(
                 function (Image $image) {
                     return $image->serialize();
                 },
                 $this->images->toArray()
             ),
-        );
+        ];
 
         $mainImage = $this->images->getMain();
         if ($mainImage) {

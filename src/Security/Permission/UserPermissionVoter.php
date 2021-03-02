@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
@@ -14,9 +16,7 @@ class UserPermissionVoter implements PermissionVoterInterface
      */
     private $userPermissionsReadRepository;
 
-    /**
-     * @param UserPermissionsReadRepositoryInterface $userPermissionsReadRepository
-     */
+
     public function __construct(
         UserPermissionsReadRepositoryInterface $userPermissionsReadRepository
     ) {

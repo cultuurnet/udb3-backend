@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Organizer;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -16,10 +18,7 @@ class OrganizerReference
      */
     private $embeddedOrganizer;
 
-    /**
-     * @param UUID $organizerId
-     * @param Organizer|null $embeddedOrganizer
-     */
+
     private function __construct(UUID $organizerId, Organizer $embeddedOrganizer = null)
     {
         if ($embeddedOrganizer) {
@@ -47,7 +46,6 @@ class OrganizerReference
     }
 
     /**
-     * @param UUID $organizerId
      * @return OrganizerReference
      */
     public static function createWithOrganizerId(UUID $organizerId)
@@ -56,7 +54,6 @@ class OrganizerReference
     }
 
     /**
-     * @param Organizer $organizer
      * @return OrganizerReference
      */
     public static function createWithEmbeddedOrganizer(Organizer $organizer)

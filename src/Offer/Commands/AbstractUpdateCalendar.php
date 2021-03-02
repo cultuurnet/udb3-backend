@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Calendar;
@@ -13,7 +15,6 @@ abstract class AbstractUpdateCalendar extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Calendar $calendar
      */
     public function __construct($itemId, Calendar $calendar)
     {

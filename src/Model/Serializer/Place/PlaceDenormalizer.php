@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -123,7 +125,7 @@ class PlaceDenormalizer extends OfferDenormalizer
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("PlaceDenormalizer does not support {$class}.");
@@ -143,8 +145,6 @@ class PlaceDenormalizer extends OfferDenormalizer
     }
 
     /**
-     * @param array $data
-     * @param ImmutablePlace $place
      * @return ImmutablePlace
      */
     private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place)

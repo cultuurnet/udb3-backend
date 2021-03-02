@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
 use ValueObjects\Enum\Enum;
@@ -14,7 +16,7 @@ use ValueObjects\Enum\Enum;
  */
 class AudienceType extends Enum
 {
-    const EVERYONE = 'everyone';
-    const MEMBERS = 'members';
-    const EDUCATION = 'education';
+    public const EVERYONE = 'everyone';
+    public const MEMBERS = 'members';
+    public const EDUCATION = 'education';
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Command;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
@@ -104,18 +106,18 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
      */
     public function exportPropertyDataProvider()
     {
-        return array(
-            array('subtitle', new Subtitle('a subtitle'), 'getSubtitle'),
-            array('publisher', new Publisher('a publisher'), 'getPublisher'),
-            array('footer', new Footer('a footer'), 'getFooter'),
-            array('email', new EmailAddress('john@doe.com'), 'getAddress'),
-        );
+        return [
+            ['subtitle', new Subtitle('a subtitle'), 'getSubtitle'],
+            ['publisher', new Publisher('a publisher'), 'getPublisher'],
+            ['footer', new Footer('a footer'), 'getFooter'],
+            ['email', new EmailAddress('john@doe.com'), 'getAddress'],
+        ];
     }
 
     private function getJSONStringFromFile($fileName)
     {
         $json = file_get_contents(
-            __DIR__.'/'.$fileName
+            __DIR__ . '/' . $fileName
         );
 
         return new StringLiteral($json);

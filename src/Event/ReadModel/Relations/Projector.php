@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ReadModel\Relations;
 
 use Broadway\EventHandling\EventListener;
@@ -30,10 +32,7 @@ class Projector implements EventListener
      */
     protected $cdbIdExtractor;
 
-    /**
-     * @param RepositoryInterface $repository
-     * @param EventCdbIdExtractorInterface $cdbIdExtractor
-     */
+
     public function __construct(
         RepositoryInterface $repository,
         EventCdbIdExtractorInterface $cdbIdExtractor
@@ -42,17 +41,13 @@ class Projector implements EventListener
         $this->cdbIdExtractor = $cdbIdExtractor;
     }
 
-    /**
-     * @param EventImportedFromUDB2 $event
-     */
+
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $event)
     {
         $this->applyEventDataFromUDB2($event);
     }
 
-    /**
-     * @param EventUpdatedFromUDB2 $event
-     */
+
     protected function applyEventUpdatedFromUDB2(EventUpdatedFromUDB2 $event)
     {
         $this->applyEventDataFromUDB2($event);
@@ -76,9 +71,7 @@ class Projector implements EventListener
         $this->storeRelations($eventId, $placeId, $organizerId);
     }
 
-    /**
-     * @param EventCreated $event
-     */
+
     protected function applyEventCreated(EventCreated $event)
     {
         $eventId = $event->getEventId();
@@ -91,9 +84,7 @@ class Projector implements EventListener
         }
     }
 
-    /**
-     * @param EventCopied $eventCopied
-     */
+
     protected function applyEventCopied(EventCopied $eventCopied)
     {
         $originalEventId = $eventCopied->getOriginalEventId();
@@ -107,9 +98,7 @@ class Projector implements EventListener
         );
     }
 
-    /**
-     * @param MajorInfoUpdated $majorInfoUpdated
-     */
+
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated)
     {
         $eventId = $majorInfoUpdated->getItemId();
@@ -117,9 +106,7 @@ class Projector implements EventListener
         $this->repository->storePlace($eventId, $cdbId);
     }
 
-    /**
-     * @param LocationUpdated $locationUpdated
-     */
+
     protected function applyLocationUpdated(LocationUpdated $locationUpdated)
     {
         $eventId = $locationUpdated->getItemId();
@@ -129,7 +116,6 @@ class Projector implements EventListener
 
     /**
      * Delete the relations.
-     * @param EventDeleted $event
      */
     protected function applyEventDeleted(EventDeleted $event)
     {
@@ -139,7 +125,6 @@ class Projector implements EventListener
 
     /**
      * Store the relation when the organizer was changed
-     * @param OrganizerUpdated $organizerUpdated
      */
     protected function applyOrganizerUpdated(OrganizerUpdated $organizerUpdated)
     {
@@ -148,7 +133,6 @@ class Projector implements EventListener
 
     /**
      * Remove the relation.
-     * @param OrganizerDeleted $organizerDeleted
      */
     protected function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted)
     {

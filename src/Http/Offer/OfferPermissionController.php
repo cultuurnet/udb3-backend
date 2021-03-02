@@ -1,7 +1,10 @@
 <?php
+
+declare(strict_types=1);
 /**
  * @deprecated
  */
+
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
@@ -27,11 +30,7 @@ class OfferPermissionController
      */
     private $currentUserId;
 
-    /**
-     * @param Permission $permission
-     * @param PermissionVoterInterface $permissionVoter
-     * @param StringLiteral|null $currentUserId
-     */
+
     public function __construct(
         Permission $permission,
         PermissionVoterInterface $permissionVoter,

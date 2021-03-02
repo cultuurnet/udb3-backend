@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -12,9 +14,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20190509112328 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->getTable('roles_search_v3');
@@ -28,9 +27,7 @@ class Version20190509112328 extends AbstractMigration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $table = $schema->getTable('roles_search_v3');

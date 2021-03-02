@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Assert;
 
 use PHPUnit\Framework\TestCase;
@@ -11,9 +13,7 @@ class JsonEquals
      */
     private $testCase;
 
-    /**
-     * @param TestCase $testCase
-     */
+
     public function __construct(TestCase $testCase)
     {
         $this->testCase = $testCase;

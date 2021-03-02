@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Event;
 
 use Broadway\Domain\DateTime;
@@ -108,7 +110,6 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @param Url $url
      * @return StringLiteral
      * @throws EventNotFoundException
      * @throws XMLValidationException
@@ -140,7 +141,6 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
     }
 
     /**
-     * @param Url $url
      * @return \Psr\Http\Message\ResponseInterface
      * @throws EventNotFoundException
      */
@@ -181,7 +181,6 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
 
     /**
      * @param object $payload
-     * @param Metadata $metadata
      */
     private function publish($payload, Metadata $metadata)
     {
@@ -225,7 +224,7 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
         $this->logger->error('no event found in cdbxml!');
 
         throw new \RuntimeException(
-            "Event could not be found in the Entry API response body."
+            'Event could not be found in the Entry API response body.'
         );
     }
 

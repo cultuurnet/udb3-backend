@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\Organizer;
 
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
@@ -11,10 +13,6 @@ use ValueObjects\Web\Url as LegacyUrl;
 
 class OrganizerHasUniqueUrlValidator extends Callback
 {
-    /**
-     * @param OrganizerIDParser $organizerIDParser
-     * @param WebsiteLookupServiceInterface $websiteLookupService
-     */
     public function __construct(
         OrganizerIDParser $organizerIDParser,
         WebsiteLookupServiceInterface $websiteLookupService

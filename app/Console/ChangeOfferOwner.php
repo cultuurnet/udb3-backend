@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
@@ -39,7 +41,7 @@ class ChangeOfferOwner extends AbstractCommand
                 $newOwnerId
             )
         );
-        $logger->info('Successfully changed owner of offer "' . $offerId .'" to user with id "' . $newOwnerId . '"');
+        $logger->info('Successfully changed owner of offer "' . $offerId . '" to user with id "' . $newOwnerId . '"');
 
         return 0;
     }

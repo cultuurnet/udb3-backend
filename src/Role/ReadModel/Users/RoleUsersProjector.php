@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
@@ -30,9 +32,7 @@ class RoleUsersProjector extends RoleProjector
         $this->userIdentityResolver = $userIdentityResolver;
     }
 
-    /**
-     * @param UserAdded $userAdded
-     */
+
     public function applyUserAdded(UserAdded $userAdded)
     {
         $document = $this->getDocument($userAdded->getUuid());
@@ -55,9 +55,7 @@ class RoleUsersProjector extends RoleProjector
         }
     }
 
-    /**
-     * @param UserRemoved $userRemoved
-     */
+
     public function applyUserRemoved(UserRemoved $userRemoved)
     {
         $document = $this->getDocument($userRemoved->getUuid());
@@ -71,9 +69,7 @@ class RoleUsersProjector extends RoleProjector
         }
     }
 
-    /**
-     * @param RoleCreated $roleCreated
-     */
+
     public function applyRoleCreated(RoleCreated $roleCreated)
     {
         $this->repository->save(
@@ -84,16 +80,13 @@ class RoleUsersProjector extends RoleProjector
         );
     }
 
-    /**
-     * @param RoleDeleted $roleDeleted
-     */
+
     public function applyRoleDeleted(RoleDeleted $roleDeleted)
     {
         $this->repository->remove($roleDeleted->getUuid());
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument|null
      */
     private function getDocument(UUID $uuid)
@@ -109,7 +102,6 @@ class RoleUsersProjector extends RoleProjector
     }
 
     /**
-     * @param JsonDocument $document
      * @return UserIdentityDetails[]
      */
     private function getUserIdentityDetails(JsonDocument $document)

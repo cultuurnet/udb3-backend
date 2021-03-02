@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Export;
 
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSVJSONDeserializer;
@@ -14,7 +16,6 @@ use Silex\ControllerProviderInterface;
 class ExportControllerProvider implements ControllerProviderInterface
 {
     /**
-     * @param Application $app
      * @return ControllerCollection
      */
     public function connect(Application $app)

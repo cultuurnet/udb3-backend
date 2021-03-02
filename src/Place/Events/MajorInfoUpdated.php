@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
@@ -84,13 +86,13 @@ final class MajorInfoUpdated extends PlaceEvent
         if ($this->getTheme() !== null) {
             $theme = $this->getTheme()->serialize();
         }
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'title' => (string)$this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'address' => $this->getAddress()->serialize(),
             'calendar' => $this->getCalendar()->serialize(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): MajorInfoUpdated

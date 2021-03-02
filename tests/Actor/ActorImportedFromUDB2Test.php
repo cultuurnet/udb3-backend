@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Actor;
 
 use PHPUnit\Framework\TestCase;
 
 class ActorImportedFromUDB2Test extends TestCase
 {
-    const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
-    const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+    public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     /**
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param ActorImportedFromUDB2 $actorImportedFromUDB2
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -29,7 +30,6 @@ class ActorImportedFromUDB2Test extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param ActorImportedFromUDB2 $expectedActorImportedFromUDB2
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

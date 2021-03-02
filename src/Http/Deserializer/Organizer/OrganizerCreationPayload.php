@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
 use CultuurNet\UDB3\Address\Address;
@@ -35,13 +37,7 @@ class OrganizerCreationPayload
      */
     private $contactPoint;
 
-    /**
-     * @param Language $mainLanguage
-     * @param Url $website
-     * @param Title $title
-     * @param Address|null $address
-     * @param ContactPoint|null $contactPoint
-     */
+
     public function __construct(
         Language $mainLanguage,
         Url $website,

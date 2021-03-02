@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Domain\DomainEventStream;
@@ -15,8 +17,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 {
-    const UUID_COLUMN = 'uuid_col';
-    const UNIQUE_COLUMN = 'unique_col';
+    public const UUID_COLUMN = 'uuid_col';
+    public const UNIQUE_COLUMN = 'unique_col';
 
     /**
      * @var EventStore
@@ -89,7 +91,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     }
 
     /**
-     * @param StringLiteral $tableName
      * @return Table
      */
     private function createUniqueTable(
@@ -115,7 +116,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @throws UniqueConstraintException
      */
     private function processUniqueConstraint(
@@ -150,7 +150,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 
     /**
      * @param string $id
-     * @param StringLiteral $uniqueValue
      * @throws UniqueConstraintException
      */
     private function updateUniqueConstraint(

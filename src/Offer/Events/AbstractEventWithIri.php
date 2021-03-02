@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
 abstract class AbstractEventWithIri extends AbstractEvent
@@ -22,9 +24,9 @@ abstract class AbstractEventWithIri extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'iri' => $this->iri,
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractEventWithIri

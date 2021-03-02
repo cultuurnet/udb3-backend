@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\JSONLD;
 
 use CultuurNet\UDB3\Http\JSONLD\ContextController;
@@ -11,7 +13,7 @@ use ValueObjects\Web\Url;
 
 class ContextControllerProvider implements ControllerProviderInterface
 {
-    const JSONLD_CONTEXT_CONTROLLER = 'json_ld_controller';
+    public const JSONLD_CONTEXT_CONTROLLER = 'json_ld_controller';
 
     public function connect(Application $app)
     {

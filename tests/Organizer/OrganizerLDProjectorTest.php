@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\Domain\DateTime;
@@ -763,7 +765,6 @@ class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider labelRemovedDataProvider
-     * @param Label $label
      * @param string $originalFile
      * @param string $finalFile
      */

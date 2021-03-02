@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
@@ -83,7 +85,6 @@ class DBALWebsiteLookupServiceTest extends TestCase
 
     /**
      * @param string $uuid
-     * @param Url $url
      */
     private function insertOrganizerWebsite($uuid, Url $url)
     {

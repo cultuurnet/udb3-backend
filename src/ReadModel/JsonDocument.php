@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\ReadModel;
 
 use Broadway\ReadModel\Identifiable;
@@ -7,8 +9,8 @@ use stdClass;
 
 final class JsonDocument implements Identifiable
 {
-    protected $id;
-    protected $body;
+    private $id;
+    private $body;
 
     public function __construct($id, $rawBody = '{}')
     {

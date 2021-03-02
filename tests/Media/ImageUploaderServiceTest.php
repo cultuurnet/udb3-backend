@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\CommandHandling\CommandBus;
@@ -71,7 +73,7 @@ class ImageUploaderServiceTest extends TestCase
         $description = new StringLiteral('file description');
         $copyrightHolder = new StringLiteral('Dude Man');
         $language = new Language('en');
-        $file = $this->getMockFile();
+        $file = $this->getMockFile(1000);
 
         $file
             ->expects($this->once())
@@ -95,7 +97,7 @@ class ImageUploaderServiceTest extends TestCase
     public function it_should_move_an_uploaded_file_to_the_upload_directory()
     {
         $file = new UploadedFile(
-            __DIR__.'/files/my-image.png',
+            __DIR__ . '/files/my-image.png',
             'my-image.png',
             'image/png',
             null,
@@ -107,7 +109,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new StringLiteral('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory.'/'. $this->fileId .'.png';
+        $expectedDestination = $this->directory . '/' . $this->fileId . '.png';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator
@@ -135,7 +137,7 @@ class ImageUploaderServiceTest extends TestCase
     public function it_should_throw_an_exception_when_the_upload_was_not_successful()
     {
         $file = new UploadedFile(
-            __DIR__.'/files/my-image.png',
+            __DIR__ . '/files/my-image.png',
             'my-image.png',
             'image/png'
         );
@@ -154,7 +156,7 @@ class ImageUploaderServiceTest extends TestCase
      */
     public function it_should_throw_an_exception_when_the_file_type_can_not_be_guessed()
     {
-        $file = $this->getMockFile();
+        $file = $this->getMockFile(1000);
 
         $file
             ->expects($this->once())
@@ -245,7 +247,7 @@ class ImageUploaderServiceTest extends TestCase
         $copyrightHolder = new StringLiteral('Dude Man');
         $language = new Language('en');
 
-        $expectedDestination = $this->directory.'/'. $this->fileId .'.jpg';
+        $expectedDestination = $this->directory . '/' . $this->fileId . '.jpg';
 
         $generatedUuid = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $this->uuidGenerator
@@ -268,24 +270,10 @@ class ImageUploaderServiceTest extends TestCase
     }
 
     /**
+     * @param int | bool $imageSize
      * @return UploadedFile|MockObject
      */
-    private function getMockFile()
-    {
-        return $this
-            ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-            ->enableOriginalConstructor()
-            ->setConstructorArgs([tempnam(sys_get_temp_dir(), ''), 'dummy'])
-            ->getMock();
-    }
-
-    /**
-     * @param int $imageSize
-     *  Image size in bytes.
-     *
-     * @return UploadedFile|MockObject
-     */
-    private function getMockImage($imageSize)
+    private function getMockFile($imageSize)
     {
         $fileDirectory = vfsStream::setup('files');
         $file = vfsStream::newFile('my-image.jpg')
@@ -293,7 +281,28 @@ class ImageUploaderServiceTest extends TestCase
             ->at($fileDirectory);
         $filePath = $file->url();
 
-        $image = $this->getMockFile();
+        $file = $this
+            ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+            ->enableOriginalConstructor()
+            ->setConstructorArgs([tempnam(sys_get_temp_dir(), ''), 'dummy'])
+            ->getMock();
+
+        $file->expects($this->any())
+            ->method('getRealPath')
+            ->willReturn($filePath);
+
+        return $file;
+    }
+
+    /**
+     * @param int | bool $imageSize
+     *  Image size in bytes.
+     *
+     * @return UploadedFile|MockObject
+     */
+    private function getMockImage($imageSize)
+    {
+        $image = $this->getMockFile($imageSize);
 
         $image
             ->expects($this->once())
@@ -309,10 +318,6 @@ class ImageUploaderServiceTest extends TestCase
             ->expects($this->any())
             ->method('guessExtension')
             ->willReturn('jpg');
-
-        $image->expects($this->any())
-            ->method('getRealPath')
-            ->willReturn($filePath);
 
         return $image;
     }

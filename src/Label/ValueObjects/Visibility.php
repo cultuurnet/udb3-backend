@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ValueObjects;
 
 use ValueObjects\Enum\Enum;
@@ -12,6 +14,6 @@ use ValueObjects\Enum\Enum;
  */
 class Visibility extends Enum
 {
-    const VISIBLE = 'visible';
-    const INVISIBLE = 'invisible';
+    public const VISIBLE = 'visible';
+    public const INVISIBLE = 'invisible';
 }

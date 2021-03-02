@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
 interface RepositoryInterface
 {
     /**
      * @param string $uuid
-     * @return mixed
      */
     public function remove($uuid);
 

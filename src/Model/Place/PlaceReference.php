@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Place;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -16,10 +18,7 @@ class PlaceReference
      */
     private $embeddedPlace;
 
-    /**
-     * @param UUID $placeId
-     * @param Place|null $embeddedPlace
-     */
+
     private function __construct(UUID $placeId, Place $embeddedPlace = null)
     {
         if ($embeddedPlace) {
@@ -47,7 +46,6 @@ class PlaceReference
     }
 
     /**
-     * @param UUID $placeId
      * @return PlaceReference
      */
     public static function createWithPlaceId(UUID $placeId)
@@ -56,7 +54,6 @@ class PlaceReference
     }
 
     /**
-     * @param Place $place
      * @return PlaceReference
      */
     public static function createWithEmbeddedPlace(Place $place)

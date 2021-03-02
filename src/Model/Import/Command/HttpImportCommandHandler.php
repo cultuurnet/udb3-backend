@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Command;
 
 use Broadway\CommandHandling\CommandHandler;
@@ -68,13 +70,9 @@ class HttpImportCommandHandler implements CommandHandler
             );
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    private function fetchJsonLd($url)
+    private function fetchJsonLd(string $url): string
     {
         $response = $this->httpClient->get($url);
-        return $response->getBody();
+        return (string) $response->getBody();
     }
 }

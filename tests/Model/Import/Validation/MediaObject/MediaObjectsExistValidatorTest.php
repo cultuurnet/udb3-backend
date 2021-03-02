@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\MediaObject;
 
 use CultuurNet\UDB3\Media\MediaManagerInterface;
@@ -8,6 +10,7 @@ use CultuurNet\UDB3\MediaObject;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Respect\Validation\Exceptions\GroupedValidationException;
+use ValueObjects\Identity\UUID;
 
 class MediaObjectsExistValidatorTest extends TestCase
 {
@@ -82,22 +85,20 @@ class MediaObjectsExistValidatorTest extends TestCase
         $this->assertEquals($expected, $errors);
     }
 
-    /**
-     * @param array $ids
-     */
+
     private function expectIdsToExist(array $ids)
     {
         $this->mediaManager->expects($this->any())
             ->method('get')
             ->willReturnCallback(
-                function ($id) use ($ids) {
-                    if (in_array($id, $ids)) {
+                function (UUID $id) use ($ids) {
+                    if (in_array($id->toNative(), $ids)) {
                         return new MediaObject(
                             'https://mocked-image.jpg',
                             'https://mocked-image-thumbnail.jpg',
                             'description',
                             'copyright holder',
-                            $id
+                            $id->toNative()
                         );
                     }
                     throw new MediaObjectNotFoundException();

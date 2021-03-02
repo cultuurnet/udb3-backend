@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\StringFilter;
 
 class NewlineToBreakTagStringFilter implements StringFilterInterface
@@ -17,7 +19,7 @@ class NewlineToBreakTagStringFilter implements StringFilterInterface
         }
 
         // nl2br() only appends <br /> after each \n but does not remove the \n
-        $breakTag = $this->closeTag ? "<br />" : "<br>";
+        $breakTag = $this->closeTag ? '<br />' : '<br>';
         return str_replace("\n", $breakTag, $string);
     }
 

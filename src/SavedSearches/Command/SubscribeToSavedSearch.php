@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
@@ -17,11 +19,7 @@ class SubscribeToSavedSearch extends SavedSearchCommand
      */
     protected $query;
 
-    /**
-     * @param StringLiteral $userId
-     * @param StringLiteral $name
-     * @param QueryString $query
-     */
+
     public function __construct(
         StringLiteral $userId,
         StringLiteral $name,

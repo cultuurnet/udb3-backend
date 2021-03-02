@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Label;
 
 use CultuurNet\UDB3\Label\Services\WriteServiceInterface;
@@ -21,7 +23,6 @@ class EditRestController
 
     /**
      * EditRestController constructor.
-     * @param WriteServiceInterface $writeService
      */
     public function __construct(WriteServiceInterface $writeService)
     {
@@ -29,7 +30,6 @@ class EditRestController
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function create(Request $request)

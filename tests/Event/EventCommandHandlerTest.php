@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventHandling\EventBus;
@@ -9,11 +11,8 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Event\Commands\AddLabel;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\DeleteEvent;
-use CultuurNet\UDB3\Event\Commands\ImportLabels;
-use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Event\Commands\EventCommandFactory;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateCalendar;
@@ -26,34 +25,22 @@ use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
-use CultuurNet\UDB3\Event\Events\LabelAdded;
-use CultuurNet\UDB3\Event\Events\LabelRemoved;
-use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\Privacy;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManager;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -75,19 +62,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->organizerRepository = $this->createMock(Repository::class);
 
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository->method('getByName')
-            ->will($this->returnCallback(
-                function (StringLiteral $labelName) {
-                    return new Entity(
-                        new UUID(),
-                        $labelName,
-                        $labelName->toNative() === 'foo' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
-                    );
-                }
-            ));
-
         $this->mediaManager = $this->createMock(MediaManager::class);
 
         $this->commandFactory = new EventCommandFactory();
@@ -95,7 +69,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         return new EventCommandHandler(
             $repository,
             $this->organizerRepository,
-            $this->labelRepository,
             $this->mediaManager
         );
     }
@@ -181,155 +154,6 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->when(new UpdateDescription($id, $language, $description))
             ->then([new DescriptionTranslated($id, $language, $description)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_label_an_event()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new AddLabel($id, new Label('foo')))
-            ->then([new LabelAdded($id, new Label('foo'))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_label_an_event_with_invisible_label()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new AddLabel($id, new Label('bar')))
-            ->then([new LabelAdded($id, new Label('bar', false))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_unlabel_an_event()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new LabelAdded($id, new Label('foo')),
-                ]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([new LabelRemoved($id, new Label('foo'))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_unlabel_an_event_with_invisible_label()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new LabelAdded($id, new Label('bar', false)),
-                ]
-            )
-            ->when(new RemoveLabel($id, new Label('bar', false)))
-            ->then([new LabelRemoved($id, new Label('bar', false))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_label_that_is_not_present_on_an_event()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_label_from_an_event_that_has_been_unlabelled_already()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new LabelAdded($id, new Label('foo')),
-                    new LabelRemoved($id, new Label('foo')),
-                ]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_import_labels()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                ]
-            )
-            ->when(
-                new ImportLabels(
-                    $id,
-                    new Labels(
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('foo'),
-                            true
-                        ),
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('bar'),
-                            true
-                        )
-                    )
-                )
-            )
-            ->then(
-                [
-                    new LabelsImported(
-                        $id,
-                        new Labels(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('foo'),
-                                true
-                            ),
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('bar'),
-                                true
-                            )
-                        )
-                    ),
-                    new LabelAdded($id, new Label('foo')),
-                    new LabelAdded($id, new Label('bar')),
-                ]
-            );
     }
 
     /**

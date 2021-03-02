@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine;
 
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
@@ -26,9 +28,6 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
 
     /**
      * UserPermissionsReadRepository constructor.
-     * @param Connection $connection
-     * @param StringLiteral $userRoleTableName
-     * @param StringLiteral $rolePermissionTableName
      */
     public function __construct(
         Connection $connection,
@@ -41,7 +40,6 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
     }
 
     /**
-     * @param StringLiteral $userId
      * @return Permission[]
      */
     public function getPermissions(StringLiteral $userId)
@@ -58,14 +56,14 @@ class UserPermissionsReadRepository implements UserPermissionsReadRepositoryInte
                 'rp',
                 sprintf('(%s)', $userRoleQuery->getSQL()),
                 'up',
-                'rp.' . SchemaConfigurator::ROLE_ID_COLUMN .' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
+                'rp.' . SchemaConfigurator::ROLE_ID_COLUMN . ' = up.' . SchemaConfigurator::ROLE_ID_COLUMN
             )
             ->setParameter('userId', (string) $userId);
 
         $results = $userPermissionQuery->execute()->fetchAll(\PDO::FETCH_COLUMN);
 
         /** @var Permission[] $permissions */
-        $permissions = array_map(array(Permission::class, 'fromNative'), $results);
+        $permissions = array_map([Permission::class, 'fromNative'], $results);
 
         return $permissions;
     }

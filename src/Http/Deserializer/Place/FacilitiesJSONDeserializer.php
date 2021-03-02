@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -24,7 +26,6 @@ class FacilitiesJSONDeserializer extends JSONDeserializer
 
     /**
      * FacilitiesJSONDeserializer constructor.
-     * @param OfferFacilityResolverInterface $facilityResolver
      */
     public function __construct(OfferFacilityResolverInterface $facilityResolver)
     {
@@ -35,7 +36,6 @@ class FacilitiesJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @throws DataValidationException
      * @return Facility[]
      */

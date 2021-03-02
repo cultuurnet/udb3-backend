@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\Commands;
 
 use CultuurNet\UDB3\Address\Address;
@@ -50,13 +52,6 @@ class CreatePlace extends AbstractCreateCommand
 
     /**
      * @param string $eventId
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     * @param DateTimeImmutable|null $publicationDate
      */
     public function __construct(
         $eventId,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\XSD;
 
 class CachedInMemoryXSDReader implements XSDReaderInterface
@@ -14,9 +16,7 @@ class CachedInMemoryXSDReader implements XSDReaderInterface
      */
     private $cachedXSD;
 
-    /**
-     * @param XSDReaderInterface $xsdReader
-     */
+
     public function __construct(XSDReaderInterface $xsdReader)
     {
         $this->decoratedReader = $xsdReader;

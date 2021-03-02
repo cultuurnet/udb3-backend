@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Translation;
 
 use PHPUnit\Framework\TestCase;
@@ -79,7 +81,7 @@ class TranslatedValueObjectTest extends TestCase
             ->withoutTranslation($fr);
 
         $this->expectException(\OutOfBoundsException::class);
-        $this->expectExceptionMessage("No translation found for language fr");
+        $this->expectExceptionMessage('No translation found for language fr');
 
         $translated->getTranslation($fr);
     }

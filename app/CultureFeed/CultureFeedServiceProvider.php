@@ -1,16 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\CultureFeed;
 
-use CultuurNet\UitidCredentials\UitidCredentialsFetcher;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
 class CultureFeedServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['culturefeed'] = $app->share(
@@ -32,9 +30,7 @@ class CultureFeedServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

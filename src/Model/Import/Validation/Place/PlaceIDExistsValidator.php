@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\Place;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
@@ -11,10 +13,6 @@ use Respect\Validation\Rules\Callback;
 
 class PlaceIDExistsValidator extends Callback
 {
-    /**
-     * @param UUIDParser $placeIDParser
-     * @param DocumentRepository $placeDocumentRepository
-     */
     public function __construct(
         UUIDParser $placeIDParser,
         DocumentRepository $placeDocumentRepository

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -20,7 +22,7 @@ class AbstractTypicalAgeRangeUpdatedTest extends TestCase
     protected $itemId;
 
     /**
-     * @var string
+     * @var AgeRange
      */
     protected $typicalAgeRange;
 

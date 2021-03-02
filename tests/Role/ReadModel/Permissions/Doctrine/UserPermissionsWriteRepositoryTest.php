@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
@@ -18,9 +20,9 @@ class UserPermissionsWriteRepositoryTest extends TestCase
      */
     private $repository;
 
-    /*
-    * @var StringLiteral
-    */
+    /**
+     * @var StringLiteral
+     */
     private $userRoleTableName;
 
     /**
@@ -59,7 +61,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->addUserRole($userId, $roleId);
 
-        $rows = $this->getTableRows($this->userRoleTableName);
+        $rows = $this->getTableRows($this->userRoleTableName->toNative());
 
         $expectedRows = [
             [
@@ -81,7 +83,7 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->repository->addRolePermission($roleId, $permission);
 
-        $rows = $this->getTableRows($this->rolePermissionTableName);
+        $rows = $this->getTableRows($this->rolePermissionTableName->toNative());
 
         $expectedRows = [
             [
@@ -104,31 +106,31 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->repository->removeRolePermission($roleId, $permission);
 
-        $rows = $this->getTableRows($this->rolePermissionTableName);
+        $rows = $this->getTableRows($this->rolePermissionTableName->toNative());
 
         $expectedRows = [
             [
@@ -155,40 +157,40 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::LABELS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->rolePermissionTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => $otherRoleId,
                 SchemaConfigurator::PERMISSION_COLUMN => Permission::GEBRUIKERS_BEHEREN,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::USER_ID_COLUMN => $userId,
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
-            )
+            ]
         );
 
         $this->repository->removeRole($roleId);
 
-        $rolePermissions = $this->getTableRows($this->rolePermissionTableName);
-        $userRoles = $this->getTableRows($this->userRoleTableName);
+        $rolePermissions = $this->getTableRows($this->rolePermissionTableName->toNative());
+        $userRoles = $this->getTableRows($this->userRoleTableName->toNative());
 
         $expectedRolePermissions = [
             [
@@ -212,23 +214,23 @@ class UserPermissionsWriteRepositoryTest extends TestCase
 
         $this->getConnection()->insert(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::USER_ID_COLUMN => $otherUserId,
-            )
+            ]
         );
 
         $this->getConnection()->insert(
             $this->userRoleTableName,
-            array(
+            [
                 SchemaConfigurator::ROLE_ID_COLUMN => (string) $roleId,
                 SchemaConfigurator::USER_ID_COLUMN => $userId,
-            )
+            ]
         );
 
         $this->repository->removeUserRole($userId, $roleId);
 
-        $rows = $this->getTableRows($this->userRoleTableName);
+        $rows = $this->getTableRows($this->userRoleTableName->toNative());
 
 
         $expectedRows = [

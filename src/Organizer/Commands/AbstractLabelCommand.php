@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Label;
@@ -17,7 +19,6 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
 
     /**
      * @param string $organizerId
-     * @param Label $label
      */
     public function __construct(
         $organizerId,

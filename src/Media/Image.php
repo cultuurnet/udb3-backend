@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\Serializer\Serializable;
@@ -15,32 +17,32 @@ final class Image implements Serializable
     /**
      * @var UUID
      */
-    protected $mediaObjectId;
+    private $mediaObjectId;
 
     /**
      * @var MIMEType
      */
-    protected $mimeType;
+    private $mimeType;
 
     /**
      * @var Description
      */
-    protected $description;
+    private $description;
 
     /**
      * @var CopyrightHolder
      */
-    protected $copyrightHolder;
+    private $copyrightHolder;
 
     /**
      * @var Url
      */
-    protected $sourceLocation;
+    private $sourceLocation;
 
     /**
      * @var Language
      */
-    protected $language;
+    private $language;
 
     public function __construct(
         UUID $id,

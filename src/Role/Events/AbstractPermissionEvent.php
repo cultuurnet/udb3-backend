@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Events;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -30,8 +32,8 @@ abstract class AbstractPermissionEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'permission' => $this->permission->toNative(),
-        );
+        ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\Repository\AggregateNotFoundException;
@@ -20,7 +22,6 @@ use ValueObjects\Web\Url;
 
 class MediaManagerTest extends TestCase
 {
-
     /**
      * @var MediaManager
      */

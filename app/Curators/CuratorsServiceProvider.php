@@ -69,10 +69,10 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
         $app['curators_news_article_process_manager'] = $app->share(
             function (Application $app) {
                 return new NewsArticleProcessManager(
-                    $app['event_editor'],
                     new LabelFactory(
                         $app['config']['curator_labels']
-                    )
+                    ),
+                    $app['event_command_bus']
                 );
             }
         );

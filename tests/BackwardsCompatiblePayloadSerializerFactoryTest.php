@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializer;
@@ -81,7 +83,6 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
      * @test
      * @dataProvider mainLanguageDataProvider
      * @param string $sampleFile
-     * @param Language $expectedMainLanguage
      */
     public function it_handles_main_language(
         $sampleFile,
@@ -508,7 +509,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
     public function it_should_replace_place_id_on_older_events_with_item_id(
         $eventClassFile
     ) {
-        $sampleFile = $this->sampleDir . '/place/'. $eventClassFile;
+        $sampleFile = $this->sampleDir . '/place/' . $eventClassFile;
         $this->assertPlaceIdReplacedWithItemId($sampleFile);
     }
 

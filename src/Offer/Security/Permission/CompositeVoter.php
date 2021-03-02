@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -21,9 +23,6 @@ class CompositeVoter implements PermissionVoterInterface
     }
 
     /**
-     * @param Permission $permission
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return bool
      */
     public function isAllowed(

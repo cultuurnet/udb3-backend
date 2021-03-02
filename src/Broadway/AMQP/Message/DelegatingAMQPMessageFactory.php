@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP\Message;
 
 use Broadway\Domain\DomainMessage;
@@ -19,10 +21,7 @@ class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface
      */
     private $propertiesFactory;
 
-    /**
-     * @param BodyFactoryInterface $bodyFactory
-     * @param PropertiesFactoryInterface $propertiesFactory
-     */
+
     public function __construct(
         BodyFactoryInterface $bodyFactory,
         PropertiesFactoryInterface $propertiesFactory
@@ -32,7 +31,6 @@ class DelegatingAMQPMessageFactory implements AMQPMessageFactoryInterface
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return AMQPMessage
      */
     public function createAMQPMessage(DomainMessage $domainMessage)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -86,7 +88,7 @@ class AMQPPublisherTest extends TestCase
         $this->expectSpecificationIsSatisfied();
 
         $expectedBody = '{"id":"F68E71A1-DBB0-4542-AEE5-BD937E095F74","content":"test 123 456"}';
-        $expectedProperties = ["correlation_id" => "F68E71A1-DBB0-4542-AEE5-BD937E095F74-2"];
+        $expectedProperties = ['correlation_id' => 'F68E71A1-DBB0-4542-AEE5-BD937E095F74-2'];
 
         $expectedMessage = new AMQPMessage($expectedBody, $expectedProperties);
 

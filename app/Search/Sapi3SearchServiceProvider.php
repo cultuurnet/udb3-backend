@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Search;
 
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -11,10 +13,10 @@ use Silex\ServiceProviderInterface;
 
 class Sapi3SearchServiceProvider implements ServiceProviderInterface
 {
-    const SEARCH_SERVICE_EVENTS = 'sapi3_search_service_events';
-    const SEARCH_SERVICE_PLACES = 'sapi3_search_service_places';
-    const ORGANIZERS_COUNTING_SEARCH_SERVICE = 'sapi3_organizers_counting_service';
-    const OFFERS_COUNTING_SEARCH_SERVICE = 'sapi3_offers_counting_service';
+    public const SEARCH_SERVICE_EVENTS = 'sapi3_search_service_events';
+    public const SEARCH_SERVICE_PLACES = 'sapi3_search_service_places';
+    public const ORGANIZERS_COUNTING_SEARCH_SERVICE = 'sapi3_organizers_counting_service';
+    public const OFFERS_COUNTING_SEARCH_SERVICE = 'sapi3_offers_counting_service';
 
     public function register(Application $app)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\UDB3\Address\Address;
@@ -142,8 +144,8 @@ class EditPlaceRestControllerTest extends TestCase
 
         $expectedResponseContent = json_encode(
             [
-                "placeId" => "A14DD1C8-0F9C-4633-B56A-A908F009AD94",
-                "url" => "http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94",
+                'placeId' => 'A14DD1C8-0F9C-4633-B56A-A908F009AD94',
+                'url' => 'http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94',
             ]
         );
 
@@ -185,8 +187,8 @@ class EditPlaceRestControllerTest extends TestCase
 
         $expectedResponseContent = json_encode(
             [
-                "placeId" => "A14DD1C8-0F9C-4633-B56A-A908F009AD94",
-                "url" => "http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94",
+                'placeId' => 'A14DD1C8-0F9C-4633-B56A-A908F009AD94',
+                'url' => 'http://du.de/place/A14DD1C8-0F9C-4633-B56A-A908F009AD94',
             ]
         );
 
@@ -265,24 +267,24 @@ class EditPlaceRestControllerTest extends TestCase
     {
         return json_encode(
             [
-                "mainLanguage" => "en",
-                "name" => "foo",
-                "type" => [
-                    "id" => "1.8.2",
-                    "label" => "PARTY!",
+                'mainLanguage' => 'en',
+                'name' => 'foo',
+                'type' => [
+                    'id' => '1.8.2',
+                    'label' => 'PARTY!',
                 ],
-                "theme" => [
-                    "id" => "6.6.6",
-                    "label" => "Pentagrams",
+                'theme' => [
+                    'id' => '6.6.6',
+                    'label' => 'Pentagrams',
                 ],
-                "address" => [
-                    "streetAddress" => "acmelane 12",
-                    "postalCode" => "3000",
-                    "addressLocality" => "Leuven",
-                    "addressCountry" => "BE",
+                'address' => [
+                    'streetAddress' => 'acmelane 12',
+                    'postalCode' => '3000',
+                    'addressLocality' => 'Leuven',
+                    'addressCountry' => 'BE',
                 ],
-                "calendar" => [
-                    "type" => "permanent",
+                'calendar' => [
+                    'type' => 'permanent',
                 ],
             ]
         );

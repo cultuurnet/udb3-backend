@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -12,7 +14,6 @@ use CultuurNet\UDB3\Role\Events\RoleDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use GuzzleHttp\Tests\Psr7\Str;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
@@ -376,7 +377,6 @@ class UserRolesProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @param string $roleName
      * @return JsonDocument
      */

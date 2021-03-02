@@ -35,20 +35,23 @@ final class SimilarEventsRepository extends AbstractDBALRepository
      * Note that the order of values in event1 and event2 in similar_events and similar_events_skipped tables is not guaranteed to be the same.
      * The productions table does not have an event1 and event2 column, but rows of events instead. (Since a production can have more than 2 events)
      *
-     * @return Suggestion
      * @throws SuggestionsNotFound
      */
     public function findNextSuggestion(): Suggestion
     {
+        $queryBuilder = $this->getConnection()->createQueryBuilder();
+
+        $skippedEvents = $queryBuilder
+            ->select('CONCAT(LEAST(event1, event2), GREATEST(event1, event2))')
+            ->from(SkippedSimilarEventsRepository::TABLE_NAME);
+
         $query = $this->getConnection()->createQueryBuilder()
             ->select('se.similarity, se.event1, se.event2, p1.production_id as production1, p2.production_id as production2')
             ->from($this->getTableName()->toNative(), 'se')
             ->leftJoin('se', ProductionRepository::TABLE_NAME, 'p1', 'p1.event_id = se.event1')
             ->leftJoin('se', ProductionRepository::TABLE_NAME, 'p2', 'p2.event_id = se.event2')
-            ->leftJoin('se', SkippedSimilarEventsRepository::TABLE_NAME, 'sk', 'CONCAT(LEAST(se.event1, se.event2), GREATEST(se.event1, se.event2)) = CONCAT(LEAST(sk.event1, sk.event2), GREATEST(sk.event1, sk.event2))')
             ->where('(p1.production_id IS NULL OR p2.production_id IS NULL OR p1.production_id != p2.production_id)')
-            ->andWhere('sk.event1 IS NULL')
-            ->andWhere('sk.event2 IS NULL')
+            ->andWhere('CONCAT(LEAST(se.event1, se.event2), GREATEST(se.event1, se.event2)) NOT IN (' . $skippedEvents->getSQL() . ')')
             ->orderBy('similarity', 'DESC');
         $results = $query->execute();
         $result = $results->fetch();

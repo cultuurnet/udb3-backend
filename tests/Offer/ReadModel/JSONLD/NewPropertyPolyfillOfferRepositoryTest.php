@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class NewPropertyPolyfillOfferRepositoryTest extends TestCase
 {
-    const DOCUMENT_ID = '5d7ed700-17de-4c1f-923a-0affe7cf2d4c';
+    public const DOCUMENT_ID = '5d7ed700-17de-4c1f-923a-0affe7cf2d4c';
 
     /**
      * @var NewPropertyPolyfillOfferRepository

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Place;
 
 use CultuurNet\UDB3\Model\Import\Place\PlaceDocumentImporter;
@@ -56,8 +58,7 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
                 $labelPreProcessor = new LabelPreProcessingDocumentImporter(
                     $termPreProcessor,
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
-                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY],
-                    $app['labels.constraint_aware_service']
+                    $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
                 );
 
                 return $labelPreProcessor;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -49,7 +51,7 @@ class CalendarForPlaceDataValidator implements DataValidatorInterface
             $messages,
             (new TimeSpanValidator())->validate($data)
         );
-        
+
         // All other combinations are valid:
         // - No data at all
         // - Start date and end date

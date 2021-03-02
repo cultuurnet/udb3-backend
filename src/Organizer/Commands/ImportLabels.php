@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -23,7 +25,6 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
 
     /**
      * @param string $organizerId
-     * @param Labels $label
      */
     public function __construct(
         $organizerId,

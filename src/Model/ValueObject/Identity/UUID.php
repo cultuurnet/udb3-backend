@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
@@ -7,14 +9,13 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
 
 class UUID
 {
+    use IsString;
+    use MatchesRegexPattern;
 
     /**
      * Ensures backwards compatibility with older, malformed, uuids present in UDB.
      */
-    const BC_REGEX = '\\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}\\z';
-
-    use IsString;
-    use MatchesRegexPattern;
+    public const BC_REGEX = '\\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}\\z';
 
     /**
      * @param string $value

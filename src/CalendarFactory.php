@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Cake\Chronos\Chronos;
@@ -88,7 +90,7 @@ class CalendarFactory implements CalendarFactoryInterface
                     $endDateString
                 );
 
-                $index = intval($timestamp->getStartDate()->format('s'));
+                $index = (int) ($timestamp->getStartDate()->format('s'));
                 if ($index > 0) {
                     $splitPeriods[$index][] = $timestamp;
                 } else {
@@ -161,7 +163,6 @@ class CalendarFactory implements CalendarFactoryInterface
     }
 
     /**
-     * @param \CultureFeed_Cdb_Data_Calendar_Weekscheme|null $weekScheme
      * @return Calendar
      */
     public function createFromWeekScheme(
@@ -183,7 +184,6 @@ class CalendarFactory implements CalendarFactoryInterface
     }
 
     /**
-     * @param \CultureFeed_Cdb_Data_Calendar_Weekscheme $weekScheme
      * @return OpeningHour[]
      */
     private function createOpeningHoursFromWeekScheme(
@@ -212,7 +212,7 @@ class CalendarFactory implements CalendarFactoryInterface
                     );
                     $closes = \DateTime::createFromFormat(
                         'H:i:s',
-                        $openingTime->getOpenTill()
+                        (string) $openingTime->getOpenTill()
                     );
 
                     $openingHour = new OpeningHour(
@@ -230,7 +230,6 @@ class CalendarFactory implements CalendarFactoryInterface
     }
 
     /**
-     * @param OpeningHour $newOpeningHour
      * @param OpeningHour[] ...$openingHours
      * @return OpeningHour[]
      */
@@ -272,8 +271,6 @@ class CalendarFactory implements CalendarFactoryInterface
      *
      * If the end dates does not make any sense at all, it is forced to the start date.
      *
-     * @param DateTimeInterface $start
-     * @param DateTimeInterface $end
      *
      * @return Timestamp
      */
@@ -295,7 +292,6 @@ class CalendarFactory implements CalendarFactoryInterface
 
     /**
      * @param CultureFeed_Cdb_Data_Calendar_Timestamp[] $timestampList
-     * @param CultureFeed_Cdb_Data_Calendar_Timestamp $default
      * @return CultureFeed_Cdb_Data_Calendar_Timestamp
      */
     private function getLastTimestamp(array $timestampList, CultureFeed_Cdb_Data_Calendar_Timestamp $default)
@@ -314,7 +310,6 @@ class CalendarFactory implements CalendarFactoryInterface
 
     /**
      * @param CultureFeed_Cdb_Data_Calendar_Timestamp[] $timestampList
-     * @param CultureFeed_Cdb_Data_Calendar_Timestamp $default
      * @return CultureFeed_Cdb_Data_Calendar_Timestamp
      */
     private function getFirstTimestamp(array $timestampList, CultureFeed_Cdb_Data_Calendar_Timestamp $default)

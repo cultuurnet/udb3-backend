@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\CommandHandling\CommandHandler;
@@ -13,7 +15,6 @@ use ValueObjects\Web\Url;
 interface MediaManagerInterface extends CommandHandler
 {
     /**
-     * @param UUID $id
      * @throws MediaObjectNotFoundException
      * @return MediaObject
      */
@@ -21,19 +22,10 @@ interface MediaManagerInterface extends CommandHandler
 
     public function getImage(UUID $imageId): Image;
 
-    /**
-     * @param UploadImage $uploadImage
-     * @return mixed
-     */
+
     public function handleUploadImage(UploadImage $uploadImage);
 
     /**
-     * @param UUID $id
-     * @param MIMEType $mimeType
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
-     * @param Url $sourceLocation
-     * @param Language $language
      *
      * @return MediaObject
      */

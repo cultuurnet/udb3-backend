@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
 use CultuurNet\UDB3\CalendarType;
@@ -64,7 +66,6 @@ class HTMLEventFormatter
     protected $calendarSummaryRepository;
 
     /**
-     * @param EventInfoServiceInterface|null     $uitpas
      * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
      */
     public function __construct(
@@ -193,8 +194,6 @@ class HTMLEventFormatter
      * If the large formatted summary is missing, the summary that is available on the event will be used as fallback.
      *
      * @param string   $eventId
-     * @param stdClass $event
-     * @param array    $formattedEvent
      */
     private function addCalendarInfo($eventId, stdClass $event, array &$formattedEvent)
     {
@@ -213,7 +212,6 @@ class HTMLEventFormatter
 
     /**
      * @param string $eventId
-     * @param array  $formattedEvent
      */
     private function addUitpasInfo($eventId, array &$formattedEvent)
     {
@@ -283,7 +281,7 @@ class HTMLEventFormatter
         }
 
         $formattedEvent['price'] =
-            $basePrice ? $this->priceFormatter->format($basePrice->price) : 'Niet ingevoerd';
+            $basePrice ? $this->priceFormatter->format((float) $basePrice->price) : 'Niet ingevoerd';
     }
 
     /**

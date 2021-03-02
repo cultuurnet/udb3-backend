@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ReadModel\Calendar;
 
 use CultureFeed_Cdb_Data_Calendar as Calendar;
@@ -16,8 +18,8 @@ use PHPUnit\Framework\TestCase;
 
 class EventCalendarProjectorTest extends TestCase
 {
-    const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
-    const CDBXML_NAMESPACE_32 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+    public const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    public const CDBXML_NAMESPACE_32 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
     /**
      * @var CalendarRepositoryInterface|MockObject
@@ -127,7 +129,6 @@ class EventCalendarProjectorTest extends TestCase
 
     /**
      * @param string $id
-     * @param Calendar $calendar
      */
     private function repositoryExpectsCalendarToBeSaved($id, Calendar $calendar)
     {

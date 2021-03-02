@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event;
 
 use ValueObjects\Enum\Enum;
@@ -14,6 +16,6 @@ use ValueObjects\Enum\Enum;
  */
 class EventAdvantage extends Enum
 {
-    const POINT_COLLECTING = "POINT_COLLECTING";
-    const KANSENTARIEF = "KANSENTARIEF";
+    public const POINT_COLLECTING = 'POINT_COLLECTING';
+    public const KANSENTARIEF = 'KANSENTARIEF';
 }

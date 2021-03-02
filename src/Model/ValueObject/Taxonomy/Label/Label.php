@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
 class Label
@@ -15,7 +17,6 @@ class Label
     private $visible;
 
     /**
-     * @param LabelName $name
      * @param bool $visible
      */
     public function __construct(LabelName $name, $visible = true)

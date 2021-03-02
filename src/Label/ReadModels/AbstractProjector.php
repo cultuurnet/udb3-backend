@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels;
 
 use Broadway\Domain\DomainMessage;
@@ -21,9 +23,7 @@ abstract class AbstractProjector implements EventListener
         DelegateEventHandlingToSpecificMethodTrait::handle as handleSpecific;
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     public function handle(DomainMessage $domainMessage)
     {
         $payload = $domainMessage->getPayload();
@@ -48,26 +48,16 @@ abstract class AbstractProjector implements EventListener
         }
     }
 
-    /**
-     * @param LabelEventInterface $labelAdded
-     * @param Metadata $metadata
-     */
+
     abstract public function applyLabelAdded(LabelEventInterface $labelAdded, Metadata $metadata);
 
-    /**
-     * @param LabelEventInterface $labelRemoved
-     * @param Metadata $metadata
-     */
+
     abstract public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata);
 
-    /**
-     * @param LabelsImportedEventInterface $labelsImported
-     * @param Metadata $metadata
-     */
+
     abstract public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata);
 
     /**
-     * @param mixed $payload
      * @return bool
      */
     private function isLabelAdded($payload)
@@ -77,7 +67,6 @@ abstract class AbstractProjector implements EventListener
     }
 
     /**
-     * @param mixed $payload
      * @return bool
      */
     private function isLabelRemoved($payload)
@@ -87,7 +76,6 @@ abstract class AbstractProjector implements EventListener
     }
 
     /**
-     * @param mixed $payload
      * @return bool
      */
     private function isLabelsImported($payload)

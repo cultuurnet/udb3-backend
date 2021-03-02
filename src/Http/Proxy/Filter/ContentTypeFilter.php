@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use Psr\Http\Message\RequestInterface;
@@ -7,7 +9,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ContentTypeFilter implements FilterInterface
 {
-    const CONTENT_TYPE = 'Content-Type';
+    public const CONTENT_TYPE = 'Content-Type';
     /**
      * @var StringLiteral
      */

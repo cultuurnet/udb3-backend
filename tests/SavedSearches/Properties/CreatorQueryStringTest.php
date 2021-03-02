@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SavedSearches\Properties;
 
 use PHPUnit\Framework\TestCase;
@@ -9,8 +11,6 @@ class CreatorQueryStringTest extends TestCase
     /**
      * @test
      * @dataProvider creatorQueryDataProvider
-     * @param CreatorQueryString $creatorQueryString
-     * @param string $expectedQuery
      */
     public function it_can_create_query_strings(
         CreatorQueryString $creatorQueryString,
@@ -22,9 +22,7 @@ class CreatorQueryStringTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
+
     public function creatorQueryDataProvider(): array
     {
         $userId = 'cef70b98-2d4d-40a9-95f0-762aae66ef3f';

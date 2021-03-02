@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
@@ -157,18 +159,14 @@ class AuthorizedCommandBusTest extends TestCase
             ->willReturn($isAuthorized);
     }
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     private function mockGetId(StringLiteral $userId)
     {
         $this->userIdentification->method('getId')
             ->willReturn($userId);
     }
 
-    /**
-     * @param Permission $permission
-     */
+
     private function mockGetPermission(Permission $permission)
     {
         $this->command->method('getPermission')

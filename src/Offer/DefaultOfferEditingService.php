@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
@@ -10,9 +12,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
@@ -44,11 +43,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     protected $commandFactory;
 
     /**
-     * @var LabelServiceInterface
-     */
-    private $labelService;
-
-    /**
      * @var \DateTimeImmutable|null
      */
     protected $publicationDate;
@@ -68,7 +62,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         UuidGeneratorInterface $uuidGenerator,
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
-        LabelServiceInterface $labelService,
         TypeResolverInterface $typeResolver,
         ThemeResolverInterface $themeResolver
     ) {
@@ -76,14 +69,12 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         $this->uuidGenerator = $uuidGenerator;
         $this->readRepository = $readRepository;
         $this->commandFactory = $commandFactory;
-        $this->labelService = $labelService;
         $this->typeResolver = $typeResolver;
         $this->themeResolver = $themeResolver;
         $this->publicationDate = null;
     }
 
     /**
-     * @param \DateTimeImmutable $publicationDate
      * @return static
      */
     public function withFixedPublicationDateForNewOffers(
@@ -96,46 +87,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function addLabel($id, Label $label)
-    {
-        $this->guardId($id);
-
-        $this->labelService->createLabelAggregateIfNew(
-            new LabelName((string) $label),
-            $label->isVisible()
-        );
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createAddLabelCommand(
-                $id,
-                $label
-            )
-        );
-    }
-
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function removeLabel($id, Label $label)
-    {
-        $this->guardId($id);
-
-        return $this->commandBus->dispatch(
-            $this->commandFactory->createRemoveLabelCommand(
-                $id,
-                $label
-            )
-        );
-    }
-
-    /**
-     * @param string $id
-     * @param StringLiteral $typeId
      * @return string
      */
     public function updateType($id, StringLiteral $typeId)
@@ -150,7 +101,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param StringLiteral $themeId
      * @return string
      */
     public function updateTheme($id, StringLiteral $themeId)
@@ -165,7 +115,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param array $facilities
      * @return string
      */
     public function updateFacilities($id, array $facilities)
@@ -179,8 +128,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Language $language
-     * @param StringLiteral $title
      * @return string
      */
     public function updateTitle($id, Language $language, StringLiteral $title)
@@ -198,8 +145,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Language $language
-     * @param Description $description
      * @return string
      */
     public function updateDescription($id, Language $language, Description $description)
@@ -232,7 +177,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param UUID $imageId
      * @return string
      */
     public function addImage($id, UUID $imageId)
@@ -246,9 +190,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Image $image
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
      * @return string
      */
     public function updateImage(
@@ -289,7 +230,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Image $image
      * @return string
      */
     public function selectMainImage($id, Image $image)
@@ -303,7 +243,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param AgeRange $ageRange
      * @return string
      */
     public function updateTypicalAgeRange($id, AgeRange $ageRange)
@@ -358,7 +297,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param ContactPoint $contactPoint
      * @return string
      */
     public function updateContactPoint($id, ContactPoint $contactPoint)
@@ -372,7 +310,6 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param BookingInfo $bookingInfo
      * @return string
      */
     public function updateBookingInfo($id, BookingInfo $bookingInfo)

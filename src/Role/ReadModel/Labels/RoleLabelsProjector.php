@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
@@ -27,11 +29,7 @@ class RoleLabelsProjector extends RoleProjector
      */
     private $labelRolesRepository;
 
-    /**
-     * @param \CultuurNet\UDB3\ReadModel\DocumentRepository $repository
-     * @param \CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface $labelJsonRepository
-     * @param \CultuurNet\UDB3\ReadModel\DocumentRepository $labelRolesRepository
-     */
+
     public function __construct(
         DocumentRepository $repository,
         ReadRepositoryInterface $labelJsonRepository,
@@ -43,9 +41,7 @@ class RoleLabelsProjector extends RoleProjector
         $this->labelRolesRepository = $labelRolesRepository;
     }
 
-    /**
-     * @param LabelAdded $labelAdded
-     */
+
     public function applyLabelAdded(LabelAdded $labelAdded)
     {
         $document = $this->getDocument($labelAdded->getUuid());
@@ -62,9 +58,7 @@ class RoleLabelsProjector extends RoleProjector
         }
     }
 
-    /**
-     * @param LabelRemoved $labelRemoved
-     */
+
     public function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
         $document = $this->getDocument($labelRemoved->getUuid());
@@ -81,9 +75,7 @@ class RoleLabelsProjector extends RoleProjector
         }
     }
 
-    /**
-     * @param LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD
-     */
+
     public function applyLabelDetailsProjectedToJSONLD(LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD)
     {
         $labelId = $labelDetailsProjectedToJSONLD->getUuid()->toNative();
@@ -105,25 +97,20 @@ class RoleLabelsProjector extends RoleProjector
         }
     }
 
-    /**
-     * @param RoleCreated $roleCreated
-     */
+
     public function applyRoleCreated(RoleCreated $roleCreated)
     {
         $document = $this->createNewDocument($roleCreated->getUuid());
         $this->repository->save($document);
     }
 
-    /**
-     * @param RoleDeleted $roleDeleted
-     */
+
     public function applyRoleDeleted(RoleDeleted $roleDeleted)
     {
         $this->repository->remove($roleDeleted->getUuid());
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument|null
      */
     private function getDocument(UUID $uuid)
@@ -139,7 +126,6 @@ class RoleLabelsProjector extends RoleProjector
     }
 
     /**
-     * @param JsonDocument $document
      * @return Entity[]
      */
     private function getLabelDetails(JsonDocument $document)
@@ -148,7 +134,6 @@ class RoleLabelsProjector extends RoleProjector
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument
      */
     private function createNewDocument(UUID $uuid)

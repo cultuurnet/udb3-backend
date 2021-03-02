@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use ValueObjects\StringLiteral\StringLiteral;
@@ -11,9 +13,7 @@ trait HasActorIdTrait
      */
     private $actorId;
 
-    /**
-     * @param StringLiteral $actorId
-     */
+
     private function setActorId(StringLiteral $actorId)
     {
         if ($actorId->isEmpty()) {

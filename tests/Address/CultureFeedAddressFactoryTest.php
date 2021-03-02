@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Address;
 
 use PHPUnit\Framework\TestCase;
@@ -45,7 +47,6 @@ class CultureFeedAddressFactoryTest extends TestCase
      * @test
      * @dataProvider incompletePhysicalAddressDataProvider
      *
-     * @param \CultureFeed_Cdb_Data_Address_PhysicalAddress $incompletePhysicalAddress
      * @param string $exceptionMessage
      */
     public function it_throws_an_exception_when_a_required_field_is_missing_on_the_physical_address(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Facility;
@@ -31,7 +33,7 @@ class EventFacilityResolverTest extends TestCase
         $resolver = new EventFacilityResolver();
 
         $facility = $resolver->byId(new StringLiteral('3.13.2.0.0'));
-        $expectedFacility = new Facility("3.13.2.0.0", "Audiodescriptie");
+        $expectedFacility = new Facility('3.13.2.0.0', 'Audiodescriptie');
 
         $this->assertEquals($expectedFacility, $facility);
     }

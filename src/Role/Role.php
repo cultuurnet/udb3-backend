@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
@@ -53,17 +55,12 @@ class Role extends EventSourcedAggregateRoot
      */
     private $userIds = [];
 
-    /**
-     * @return string
-     */
-    public function getAggregateRootId()
+    public function getAggregateRootId(): string
     {
-        return $this->uuid;
+        return $this->uuid->toNative();
     }
 
     /**
-     * @param UUID $uuid
-     * @param StringLiteral $name
      * @return Role
      */
     public static function create(
@@ -83,8 +80,6 @@ class Role extends EventSourcedAggregateRoot
     /**
      * Rename the role.
      *
-     * @param UUID $uuid
-     * @param StringLiteral $name
      */
     public function rename(
         UUID $uuid,
@@ -93,10 +88,7 @@ class Role extends EventSourcedAggregateRoot
         $this->apply(new RoleRenamed($uuid, $name));
     }
 
-    /**
-     * @param SapiVersion $sapiVersion
-     * @param Query $query
-     */
+
     public function addConstraint(SapiVersion $sapiVersion, Query $query): void
     {
         if ($this->queryEmpty($sapiVersion)) {
@@ -104,10 +96,7 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param SapiVersion $sapiVersion
-     * @param Query $query
-     */
+
     public function updateConstraint(SapiVersion $sapiVersion, Query $query): void
     {
         if (!$this->queryEmpty($sapiVersion) &&
@@ -116,9 +105,7 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param SapiVersion $sapiVersion
-     */
+
     public function removeConstraint(SapiVersion $sapiVersion): void
     {
         if (!$this->queryEmpty($sapiVersion)) {
@@ -126,20 +113,13 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param SapiVersion $sapiVersion
-     * @return bool
-     */
+
     private function queryEmpty(SapiVersion $sapiVersion): bool
     {
         return empty($this->queries[$sapiVersion->toNative()]);
     }
 
-    /**
-     * @param SapiVersion $sapiVersion
-     * @param Query $query
-     * @return bool
-     */
+
     private function querySameValue(SapiVersion $sapiVersion, Query $query): bool
     {
         return $this->queries[$sapiVersion->toNative()]->sameValueAs($query);
@@ -148,8 +128,6 @@ class Role extends EventSourcedAggregateRoot
     /**
      * Add a permission to the role.
      *
-     * @param UUID $uuid
-     * @param Permission $permission
      */
     public function addPermission(
         UUID $uuid,
@@ -163,8 +141,6 @@ class Role extends EventSourcedAggregateRoot
     /**
      * Remove a permission from the role.
      *
-     * @param UUID $uuid
-     * @param Permission $permission
      */
     public function removePermission(
         UUID $uuid,
@@ -175,9 +151,7 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param UUID $labelId
-     */
+
     public function addLabel(
         UUID $labelId
     ) {
@@ -186,9 +160,7 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param \ValueObjects\Identity\UUID $labelId
-     */
+
     public function removeLabel(
         UUID $labelId
     ) {
@@ -197,9 +169,7 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     public function addUser(
         StringLiteral $userId
     ) {
@@ -208,9 +178,7 @@ class Role extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     public function removeUser(
         StringLiteral $userId
     ) {
@@ -222,7 +190,6 @@ class Role extends EventSourcedAggregateRoot
     /**
      * Delete a role.
      *
-     * @param UUID $uuid
      */
     public function delete(
         UUID $uuid
@@ -230,50 +197,38 @@ class Role extends EventSourcedAggregateRoot
         $this->apply(new RoleDeleted($uuid));
     }
 
-    /**
-     * @param RoleCreated $roleCreated
-     */
+
     public function applyRoleCreated(RoleCreated $roleCreated)
     {
         $this->uuid = $roleCreated->getUuid();
         $this->name = $roleCreated->getName();
     }
 
-    /**
-     * @param RoleRenamed $roleRenamed
-     */
+
     public function applyRoleRenamed(RoleRenamed $roleRenamed)
     {
         $this->name = $roleRenamed->getName();
     }
 
-    /**
-     * @param ConstraintAdded $constraintAdded
-     */
+
     public function applyConstraintAdded(ConstraintAdded $constraintAdded)
     {
         $this->queries[$constraintAdded->getSapiVersion()->toNative()] = $constraintAdded->getQuery();
     }
 
-    /**
-     * @param ConstraintUpdated $constraintUpdated
-     */
+
     public function applyConstraintUpdated(ConstraintUpdated $constraintUpdated)
     {
         $this->queries[$constraintUpdated->getSapiVersion()->toNative()] = $constraintUpdated->getQuery();
     }
 
-    /**
-     * @param ConstraintRemoved $constraintRemoved
-     */
+
     public function applyConstraintRemoved(ConstraintRemoved $constraintRemoved)
     {
         unset($this->queries[$constraintRemoved->getSapiVersion()->toNative()]);
     }
 
-    /**
-     * @param PermissionAdded $permissionAdded
-     */
+
     public function applyPermissionAdded(PermissionAdded $permissionAdded)
     {
         $permission = $permissionAdded->getPermission();
@@ -281,9 +236,7 @@ class Role extends EventSourcedAggregateRoot
         $this->permissions[$permission->getName()] = $permission;
     }
 
-    /**
-     * @param PermissionRemoved $permissionRemoved
-     */
+
     public function applyPermissionRemoved(PermissionRemoved $permissionRemoved)
     {
         $permission = $permissionRemoved->getPermission();
@@ -291,36 +244,28 @@ class Role extends EventSourcedAggregateRoot
         unset($this->permissions[$permission->getName()]);
     }
 
-    /**
-     * @param LabelAdded $labelAdded
-     */
+
     public function applyLabelAdded(LabelAdded $labelAdded)
     {
         $labelId = $labelAdded->getLabelId();
         $this->labelIds[] = $labelId;
     }
 
-    /**
-     * @param LabelRemoved $labelRemoved
-     */
+
     public function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
         $labelId = $labelRemoved->getLabelId();
         $this->labelIds = array_diff($this->labelIds, [$labelId]);
     }
 
-    /**
-     * @param UserAdded $userAdded
-     */
+
     public function applyUserAdded(UserAdded $userAdded)
     {
         $userId = $userAdded->getUserId();
         $this->userIds[] = $userId;
     }
 
-    /**
-     * @param UserRemoved $userRemoved
-     */
+
     public function applyUserRemoved(UserRemoved $userRemoved)
     {
         $userId = $userRemoved->getUserId();

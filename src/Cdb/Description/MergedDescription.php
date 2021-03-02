@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Cdb\Description;
 
 use CultuurNet\UDB3\StringFilter\StringFilterInterface;
@@ -18,7 +20,6 @@ class MergedDescription extends StringLiteral
     private static $shortDescriptionUDB3FormattingFilter;
 
     /**
-     * @param \CultureFeed_Cdb_Data_Detail $detail
      * @return MergedDescription
      * @throws \InvalidArgumentException
      */
@@ -52,8 +53,6 @@ class MergedDescription extends StringLiteral
     }
 
     /**
-     * @param ShortDescription $shortDescription
-     * @param LongDescription $longDescription
      * @return MergedDescription $longDescription
      */
     public static function merge(ShortDescription $shortDescription, LongDescription $longDescription)

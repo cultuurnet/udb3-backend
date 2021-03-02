@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\ReadModel\MainLanguage;
 
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -66,7 +68,6 @@ class JSONLDMainLanguageQueryTest extends TestCase
 
     /**
      * @param string $cdbid
-     * @param array $data
      */
     private function expectDocumentWithJsonLd($cdbid, array $data)
     {

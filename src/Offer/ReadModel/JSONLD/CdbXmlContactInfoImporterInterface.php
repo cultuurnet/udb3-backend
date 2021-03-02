@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 interface CdbXmlContactInfoImporterInterface
 {
     /**
-     * @param \stdClass $jsonLD
      * @param \CultureFeed_Cdb_Data_ContactInfo $contactInfo ,
-     * @param \CultureFeed_Cdb_Data_Price|null $price
-     * @param \CultureFeed_Cdb_Data_Calendar_BookingPeriod|null $bookingPeriod
      * @return void
      */
     public function importBookingInfo(
@@ -19,8 +18,6 @@ interface CdbXmlContactInfoImporterInterface
     );
 
     /**
-     * @param \stdClass $jsonLD
-     * @param \CultureFeed_Cdb_Data_ContactInfo $contactInfo
      * @return void
      */
     public function importContactPoint(

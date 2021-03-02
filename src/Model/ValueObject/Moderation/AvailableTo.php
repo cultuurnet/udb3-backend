@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -8,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 class AvailableTo
 {
     /**
-     * @param Calendar $calendar
      * @return \DateTimeImmutable
      */
     public static function createFromCalendar(Calendar $calendar)

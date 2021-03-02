@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -74,7 +76,6 @@ class SimilaritySorterTest extends TestCase
     }
 
     /**
-     * @param StringLiteral $name
      * @return Entity
      */
     private function createEntity(StringLiteral $name)

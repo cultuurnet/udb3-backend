@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Address\Address;
@@ -13,7 +15,6 @@ abstract class AbstractUpdateGeoCoordinatesFromAddress extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Address $address
      */
     public function __construct($itemId, Address $address)
     {

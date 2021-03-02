@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine;
 
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
@@ -33,10 +35,6 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
 
     /**
      * UserConstraintsReadRepository constructor.
-     * @param Connection $connection
-     * @param StringLiteral $userRolesTableName
-     * @param StringLiteral $rolePermissionsTableName
-     * @param StringLiteral $rolesSearchTableName
      */
     public function __construct(
         Connection $connection,
@@ -51,8 +49,6 @@ class UserConstraintsReadRepository implements UserConstraintsReadRepositoryInte
     }
 
     /**
-     * @param StringLiteral $userId
-     * @param Permission $permission
      * @return StringLiteral[]
      */
     public function getByUserAndPermission(

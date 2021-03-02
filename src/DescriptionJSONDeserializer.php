@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -13,7 +15,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 class DescriptionJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $data
      * @return Description
      */
     public function deserialize(StringLiteral $data)

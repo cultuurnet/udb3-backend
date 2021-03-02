@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializable;
@@ -63,7 +65,6 @@ class Category implements Serializable, JsonLdSerializableInterface
     }
 
     /**
-     * @param array $data
      * @return Category
      */
     public static function deserialize(array $data)
@@ -78,7 +79,6 @@ class Category implements Serializable, JsonLdSerializableInterface
     }
 
     /**
-     * @param Udb3ModelCategory $category
      * @return Category
      */
     public static function fromUdb3ModelCategory(Udb3ModelCategory $category)

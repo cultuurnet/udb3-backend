@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
@@ -30,11 +32,7 @@ class JwtListener implements ListenerInterface
      */
     private $decoderService;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthenticationManagerInterface $authenticationManager
-     * @param JwtDecoderServiceInterface $decoderService
-     */
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AuthenticationManagerInterface $authenticationManager,
@@ -45,9 +43,7 @@ class JwtListener implements ListenerInterface
         $this->decoderService = $decoderService;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
+
     public function handle(GetResponseEvent $event)
     {
         $request = $event->getRequest();
@@ -71,7 +67,6 @@ class JwtListener implements ListenerInterface
     }
 
     /**
-     * @param Request $request
      * @return null|string
      */
     private function getJwtString(Request $request)

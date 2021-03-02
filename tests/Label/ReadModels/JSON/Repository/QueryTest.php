@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use PHPUnit\Framework\TestCase;
@@ -8,10 +10,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryTest extends TestCase
 {
-    const NAME = 'name';
-    const USER_ID = 'userId';
-    const OFFSET = 5;
-    const LIMIT = 10;
+    public const NAME = 'name';
+    public const USER_ID = 'userId';
+    public const OFFSET = 5;
+    public const LIMIT = 10;
 
     /**
      * @var Query

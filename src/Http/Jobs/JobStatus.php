@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Jobs;
 
 use ValueObjects\Enum\Enum;
@@ -14,8 +16,8 @@ use ValueObjects\Enum\Enum;
  */
 class JobStatus extends Enum
 {
-    const WAITING = 'waiting';
-    const RUNNING = 'running';
-    const FAILED = 'failed';
-    const COMPLETE = 'complete';
+    public const WAITING = 'waiting';
+    public const RUNNING = 'running';
+    public const FAILED = 'failed';
+    public const COMPLETE = 'complete';
 }

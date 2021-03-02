@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -27,12 +29,7 @@ class MediaObject
      */
     private $thumbnailUrl;
 
-    /**
-     * @param UUID $id
-     * @param MediaObjectType $type
-     * @param Url $contentUrl
-     * @param Url $thumbnailUrl
-     */
+
     public function __construct(
         UUID $id,
         MediaObjectType $type,

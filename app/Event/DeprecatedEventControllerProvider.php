@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Event;
 
 use Silex\Application;
@@ -25,7 +27,7 @@ class DeprecatedEventControllerProvider implements ControllerProviderInterface
             ->get('event/{cdbid}/history', 'event_controller:history')
             ->bind('event-history');
 
-        $controllers->post('event', "event_editing_controller:createEvent");
+        $controllers->post('event', 'event_editing_controller:createEvent');
 
         $controllers->post('event/{itemId}/images', 'event_editing_controller:addImage');
         $controllers->post('event/{itemId}/images/main', 'event_editing_controller:selectMainImage');

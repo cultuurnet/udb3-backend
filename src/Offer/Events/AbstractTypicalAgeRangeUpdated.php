@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Offer\AgeRange;
@@ -24,9 +26,9 @@ abstract class AbstractTypicalAgeRangeUpdated extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'typicalAgeRange' => (string) $this->typicalAgeRange,
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractTypicalAgeRangeUpdated

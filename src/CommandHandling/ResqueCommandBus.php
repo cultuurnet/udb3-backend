@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\CommandHandling;
 
@@ -21,7 +20,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
 {
     use LoggerAwareTrait;
 
-    const EVENT_COMMAND_CONTEXT_SET = 'broadway.command_handling.context';
+    public const EVENT_COMMAND_CONTEXT_SET = 'broadway.command_handling.context';
 
     /**
      * @var CommandBus|ContextAwareInterface
@@ -66,9 +65,9 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
 
         $this->eventDispatcher->dispatch(
             self::EVENT_COMMAND_CONTEXT_SET,
-            array(
+            [
                 'context' => $this->context,
-            )
+            ]
         );
     }
 
@@ -86,7 +85,6 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     /**
      * Dispatches the command $command to a queue.
      *
-     * @param mixed $command
      * @return string the command id
      *
      * @throws CommandAuthorizationException
@@ -103,7 +101,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
             }
         }
 
-        $args = array();
+        $args = [];
         $args['command'] = base64_encode(serialize($command));
         $args['context'] = base64_encode(serialize($this->context));
         $id = \Resque::enqueue($this->queueName, QueueJob::class, $args, true);
@@ -115,7 +113,6 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
      * Really dispatches the command to the proper handler to be executed.
      *
      * @param string $jobId
-     * @param mixed $command
      *
      * @throws \Exception
      */
@@ -124,9 +121,9 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
         $exception = null;
         $currentCommandLogger = null;
         if ($this->logger) {
-            $jobMetadata = array(
+            $jobMetadata = [
                 'job_id' => $jobId,
-            );
+            ];
             $currentCommandLogger = new ContextEnrichingLogger(
                 $this->logger,
                 $jobMetadata

@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Relations\Doctrine;
 
@@ -18,9 +17,7 @@ class DBALRepository implements RepositoryInterface
      */
     protected $connection;
 
-    /**
-     * @param Connection $connection
-     */
+
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
@@ -41,7 +38,7 @@ class DBALRepository implements RepositoryInterface
     private function prepareInsertStatement()
     {
         $table = $this->connection->quoteIdentifier($this->tableName);
-        
+
         return $this->connection->prepare(
             "REPLACE INTO {$table}
              (place, organizer)
@@ -60,7 +57,7 @@ class DBALRepository implements RepositoryInterface
 
         $results = $q->execute();
 
-        $places = array();
+        $places = [];
         while ($id = $results->fetchColumn(0)) {
             $places[] = $id;
         }
@@ -99,15 +96,15 @@ class DBALRepository implements RepositoryInterface
         $table->addColumn(
             'place',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
         $table->addColumn(
             'organizer',
             'string',
-            array('length' => 36, 'notnull' => false)
+            ['length' => 36, 'notnull' => false]
         );
 
-        $table->setPrimaryKey(array('place'));
+        $table->setPrimaryKey(['place']);
 
         return $table;
     }

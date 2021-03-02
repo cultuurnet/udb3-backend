@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UiTPAS\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Event\Commands\AddLabel;
-use CultuurNet\UDB3\Event\Commands\RemoveLabel;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
@@ -42,7 +44,6 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param DomainMessage $domainMessage
      *
      * @uses handleEventCardSystemsUpdated
      */
@@ -60,9 +61,7 @@ class EventProcessManager implements EventListener
         }
     }
 
-    /**
-     * @param EventCardSystemsUpdated $eventCardSystemsUpdated
-     */
+
     private function handleEventCardSystemsUpdated(EventCardSystemsUpdated $eventCardSystemsUpdated)
     {
         $eventId = $eventCardSystemsUpdated->getId()->toNative();
@@ -138,8 +137,6 @@ class EventProcessManager implements EventListener
 
     /**
      * @param Label[] $haystack
-     * @param Label $needle
-     * @return bool
      */
     private function labelsContain(array $haystack, Label $needle): bool
     {

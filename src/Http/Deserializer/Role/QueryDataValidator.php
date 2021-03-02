@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Role;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -23,7 +25,6 @@ class QueryDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)

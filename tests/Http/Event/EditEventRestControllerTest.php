@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
@@ -291,7 +293,7 @@ class EditEventRestControllerTest extends TestCase
                 new Audience(AudienceType::EDUCATION())
             );
 
-        $response = $this->controller->updateAudience($request, $eventId);
+        $response = $this->controller->updateAudience($request, $eventId->toNative());
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -320,7 +322,7 @@ class EditEventRestControllerTest extends TestCase
         $eventId = new UUID('7f71ebbd-b22b-4b94-96df-947ad0c1534f');
         $request = new Request();
 
-        $response = $this->controller->updateAudience($request, $eventId);
+        $response = $this->controller->updateAudience($request, $eventId->toNative());
 
         $expectedResponse = json_encode(['error' => 'audience type is required.']);
         $this->assertEquals($expectedResponse, $response->getContent());
@@ -334,28 +336,28 @@ class EditEventRestControllerTest extends TestCase
     {
         return json_encode(
             [
-                "mainLanguage" => "en",
-                "name" => "foo",
-                "type" => [
-                    "id" => "1.8.2",
-                    "label" => "PARTY!",
+                'mainLanguage' => 'en',
+                'name' => 'foo',
+                'type' => [
+                    'id' => '1.8.2',
+                    'label' => 'PARTY!',
                 ],
-                "theme" => [
-                    "id" => "6.6.6",
-                    "label" => "Pentagrams",
+                'theme' => [
+                    'id' => '6.6.6',
+                    'label' => 'Pentagrams',
                 ],
-                "location" => [
-                    "id" => "fe282e4f-35f5-480d-a90b-2720ab883b0a",
-                    "name" => "P-P-Partyzone",
-                    "address" => [
-                        "streetAddress" => "acmelane 12",
-                        "postalCode" => "3000",
-                        "addressLocality" => "Leuven",
-                        "addressCountry" => "BE",
+                'location' => [
+                    'id' => 'fe282e4f-35f5-480d-a90b-2720ab883b0a',
+                    'name' => 'P-P-Partyzone',
+                    'address' => [
+                        'streetAddress' => 'acmelane 12',
+                        'postalCode' => '3000',
+                        'addressLocality' => 'Leuven',
+                        'addressCountry' => 'BE',
                     ],
                 ],
-                "calendar" => [
-                    "type" => "permanent",
+                'calendar' => [
+                    'type' => 'permanent',
                 ],
             ]
         );

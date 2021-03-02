@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Console;
 
 use CultuurNet\UDB3\Storage\PurgeServiceInterface;
@@ -16,10 +18,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeModelCommand extends Command
 {
-    const MODEL_ARGUMENT = 'model';
+    public const MODEL_ARGUMENT = 'model';
 
-    const WRITE_MODEL = 'mysql-write';
-    const READ_MODEL = 'mysql-read';
+    public const WRITE_MODEL = 'mysql-write';
+    public const READ_MODEL = 'mysql-read';
 
     /**
      * @var PurgeServiceManager
@@ -46,8 +48,6 @@ class PurgeModelCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -69,7 +69,7 @@ class PurgeModelCommand extends Command
      */
     private function getPurgeServices(string $model): array
     {
-        $purgeServices = array();
+        $purgeServices = [];
 
         if (self::READ_MODEL === $model) {
             $purgeServices = $this->purgeServiceManager->getReadModelPurgeServices();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Commands;
 
 use ValueObjects\Identity\UUID;
@@ -12,10 +14,7 @@ abstract class AbstractUserCommand extends AbstractCommand
      */
     private $userId;
 
-    /**
-     * @param UUID $uuid
-     * @param StringLiteral $userId
-     */
+
     public function __construct(
         UUID $uuid,
         StringLiteral $userId

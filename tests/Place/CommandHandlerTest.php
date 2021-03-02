@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
@@ -14,20 +16,10 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\Privacy;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\MediaManager;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\OfferCommandHandlerTestTrait;
-use CultuurNet\UDB3\Place\Commands\AddLabel;
 use CultuurNet\UDB3\Place\Commands\CreatePlace;
-use CultuurNet\UDB3\Place\Commands\ImportLabels;
-use CultuurNet\UDB3\Place\Commands\RemoveLabel;
 use CultuurNet\UDB3\Place\Commands\DeletePlace;
 use CultuurNet\UDB3\Place\Commands\PlaceCommandFactory;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
@@ -39,9 +31,6 @@ use CultuurNet\UDB3\Place\Events\AddressTranslated;
 use CultuurNet\UDB3\Place\Events\AddressUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
-use CultuurNet\UDB3\Place\Events\LabelAdded;
-use CultuurNet\UDB3\Place\Events\LabelRemoved;
-use CultuurNet\UDB3\Place\Events\LabelsImported;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
@@ -53,11 +42,9 @@ use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
-use ValueObjects\Identity\UUID;
 use ValueObjects\Money\Currency;
-use ValueObjects\StringLiteral\StringLiteral;
 
-class PlaceHandlerTest extends CommandHandlerScenarioTestCase
+class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     use OfferCommandHandlerTestTrait;
 
@@ -133,7 +120,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
      * @test
      * @dataProvider updateAddressDataProvider
      *
-     * @param Address $updatedAddress
      */
     public function it_should_handle_an_update_address_command_for_the_main_language(
         Address $updatedAddress
@@ -153,7 +139,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
      * @test
      * @dataProvider updateAddressDataProvider
      *
-     * @param Address $updatedAddress
      */
     public function it_should_handle_an_update_address_command_for_any_language_other_than_the_language(
         Address $updatedAddress
@@ -201,122 +186,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
                 new DeletePlace($id)
             )
             ->then([new PlaceDeleted($id)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_label_a_place()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new AddLabel($id, new Label('foo')))
-            ->then([new LabelAdded($id, new Label('foo'))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_unlabel_a_place()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new LabelAdded($id, new Label('foo')),
-                ]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([new LabelRemoved($id, new Label('foo'))]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_label_that_is_not_present_on_a_place()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [$this->factorOfferCreated($id)]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_label_from_a_place_that_has_been_unlabelled_already()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                    new LabelAdded($id, new Label('foo')),
-                    new LabelRemoved($id, new Label('foo')),
-                ]
-            )
-            ->when(new RemoveLabel($id, new Label('foo')))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_import_labels()
-    {
-        $id = '1';
-        $this->scenario
-            ->withAggregateId($id)
-            ->given(
-                [
-                    $this->factorOfferCreated($id),
-                ]
-            )
-            ->when(
-                new ImportLabels(
-                    $id,
-                    new Labels(
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('foo'),
-                            true
-                        ),
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('bar'),
-                            true
-                        )
-                    )
-                )
-            )
-            ->then(
-                [
-                    new LabelsImported(
-                        $id,
-                        new Labels(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('foo'),
-                                true
-                            ),
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('bar'),
-                                true
-                            )
-                        )
-                    ),
-                    new LabelAdded($id, new Label('foo')),
-                    new LabelAdded($id, new Label('bar')),
-                ]
-            );
     }
 
     /**
@@ -431,16 +300,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->organizerRepository = $this->createMock(Repository::class);
 
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository->method('getByName')
-            ->with(new StringLiteral('foo'))
-            ->willReturn(new Entity(
-                new UUID(),
-                new StringLiteral('foo'),
-                Visibility::VISIBLE(),
-                Privacy::PRIVACY_PUBLIC()
-            ));
-
         $this->mediaManager = $this->createMock(MediaManager::class);
 
         $this->commandFactory = new PlaceCommandFactory();
@@ -448,7 +307,6 @@ class PlaceHandlerTest extends CommandHandlerScenarioTestCase
         return new CommandHandler(
             $repository,
             $this->organizerRepository,
-            $this->labelRepository,
             $this->mediaManager
         );
     }

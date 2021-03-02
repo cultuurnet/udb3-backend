@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\CommandHandling\SimpleCommandHandler;
@@ -47,11 +49,8 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
     private $twig;
 
     /**
-     * @param EventExportServiceInterface        $eventExportService
      * @param string                             $princeXMLBinaryPath
-     * @param EventInfoServiceInterface|null     $uitpas
      * @param CalendarSummaryRepositoryInterface $calendarSummaryRepository
-     * @param Twig_Environment|null              $twig
      */
     public function __construct(
         EventExportServiceInterface $eventExportService,

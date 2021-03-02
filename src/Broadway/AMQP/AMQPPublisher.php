@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DomainMessage;
@@ -61,9 +63,7 @@ class AMQPPublisher implements EventListener
         }
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     private function publishWithAMQP(DomainMessage $domainMessage)
     {
         $payload = $domainMessage->getPayload();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Security;
 
 use ValueObjects\StringLiteral\StringLiteral;
@@ -10,8 +12,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 class Sapi3SearchQueryFactory extends SearchQueryFactoryBase
 {
     /**
-     * @param StringLiteral $constraint
-     * @param StringLiteral $offerId
      * @return string
      */
     protected function createQueryString(

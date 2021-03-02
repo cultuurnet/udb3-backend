@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Security;
 
 use CultureFeed_User;
@@ -18,7 +20,6 @@ class CultureFeedUserIdentification implements UserIdentificationInterface
     private $permissionList;
 
     /**
-     * @param CultureFeed_User $cultureFeedUser
      * @param string[][] $permissionList
      */
     public function __construct(

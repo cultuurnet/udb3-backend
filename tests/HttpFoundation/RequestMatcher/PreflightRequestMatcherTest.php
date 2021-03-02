@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\HttpFoundation\RequestMatcher;
 
 use PHPUnit\Framework\TestCase;
@@ -13,7 +15,7 @@ class PreflightRequestMatcherTest extends TestCase
     public function it_matches_preflight_requests()
     {
         $request = Request::create('/foo', 'OPTIONS');
-        $request->headers->set("Access-Control-Request-Method", "POST");
+        $request->headers->set('Access-Control-Request-Method', 'POST');
 
         $matcher = new PreflightRequestMatcher();
         $this->assertTrue($matcher->matches($request));
@@ -36,7 +38,7 @@ class PreflightRequestMatcherTest extends TestCase
     public function it_does_not_match_request_methods_other_then_OPTIONS(string $requestMethod)
     {
         $request = Request::create('/foo', $requestMethod);
-        $request->headers->set("Access-Control-Request-Method", $requestMethod);
+        $request->headers->set('Access-Control-Request-Method', $requestMethod);
 
         $matcher = new PreflightRequestMatcher();
         $this->assertFalse($matcher->matches($request));

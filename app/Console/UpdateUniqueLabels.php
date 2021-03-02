@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
@@ -86,7 +88,7 @@ class UpdateUniqueLabels extends Command
 
         $reportFile = fopen('update_unique_labels_report.txt', 'wb');
         foreach ($messages as $message) {
-            fwrite($reportFile, $message. \PHP_EOL);
+            fwrite($reportFile, $message . \PHP_EOL);
         }
         \fclose($reportFile);
 

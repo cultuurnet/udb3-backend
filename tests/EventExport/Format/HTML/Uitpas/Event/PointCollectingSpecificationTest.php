@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event;
 
-use \CultureFeed_Uitpas_Event_CultureEvent as Event;
+use CultureFeed_Uitpas_Event_CultureEvent as Event;
 use PHPUnit\Framework\TestCase;
 
 class PointCollectingSpecificationTest extends TestCase
@@ -20,7 +22,6 @@ class PointCollectingSpecificationTest extends TestCase
     /**
      * @test
      * @dataProvider satisfyingEventProvider
-     * @param Event $event
      */
     public function it_is_satisfied_by_events_with_points(Event $event)
     {
@@ -49,7 +50,6 @@ class PointCollectingSpecificationTest extends TestCase
     /**
      * @test
      * @dataProvider unsatisfyingEventProvider
-     * @param Event $event
      */
     public function it_is_unsatisfied_by_events_without_points(Event $event)
     {

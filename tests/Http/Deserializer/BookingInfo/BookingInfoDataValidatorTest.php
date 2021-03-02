@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -131,10 +133,7 @@ class BookingInfoDataValidatorTest extends TestCase
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @param array $data
-     * @param array $expectedMessages
-     */
+
     private function assertValidationMessages(array $data, array $expectedMessages)
     {
         try {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
@@ -86,9 +88,7 @@ class DBALWriteRepository extends AbstractDBALRepository implements WriteReposit
         $this->executeTransactional($queryBuilder);
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
+
     private function executeTransactional(QueryBuilder $queryBuilder)
     {
         $this->getConnection()->transactional(function () use ($queryBuilder) {

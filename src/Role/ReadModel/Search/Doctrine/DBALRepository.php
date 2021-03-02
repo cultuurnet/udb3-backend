@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
@@ -19,10 +21,7 @@ class DBALRepository implements RepositoryInterface
      */
     protected $tableName;
 
-    /**
-     * @param Connection $connection
-     * @param StringLiteral $tableName
-     */
+
     public function __construct(Connection $connection, StringLiteral $tableName)
     {
         $this->connection = $connection;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Export;
 
 use Broadway\CommandHandling\CommandBus;
@@ -106,11 +108,7 @@ class ExportServiceProvider implements ServiceProviderInterface
     {
     }
 
-    /**
-     * @param Application $app
-     * @param SearchServiceInterface $searchService
-     * @return EventExportServiceInterface
-     */
+
     private function createEventExportService(
         Application $app,
         SearchServiceInterface $searchService
@@ -119,7 +117,7 @@ class ExportServiceProvider implements ServiceProviderInterface
             $app['external_event_service'],
             $searchService,
             new Version4Generator(),
-            realpath(__DIR__ .  '/../../web/downloads'),
+            realpath(__DIR__ . '/../../web/downloads'),
             new CallableIriGenerator(
                 function ($fileName) use ($app) {
                     return $app['config']['url'] . '/downloads/' . $fileName;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category;
 
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
@@ -9,9 +11,6 @@ use Respect\Validation\Rules\Callback;
 
 class CategoryIDExistsValidator extends Callback
 {
-    /**
-     * @param CategoryResolverInterface $categoryResolver
-     */
     public function __construct(CategoryResolverInterface $categoryResolver)
     {
         $callback = function ($id) use ($categoryResolver) {

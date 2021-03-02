@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use CultuurNet\UDB3\SavedSearches\Doctrine\SchemaConfigurator;
@@ -12,9 +14,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20181023121440 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->createTable('saved_searches_sapi2');
@@ -38,9 +37,7 @@ class Version20181023121440 extends AbstractMigration
         $table->addIndex([SchemaConfigurator::USER]);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('saved_searches_sapi2');

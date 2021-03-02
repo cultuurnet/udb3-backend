@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventHandling;
 
 use Broadway\Domain\DateTime;
@@ -105,7 +107,6 @@ class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
     }
 
     /**
-     * @param mixed $payload
      * @return DomainMessage
      */
     private function createDomainMessage($payload)

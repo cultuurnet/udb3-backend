@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo;
 
 use CultureFeed_PointsPromotion;
@@ -46,10 +48,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
      */
     protected $promotionQueryFactory;
 
-    /**
-     * @param CultureFeed_Uitpas             $uitpas
-     * @param PromotionQueryFactoryInterface $promotionQueryFactory
-     */
+
     public function __construct(
         CultureFeed_Uitpas $uitpas,
         PromotionQueryFactoryInterface $promotionQueryFactory
@@ -103,7 +102,6 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     }
 
     /**
-     * @param CultureFeed_Uitpas_Event_CultureEvent $event
      * @return array
      */
     private function getUitpasPricesFromEvent(CultureFeed_Uitpas_Event_CultureEvent $event)
@@ -126,7 +124,6 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     }
 
     /**
-     * @param CultureFeed_Uitpas_Event_CultureEvent $event
      * @return string[]
      */
     private function getUitpasAdvantagesFromEvent(CultureFeed_Uitpas_Event_CultureEvent $event)
@@ -143,7 +140,6 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     /**
      * Get a list of formatted promotions
      *
-     * @param  \CultureFeed_Uitpas_Event_CultureEvent $event
      * @return string[]
      */
     private function getUitpasPointsPromotionsFromEvent(\CultureFeed_Uitpas_Event_CultureEvent $event)
@@ -159,7 +155,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         } catch (\Exception $e) {
             if ($this->logger) {
                 $this->logger->error(
-                    'Can\'t retrieve promotions for event with id:'.$event->cdbid,
+                    'Can\'t retrieve promotions for event with id:' . $event->cdbid,
                     ['exception' => $e]
                 );
             }
@@ -185,8 +181,6 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     }
 
     /**
-     * @param CultureFeed_Uitpas_CardSystem      $cardSystem
-     * @param CultureFeed_Uitpas_DistributionKey $key
      * @return array
      */
     private function getUitpasPricesFromDistributionKey(
@@ -195,7 +189,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     ) {
         $uitpasPrices = [];
 
-        $tariffAsNumeric = is_integer($key->tariff) || is_float($key->tariff) ? $key->tariff : floatval($key->tariff);
+        $tariffAsNumeric = is_integer($key->tariff) || is_float($key->tariff) ? $key->tariff : (float) ($key->tariff);
 
         if ($this->kansenTariefForCurrentCardSystem->isSatisfiedBy($key)) {
             $uitpasPrices[] = [

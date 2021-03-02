@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP\Message\Properties;
 
 use Broadway\Domain\DomainMessage;
@@ -17,7 +19,6 @@ class CompositePropertiesFactory implements PropertiesFactoryInterface
     }
 
     /**
-     * @param PropertiesFactoryInterface $factory
      * @return CompositePropertiesFactory
      */
     public function with(PropertiesFactoryInterface $factory)
@@ -28,7 +29,6 @@ class CompositePropertiesFactory implements PropertiesFactoryInterface
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return array
      */
     public function createProperties(DomainMessage $domainMessage)

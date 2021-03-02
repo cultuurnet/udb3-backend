@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Command;
 
 use CultuurNet\UDB3\EventExport\EventExportQuery;
@@ -31,8 +33,6 @@ abstract class ExportEvents implements ExportEventsInterface
     private $include;
 
     /**
-     * @param EventExportQuery  $query
-     * @param EmailAddress|null $address
      * @param string[]          $selection
      * @param string[]          $include
      */
@@ -61,9 +61,7 @@ abstract class ExportEvents implements ExportEventsInterface
         return $this->query;
     }
 
-    /**
-     * @return null|EmailAddress
-     */
+
     public function getAddress(): ?EmailAddress
     {
         return $this->address;

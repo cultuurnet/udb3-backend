@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Description;
@@ -20,7 +22,7 @@ class AbstractUpdateDescriptionTest extends TestCase
     protected $itemId;
 
     /**
-     * @var string
+     * @var Description
      */
     protected $description;
 
@@ -37,7 +39,7 @@ class AbstractUpdateDescriptionTest extends TestCase
 
         $this->updateDescriptionCommand = $this->getMockForAbstractClass(
             AbstractUpdateDescription::class,
-            array($this->itemId, $this->language, $this->description)
+            [$this->itemId, $this->language, $this->description]
         );
     }
 

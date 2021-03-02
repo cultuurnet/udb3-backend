@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
 use CultureFeed_Cdb_Item_Base;
@@ -29,10 +31,7 @@ class CdbXMLItemBaseImporter
      */
     private $basePriceTranslations;
 
-    /**
-     * @param PriceDescriptionParser $priceDescriptionParser
-     * @param array $basePriceTranslations
-     */
+
     public function __construct(
         PriceDescriptionParser $priceDescriptionParser,
         array $basePriceTranslations
@@ -41,10 +40,7 @@ class CdbXMLItemBaseImporter
         $this->basePriceTranslations = $basePriceTranslations;
     }
 
-    /**
-     * @param CultureFeed_Cdb_Item_Base $item
-     * @param \stdClass $jsonLD
-     */
+
     public function importPublicationInfo(
         CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
@@ -75,10 +71,7 @@ class CdbXMLItemBaseImporter
         $jsonLD->publisher = $item->getOwner();
     }
 
-    /**
-     * @param CultureFeed_Cdb_Item_Base $item
-     * @param \stdClass $jsonLD
-     */
+
     public function importAvailable(
         \CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
@@ -111,10 +104,7 @@ class CdbXMLItemBaseImporter
         return $available->format('c');
     }
 
-    /**
-     * @param CultureFeed_Cdb_Item_Base $item
-     * @param \stdClass $jsonLD
-     */
+
     public function importExternalId(
         \CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
@@ -137,10 +127,7 @@ class CdbXMLItemBaseImporter
         }
     }
 
-    /**
-     * @param CultureFeed_Cdb_Item_Base $item
-     * @param \stdClass $jsonLD
-     */
+
     public function importWorkflowStatus(
         CultureFeed_Cdb_Item_Base $item,
         \stdClass $jsonLD
@@ -192,7 +179,7 @@ class CdbXMLItemBaseImporter
             return;
         }
 
-        $basePrice = floatval($basePrice);
+        $basePrice = (float) $basePrice;
 
         if ($basePrice < 0) {
             return;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\CommandHandling\CommandBus;
@@ -24,8 +26,6 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
@@ -75,11 +75,6 @@ class EventEditingServiceTest extends TestCase
     private $writeRepository;
 
     /**
-     * @var Label\LabelServiceInterface|MockObject
-     */
-    private $labelService;
-
-    /**
      * @var TraceableEventStore
      */
     private $eventStore;
@@ -107,8 +102,6 @@ class EventEditingServiceTest extends TestCase
             new SimpleEventBus()
         );
 
-        $this->labelService = $this->createMock(LabelServiceInterface::class);
-
         $this->eventEditingService = new EventEditingService(
             $this->eventService,
             $this->commandBus,
@@ -116,7 +109,6 @@ class EventEditingServiceTest extends TestCase
             $this->readRepository,
             $this->commandFactory,
             $this->writeRepository,
-            $this->labelService,
             $this->placeRepository
         );
     }
@@ -155,34 +147,6 @@ class EventEditingServiceTest extends TestCase
             new Language('en'),
             new Description('new description')
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_refuses_to_label_an_unknown_event()
-    {
-        $id = 'some-unknown-id';
-
-        $this->expectException(DocumentGoneException::class);
-
-        $this->setUpEventNotFound($id);
-
-        $this->eventEditingService->addLabel($id, new Label('foo'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_refuses_to_remove_a_label_from_an_unknown_event()
-    {
-        $id = 'some-unknown-id';
-
-        $this->expectException(DocumentGoneException::class);
-
-        $this->setUpEventNotFound($id);
-
-        $this->eventEditingService->RemoveLabel($id, new Label('foo'));
     }
 
     /**
@@ -571,9 +535,7 @@ class EventEditingServiceTest extends TestCase
         $this->assertEquals($expectedCommandId, $commandId);
     }
 
-    /**
-     * @param mixed $id
-     */
+
     private function setUpEventNotFound($id)
     {
         $this->readRepository->expects($this->once())

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
@@ -16,9 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReadPlaceRestController
 {
-    private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
-
     use ApiProblemJsonResponseTrait;
+    private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     /**
      * @var DocumentRepository
@@ -41,7 +42,7 @@ class ReadPlaceRestController
 
     public function get(string $cdbid, Request $request): JsonResponse
     {
-        $includeMetadata = $request->query->get('includeMetadata', false);
+        $includeMetadata = (bool) $request->query->get('includeMetadata', false);
 
         try {
             $place = $this->documentRepository->fetch($cdbid, $includeMetadata);
@@ -52,7 +53,7 @@ class ReadPlaceRestController
         $response = JsonLdResponse::create()
             ->setContent($place->getRawBody());
 
-            $response->headers->set('Vary', 'Origin');
+        $response->headers->set('Vary', 'Origin');
 
         return $response;
     }

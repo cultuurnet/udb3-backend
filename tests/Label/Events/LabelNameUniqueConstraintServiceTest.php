@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -121,7 +123,6 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
     }
 
     /**
-     * @param AbstractEvent $event
      * @return DomainMessage
      */
     private function createDomainMessage(AbstractEvent $event)

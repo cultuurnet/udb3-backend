@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Event;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
@@ -31,7 +33,6 @@ class EventEditingServiceProvider implements ServiceProviderInterface
                     $app['event_jsonld_repository'],
                     new EventCommandFactory(),
                     $app['event_repository'],
-                    $app['labels.constraint_aware_service'],
                     $app['place_repository']
                 );
             }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\CommandHandling\CommandBus;
@@ -39,10 +41,7 @@ class CommandBusForwardingConsumer extends AbstractConsumer
         );
     }
 
-    /**
-     * @param mixed $deserializedMessage
-     * @param array $context
-     */
+
     protected function handle($deserializedMessage, array $context)
     {
         $this->commandBus->dispatch($deserializedMessage);

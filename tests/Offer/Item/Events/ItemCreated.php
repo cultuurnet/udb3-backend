@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Item\Events;
 
 use Broadway\Serializer\Serializable;
@@ -46,7 +48,6 @@ class ItemCreated implements Serializable
     }
 
     /**
-     * @param array $data
      * @return self
      */
     public static function deserialize(array $data)

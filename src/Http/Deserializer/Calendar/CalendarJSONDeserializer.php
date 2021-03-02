@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -31,7 +33,6 @@ class CalendarJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return Calendar
      */
     public function deserialize(StringLiteral $data)
@@ -73,7 +74,6 @@ class CalendarJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param array $data
      *
      * @return CalendarType
      */
@@ -96,7 +96,6 @@ class CalendarJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param array $data
      *
      * @return \DateTimeInterface|null
      */
@@ -115,7 +114,6 @@ class CalendarJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param array $data
      *
      * @return \DateTimeInterface|null
      */

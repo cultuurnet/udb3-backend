@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Commands;
 
 use ValueObjects\Identity\UUID;
@@ -12,10 +14,7 @@ class RemoveConstraint extends AbstractCommand
      */
     private $sapiVersion;
 
-    /**
-     * @param UUID $uuid
-     * @param SapiVersion $sapiVersion
-     */
+
     public function __construct(
         UUID $uuid,
         SapiVersion $sapiVersion
@@ -24,9 +23,7 @@ class RemoveConstraint extends AbstractCommand
         $this->sapiVersion = $sapiVersion->toNative();
     }
 
-    /**
-     * @return SapiVersion
-     */
+
     public function getSapiVersion(): SapiVersion
     {
         return SapiVersion::fromNative($this->sapiVersion);

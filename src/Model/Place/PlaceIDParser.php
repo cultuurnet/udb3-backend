@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Place;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\RegexUUIDParser;
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\RegexUUIDParser;
 class PlaceIDParser extends RegexUUIDParser
 {
     // @codingStandardsIgnoreStart
-    const REGEX = '/\\/place[s]?\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\/]?/';
+    public const REGEX = '/\\/place[s]?\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\/]?/';
     // @codingStandardsIgnoreEnd
 
     public function __construct()

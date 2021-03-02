@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
@@ -71,7 +73,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         $count = count($ids);
 
         if ($count === 0) {
-            $output->writeln("Please enter at least one id to geocode.");
+            $output->writeln('Please enter at least one id to geocode.');
             return 0;
         }
 
@@ -92,7 +94,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count === 0) {
-            $output->writeln("Could not find any items with missing or outdated coordinates.");
+            $output->writeln('Could not find any items with missing or outdated coordinates.');
             return 0;
         }
 

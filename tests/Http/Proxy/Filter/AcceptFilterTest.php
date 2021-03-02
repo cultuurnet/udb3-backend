@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use GuzzleHttp\Psr7\Request;
@@ -9,7 +11,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class AcceptFilterTest extends TestCase
 {
-    const APPLICATION_XML = 'application/xml';
+    public const APPLICATION_XML = 'application/xml';
 
     /**
      * @var RequestInterface
@@ -43,7 +45,7 @@ class AcceptFilterTest extends TestCase
     public function it_does_not_match_for_different_accept_header()
     {
         $acceptFilter = new AcceptFilter(
-            new StringLiteral("application/xmls")
+            new StringLiteral('application/xmls')
         );
 
         $this->assertFalse($acceptFilter->matches($this->request));

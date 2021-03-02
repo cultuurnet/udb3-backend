@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ProcessManager;
 
@@ -62,8 +64,6 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      * @test
      * @dataProvider addressEventDataProvider
      *
-     * @param DomainMessage $event
-     * @param UpdateGeoCoordinatesFromAddress $expectedCommand
      */
     public function it_dispatches_a_geocoding_command_when_an_address_change_is_suspected(
         DomainMessage $event,
@@ -80,7 +80,6 @@ class GeoCoordinatesProcessManagerTest extends TestCase
      * @test
      * @dataProvider missingAddressEventDataProvider
      *
-     * @param DomainMessage $event
      */
     public function it_does_not_dispatch_a_geocoding_command_when_a_cdbxml_import_or_update_is_missing_an_address(
         DomainMessage $event

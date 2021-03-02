@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -46,9 +48,7 @@ class LocalOfferReadingServiceTest extends TestCase
      * @test
      * @dataProvider offerRepositoryDataProvider
      *
-     * @param Url $iri
      * @param string $id
-     * @param OfferType $type
      */
     public function it_loads_an_offer_from_its_correct_repository_based_on_its_type(
         Url $iri,

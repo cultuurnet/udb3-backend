@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\Commands;
 
 use PHPUnit\Framework\TestCase;
@@ -36,7 +38,6 @@ abstract class AbstractExtendsTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return AbstractCommand
      */
     abstract public function createCommand(UUID $uuid);

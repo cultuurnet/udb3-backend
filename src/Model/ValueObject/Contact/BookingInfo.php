@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Contact;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -27,12 +29,7 @@ class BookingInfo
      */
     private $availability;
 
-    /**
-     * @param WebsiteLink|null $website
-     * @param TelephoneNumber|null $telephoneNumber
-     * @param EmailAddress|null $emailAddress
-     * @param BookingAvailability|null $availability
-     */
+
     public function __construct(
         WebsiteLink $website = null,
         TelephoneNumber $telephoneNumber = null,

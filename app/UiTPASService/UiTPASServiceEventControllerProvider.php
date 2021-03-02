@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\UiTPASService;
 
 use CultuurNet\UDB3\UiTPASService\Controller\EventCardSystemsController;
@@ -10,8 +12,8 @@ use Silex\ControllerProviderInterface;
 
 class UiTPASServiceEventControllerProvider implements ControllerProviderInterface
 {
-    const EVENT_DETAIL = 'uitpas-service.event.detail';
-    const EVENT_CARD_SYSTEMS = 'uitpas-service.event.card_systems';
+    public const EVENT_DETAIL = 'uitpas-service.event.detail';
+    public const EVENT_CARD_SYSTEMS = 'uitpas-service.event.card_systems';
 
     public function connect(Application $app)
     {

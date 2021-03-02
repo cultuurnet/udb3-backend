@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use PHPUnit\Framework\TestCase;
@@ -10,7 +12,6 @@ class EventEventTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param MockEventEvent $mockEventEvent
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -26,7 +27,6 @@ class EventEventTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param MockEventEvent $expectedMockEventEvent
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

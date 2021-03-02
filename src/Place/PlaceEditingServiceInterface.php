@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Address\Address;
@@ -20,12 +22,6 @@ interface PlaceEditingServiceInterface
     /**
      * Create a new place.
      *
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
      *
      * @return string $eventId
      */
@@ -39,12 +35,6 @@ interface PlaceEditingServiceInterface
     );
 
     /**
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $eventType
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
      * @return string $eventId
      */
     public function createApprovedPlace(
@@ -67,18 +57,11 @@ interface PlaceEditingServiceInterface
      * Update the major info of a place.
      *
      * @param string $id
-     * @param Title $title
-     * @param EventType $eventType
-     * @param \CultuurNet\UDB3\Address\Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
      */
     public function updateMajorInfo($id, Title $title, EventType $eventType, Address $address, Calendar $calendar, Theme $theme = null);
 
     /**
      * @param string $id
-     * @param Address $address
-     * @param Language $language
      */
     public function updateAddress($id, Address $address, Language $language);
 
@@ -86,8 +69,6 @@ interface PlaceEditingServiceInterface
      * Update the description of a place.
      *
      * @param string $id
-     * @param Language $language
-     * @param Description $description
      */
     public function updateDescription($id, Language $language, Description $description);
 
@@ -95,7 +76,6 @@ interface PlaceEditingServiceInterface
      * Update the typical age range of a place.
      *
      * @param string $id
-     * @param AgeRange $ageRange
      */
     public function updateTypicalAgeRange($id, AgeRange $ageRange);
 
@@ -126,7 +106,6 @@ interface PlaceEditingServiceInterface
      * Update the contact info of a place.
      *
      * @param string $id
-     * @param ContactPoint $contactPoint
      */
     public function updateContactPoint($id, ContactPoint $contactPoint);
 
@@ -134,7 +113,6 @@ interface PlaceEditingServiceInterface
      * Add an image to the place.
      *
      * @param string $id
-     * @param UUID $imageId
      */
     public function addImage($id, UUID $imageId);
 
@@ -142,9 +120,6 @@ interface PlaceEditingServiceInterface
      * Update an image of the place.
      *
      * @param string $id
-     * @param Image $image
-     * @param \ValueObjects\StringLiteral\StringLiteral $description
-     * @param \ValueObjects\StringLiteral\StringLiteral $copyrightHolder
      */
     public function updateImage($id, Image $image, StringLiteral $description, StringLiteral $copyrightHolder);
 
@@ -152,7 +127,6 @@ interface PlaceEditingServiceInterface
      * Remove an image from the place.
      *
      * @param string $id
-     * @param Image $image
      */
     public function removeImage($id, Image $image);
 }

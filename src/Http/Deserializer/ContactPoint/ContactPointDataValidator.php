@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\ContactPoint;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -8,7 +10,6 @@ use CultuurNet\UDB3\Http\Deserializer\DataValidator\DataValidatorInterface;
 class ContactPointDataValidator implements DataValidatorInterface
 {
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
@@ -412,10 +414,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         ));
     }
 
-    /**
-     * @param UUID $labelId
-     * @param UUID $roleId
-     */
+
     private function insertLabelRole(UUID $labelId, UUID $roleId)
     {
         $this->getConnection()->insert(
@@ -427,10 +426,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
     }
 
-    /**
-     * @param StringLiteral $userId
-     * @param UUID $roleId
-     */
+
     private function insertUserRole(StringLiteral $userId, UUID $roleId)
     {
         $this->getConnection()->insert(
@@ -442,9 +438,7 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
     }
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     private function seedRoles(StringLiteral $userId)
     {
         $roleId1 = new UUID();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Log;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,9 +18,9 @@ class ContextEnrichingLoggerTest extends TestCase
     {
         /** @var LoggerInterface|MockObject $decoratedLogger */
         $decoratedLogger = $this->createMock(LoggerInterface::class);
-        $additionalContext = array(
+        $additionalContext = [
             'job_id' => 1,
-        );
+        ];
         $logger = new ContextEnrichingLogger(
             $decoratedLogger,
             $additionalContext

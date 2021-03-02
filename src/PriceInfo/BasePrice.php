@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\PriceInfo;
 
 use Broadway\Serializer\Serializable;
@@ -19,10 +21,7 @@ class BasePrice implements Serializable
      */
     private $currencyCodeString;
 
-    /**
-     * @param Price $price
-     * @param Currency $currency
-     */
+
     public function __construct(
         Price $price,
         Currency $currency
@@ -59,7 +58,6 @@ class BasePrice implements Serializable
     }
 
     /**
-     * @param array $data
      * @return BasePrice
      */
     public static function deserialize(array $data)
@@ -71,7 +69,6 @@ class BasePrice implements Serializable
     }
 
     /**
-     * @param Udb3ModelTariff $tariff
      * @return BasePrice
      */
     public static function fromUdb3ModelTariff(Udb3ModelTariff $tariff)

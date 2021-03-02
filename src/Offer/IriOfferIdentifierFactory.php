@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use RuntimeException;
@@ -30,7 +32,6 @@ class IriOfferIdentifierFactory implements IriOfferIdentifierFactoryInterface
     }
 
     /**
-     * @param Url $iri
      * @return IriOfferIdentifier
      */
     public function fromIri(Url $iri)

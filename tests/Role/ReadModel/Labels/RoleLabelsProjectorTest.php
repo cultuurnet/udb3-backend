@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -241,7 +243,6 @@ class RoleLabelsProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return JsonDocument
      */
     private function createEmptyJsonDocument(UUID $uuid)
@@ -253,8 +254,6 @@ class RoleLabelsProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
-     * @param UUID $labelId
      * @return JsonDocument
      */
     public function createJsonDocument(UUID $uuid, UUID $labelId)
@@ -266,7 +265,6 @@ class RoleLabelsProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @return Entity
      */
     public function createLabelEntity(UUID $uuid)
@@ -280,7 +278,6 @@ class RoleLabelsProjectorTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
      * @param JsonDocument $jsonDocument
      */
     private function mockRoleLabelsGet(UUID $uuid, JsonDocument $jsonDocument = null)
@@ -291,10 +288,7 @@ class RoleLabelsProjectorTest extends TestCase
             ->willReturn($jsonDocument);
     }
 
-    /**
-     * @param UUID $uuid
-     * @param Entity $entity
-     */
+
     private function mockLabelJsonGet(UUID $uuid, Entity $entity)
     {
         $this->labelJsonRepository

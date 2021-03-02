@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Offer\IriOfferIdentifier;
@@ -419,8 +421,8 @@ class ResultsGeneratorTest extends TestCase
                     $event7,
                 ],
                 [
-                    "Found duplicate offer 1 on page 0, occurred first time on page 0.",
-                    "Found duplicate offer 4 on page 2, occurred first time on page 1.",
+                    'Found duplicate offer 1 on page 0, occurred first time on page 0.',
+                    'Found duplicate offer 4 on page 2, occurred first time on page 1.',
                 ],
             ],
         ];

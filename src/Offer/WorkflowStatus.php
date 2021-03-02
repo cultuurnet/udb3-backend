@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use ValueObjects\Enum\Enum;
@@ -16,9 +18,9 @@ use ValueObjects\Enum\Enum;
  */
 class WorkflowStatus extends Enum
 {
-    const READY_FOR_VALIDATION = 'readyforvalidation';
-    const APPROVED = 'approved';
-    const REJECTED = 'rejected';
-    const DRAFT = 'draft';
-    const DELETED = 'deleted';
+    public const READY_FOR_VALIDATION = 'readyforvalidation';
+    public const APPROVED = 'approved';
+    public const REJECTED = 'rejected';
+    public const DRAFT = 'draft';
+    public const DELETED = 'deleted';
 }

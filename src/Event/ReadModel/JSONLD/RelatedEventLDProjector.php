@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
 use Broadway\EventHandling\EventListener;
@@ -42,13 +44,7 @@ class RelatedEventLDProjector implements EventListener
      */
     protected $iriOfferIdentifierFactory;
 
-    /**
-     * @param DocumentRepository $repository
-     * @param EventServiceInterface $eventService
-     * @param PlaceService $placeService
-     * @param OrganizerService $organizerService
-     * @param IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
-     */
+
     public function __construct(
         DocumentRepository $repository,
         EventServiceInterface $eventService,

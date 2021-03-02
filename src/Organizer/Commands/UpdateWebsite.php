@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer\Commands;
 
 use ValueObjects\Web\Url;
@@ -14,7 +16,6 @@ class UpdateWebsite extends AbstractUpdateOrganizerCommand
     /**
      * UpdateUrl constructor.
      * @param string $organizerId
-     * @param Url $website
      */
     public function __construct(
         $organizerId,

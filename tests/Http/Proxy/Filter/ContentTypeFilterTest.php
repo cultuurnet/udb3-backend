@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use GuzzleHttp\Psr7\Request;
@@ -8,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ContentTypeFilterTest extends TestCase
 {
-    const APPLICATION_XML = 'application/xml';
+    public const APPLICATION_XML = 'application/xml';
 
     /**
      * @var Request
@@ -42,7 +44,7 @@ class ContentTypeFilterTest extends TestCase
     public function it_does_not_match_for_different_content_type()
     {
         $contentTypeFilter = new ContentTypeFilter(
-            new StringLiteral("application/xmls")
+            new StringLiteral('application/xmls')
         );
 
         $this->assertFalse($contentTypeFilter->matches($this->request));

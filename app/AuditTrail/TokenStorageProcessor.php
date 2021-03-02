@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\AuditTrail;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
@@ -16,7 +18,6 @@ class TokenStorageProcessor implements ProcessorInterface
     }
 
     /**
-     * @param array $records
      * @return array The processed records
      */
     public function __invoke(array $records)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\TabularData\CSV;
 
 use CultuurNet\UDB3\EventExport\Format\TabularData\TabularDataFileWriterInterface;
@@ -14,7 +16,7 @@ class CSVFileWriter implements TabularDataFileWriterInterface
     {
         $this->f = fopen($filePath, 'w');
         if (false === $this->f) {
-            throw new \RuntimeException('Unable to open file for writing: '.$filePath);
+            throw new \RuntimeException('Unable to open file for writing: ' . $filePath);
         }
 
         $this->delimiter = ',';

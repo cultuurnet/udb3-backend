@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Storage;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -49,18 +51,14 @@ class PurgeServiceManagerTest extends TestCase
         $this->assertCount(2, $this->purgeServiceManager->getWriteModelPurgeServices());
     }
 
-    /**
-     * @param PurgeServiceManager $purgeServiceManager
-     */
+
     private function addReadModel_PurgeServiceInterfaces(PurgeServiceManager $purgeServiceManager)
     {
         $purgeServiceManager->addReadModelPurgeService($this->createMockedPurgeService());
         $purgeServiceManager->addReadModelPurgeService($this->createMockedPurgeService());
     }
 
-    /**
-     * @param PurgeServiceManager $purgeServiceManager
-     */
+
     private function addWriteModel_PurgeServiceInterfaces(PurgeServiceManager $purgeServiceManager)
     {
         $purgeServiceManager->addWriteModelPurgeService($this->createMockedPurgeService());

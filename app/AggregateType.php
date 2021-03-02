@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex;
 
@@ -18,11 +17,11 @@ use ValueObjects\Enum\Enum;
  */
 class AggregateType extends Enum
 {
-    const EVENT = 'event';
-    const PLACE = 'place';
-    const VARIATION = 'variation';
-    const ORGANIZER = 'organizer';
-    const MEDIA_OBJECT = 'media_object';
-    const ROLE = 'role';
-    const LABEL = 'label';
+    public const EVENT = 'event';
+    public const PLACE = 'place';
+    public const VARIATION = 'variation';
+    public const ORGANIZER = 'organizer';
+    public const MEDIA_OBJECT = 'media_object';
+    public const ROLE = 'role';
+    public const LABEL = 'label';
 }

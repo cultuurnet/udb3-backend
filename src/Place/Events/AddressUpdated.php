@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
@@ -23,9 +25,7 @@ final class AddressUpdated extends PlaceEvent
         return $this->address;
     }
 
-    /**
-     * @return array
-     */
+
     public function serialize(): array
     {
         return parent::serialize() + [

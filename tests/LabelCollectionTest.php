@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultureFeed_Cdb_Data_Keyword;
@@ -24,7 +26,6 @@ class LabelCollectionTest extends TestCase
     /**
      * @test
      * @dataProvider notALabelProvider
-     * @param mixed $notALabel
      */
     public function it_can_only_contain_labels($notALabel)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository;
 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\SchemaConfigurator;
@@ -31,9 +33,6 @@ class LabelRelation implements \JsonSerializable
 
     /**
      * Entity constructor.
-     * @param LabelName $labelName
-     * @param RelationType $relationType
-     * @param StringLiteral $relationId
      * @param bool $imported
      */
     public function __construct(
@@ -94,7 +93,6 @@ class LabelRelation implements \JsonSerializable
     }
 
     /**
-     * @param array $relation
      * @return LabelRelation
      */
     public static function fromRelationalData(array $relation)

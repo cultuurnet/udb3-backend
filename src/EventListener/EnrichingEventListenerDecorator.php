@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventListener;
 
 use Broadway\Domain\DomainMessage;
@@ -26,9 +28,7 @@ class EnrichingEventListenerDecorator implements EventListener
         $this->enricher = $enricher;
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     public function handle(DomainMessage $domainMessage): void
     {
         if ($this->enricher->supports($domainMessage)) {

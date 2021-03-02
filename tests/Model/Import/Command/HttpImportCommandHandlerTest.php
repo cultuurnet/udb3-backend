@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Command;
 
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -7,7 +9,6 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 

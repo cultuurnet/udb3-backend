@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\Repository\AggregateNotFoundException;
@@ -79,11 +81,11 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         try {
             /** @var MediaObject $existingMediaObject */
             $existingMediaObject = $this->repository->load($id);
-            $this->logger->info('Trying to create media with id: ' .$id . ' but it already exists. Using existing Media Object!');
+            $this->logger->info('Trying to create media with id: ' . $id . ' but it already exists. Using existing Media Object!');
 
             return $existingMediaObject;
         } catch (AggregateNotFoundException $exception) {
-            $this->logger->info('No existing media with id: ' .$id . ' found. Creating a new Media Object!');
+            $this->logger->info('No existing media with id: ' . $id . ' found. Creating a new Media Object!');
         }
 
         $mediaObject = MediaObject::create(
@@ -105,7 +107,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
      */
     public function handleUploadImage(UploadImage $uploadImage)
     {
-        $pathParts = explode('/', $uploadImage->getFilePath());
+        $pathParts = explode('/', $uploadImage->getFilePath()->toNative());
         $fileName = array_pop($pathParts);
         $fileNameParts = explode('.', $fileName);
         $extension = StringLiteral::fromNative(array_pop($fileNameParts));

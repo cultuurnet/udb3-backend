@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use ValueObjects\StringLiteral\StringLiteral;
@@ -11,10 +13,7 @@ class UnsubscribeFromSavedSearch extends SavedSearchCommand
      */
     protected $searchId;
 
-    /**
-     * @param StringLiteral $userId
-     * @param StringLiteral $searchId
-     */
+
     public function __construct(
         StringLiteral $userId,
         StringLiteral $searchId

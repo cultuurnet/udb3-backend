@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use ValueObjects\Enum\Enum;
@@ -12,8 +14,8 @@ use ValueObjects\Enum\Enum;
  */
 class CalendarType extends Enum
 {
-    const SINGLE = 'single';
-    const MULTIPLE = 'multiple';
-    const PERIODIC = 'periodic';
-    const PERMANENT = 'permanent';
+    public const SINGLE = 'single';
+    public const MULTIPLE = 'multiple';
+    public const PERIODIC = 'periodic';
+    public const PERMANENT = 'permanent';
 }

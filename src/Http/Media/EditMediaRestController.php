@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Language;
@@ -23,7 +25,7 @@ class EditMediaRestController
     public function upload(Request $request)
     {
         if (!$request->files->has('file')) {
-            return new JsonResponse(['error' => "file required"], 400);
+            return new JsonResponse(['error' => 'file required'], 400);
         }
 
         $description = $request->request->get('description');
@@ -31,15 +33,15 @@ class EditMediaRestController
         $language = $request->request->get('language');
 
         if (!$description) {
-            return new JsonResponse(['error' => "description required"], 400);
+            return new JsonResponse(['error' => 'description required'], 400);
         }
 
         if (!$copyrightHolder) {
-            return new JsonResponse(['error' => "copyright holder required"], 400);
+            return new JsonResponse(['error' => 'copyright holder required'], 400);
         }
 
         if (!$language) {
-            return new JsonResponse(['error' => "language required"], 400);
+            return new JsonResponse(['error' => 'language required'], 400);
         }
 
         $file = $request->files->get('file');

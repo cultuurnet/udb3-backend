@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Event\Commands;
 
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;

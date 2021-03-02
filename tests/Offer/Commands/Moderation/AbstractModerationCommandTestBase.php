@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands\Moderation;
 
 use PHPUnit\Framework\TestCase;
@@ -31,7 +33,7 @@ abstract class AbstractModerationCommandTestBase extends TestCase
         $abstractModerationCommand = $this->getMockForAbstractClass(
             $this->getModerationCommandClass(),
             [],
-            "",
+            '',
             false
         );
 

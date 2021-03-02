@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Storage;
 
 /**
@@ -23,14 +25,12 @@ class PurgeServiceManager
      */
     public function __construct()
     {
-        $this->readModelPurgeServices = array();
+        $this->readModelPurgeServices = [];
 
-        $this->writeModelPurgeServices = array();
+        $this->writeModelPurgeServices = [];
     }
 
-    /**
-     * @param PurgeServiceInterface $purgeService
-     */
+
     public function addReadModelPurgeService(PurgeServiceInterface $purgeService)
     {
         $this->readModelPurgeServices[] = $purgeService;
@@ -44,9 +44,7 @@ class PurgeServiceManager
         return $this->readModelPurgeServices;
     }
 
-    /**
-     * @param PurgeServiceInterface $purgeService
-     */
+
     public function addWriteModelPurgeService(PurgeServiceInterface $purgeService)
     {
         $this->writeModelPurgeServices[] = $purgeService;

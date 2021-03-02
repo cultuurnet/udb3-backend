@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role;
 
 use Broadway\Repository\Repository;
@@ -30,9 +32,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->repository = $repository;
     }
 
-    /**
-     * @param CreateRole $createRole
-     */
+
     public function handleCreateRole(CreateRole $createRole)
     {
         $role = Role::create(
@@ -43,9 +43,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param RenameRole $renameRole
-     */
+
     public function handleRenameRole(RenameRole $renameRole)
     {
         $role = $this->load($renameRole->getUuid());
@@ -58,9 +56,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param AddConstraint $addConstraint
-     */
+
     public function handleAddConstraint(AddConstraint $addConstraint): void
     {
         $role = $this->load($addConstraint->getUuid());
@@ -73,9 +69,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param UpdateConstraint $updateConstraint
-     */
+
     public function handleUpdateConstraint(UpdateConstraint $updateConstraint): void
     {
         $role = $this->load($updateConstraint->getUuid());
@@ -88,9 +82,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param RemoveConstraint $removeConstraint
-     */
+
     public function handleRemoveConstraint(RemoveConstraint $removeConstraint): void
     {
         $role = $this->load($removeConstraint->getUuid());
@@ -102,9 +94,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param AddPermission $addPermission
-     */
+
     public function handleAddPermission(AddPermission $addPermission)
     {
         $role = $this->load($addPermission->getUuid());
@@ -117,9 +107,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param RemovePermission $removePermission
-     */
+
     public function handleRemovePermission(RemovePermission $removePermission)
     {
         $role = $this->load($removePermission->getUuid());
@@ -132,9 +120,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param AddUser $addUser
-     */
+
     public function handleAddUser(AddUser $addUser)
     {
         $role = $this->load($addUser->getUuid());
@@ -146,9 +132,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param RemoveUser $removeUser
-     */
+
     public function handleRemoveUser(RemoveUser $removeUser)
     {
         $role = $this->load($removeUser->getUuid());
@@ -160,9 +144,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param DeleteRole $deleteRole
-     */
+
     public function handleDeleteRole(DeleteRole $deleteRole)
     {
         $role = $this->load($deleteRole->getUuid());
@@ -174,9 +156,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param AddLabel $addLabel
-     */
+
     public function handleAddLabel(AddLabel $addLabel)
     {
         $role = $this->load($addLabel->getUuid());
@@ -188,9 +168,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    /**
-     * @param RemoveLabel $removeLabel
-     */
+
     public function handleRemoveLabel(RemoveLabel $removeLabel)
     {
         $role = $this->load($removeLabel->getUuid());
@@ -203,7 +181,6 @@ class CommandHandler extends AbstractCommandHandler
     }
 
     /**
-     * @param UUID $uuid
      * @return Role
      */
     private function load(UUID $uuid)
@@ -213,9 +190,7 @@ class CommandHandler extends AbstractCommandHandler
         return $role;
     }
 
-    /**
-     * @param Role $role
-     */
+
     private function save(Role $role)
     {
         $this->repository->save($role);

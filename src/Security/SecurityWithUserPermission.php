@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
@@ -23,12 +25,7 @@ class SecurityWithUserPermission extends SecurityDecoratorBase
      */
     private $commandFilter;
 
-    /**
-     * @param SecurityInterface $decoratee
-     * @param UserIdentificationInterface $userIdentification
-     * @param PermissionVoterInterface $permissionVoter
-     * @param CommandFilterInterface $commandFilter
-     */
+
     public function __construct(
         SecurityInterface $decoratee,
         UserIdentificationInterface $userIdentification,

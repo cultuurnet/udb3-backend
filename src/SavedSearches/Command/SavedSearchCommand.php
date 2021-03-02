@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use ValueObjects\StringLiteral\StringLiteral;
@@ -11,9 +13,7 @@ abstract class SavedSearchCommand
      */
     protected $userId;
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     public function __construct(
         StringLiteral $userId
     ) {

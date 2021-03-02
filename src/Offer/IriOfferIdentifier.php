@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use ValueObjects\Web\Url;
@@ -22,9 +24,7 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
     private $type;
 
     /**
-     * @param Url $iri
      * @param string $id
-     * @param OfferType $type
      */
     public function __construct(
         Url $iri,

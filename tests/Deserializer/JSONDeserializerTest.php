@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Deserializer;
 
 use PHPUnit\Framework\TestCase;
@@ -79,9 +81,9 @@ class JSONDeserializerTest extends TestCase
     private function createExpectedObject()
     {
         $expectedObject = new \stdClass();
-        $expectedObject->key1 = "value1";
+        $expectedObject->key1 = 'value1';
         $value2 = new \stdClass();
-        $value2->key3 = "value3";
+        $value2->key3 = 'value3';
         $expectedObject->key2 = $value2;
 
         return $expectedObject;
@@ -92,10 +94,10 @@ class JSONDeserializerTest extends TestCase
      */
     private function createExpectedArray()
     {
-        $expectedArray = array();
-        $expectedArray["key1"] = "value1";
-        $value2 = array("key3" => "value3");
-        $expectedArray["key2"] = $value2;
+        $expectedArray = [];
+        $expectedArray['key1'] = 'value1';
+        $value2 = ['key3' => 'value3'];
+        $expectedArray['key2'] = $value2;
 
         return $expectedArray;
     }

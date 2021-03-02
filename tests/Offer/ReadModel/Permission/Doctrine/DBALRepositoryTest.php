@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine;
 
@@ -77,9 +76,7 @@ class DBALRepositoryTest extends TestCase
     }
 
     /**
-     * @param StringLiteral $eventId
      * @param string $key
-     * @param StringLiteral $userId
      */
     private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId)
     {

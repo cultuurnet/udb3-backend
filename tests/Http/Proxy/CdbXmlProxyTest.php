@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy;
 
 use GuzzleHttp\Client;
@@ -16,7 +18,7 @@ use Zend\Diactoros\Uri;
 
 class CdbXmlProxyTest extends TestCase
 {
-    const APPLICATION_XML = 'application/xml';
+    public const APPLICATION_XML = 'application/xml';
 
     /**
      * @var CdbXmlProxy

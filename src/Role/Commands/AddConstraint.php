@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Commands;
 
 use ValueObjects\Identity\UUID;
@@ -20,9 +22,6 @@ class AddConstraint extends AbstractCommand
 
     /**
      * CreateConstraint constructor.
-     * @param UUID $uuid
-     * @param SapiVersion $sapiVersion
-     * @param Query $query
      */
     public function __construct(
         UUID $uuid,
@@ -34,17 +33,13 @@ class AddConstraint extends AbstractCommand
         $this->query = $query;
     }
 
-    /**
-     * @return SapiVersion
-     */
+
     public function getSapiVersion(): SapiVersion
     {
         return SapiVersion::fromNative($this->sapiVersion);
     }
 
-    /**
-     * @return Query
-     */
+
     public function getQuery(): Query
     {
         return $this->query;

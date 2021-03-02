@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Label;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToMultiple;
 use CultuurNet\UDB3\Offer\Commands\AddLabelToQuery;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
@@ -44,18 +48,18 @@ class BulkLabelCommandHandlerTest extends TestCase
     private $offerIdentifiers;
 
     /**
-     * @var ExternalOfferEditingServiceInterface|MockObject
+     * @var CommandBus|MockObject
      */
-    private $externalOfferEditingService;
+    private $commandBus;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->resultGenerator = $this->createMock(ResultsGeneratorInterface::class);
-        $this->externalOfferEditingService = $this->createMock(ExternalOfferEditingServiceInterface::class);
+        $this->commandBus = $this->createMock(CommandBus::class);
 
         $this->commandHandler = new BulkLabelCommandHandler(
             $this->resultGenerator,
-            $this->externalOfferEditingService
+            $this->commandBus
         );
 
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -81,7 +85,7 @@ class BulkLabelCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_label_all_offer_results_from_a_query()
+    public function it_can_label_all_offer_results_from_a_query(): void
     {
         $addLabelToQuery = new AddLabelToQuery(
             $this->query,
@@ -105,7 +109,7 @@ class BulkLabelCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_label_all_offers_from_a_selection()
+    public function it_can_label_all_offers_from_a_selection(): void
     {
         $addLabelToMultiple = new AddLabelToMultiple(
             OfferIdentifierCollection::fromArray($this->offerIdentifiers),
@@ -120,32 +124,22 @@ class BulkLabelCommandHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider exceptionDataProvider
-     *
-     * @param \Exception $exception
-     * @param string $exceptionClassName
-     * @param string $message
      */
     public function it_logs_an_error_when_an_error_occurred_and_continues_labelling(
         \Exception $exception,
-        $exceptionClassName,
-        $message
-    ) {
+        string $exceptionClassName,
+        string $message
+    ): void {
         // One label action should fail.
-        $this->externalOfferEditingService->expects($this->at(0))
-            ->method('addLabel')
-            ->with(
-                $this->offerIdentifiers[1],
-                $this->label
-            )
+        $this->commandBus->expects($this->at(0))
+            ->method('dispatch')
+            ->with(new AddLabel($this->offerIdentifiers[1]->getId(), $this->label))
             ->willThrowException($exception);
 
         // Make sure the other offer is still labelled.
-        $this->externalOfferEditingService->expects($this->at(1))
-            ->method('addLabel')
-            ->with(
-                $this->offerIdentifiers[2],
-                $this->label
-            );
+        $this->commandBus->expects($this->at(1))
+            ->method('dispatch')
+            ->with(new AddLabel($this->offerIdentifiers[2]->getId(), $this->label));
 
         // Make sure we log the occur.
         $this->logger->expects($this->once())
@@ -168,10 +162,7 @@ class BulkLabelCommandHandlerTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function exceptionDataProvider()
+    public function exceptionDataProvider(): array
     {
         return [
             [
@@ -182,22 +173,14 @@ class BulkLabelCommandHandlerTest extends TestCase
         ];
     }
 
-    /**
-     * @param Label $label
-     */
-    private function expectEventAndPlaceToBeLabelledWith(Label $label)
+
+    private function expectEventAndPlaceToBeLabelledWith(Label $label): void
     {
-        $this->externalOfferEditingService->expects($this->exactly(2))
-            ->method('addLabel')
+        $this->commandBus->expects($this->exactly(2))
+            ->method('dispatch')
             ->withConsecutive(
-                [
-                    $this->offerIdentifiers[1],
-                    $label,
-                ],
-                [
-                    $this->offerIdentifiers[2],
-                    $label,
-                ]
+                [new AddLabel($this->offerIdentifiers[1]->getId(), $label)],
+                [new AddLabel($this->offerIdentifiers[2]->getId(), $label)]
             );
     }
 }

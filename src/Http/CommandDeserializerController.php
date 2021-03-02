@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBus;
@@ -29,7 +31,6 @@ class CommandDeserializerController
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function handle(Request $request)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use ValueObjects\Enum\Enum;
@@ -10,8 +12,8 @@ use ValueObjects\Enum\Enum;
  */
 class OfferType extends Enum
 {
-    const EVENT = 'Event';
-    const PLACE = 'Place';
+    public const EVENT = 'Event';
+    public const PLACE = 'Place';
 
     public static function fromCaseInsensitiveValue($value)
     {

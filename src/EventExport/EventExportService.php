@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
@@ -124,11 +126,11 @@ class EventExportService implements EventExportServiceInterface
             } catch (Exception $e) {
                 $logger->error(
                     'not_exported',
-                    array(
+                    [
                         'query' => (string) $query,
                         'error' => $e->getMessage(),
                         'exception_class' => get_class($e),
-                    )
+                    ]
                 );
 
                 throw $e;
@@ -159,7 +161,7 @@ class EventExportService implements EventExportServiceInterface
                     'not_exported',
                     [
                         'query' => (string) $query,
-                        'error' => "query did not return any results",
+                        'error' => 'query did not return any results',
                     ]
                 );
 
@@ -272,7 +274,6 @@ class EventExportService implements EventExportServiceInterface
     }
 
     /**
-     * @param EmailAddress $address
      * @param string $url
      */
     private function notifyByMail(EmailAddress $address, $url): void

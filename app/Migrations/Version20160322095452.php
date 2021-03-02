@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -10,9 +12,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20160322095452 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->getTable('index_readmodel');
@@ -20,13 +19,13 @@ class Version20160322095452 extends AbstractMigration
         $table->addColumn(
             'updated',
             'text',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->addColumn(
             'owning_domain',
             'text',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->addColumn(
@@ -35,9 +34,7 @@ class Version20160322095452 extends AbstractMigration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Item;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -58,14 +60,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Item extends Offer
 {
-    /**
-     * @var mixed
-     */
     protected $id;
 
-    /**
-     * @param ItemCreated $created
-     */
+
     protected function applyItemCreated(ItemCreated $created)
     {
         $this->id = $created->getItemId();
@@ -84,7 +81,6 @@ class Item extends Offer
     }
 
     /**
-     * @param Label $label
      * @return LabelAdded
      */
     protected function createLabelAddedEvent(Label $label)
@@ -93,7 +89,6 @@ class Item extends Offer
     }
 
     /**
-     * @param Label $label
      * @return LabelRemoved
      */
     protected function createLabelRemovedEvent(Label $label)
@@ -137,9 +132,7 @@ class Item extends Offer
         return new MainImageSelected($this->id, $image);
     }
 
-    /**
-     * @return mixed
-     */
+
     public function getAggregateRootId()
     {
         return $this->id;
@@ -154,7 +147,6 @@ class Item extends Offer
     }
 
     /**
-     * @param Title $title
      * @return TitleUpdated
      */
     protected function createTitleUpdatedEvent(Title $title)
@@ -222,7 +214,6 @@ class Item extends Offer
     }
 
     /**
-     * @param ContactPoint $contactPoint
      * @return ContactPointUpdated
      */
     protected function createContactPointUpdatedEvent(ContactPoint $contactPoint)
@@ -239,7 +230,6 @@ class Item extends Offer
     }
 
     /**
-     * @param BookingInfo $bookingInfo
      * @return BookingInfoUpdated
      */
     protected function createBookingInfoUpdatedEvent(BookingInfo $bookingInfo)
@@ -248,7 +238,6 @@ class Item extends Offer
     }
 
     /**
-     * @param PriceInfo $priceInfo
      * @return PriceInfoUpdated
      */
     protected function createPriceInfoUpdatedEvent(PriceInfo $priceInfo)

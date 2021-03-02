@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Event;
 
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
@@ -20,9 +22,7 @@ class Udb3ModelToLegacyEventAdapter extends Udb3ModelToLegacyOfferAdapter implem
      */
     private $placeId;
 
-    /**
-     * @param Event $event
-     */
+
     public function __construct(Event $event)
     {
         $placeId = $event->getPlaceReference()->getPlaceId();

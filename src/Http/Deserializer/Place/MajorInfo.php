@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\UDB3\Address\Address;
@@ -35,13 +37,7 @@ class MajorInfo
      */
     private $theme;
 
-    /**
-     * @param Title $title
-     * @param EventType $type
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     */
+
     public function __construct(
         Title $title,
         EventType $type,

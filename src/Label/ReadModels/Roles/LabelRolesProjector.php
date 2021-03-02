@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\Roles;
 
 use Broadway\EventHandling\EventListener;
@@ -19,7 +21,6 @@ class LabelRolesProjector implements EventListener
 
     /**
      * LabelRolesProjector constructor.
-     * @param LabelRolesWriteRepositoryInterface $labelRolesWriteRepository
      */
     public function __construct(
         LabelRolesWriteRepositoryInterface $labelRolesWriteRepository
@@ -27,9 +28,7 @@ class LabelRolesProjector implements EventListener
         $this->labelRolesWriteRepository = $labelRolesWriteRepository;
     }
 
-    /**
-     * @param LabelAdded $labelAdded
-     */
+
     protected function applyLabelAdded(LabelAdded $labelAdded)
     {
         $this->labelRolesWriteRepository->insertLabelRole(
@@ -38,9 +37,7 @@ class LabelRolesProjector implements EventListener
         );
     }
 
-    /**
-     * @param LabelRemoved $labelRemoved
-     */
+
     protected function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
         $this->labelRolesWriteRepository->removeLabelRole(
@@ -49,9 +46,7 @@ class LabelRolesProjector implements EventListener
         );
     }
 
-    /**
-     * @param RoleDeleted $roleDeleted
-     */
+
     protected function applyRoleDeleted(RoleDeleted $roleDeleted)
     {
         $this->labelRolesWriteRepository->removeRole($roleDeleted->getUuid());

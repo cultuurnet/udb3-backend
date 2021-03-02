@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
 use CultureFeed_Uitpas;
@@ -28,12 +30,7 @@ class EventDetailController
      */
     private $eventCardSystemsRouteName;
 
-    /**
-     * @param CultureFeed_Uitpas $uitpas
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param string $eventDetailRouteName
-     * @param string $eventCardSystemsRouteName
-     */
+
     public function __construct(
         CultureFeed_Uitpas $uitpas,
         UrlGeneratorInterface $urlGenerator,

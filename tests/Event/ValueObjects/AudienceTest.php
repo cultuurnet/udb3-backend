@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
 use PHPUnit\Framework\TestCase;
@@ -74,8 +76,6 @@ class AudienceTest extends TestCase
     /**
      * @test
      * @dataProvider audienceDataProvider
-     * @param Audience $audience
-     * @param Audience $otherAudience
      * @param bool $equal
      */
     public function it_can_check_for_equality(

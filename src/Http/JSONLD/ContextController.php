@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\JSONLD;
 
 use CultuurNet\UDB3\Http\JsonLdResponse;
@@ -8,7 +10,7 @@ use ValueObjects\Web\Url;
 
 class ContextController
 {
-    const DEFAULT_BASE_PATH = 'https://io.uitdatabank.be';
+    public const DEFAULT_BASE_PATH = 'https://io.uitdatabank.be';
 
     /**
      * @var Url
@@ -22,7 +24,6 @@ class ContextController
 
     /**
      * ContextController constructor.
-     * @param StringLiteral $fileDirectory
      */
     public function __construct(
         StringLiteral $fileDirectory
@@ -31,7 +32,6 @@ class ContextController
     }
 
     /**
-     * @param Url $basePath
      * @return ContextController
      */
     public function withCustomBasePath(Url $basePath)

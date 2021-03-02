@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -7,7 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 interface UUIDParser
 {
     /**
-     * @param Url $url
      * @return UUID
      * @throws \InvalidArgumentException
      */

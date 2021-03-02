@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Organizer\ReadModel\Permission\Projector;
@@ -10,7 +12,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OrganizerPermissionServiceProvider implements ServiceProviderInterface
 {
-    const PERMISSION_PROJECTOR = 'organizer_permission.projector';
+    public const PERMISSION_PROJECTOR = 'organizer_permission.projector';
     /**
      * @inheritdoc
      */

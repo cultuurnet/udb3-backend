@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Place;
 
 use CultuurNet\UDB3\Address\Address;
@@ -13,9 +15,7 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
      */
     private $place;
 
-    /**
-     * @param Place $place
-     */
+
     public function __construct(Place $place)
     {
         parent::__construct($place);

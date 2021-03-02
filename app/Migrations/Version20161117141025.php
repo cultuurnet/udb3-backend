@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -10,9 +12,6 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class Version20161117141025 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $this->changeColumnName('uuid_col', 'labelName');
@@ -20,9 +19,7 @@ class Version20161117141025 extends AbstractMigration
         $this->changeColumnName('offerId', 'relationId');
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         // Converting back down would loose data if the size was changed.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventHandling\EventBus;
@@ -12,7 +14,7 @@ class MediaObjectRepository extends EventSourcingRepository
     public function __construct(
         EventStore $eventStore,
         EventBus $eventBus,
-        array $eventStreamDecorators = array()
+        array $eventStreamDecorators = []
     ) {
         parent::__construct(
             $eventStore,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
 use ValueObjects\Enum\Enum;
@@ -12,8 +14,8 @@ use ValueObjects\Enum\Enum;
  */
 class Format extends Enum
 {
-    const LARGE = 'lg';
-    const MEDIUM = 'md';
-    const SMALL = 'sm';
-    const EXTRA_SMALL = 'xs';
+    public const LARGE = 'lg';
+    public const MEDIUM = 'md';
+    public const SMALL = 'sm';
+    public const EXTRA_SMALL = 'xs';
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\CommandHandling\CommandBus;
@@ -11,16 +13,11 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -57,11 +54,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
     private $organizerRepository;
 
     /**
-     * @var LabelServiceInterface|MockObject
-     */
-    private $labelService;
-
-    /**
      * @var DefaultOrganizerEditingService
      */
     private $service;
@@ -78,16 +70,13 @@ class DefaultOrganizerEditingServiceTest extends TestCase
 
         $this->organizerRepository = new OrganizerRepository(
             $this->eventStore,
-            new SimpleEventBus
+            new SimpleEventBus()
         );
-
-        $this->labelService = $this->createMock(LabelServiceInterface::class);
 
         $this->service = new DefaultOrganizerEditingService(
             $this->commandBus,
             $this->uuidGenerator,
-            $this->organizerRepository,
-            $this->labelService
+            $this->organizerRepository
         );
     }
 
@@ -278,44 +267,6 @@ class DefaultOrganizerEditingServiceTest extends TestCase
             ->with($updateContactPoint);
 
         $this->service->updateContactPoint($organizerId, $contactPoint);
-    }
-
-    /**
-     * @test
-     */
-    public function it_sends_a_add_label_command()
-    {
-        $organizerId = 'organizerId';
-        $label = new Label('foo');
-
-        $expectedAddLabel = new AddLabel($organizerId, $label);
-
-        $this->labelService->expects($this->once())
-            ->method('createLabelAggregateIfNew')
-            ->with(new LabelName('foo'));
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($expectedAddLabel);
-
-        $this->service->addLabel($organizerId, $label);
-    }
-
-    /**
-     * @test
-     */
-    public function it_sends_a_remove_label_command()
-    {
-        $organizerId = 'organizerId';
-        $label = new Label('foo');
-
-        $expectedRemoveLabel = new RemoveLabel($organizerId, $label);
-
-        $this->commandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($expectedRemoveLabel);
-
-        $this->service->removeLabel($organizerId, $label);
     }
 
     /**

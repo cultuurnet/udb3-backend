@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Domain\DateTime;
@@ -101,7 +103,7 @@ class EventStreamTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cdbids should have type array.');
 
-        $this->eventStream->withCdbids("1021");
+        $this->eventStream->withCdbids('1021');
     }
 
     /**
@@ -118,8 +120,6 @@ class EventStreamTest extends TestCase
     /**
      * @test
      * @dataProvider eventStreamDecoratorDataProvider
-     * @param EventStreamDecorator|null $eventStreamDecorator
-     * @param array $expectedDecoratedMetadata
      */
     public function it_retrieves_all_events_from_the_event_store(
         EventStreamDecorator $eventStreamDecorator = null,
@@ -599,9 +599,7 @@ class EventStreamTest extends TestCase
     }
 
     /**
-     * @param EventStream $eventStream
      * @param DomainMessage[] $domainMessages
-     * @param AggregateType $aggregateType
      */
     private function checkEventStream(
         EventStream $eventStream,

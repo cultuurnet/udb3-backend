@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Price;
 
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -18,9 +20,7 @@ class PriceInfoDenormalizer implements DenormalizerInterface
      */
     private $tariffNameDenormalizer;
 
-    /**
-     * @param DenormalizerInterface|null $tariffNameDenormalizer
-     */
+
     public function __construct(DenormalizerInterface $tariffNameDenormalizer = null)
     {
         if (!$tariffNameDenormalizer) {
@@ -77,8 +77,6 @@ class PriceInfoDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate TariffDenormalizer
-     * @param array $tariffData
-     * @param array $context
      * @return Tariff
      * @throws \Money\UnknownCurrencyException
      */

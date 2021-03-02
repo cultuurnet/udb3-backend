@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
@@ -76,7 +78,7 @@ class AddLabelToMultipleJSONDeserializerTest extends TestCase
                         OfferType::EVENT()
                     )
                 ),
-            new Label("foo")
+            new Label('foo')
         );
 
         $actual = $this->deserializer->deserialize($json);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Jobs;
 
 use Crell\ApiProblem\ApiProblem;
@@ -17,7 +19,6 @@ class ReadRestController
 
     /**
      * ReadRestController constructor.
-     * @param JobsStatusFactoryInterface $jobStatusFactory
      */
     public function __construct(JobsStatusFactoryInterface $jobStatusFactory)
     {

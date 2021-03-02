@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\DomainEvents;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -9,7 +11,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ActorUpdatedJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $json
      * @return ActorUpdated
      */
     public function deserialize(StringLiteral $json)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\XSD;
 
 use CultuurNet\UDB3\UDB2\XML\XMLValidationError;
@@ -207,7 +209,6 @@ class XSDAwareXMLValidationServiceTest extends TestCase
     }
 
     /**
-     * @param array $xmlValidationErrors
      * @return string[]
      */
     private function getErrorMessages(array $xmlValidationErrors)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\Twig;
 
 use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class GoogleMapUrlGeneratorTest extends TestCase
 {
-    const TEST_API_KEY = 'MY_API_KEY';
+    public const TEST_API_KEY = 'MY_API_KEY';
 
     /**
      * @var GoogleMapUrlGenerator
@@ -36,10 +38,10 @@ class GoogleMapUrlGeneratorTest extends TestCase
         ];
 
         $expected = 'https://maps.googleapis.com/maps/api/staticmap?size=800x400&scale=2';
-        $expected .= '&markers='.$coordinate1;
-        $expected .= '&markers='.$coordinate2;
-        $expected .= '&markers='.$coordinate3;
-        $expected .= '&key='.self::TEST_API_KEY;
+        $expected .= '&markers=' . $coordinate1;
+        $expected .= '&markers=' . $coordinate2;
+        $expected .= '&markers=' . $coordinate3;
+        $expected .= '&key=' . self::TEST_API_KEY;
 
         $this->assertEquals(
             $expected,

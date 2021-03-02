@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
 use ValueObjects\Enum\Enum;
@@ -10,6 +12,6 @@ use ValueObjects\Enum\Enum;
  */
 class ContentType extends Enum
 {
-    const HTML = 'text/html';
-    const PLAIN = 'text/plain';
+    public const HTML = 'text/html';
+    public const PLAIN = 'text/plain';
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
@@ -37,7 +39,6 @@ class Label
     }
 
     /**
-     * @param Label $label
      * @return bool
      */
     public function equals(Label $label)
@@ -54,6 +55,11 @@ class Label
     public function isVisible()
     {
         return $this->visible;
+    }
+
+    public function getName(): LabelName
+    {
+        return $this->labelName;
     }
 
     /**

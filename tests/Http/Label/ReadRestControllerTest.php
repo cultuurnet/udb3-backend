@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Label;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
@@ -201,7 +203,6 @@ class ReadRestControllerTest extends TestCase
     }
 
     /**
-     * @param Entity $entity
      * @return array
      */
     private function entityToArray(Entity $entity)

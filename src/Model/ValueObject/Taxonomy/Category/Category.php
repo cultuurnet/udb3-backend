@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 class Category
@@ -19,11 +21,7 @@ class Category
      */
     protected $domain;
 
-    /**
-     * @param CategoryID $id
-     * @param CategoryLabel|null $label
-     * @param CategoryDomain|null $domain
-     */
+
     public function __construct(
         CategoryID $id,
         CategoryLabel $label = null,

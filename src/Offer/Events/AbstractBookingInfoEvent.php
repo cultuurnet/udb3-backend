@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
-use \CultuurNet\UDB3\BookingInfo;
+use CultuurNet\UDB3\BookingInfo;
 
 abstract class AbstractBookingInfoEvent extends AbstractEvent
 {
@@ -24,9 +26,9 @@ abstract class AbstractBookingInfoEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'bookingInfo' => $this->bookingInfo->serialize(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractBookingInfoEvent

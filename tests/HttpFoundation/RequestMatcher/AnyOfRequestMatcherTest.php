@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\HttpFoundation\RequestMatcher;
 
 use PHPUnit\Framework\TestCase;
@@ -22,7 +24,6 @@ class AnyOfRequestMatcherTest extends TestCase
      * @test
      * @dataProvider matchingRequestDataProvider
      *
-     * @param Request $request
      * @param bool $shouldMatch
      */
     public function it_matches_if_the_request_is_matched_by_any_of_the_injected_request_matchers(

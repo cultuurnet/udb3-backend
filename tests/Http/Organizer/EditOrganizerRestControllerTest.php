@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Organizer;
 
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
@@ -10,7 +13,10 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Organizer\Commands\AddLabel;
+use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Title;
 use InvalidArgumentException;
@@ -23,6 +29,11 @@ use ValueObjects\Web\Url;
 
 class EditOrganizerRestControllerTest extends TestCase
 {
+    /**
+     * @var TraceableCommandBus
+     */
+    private $commandBus;
+
     /**
      * @var OrganizerEditingServiceInterface|MockObject
      */
@@ -40,6 +51,7 @@ class EditOrganizerRestControllerTest extends TestCase
 
     public function setUp()
     {
+        $this->commandBus = new TraceableCommandBus();
         $this->editService = $this->createMock(OrganizerEditingServiceInterface::class);
 
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
@@ -51,7 +63,7 @@ class EditOrganizerRestControllerTest extends TestCase
                 }
             );
 
-        $this->controller = new EditOrganizerRestController($this->editService, $this->iriGenerator);
+        $this->controller = new EditOrganizerRestController($this->commandBus, $this->editService, $this->iriGenerator);
     }
 
     /**
@@ -76,13 +88,13 @@ class EditOrganizerRestControllerTest extends TestCase
                 ),
                 new ContactPoint(
                     [
-                        "+32 498 71 49 96",
+                        '+32 498 71 49 96',
                     ],
                     [
-                        "jos@hetdepot.be",
+                        'jos@hetdepot.be',
                     ],
                     [
-                        "https://www.facebook.com/hetdepot",
+                        'https://www.facebook.com/hetdepot',
                     ]
                 )
             )
@@ -302,15 +314,15 @@ class EditOrganizerRestControllerTest extends TestCase
         $organizerId = '5e1d6fec-d0ea-4203-b466-7fb9711f3bb9';
         $contactPoint = new ContactPoint(
             [
-                "+32 498 71 49 96",
+                '+32 498 71 49 96',
             ],
             [
-                "jos@hetdepot.be",
-                "info@hetdepot.be",
+                'jos@hetdepot.be',
+                'info@hetdepot.be',
             ],
             [
-                "https://www.facebook.com/hetdepot",
-                "https://www.depot.be",
+                'https://www.facebook.com/hetdepot',
+                'https://www.depot.be',
             ]
         );
 
@@ -352,35 +364,39 @@ class EditOrganizerRestControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_label()
+    public function it_adds_a_label(): void
     {
         $organizerId = 'organizerId';
         $labelName = 'publiq';
 
-        $this->editService->expects($this->once())
-            ->method('addLabel')
-            ->with($organizerId, $labelName);
+        $this->commandBus->record();
 
         $response = $this->controller->addLabel($organizerId, $labelName);
 
         $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(
+            [new AddLabel($organizerId, new Label($labelName))],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**
      * @test
      */
-    public function it_removes_a_label()
+    public function it_removes_a_label(): void
     {
         $organizerId = 'organizerId';
         $labelName = 'publiq';
 
-        $this->editService->expects($this->once())
-            ->method('removeLabel')
-            ->with($organizerId, $labelName);
+        $this->commandBus->record();
 
         $response = $this->controller->removeLabel($organizerId, $labelName);
 
         $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(
+            [new RemoveLabel($organizerId, new Label($labelName))],
+            $this->commandBus->getRecordedCommands()
+        );
     }
 
     /**

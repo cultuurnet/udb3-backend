@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -22,7 +24,6 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     }
 
     /**
-     * @param EventImportedFromUDB2 $eventImportedFromUDB2
      * @throws \CultureFeed_Cdb_ParseException
      */
     protected function handleEventImportedFromUDB2(
@@ -36,7 +37,6 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     }
 
     /**
-     * @param EventUpdatedFromUDB2 $eventUpdatedFromUDB2
      * @throws \CultureFeed_Cdb_ParseException
      */
     protected function handleEventUpdatedFromUDB2(

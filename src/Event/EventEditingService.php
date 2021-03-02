@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event;
 
 use Broadway\CommandHandling\CommandBus;
@@ -13,7 +15,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Offer\DefaultOfferEditingService;
@@ -46,7 +47,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
         DocumentRepository $readRepository,
         OfferCommandFactoryInterface $commandFactory,
         Repository $writeRepository,
-        LabelServiceInterface $labelService,
         PlaceRepository $placeRepository
     ) {
         parent::__construct(
@@ -54,7 +54,6 @@ class EventEditingService extends DefaultOfferEditingService implements EventEdi
             $uuidGenerator,
             $readRepository,
             $commandFactory,
-            $labelService,
             new EventTypeResolver(),
             new EventThemeResolver()
         );

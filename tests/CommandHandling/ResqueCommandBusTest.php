@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
@@ -15,7 +17,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class ResqueCommandBusTest extends TestCase
 {
-
     /**
      * @var CommandBus|ContextAwareInterface|MockObject
      */
@@ -222,5 +223,4 @@ class ResqueCommandBusTest extends TestCase
 
 abstract class TestContextAwareCommandBus implements CommandBus, ContextAwareInterface
 {
-
 }

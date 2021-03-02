@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Productions;
 
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Query\QueryBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -19,14 +20,14 @@ class ProductionRepository extends AbstractDBALRepository
         parent::__construct($connection, new StringLiteral(self::TABLE_NAME));
     }
 
-    public function add(Production $production)
+    public function add(Production $production): void
     {
         foreach ($production->getEventIds() as $eventId) {
             $this->addEvent($eventId, $production);
         }
     }
 
-    public function find(ProductionId $productionId)
+    public function find(ProductionId $productionId): Production
     {
         $results = $this->getConnection()->fetchAll(
             'SELECT * FROM productions WHERE production_id = :productionId',
@@ -52,7 +53,7 @@ class ProductionRepository extends AbstractDBALRepository
         return $production;
     }
 
-    public function addEvent(string $eventId, Production $production)
+    public function addEvent(string $eventId, Production $production): void
     {
         $addedAt = Chronos::now();
         $this->getConnection()->insert(
@@ -66,7 +67,7 @@ class ProductionRepository extends AbstractDBALRepository
         );
     }
 
-    public function removeEvent(string $eventId, ProductionId $productionId)
+    public function removeEvent(string $eventId, ProductionId $productionId): void
     {
         $this->getConnection()->delete(
             $this->getTableName()->toNative(),
@@ -77,7 +78,7 @@ class ProductionRepository extends AbstractDBALRepository
         );
     }
 
-    public function moveEvents(ProductionId $from, Production $to)
+    public function moveEvents(ProductionId $from, Production $to): void
     {
         $addedAt = Chronos::now();
         $this->getConnection()->update(
@@ -94,9 +95,6 @@ class ProductionRepository extends AbstractDBALRepository
     }
 
     /**
-     * @param string $keyword
-     * @param int $start
-     * @param int $limit
      * @return Production[]
      */
     public function search(string $keyword, int $start, int $limit): array
@@ -111,16 +109,24 @@ class ProductionRepository extends AbstractDBALRepository
             return [];
         }
 
-        return array_map(
-            function (array $data) {
-                return new Production(
-                    ProductionId::fromNative($data['production_id']),
-                    $data['name'],
-                    explode(',', $data['events'])
+        /** @var Production[] $productions */
+        $productions = [];
+        foreach ($results as $result) {
+            $productionId = $result['production_id'];
+
+            if (empty($productions[$productionId])) {
+                $productions[$productionId] = new Production(
+                    ProductionId::fromNative($productionId),
+                    $result['name'],
+                    [$result['event_id']]
                 );
-            },
-            $results
-        );
+                continue;
+            }
+
+            $productions[$productionId] = $productions[$productionId]->addEvent($result['event_id']);
+        }
+
+        return array_values($productions);
     }
 
     public function count(string $keyword): int
@@ -131,7 +137,7 @@ class ProductionRepository extends AbstractDBALRepository
     private function createSearchQuery(string $keyword): QueryBuilder
     {
         $query = $this->getConnection()->createQueryBuilder()
-            ->select('production_id, name, GROUP_CONCAT(event_id) as events')
+            ->select('production_id, name, event_id')
             ->from($this->getTableName()->toNative());
 
         if (!empty($keyword)) {
@@ -140,7 +146,7 @@ class ProductionRepository extends AbstractDBALRepository
                 ->setParameter(':keyword', $keyword);
         }
 
-        return $query->groupBy('production_id');
+        return $query;
     }
 
     public function findProductionForEventId(string $eventId): Production
@@ -170,9 +176,6 @@ class ProductionRepository extends AbstractDBALRepository
     }
 
     /**
-     * @param string $forEventId
-     * @param ProductionId $inProductionId
-     *
      * @return SimilarEventPair[]
      * @throws EntityNotFoundException
      */
@@ -194,7 +197,7 @@ class ProductionRepository extends AbstractDBALRepository
         }
 
         return array_map(
-            function (array $data) use ($forEventId) {
+            static function (array $data) use ($forEventId) {
                 return new SimilarEventPair($forEventId, $data['event_id']);
             },
             $results

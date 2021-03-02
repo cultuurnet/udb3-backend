@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Calendar;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -30,7 +32,7 @@ class CalendarForPlaceDataValidatorTest extends TestCase
 
         try {
             $this->calendarForPlaceDataValidator->validate($data);
-            $this->fail("No DataValidationException was thrown.");
+            $this->fail('No DataValidationException was thrown.');
         } catch (DataValidationException $exception) {
             $this->assertEquals(
                 $expectedException->getValidationMessages(),

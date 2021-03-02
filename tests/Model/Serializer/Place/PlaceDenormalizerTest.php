@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -726,8 +728,8 @@ class PlaceDenormalizerTest extends TestCase
                 '@id' => 'https://io.uitdatabank.be/organizers/236f736e-5308-4c3a-94f3-da0bd768da7d',
             ],
             'geo' => [
-                "latitude" => 50.8793916,
-                "longitude" => 4.7019674,
+                'latitude' => 50.8793916,
+                'longitude' => 4.7019674,
             ],
             'typicalAgeRange' => '8-12',
             'priceInfo' => [

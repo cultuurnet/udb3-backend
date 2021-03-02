@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\ReadModel\Permission;
 
 use ValueObjects\StringLiteral\StringLiteral;
@@ -21,7 +23,6 @@ class CombinedPermissionQuery implements PermissionQueryInterface
     }
 
     /**
-     * @param StringLiteral $uitId
      * @return StringLiteral[] A list of offer ids.
      */
     public function getEditableOffers(StringLiteral $uitId)

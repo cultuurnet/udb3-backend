@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use Respect\Validation\Rules\AllOf;
 use Respect\Validation\Rules\AlwaysValid;
 use Respect\Validation\Rules\Date;

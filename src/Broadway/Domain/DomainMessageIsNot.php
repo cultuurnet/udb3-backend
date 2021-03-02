@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\Domain;
 
 use Broadway\Domain\DomainMessage;
@@ -11,16 +13,13 @@ class DomainMessageIsNot implements DomainMessageSpecificationInterface
      */
     private $domainMessageSpecification;
 
-    /**
-     * @param DomainMessageSpecificationInterface $domainMessageSpecification
-     */
+
     public function __construct(DomainMessageSpecificationInterface $domainMessageSpecification)
     {
         $this->domainMessageSpecification = $domainMessageSpecification;
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return bool
      */
     public function isSatisfiedBy(DomainMessage $domainMessage)

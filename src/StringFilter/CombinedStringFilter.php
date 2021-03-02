@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\StringFilter;
 
 class CombinedStringFilter implements StringFilterInterface
@@ -7,7 +9,7 @@ class CombinedStringFilter implements StringFilterInterface
     /**
      * @var StringFilterInterface[]
      */
-    protected $filters = array();
+    protected $filters = [];
 
     /**
      * @param StringFilterInterface $filter

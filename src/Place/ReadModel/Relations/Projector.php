@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\ReadModel\Relations;
 
 use Broadway\EventHandling\EventListener;
@@ -11,7 +13,6 @@ use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 
 class Projector implements EventListener
 {
-
     use DelegateEventHandlingToSpecificMethodTrait;
 
     /**

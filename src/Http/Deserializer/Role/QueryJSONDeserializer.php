@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Role;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -23,8 +25,6 @@ class QueryJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
-     * @return Query
      * @throws DataValidationException
      */
     public function deserialize(StringLiteral $data): Query

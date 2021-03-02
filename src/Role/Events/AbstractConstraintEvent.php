@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Events;
 
 use CultuurNet\UDB3\Role\ValueObjects\Query;
@@ -20,9 +22,6 @@ abstract class AbstractConstraintEvent extends AbstractEvent
 
     /**
      * AbstractPermissionEvent constructor.
-     * @param UUID $uuid
-     * @param SapiVersion $sapiVersion
-     * @param Query $query
      */
     final public function __construct(
         UUID $uuid,
@@ -55,9 +54,9 @@ abstract class AbstractConstraintEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'sapiVersion' => $this->sapiVersion->toNative(),
             'query' => $this->query->toNative(),
-        );
+        ];
     }
 }

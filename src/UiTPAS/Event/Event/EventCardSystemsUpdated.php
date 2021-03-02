@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
@@ -18,7 +20,6 @@ class EventCardSystemsUpdated
     private $cardSystems;
 
     /**
-     * @param Id $id
      * @param CardSystem[] $cardSystems
      */
     public function __construct(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Place;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -26,14 +28,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
      */
     private $coordinates;
 
-    /**
-     * @param UUID $id
-     * @param Language $mainLanguage
-     * @param TranslatedTitle $title
-     * @param Calendar $calendar
-     * @param TranslatedAddress $address
-     * @param Categories $categories
-     */
+
     public function __construct(
         UUID $id,
         Language $mainLanguage,
@@ -64,7 +59,6 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     }
 
     /**
-     * @param TranslatedAddress $address
      * @return ImmutablePlace
      */
     public function withAddress(TranslatedAddress $address)
@@ -83,7 +77,6 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     }
 
     /**
-     * @param Coordinates $coordinates
      * @return ImmutablePlace
      */
     public function withGeoCoordinates(Coordinates $coordinates)
@@ -112,9 +105,6 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     }
 
     /**
-     * @param Language $mainLanguage
-     * @param TranslatedTitle $title
-     * @param TranslatedAddress $address
      * @return ImmutablePlace
      */
     public static function createDummyLocation(

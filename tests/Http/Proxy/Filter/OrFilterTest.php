@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use GuzzleHttp\Psr7\Request;
@@ -8,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class OrFilterTest extends TestCase
 {
-    const APPLICATION_XML = 'application/xml';
+    public const APPLICATION_XML = 'application/xml';
 
     /**
      * @var Request
@@ -29,10 +31,10 @@ class OrFilterTest extends TestCase
      */
     public function it_does_match_when_one_filters_matches()
     {
-        $orFilter = new OrFilter(array(
+        $orFilter = new OrFilter([
             new AcceptFilter(new StringLiteral(self::APPLICATION_XML)),
             new MethodFilter(new StringLiteral('POST')),
-        ));
+        ]);
 
         $this->assertTrue($orFilter->matches($this->request));
     }
@@ -42,10 +44,10 @@ class OrFilterTest extends TestCase
      */
     public function it_does_not_match_when_no_filter_matches()
     {
-        $orFilter = new OrFilter(array(
+        $orFilter = new OrFilter([
             new AcceptFilter(new StringLiteral('application/json')),
             new MethodFilter(new StringLiteral('PUT')),
-        ));
+        ]);
 
         $this->assertFalse($orFilter->matches($this->request));
     }

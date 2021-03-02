@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Organizer\OrganizerRelationServiceInterface;
@@ -17,10 +19,7 @@ class PlaceOrganizerRelationService implements OrganizerRelationServiceInterface
      */
     private $relationsRepository;
 
-    /**
-     * @param PlaceEditingServiceInterface $editingService
-     * @param RepositoryInterface $relationsRepository
-     */
+
     public function __construct(
         PlaceEditingServiceInterface $editingService,
         RepositoryInterface $relationsRepository

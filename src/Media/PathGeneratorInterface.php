@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use ValueObjects\Identity\UUID;
@@ -10,8 +12,6 @@ interface PathGeneratorInterface
     /**
      * Returns the path where a file is stored
      *
-     * @param UUID $fileId
-     * @param StringLiteral $extension
      *
      * @return string
      */

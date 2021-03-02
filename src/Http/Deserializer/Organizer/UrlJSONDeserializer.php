@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Organizer;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -10,7 +12,6 @@ use ValueObjects\Web\Url;
 class UrlJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $data
      * @return Url
      */
     public function deserialize(StringLiteral $data)

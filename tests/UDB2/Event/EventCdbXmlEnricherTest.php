@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Event;
 
 use Broadway\Domain\DomainMessage;
@@ -256,7 +258,6 @@ class EventCdbXmlEnricherTest extends TestCase
     }
 
     /**
-     * @param \DateTimeImmutable $time
      * @return EventCreated
      */
     private function newEventCreated(\DateTimeImmutable $time)
@@ -274,7 +275,6 @@ class EventCdbXmlEnricherTest extends TestCase
     }
 
     /**
-     * @param \DateTimeImmutable $time
      * @return EventUpdated
      */
     private function newEventUpdated(\DateTimeImmutable $time)

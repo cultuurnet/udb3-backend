@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
 use Broadway\Domain\DateTime;
@@ -214,7 +216,6 @@ class ProjectorTest extends TestCase
     }
 
     /**
-     * @param mixed $payload
      * @return DomainMessage
      */
     private function createDomainMessage($payload)

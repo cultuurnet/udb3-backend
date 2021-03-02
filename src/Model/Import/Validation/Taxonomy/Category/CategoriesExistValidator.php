@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category;
 
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
@@ -12,7 +14,6 @@ use Respect\Validation\Validator;
 class CategoriesExistValidator extends Validator
 {
     /**
-     * @param CategoryResolverInterface $categoryResolver
      * @param string $documentType
      * @param string $propertyName
      */

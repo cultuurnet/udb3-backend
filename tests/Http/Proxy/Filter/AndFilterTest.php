@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use GuzzleHttp\Psr7\Request;
@@ -8,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class AndFilterTest extends TestCase
 {
-    const APPLICATION_XML = 'application/xml';
+    public const APPLICATION_XML = 'application/xml';
 
     /**
      * @var Request
@@ -29,10 +31,10 @@ class AndFilterTest extends TestCase
      */
     public function it_does_match_when_all_filters_match()
     {
-        $andFilter = new AndFilter(array(
+        $andFilter = new AndFilter([
             new AcceptFilter(new StringLiteral(self::APPLICATION_XML)),
             new MethodFilter(new StringLiteral('POST')),
-        ));
+        ]);
 
         $this->assertTrue($andFilter->matches($this->request));
     }
@@ -42,10 +44,10 @@ class AndFilterTest extends TestCase
      */
     public function it_does_not_match_when_at_least_one_filter_does_not_match()
     {
-        $andFilter = new AndFilter(array(
+        $andFilter = new AndFilter([
             new AcceptFilter(new StringLiteral(self::APPLICATION_XML)),
             new MethodFilter(new StringLiteral('PUT')),
-        ));
+        ]);
 
         $this->assertFalse($andFilter->matches($this->request));
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -12,10 +14,7 @@ abstract class AbstractPermissionCommand extends AbstractCommand
      */
     private $rolePermission;
 
-    /**
-     * @param UUID $uuid
-     * @param Permission $rolePermission
-     */
+
     public function __construct(
         UUID $uuid,
         Permission $rolePermission

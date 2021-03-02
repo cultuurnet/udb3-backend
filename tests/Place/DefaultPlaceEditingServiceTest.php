@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\CommandHandling\CommandBus;
@@ -15,7 +17,6 @@ use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\EventType;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\Commands\UpdateAddress;
@@ -32,7 +33,6 @@ use ValueObjects\Geography\Country;
 
 class DefaultPlaceEditingServiceTest extends TestCase
 {
-
     /**
      * @var DefaultPlaceEditingService
      */
@@ -64,11 +64,6 @@ class DefaultPlaceEditingServiceTest extends TestCase
     protected $writeRepository;
 
     /**
-     * @var LabelServiceInterface|MockObject
-     */
-    protected $labelService;
-
-    /**
      * @var TraceableEventStore
      */
     protected $eventStore;
@@ -98,15 +93,12 @@ class DefaultPlaceEditingServiceTest extends TestCase
             ->with('ad93103d-1395-4af7-a52a-2829d466c232')
             ->willReturn(new JsonDocument('ad93103d-1395-4af7-a52a-2829d466c232'));
 
-        $this->labelService = $this->createMock(LabelServiceInterface::class);
-
         $this->placeEditingService = new DefaultPlaceEditingService(
             $this->commandBus,
             $this->uuidGenerator,
             $this->readRepository,
             $this->commandFactory,
-            $this->writeRepository,
-            $this->labelService
+            $this->writeRepository
         );
     }
 

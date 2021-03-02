@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UDB2;
 
@@ -25,8 +24,6 @@ class OutdatedXmlRepresentationException extends \RuntimeException
     /**
      * @param string $message
      * @param string $actorId
-     * @param \DateTimeInterface $sinceDate
-     * @param \DateTimeInterface $actualDate
      */
     public function __construct($message, $actorId, \DateTimeInterface $sinceDate, \DateTimeInterface $actualDate)
     {

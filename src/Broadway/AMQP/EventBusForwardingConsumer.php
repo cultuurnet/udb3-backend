@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\Domain\DateTime;
@@ -44,10 +46,7 @@ class EventBusForwardingConsumer extends AbstractConsumer
         );
     }
 
-    /**
-     * @param mixed $deserializedMessage
-     * @param array $context
-     */
+
     protected function handle($deserializedMessage, array $context)
     {
         // If the deserializer did not return a DomainMessage yet, then

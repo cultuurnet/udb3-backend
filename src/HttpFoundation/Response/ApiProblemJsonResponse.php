@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\HttpFoundation\Response;
 
 use Crell\ApiProblem\ApiProblem;
@@ -13,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
  **/
 class ApiProblemJsonResponse extends JsonResponse
 {
-    public function __construct(ApiProblem $problem, $headers = array())
+    public function __construct(ApiProblem $problem, $headers = [])
     {
         $headers += ['Content-Type' => 'application/problem+json'];
 

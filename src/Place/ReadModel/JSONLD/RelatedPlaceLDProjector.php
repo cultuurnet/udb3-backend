@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\ReadModel\JSONLD;
 
 use Broadway\EventHandling\EventListener;
@@ -28,11 +30,7 @@ class RelatedPlaceLDProjector implements EventListener
      */
     private $organizerService;
 
-    /**
-     * @param DocumentRepository $repository
-     * @param EntityServiceInterface $organizerService
-     * @param RepositoryInterface $placeRelations
-     */
+
     public function __construct(
         DocumentRepository $repository,
         EntityServiceInterface $organizerService,
@@ -44,7 +42,6 @@ class RelatedPlaceLDProjector implements EventListener
     }
 
     /**
-     * @param OrganizerProjectedToJSONLD $organizerProjectedToJSONLD
      *
      * @throws \CultuurNet\UDB3\EntityNotFoundException
      */

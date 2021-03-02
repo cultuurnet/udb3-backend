@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\User;
 
 use Crell\ApiProblem\ApiProblem;
@@ -19,9 +21,7 @@ class UserIdentityController
      */
     private $userIdentityResolver;
 
-    /**
-     * @param UserIdentityResolverInterface $userIdentityResolver
-     */
+
     public function __construct(
         UserIdentityResolverInterface $userIdentityResolver
     ) {

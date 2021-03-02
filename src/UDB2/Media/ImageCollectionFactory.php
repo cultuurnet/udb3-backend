@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Media;
 
 use CultureFeed_Cdb_Data_File;
-use CultureFeed_Cdb_Data_Media;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
@@ -21,7 +22,7 @@ use ValueObjects\Web\Url;
 
 class ImageCollectionFactory implements ImageCollectionFactoryInterface
 {
-    const SUPPORTED_UDB2_MEDIA_TYPES = [
+    public const SUPPORTED_UDB2_MEDIA_TYPES = [
         CultureFeed_Cdb_Data_File::MEDIA_TYPE_PHOTO,
         CultureFeed_Cdb_Data_File::MEDIA_TYPE_IMAGEWEB,
     ];
@@ -52,7 +53,6 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
     /**
      * Create an ImageCollection from the media in the Dutch details of on an UDB2 item.
      *
-     * @param CultureFeed_Cdb_Item_Base $item
      * @return ImageCollection
      */
     public function fromUdb2Item(CultureFeed_Cdb_Item_Base $item)
@@ -80,9 +80,7 @@ class ImageCollectionFactory implements ImageCollectionFactoryInterface
     }
 
     /**
-     * @param CultureFeed_Cdb_Data_Media $media
      * @param Description $fallbackDescription ,
-     * @param CopyrightHolder $fallbackCopyright
      * @return ImageCollection
      */
     private function fromUdb2Media(

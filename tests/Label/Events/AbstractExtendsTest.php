@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\Events;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
@@ -59,14 +61,11 @@ abstract class AbstractExtendsTest extends TestCase
     }
 
     /**
-     * @param UUID $uuid
-     * @param LabelName $name
      * @return AbstractEvent
      */
     abstract public function createEvent(UUID $uuid, LabelName $name);
 
     /**
-     * @param array $array
      * @return AbstractEvent
      */
     abstract public function deserialize(array $array);

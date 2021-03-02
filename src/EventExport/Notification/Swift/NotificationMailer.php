@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Notification\Swift;
 
 use CultuurNet\UDB3\EventExport\EventExportResult;
@@ -18,10 +20,7 @@ class NotificationMailer implements NotificationMailerInterface
      */
     private $messageFactory;
 
-    /**
-     * @param \Swift_Mailer           $mailer
-     * @param MessageFactoryInterface $mailFactory
-     */
+
     public function __construct(
         \Swift_Mailer $mailer,
         MessageFactoryInterface $mailFactory
@@ -38,6 +37,6 @@ class NotificationMailer implements NotificationMailerInterface
 
         $sent = $this->mailer->send($message);
 
-        print 'sent '.$sent.' e-mails'.PHP_EOL;
+        print 'sent ' . $sent . ' e-mails' . PHP_EOL;
     }
 }

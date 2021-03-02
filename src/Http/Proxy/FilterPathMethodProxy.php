@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\Filter\AndFilter;
@@ -39,8 +41,6 @@ class FilterPathMethodProxy extends Proxy
     }
 
     /**
-     * @param FilterPathRegex $path
-     * @param StringLiteral $method
      * @return FilterInterface
      */
     private function createFilter(FilterPathRegex $path, StringLiteral $method)
@@ -61,8 +61,6 @@ class FilterPathMethodProxy extends Proxy
     }
 
     /**
-     * @param Domain $domain
-     * @param PortNumber $port
      * @return CombinedReplacer
      */
     private function createTransformer(

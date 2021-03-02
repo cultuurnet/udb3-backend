@@ -1,11 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 /** @deprecated */
+
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Assert\JsonEquals;
-use GuzzleHttp\Tests\Psr7\Str;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,11 +48,11 @@ class OfferPermissionsControllerTest extends TestCase
 
     public function setUp()
     {
-        $permissionsToCheck = array(
+        $permissionsToCheck = [
             Permission::AANBOD_BEWERKEN(),
             Permission::AANBOD_MODEREREN(),
             Permission::AANBOD_VERWIJDEREN(),
-        );
+        ];
         $this->permissions = $permissionsToCheck;
         $this->voter = $this->createMock(PermissionVoterInterface::class);
 
@@ -81,11 +84,11 @@ class OfferPermissionsControllerTest extends TestCase
             ->getPermissionsForCurrentUser('b06a4ab4-a75b-49d1-b4ab-1992c1db908a');
         $actualResponseJson = $actualResponse->getContent();
 
-        $expectedPermissions = array(
+        $expectedPermissions = [
             'Aanbod bewerken',
             'Aanbod modereren',
             'Aanbod verwijderen',
-        );
+        ];
         $expectedResponseJson = json_encode(['permissions' => $expectedPermissions]);
 
         $this->jsonEquals->assert($expectedResponseJson, $actualResponseJson);
@@ -105,11 +108,11 @@ class OfferPermissionsControllerTest extends TestCase
             );
         $actualResponseJson = $actualResponse->getContent();
 
-        $expectedPermissions = array(
+        $expectedPermissions = [
             'Aanbod bewerken',
             'Aanbod modereren',
             'Aanbod verwijderen',
-        );
+        ];
         $expectedResponseJson = json_encode(['permissions' => $expectedPermissions]);
 
         $this->jsonEquals->assert($expectedResponseJson, $actualResponseJson);

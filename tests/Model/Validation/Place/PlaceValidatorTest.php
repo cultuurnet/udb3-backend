@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Validation\Place;
 
 use PHPUnit\Framework\TestCase;
@@ -1608,7 +1610,7 @@ class PlaceValidatorTest extends TestCase
 
         // @codingStandardsIgnoreStart
         $expectedErrors = [
-            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"'
+            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"',
         ];
         // @codingStandardsIgnoreEnd
 
@@ -3190,10 +3192,7 @@ class PlaceValidatorTest extends TestCase
         $this->assertTrue($this->validator->validate($place));
     }
 
-    /**
-     * @param mixed $data
-     * @param array $expectedMessages
-     */
+
     private function assertValidationErrors($data, array $expectedMessages)
     {
         try {

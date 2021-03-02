@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -11,22 +13,20 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20160607134416 extends AbstractMigration
 {
-    const LABELS_JSON_TABLE = 'labels_json';
-    const LABELS_RELATIONS_TABLE = 'labels_relations';
+    public const LABELS_JSON_TABLE = 'labels_json';
+    public const LABELS_RELATIONS_TABLE = 'labels_relations';
 
-    const UUID_COLUMN = 'uuid_col';
-    const NAME_COLUMN = 'name';
-    const VISIBLE_COLUMN = 'visible';
-    const PRIVATE_COLUMN = 'private';
-    const PARENT_UUID_COLUMN = 'parentUuid';
-    const COUNT_COLUMN = 'count_col';
+    public const UUID_COLUMN = 'uuid_col';
+    public const NAME_COLUMN = 'name';
+    public const VISIBLE_COLUMN = 'visible';
+    public const PRIVATE_COLUMN = 'private';
+    public const PARENT_UUID_COLUMN = 'parentUuid';
+    public const COUNT_COLUMN = 'count_col';
 
-    const RELATION_TYPE_COLUMN = 'relationType';
-    const RELATION_ID_COLUMN = 'relationId';
+    public const RELATION_TYPE_COLUMN = 'relationType';
+    public const RELATION_ID_COLUMN = 'relationId';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $this->createJsonRepository($schema);
@@ -34,9 +34,7 @@ class Version20160607134416 extends AbstractMigration
         $this->createRelationsRepository($schema);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(self::LABELS_JSON_TABLE);
@@ -44,9 +42,7 @@ class Version20160607134416 extends AbstractMigration
         $schema->dropTable(self::LABELS_RELATIONS_TABLE);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createJsonRepository(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_JSON_TABLE);
@@ -80,9 +76,7 @@ class Version20160607134416 extends AbstractMigration
         $table->addUniqueIndex([self::NAME_COLUMN]);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     private function createRelationsRepository(Schema $schema)
     {
         $table = $schema->createTable(self::LABELS_RELATIONS_TABLE);

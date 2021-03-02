@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\String\Behaviour;
 
 trait IsString
@@ -29,7 +31,6 @@ trait IsString
     }
 
     /**
-     * @param mixed $value
      * @throws \InvalidArgumentException
      */
     private function guardString($value)

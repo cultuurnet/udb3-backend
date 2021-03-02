@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
@@ -40,9 +41,6 @@ class PatchOfferRestControllerTest extends TestCase
     /**
      * @test
      * @dataProvider commandRequestDataProvider
-     * @param OfferType $offerType
-     * @param Request $request
-     * @param AbstractCommand $expectedCommand
      */
     public function it_should_dispatch_the_requested_offer_commands(
         OfferType $offerType,

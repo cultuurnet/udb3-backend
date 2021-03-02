@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializable;
@@ -22,37 +24,34 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     /**
      * @var CalendarType
      */
-    protected $type;
+    private $type;
 
     /**
      * @var DateTimeInterface
      */
-    protected $startDate;
+    private $startDate;
 
     /**
      * @var DateTimeInterface
      */
-    protected $endDate;
+    private $endDate;
 
     /**
      * @var Timestamp[]
      */
-    protected $timestamps = [];
+    private $timestamps = [];
 
     /**
      * @var OpeningHour[]
      */
-    protected $openingHours = [];
+    private $openingHours = [];
 
     /**
      * @var Status
      */
-    protected $status;
+    private $status;
 
     /**
-     * @param CalendarType $type
-     * @param DateTimeInterface|null $startDate
-     * @param DateTimeInterface|null $endDate
      * @param Timestamp[] $timestamps
      * @param OpeningHour[] $openingHours
      */
@@ -108,7 +107,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     {
         $clone = clone $this;
         $clone->timestamps = \array_map(
-            function (Timestamp $timestamp) use ($status) : Timestamp {
+            function (Timestamp $timestamp) use ($status): Timestamp {
                 return $timestamp->withStatus($status);
             },
             $clone->getTimestamps()

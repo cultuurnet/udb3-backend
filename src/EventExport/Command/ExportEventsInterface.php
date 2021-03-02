@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Command;
 
 use CultuurNet\UDB3\EventExport\EventExportQuery;
@@ -12,9 +14,7 @@ interface ExportEventsInterface
      */
     public function getQuery(): EventExportQuery;
 
-    /**
-     * @return null|EmailAddress
-     */
+
     public function getAddress(): ?EmailAddress;
 
     /**

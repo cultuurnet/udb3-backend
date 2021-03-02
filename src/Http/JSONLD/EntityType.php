@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\JSONLD;
 
 use ValueObjects\Enum\Enum;
@@ -12,8 +14,8 @@ use ValueObjects\Enum\Enum;
  */
 class EntityType extends Enum
 {
-    const EVENT = 'event';
-    const PLACE = 'place';
-    const ORGANIZER = 'organizer';
-    const POSTAL_ADDRESS = 'postaladdress';
+    public const EVENT = 'event';
+    public const PLACE = 'place';
+    public const ORGANIZER = 'organizer';
+    public const POSTAL_ADDRESS = 'postaladdress';
 }

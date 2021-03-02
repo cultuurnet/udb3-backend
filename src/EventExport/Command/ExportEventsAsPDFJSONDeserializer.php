@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Command;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -20,7 +22,6 @@ use ValueObjects\Web\EmailAddress;
 class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @param StringLiteral $data
      * @return ExportEventsAsPDF
      */
     public function deserialize(StringLiteral $data)

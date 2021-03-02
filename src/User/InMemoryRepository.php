@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User;
 
 class InMemoryRepository implements Auth0ManagementTokenRepository
 {
-
     private $token = null;
 
     public function token(): ?string

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Event;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
@@ -23,14 +25,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
      */
     private $audience;
 
-    /**
-     * @param UUID $id
-     * @param Language $mainLanguage
-     * @param TranslatedTitle $title
-     * @param Calendar $calendar
-     * @param PlaceReference $placeReference
-     * @param Categories $categories
-     */
+
     public function __construct(
         UUID $id,
         Language $mainLanguage,
@@ -62,7 +57,6 @@ class ImmutableEvent extends ImmutableOffer implements Event
     }
 
     /**
-     * @param PlaceReference $placeReference
      * @return ImmutableEvent
      */
     public function withPlaceReference(PlaceReference $placeReference)
@@ -81,7 +75,6 @@ class ImmutableEvent extends ImmutableOffer implements Event
     }
 
     /**
-     * @param AudienceType $audience
      * @return ImmutableEvent
      */
     public function withAudienceType(AudienceType $audience)

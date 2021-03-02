@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Import;
 
 use Silex\Application;
@@ -12,9 +14,7 @@ class ImportServiceProvider implements ServiceProviderInterface
      */
     private $subscribeHandlersCallback;
 
-    /**
-     * @param callable $subscribeHandlersCallback
-     */
+
     public function __construct(callable $subscribeHandlersCallback)
     {
         $this->subscribeHandlersCallback = $subscribeHandlersCallback;

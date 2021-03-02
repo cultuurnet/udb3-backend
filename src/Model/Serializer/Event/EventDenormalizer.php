@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Serializer\Event;
 
 use CultuurNet\UDB3\Model\Event\Event;
@@ -113,7 +115,7 @@ class EventDenormalizer extends OfferDenormalizer
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("EventDenormalizer does not support {$class}.");
@@ -133,8 +135,6 @@ class EventDenormalizer extends OfferDenormalizer
     }
 
     /**
-     * @param array $data
-     * @param ImmutableEvent $event
      * @return ImmutableEvent
      */
     private function denormalizeAudienceType(array $data, ImmutableEvent $event)

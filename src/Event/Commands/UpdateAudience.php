@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
@@ -15,7 +17,6 @@ class UpdateAudience extends AbstractCommand
     /**
      * UpdateAudience constructor.
      * @param string $itemId
-     * @param Audience $audience
      */
     public function __construct(
         $itemId,

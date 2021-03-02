@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\User;
 
 use ValueObjects\StringLiteral\StringLiteral;
@@ -24,11 +26,7 @@ class UserIdentityDetails implements \JsonSerializable
      */
     private $emailAddress;
 
-    /**
-     * @param StringLiteral $userId
-     * @param StringLiteral $userName
-     * @param EmailAddress $emailAddress
-     */
+
     public function __construct(
         StringLiteral $userId,
         StringLiteral $userName,

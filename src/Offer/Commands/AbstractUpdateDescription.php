@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Description;
@@ -20,8 +22,6 @@ abstract class AbstractUpdateDescription extends AbstractCommand
 
     /**
      * @param string $itemId
-     * @param Description $description
-     * @param Language $language
      */
     public function __construct($itemId, Language $language, Description $description)
     {

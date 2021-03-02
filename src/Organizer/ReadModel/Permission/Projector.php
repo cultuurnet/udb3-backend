@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer\ReadModel\Permission;
 
 use Broadway\Domain\DomainMessage;
@@ -81,10 +83,7 @@ class Projector implements EventListener
         );
     }
 
-    /**
-     * @param string $organizerId
-     * @param DomainMessage $domainMessage
-     */
+
     private function makeOrganizerEditableByUser(
         string $organizerId,
         DomainMessage $domainMessage

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\Filter\AcceptFilter;
@@ -19,12 +21,6 @@ class CdbXmlProxy extends Proxy
 {
     /**
      * CdbXmlProxy constructor.
-     * @param StringLiteral $accept
-     * @param Domain $domain
-     * @param PortNumber $port
-     * @param DiactorosFactory $diactorosFactory
-     * @param HttpFoundationFactory $httpFoundationFactory
-     * @param ClientInterface $client
      */
     public function __construct(
         StringLiteral $accept,
@@ -35,7 +31,7 @@ class CdbXmlProxy extends Proxy
         ClientInterface $client
     ) {
         $cdbXmlFilter = $this->createFilter($accept);
-        
+
         $requestTransformer = $this->createTransformer($domain, $port);
 
         parent::__construct(
@@ -48,7 +44,6 @@ class CdbXmlProxy extends Proxy
     }
 
     /**
-     * @param StringLiteral $accept
      * @return AndFilter
      */
     private function createFilter(StringLiteral $accept)
@@ -60,8 +55,6 @@ class CdbXmlProxy extends Proxy
     }
 
     /**
-     * @param Domain $domain
-     * @param PortNumber $port
      * @return CombinedReplacer
      */
     private function createTransformer(
@@ -69,9 +62,9 @@ class CdbXmlProxy extends Proxy
         PortNumber $port
     ) {
         $domainReplacer = new DomainReplacer($domain);
-        
+
         $portReplacer = new PortReplacer($port);
-        
+
         return new CombinedReplacer([$domainReplacer, $portReplacer]);
     }
 }

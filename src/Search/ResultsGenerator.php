@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use Generator;
@@ -118,11 +120,11 @@ class ResultsGenerator implements LoggerAwareInterface, ResultsGeneratorInterfac
                 } else {
                     $this->logger->error(
                         'query_duplicate_event',
-                        array(
+                        [
                             'query' => $query,
                             'error' => "Found duplicate offer {$id} on page {$currentPage}, " .
                                 "occurred first time on page {$ids[$id]}.",
-                        )
+                        ]
                     );
                 }
             }

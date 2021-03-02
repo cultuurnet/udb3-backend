@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -11,9 +13,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20160930161518 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->createTable('organizer_unique_websites');
@@ -31,9 +30,7 @@ class Version20160930161518 extends AbstractMigration
         $table->addUniqueIndex(['unique_col']);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable('organizer_unique_websites');

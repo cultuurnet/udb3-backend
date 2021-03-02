@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\ContactPoint;
@@ -11,7 +13,6 @@ class ContactPointUpdatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $expectedSerializedValue
-     * @param ContactPointUpdated $contactPointUpdated
      */
     public function it_can_be_serialized_into_an_array(
         $expectedSerializedValue,
@@ -27,7 +28,6 @@ class ContactPointUpdatedTest extends TestCase
      * @test
      * @dataProvider serializationDataProvider
      * @param array $serializedValue
-     * @param ContactPointUpdated $expectedContactPointUpdated
      */
     public function it_can_be_deserialized_from_an_array(
         $serializedValue,

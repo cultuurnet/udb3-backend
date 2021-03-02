@@ -21,8 +21,6 @@ final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
     }
 
     /**
-     * @param StringLiteral $userId
-     * @return UserIdentityDetails|null
      * @throws \Exception
      */
     public function getUserById(StringLiteral $userId): ?UserIdentityDetails

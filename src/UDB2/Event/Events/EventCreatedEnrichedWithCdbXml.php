@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Event\Events;
 
 use CultuurNet\UDB3\Cdb\CdbXmlContainerInterface;
@@ -9,9 +11,6 @@ use DateTimeImmutable;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
-/**
- * @file
- */
 class EventCreatedEnrichedWithCdbXml extends EventCreated implements CdbXmlContainerInterface
 {
     use HasCdbXmlTrait;

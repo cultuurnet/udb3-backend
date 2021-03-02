@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Security\Permission;
 
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
@@ -13,18 +15,13 @@ class OwnerVoter implements PermissionVoterInterface
      */
     private $permissionRepository;
 
-    /**
-     * @param PermissionQueryInterface $permissionRepository
-     */
+
     public function __construct(PermissionQueryInterface $permissionRepository)
     {
         $this->permissionRepository = $permissionRepository;
     }
 
     /**
-     * @param Permission $permission
-     * @param StringLiteral $offerId
-     * @param StringLiteral $userId
      * @return bool
      */
     public function isAllowed(

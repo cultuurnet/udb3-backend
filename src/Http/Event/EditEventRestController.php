@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
@@ -75,11 +77,6 @@ class EditEventRestController extends OfferRestBaseController
      *
      * @param EventEditingServiceInterface $eventEditor
      *   The event editor.
-     * @param MediaManagerInterface $mediaManager
-     * @param IriGeneratorInterface $iriGenerator
-     * @param ApiKeyReaderInterface $apiKeyReader
-     * @param ConsumerReadRepositoryInterface $consumerReadRepository
-     * @param ConsumerSpecificationInterface $shouldApprove
      */
     public function __construct(
         EventEditingServiceInterface $eventEditor,

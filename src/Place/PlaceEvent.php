@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place;
 
 use Broadway\Serializer\Serializable;
@@ -23,8 +25,8 @@ abstract class PlaceEvent implements Serializable
 
     public function serialize(): array
     {
-        return array(
+        return [
             'place_id' => $this->placeId,
-        );
+        ];
     }
 }

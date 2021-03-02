@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Theme;
@@ -13,7 +15,6 @@ abstract class AbstractThemeUpdated extends AbstractEvent
 
     /**
      * @param string $itemId
-     * @param Theme $theme
      */
     final public function __construct($itemId, Theme $theme)
     {

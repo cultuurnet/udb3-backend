@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SavedSearches\Command;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -14,13 +16,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
 {
     /**
-     * @var StringLiteral $userId
+     * @var StringLiteral
      */
     protected $userId;
 
-    /**
-     * @param StringLiteral $userId
-     */
+
     public function __construct(
         StringLiteral $userId
     ) {
@@ -29,7 +29,6 @@ class SubscribeToSavedSearchJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return SubscribeToSavedSearch|\stdClass
      */
     public function deserialize(StringLiteral $data)

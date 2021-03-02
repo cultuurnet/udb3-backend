@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class AbstractUpdateTitleTest extends TestCase
 {
@@ -21,7 +22,7 @@ class AbstractUpdateTitleTest extends TestCase
     protected $itemId;
 
     /**
-     * @var string
+     * @var Title
      */
     protected $title;
 
@@ -38,7 +39,7 @@ class AbstractUpdateTitleTest extends TestCase
 
         $this->updateTitleCommand = $this->getMockForAbstractClass(
             AbstractUpdateTitle::class,
-            array($this->itemId, $this->language, $this->title)
+            [$this->itemId, $this->language, $this->title]
         );
     }
 

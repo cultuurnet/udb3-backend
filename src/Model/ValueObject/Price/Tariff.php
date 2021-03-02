@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Price;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -17,10 +19,7 @@ class Tariff
      */
     private $price;
 
-    /**
-     * @param TranslatedTariffName $name
-     * @param Money $price
-     */
+
     public function __construct(TranslatedTariffName $name, Money $price)
     {
         $this->name = $name;
@@ -36,7 +35,6 @@ class Tariff
     }
 
     /**
-     * @param TranslatedTariffName $name
      * @return Tariff
      */
     public function withName(TranslatedTariffName $name)
@@ -55,7 +53,6 @@ class Tariff
     }
 
     /**
-     * @param Money $price
      * @return Tariff
      */
     public function withPrice(Money $price)
@@ -66,7 +63,6 @@ class Tariff
     }
 
     /**
-     * @param Money $price
      * @return Tariff
      */
     public static function createBasePrice(Money $price)

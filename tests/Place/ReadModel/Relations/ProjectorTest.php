@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\ReadModel\Relations;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -14,12 +16,12 @@ use PHPUnit\Framework\TestCase;
 
 class ProjectorTest extends TestCase
 {
-    const CDBXML_NAMESPACE_32 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
+    public const CDBXML_NAMESPACE_32 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
 
-    const DATE_TIME = '2015-03-01T10:17:19.176169+02:00';
-    
-    const PLACE_ID = 'placeId';
-    const ORGANIZER_ID = 'organizerId';
+    public const DATE_TIME = '2015-03-01T10:17:19.176169+02:00';
+
+    public const PLACE_ID = 'placeId';
+    public const ORGANIZER_ID = 'organizerId';
 
     /**
      * @var RepositoryInterface|MockObject
@@ -46,7 +48,7 @@ class ProjectorTest extends TestCase
     public function it_stores_empty_relation_when_place_imported_from_udb2()
     {
         $xml = file_get_contents(__DIR__ . '/place_imported_from_udb2.cdbxml.xml');
-        
+
         $placeCreatedFromCdbXml = new PlaceImportedFromUDB2(
             self::PLACE_ID,
             $xml,
@@ -65,7 +67,7 @@ class ProjectorTest extends TestCase
                 $this->equalTo(self::PLACE_ID),
                 $this->equalTo(null)
             );
-        
+
         $this->projector->handle($domainMessage);
     }
 
@@ -87,7 +89,7 @@ class ProjectorTest extends TestCase
             ->with(
                 $this->equalTo(self::PLACE_ID)
             );
-        
+
         $this->projector->handle($domainMessage);
     }
 
@@ -145,7 +147,6 @@ class ProjectorTest extends TestCase
 
     /**
      * @param string $placeId
-     * @param mixed $payload
      * @return DomainMessage
      */
     private function createDomainMessage($placeId, $payload)

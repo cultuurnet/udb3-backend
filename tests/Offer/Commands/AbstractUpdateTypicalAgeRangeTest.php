@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,7 +31,7 @@ class AbstractUpdateTypicalAgeRangeTest extends TestCase
 
         $this->updateTypicalAgeRange = $this->getMockForAbstractClass(
             AbstractUpdateTypicalAgeRange::class,
-            array($this->itemId, $this->typicalAgeRange)
+            [$this->itemId, $this->typicalAgeRange]
         );
     }
 

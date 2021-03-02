@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\XSD;
 
 use CultuurNet\UDB3\UDB2\XML\XMLValidationError;
@@ -18,7 +20,6 @@ class XSDAwareXMLValidationService implements XMLValidationServiceInterface
     private $minimumReportLevel;
 
     /**
-     * @param XSDReaderInterface $xsdReader
      *
      * @param int $minimumReportLevel
      *   One of LIBXML_ERR_WARNING, LIBXML_ERR_ERROR, LIBXML_ERR_FATAL

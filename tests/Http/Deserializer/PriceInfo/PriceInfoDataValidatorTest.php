@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\PriceInfo;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -204,8 +206,8 @@ class PriceInfoDataValidatorTest extends TestCase
         ];
 
         $expectedMessages = [
-            '[0].price' => "Required but not found.",
-            '[1].price' => "Required but not found.",
+            '[0].price' => 'Required but not found.',
+            '[1].price' => 'Required but not found.',
         ];
 
         $this->assertDataValidationMessages($this->validator, $data, $expectedMessages);
@@ -233,7 +235,7 @@ class PriceInfoDataValidatorTest extends TestCase
         ];
 
         $expectedMessages = [
-            '[1].price' => "Price must have a numeric value.",
+            '[1].price' => 'Price must have a numeric value.',
         ];
 
         $this->assertDataValidationMessages($this->validator, $data, $expectedMessages);
@@ -295,11 +297,7 @@ class PriceInfoDataValidatorTest extends TestCase
         $this->assertDataValidationMessages($this->validator, $data, $expectedMessages);
     }
 
-    /**
-     * @param DataValidatorInterface $validator
-     * @param mixed $data
-     * @param array $expectedMessages
-     */
+
     private function assertDataValidationMessages(DataValidatorInterface $validator, $data, array $expectedMessages)
     {
         try {

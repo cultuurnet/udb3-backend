@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\DataValidator;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -35,7 +37,6 @@ class CompositeDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param DataValidatorInterface $validator
      * @param string[] $depth
      * @return CompositeDataValidator
      */
@@ -50,7 +51,6 @@ class CompositeDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @throws DataValidationException
      */
     public function validate(array $data)
@@ -86,7 +86,6 @@ class CompositeDataValidator implements DataValidatorInterface
     }
 
     /**
-     * @param array $data
      * @param array $depth
      * @return array|null
      */

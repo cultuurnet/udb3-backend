@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine;
 
@@ -21,10 +20,7 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
      */
     protected $idField;
 
-    /**
-     * @param StringLiteral $tableName
-     * @param StringLiteral $idField
-     */
+
     public function __construct(StringLiteral $tableName, StringLiteral $idField)
     {
         $this->tableName = $tableName;
@@ -42,12 +38,12 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
         $table->addColumn(
             $this->idField->toNative(),
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'user_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->setPrimaryKey([$this->idField->toNative(), 'user_id']);

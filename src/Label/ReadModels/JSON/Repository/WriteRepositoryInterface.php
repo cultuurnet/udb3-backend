@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
@@ -9,13 +11,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface WriteRepositoryInterface
 {
-    /**
-     * @param UUID $uuid
-     * @param StringLiteral $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
-     * @param UUID|null $parentUuid
-     */
     public function save(
         UUID $uuid,
         StringLiteral $name,
@@ -24,33 +19,21 @@ interface WriteRepositoryInterface
         UUID $parentUuid = null
     );
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateVisible(UUID $uuid);
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateInvisible(UUID $uuid);
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updatePublic(UUID $uuid);
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updatePrivate(UUID $uuid);
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateCountIncrement(UUID $uuid);
 
-    /**
-     * @param UUID $uuid
-     */
+
     public function updateCountDecrement(UUID $uuid);
 }

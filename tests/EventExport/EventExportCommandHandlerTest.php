@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport;
 
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
@@ -41,7 +43,6 @@ class EventExportCommandHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-
         $this->eventExportService = $this->createMock(EventExportServiceInterface::class);
 
         $this->princeXMLBinaryPath = 'PrinceXML path';

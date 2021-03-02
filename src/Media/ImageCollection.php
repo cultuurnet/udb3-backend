@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media;
 
 use ArrayIterator;
@@ -19,7 +21,6 @@ class ImageCollection extends AbstractCollection
     }
 
     /**
-     * @param Image $image
      * @return ImageCollection
      */
     public function withMain(Image $image)
@@ -52,7 +53,6 @@ class ImageCollection extends AbstractCollection
     }
 
     /**
-     * @param UUID $uuid
      * @return Image|null
      */
     public function findImageByUUID(UUID $uuid)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Geography;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
@@ -10,7 +12,7 @@ class CountryCode
     use IsString;
     use MatchesRegexPattern;
 
-    const REGEX = '/^[A-Z]{2}$/';
+    public const REGEX = '/^[A-Z]{2}$/';
 
     /**
      * @param string $code

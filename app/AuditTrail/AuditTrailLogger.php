@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\AuditTrail;
 
 use Psr\Log\LoggerInterface;
@@ -7,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AuditTrailLogger
 {
-
     /**
      * @var LoggerInterface
      */
@@ -34,7 +35,6 @@ abstract class AuditTrailLogger
     protected function addToContextBasedOnContentType(
         Request $request
     ): array {
-
         $contextValues = [];
 
         if (in_array($request->getContentType(), ['json', 'jsonld', 'txt'])) {

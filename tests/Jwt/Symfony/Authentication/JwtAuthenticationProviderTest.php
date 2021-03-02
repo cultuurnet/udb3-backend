@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
@@ -60,7 +62,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            "Token type Symfony\\Component\\Security\\Core\\Authentication\\Token\\AnonymousToken not supported."
+            'Token type Symfony\\Component\\Security\\Core\\Authentication\\Token\\AnonymousToken not supported.'
         );
 
         $this->authenticationProvider->authenticate($token);
@@ -81,7 +83,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            "Token signature verification failed. The token is likely forged or manipulated."
+            'Token signature verification failed. The token is likely forged or manipulated.'
         );
 
         $this->authenticationProvider->authenticate($token);
@@ -107,7 +109,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            "Token claims validation failed. This most likely means the token is expired."
+            'Token claims validation failed. This most likely means the token is expired.'
         );
 
         $this->authenticationProvider->authenticate($token);
@@ -138,7 +140,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            "Token is missing one of its required claims."
+            'Token is missing one of its required claims.'
         );
 
         $this->authenticationProvider->authenticate($token);

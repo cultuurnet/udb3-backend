@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Proxy;
 
 use CultuurNet\UDB3\Http\Proxy\CdbXmlProxy;
@@ -16,9 +18,6 @@ use ValueObjects\Web\PortNumber;
 
 class ProxyServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['cdbxml_proxy'] = $app->share(
@@ -70,9 +69,7 @@ class ProxyServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\HttpFoundation\RequestMatcher;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +20,6 @@ class AnyOfRequestMatcher implements RequestMatcherInterface
     }
 
     /**
-     * @param RequestMatcherInterface $requestMatcher
      * @return AnyOfRequestMatcher
      */
     public function with(RequestMatcherInterface $requestMatcher)
@@ -29,7 +30,6 @@ class AnyOfRequestMatcher implements RequestMatcherInterface
     }
 
     /**
-     * @param Request $request
      * @return bool
      */
     public function matches(Request $request)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Label;
 
 use CultuurNet\UDB3\Label;
@@ -27,11 +29,7 @@ class RelatedUDB3LabelApplier implements LabelApplierInterface
      */
     private $logger;
 
-    /**
-     * @param LabelsRelationsRepositoryInterface $labelsRelationsRepository
-     * @param LabelsRepositoryInterface $labelsRepository
-     * @param LoggerInterface $logger
-     */
+
     public function __construct(
         LabelsRelationsRepositoryInterface $labelsRelationsRepository,
         LabelsRepositoryInterface $labelsRepository,

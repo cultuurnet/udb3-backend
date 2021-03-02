@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Translation;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -12,7 +14,7 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             $selfClass = get_class($this);
@@ -54,14 +56,12 @@ abstract class TranslatedValueObjectDenormalizer implements DenormalizerInterfac
     }
 
     /**
-     * @param Language $originalLanguage
      * @param string $originalValue
      * @return TranslatedValueObject
      */
     abstract protected function createTranslatedValueObject(Language $originalLanguage, $originalValue);
 
     /**
-     * @param mixed $value
      * @return object
      */
     abstract protected function createValueObject($value);

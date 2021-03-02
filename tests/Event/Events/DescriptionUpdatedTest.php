@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Description;
@@ -26,8 +28,6 @@ class DescriptionUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $expectedSerializedValue
-     * @param DescriptionUpdated $descriptionUpdated
      */
     public function it_can_be_serialized_to_an_array(
         array $expectedSerializedValue,
@@ -42,8 +42,6 @@ class DescriptionUpdatedTest extends TestCase
     /**
      * @test
      * @dataProvider serializationDataProvider
-     * @param array $serializedValue
-     * @param DescriptionUpdated $expectedDescriptionUpdated
      */
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,

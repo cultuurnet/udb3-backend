@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar;
@@ -86,13 +88,13 @@ final class MajorInfoUpdated extends AbstractEvent
         if ($this->getTheme() !== null) {
             $theme = $this->getTheme()->serialize();
         }
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'title' => (string)$this->getTitle(),
             'event_type' => $this->getEventType()->serialize(),
             'theme' => $theme,
             'location' => $this->getLocation()->toNative(),
             'calendar' => $this->getCalendar()->serialize(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): MajorInfoUpdated

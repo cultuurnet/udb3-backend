@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
 use Broadway\Serializer\Serializable;
@@ -12,9 +14,7 @@ final class Audience implements Serializable
      */
     private $audienceType;
 
-    /**
-     * @param AudienceType $audienceType
-     */
+
     public function __construct(AudienceType $audienceType)
     {
         $this->audienceType = $audienceType->toNative();

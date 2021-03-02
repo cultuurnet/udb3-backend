@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\StringFilter;
 
 class NewlineToSpaceStringFilter implements StringFilterInterface
@@ -14,6 +16,6 @@ class NewlineToSpaceStringFilter implements StringFilterInterface
             throw new \InvalidArgumentException('Argument should be string, got ' . gettype($string) . ' instead.');
         }
 
-        return preg_replace("/[\\r\\n]+/", " ", $string);
+        return preg_replace('/[\\r\\n]+/', ' ', $string);
     }
 }

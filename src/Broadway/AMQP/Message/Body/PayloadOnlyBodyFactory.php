@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP\Message\Body;
 
 use Broadway\Domain\DomainMessage;
@@ -21,7 +23,6 @@ class PayloadOnlyBodyFactory implements BodyFactoryInterface
     }
 
     /**
-     * @param mixed $object
      * @throws SerializationException
      */
     private function guardSerializable($object)

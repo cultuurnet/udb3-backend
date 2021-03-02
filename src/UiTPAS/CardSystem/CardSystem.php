@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UiTPAS\CardSystem;
 
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
@@ -17,10 +19,7 @@ class CardSystem
      */
     private $name;
 
-    /**
-     * @param Id $id
-     * @param StringLiteral $name
-     */
+
     public function __construct(
         Id $id,
         StringLiteral $name

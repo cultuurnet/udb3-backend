@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializable;
@@ -9,32 +11,32 @@ final class MediaObject implements Serializable, JsonLdSerializableInterface
     /**
      * @var string|null
      */
-    protected $type;
+    private $type;
 
     /**
      * @var string
      */
-    protected $internalId;
+    private $internalId;
 
     /**
      * @var string
      */
-    protected $url;
+    private $url;
 
     /**
      * @var string
      */
-    protected $thumbnailUrl;
+    private $thumbnailUrl;
 
     /**
      * @var string
      */
-    protected $description;
+    private $description;
 
     /**
      * @var string
      */
-    protected $copyrightHolder;
+    private $copyrightHolder;
 
     public function __construct(string $url, string $thumbnailUrl, string $description, string $copyrightHolder, string $internalId = '', ?string $type = null)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use PHPUnit\Framework\TestCase;
@@ -11,8 +13,8 @@ class CopyrightHolderTest extends TestCase
      */
     public function it_should_trim_the_given_value()
     {
-        $original = " Publiq  ";
-        $expected = "Publiq";
+        $original = ' Publiq  ';
+        $expected = 'Publiq';
 
         $copyrightHolder = new CopyrightHolder($original);
         $actual = $copyrightHolder->toString();

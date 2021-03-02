@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Place;
 
 use CultuurNet\UDB3\Address\Address;
@@ -16,14 +18,7 @@ class CreatePlace extends MajorInfo
      */
     private $mainLanguage;
 
-    /**
-     * @param Language $mainLanguage
-     * @param Title $title
-     * @param EventType $type
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
-     */
+
     public function __construct(
         Language $mainLanguage,
         Title $title,

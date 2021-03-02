@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label;
 
 use CultuurNet\UDB3\Event\Events\LabelsImported as EventLabelsImported;
@@ -37,7 +39,6 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
     }
 
     /**
-     * @param LabelEventInterface $labelEvent
      * @return RelationType
      * @throws \InvalidArgumentException
      */
@@ -58,7 +59,6 @@ class LabelEventRelationTypeResolver implements LabelEventRelationTypeResolverIn
     }
 
     /**
-     * @param LabelsImportedEventInterface $labelsImported
      * @return RelationType
      */
     public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported)

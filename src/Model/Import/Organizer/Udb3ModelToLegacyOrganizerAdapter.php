@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Organizer;
 
 use CultuurNet\UDB3\Address\Address;
@@ -16,9 +18,7 @@ class Udb3ModelToLegacyOrganizerAdapter implements LegacyOrganizer
      */
     private $organizer;
 
-    /**
-     * @param Organizer $organizer
-     */
+
     public function __construct(Organizer $organizer)
     {
         if (is_null($organizer->getUrl())) {

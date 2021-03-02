@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use GuzzleHttp\Psr7\Request;
 use Http\Client\HttpClient;
-use function http_build_query;
 use Psr\Http\Message\UriInterface;
+use function http_build_query;
 
 class Sapi3CountingSearchService implements CountingSearchServiceInterface
 {
@@ -29,11 +31,7 @@ class Sapi3CountingSearchService implements CountingSearchServiceInterface
      */
     private $queryParameters;
 
-    /**
-     * @param UriInterface $searchLocation
-     * @param HttpClient $httpClient
-     * @param string|null $apiKey
-     */
+
     public function __construct(
         UriInterface $searchLocation,
         HttpClient $httpClient,

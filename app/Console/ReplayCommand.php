@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
@@ -26,11 +28,11 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class ReplayCommand extends AbstractCommand
 {
-    const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
-    const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
-    const OPTION_START_ID = 'start-id';
-    const OPTION_DELAY = 'delay';
-    const OPTION_CDBID = 'cdbid';
+    public const OPTION_DISABLE_PUBLISHING = 'disable-publishing';
+    public const OPTION_DISABLE_RELATED_OFFER_SUBSCRIBERS = 'disable-related-offer-subscribers';
+    public const OPTION_START_ID = 'start-id';
+    public const OPTION_DELAY = 'delay';
+    public const OPTION_CDBID = 'cdbid';
 
     /**
      * @var Connection
@@ -190,9 +192,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param DomainEventStream $eventStream
-     * @param OutputInterface $output
-     * @param EventStream $stream
      * @param string $marker
      */
     private function logStream(
@@ -208,9 +207,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param OutputInterface $output
-     * @param EventStream $stream
-     * @param DomainMessage $message
      * @param string $marker
      */
     private function logMessage(
@@ -289,8 +285,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return AggregateType|null
      */
     private function getAggregateType(
@@ -309,7 +303,6 @@ class ReplayCommand extends AbstractCommand
     }
 
     /**
-     * @param InputInterface $input
      * @return bool
      */
     private function isPublishDisabled(InputInterface $input)

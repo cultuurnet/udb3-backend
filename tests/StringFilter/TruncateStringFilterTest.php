@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\StringFilter;
 
 class TruncateStringFilterTest extends StringFilterTest
@@ -117,8 +119,8 @@ class TruncateStringFilterTest extends StringFilterTest
     public function it_truncates_to_the_closest_sentence_when_possible()
     {
         $this->filter->beSentenceFriendly();
-        $expected = "Een zin.";
-        $original = "Een zin. Een langere zin die niet meer past.";
+        $expected = 'Een zin.';
+        $original = 'Een zin. Een langere zin die niet meer past.';
         $this->assertFilterValue($expected, $original);
     }
 
@@ -161,8 +163,8 @@ class TruncateStringFilterTest extends StringFilterTest
     {
         $this->filter->turnOnWordSafe(0);
         $this->filter->beSentenceFriendly();
-        $expected = "beschrijving";
-        $original = "beschrijving zonder leestekens dat langer is dan de limiet";
+        $expected = 'beschrijving';
+        $original = 'beschrijving zonder leestekens dat langer is dan de limiet';
         $this->assertFilterValue($expected, $original);
     }
 
@@ -173,8 +175,8 @@ class TruncateStringFilterTest extends StringFilterTest
     {
         $this->filter->turnOnWordSafe(0);
         $this->filter->beSentenceFriendly();
-        $expected = "Een zin die te";
-        $original = "Een zin die te lang is om volledig door te laten.";
+        $expected = 'Een zin die te';
+        $original = 'Een zin die te lang is om volledig door te laten.';
         $this->assertFilterValue($expected, $original);
     }
 }

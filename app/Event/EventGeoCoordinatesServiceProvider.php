@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
@@ -14,9 +16,6 @@ use Silex\ServiceProviderInterface;
 
 class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['event_geocoordinates_command_handler'] = $app->share(
@@ -47,9 +46,7 @@ class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

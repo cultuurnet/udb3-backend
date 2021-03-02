@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Contact;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -46,7 +48,6 @@ class ContactPoint
     }
 
     /**
-     * @param TelephoneNumbers $telephoneNumbers
      * @return ContactPoint
      */
     public function withTelephoneNumbers(TelephoneNumbers $telephoneNumbers)
@@ -65,7 +66,6 @@ class ContactPoint
     }
 
     /**
-     * @param EmailAddresses $emailAddresses
      * @return ContactPoint
      */
     public function withEmailAddresses(EmailAddresses $emailAddresses)
@@ -84,7 +84,6 @@ class ContactPoint
     }
 
     /**
-     * @param Urls $urls
      * @return ContactPoint
      */
     public function withUrls(Urls $urls)

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
-use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
@@ -17,37 +18,18 @@ interface OfferEditingServiceInterface
 {
     /**
      * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function addLabel($id, Label $label);
-
-    /**
-     * @param string $id
-     * @param Label $label
-     * @return string
-     */
-    public function removeLabel($id, Label $label);
-
-    /**
-     * @param string $id
-     * @param Language $language
-     * @param StringLiteral $title
      * @return string
      */
     public function updateTitle($id, Language $language, StringLiteral $title);
 
     /**
      * @param string $id
-     * @param Language $language
-     * @param Description $description
      * @return string
      */
     public function updateDescription($id, Language $language, Description $description);
 
     /**
      * @param string $id
-     * @param Calendar $calendar
      *
      * @return string
      */
@@ -55,16 +37,12 @@ interface OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param UUID $imageId
      * @return string
      */
     public function addImage($id, UUID $imageId);
 
     /**
      * @param string $id
-     * @param Image $image
-     * @param StringLiteral $description
-     * @param StringLiteral $copyrightHolder
      * @return string
      */
     public function updateImage($id, Image $image, StringLiteral $description, StringLiteral $copyrightHolder);
@@ -82,14 +60,12 @@ interface OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param Image $image
      * @return string
      */
     public function selectMainImage($id, Image $image);
 
     /**
      * @param string $id
-     * @param AgeRange $ageRange
      * @return string
      */
     public function updateTypicalAgeRange($id, AgeRange $ageRange);
@@ -116,14 +92,12 @@ interface OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param ContactPoint $contactPoint
      * @return string
      */
     public function updateContactPoint($id, ContactPoint $contactPoint);
 
     /**
      * @param string $id
-     * @param BookingInfo $bookingInfo
      * @return string
      */
     public function updateBookingInfo($id, BookingInfo $bookingInfo);
@@ -132,21 +106,18 @@ interface OfferEditingServiceInterface
 
     /**
      * @param string $id
-     * @param StringLiteral $typeId
      * @return string
      */
     public function updateType($id, StringLiteral $typeId);
 
     /**
      * @param string $id
-     * @param StringLiteral $themeId
      * @return string
      */
     public function updateTheme($id, StringLiteral $themeId);
 
     /**
      * @param string $id
-     * @param array $facilities
      * @return string
      */
     public function updateFacilities($id, array $facilities);

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
@@ -22,17 +24,13 @@ class UpdateGeoCoordinatesFromAddress
         $this->address = $address;
     }
 
-    /**
-     * @return string
-     */
+
     public function organizerId(): string
     {
         return $this->organizerId;
     }
 
-    /**
-     * @return Address
-     */
+
     public function address(): Address
     {
         return $this->address;

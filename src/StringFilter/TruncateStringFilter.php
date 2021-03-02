@@ -1,7 +1,6 @@
 <?php
-/**
- * @file
- */
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\StringFilter;
 
@@ -124,7 +123,7 @@ class TruncateStringFilter implements StringFilterInterface
         $hasEndingSymbolInRange = preg_match($sentencePattern, $trunc);
 
         if ($this->sentenceFriendly && $hasEndingSymbolInRange === 1) {
-            $sentenceTruncated = preg_replace($sentencePattern, "$1".$suffix, $trunc);
+            $sentenceTruncated = preg_replace($sentencePattern, '$1' . $suffix, $trunc);
             $truncated = Stringy::create($sentenceTruncated, 'UTF-8');
         } elseif ($wordSafe) {
             $truncated = $stringy->safeTruncate($maxLength, $suffix);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -17,10 +19,10 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
-    const ID = 'id';
-    const UNIQUE_VALUE = 'unique';
-    const OTHER_ID = 'otherId';
-    const OTHER_UNIQUE_VALUE = 'otherUnique';
+    public const ID = 'id';
+    public const UNIQUE_VALUE = 'unique';
+    public const OTHER_ID = 'otherId';
+    public const OTHER_UNIQUE_VALUE = 'otherUnique';
 
     /**
      * @var UniqueDBALEventStoreDecorator

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
@@ -15,7 +17,6 @@ abstract class AbstractCommand implements AuthorizableCommandInterface
 
     /**
      * AbstractCommand constructor.
-     * @param UUID $uuid
      */
     public function __construct(UUID $uuid)
     {

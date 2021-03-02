@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\TabularData\OOXML;
 
 use CultuurNet\UDB3\EventExport\Format\TabularData\TabularDataFileWriterInterface;
@@ -40,7 +42,7 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
         $this->spreadsheet->getActiveSheet()->fromArray(
             $row,
             '',
-            'A'.$this->i
+            'A' . $this->i
         );
 
         $this->i++;

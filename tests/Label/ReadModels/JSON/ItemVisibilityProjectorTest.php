@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 
 use Broadway\Domain\DateTime as BroadwayDateTime;
@@ -51,11 +53,7 @@ class ItemVisibilityProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param LabelName $labelName
-     * @param JsonDocument $jsonDocument
-     * @param RelationType $relationType
-     */
+
     private function mockRelatedDocument(
         LabelName $labelName,
         JsonDocument $jsonDocument,
@@ -86,7 +84,6 @@ class ItemVisibilityProjectorTest extends TestCase
     /**
      * @test
      * @dataProvider relationTypeProvider
-     * @param RelationType $relationType
      */
     public function it_should_update_the_projection_of_offers_which_have_a_label_made_visible(
         RelationType $relationType
@@ -409,7 +406,7 @@ class ItemVisibilityProjectorTest extends TestCase
         $logger
             ->expects($this->once())
             ->method('alert')
-            ->with('Can not update visibility of label: "'. $labelName . '" for the relation with id: "B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A" because the document could not be retrieved.');
+            ->with('Can not update visibility of label: "' . $labelName . '" for the relation with id: "B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A" because the document could not be retrieved.');
 
         $this->projector->setLogger($logger);
 

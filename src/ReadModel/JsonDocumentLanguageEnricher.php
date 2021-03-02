@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\ReadModel;
 
 use Broadway\Domain\Metadata;
@@ -12,9 +14,7 @@ class JsonDocumentLanguageEnricher implements JsonDocumentMetaDataEnricherInterf
      */
     private $languageAnalyzer;
 
-    /**
-     * @param JsonDocumentLanguageAnalyzerInterface $languageAnalyzer
-     */
+
     public function __construct(
         JsonDocumentLanguageAnalyzerInterface $languageAnalyzer
     ) {

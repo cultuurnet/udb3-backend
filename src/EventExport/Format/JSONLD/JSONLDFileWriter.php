@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
@@ -25,7 +27,7 @@ class JSONLDFileWriter implements FileWriterInterface
         $file = fopen($filePath, 'w');
         if (false === $file) {
             throw new \RuntimeException(
-                'Unable to open file for writing: '.$filePath
+                'Unable to open file for writing: ' . $filePath
             );
         }
 

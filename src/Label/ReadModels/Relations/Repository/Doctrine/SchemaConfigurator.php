@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine;
 
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
@@ -10,10 +12,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class SchemaConfigurator implements SchemaConfiguratorInterface
 {
-    const LABEL_NAME = 'labelName';
-    const RELATION_TYPE = 'relationType';
-    const RELATION_ID = 'relationId';
-    const IMPORTED = 'imported';
+    public const LABEL_NAME = 'labelName';
+    public const RELATION_TYPE = 'relationType';
+    public const RELATION_ID = 'relationId';
+    public const IMPORTED = 'imported';
 
     /**
      * @var StringLiteral
@@ -22,16 +24,13 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
 
     /**
      * SchemaConfigurator constructor.
-     * @param StringLiteral $tableName
      */
     public function __construct(StringLiteral $tableName)
     {
         $this->tableName = $tableName;
     }
 
-    /**
-     * @param AbstractSchemaManager $schemaManager
-     */
+
     public function configure(AbstractSchemaManager $schemaManager)
     {
         $schema = $schemaManager->createSchema();
@@ -44,8 +43,6 @@ class SchemaConfigurator implements SchemaConfiguratorInterface
     }
 
     /**
-     * @param Schema $schema
-     * @param StringLiteral $tableName
      * @return \Doctrine\DBAL\Schema\Table
      */
     private function createTable(Schema $schema, StringLiteral $tableName)

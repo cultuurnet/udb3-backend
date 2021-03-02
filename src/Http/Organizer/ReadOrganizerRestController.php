@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\EntityServiceInterface;
@@ -8,10 +10,9 @@ use CultuurNet\UDB3\Http\JsonLdResponse;
 
 class ReadOrganizerRestController
 {
-    const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
-    const GET_ERROR_GONE = 'An error occurred while getting the event with id %s which was removed!';
-
     use ApiProblemJsonResponseTrait;
+    public const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
+    public const GET_ERROR_GONE = 'An error occurred while getting the event with id %s which was removed!';
 
     /**
      * @var EntityServiceInterface
@@ -20,7 +21,6 @@ class ReadOrganizerRestController
 
     /**
      * OrganizerController constructor.
-     * @param EntityServiceInterface           $service
      */
     public function __construct(
         EntityServiceInterface $service

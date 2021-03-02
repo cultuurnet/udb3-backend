@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -8,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class Version20181217144324 extends AbstractMigration
 {
-    const EVENT_STORE_TABLES = [
+    public const EVENT_STORE_TABLES = [
         'events',
         'places',
         'organizers',
@@ -18,9 +20,7 @@ class Version20181217144324 extends AbstractMigration
         'variations',
     ];
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {
@@ -28,9 +28,7 @@ class Version20181217144324 extends AbstractMigration
         }
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         foreach (self::EVENT_STORE_TABLES as $eventStoreTable) {
@@ -43,15 +41,15 @@ class Version20181217144324 extends AbstractMigration
         // @see \Broadway\EventStore\DBALEventStore
         $table = $schema->createTable($name->toNative());
 
-        $table->addColumn('id', 'integer', array('autoincrement' => true));
-        $table->addColumn('uuid', 'guid', array('length' => 36));
-        $table->addColumn('playhead', 'integer', array('unsigned' => true));
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('uuid', 'guid', ['length' => 36]);
+        $table->addColumn('playhead', 'integer', ['unsigned' => true]);
         $table->addColumn('payload', 'text');
         $table->addColumn('metadata', 'text');
-        $table->addColumn('recorded_on', 'string', array('length' => 32));
+        $table->addColumn('recorded_on', 'string', ['length' => 32]);
         $table->addColumn('type', 'text');
 
-        $table->setPrimaryKey(array('id'));
-        $table->addUniqueIndex(array('uuid', 'playhead'));
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['uuid', 'playhead']);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
@@ -48,9 +50,7 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @param AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates
-     */
+
     protected function updateGeoCoordinatesFromAddress(AbstractUpdateGeoCoordinatesFromAddress $updateGeoCoordinates)
     {
         $offerId = $updateGeoCoordinates->getItemId();

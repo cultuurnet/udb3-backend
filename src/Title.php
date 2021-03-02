@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use CultuurNet\UDB3\Model\ValueObject\Text\Title as Udb3ModelTitle;
@@ -27,7 +29,6 @@ class Title extends TrimmedString implements \JsonSerializable
     }
 
     /**
-     * @param Udb3ModelTitle $title
      * @return Title
      */
     public static function fromUdb3ModelTitle(Udb3ModelTitle $title)

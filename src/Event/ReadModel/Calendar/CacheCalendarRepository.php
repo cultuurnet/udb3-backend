@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\ReadModel\Calendar;
 
 use CultureFeed_Cdb_Data_Calendar as Calendar;
@@ -12,9 +14,7 @@ class CacheCalendarRepository implements CalendarRepositoryInterface
      */
     protected $cache;
 
-    /**
-     * @param Cache $cache
-     */
+
     public function __construct(Cache $cache)
     {
         $this->cache = $cache;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo;
 
 use CultureFeed_ResultSet as ResultSet;
@@ -75,7 +77,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
             ]
         );
         $distributionKeys[] = $distributionKeyFactory->buildKey(
-            "3.45",
+            '3.45',
             [
                 $distributionKeyConditionFactory->buildCondition(
                     Condition::DEFINITION_KANSARM,
@@ -105,7 +107,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
 
             $cardSystem = new CardSystem();
             $cardSystem->id = $cardSystemId;
-            $cardSystem->name = 'UiTPAS regio '.$cardSystemId;
+            $cardSystem->name = 'UiTPAS regio ' . $cardSystemId;
             $cardSystem->distributionKeys = [$distributionKey];
 
             $event->cardSystems[] = $cardSystem;
@@ -249,7 +251,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
 
         $this->assertTrue(
             $testLogHandler->hasError(
-                'Can\'t retrieve promotions for event with id:'.$event->cdbid
+                'Can\'t retrieve promotions for event with id:' . $event->cdbid
             )
         );
     }

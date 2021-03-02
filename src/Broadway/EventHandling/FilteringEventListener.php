@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\EventHandling;
 
 use Broadway\Domain\DomainMessage;
@@ -26,9 +28,7 @@ class FilteringEventListener implements EventListener
         $this->domainMessageSpecification = $domainMessageSpecification;
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     public function handle(DomainMessage $domainMessage)
     {
         if ($this->domainMessageSpecification->isSatisfiedBy($domainMessage)) {

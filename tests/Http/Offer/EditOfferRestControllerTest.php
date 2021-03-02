@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
@@ -9,8 +12,11 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\DescriptionJSONDeserializer;
 use CultuurNet\UDB3\Facility;
 use CultuurNet\UDB3\Http\Deserializer\PriceInfo\PriceInfoDataValidator;
+use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Offer\Commands\AddLabel;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Offer\ReadModel\MainLanguage\MainLanguageQueryInterface;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -31,6 +37,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EditOfferRestControllerTest extends TestCase
 {
+    /**
+     * @var TraceableCommandBus
+     */
+    private $commandBus;
+
     /**
      * @var OfferEditingServiceInterface|MockObject
      */
@@ -83,6 +94,7 @@ class EditOfferRestControllerTest extends TestCase
 
     public function setUp()
     {
+        $this->commandBus = new TraceableCommandBus();
         $this->editService = $this->createMock(OfferEditingServiceInterface::class);
 
         $this->mainLanguageQuery = $this->createMock(MainLanguageQueryInterface::class);
@@ -100,6 +112,7 @@ class EditOfferRestControllerTest extends TestCase
         $this->facilitiesJSONDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->controller = new EditOfferRestController(
+            $this->commandBus,
             $this->editService,
             $this->mainLanguageQuery,
             $this->labelDeserializer,
@@ -119,15 +132,12 @@ class EditOfferRestControllerTest extends TestCase
         $label = 'test label';
         $cdbid = 'c6ff4c27-bdbb-452f-a1b5-d9e2e3aa846c';
 
-        $this->editService->expects($this->once())
-            ->method('addLabel')
-            ->with(
-                $cdbid,
-                $label
-            );
+        $this->commandBus->record();
 
         $response = $this->controller
             ->addLabel($cdbid, $label);
+
+        $this->assertEquals([new AddLabel($cdbid, new Label($label))], $this->commandBus->getRecordedCommands());
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -154,15 +164,12 @@ class EditOfferRestControllerTest extends TestCase
         $json = new StringLiteral($data);
         $expectedLabel = $this->labelDeserializer->deserialize($json);
 
-        $this->editService->expects($this->once())
-            ->method('addLabel')
-            ->with(
-                $cdbid,
-                $expectedLabel
-            );
+        $this->commandBus->record();
 
         $response = $this->controller
             ->addLabelFromJsonBody($request, $cdbid);
+
+        $this->assertEquals([new AddLabel($cdbid, $expectedLabel)], $this->commandBus->getRecordedCommands());
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -175,15 +182,12 @@ class EditOfferRestControllerTest extends TestCase
         $label = 'test label';
         $cdbid = 'c6ff4c27-bdbb-452f-a1b5-d9e2e3aa846c';
 
-        $this->editService->expects($this->once())
-            ->method('removeLabel')
-            ->with(
-                $cdbid,
-                $label
-            );
+        $this->commandBus->record();
 
         $response = $this->controller
             ->removeLabel($cdbid, $label);
+
+        $this->assertEquals([new RemoveLabel($cdbid, new Label($label))], $this->commandBus->getRecordedCommands());
 
         $this->assertEquals(204, $response->getStatusCode());
     }

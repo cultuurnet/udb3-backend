@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject;
 
 abstract class DateTimeImmutableRange
@@ -14,10 +16,7 @@ abstract class DateTimeImmutableRange
      */
     private $to;
 
-    /**
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
-     */
+
     public function __construct(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
     {
         if ($from && $to && $from > $to) {

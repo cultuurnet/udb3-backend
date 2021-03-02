@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\AuditTrail;
 
 use Psr\Log\LoggerInterface;
@@ -8,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResponseLogger extends AuditTrailLogger
 {
-
     /**
      * @var LoggerInterface
      */

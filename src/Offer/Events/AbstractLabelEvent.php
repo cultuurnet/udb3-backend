@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Label;
@@ -25,10 +27,10 @@ abstract class AbstractLabelEvent extends AbstractEvent implements LabelEventInt
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'label' => (string) $this->label,
             'visibility' => $this->label->isVisible(),
-        );
+        ];
     }
 
     public static function deserialize(array $data): AbstractLabelEvent

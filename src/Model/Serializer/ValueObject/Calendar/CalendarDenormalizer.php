@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -38,7 +40,7 @@ class CalendarDenormalizer implements DenormalizerInterface
     /**
      * @inheritdoc
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
             throw new UnsupportedException("CalendarDenormalizer does not support {$class}.");
@@ -103,7 +105,6 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate OpeningHoursDenormalizer
-     * @param array $openingHoursData
      * @return OpeningHours
      */
     private function denormalizeOpeningHours(array $openingHoursData)
@@ -114,7 +115,6 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate OpeningHourDenormalizer
-     * @param array $openingHourData
      * @return OpeningHour
      */
     private function denormalizeOpeningHour(array $openingHourData)
@@ -127,7 +127,6 @@ class CalendarDenormalizer implements DenormalizerInterface
 
     /**
      * @todo Extract to a separate DaysDenormalizer
-     * @param array $daysData
      * @return Days
      */
     private function denormalizeDays(array $daysData)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
 use Broadway\EventHandling\EventListener;
@@ -27,10 +29,7 @@ class Projector implements EventListener
      */
     private $sapiVersion;
 
-    /**
-     * @param RepositoryInterface $repository
-     * @param SapiVersion $sapiVersion
-     */
+
     public function __construct(
         RepositoryInterface $repository,
         SapiVersion $sapiVersion
@@ -39,10 +38,7 @@ class Projector implements EventListener
         $this->repository = $repository;
     }
 
-    /**
-     * @param RoleCreated $roleCreated
-     * @param DomainMessage $domainMessage
-     */
+
     public function applyRoleCreated(
         RoleCreated $roleCreated,
         DomainMessage $domainMessage
@@ -53,10 +49,7 @@ class Projector implements EventListener
         );
     }
 
-    /**
-     * @param RoleRenamed $roleRenamed
-     * @param DomainMessage $domainMessage
-     */
+
     public function applyRoleRenamed(
         RoleRenamed $roleRenamed,
         DomainMessage $domainMessage
@@ -67,10 +60,7 @@ class Projector implements EventListener
         );
     }
 
-    /**
-     * @param RoleDeleted $roleDeleted
-     * @param DomainMessage $domainMessage
-     */
+
     public function applyRoleDeleted(
         RoleDeleted $roleDeleted,
         DomainMessage $domainMessage
@@ -78,9 +68,7 @@ class Projector implements EventListener
         $this->repository->remove($roleDeleted->getUuid()->toNative());
     }
 
-    /**
-     * @param ConstraintAdded $constraintAdded
-     */
+
     protected function applyConstraintAdded(ConstraintAdded $constraintAdded)
     {
         if ($constraintAdded->getSapiVersion()->sameValueAs($this->sapiVersion)) {
@@ -91,9 +79,7 @@ class Projector implements EventListener
         }
     }
 
-    /**
-     * @param ConstraintUpdated $constraintUpdated
-     */
+
     protected function applyConstraintUpdated(ConstraintUpdated $constraintUpdated)
     {
         if ($constraintUpdated->getSapiVersion()->sameValueAs($this->sapiVersion)) {
@@ -104,9 +90,7 @@ class Projector implements EventListener
         }
     }
 
-    /**
-     * @param ConstraintRemoved $constraintRemoved
-     */
+
     protected function applyConstraintRemoved(ConstraintRemoved $constraintRemoved)
     {
         if ($constraintRemoved->getSapiVersion()->sameValueAs($this->sapiVersion)) {

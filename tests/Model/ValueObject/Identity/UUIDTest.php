@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use PHPUnit\Framework\TestCase;
@@ -33,7 +35,6 @@ class UUIDTest extends TestCase
     /**
      * @test
      * @dataProvider invalidUUIDDataProvider
-     * @param mixed $invalidUuid
      */
     public function it_should_throw_an_exception_if_an_invalid_uuid_is_given($invalidUuid)
     {

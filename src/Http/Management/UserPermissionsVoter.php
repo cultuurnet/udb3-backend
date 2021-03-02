@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Management;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
@@ -19,7 +21,6 @@ class UserPermissionsVoter implements VoterInterface
 
     /**
      * PermissionVoter constructor.
-     * @param UserPermissionsReadRepositoryInterface $permissionsRepository
      */
     public function __construct(UserPermissionsReadRepositoryInterface $permissionsRepository)
     {

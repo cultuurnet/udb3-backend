@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\BookingInfo;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -15,9 +17,7 @@ class BookingInfoJSONDeserializer extends JSONDeserializer
      */
     private $validator;
 
-    /**
-     * @param DataValidatorInterface|null $validator
-     */
+
     public function __construct(DataValidatorInterface $validator = null)
     {
         if (!$validator) {

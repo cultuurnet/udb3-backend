@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt;
 
 use Lcobucci\JWT\Claim\Basic;
@@ -100,28 +102,28 @@ class JwtDecoderServiceTest extends TestCase
         );
 
         $this->tokenHeaders = [
-            "typ" => "JWT",
-            "alg" => "RS256",
+            'typ' => 'JWT',
+            'alg' => 'RS256',
         ];
 
         $this->tokenClaims = [
-            "uid" => "1",
-            "nick" => "foo",
-            "email" => "foo@bar.com",
-            "iss" => "http://culudb-jwt-provider.dev",
-            "iat" => "1461829061",
-            "exp" => "1461829061",
-            "nbf" => "1461829061",
+            'uid' => '1',
+            'nick' => 'foo',
+            'email' => 'foo@bar.com',
+            'iss' => 'http://culudb-jwt-provider.dev',
+            'iat' => '1461829061',
+            'exp' => '1461829061',
+            'nbf' => '1461829061',
         ];
 
         $this->tokenClaimsAsValueObjects = [
-            "uid" => new Basic('uid', '1'),
-            "nick" => new Basic('nick', 'foo'),
-            "email" => new Basic('email', 'foo@bar.com'),
-            "iss" => new EqualsTo('iss', 'http://culudb-jwt-provider.dev'),
-            "iat" =>  new LesserOrEqualsTo('iat', '1461829061'),
-            "exp" =>  new GreaterOrEqualsTo('exp', '1461829061'),
-            "nbf" => new LesserOrEqualsTo('nbf', '1461829061'),
+            'uid' => new Basic('uid', '1'),
+            'nick' => new Basic('nick', 'foo'),
+            'email' => new Basic('email', 'foo@bar.com'),
+            'iss' => new EqualsTo('iss', 'http://culudb-jwt-provider.dev'),
+            'iat' =>  new LesserOrEqualsTo('iat', '1461829061'),
+            'exp' =>  new GreaterOrEqualsTo('exp', '1461829061'),
+            'nbf' => new LesserOrEqualsTo('nbf', '1461829061'),
         ];
 
         $this->payload = explode('.', $this->tokenString);
@@ -142,7 +144,7 @@ class JwtDecoderServiceTest extends TestCase
         $this->parser = new Parser();
 
         $this->validationData = new ValidationData();
-        $this->validationData->setIssuer("http://culudb-jwt-provider.dev");
+        $this->validationData->setIssuer('http://culudb-jwt-provider.dev');
 
         $this->signer = new Sha256();
         $this->publicKey = new Key($this->publicKeyString);
@@ -319,11 +321,11 @@ class JwtDecoderServiceTest extends TestCase
             $this->publicKey
         );
 
-        $this->tokenString = new StringLiteral(str_repeat(rtrim(
+        $this->tokenString = str_repeat(rtrim(
             file_get_contents(__DIR__ . '/samples/token.txt'),
             '\\r\\n'
-        ), 2));
+        ), 2);
 
-        $this->decoderService->parse($this->tokenString);
+        $this->decoderService->parse(new StringLiteral($this->tokenString));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Cdb\CdbId;
 
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
@@ -18,7 +20,6 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
     private $organizerExternalIdMappingService;
 
     /**
-     * @param MappingServiceInterface|null $placeExternalIdMappingService
      * @param MappingServiceInterface $organizerExternalIdMappingService
      */
     public function __construct(
@@ -37,7 +38,6 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $cdbEvent
      * @return string|null
      */
     public function getRelatedPlaceCdbId(\CultureFeed_Cdb_Item_Event $cdbEvent)
@@ -55,7 +55,6 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
     }
 
     /**
-     * @param \CultureFeed_Cdb_Item_Event $cdbEvent
      * @return string|null
      */
     public function getRelatedOrganizerCdbId(\CultureFeed_Cdb_Item_Event $cdbEvent)
@@ -74,7 +73,6 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
 
     /**
      * @param \CultureFeed_Cdb_Data_Location|\CultureFeed_Cdb_Data_Organiser $embeddedCdb
-     * @param MappingServiceInterface $externalIdMappingService
      * @return null|string
      */
     private function getCdbIdFromEmbeddedLocationOrOrganizer(

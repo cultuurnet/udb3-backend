@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Label\Query;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
@@ -10,9 +12,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class QueryFactory implements QueryFactoryInterface
 {
-    const QUERY = 'query';
-    const START = 'start';
-    const LIMIT = 'limit';
+    public const QUERY = 'query';
+    public const START = 'start';
+    public const LIMIT = 'limit';
 
     /**
      * @var UserIdentificationInterface
@@ -21,7 +23,6 @@ class QueryFactory implements QueryFactoryInterface
 
     /**
      * QueryFactory constructor.
-     * @param UserIdentificationInterface $userIdentification
      */
     public function __construct(UserIdentificationInterface $userIdentification)
     {
@@ -29,7 +30,6 @@ class QueryFactory implements QueryFactoryInterface
     }
 
     /**
-     * @param Request $request
      * @return Query
      */
     public function createFromRequest(Request $request)

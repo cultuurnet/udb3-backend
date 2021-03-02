@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use ValueObjects\Number\Natural;
@@ -29,10 +31,6 @@ class Query
 
     /**
      * Query constructor.
-     * @param StringLiteral $value
-     * @param StringLiteral|null $userId
-     * @param Natural|null $offset
-     * @param Natural|null $limit
      */
     public function __construct(
         StringLiteral $value,

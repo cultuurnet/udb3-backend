@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
@@ -40,7 +42,6 @@ abstract class OfferRestBaseController
 
     /**
      * @param EventEditingServiceInterface|PlaceEditingServiceInterface $editor
-     * @param MediaManagerInterface $mediaManager
      * @param ?JSONDeserializer $bookingInfoDeserializer
      */
     public function __construct(
@@ -63,7 +64,7 @@ abstract class OfferRestBaseController
 
         // @todo Use a data validator and change to an exception so it can be converted to an API problem
         if (empty($bodyContent->typicalAgeRange)) {
-            return new JsonResponse(['error' => "typicalAgeRange required"], 400);
+            return new JsonResponse(['error' => 'typicalAgeRange required'], 400);
         }
 
         $ageRange = AgeRange::fromString($bodyContent->typicalAgeRange);
@@ -96,7 +97,7 @@ abstract class OfferRestBaseController
 
         // @todo Use a data validator and change to an exception so it can be converted to an API problem
         if (empty($bodyContent->organizer)) {
-            return new JsonResponse(['error' => "organizer required"], 400);
+            return new JsonResponse(['error' => 'organizer required'], 400);
         }
 
         $this->editor->updateOrganizer($cdbid, $bodyContent->organizer);
@@ -120,7 +121,7 @@ abstract class OfferRestBaseController
             !isset($bodyContent->contactPoint->url) ||
             !isset($bodyContent->contactPoint->email) ||
             !isset($bodyContent->contactPoint->phone)) {
-            return new JsonResponse(['error' => "contactPoint and his properties required"], 400);
+            return new JsonResponse(['error' => 'contactPoint and his properties required'], 400);
         }
 
         $this->editor->updateContactPoint(
@@ -149,7 +150,7 @@ abstract class OfferRestBaseController
     {
         $bodyContent = json_decode($request->getContent());
         if (empty($bodyContent->mediaObjectId)) {
-            return new JsonResponse(['error' => "media object id required"], 400);
+            return new JsonResponse(['error' => 'media object id required'], 400);
         }
 
         // @todo Validate that this id exists and is in fact an image and not a different type of media object
@@ -164,7 +165,7 @@ abstract class OfferRestBaseController
     {
         $bodyContent = json_decode($request->getContent());
         if (empty($bodyContent->mediaObjectId)) {
-            return new JsonResponse(['error' => "media object id required"], 400);
+            return new JsonResponse(['error' => 'media object id required'], 400);
         }
 
         $mediaObjectId = new UUID($bodyContent->mediaObjectId);

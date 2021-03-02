@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBus;
@@ -15,17 +17,13 @@ trait CommandDeserializerControllerTrait
      */
     private $commandBus = null;
 
-    /**
-     * @param CommandBus $commandBus
-     */
+
     private function setCommandBus(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
     }
 
     /**
-     * @param Request $request
-     * @param DeserializerInterface $deserializer
      * @return JsonResponse
      */
     private function handleRequestWithDeserializer(
@@ -40,7 +38,6 @@ trait CommandDeserializerControllerTrait
     }
 
     /**
-     * @param mixed $command
      * @return JsonResponse
      */
     private function handleCommand($command)

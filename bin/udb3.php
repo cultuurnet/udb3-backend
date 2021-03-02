@@ -107,7 +107,7 @@ $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::EVENT(),
         $app['dbal_connection'],
-        $app['event_bus'],
+        $app['amqp.publisher'],
         $app[EventJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );
@@ -115,7 +115,7 @@ $consoleApp->add(
     new ReindexOffersWithPopularityScore(
         OfferType::PLACE(),
         $app['dbal_connection'],
-        $app['event_bus'],
+        $app['amqp.publisher'],
         $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]
     )
 );

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label\Events;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
@@ -45,7 +47,6 @@ class Created extends AbstractEvent
     }
 
     /**
-     * @param array $data
      * @return Created
      */
     public static function deserialize(array $data)

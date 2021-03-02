@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Category;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -12,7 +14,6 @@ use Respect\Validation\Validator;
 class CategoryCountValidator extends Validator
 {
     /**
-     * @param CategoryDomain $domain
      * @param int $min
      * @param int|null $max
      * @param string $name

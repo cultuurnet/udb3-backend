@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Validation\Event;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepository;
@@ -20,13 +22,6 @@ use Respect\Validation\Rules\Key;
 
 class EventImportValidator extends EventValidator
 {
-    /**
-     * @param DocumentRepository $placeRepository
-     * @param UUIDParser $uuidParser
-     * @param UserIdentificationInterface $userIdentification
-     * @param LabelsRepository $labelsRepository
-     * @param LabelRelationsRepository $labelRelationsRepository
-     */
     public function __construct(
         DocumentRepository $placeRepository,
         UUIDParser $uuidParser,

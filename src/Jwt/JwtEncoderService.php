@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt;
 
 use CultuurNet\UDB3\Clock\Clock;
@@ -42,11 +44,6 @@ class JwtEncoderService implements JwtEncoderServiceInterface
     private $nbf;
 
     /**
-     * @param Builder $builder
-     * @param Signer $signer
-     * @param Key $key
-     * @param Clock $clock
-     * @param IntegerLiteral $exp
      * @param IntegerLiteral $nbf
      */
     public function __construct(

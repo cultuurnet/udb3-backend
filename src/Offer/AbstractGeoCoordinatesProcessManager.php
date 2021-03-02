@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\CommandHandling\CommandBus;
@@ -37,9 +39,7 @@ abstract class AbstractGeoCoordinatesProcessManager implements EventListener
 
     abstract protected function getEventHandlers();
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     public function handle(DomainMessage $domainMessage)
     {
         $payload = $domainMessage->getPayload();

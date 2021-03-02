@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Broadway\AMQP\Message\Properties;
 
 use Broadway\Domain\DomainMessage;
@@ -11,16 +13,13 @@ class ContentTypePropertiesFactory implements PropertiesFactoryInterface
      */
     private $contentTypeLookup;
 
-    /**
-     * @param ContentTypeLookupInterface $contentTypeLookup
-     */
+
     public function __construct(ContentTypeLookupInterface $contentTypeLookup)
     {
         $this->contentTypeLookup = $contentTypeLookup;
     }
 
     /**
-     * @param DomainMessage $domainMessage
      * @return array
      */
     public function createProperties(DomainMessage $domainMessage)

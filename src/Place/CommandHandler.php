@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
@@ -7,15 +9,12 @@ use CultuurNet\UDB3\Place\Commands\AddImage;
 use CultuurNet\UDB3\Place\Commands\CreatePlace;
 use CultuurNet\UDB3\Place\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Place\Commands\ImportImages;
-use CultuurNet\UDB3\Place\Commands\ImportLabels;
 use CultuurNet\UDB3\Place\Commands\Moderation\Approve;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsDuplicate;
 use CultuurNet\UDB3\Place\Commands\Moderation\FlagAsInappropriate;
 use CultuurNet\UDB3\Place\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Place\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Place\Commands\RemoveImage;
-use CultuurNet\UDB3\Place\Commands\AddLabel;
-use CultuurNet\UDB3\Place\Commands\RemoveLabel;
 use CultuurNet\UDB3\Place\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Place\Commands\DeletePlace;
 use CultuurNet\UDB3\Place\Commands\DeleteTypicalAgeRange;
@@ -43,30 +42,6 @@ use Psr\Log\LoggerAwareTrait;
 class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    /**
-     * @return string
-     */
-    protected function getAddLabelClassName()
-    {
-        return AddLabel::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRemoveLabelClassName()
-    {
-        return RemoveLabel::class;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getImportLabelsClassName()
-    {
-        return ImportLabels::class;
-    }
 
     /**
      * @return string
@@ -229,9 +204,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         return FlagAsInappropriate::class;
     }
 
-    /**
-     * @param CreatePlace $command
-     */
+
     protected function handleCreatePlace(CreatePlace $command)
     {
         $place = Place::createPlace(
@@ -248,9 +221,7 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
         $this->offerRepository->save($place);
     }
 
-    /**
-     * @param UpdateAddress $updateAddress
-     */
+
     protected function handleUpdateAddress(UpdateAddress $updateAddress)
     {
         /** @var Place $place */
@@ -261,7 +232,6 @@ class CommandHandler extends OfferCommandHandler implements LoggerAwareInterface
 
     /**
      * Handle an update the major info command.
-     * @param UpdateMajorInfo $updateMajorInfo
      */
     public function handleUpdateMajorInfo(UpdateMajorInfo $updateMajorInfo)
     {

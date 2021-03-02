@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\AMQP;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -8,9 +10,6 @@ use Silex\ServiceProviderInterface;
 
 class AMQPConnectionServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @param Application $app
-     */
     public function register(Application $app)
     {
         $app['amqp.connection'] = $app->share(
@@ -28,9 +27,7 @@ class AMQPConnectionServiceProvider implements ServiceProviderInterface
         );
     }
 
-    /**
-     * @param Application $app
-     */
+
     public function boot(Application $app)
     {
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Storage;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
@@ -8,12 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class DBALPurgeServiceTest extends TestCase
 {
-    const PERSON = 'person';
-    const ID = 'id';
-    const FIRST_NAME = 'firstName';
-    const LAST_NAME = 'lastName';
-
     use DBALTestConnectionTrait;
+    public const PERSON = 'person';
+    public const ID = 'id';
+    public const FIRST_NAME = 'firstName';
+    public const LAST_NAME = 'lastName';
 
     /**
      * @var DBALPurgeService
@@ -58,10 +59,10 @@ class DBALPurgeServiceTest extends TestCase
 
         $personTable = $schema->createTable(self::PERSON);
 
-        $personTable->addColumn(self::ID, 'integer', array('autoincrement' => true));
-        $personTable->addColumn(self::FIRST_NAME, 'string', array('length' => 256));
-        $personTable->addColumn(self::LAST_NAME, 'string', array('length' => 256));
-        $personTable->setPrimaryKey(array(self::ID));
+        $personTable->addColumn(self::ID, 'integer', ['autoincrement' => true]);
+        $personTable->addColumn(self::FIRST_NAME, 'string', ['length' => 256]);
+        $personTable->addColumn(self::LAST_NAME, 'string', ['length' => 256]);
+        $personTable->setPrimaryKey([self::ID]);
 
         $platform = $this->getConnection()->getDatabasePlatform();
         $queries = $schema->toSql($platform);

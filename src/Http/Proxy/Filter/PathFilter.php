@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Proxy\Filter;
 
 use CultuurNet\UDB3\Http\Proxy\FilterPathRegex;
@@ -23,7 +25,7 @@ class PathFilter implements FilterInterface
     public function matches(RequestInterface $request)
     {
         $requestedPath = new FilterPathRegex($request->getUri()->getPath());
-        $pathPattern = '/'.$this->path->toNative().'/';
-        return !!preg_match($pathPattern, $requestedPath);
+        $pathPattern = '/' . $this->path->toNative() . '/';
+        return !!preg_match($pathPattern, $requestedPath->toNative());
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Role\Commands;
 
 use CultuurNet\UDB3\Role\MissingContentTypeException;
@@ -16,7 +18,7 @@ class UpdateRoleRequestDeserializer
         $body_content = json_decode($request->getContent());
 
         if (empty($contentType)) {
-            throw new MissingContentTypeException;
+            throw new MissingContentTypeException();
         }
 
         switch ($contentType) {
@@ -28,7 +30,7 @@ class UpdateRoleRequestDeserializer
                 break;
 
             default:
-                throw new UnknownContentTypeException;
+                throw new UnknownContentTypeException();
                 break;
         }
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Label;
 
 use Crell\ApiProblem\ApiProblem;
@@ -31,8 +33,6 @@ class ReadRestController
 
     /**
      * ReadRestController constructor.
-     * @param ReadServiceInterface $readService
-     * @param QueryFactoryInterface $queryFactory
      */
     public function __construct(
         ReadServiceInterface $readService,
@@ -66,7 +66,6 @@ class ReadRestController
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
     public function search(Request $request)
@@ -92,10 +91,7 @@ class ReadRestController
     }
 
     /**
-     * @param Query $query
      * @param Entity[] $entities
-     * @param Natural $totalEntities
-     * @return PagedCollectionResponse
      */
     private function createPagedCollectionResponse(
         Query $query,

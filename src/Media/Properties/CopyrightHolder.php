@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Media\Properties;
 
 use InvalidArgumentException;
@@ -11,7 +13,7 @@ final class CopyrightHolder extends StringLiteral
     public function __construct($value)
     {
         if (false === \is_string($value)) {
-            throw new InvalidNativeArgumentException($value, array('string'));
+            throw new InvalidNativeArgumentException($value, ['string']);
         }
 
         if (strlen($value) < 2) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Deserializer\Theme;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -23,7 +25,6 @@ class ThemeJSONDeserializer extends JSONDeserializer
     }
 
     /**
-     * @param StringLiteral $data
      * @return Theme
      * @throws DataValidationException
      */

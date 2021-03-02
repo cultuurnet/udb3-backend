@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandHandler;
@@ -20,7 +22,7 @@ abstract class Udb3CommandHandler implements CommandHandler
             return;
         }
 
-        $parameter = new \ReflectionParameter(array($this, $method), 0);
+        $parameter = new \ReflectionParameter([$this, $method], 0);
         $expectedClass = $parameter->getClass();
 
         if ($expectedClass->getName() === get_class($command)) {

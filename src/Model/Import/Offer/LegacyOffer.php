@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
 use CultuurNet\UDB3\BookingInfo;
@@ -76,7 +78,6 @@ interface LegacyOffer
     public function getContactPoint();
 
     /**
-     * @param \DateTimeImmutable|null $default
      * @return \DateTimeImmutable|null
      */
     public function getAvailableFrom(\DateTimeImmutable $default = null);

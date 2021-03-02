@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\EventSourcing;
 
 use Broadway\Domain\DateTime;
@@ -14,12 +16,12 @@ use ValueObjects\Identity\UUID;
 class DomainMessageBuilder
 {
     /**
-     * @var string $userId
+     * @var string
      */
     private $userId;
 
     /**
-     * @var string $id
+     * @var string
      */
     private $id;
 

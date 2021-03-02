@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Security;
 
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
@@ -29,9 +31,6 @@ class Sapi3UserPermissionMatcher implements UserPermissionMatcherInterface
 
     /**
      * ConstraintsOfferFilter constructor.
-     * @param UserConstraintsReadRepositoryInterface $userConstraintsReadRepository
-     * @param SearchQueryFactoryInterface $searchQueryFactory
-     * @param CountingSearchServiceInterface $searchService
      */
     public function __construct(
         UserConstraintsReadRepositoryInterface $userConstraintsReadRepository,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
 class Coordinates
@@ -14,10 +16,7 @@ class Coordinates
      */
     private $long;
 
-    /**
-     * @param Latitude $lat
-     * @param Longitude $long
-     */
+
     public function __construct(Latitude $lat, Longitude $long)
     {
         $this->lat = $lat;
@@ -41,7 +40,6 @@ class Coordinates
     }
 
     /**
-     * @param Coordinates $coordinates
      * @return bool
      */
     public function sameAs(Coordinates $coordinates)
@@ -59,11 +57,11 @@ class Coordinates
         $split = explode(',', $latLon);
 
         if (count($split) !== 2) {
-            throw new \InvalidArgumentException("Lat lon string is not in the expected format (lat,lon).");
+            throw new \InvalidArgumentException('Lat lon string is not in the expected format (lat,lon).');
         }
 
-        $lat = new Latitude((double) $split[0]);
-        $lon = new Longitude((double) $split[1]);
+        $lat = new Latitude((float) $split[0]);
+        $lon = new Longitude((float) $split[1]);
 
         return new Coordinates($lat, $lon);
     }

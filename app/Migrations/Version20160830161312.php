@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\SchemaConfigurator;
@@ -12,9 +14,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20160830161312 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema)
     {
         $table = $schema->getTable('roles_search');
@@ -23,9 +22,7 @@ class Version20160830161312 extends AbstractMigration
             ->setNotnull(false);
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $table = $schema->getTable('roles_search');

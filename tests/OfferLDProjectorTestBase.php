@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3;
 
 use Broadway\Domain\DateTime;
@@ -85,10 +87,6 @@ abstract class OfferLDProjectorTestBase extends TestCase
 
     /**
      * @param object $event
-     * @param string $entityId
-     * @param Metadata|null $metadata
-     * @param DateTime|null $dateTime
-     * @return stdClass
      */
     protected function project(
         $event,

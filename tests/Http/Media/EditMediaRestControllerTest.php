@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
@@ -33,8 +35,6 @@ class EditMediaRestControllerTest extends TestCase
     /**
      * @test
      * @dataProvider incompleteUploadRequestsProvider
-     * @param Request $uploadRequest
-     * @param Response $expectedErrorResponse
      */
     public function it_should_return_an_error_response_when_media_meta_data_is_missing_for_an_upload(
         Request $uploadRequest,

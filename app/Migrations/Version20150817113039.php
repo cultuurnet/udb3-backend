@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
@@ -20,12 +22,12 @@ class Version20150817113039 extends AbstractMigration
         $table->addColumn(
             'entity_id',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'entity_type',
             'string',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'title',
@@ -34,7 +36,7 @@ class Version20150817113039 extends AbstractMigration
         $table->addColumn(
             'uid',
             'guid',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
         $table->addColumn(
             'zip',
@@ -43,7 +45,7 @@ class Version20150817113039 extends AbstractMigration
         $table->addColumn(
             'created',
             'text',
-            array('length' => 36, 'notnull' => true)
+            ['length' => 36, 'notnull' => true]
         );
 
         $table->setPrimaryKey(['entity_id', 'entity_type']);

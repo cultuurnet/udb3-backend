@@ -1,20 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\LabelServiceInterface;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -39,21 +36,14 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
      */
     protected $organizerRepository;
 
-    /**
-     * @var LabelServiceInterface
-     */
-    protected $labelService;
-
     public function __construct(
         CommandBus $commandBus,
         UuidGeneratorInterface $uuidGenerator,
-        Repository $organizerRepository,
-        LabelServiceInterface $labelService
+        Repository $organizerRepository
     ) {
         $this->commandBus = $commandBus;
         $this->uuidGenerator = $uuidGenerator;
         $this->organizerRepository = $organizerRepository;
-        $this->labelService = $labelService;
     }
 
     public function create(
@@ -114,31 +104,6 @@ class DefaultOrganizerEditingService implements OrganizerEditingServiceInterface
     {
         $this->commandBus->dispatch(
             new UpdateContactPoint($organizerId, $contactPoint)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function addLabel(string $organizerId, Label $label): void
-    {
-        $this->labelService->createLabelAggregateIfNew(
-            new LabelName((string) $label),
-            $label->isVisible()
-        );
-
-        $this->commandBus->dispatch(
-            new AddLabel($organizerId, $label)
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function removeLabel(string $organizerId, Label $label): void
-    {
-        $this->commandBus->dispatch(
-            new RemoveLabel($organizerId, $label)
         );
     }
 

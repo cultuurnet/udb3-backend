@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Migrations;
 
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -12,12 +14,10 @@ use Doctrine\DBAL\Types\Type;
  */
 class Version20160817112023 extends AbstractMigration
 {
-    const LABEL_ID_COLUMN = 'label_id';
-    const ROLE_ID_COLUMN = 'role_id';
+    public const LABEL_ID_COLUMN = 'label_id';
+    public const ROLE_ID_COLUMN = 'role_id';
 
-    /**
-     * @param Schema $schema
-     */
+
     public function up(Schema $schema)
     {
         $userRoleTable = $schema->createTable(
@@ -40,9 +40,7 @@ class Version20160817112023 extends AbstractMigration
         );
     }
 
-    /**
-     * @param Schema $schema
-     */
+
     public function down(Schema $schema)
     {
         $schema->dropTable(LabelServiceProvider::LABEL_ROLES_TABLE);

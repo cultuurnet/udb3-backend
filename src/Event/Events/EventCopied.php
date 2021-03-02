@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Calendar;
@@ -45,9 +47,7 @@ final class EventCopied extends AbstractEvent implements AggregateCopiedEventInt
         return $this->originalEventId;
     }
 
-    /**
-     * @return Calendar
-     */
+
     public function getCalendar(): Calendar
     {
         return $this->calendar;

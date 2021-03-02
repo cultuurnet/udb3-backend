@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Offer\Events;
 
 use CultuurNet\UDB3\Language;
@@ -24,8 +26,8 @@ abstract class AbstractPropertyTranslatedEvent extends AbstractEvent
 
     public function serialize(): array
     {
-        return parent::serialize() + array(
+        return parent::serialize() + [
             'language' => (string)$this->language->getCode(),
-        );
+        ];
     }
 }

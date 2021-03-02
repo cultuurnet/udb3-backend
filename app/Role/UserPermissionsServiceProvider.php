@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Silex\Role;
 
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\UserPermissionsReadRepository;
@@ -11,13 +13,13 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class UserPermissionsServiceProvider implements ServiceProviderInterface
 {
-    const USER_ROLES_TABLE = 'user_roles';
-    const ROLE_PERMISSIONS_TABLE = 'role_permissions';
+    public const USER_ROLES_TABLE = 'user_roles';
+    public const ROLE_PERMISSIONS_TABLE = 'role_permissions';
 
-    const USER_PERMISSIONS_READ_REPOSITORY = 'user_permissions_read_repository';
-    const USER_PERMISSIONS_WRITE_REPOSITORY = 'user_permissions_write_repository';
+    public const USER_PERMISSIONS_READ_REPOSITORY = 'user_permissions_read_repository';
+    public const USER_PERMISSIONS_WRITE_REPOSITORY = 'user_permissions_write_repository';
 
-    const USER_PERMISSIONS_PROJECTOR = 'roles.user_permissions_projector';
+    public const USER_PERMISSIONS_PROJECTOR = 'roles.user_permissions_projector';
     /**
      * Registers services on the given app.
      *

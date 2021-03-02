@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Label;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
@@ -41,19 +43,13 @@ class Label extends EventSourcedAggregateRoot
      */
     private $parentUuid;
 
-    /**
-     * @return string
-     */
+
     public function getAggregateRootId(): string
     {
         return $this->uuid->toNative();
     }
 
     /**
-     * @param UUID $uuid
-     * @param StringLiteral $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
      * @return Label
      */
     public static function create(
@@ -75,11 +71,6 @@ class Label extends EventSourcedAggregateRoot
     }
 
     /**
-     * @param UUID $uuid
-     * @param StringLiteral $name
-     * @param Visibility $visibility
-     * @param Privacy $privacy
-     * @param UUID $parentUuid
      * @return Label
      */
     public static function createCopy(
@@ -130,9 +121,7 @@ class Label extends EventSourcedAggregateRoot
         }
     }
 
-    /**
-     * @param Created $created
-     */
+
     public function applyCreated(Created $created)
     {
         $this->uuid = $created->getUuid();
@@ -141,9 +130,7 @@ class Label extends EventSourcedAggregateRoot
         $this->privacy = $created->getPrivacy();
     }
 
-    /**
-     * @param CopyCreated $copyCreated
-     */
+
     public function applyCopyCreated(CopyCreated $copyCreated)
     {
         $this->applyCreated($copyCreated);
@@ -151,33 +138,25 @@ class Label extends EventSourcedAggregateRoot
         $this->parentUuid = $copyCreated->getParentUuid();
     }
 
-    /**
-     * @param MadeVisible $madeVisible
-     */
+
     public function applyMadeVisible(MadeVisible $madeVisible)
     {
         $this->visibility = Visibility::VISIBLE();
     }
 
-    /**
-     * @param MadeInvisible $madeInvisible
-     */
+
     public function applyMadeInvisible(MadeInvisible $madeInvisible)
     {
         $this->visibility = Visibility::INVISIBLE();
     }
 
-    /**
-     * @param MadePublic $madePublic
-     */
+
     public function applyMadePublic(MadePublic $madePublic)
     {
         $this->privacy = Privacy::PRIVACY_PUBLIC();
     }
 
-    /**
-     * @param MadePrivate $madePrivate
-     */
+
     public function applyMadePrivate(MadePrivate $madePrivate)
     {
         $this->privacy = Privacy::PRIVACY_PRIVATE();

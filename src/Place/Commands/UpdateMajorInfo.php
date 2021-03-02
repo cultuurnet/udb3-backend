@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Place\Commands;
 
 use CultuurNet\UDB3\Address\Address;
@@ -38,11 +40,6 @@ class UpdateMajorInfo extends AbstractCommand
 
     /**
      * @param string $placeId
-     * @param Title $title
-     * @param EventType $eventType
-     * @param Address $address
-     * @param Calendar $calendar
-     * @param Theme|null $theme
      */
     public function __construct(
         $placeId,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\UDB2\Label;
 
 use Broadway\Domain\AggregateRoot;
@@ -68,7 +70,6 @@ class RelatedUDB3LabelApplierTest extends TestCase
      * @test aggregateDataProvider
      * @dataProvider aggregateDataProvider
      * @param AggregateRoot|Event|Place|Organizer $aggregateRoot
-     * @param RelationType $relationType
      */
     public function it_can_apply_labels(
         AggregateRoot $aggregateRoot,

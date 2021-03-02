@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Geocoding\Coordinate;
 
 abstract class Coordinate
@@ -30,7 +32,6 @@ abstract class Coordinate
     }
 
     /**
-     * @param Coordinate $coordinate
      * @return bool
      */
     public function sameAs(Coordinate $coordinate)
