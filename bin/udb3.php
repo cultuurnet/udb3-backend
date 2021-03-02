@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Silex\Console\FireProjectedToJSONLDForRelationsCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodeEventCommand;
 use CultuurNet\UDB3\Silex\Console\GeocodePlaceCommand;
+use CultuurNet\UDB3\Silex\Console\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Silex\Console\ImportEventCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\ImportPlaceCdbXmlCommand;
 use CultuurNet\UDB3\Silex\Console\MarkPlaceAsDuplicateCommand;
@@ -125,6 +126,8 @@ $consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
 $consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_permission_query']));
 $consoleApp->add(new UpdateUniqueLabels($app['dbal_connection']));
 $consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection']));
+
+$consoleApp->add(new ImportOfferAutoClassificationLabels($app['dbal_connection'], $app['event_command_bus']));
 
 try {
     $consoleApp->run();
