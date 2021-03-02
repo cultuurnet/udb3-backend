@@ -26,7 +26,7 @@
     "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/culturefeed-php": "dev-master",
     "cultuurnet/monolog-socketio": "~0.1",
-    "cultuurnet/udb3-api-guard": "^2.0",
+    "cultuurnet/udb3-api-guard": "^v3.0",
     "cultuurnet/valueobjects": "^4.1",
     "danielstjules/stringy": "^3.1",
     "doctrine/cache": "~1.3",
