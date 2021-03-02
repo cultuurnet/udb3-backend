@@ -18,7 +18,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php-versions }}
                   ini-values: xdebug.mode=coverage
-                  extensions: intl, tidy, bcmath
+                  extensions: bcmath, tidy
                   tools: composer
 
             - name: ✌️ Check PHP Version
@@ -54,7 +54,6 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
-                  extensions: intl, tidy, bcmath, zip
                   tools: composer
 
             - name: 📩 Cache Composer packages
@@ -84,7 +83,6 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
-                  extensions: intl, tidy, bcmath, zip
                   tools: composer
 
             - name: 📩 Cache Composer packages
