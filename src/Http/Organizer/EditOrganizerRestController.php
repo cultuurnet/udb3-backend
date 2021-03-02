@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Organizer;
 
+use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Organizer\Commands\AddLabel;
+use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\OrganizerEditingServiceInterface;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\ContactPoint\ContactPointJSONDeserializer;
@@ -24,6 +27,11 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class EditOrganizerRestController
 {
+    /**
+     * @var CommandBus
+     */
+    private $commandBus;
+
     /** @var OrganizerEditingServiceInterface */
     private $editingService;
 
@@ -39,9 +47,11 @@ class EditOrganizerRestController
      * EditOrganizerRestController constructor.
      */
     public function __construct(
+        CommandBus $commandBus,
         OrganizerEditingServiceInterface $organizerEditingService,
         IriGeneratorInterface $organizerIriGenerator
     ) {
+        $this->commandBus = $commandBus;
         $this->editingService = $organizerEditingService;
         $this->iriGenerator = $organizerIriGenerator;
 
@@ -193,21 +203,13 @@ class EditOrganizerRestController
 
     public function addLabel(string $organizerId, string $labelName): Response
     {
-        $this->editingService->addLabel(
-            $organizerId,
-            new Label($labelName)
-        );
-
+        $this->commandBus->dispatch(new AddLabel($organizerId, new Label($labelName)));
         return new NoContent();
     }
 
     public function removeLabel($organizerId, $labelName): Response
     {
-        $this->editingService->removeLabel(
-            $organizerId,
-            new Label($labelName)
-        );
-
+        $this->commandBus->dispatch(new RemoveLabel($organizerId, new Label($labelName)));
         return new NoContent();
     }
 

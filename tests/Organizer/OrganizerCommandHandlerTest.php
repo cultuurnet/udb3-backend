@@ -15,21 +15,11 @@ use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\ContactPoint;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Label\ValueObjects\Privacy;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
@@ -37,9 +27,6 @@ use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
 use CultuurNet\UDB3\Organizer\Events\AddressRemoved;
 use CultuurNet\UDB3\Organizer\Events\AddressUpdated;
 use CultuurNet\UDB3\Organizer\Events\ContactPointUpdated;
-use CultuurNet\UDB3\Organizer\Events\LabelAdded;
-use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
-use CultuurNet\UDB3\Organizer\Events\LabelsImported;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
@@ -49,7 +36,6 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
@@ -73,11 +59,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
      * @var OrganizerRepository
      */
     private $repository;
-
-    /**
-     * @var ReadRepositoryInterface|MockObject
-     */
-    private $labelRepository;
 
     /**
      * @var OrganizerRelationServiceInterface|MockObject
@@ -109,28 +90,10 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->eventBus = $this->createMock(EventBus::class);
         $this->repository = new OrganizerRepository($this->eventStore, $this->eventBus);
 
-        $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
-        $this->labelRepository->method('getByName')
-            ->will($this->returnCallback(
-                function (StringLiteral $labelName) {
-                    return new Entity(
-                        new UUID(),
-                        $labelName,
-                        $labelName->toNative() === 'foo' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
-                    );
-                }
-            ));
-
         $this->eventOrganizerRelationService = $this->createMock(OrganizerRelationServiceInterface::class);
         $this->placeOrganizerRelationService = $this->createMock(OrganizerRelationServiceInterface::class);
 
-        $this->commandHandler = (
-            new OrganizerCommandHandler(
-                $this->repository,
-                $this->labelRepository
-            )
-        )
+        $this->commandHandler = (new OrganizerCommandHandler($this->repository))
             ->withOrganizerRelationService($this->eventOrganizerRelationService)
             ->withOrganizerRelationService($this->placeOrganizerRelationService);
 
@@ -161,8 +124,7 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
             new OrganizerRepository(
                 $eventStore,
                 $eventBus
-            ),
-            $this->labelRepository
+            )
         );
     }
 
@@ -373,219 +335,6 @@ class OrganizerCommandHandlerTest extends CommandHandlerScenarioTestCase
                 ]
             );
     }
-
-    /**
-     * @test
-     */
-    public function it_handles_add_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo', true);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new AddLabel($organizerId, $label))
-            ->then([new LabelAdded($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_add_invisible_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('bar', false);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new AddLabel($organizerId, $label))
-            ->then([new LabelAdded($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_add_the_same_label_twice()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo', true);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([
-                $this->organizerCreated,
-                new LabelAdded($organizerId, $label),
-            ])
-            ->when(new AddLabel($organizerId, $label))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_removes_an_attached_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo', true);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([
-                $this->organizerCreated,
-                new LabelAdded($organizerId, $label),
-            ])
-            ->when(new RemoveLabel($organizerId, $label))
-            ->then([new LabelRemoved($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_removes_an_attached_invisible_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('bar', false);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([
-                $this->organizerCreated,
-                new LabelAdded($organizerId, $label),
-            ])
-            ->when(new RemoveLabel($organizerId, $label))
-            ->then([new LabelRemoved($organizerId, $label)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_remove_a_missing_label()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $label = new Label('foo');
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new RemoveLabel($organizerId, $label))
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_handle_complex_label_scenario()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-        $labelFoo = new Label('foo', true);
-        $labelBar = new Label('bar', false);
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given([$this->organizerCreated])
-            ->when(new AddLabel($organizerId, $labelFoo))
-            ->when(new AddLabel($organizerId, $labelBar))
-            ->when(new AddLabel($organizerId, $labelBar))
-            ->when(new RemoveLabel($organizerId, $labelFoo))
-            ->when(new RemoveLabel($organizerId, $labelBar))
-            ->when(new RemoveLabel($organizerId, $labelBar))
-            ->then([
-                new LabelAdded($organizerId, $labelFoo),
-                new LabelAdded($organizerId, $labelBar),
-                new LabelRemoved($organizerId, $labelFoo),
-                new LabelRemoved($organizerId, $labelBar),
-            ]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_import_labels()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                ]
-            )
-            ->when(
-                new ImportLabels(
-                    $organizerId,
-                    new Labels(
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('foo'),
-                            true
-                        ),
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('bar'),
-                            true
-                        )
-                    )
-                )
-            )
-            ->then(
-                [
-                    new LabelsImported(
-                        $organizerId,
-                        new Labels(
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('foo'),
-                                true
-                            ),
-                            new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                                new LabelName('bar'),
-                                true
-                            )
-                        )
-                    ),
-                    new LabelAdded($organizerId, new Label('foo')),
-                    new LabelAdded($organizerId, new Label('bar')),
-                ]
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_not_replace_private_labels_that_are_already_on_the_organizer()
-    {
-        $organizerId = $this->organizerCreated->getOrganizerId();
-
-        $this->scenario
-            ->withAggregateId($organizerId)
-            ->given(
-                [
-                    $this->organizerCreated,
-                    new LabelAdded($organizerId, new Label('existing_to_be_removed')),
-                    new LabelAdded($organizerId, new Label('existing_private')),
-                ]
-            )
-            ->when(
-                (
-                    new ImportLabels(
-                        $organizerId,
-                        new Labels()
-                    )
-                )->withLabelsToKeepIfAlreadyOnOrganizer(
-                    new Labels(
-                        new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label(
-                            new LabelName('existing_private')
-                        )
-                    )
-                )
-            )
-            ->then(
-                [
-                    new LabelRemoved($organizerId, new Label('existing_to_be_removed')),
-                ]
-            );
-    }
-
 
     /**
      * @test

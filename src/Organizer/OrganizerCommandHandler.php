@@ -6,21 +6,13 @@ namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\CommandHandling\CommandHandler;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Organizer\Commands\AbstractLabelCommand;
-use CultuurNet\UDB3\Organizer\Commands\AddLabel;
 use CultuurNet\UDB3\Organizer\Commands\CreateOrganizer;
 use CultuurNet\UDB3\Organizer\Commands\DeleteOrganizer;
-use CultuurNet\UDB3\Organizer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\RemoveAddress;
-use CultuurNet\UDB3\Organizer\Commands\RemoveLabel;
 use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Organizer\Commands\UpdateTitle;
 use CultuurNet\UDB3\Organizer\Commands\UpdateWebsite;
-use ValueObjects\StringLiteral\StringLiteral;
-use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 
 class OrganizerCommandHandler implements CommandHandler
 {
@@ -30,21 +22,13 @@ class OrganizerCommandHandler implements CommandHandler
     private $organizerRepository;
 
     /**
-     * @var ReadRepositoryInterface
-     */
-    private $labelRepository;
-
-    /**
      * @var OrganizerRelationServiceInterface[]
      */
     private $organizerRelationServices;
 
-    public function __construct(
-        Repository $organizerRepository,
-        ReadRepositoryInterface $labelRepository
-    ) {
+    public function __construct(Repository $organizerRepository)
+    {
         $this->organizerRepository = $organizerRepository;
-        $this->labelRepository = $labelRepository;
         $this->organizerRelationServices = [];
     }
 
@@ -71,9 +55,6 @@ class OrganizerCommandHandler implements CommandHandler
             RemoveAddress::class => 'removeAddress',
             UpdateContactPoint::class => 'updateContactPoint',
             DeleteOrganizer::class => 'deleteOrganizer',
-            AddLabel::class => 'addLabel',
-            RemoveLabel::class => 'removeLabel',
-            ImportLabels::class => 'importLabels',
         ];
     }
 
@@ -155,51 +136,6 @@ class OrganizerCommandHandler implements CommandHandler
 
         $this->organizerRepository->save($organizer);
     }
-
-
-    protected function addLabel(AddLabel $addLabel)
-    {
-        $organizer = $this->loadOrganizer($addLabel->getOrganizerId());
-
-        $organizer->addLabel($this->createLabel($addLabel));
-
-        $this->organizerRepository->save($organizer);
-    }
-
-
-    protected function removeLabel(RemoveLabel $removeLabel)
-    {
-        $organizer = $this->loadOrganizer($removeLabel->getOrganizerId());
-
-        $organizer->removeLabel($this->createLabel($removeLabel));
-
-        $this->organizerRepository->save($organizer);
-    }
-
-
-    protected function importLabels(ImportLabels $importLabels)
-    {
-        $organizer = $this->loadOrganizer($importLabels->getOrganizerId());
-
-        $organizer->importLabels($importLabels->getLabels(), $importLabels->getLabelsToKeepIfAlreadyOnOrganizer());
-
-        $this->organizerRepository->save($organizer);
-    }
-
-    /**
-     * @return Label
-     */
-    private function createLabel(AbstractLabelCommand $labelCommand)
-    {
-        $labelName = new StringLiteral((string) $labelCommand->getLabel());
-        $label = $this->labelRepository->getByName($labelName);
-
-        return new Label(
-            $labelName->toNative(),
-            $label->getVisibility() === Visibility::VISIBLE()
-        );
-    }
-
 
     public function deleteOrganizer(DeleteOrganizer $deleteOrganizer)
     {

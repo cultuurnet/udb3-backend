@@ -39,6 +39,7 @@ use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerPermissionServiceProvider;
+use CultuurNet\UDB3\Silex\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -626,10 +627,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe(new MarkAsDuplicateCommandHandler($app['place_repository']));
 
         $commandBus->subscribe(
-            (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler(
-                $app['organizer_repository'],
-                $app[LabelServiceProvider::JSON_READ_REPOSITORY]
-            ))
+            (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler($app['organizer_repository']))
                 ->withOrganizerRelationService($app['place_organizer_relation_service'])
                 ->withOrganizerRelationService($app['event_organizer_relation_service'])
         );
@@ -643,11 +641,18 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         $commandBus->subscribe($app['event_geocoordinates_command_handler']);
         $commandBus->subscribe($app['organizer_geocoordinates_command_handler']);
         $commandBus->subscribe($app[ProductionCommandHandler::class]);
+
+        // Offer command handlers
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
         $commandBus->subscribe($app[ChangeOwnerHandler::class]);
         $commandBus->subscribe($app[AddLabelHandler::class]);
         $commandBus->subscribe($app[RemoveLabelHandler::class]);
         $commandBus->subscribe($app[ImportLabelsHandler::class]);
+
+        // Organizer command handlers
+        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class]);
+        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler::class]);
+        $commandBus->subscribe($app[\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class]);
 
         $commandBus->subscribe($app[LabelServiceProvider::COMMAND_HANDLER]);
     };
@@ -752,12 +757,12 @@ $app['organizer_editing_service'] = $app->share(
         return new \CultuurNet\UDB3\Organizer\DefaultOrganizerEditingService(
             $app['event_command_bus'],
             $app['uuid_generator'],
-            $app['organizer_repository'],
-            $app['labels.constraint_aware_service']
+            $app['organizer_repository']
         );
     }
 );
 
+$app->register(new OrganizerServiceProvider());
 $app->register(new OrganizerJSONLDServiceProvider());
 
 $app['eventstore_payload_serializer'] = $app->share(
