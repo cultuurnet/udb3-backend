@@ -42,7 +42,7 @@ class ReadPlaceRestController
 
     public function get(string $cdbid, Request $request): JsonResponse
     {
-        $includeMetadata = $request->query->get('includeMetadata', false);
+        $includeMetadata = (bool) $request->query->get('includeMetadata', false);
 
         try {
             $place = $this->documentRepository->fetch($cdbid, $includeMetadata);
