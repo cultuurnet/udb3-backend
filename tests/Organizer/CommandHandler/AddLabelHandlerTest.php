@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Organizer\CommandHandler;
 
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
@@ -21,7 +23,6 @@ use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
-use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
@@ -119,10 +120,10 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
             ->then([]);
     }
 
-    private function organizerCreated($id): OrganizerCreated
+    private function organizerCreated(string $id): OrganizerCreated
     {
         return new OrganizerCreated(
-            UUID::fromNative($id),
+            $id,
             new Title('Organizer Title'),
             [
                 new Address(
