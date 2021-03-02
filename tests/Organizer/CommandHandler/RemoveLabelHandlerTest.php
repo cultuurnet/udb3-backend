@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Geography\Country;
-use ValueObjects\Identity\UUID;
 
 final class RemoveLabelHandlerTest extends CommandHandlerScenarioTestCase
 {

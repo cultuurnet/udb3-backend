@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Organizer\OrganizerRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
-use ValueObjects\Identity\UUID;
 
 final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
 {
