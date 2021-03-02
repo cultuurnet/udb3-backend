@@ -18,6 +18,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php-versions }}
                   ini-values: xdebug.mode=coverage
+                  extensions: bcmath
                   tools: composer
 
             - name: ✌️ Check PHP Version
