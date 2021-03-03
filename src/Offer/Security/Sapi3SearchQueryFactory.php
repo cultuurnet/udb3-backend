@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Security;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-final class Sapi3SearchQueryFactory implements SearchQueryFactoryInterface
+final class Sapi3SearchQueryFactory
 {
     private function createQueryString(
         StringLiteral $constraint,

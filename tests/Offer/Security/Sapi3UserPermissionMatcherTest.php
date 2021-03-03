@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Security;
 
-use CultuurNet\SearchV3\Parameter\Query;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Search\CountingSearchServiceInterface;
@@ -20,7 +19,7 @@ class Sapi3UserPermissionMatcherTest extends TestCase
     private $userConstraintsReadRepository;
 
     /**
-     * @var SearchQueryFactoryInterface|MockObject
+     * @var Sapi3SearchQueryFactory|MockObject
      */
     private $searchQueryFactory;
 
@@ -41,7 +40,7 @@ class Sapi3UserPermissionMatcherTest extends TestCase
         );
 
         $this->searchQueryFactory = $this->createMock(
-            SearchQueryFactoryInterface::class
+            Sapi3SearchQueryFactory::class
         );
 
         $this->searchService = $this->createMock(

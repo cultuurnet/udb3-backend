@@ -20,7 +20,7 @@ class Sapi3UserPermissionMatcher implements UserPermissionMatcherInterface
     private $userConstraintsReadRepository;
 
     /**
-     * @var SearchQueryFactoryInterface
+     * @var Sapi3SearchQueryFactory
      */
     private $searchQueryFactory;
 
@@ -29,12 +29,9 @@ class Sapi3UserPermissionMatcher implements UserPermissionMatcherInterface
      */
     private $searchService;
 
-    /**
-     * ConstraintsOfferFilter constructor.
-     */
     public function __construct(
         UserConstraintsReadRepositoryInterface $userConstraintsReadRepository,
-        SearchQueryFactoryInterface $searchQueryFactory,
+        Sapi3SearchQueryFactory $searchQueryFactory,
         CountingSearchServiceInterface $searchService
     ) {
         $this->userConstraintsReadRepository = $userConstraintsReadRepository;
