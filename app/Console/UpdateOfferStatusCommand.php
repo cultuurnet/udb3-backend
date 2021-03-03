@@ -99,6 +99,11 @@ class UpdateOfferStatusCommand extends AbstractCommand
 
         $progressBar->finish();
 
+        $output->writeln('');
+        foreach ($exceptions as $exception) {
+            $output->writeln($exception);
+        }
+
         return 0;
     }
 
