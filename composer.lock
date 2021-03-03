@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3599259ce607c3ab189e9e89e85dcecd",
+    "content-hash": "ebee53aab27d3f537ea851b4a1fc7e65",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -869,16 +869,16 @@
         },
         {
             "name": "cultuurnet/udb3-api-guard",
-            "version": "V2.0.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "c2271000227653e6e8b149209a17f82bc468c843"
+                "reference": "126f3e08ffbedaf13eccaf83b943e7c685ba535c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/c2271000227653e6e8b149209a17f82bc468c843",
-                "reference": "c2271000227653e6e8b149209a17f82bc468c843",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/126f3e08ffbedaf13eccaf83b943e7c685ba535c",
+                "reference": "126f3e08ffbedaf13eccaf83b943e7c685ba535c",
                 "shasum": ""
             },
             "require": {
@@ -889,9 +889,8 @@
                 "cultuurnet/culturefeed-php": "~1.8",
                 "phpstan/phpstan": "^0.12.74",
                 "phpunit/phpunit": "^7.5",
-                "satooshi/php-coveralls": "~0.7",
-                "slim/psr7": "^0.5.0",
-                "squizlabs/php_codesniffer": "^3.5"
+                "publiq/php-cs-fixer-config": "^v1.3",
+                "slim/psr7": "^0.5.0"
             },
             "suggest": {
                 "cultuurnet/culturefeed-php": "To use the CultureFeed implementations of ApiKey and Consumer interfaces."
@@ -917,7 +916,7 @@
                     "email": "info@2publiq.be"
                 }
             ],
-            "time": "2021-02-22T10:05:10+00:00"
+            "time": "2021-03-01T16:19:28+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -8205,11 +8204,6 @@
                 "validation",
                 "versioning"
             ],
-            "support": {
-                "irc": "irc://irc.freenode.org/composer",
-                "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.2.4"
-            },
             "funding": [
                 {
                     "url": "https://packagist.com",
@@ -8268,11 +8262,6 @@
                 "Xdebug",
                 "performance"
             ],
-            "support": {
-                "irc": "irc://irc.freenode.org/composer",
-                "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/1.4.5"
-            },
             "funding": [
                 {
                     "url": "https://packagist.com",
@@ -8445,10 +8434,6 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "support": {
-                "issues": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues",
-                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.18.2"
-            },
             "funding": [
                 {
                     "url": "https://github.com/keradus",
@@ -8708,10 +8693,6 @@
             "keywords": [
                 "diff"
             ],
-            "support": {
-                "issues": "https://github.com/PHP-CS-Fixer/diff/issues",
-                "source": "https://github.com/PHP-CS-Fixer/diff/tree/v1.3.1"
-            },
             "time": "2020-10-14T08:39:05+00:00"
         },
         {
@@ -10099,9 +10080,6 @@
             ],
             "description": "Provides a way to profile code",
             "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/stopwatch/tree/v4.4.19"
-            },
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -10161,16 +10139,16 @@
     ],
     "aliases": [
         {
-            "package": "chrisboulton/php-resque",
-            "version": "dev-compat-1-2",
             "alias": "1.2",
-            "alias_normalized": "1.2.0.0"
+            "alias_normalized": "1.2.0.0",
+            "version": "dev-compat-1-2",
+            "package": "chrisboulton/php-resque"
         },
         {
-            "package": "jeremykendall/php-domain-parser",
-            "version": "4.0.3.0-alpha",
             "alias": "1.3.1",
-            "alias_normalized": "1.3.1.0"
+            "alias_normalized": "1.3.1.0",
+            "version": "4.0.3.0-alpha",
+            "package": "jeremykendall/php-domain-parser"
         }
     ],
     "minimum-stability": "dev",
@@ -10184,11 +10162,16 @@
     "platform": {
         "php": ">=7.1",
         "ext-dom": "*",
+        "ext-iconv": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-pcntl": "*",
         "ext-pdo": "*",
+        "ext-redis": "*",
         "ext-tidy": "*",
+        "ext-simplexml": "*",
         "ext-xmlreader": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }

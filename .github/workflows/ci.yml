@@ -54,6 +54,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
+                  extensions: tidy, zip
                   tools: composer
 
             - name: 📩 Cache Composer packages
@@ -83,6 +84,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
+                  extensions: tidy, zip
                   tools: composer
 
             - name: 📩 Cache Composer packages
