@@ -20,8 +20,7 @@ class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
         $app['place_controller'] = $app->share(
             function (Application $app) {
                 return new ReadPlaceRestController(
-                    $app['place_service'],
-                    $app['search_serializer']
+                    $app['place_service']
                 );
             }
         );
