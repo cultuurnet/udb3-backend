@@ -67,7 +67,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
                 $output,
                 new ConfirmationQuestion(
                     "This action will update the status of {$count} {$this->getPluralOfferType()} to {$statusType->toNative()}, continue? [y/N] ",
-                    true
+                    false
                 )
             );
 
