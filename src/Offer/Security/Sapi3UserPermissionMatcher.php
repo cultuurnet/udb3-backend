@@ -63,7 +63,7 @@ class Sapi3UserPermissionMatcher implements UserPermissionMatcherInterface
             $offerId
         );
 
-        $totalItems = $this->searchService->search($query->getValue());
+        $totalItems = $this->searchService->search($query);
 
         return $totalItems === 1;
     }

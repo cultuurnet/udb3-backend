@@ -32,7 +32,7 @@ final class Sapi3SearchQueryFactoryTest extends TestCase
             $offerId
         );
 
-        $expectedQuery = new Query('((zipCode:3000 OR zipCode:3010) AND id:offerId)');
+        $expectedQuery = '((zipCode:3000 OR zipCode:3010) AND id:offerId)';
 
         $this->assertEquals($expectedQuery, $query);
     }
@@ -52,7 +52,7 @@ final class Sapi3SearchQueryFactoryTest extends TestCase
             $offerId
         );
 
-        $expectedQuery = new Query('((zipCode:3000 OR zipCode:3010) AND id:offerId) OR ((zipCode:3271 OR zipCode:3271) AND id:offerId)');
+        $expectedQuery = '((zipCode:3000 OR zipCode:3010) AND id:offerId) OR ((zipCode:3271 OR zipCode:3271) AND id:offerId)';
 
         $this->assertEquals($expectedQuery, $query);
     }

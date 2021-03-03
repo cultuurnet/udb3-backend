@@ -21,14 +21,14 @@ final class Sapi3SearchQueryFactory implements SearchQueryFactoryInterface
     public function createFromConstraint(
         StringLiteral $constraint,
         StringLiteral $offerId
-    ) {
-        return new Query($this->createQueryString($constraint, $offerId));
+    ): string {
+        return $this->createQueryString($constraint, $offerId);
     }
 
     public function createFromConstraints(
         array $constraints,
         StringLiteral $offerId
-    ) {
+    ): string {
         $queryString = '';
 
         foreach ($constraints as $constraint) {
@@ -39,6 +39,6 @@ final class Sapi3SearchQueryFactory implements SearchQueryFactoryInterface
             $queryString .= $this->createQueryString($constraint, $offerId);
         }
 
-        return new Query($queryString);
+        return $queryString;
     }
 }

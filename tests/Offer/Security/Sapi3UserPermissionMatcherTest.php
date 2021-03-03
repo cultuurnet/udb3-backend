@@ -85,9 +85,7 @@ class Sapi3UserPermissionMatcherTest extends TestCase
                 $constraints,
                 $offerId
             )
-            ->willReturn(
-                new Query($query)
-            );
+            ->willReturn($query);
 
         $this->searchService->expects($this->once())
             ->method('search')
