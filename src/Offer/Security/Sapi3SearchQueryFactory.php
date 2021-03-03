@@ -18,13 +18,6 @@ final class Sapi3SearchQueryFactory
         return '(' . $constraintStr . ' AND id:' . $offerIdStr . ')';
     }
 
-    public function createFromConstraint(
-        StringLiteral $constraint,
-        StringLiteral $offerId
-    ): string {
-        return $this->createQueryString($constraint, $offerId);
-    }
-
     public function createFromConstraints(
         array $constraints,
         StringLiteral $offerId

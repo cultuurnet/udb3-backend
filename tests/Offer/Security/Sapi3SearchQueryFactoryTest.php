@@ -22,24 +22,6 @@ final class Sapi3SearchQueryFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_query_from_a_constraint()
-    {
-        $constraint = new StringLiteral('zipCode:3000 OR zipCode:3010');
-        $offerId = new StringLiteral('offerId');
-
-        $query = $this->searchQueryFactory->createFromConstraint(
-            $constraint,
-            $offerId
-        );
-
-        $expectedQuery = '((zipCode:3000 OR zipCode:3010) AND id:offerId)';
-
-        $this->assertEquals($expectedQuery, $query);
-    }
-
-    /**
-     * @test
-     */
     public function it_creates_a_query_from_constraints()
     {
         $constraint1 = new StringLiteral('zipCode:3000 OR zipCode:3010');
