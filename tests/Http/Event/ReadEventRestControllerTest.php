@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use CultuurNet\SearchV3\Serializer\SerializerInterface;
-use CultuurNet\SearchV3\ValueObjects\Event;
-use CultuurNet\SearchV3\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use DateTimeZone;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,11 +51,6 @@ class ReadEventRestControllerTest extends TestCase
     private $calSum;
 
     /**
-     * @var Event
-     */
-    private $event;
-
-    /**
      * @var UserIdentificationInterface|MockObject
      */
     private $userIdentification;
@@ -74,6 +65,12 @@ class ReadEventRestControllerTest extends TestCase
             json_encode(
                 [
                     '@type' => 'Event',
+                    'status' => [
+                        'type' => 'Available',
+                    ],
+                    'startDate' => '2018-10-07 12:15:00+0200',
+                    'endDate' => '2018-10-07 18:00:00+0200',
+                    'calendarType' => 'single',
                 ]
             )
         );
@@ -115,13 +112,6 @@ class ReadEventRestControllerTest extends TestCase
 
         $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00';
 
-        $this->event = new Event();
-        $this->event->setStatus(new Status('Available'));
-        $tz = new DateTimeZone('Europe/Brussels');
-        $this->event->setStartDate(new \DateTime('2018-10-07 12:15:00', $tz));
-        $this->event->setEndDate(new \DateTime('2018-10-07 18:00:00', $tz));
-        $this->event->setCalendarType('single');
-
         $jsonRepository = $this->createMock(DocumentRepository::class);
         $jsonRepository->method('fetch')
             ->willReturnCallback(
@@ -152,20 +142,11 @@ class ReadEventRestControllerTest extends TestCase
                 }
             );
 
-        $serializerInterface = $this->createMock(SerializerInterface::class);
-        $serializerInterface->method('deserialize')
-            ->willReturnCallback(
-                function () {
-                    return $this->event;
-                }
-            );
-
         $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
 
         $this->eventRestController = new ReadEventRestController(
             $jsonRepository,
             $documentRepositoryInterface,
-            $serializerInterface,
             $this->userIdentification
         );
     }
