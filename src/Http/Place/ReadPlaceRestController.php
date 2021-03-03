@@ -6,8 +6,7 @@ namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
-use CultuurNet\SearchV3\Serializer\SerializerInterface;
-use CultuurNet\SearchV3\ValueObjects\Place;
+use CultuurNet\CalendarSummaryV3\Offer\Offer;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\JsonLdResponse;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -26,18 +25,10 @@ class ReadPlaceRestController
      */
     private $documentRepository;
 
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-
     public function __construct(
-        DocumentRepository $documentRepository,
-        SerializerInterface $serializer
+        DocumentRepository $documentRepository
     ) {
         $this->documentRepository = $documentRepository;
-        $this->serializer = $serializer;
     }
 
     public function get(string $cdbid, Request $request): JsonResponse
@@ -67,7 +58,7 @@ class ReadPlaceRestController
         $format = $request->query->get('format', 'lg');
 
         $data = $this->documentRepository->fetch($cdbid, false);
-        $place = $this->serializer->deserialize($data->getRawBody(), Place::class);
+        $place = Offer::fromJsonLd($data->getRawBody());
 
         if ($style !== 'html' && $style !== 'text') {
             return $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);

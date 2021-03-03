@@ -6,8 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
-use CultuurNet\SearchV3\Serializer\SerializerInterface;
-use CultuurNet\SearchV3\ValueObjects\Event;
+use CultuurNet\CalendarSummaryV3\Offer\Offer;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
@@ -37,11 +36,6 @@ class ReadEventRestController
     private $historyRepository;
 
     /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * @var UserIdentificationInterface
      */
     private $userIdentification;
@@ -49,12 +43,10 @@ class ReadEventRestController
     public function __construct(
         DocumentRepository $jsonRepository,
         DocumentRepository $historyRepository,
-        SerializerInterface $serializer,
         UserIdentificationInterface $userIdentification
     ) {
         $this->jsonRepository = $jsonRepository;
         $this->historyRepository = $historyRepository;
-        $this->serializer = $serializer;
         $this->userIdentification = $userIdentification;
     }
 
@@ -124,7 +116,7 @@ class ReadEventRestController
         $format = $request->query->get('format', 'lg');
 
         $eventDocument = $this->jsonRepository->fetch($cdbid);
-        $event = $this->serializer->deserialize($eventDocument->getRawBody(), Event::class);
+        $event = Offer::fromJsonLd($eventDocument->getRawBody());
 
         if ($style !== 'html' && $style !== 'text') {
             $response = $this->createApiProblemJsonResponseNotFound('No style found for ' . $style, $cdbid);
