@@ -90,7 +90,7 @@ class UpdateOfferStatusCommand extends AbstractCommand
                 $this->commandBus->dispatch(
                     new UpdateStatus($id, $status)
                 );
-            } catch(Exception $exception) {
+            } catch (Exception $exception) {
                 $exceptions[$id] = 'Offer with id: ' . $id . ' caused an exception: ' . $exception->getMessage();
             }
 
