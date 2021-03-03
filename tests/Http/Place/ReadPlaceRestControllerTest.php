@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\SearchV3\Serializer\SerializerInterface;
-use CultuurNet\SearchV3\ValueObjects\Status;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -13,7 +11,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use CultuurNet\SearchV3\ValueObjects\Place;
 
 class ReadPlaceRestControllerTest extends TestCase
 {
@@ -42,18 +39,24 @@ class ReadPlaceRestControllerTest extends TestCase
     private $calSum;
 
     /**
-     * @var Place
-     */
-    private $place;
-
-    /**
      * @inheritdoc
      */
     public function setUp()
     {
         $this->jsonDocument = new JsonDocument(
             'existingId',
-            json_encode(['@type' => 'Place'])
+
+            json_encode(
+                [
+                    '@type' => 'Place',
+                    'status' => [
+                        'type' => 'Available',
+                    ],
+                    'startDate' => '2018-10-07 12:15:00+0200',
+                    'endDate' => '2018-10-07 18:00:00+0200',
+                    'calendarType' => 'single',
+                ]
+            )
         );
 
         $this->jsonDocumentWithMetadata = new JsonDocument(
@@ -69,14 +72,6 @@ class ReadPlaceRestControllerTest extends TestCase
         );
 
         $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00';
-
-        $this->place = new Place();
-        $this->place->setStatus(new Status('Available'));
-        $this->place->setStartDate(new \DateTime('2018-10-07 12:15:00'));
-        $this->place->setEndDate(new \DateTime('2018-10-07 18:00:00'));
-        $this->place->setCalendarType('single');
-
-        $serializerInterface = $this->createMock(SerializerInterface::class);
 
         /** @var DocumentRepository|MockObject $jsonRepository */
         $jsonRepository = $this->createMock(DocumentRepository::class);
@@ -94,18 +89,7 @@ class ReadPlaceRestControllerTest extends TestCase
                 }
             );
 
-        /** @var SerializerInterface|MockObject $serializerInterface */
-        $serializerInterface->method('deserialize')
-            ->willReturnCallback(
-                function () {
-                    return $this->place;
-                }
-            );
-
-        $this->placeRestController = new ReadPlaceRestController(
-            $jsonRepository,
-            $serializerInterface
-        );
+        $this->placeRestController = new ReadPlaceRestController($jsonRepository);
     }
 
     /**
