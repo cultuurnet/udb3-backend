@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Offer\Commands\Status\UpdateStatus;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use Exception;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,13 +62,18 @@ class UpdateOfferStatusCommand extends AbstractCommand
 
         $status = new Status($statusType, $reasons);
 
+        if ($count <= 0) {
+            $output->writeln('Query found 0 ' . $this->getPluralOfferType() . ' to update');
+            return 0;
+        }
+
         $confirmation = $this->getHelper('question')
             ->ask(
                 $input,
                 $output,
                 new ConfirmationQuestion(
                     "This action will update the status of {$count} {$this->getPluralOfferType()} to {$statusType->toNative()}, continue? [y/N] ",
-                    true
+                    false
                 )
             );
 
@@ -75,17 +81,28 @@ class UpdateOfferStatusCommand extends AbstractCommand
             return 0;
         }
 
+        $exceptions = [];
         $offers = $this->searchResultsGenerator->search($query);
         $progressBar = new ProgressBar($output, $count);
 
         foreach ($offers as $id => $offer) {
-            $this->commandBus->dispatch(
-                new UpdateStatus($id, $status)
-            );
+            try {
+                $this->commandBus->dispatch(
+                    new UpdateStatus($id, $status)
+                );
+            } catch (Exception $exception) {
+                $exceptions[$id] = 'Offer with id: ' . $id . ' caused an exception: ' . $exception->getMessage();
+            }
+
             $progressBar->advance();
         }
 
         $progressBar->finish();
+
+        $output->writeln('');
+        foreach ($exceptions as $exception) {
+            $output->writeln($exception);
+        }
 
         return 0;
     }
