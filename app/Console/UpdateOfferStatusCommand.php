@@ -61,6 +61,11 @@ class UpdateOfferStatusCommand extends AbstractCommand
 
         $status = new Status($statusType, $reasons);
 
+        if ($count <= 0) {
+            $output->writeln('Query found 0 ' . $this->getPluralOfferType() . ' to update');
+            return 0;
+        }
+
         $confirmation = $this->getHelper('question')
             ->ask(
                 $input,
