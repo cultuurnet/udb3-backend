@@ -45,7 +45,6 @@ class ReadPlaceRestControllerTest extends TestCase
     {
         $this->jsonDocument = new JsonDocument(
             'existingId',
-
             json_encode(
                 [
                     '@type' => 'Place',
