@@ -72,11 +72,14 @@ final class Timestamp implements Serializable
             $status = Status::deserialize($data['status']);
         }
 
-        return new static(
-            DateTime::createFromFormat(DateTime::ATOM, $data['startDate']),
-            DateTime::createFromFormat(DateTime::ATOM, $data['endDate']),
-            $status
-        );
+        $startDate = DateTime::createFromFormat(DateTime::ATOM, $data['startDate']);
+        $endDate = DateTime::createFromFormat(DateTime::ATOM, $data['endDate']);
+
+        if ($startDate > $endDate) {
+            $endDate = $startDate;
+        }
+
+        return new self($startDate, $endDate, $status);
     }
 
     public function serialize(): array
