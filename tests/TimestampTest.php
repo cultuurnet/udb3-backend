@@ -140,4 +140,26 @@ class TimestampTest extends TestCase
             $timestamp->withStatus($newStatus)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_will_set_end_date_to_start_date_when_deserializing_incorrect_events(): void
+    {
+        $expected = new Timestamp(
+            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+            new Status(StatusType::available(), [])
+        );
+
+        $serialized = [
+            'startDate' => self::END_DATE,
+            'endDate' => self::START_DATE,
+            'status' => [
+                'type' => 'Available',
+            ],
+        ];
+
+        $this->assertEquals($expected, Timestamp::deserialize($serialized));
+    }
 }
