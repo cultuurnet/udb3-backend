@@ -35,9 +35,8 @@ class PriceDescriptionParser
     ) {
         $this->numberFormatRepository = $numberFormatRepository;
         $this->currencyRepository = $currencyRepository;
-        $numberFormat = $this->numberFormatRepository->get('nl-BE');
         $this->currencyFormatter = new NumberFormatter(
-            $numberFormat,
+            $this->numberFormatRepository->get('nl-BE'),
             NumberFormatter::CURRENCY
         );
     }
