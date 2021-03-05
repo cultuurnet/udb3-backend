@@ -160,7 +160,7 @@ class EditPlaceRestControllerTest extends TestCase
         $request = Request::create(
             'www.uitdatabank.dev',
             'GET',
-            ['apiKey' => $this->apiKey->toNative()],
+            ['apiKey' => $this->apiKey->toString()],
             [],
             [],
             [],
