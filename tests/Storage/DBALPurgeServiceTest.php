@@ -109,10 +109,7 @@ class DBALPurgeServiceTest extends TestCase
         return count($persons);
     }
 
-    /**
-     * @return int
-     */
-    private function getSequence()
+    private function getSequence(): string
     {
         $this->insertPerson('test', 'test');
         return $this->getConnection()->lastInsertId();
