@@ -51,7 +51,7 @@ class EventStream
     protected $cdbids;
 
     /**
-     * @var EventStreamDecorator
+     * @var EventStreamDecorator|null
      */
     private $domainEventStreamDecorator;
 
