@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferServiceProvider implements ServiceProviderInterface
 {
@@ -52,7 +51,7 @@ class OfferServiceProvider implements ServiceProviderInterface
         $app['should_auto_approve_new_offer'] = $app->share(
             function (Application $app) {
                 return new ConsumerIsInPermissionGroup(
-                    new StringLiteral((string) $app['config']['uitid']['auto_approve_group_id'])
+                    (string) $app['config']['uitid']['auto_approve_group_id']
                 );
             }
         );

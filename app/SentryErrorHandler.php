@@ -64,7 +64,7 @@ class SentryErrorHandler
     private function createTags(?ApiKey $apiKey, ?string $apiName): array
     {
         return [
-            'api_key' => $apiKey ? $apiKey->toNative() : 'null',
+            'api_key' => $apiKey ? $apiKey->toString() : 'null',
             'api_name' => $apiName ?? 'null',
         ];
     }

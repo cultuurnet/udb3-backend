@@ -20,7 +20,6 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class UitidApiKeyServiceProvider implements ServiceProviderInterface
 {
@@ -95,7 +94,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
 
                 // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
                 $permissionCheck = new ConsumerIsInPermissionGroup(
-                    new StringLiteral((string) $app['auth.api_key.group_id'])
+                    (string) $app['auth.api_key.group_id']
                 );
 
                 /* @var ConsumerReadRepositoryInterface $consumerRepository */
