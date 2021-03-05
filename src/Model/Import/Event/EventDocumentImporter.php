@@ -103,7 +103,8 @@ class EventDocumentImporter implements DocumentImporterInterface
         $this->logger->log(LogLevel::DEBUG, $decodedDocument->toJson(), ['event_id' => $id]);
 
         try {
-            $exists = !is_null($this->aggregateRepository->load($id));
+            $this->aggregateRepository->load($id);
+            $exists = true;
         } catch (AggregateNotFoundException $e) {
             $exists = false;
         }
