@@ -34,13 +34,7 @@ class EventItemFactory implements EventItemFactoryInterface
         return self::createEventFromCdbXml($this->namespaceUri, $cdbXml);
     }
 
-    /**
-     * @param string $namespaceUri
-     * @param string $cdbXml
-     * @throws CultureFeed_Cdb_ParseException
-     * @return CultureFeed_Cdb_Item_Event
-     */
-    public static function createEventFromCdbXml($namespaceUri, $cdbXml)
+    public static function createEventFromCdbXml(string $namespaceUri, string $cdbXml): CultureFeed_Cdb_Item_Event
     {
         $udb2SimpleXml = new SimpleXMLElement(
             $cdbXml,

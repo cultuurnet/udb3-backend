@@ -33,8 +33,7 @@ class EventXMLValidatorService implements XMLValidationServiceInterface
             (string) $xml
         );
 
-        if ($cdbXmlEvent &&
-            $cdbXmlEvent->getLocation() &&
+        if ($cdbXmlEvent->getLocation() &&
             $cdbXmlEvent->getOrganiser() &&
             $cdbXmlEvent->getLocation()->getExternalId() === null &&
             $cdbXmlEvent->getOrganiser()->getExternalId() === null &&
