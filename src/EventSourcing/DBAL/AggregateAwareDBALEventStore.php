@@ -183,7 +183,7 @@ class AggregateAwareDBALEventStore implements EventStore
         return $table;
     }
 
-    private function prepareLoadStatement(): ?Statement
+    private function prepareLoadStatement(): Statement
     {
         if (null === $this->loadStatement) {
             $queryBuilder = $this->connection->createQueryBuilder();
