@@ -39,7 +39,7 @@ class LocalEntityService implements EntityServiceInterface
 
     public function getEntity(string $id): string
     {
-        /** @var JsonDocument $document */
+        /** @var JsonDocument|null $document */
         $document = $this->documentRepository->get($id);
 
         if (!$document) {
@@ -53,7 +53,7 @@ class LocalEntityService implements EntityServiceInterface
                 );
             }
 
-            /** @var JsonDocument $document */
+            /** @var JsonDocument|null $document */
             $document = $this->documentRepository->get($id);
 
             if (!$document) {
