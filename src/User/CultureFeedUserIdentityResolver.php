@@ -85,7 +85,7 @@ class CultureFeedUserIdentityResolver implements UserIdentityResolverInterface
         /** @var \CultureFeed_ResultSet $results */
         $results = $this->cultureFeed->searchUsers($query);
 
-        /** @var \CultureFeed_SearchUser $user */
+        /** @var \CultureFeed_SearchUser|false $user */
         $user = reset($results->objects);
 
         if ($user) {
