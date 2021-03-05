@@ -20,7 +20,6 @@ use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class UitidApiKeyServiceProvider implements ServiceProviderInterface
 {
