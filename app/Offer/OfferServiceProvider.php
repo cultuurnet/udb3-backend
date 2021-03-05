@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferServiceProvider implements ServiceProviderInterface
 {
