@@ -238,11 +238,7 @@ class CalendarConverter implements CalendarConverterInterface
         return $newCalendar;
     }
 
-    /**
-     * @param integer|null $index
-     * @return null|string
-     */
-    private function formatDateTimeAsCdbTime(DateTimeInterface $timestamp, $index = null)
+    private function formatDateTimeAsCdbTime(DateTimeInterface $timestamp, ?int $index = null): string
     {
         if (is_int($index) && $index > 59) {
             throw new InvalidArgumentException('The CDB time index should not be higher than 59!');
