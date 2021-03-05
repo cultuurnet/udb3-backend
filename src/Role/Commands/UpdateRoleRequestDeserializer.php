@@ -27,11 +27,9 @@ class UpdateRoleRequestDeserializer
                     new UUID($roleId),
                     new StringLiteral($body_content->name)
                 );
-                break;
 
             default:
                 throw new UnknownContentTypeException();
-                break;
         }
     }
 }
