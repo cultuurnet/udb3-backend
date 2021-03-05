@@ -80,7 +80,7 @@ class ConcludeCommand extends AbstractConcludeCommand
 
     private function createLuceneQuery(Carbon $lowerDateBoundary, Carbon $upperDateBoundary): string
     {
-        $from = $lowerDateBoundary ? $lowerDateBoundary->format(DateTime::ATOM) : '*';
+        $from = $lowerDateBoundary->format(DateTime::ATOM);
         $to = $upperDateBoundary->format(DateTime::ATOM);
 
         return "_type:event AND availableRange:[{$from} TO {$to}]";
