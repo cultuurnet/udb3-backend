@@ -13,6 +13,7 @@ use Silex\ServiceProviderInterface;
 
 class Sapi3SearchServiceProvider implements ServiceProviderInterface
 {
+    public const SEARCH_SERVICE_OFFERS = 'sapi3_search_service_offers';
     public const SEARCH_SERVICE_EVENTS = 'sapi3_search_service_events';
     public const SEARCH_SERVICE_PLACES = 'sapi3_search_service_places';
     public const ORGANIZERS_COUNTING_SEARCH_SERVICE = 'sapi3_organizers_counting_service';
@@ -20,6 +21,16 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
 
     public function register(Application $app)
     {
+        $app[self::SEARCH_SERVICE_OFFERS] = $app->share(
+            function ($app) {
+                return new \CultuurNet\UDB3\Search\Sapi3SearchService(
+                    new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/offers/'),
+                    new Client(new \GuzzleHttp\Client()),
+                    $app['iri_offer_identifier_factory'],
+                    $app['config']['export']['search']['api_key'] ?? null
+                );
+            }
+        );
         $app[self::SEARCH_SERVICE_EVENTS] = $app->share(
             function ($app) {
                 return new \CultuurNet\UDB3\Search\Sapi3SearchService(
