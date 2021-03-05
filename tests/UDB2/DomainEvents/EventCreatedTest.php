@@ -57,23 +57,6 @@ class EventCreatedTest extends TestCase
         );
     }
 
-    public function testTime()
-    {
-        $time = new \DateTimeImmutable();
-        $expectedTime = clone $time;
-
-        $eventCreated = $this->createEventCreated($time);
-
-        // Adjustments to the time after creating the event should
-        // not affect the event time.
-        $time->modify('+5 days');
-
-        $this->assertEquals(
-            $expectedTime,
-            $eventCreated->getTime()
-        );
-    }
-
     public function testGetUrl()
     {
         $eventCreated = $this->createEventCreated();
