@@ -12,7 +12,7 @@ final class CopyrightHolder extends StringLiteral
 {
     public function __construct($value)
     {
-        if (false === \is_string($value)) {
+        if (!is_string($value)) {
             throw new InvalidNativeArgumentException($value, ['string']);
         }
 

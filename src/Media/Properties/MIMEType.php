@@ -19,7 +19,7 @@ final class MIMEType extends StringLiteral
 
     public static function fromSubtype(string $subtypeString): MIMEType
     {
-        if (false === is_string($subtypeString)) {
+        if (!is_string($subtypeString)) {
             throw new InvalidNativeArgumentException($subtypeString, ['string']);
         }
 
