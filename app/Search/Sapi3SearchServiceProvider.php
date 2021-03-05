@@ -31,6 +31,7 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
                 );
             }
         );
+
         $app[self::SEARCH_SERVICE_EVENTS] = $app->share(
             function ($app) {
                 return new \CultuurNet\UDB3\Search\Sapi3SearchService(
@@ -81,7 +82,7 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
         $app['search_results_generator'] = $app->share(
             function (Application $app) {
                 $resultsGenerator = new ResultsGenerator(
-                    $app[self::SEARCH_SERVICE_EVENTS]
+                    $app[self::SEARCH_SERVICE_OFFERS]
                 );
                 $resultsGenerator->setLogger($app['search_results_generator_logger']);
                 return $resultsGenerator;
