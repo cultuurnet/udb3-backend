@@ -9,10 +9,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
-/**
- * @todo Move to udb3-symfony
- * @see https://jira.uitdatabank.be/browse/III-1513
- */
 interface ImageUploaderInterface
 {
     public function upload(
@@ -22,9 +18,5 @@ interface ImageUploaderInterface
         Language $language
     ): UUID;
 
-    /**
-     * @return string
-     *  path to upload directory
-     */
-    public function getUploadDirectory();
+    public function getUploadDirectory(): string;
 }

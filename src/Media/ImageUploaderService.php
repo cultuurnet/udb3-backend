@@ -106,7 +106,7 @@ class ImageUploaderService implements ImageUploaderInterface
         return $fileId;
     }
 
-    private function guardFileSizeLimit(UploadedFile $file)
+    private function guardFileSizeLimit(UploadedFile $file): void
     {
         $filePath = $file->getRealPath();
         $fileSize = filesize($filePath);
@@ -122,10 +122,7 @@ class ImageUploaderService implements ImageUploaderInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUploadDirectory()
+    public function getUploadDirectory(): string
     {
         return $this->uploadDirectory;
     }
