@@ -95,13 +95,13 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
         /** @var CultureFeed_Cdb_Item_Actor|null $actor */
         $actor = $embeddedCdb->getActor();
         /** @var string|null $actorId */
-        $actorId = $actor ?? $actor->getCdbId();
+        $actorId = $actor ? $actor->getCdbId() : null;
         if ($actorId) {
             return $embeddedCdb->getActor()->getCdbId();
         }
 
         /** @var string|null $actorId */
-        $actorId = $actor ?? $actor->getExternalId();
+        $actorId = $actor ? $actor->getExternalId() : null;
         if ($actorId) {
             return $externalIdMappingService->getCdbId(
                 $embeddedCdb->getActor()->getExternalId()
