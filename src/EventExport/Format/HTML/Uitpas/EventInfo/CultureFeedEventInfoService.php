@@ -82,7 +82,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
 
         $resultSet = $this->uitpas->searchEvents($eventQuery);
 
-        /** @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent */
+        /** @var CultureFeed_Uitpas_Event_CultureEvent|false $uitpasEvent */
         $uitpasEvent = reset($resultSet->objects);
 
         if ($uitpasEvent) {
