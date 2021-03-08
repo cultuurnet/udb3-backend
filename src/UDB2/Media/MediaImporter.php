@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class MediaImporter implements LoggerAwareInterface
 {
@@ -58,7 +59,7 @@ class MediaImporter implements LoggerAwareInterface
             $image->getMediaObjectId(),
             $image->getMimeType(),
             $image->getDescription(),
-            $image->getCopyrightHolder(),
+            new StringLiteral($image->getCopyrightHolder()->toString()),
             $image->getSourceLocation(),
             $image->getLanguage()
         );

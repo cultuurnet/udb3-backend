@@ -10,9 +10,9 @@ use Broadway\CommandHandling\Testing\Scenario;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManager;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -283,7 +283,7 @@ trait OfferCommandHandlerTestTrait
                 $itemId,
                 $image->getMediaObjectId(),
                 $image->getDescription(),
-                $image->getCopyrightHolder()
+                new StringLiteral($image->getCopyrightHolder()->toString())
             );
         };
 

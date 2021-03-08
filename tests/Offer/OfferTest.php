@@ -16,9 +16,9 @@ use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
@@ -542,7 +542,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                         'someId',
                         $anotherImage->getMediaObjectId(),
                         new Description('new description'),
-                        new CopyrightHolder('new copyright holder')
+                        new StringLiteral('new copyright holder')
                     ),
                     new MainImageSelected('someId', $anotherImage),
                 ]
@@ -587,7 +587,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                         'someId',
                         $this->image->getMediaObjectId(),
                         new Description('my favorite cat'),
-                        new CopyrightHolder('Jane Doe')
+                        new StringLiteral('Jane Doe')
                     ),
                 ]
             );
@@ -635,13 +635,13 @@ class OfferTest extends AggregateRootScenarioTestCase
                         'someId',
                         $this->image->getMediaObjectId(),
                         new Description('other description'),
-                        $this->image->getCopyrightHolder()
+                        new StringLiteral($this->image->getCopyrightHolder()->toString())
                     ),
                     new ImageUpdated(
                         'someId',
                         $this->image->getMediaObjectId(),
                         new Description('other description'),
-                        new CopyrightHolder('other copyright')
+                        new StringLiteral('other copyright')
                     ),
                 ]
             );

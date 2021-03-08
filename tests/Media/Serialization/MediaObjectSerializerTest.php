@@ -8,13 +8,14 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use ValueObjects\Identity\UUID;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class MediaObjectSerializerTest extends TestCase
@@ -78,7 +79,7 @@ class MediaObjectSerializerTest extends TestCase
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('application/octet-stream'),
             new Description('my pic'),
-            new CopyrightHolder('Dirk Dirkington'),
+            new StringLiteral('Dirk Dirkington'),
             Url::fromNative('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
@@ -146,7 +147,7 @@ class MediaObjectSerializerTest extends TestCase
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('video/avi'),
             new Description('The Gleaners'),
-            new CopyrightHolder('Jean-François Millet'),
+            new StringLiteral('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );

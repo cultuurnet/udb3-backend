@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Web\Url;
 
@@ -115,7 +115,7 @@ final class Image implements Serializable
             'media_object_id' => (string) $this->getMediaObjectId(),
             'mime_type' => (string) $this->getMimeType(),
             'description' => (string) $this->getDescription(),
-            'copyright_holder' => (string) $this->getCopyrightHolder(),
+            'copyright_holder' => $this->getCopyrightHolder()->toString(),
             'source_location' => (string) $this->getSourceLocation(),
             'language' => (string) $this->getLanguage(),
         ];

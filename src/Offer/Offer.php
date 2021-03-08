@@ -21,8 +21,8 @@ use CultuurNet\UDB3\LabelCollection;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
@@ -601,7 +601,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function updateImage(
         UUID $mediaObjectId,
         StringLiteral $description,
-        StringLiteral $copyrightHolder
+        CopyrightHolder $copyrightHolder
     ) {
         if ($this->updateImageAllowed($mediaObjectId, $description, $copyrightHolder)) {
             $this->apply(
@@ -614,14 +614,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
-    /**
-     * @return bool
-     */
     private function updateImageAllowed(
         UUID $mediaObjectId,
         StringLiteral $description,
-        StringLiteral $copyrightHolder
-    ) {
+        CopyrightHolder $copyrightHolder
+    ): bool {
         $image = $this->images->findImageByUUID($mediaObjectId);
 
         // Don't update if the image is not found based on UUID.
@@ -630,7 +627,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
 
         // Update when copyright or description is changed.
-        return !$copyrightHolder->sameValueAs($image->getCopyrightHolder()) ||
+        return !$copyrightHolder->sameAs($image->getCopyrightHolder()) ||
             !$description->sameValueAs($image->getDescription());
     }
 
@@ -1030,7 +1027,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createImageUpdatedEvent(
         UUID $uuid,
         StringLiteral $description,
-        StringLiteral $copyrightHolder
+        CopyrightHolder $copyrightHolder
     );
 
     /**

@@ -62,8 +62,8 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
@@ -899,7 +899,7 @@ class HistoryProjectorTest extends TestCase
             self::EVENT_ID_1,
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             new \CultuurNet\UDB3\Media\Properties\Description('description'),
-            new CopyrightHolder('copyright holder')
+            new StringLiteral('copyright holder')
         );
 
         $domainMessage = new DomainMessage(

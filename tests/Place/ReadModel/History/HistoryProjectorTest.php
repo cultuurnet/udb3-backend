@@ -24,8 +24,8 @@ use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Place\Events\AddressTranslated;
@@ -498,8 +498,8 @@ class HistoryProjectorTest extends TestCase
         $event = new ImageUpdated(
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
-            new \CultuurNet\UDB3\Media\Properties\Description('description'),
-            new CopyrightHolder('copyright holder')
+            new Description('description'),
+            new StringLiteral('copyright holder')
         );
 
         $domainMessage = $this->aDomainMessageForEvent((string) $event->getItemId(), $event);

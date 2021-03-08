@@ -63,6 +63,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
@@ -489,13 +490,13 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected function createImageUpdatedEvent(
         UUID $mediaObjectId,
         StringLiteral $description,
-        StringLiteral $copyrightHolder
+        CopyrightHolder $copyrightHolder
     ) {
         return new ImageUpdated(
             $this->eventId,
             $mediaObjectId,
             $description,
-            $copyrightHolder
+            new StringLiteral($copyrightHolder->toString())
         );
     }
 
