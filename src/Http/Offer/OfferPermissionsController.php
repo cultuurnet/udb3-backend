@@ -23,7 +23,7 @@ class OfferPermissionsController
     private $permissionVoter;
 
     /**
-     * @var StringLiteral
+     * @var StringLiteral|null
      */
     private $currentUserId;
 
