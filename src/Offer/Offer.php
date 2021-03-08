@@ -917,7 +917,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             $image->getMediaObjectId(),
             $image->getMimeType(),
             new ImageDescription($imageUpdated->getDescription()->toNative()),
-            new CopyrightHolder($imageUpdated->getCopyrightHolder()->toNative()),
+            $imageUpdated->getCopyrightHolder(),
             $image->getSourceLocation(),
             $image->getLanguage()
         );

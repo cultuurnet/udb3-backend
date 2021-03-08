@@ -285,7 +285,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $id = 'foo';
         $imageId = UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = StringLiteral::fromNative('Some description.');
-        $copyrightHolder = StringLiteral::fromNative('Dirk Dirkington');
+        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $eventClass = $this->getEventClass('ImageUpdated');
         $imageUpdated = new $eventClass($id, $imageId, $description, $copyrightHolder);
 
@@ -315,7 +315,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                     'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'description' => (string) $description,
-                    'copyrightHolder' => (string) $copyrightHolder,
+                    'copyrightHolder' => $copyrightHolder->toString(),
                     'inLanguage' => 'en',
                 ],
             ],

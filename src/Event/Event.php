@@ -496,7 +496,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
             $this->eventId,
             $mediaObjectId,
             $description,
-            new StringLiteral($copyrightHolder->toString())
+            $copyrightHolder
         );
     }
 

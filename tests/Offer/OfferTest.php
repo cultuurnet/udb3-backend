@@ -542,7 +542,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                         'someId',
                         $anotherImage->getMediaObjectId(),
                         new Description('new description'),
-                        new StringLiteral('new copyright holder')
+                        new CopyrightHolder('new copyright holder')
                     ),
                     new MainImageSelected('someId', $anotherImage),
                 ]
@@ -587,7 +587,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                         'someId',
                         $this->image->getMediaObjectId(),
                         new Description('my favorite cat'),
-                        new StringLiteral('Jane Doe')
+                        new CopyrightHolder('Jane Doe')
                     ),
                 ]
             );
@@ -635,13 +635,13 @@ class OfferTest extends AggregateRootScenarioTestCase
                         'someId',
                         $this->image->getMediaObjectId(),
                         new Description('other description'),
-                        new StringLiteral($this->image->getCopyrightHolder()->toString())
+                        $this->image->getCopyrightHolder()
                     ),
                     new ImageUpdated(
                         'someId',
                         $this->image->getMediaObjectId(),
                         new Description('other description'),
-                        new StringLiteral('other copyright')
+                        new CopyrightHolder('other copyright')
                     ),
                 ]
             );

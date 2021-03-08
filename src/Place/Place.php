@@ -427,7 +427,7 @@ class Place extends Offer implements UpdateableWithCdbXmlInterface
             $this->placeId,
             $mediaObjectId,
             $description,
-            new StringLiteral($copyrightHolder->toString())
+            $copyrightHolder
         );
     }
 

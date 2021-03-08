@@ -124,7 +124,7 @@ class Item extends Offer
             $this->id,
             $mediaObjectId,
             $description,
-            new StringLiteral($copyrightHolder->toString())
+            $copyrightHolder
         );
     }
 
