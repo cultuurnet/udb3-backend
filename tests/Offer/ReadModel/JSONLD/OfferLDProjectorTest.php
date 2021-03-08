@@ -525,8 +525,8 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -536,8 +536,8 @@ class OfferLDProjectorTest extends TestCase
                 '@type' => 'schema:ImageObject',
                 'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                'description' => 'sexy ladies without clothes',
-                'copyrightHolder' => 'Bart Ramakers',
+                'description' => 'The Gleaners',
+                'copyrightHolder' => 'Jean-François Millet',
                 'inLanguage' => 'en',
             ],
         ];
@@ -582,8 +582,8 @@ class OfferLDProjectorTest extends TestCase
                         '@type' => 'schema:ImageObject',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'sexy ladies without clothes',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                 ],
@@ -603,8 +603,8 @@ class OfferLDProjectorTest extends TestCase
         $image2 = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative(
                 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
             ),
@@ -635,8 +635,8 @@ class OfferLDProjectorTest extends TestCase
                     '@type' => 'schema:ImageObject',
                     'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                    'description' => 'sexy ladies without clothes',
-                    'copyrightHolder' => 'Bart Ramakers',
+                    'description' => 'The Gleaners',
+                    'copyrightHolder' => 'Jean-François Millet',
                     'inLanguage' => 'en',
                 ],
             ],
@@ -700,8 +700,8 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -714,8 +714,8 @@ class OfferLDProjectorTest extends TestCase
                         '@type' => 'schema:ImageObject',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'sexy ladies without clothes',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                 ],
@@ -738,8 +738,8 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -753,8 +753,8 @@ class OfferLDProjectorTest extends TestCase
                         '@type' => 'schema:ImageObject',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'sexy ladies without clothes',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                 ],
@@ -777,8 +777,8 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -808,8 +808,8 @@ class OfferLDProjectorTest extends TestCase
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -823,8 +823,8 @@ class OfferLDProjectorTest extends TestCase
                         '@type' => 'schema:ImageObject',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'sexy ladies without clothes',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                     [
@@ -833,7 +833,7 @@ class OfferLDProjectorTest extends TestCase
                         'contentUrl' => 'http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
                         'thumbnailUrl' => 'http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
                         'description' => 'funny giphy image',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                 ],
@@ -859,8 +859,8 @@ class OfferLDProjectorTest extends TestCase
         $selectedMainImage = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -874,8 +874,8 @@ class OfferLDProjectorTest extends TestCase
                         '@type' => 'schema:ImageObject',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'sexy ladies without clothes',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                     [
@@ -884,7 +884,7 @@ class OfferLDProjectorTest extends TestCase
                         'contentUrl' => 'http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
                         'thumbnailUrl' => 'http://foo.bar/media/5ae74e68-20a3-4cb1-b255-8e405aa01ab9.png',
                         'description' => 'funny giphy image',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                 ],
@@ -1377,7 +1377,7 @@ class OfferLDProjectorTest extends TestCase
             new UUID('ED5B9B25-8C16-48E5-9899-27BB2D110C57'),
             new MIMEType('image/jpg'),
             new Description('epische panorama foto'),
-            new CopyrightHolder('Bart Ramakers'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg'),
             new Language('nl')
         );
@@ -1388,7 +1388,7 @@ class OfferLDProjectorTest extends TestCase
                 'contentUrl' => 'http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg',
                 'thumbnailUrl' => 'http://foo.bar/media/ED5B9B25-8C16-48E5-9899-27BB2D110C57.jpg',
                 'description' => 'epische panorama foto',
-                'copyrightHolder' => 'Bart Ramakers',
+                'copyrightHolder' => 'Jean-François Millet',
                 'inLanguage' => 'nl',
             ],
             (object) [
@@ -1396,8 +1396,8 @@ class OfferLDProjectorTest extends TestCase
                 '@type' => 'schema:ImageObject',
                 'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                'description' => 'sexy ladies without clothes',
-                'copyrightHolder' => 'Bart Ramakers',
+                'description' => 'The Gleaners',
+                'copyrightHolder' => 'Jean-François Millet',
                 'inLanguage' => 'en',
             ],
         ];
@@ -1411,8 +1411,8 @@ class OfferLDProjectorTest extends TestCase
                         '@type' => 'schema:ImageObject',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'sexy ladies without clothes',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
                         'inLanguage' => 'en',
                     ],
                 ],

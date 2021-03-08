@@ -29,8 +29,8 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
     {
         $fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $fileType = new MIMEType('image/png');
-        $description = new StringLiteral('sexy ladies without clothes');
-        $copyrightHolder = new StringLiteral('Bart Ramakers');
+        $description = new StringLiteral('The Gleaners');
+        $copyrightHolder = new StringLiteral('Jean-François Millet');
         $location = Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
         $language = new Language('en');
 
@@ -70,8 +70,8 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
         $mediaObject = MediaObject::create(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new StringLiteral('sexy ladies without clothes'),
-            new StringLiteral('Bart Ramakers'),
+            new StringLiteral('The Gleaners'),
+            new StringLiteral('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -87,12 +87,12 @@ class MediaObjectTest extends AggregateRootScenarioTestCase
         );
 
         $this->assertEquals(
-            new StringLiteral('sexy ladies without clothes'),
+            new StringLiteral('The Gleaners'),
             $mediaObject->getDescription()
         );
 
         $this->assertEquals(
-            new StringLiteral('Bart Ramakers'),
+            new StringLiteral('Jean-François Millet'),
             $mediaObject->getCopyrightHolder()
         );
 

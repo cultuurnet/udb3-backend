@@ -148,8 +148,8 @@ class MediaManagerTest extends TestCase
     {
         $id = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $fileType = new MIMEType('image/png');
-        $description = new Description('sexy ladies without clothes');
-        $copyrightHolder = new CopyrightHolder('Bart Ramakers');
+        $description = new Description('The Gleaners');
+        $copyrightHolder = new CopyrightHolder('Jean-François Millet');
         $location = Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
         $language = new Language('en');
 

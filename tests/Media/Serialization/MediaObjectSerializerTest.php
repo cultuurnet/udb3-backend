@@ -145,8 +145,8 @@ class MediaObjectSerializerTest extends TestCase
         $mediaObject = MediaObject::create(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('video/avi'),
-            new Description('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
