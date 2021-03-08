@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
+use CultureFeed_Cdb_Data_Detail;
 use CultureFeed_Cdb_Data_Price;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\DateTimeFactory;
@@ -194,6 +195,7 @@ class CdbXMLItemBaseImporter
 
         /* @var Tariff[] $tariffs */
         $tariffs = [];
+        /** @var CultureFeed_Cdb_Data_Detail $detail */
         foreach ($details as $detail) {
             $language = null;
             $price = null;
@@ -201,6 +203,7 @@ class CdbXMLItemBaseImporter
 
             $language = $detail->getLanguage();
 
+            /** @var CultureFeed_Cdb_Data_Price|null $price */
             $price = $detail->getPrice();
             if (!$price) {
                 continue;
