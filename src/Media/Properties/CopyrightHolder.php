@@ -8,6 +8,9 @@ use InvalidArgumentException;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * @deprecated Use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder instead
+ */
 final class CopyrightHolder extends StringLiteral
 {
     public function __construct($value)
