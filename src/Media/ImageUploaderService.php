@@ -98,7 +98,7 @@ class ImageUploaderService implements ImageUploaderInterface
                 $fileId,
                 $mimeType,
                 $description,
-                new StringLiteral($copyrightHolder->toString()),
+                $copyrightHolder,
                 new StringLiteral($destination),
                 $language
             )

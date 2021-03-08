@@ -77,7 +77,7 @@ class MediaManagerTest extends TestCase
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             StringLiteral::fromNative('description'),
-            StringLiteral::fromNative('copyright'),
+            new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -115,7 +115,7 @@ class MediaManagerTest extends TestCase
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             StringLiteral::fromNative('description'),
-            StringLiteral::fromNative('copyright'),
+            new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -129,6 +129,11 @@ class MediaManagerTest extends TestCase
             ->expects($this->once())
             ->method('iri')
             ->willReturn('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->repository
+            ->expects($this->once())
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
 
         $this->filesystem
             ->expects($this->once())
@@ -157,7 +162,7 @@ class MediaManagerTest extends TestCase
             new UUID($id),
             $fileType,
             $description,
-            new StringLiteral($copyrightHolder->toString()),
+            $copyrightHolder,
             $location,
             $language
         );

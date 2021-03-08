@@ -67,17 +67,14 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         $this->setLogger(new NullLogger());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(
         UUID $id,
         MIMEType $fileType,
         StringLiteral $description,
-        StringLiteral $copyrightHolder,
+        CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
         Language $language
-    ) {
+    ): MediaObject {
         try {
             /** @var MediaObject $existingMediaObject */
             $existingMediaObject = $this->repository->load($id);
@@ -163,7 +160,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $mediaObject->getMediaObjectId(),
             $mediaObject->getMimeType(),
             new Description((string) $mediaObject->getDescription()),
-            new CopyrightHolder((string) $mediaObject->getCopyrightHolder()),
+            $mediaObject->getCopyrightHolder(),
             $mediaObject->getSourceLocation(),
             $mediaObject->getLanguage()
         );

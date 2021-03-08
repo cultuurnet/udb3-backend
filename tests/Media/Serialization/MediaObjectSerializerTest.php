@@ -15,7 +15,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use ValueObjects\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class MediaObjectSerializerTest extends TestCase
@@ -79,7 +78,7 @@ class MediaObjectSerializerTest extends TestCase
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('application/octet-stream'),
             new Description('my pic'),
-            new StringLiteral('Dirk Dirkington'),
+            new CopyrightHolder('Dirk Dirkington'),
             Url::fromNative('http://foo.bar/media/my_pic.jpg'),
             new Language('en')
         );
@@ -147,7 +146,7 @@ class MediaObjectSerializerTest extends TestCase
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('video/avi'),
             new Description('The Gleaners'),
-            new StringLiteral('Jean-François Millet'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );

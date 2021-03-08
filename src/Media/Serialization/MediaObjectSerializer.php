@@ -29,10 +29,8 @@ class MediaObjectSerializer
             // Some Image objects have the 'application/octet-stream' mime-type, so we hardcode the @type to
             // 'schema:ImageObject' to make sure an Image does not get the @type 'schema:mediaObject'.
             $type = 'schema:ImageObject';
-            $copyrightHolder = $mediaObject->getCopyrightHolder()->toString();
         } else {
             $type = $this->serializeMimeType($mediaObject->getMimeType());
-            $copyrightHolder = $mediaObject->getCopyrightHolder()->toNative();
         }
 
         return  [
@@ -41,7 +39,7 @@ class MediaObjectSerializer
             'contentUrl' => (string) $mediaObject->getSourceLocation(),
             'thumbnailUrl' => (string) $mediaObject->getSourceLocation(),
             'description' => (string) $mediaObject->getDescription(),
-            'copyrightHolder' => $copyrightHolder,
+            'copyrightHolder' => $mediaObject->getCopyrightHolder()->toString(),
             'inLanguage' => (string) $mediaObject->getLanguage(),
         ];
     }

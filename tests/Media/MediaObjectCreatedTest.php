@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -58,7 +59,7 @@ class MediaObjectCreatedTest extends TestCase
                     new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
                     new MIMEType('image/png'),
                     new StringLiteral('The Gleaners'),
-                    new StringLiteral('Jean-François Millet'),
+                    new CopyrightHolder('Jean-François Millet'),
                     Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
                     new Language('en')
                 ),
@@ -83,7 +84,7 @@ class MediaObjectCreatedTest extends TestCase
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
-            new StringLiteral('Jean-François Millet'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('nl')
         );
@@ -108,7 +109,7 @@ class MediaObjectCreatedTest extends TestCase
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new StringLiteral('The Gleaners'),
-            new StringLiteral('J_'),
+            new CopyrightHolder('J_'),
             Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('nl')
         );
