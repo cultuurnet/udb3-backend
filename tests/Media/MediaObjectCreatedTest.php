@@ -90,4 +90,29 @@ class MediaObjectCreatedTest extends TestCase
 
         $this->assertEquals(MediaObjectCreated::deserialize($eventData), $expectedEvent);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_create_a_media_object_from_serialized_data_with_invalid_length_copyright_holder()
+    {
+        $eventData = [
+            'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'mime_type' => 'image/png',
+            'description' => 'The Gleaners',
+            'copyright_holder' => 'J',
+            'source_location' => 'http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+        ];
+
+        $expectedEvent = new MediaObjectCreated(
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new StringLiteral('The Gleaners'),
+            new StringLiteral('J_'),
+            Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Language('nl')
+        );
+
+        $this->assertEquals(MediaObjectCreated::deserialize($eventData), $expectedEvent);
+    }
 }

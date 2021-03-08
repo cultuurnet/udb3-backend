@@ -103,11 +103,18 @@ final class MediaObjectCreated implements Serializable
 
     public static function deserialize(array $data): MediaObjectCreated
     {
+        // There are some older events that contain copyright_holder with less then 2 characters.
+        // This is fixed here by adding an `_` instead of manually modifying the event store.
+        $copyrightHolderData = $data['copyright_holder'];
+        if (strlen($copyrightHolderData) < 2) {
+            $copyrightHolderData .= '_';
+        }
+
         return new self(
             new UUID($data['media_object_id']),
             new MIMEType($data['mime_type']),
             new StringLiteral($data['description']),
-            new StringLiteral($data['copyright_holder']),
+            new StringLiteral($copyrightHolderData),
             Url::fromNative($data['source_location']),
             array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl')
         );
