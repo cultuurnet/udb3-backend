@@ -85,7 +85,7 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
     protected $eventId;
 
     /**
-     * @var Audience
+     * @var Audience|null
      */
     private $audience;
 
