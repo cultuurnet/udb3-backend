@@ -41,7 +41,7 @@ class DefaultGeocodingService implements GeocodingServiceInterface
             $addresses = $this->geocoder->geocode($address);
             $coordinates = $addresses->first()->getCoordinates();
 
-            if ($coordinates === null) {
+            if (!$coordinates) {
                 throw new CollectionIsEmpty('Coordinates from address are empty');
             }
 
