@@ -202,7 +202,7 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
                 $id,
                 $image->getMediaObjectId(),
                 $description,
-                new StringLiteral($copyrightHolder->toString())
+                $copyrightHolder
             )
         );
     }

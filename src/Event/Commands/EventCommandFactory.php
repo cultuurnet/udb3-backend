@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\AbstractDeleteOrganizer;
@@ -75,13 +76,13 @@ class EventCommandFactory implements OfferCommandFactoryInterface
         string $id,
         UUID $mediaObjectId,
         StringLiteral $description,
-        StringLiteral $copyrightHolder
+        CopyrightHolder $copyrightHolder
     ): AbstractUpdateImage {
         return new UpdateImage(
             $id,
             $mediaObjectId,
             $description,
-            $copyrightHolder
+            new StringLiteral($copyrightHolder->toString())
         );
     }
 
