@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
+use CultureFeed_Cdb_Data_Price;
 use CultureFeed_Cdb_Item_Base;
 use CultuurNet\UDB3\Cdb\DateTimeFactory;
 use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
@@ -168,6 +169,7 @@ class CdbXMLItemBaseImporter
             return;
         }
 
+        /** @var CultureFeed_Cdb_Data_Price|null $mainLanguagePrice */
         $mainLanguagePrice = $mainLanguageDetail->getPrice();
 
         if (!$mainLanguagePrice) {
