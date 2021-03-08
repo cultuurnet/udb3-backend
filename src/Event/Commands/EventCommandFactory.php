@@ -82,7 +82,7 @@ class EventCommandFactory implements OfferCommandFactoryInterface
             $id,
             $mediaObjectId,
             $description,
-            new StringLiteral($copyrightHolder->toString())
+            $copyrightHolder
         );
     }
 

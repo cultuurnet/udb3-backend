@@ -221,7 +221,7 @@ trait OfferCommandHandlerTestTrait
         $itemId = '1';
         $mediaObjectId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = new StringLiteral('A description.');
-        $copyrightHolder = new StringLiteral('Dirk');
+        $copyrightHolder = new \CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder('Dirk');
         $imageAdded = $this->getEventClass('ImageAdded');
         $commandClass = $this->getCommandClass('UpdateImage');
         $eventClass = $this->getEventClass('ImageUpdated');
@@ -257,7 +257,7 @@ trait OfferCommandHandlerTestTrait
                     $itemId,
                     $mediaObjectId,
                     $description,
-                    $copyrightHolder
+                    new StringLiteral($copyrightHolder->toString())
                 ),
             ]);
     }
