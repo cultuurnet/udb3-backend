@@ -74,7 +74,7 @@ class ReadRestController
 
         $totalEntities = $this->readService->searchTotalLabels($query);
 
-        if ($totalEntities) {
+        if ($totalEntities->toInteger() > 0) {
             $entities = $this->readService->search($query);
 
             return $this->createPagedCollectionResponse(
