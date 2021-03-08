@@ -177,7 +177,7 @@ class CdbXMLItemBaseImporter
         }
 
         $basePrice = $mainLanguagePrice->getValue();
-        if (!is_numeric($basePrice) || is_null($basePrice)) {
+        if (!is_numeric($basePrice)) {
             return;
         }
 
