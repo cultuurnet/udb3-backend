@@ -49,16 +49,16 @@ class MediaObjectCreatedTest extends TestCase
                 [
                     'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
                     'mime_type' => 'image/png',
-                    'description' => 'sexy ladies without clothes',
-                    'copyright_holder' => 'Bart Ramakers',
+                    'description' => 'The Gleaners',
+                    'copyright_holder' => 'Jean-François Millet',
                     'source_location' => 'http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'language' => 'en',
                 ],
                 new MediaObjectCreated(
                     new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
                     new MIMEType('image/png'),
-                    new StringLiteral('sexy ladies without clothes'),
-                    new StringLiteral('Bart Ramakers'),
+                    new StringLiteral('The Gleaners'),
+                    new StringLiteral('Jean-François Millet'),
                     Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
                     new Language('en')
                 ),
@@ -74,16 +74,16 @@ class MediaObjectCreatedTest extends TestCase
         $eventData = [
             'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
             'mime_type' => 'image/png',
-            'description' => 'sexy ladies without clothes',
-            'copyright_holder' => 'Bart Ramakers',
+            'description' => 'The Gleaners',
+            'copyright_holder' => 'Jean-François Millet',
             'source_location' => 'http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png',
         ];
 
         $expectedEvent = new MediaObjectCreated(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new StringLiteral('sexy ladies without clothes'),
-            new StringLiteral('Bart Ramakers'),
+            new StringLiteral('The Gleaners'),
+            new StringLiteral('Jean-François Millet'),
             Url::fromNative('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('nl')
         );
