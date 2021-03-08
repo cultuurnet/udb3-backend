@@ -471,14 +471,10 @@ class OrganizerLDProjector implements EventListener
         return $document->withBody($jsonLD);
     }
 
-    /**
-     * @param Language $language
-     * @return JsonDocument|null
-     */
     private function applyAddress(
         AddressUpdated $addressUpdated,
         Language $language = null
-    ) {
+    ): JsonDocument {
         $organizerId = $addressUpdated->getOrganizerId();
         $document = $this->repository->get($organizerId);
         $jsonLD = $document->getBody();
