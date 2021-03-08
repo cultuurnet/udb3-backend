@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Cdb;
 
 use CultureFeed_Cdb_Data_Keyword;
 use CultureFeed_Cdb_Item_Event;
-use CultureFeed_Cdb_ParseException;
 use SimpleXMLElement;
 
 class EventItemFactory implements EventItemFactoryInterface
