@@ -28,6 +28,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
     public function createForEvent(
         CultureFeed_Uitpas_Event_CultureEvent $event
     ) {
+        /** @var CultureFeed_Uitpas_Calendar | null $eventCalendar */
         $eventCalendar = $event->calendar;
         if ($eventCalendar) {
             $dateRange = $this->getDateRangeFromUitpasCalendar($eventCalendar);
