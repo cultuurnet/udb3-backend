@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Cdb\CdbId;
 
+use CultureFeed_Cdb_Item_Actor;
 use CultuurNet\UDB3\Cdb\ExternalId\ArrayMappingService;
 use CultuurNet\UDB3\Cdb\ExternalId\MappingServiceInterface;
 
@@ -83,17 +84,25 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
             return $embeddedCdb->getCdbid();
         }
 
-        if (!is_null($embeddedCdb->getExternalId())) {
+        /** @var string|null $externalId */
+        $externalId = $embeddedCdb->getExternalId();
+        if (!is_null($externalId)) {
             return $externalIdMappingService->getCdbId(
                 $embeddedCdb->getExternalId()
             );
         }
 
-        if (!is_null($embeddedCdb->getActor()) && !is_null($embeddedCdb->getActor()->getCdbId())) {
+        /** @var CultureFeed_Cdb_Item_Actor|null $actor */
+        $actor = $embeddedCdb->getActor();
+        /** @var string|null $actorId */
+        $actorId = $actor ?? $actor->getCdbId();
+        if ($actorId) {
             return $embeddedCdb->getActor()->getCdbId();
         }
 
-        if (!is_null($embeddedCdb->getActor()) && !is_null($embeddedCdb->getActor()->getExternalId())) {
+        /** @var string|null $actorId */
+        $actorId = $actor ?? $actor->getExternalId();
+        if ($actorId) {
             return $externalIdMappingService->getCdbId(
                 $embeddedCdb->getActor()->getExternalId()
             );
