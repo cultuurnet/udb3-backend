@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 
+use CultureFeed_Cdb_Data_PerformerList;
 use CultuurNet\UDB3\CalendarFactoryInterface;
 use CultuurNet\UDB3\Cdb\CdbId\EventCdbIdExtractorInterface;
 use CultuurNet\UDB3\Cdb\Description\MergedDescription;
@@ -281,6 +282,7 @@ class CdbXMLImporter
      */
     private function importPerformers(\CultureFeed_Cdb_Data_EventDetail $detail, $jsonLD)
     {
+        /** @var CultureFeed_Cdb_Data_PerformerList|null $performers */
         $performers = $detail->getPerformers();
         if ($performers) {
             /** @var \CultureFeed_Cdb_Data_Performer $performer */
