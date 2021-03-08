@@ -9,7 +9,7 @@ use ValueObjects\Web\Url;
 trait UrlTransformingTrait
 {
     /**
-     * @var UrlTransformerInterface
+     * @var UrlTransformerInterface|null
      */
     protected $urlTransformer;
 
