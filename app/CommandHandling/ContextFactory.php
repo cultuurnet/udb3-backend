@@ -82,7 +82,7 @@ final class ContextFactory
 
         // Convert the ApiKey object to a string so it can get JSON-encoded.
         if (isset($metadata['auth_api_key'])) {
-            $metadata['auth_api_key'] = (string) $metadata['auth_api_key'];
+            $metadata['auth_api_key'] = $metadata['auth_api_key']->toString();
         }
 
         return new Metadata($metadata);
