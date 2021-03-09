@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media\Events;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
@@ -29,7 +30,7 @@ final class MediaObjectCreated implements Serializable
     private $description;
 
     /**
-     * @var StringLiteral
+     * @var CopyrightHolder
      */
     private $copyrightHolder;
 
@@ -47,7 +48,7 @@ final class MediaObjectCreated implements Serializable
         UUID $id,
         MIMEType $fileType,
         StringLiteral $description,
-        StringLiteral $copyrightHolder,
+        CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
         Language $language
     ) {
@@ -74,7 +75,7 @@ final class MediaObjectCreated implements Serializable
         return $this->description;
     }
 
-    public function getCopyrightHolder(): StringLiteral
+    public function getCopyrightHolder(): CopyrightHolder
     {
         return $this->copyrightHolder;
     }
@@ -95,7 +96,7 @@ final class MediaObjectCreated implements Serializable
             'media_object_id' => $this->getMediaObjectId()->toNative(),
             'mime_type' => $this->getMimeType()->toNative(),
             'description' => $this->getDescription()->toNative(),
-            'copyright_holder' => $this->getCopyrightHolder()->toNative(),
+            'copyright_holder' => $this->getCopyrightHolder()->toString(),
             'source_location' => (string) $this->getSourceLocation(),
             'language' => (string) $this->getLanguage(),
         ];
@@ -103,11 +104,18 @@ final class MediaObjectCreated implements Serializable
 
     public static function deserialize(array $data): MediaObjectCreated
     {
+        // There are some older events that contain copyright_holder with less then 2 characters.
+        // This is fixed here by adding an `_` instead of manually modifying the event store.
+        $copyrightHolderData = $data['copyright_holder'];
+        if (strlen($copyrightHolderData) < 2) {
+            $copyrightHolderData .= '_';
+        }
+
         return new self(
             new UUID($data['media_object_id']),
             new MIMEType($data['mime_type']),
             new StringLiteral($data['description']),
-            new StringLiteral($data['copyright_holder']),
+            new CopyrightHolder($copyrightHolderData),
             Url::fromNative($data['source_location']),
             array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl')
         );

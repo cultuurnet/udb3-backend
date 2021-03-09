@@ -10,9 +10,9 @@ use Broadway\CommandHandling\Testing\Scenario;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManager;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Item\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Organizer\Organizer;
@@ -190,8 +190,8 @@ trait OfferCommandHandlerTestTrait
         $image = new Image(
             new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
-            new MediaDescription('sexy ladies without clothes'),
-            new CopyrightHolder('Bart Ramakers'),
+            new MediaDescription('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
             Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -221,7 +221,7 @@ trait OfferCommandHandlerTestTrait
         $itemId = '1';
         $mediaObjectId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = new StringLiteral('A description.');
-        $copyrightHolder = new StringLiteral('Dirk');
+        $copyrightHolder = new CopyrightHolder('Dirk');
         $imageAdded = $this->getEventClass('ImageAdded');
         $commandClass = $this->getCommandClass('UpdateImage');
         $eventClass = $this->getEventClass('ImageUpdated');

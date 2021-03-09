@@ -9,9 +9,9 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Media\Image;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -265,7 +265,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                     'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'description' => (string) $description,
-                    'copyrightHolder' => (string) $copyrightHolder,
+                    'copyrightHolder' => $copyrightHolder->toString(),
                     'inLanguage' => 'en',
                 ],
             ],
@@ -285,7 +285,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $id = 'foo';
         $imageId = UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = StringLiteral::fromNative('Some description.');
-        $copyrightHolder = StringLiteral::fromNative('Dirk Dirkington');
+        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $eventClass = $this->getEventClass('ImageUpdated');
         $imageUpdated = new $eventClass($id, $imageId, $description, $copyrightHolder);
 
@@ -315,7 +315,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
                     'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                     'description' => (string) $description,
-                    'copyrightHolder' => (string) $copyrightHolder,
+                    'copyrightHolder' => $copyrightHolder->toString(),
                     'inLanguage' => 'en',
                 ],
             ],

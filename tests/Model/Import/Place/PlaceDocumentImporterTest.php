@@ -20,13 +20,12 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\LockedLabelRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID as Udb3ModelUUID;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder as Udb3ModelCopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -545,13 +544,13 @@ class PlaceDocumentImporterTest extends TestCase
                     MediaObjectReference::createWithMediaObjectId(
                         new Udb3ModelUUID('6984df33-62b4-4c94-ba2d-59d4a87d17dd'),
                         new Udb3ModelDescription('Example description'),
-                        new Udb3ModelCopyrightHolder('Bob'),
+                        new CopyrightHolder('Bob'),
                         new Udb3ModelLanguage('en')
                     ),
                     MediaObjectReference::createWithMediaObjectId(
                         new Udb3ModelUUID('ff29632f-c277-4e27-bb97-3fdb14e90279'),
                         new Udb3ModelDescription('Voorbeeld beschrijving'),
-                        new Udb3ModelCopyrightHolder('Bob'),
+                        new CopyrightHolder('Bob'),
                         new Udb3ModelLanguage('nl')
                     )
                 )

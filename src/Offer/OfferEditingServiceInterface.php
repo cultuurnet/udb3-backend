@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -41,11 +42,7 @@ interface OfferEditingServiceInterface
      */
     public function addImage($id, UUID $imageId);
 
-    /**
-     * @param string $id
-     * @return string
-     */
-    public function updateImage($id, Image $image, StringLiteral $description, StringLiteral $copyrightHolder);
+    public function updateImage($id, Image $image, StringLiteral $description, CopyrightHolder $copyrightHolder): void;
 
     /**
      * @param string $id

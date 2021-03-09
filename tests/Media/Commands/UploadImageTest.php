@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Media\Commands;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
@@ -24,7 +25,7 @@ class UploadImageTest extends TestCase
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             StringLiteral::fromNative('description'),
-            StringLiteral::fromNative('copyright'),
+            new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -69,7 +70,7 @@ class UploadImageTest extends TestCase
     public function it_stores_a_copyright()
     {
         $this->assertEquals(
-            StringLiteral::fromNative('copyright'),
+            new CopyrightHolder('copyright'),
             $this->uploadImage->getCopyrightHolder()
         );
     }

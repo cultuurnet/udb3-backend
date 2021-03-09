@@ -8,6 +8,7 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
@@ -41,7 +42,7 @@ class MediaObject extends EventSourcedAggregateRoot
     /**
      * Copyright info.
      *
-     * @var StringLiteral
+     * @var CopyrightHolder
      */
     protected $copyrightHolder;
 
@@ -56,18 +57,14 @@ class MediaObject extends EventSourcedAggregateRoot
      */
     protected $language;
 
-    /**
-     *
-     * @return MediaObject
-     */
     public static function create(
         UUID $id,
         MIMEType $mimeType,
         StringLiteral $description,
-        StringLiteral $copyrightHolder,
+        CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
         Language $language
-    ) {
+    ): MediaObject {
         $mediaObject = new self();
         $mediaObject->apply(
             new MediaObjectCreated(
@@ -106,10 +103,7 @@ class MediaObject extends EventSourcedAggregateRoot
         return $this->description;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getCopyrightHolder()
+    public function getCopyrightHolder(): CopyrightHolder
     {
         return $this->copyrightHolder;
     }

@@ -9,6 +9,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use ValueObjects\Identity\UUID;
@@ -61,7 +62,7 @@ class ImageUploaderService implements ImageUploaderInterface
     public function upload(
         UploadedFile $file,
         StringLiteral $description,
-        StringLiteral $copyrightHolder,
+        CopyrightHolder $copyrightHolder,
         Language $language
     ): UUID {
         if (!$file->isValid()) {
@@ -106,7 +107,7 @@ class ImageUploaderService implements ImageUploaderInterface
         return $fileId;
     }
 
-    private function guardFileSizeLimit(UploadedFile $file)
+    private function guardFileSizeLimit(UploadedFile $file): void
     {
         $filePath = $file->getRealPath();
         $fileSize = filesize($filePath);
@@ -122,10 +123,7 @@ class ImageUploaderService implements ImageUploaderInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUploadDirectory()
+    public function getUploadDirectory(): string
     {
         return $this->uploadDirectory;
     }
