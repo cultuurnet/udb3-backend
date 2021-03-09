@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -22,7 +23,7 @@ class EditMediaRestController
         $this->imageUploader = $imageUploader;
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request): JsonResponse
     {
         if (!$request->files->has('file')) {
             return new JsonResponse(['error' => 'file required'], 400);
@@ -49,7 +50,7 @@ class EditMediaRestController
         $imageId = $this->imageUploader->upload(
             $file,
             new StringLiteral($description),
-            new StringLiteral($copyrightHolder),
+            new CopyrightHolder($copyrightHolder),
             new Language($language)
         );
 

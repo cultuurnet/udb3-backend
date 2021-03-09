@@ -8,19 +8,31 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
-class CopyrightHolder
+final class CopyrightHolder
 {
     use IsString;
     use IsNotEmpty;
     use Trims;
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $value = $this->trim($value);
+
         $this->guardNotEmpty($value);
+
+        $length = mb_strlen($value);
+        if ($length < 2) {
+            throw new \InvalidArgumentException(
+                "CopyrightHolder '$value' should not be shorter than 2 chars."
+            );
+        }
+
+        if ($length > 250) {
+            throw new \InvalidArgumentException(
+                "CopyrightHolder '$value' should not be longer than 250 chars."
+            );
+        }
+
         $this->setValue($value);
     }
 }

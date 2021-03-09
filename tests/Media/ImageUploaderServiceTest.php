@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemInterface;
 use org\bovigo\vfs\content\LargeFileContent;
 use org\bovigo\vfs\vfsStream;
@@ -71,7 +72,7 @@ class ImageUploaderServiceTest extends TestCase
     public function it_should_throw_an_exception_if_the_uploaded_file_is_not_an_image()
     {
         $description = new StringLiteral('file description');
-        $copyrightHolder = new StringLiteral('Dude Man');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
         $file = $this->getMockFile(1000);
 
@@ -106,7 +107,7 @@ class ImageUploaderServiceTest extends TestCase
         );
 
         $description = new StringLiteral('file description');
-        $copyrightHolder = new StringLiteral('Dude Man');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
         $expectedDestination = $this->directory . '/' . $this->fileId . '.png';
@@ -142,7 +143,7 @@ class ImageUploaderServiceTest extends TestCase
             'image/png'
         );
         $description = new StringLiteral('file description');
-        $copyrightHolder = new StringLiteral('Dude Man');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
         $this->expectException(\InvalidArgumentException::class);
@@ -169,7 +170,7 @@ class ImageUploaderServiceTest extends TestCase
             ->willReturn(null);
 
         $description = new StringLiteral('file description');
-        $copyrightHolder = new StringLiteral('Dude Man');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
         $this->expectException(\InvalidArgumentException::class);
@@ -194,7 +195,7 @@ class ImageUploaderServiceTest extends TestCase
         $file = $this->getMockImage(1111111);
 
         $description = new StringLiteral('file description');
-        $copyrightHolder = new StringLiteral('Dude Man');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
         $this->expectException(FileSizeExceededException::class);
@@ -219,7 +220,7 @@ class ImageUploaderServiceTest extends TestCase
         $file = $this->getMockImage(false);
 
         $description = new StringLiteral('file description');
-        $copyrightHolder = new StringLiteral('Dude Man');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
         $this->expectException(\InvalidArgumentException::class);
@@ -244,7 +245,7 @@ class ImageUploaderServiceTest extends TestCase
         );
 
         $description = new StringLiteral('file description');
-        $copyrightHolder = new StringLiteral('Dude Man');
+        $copyrightHolder = new CopyrightHolder('Dude Man');
         $language = new Language('en');
 
         $expectedDestination = $this->directory . '/' . $this->fileId . '.jpg';

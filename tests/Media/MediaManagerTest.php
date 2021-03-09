@@ -9,9 +9,9 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -77,7 +77,7 @@ class MediaManagerTest extends TestCase
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             StringLiteral::fromNative('description'),
-            StringLiteral::fromNative('copyright'),
+            new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -115,7 +115,7 @@ class MediaManagerTest extends TestCase
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             StringLiteral::fromNative('description'),
-            StringLiteral::fromNative('copyright'),
+            new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );
@@ -129,6 +129,11 @@ class MediaManagerTest extends TestCase
             ->expects($this->once())
             ->method('iri')
             ->willReturn('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->repository
+            ->expects($this->once())
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
 
         $this->filesystem
             ->expects($this->once())
@@ -148,8 +153,8 @@ class MediaManagerTest extends TestCase
     {
         $id = 'de305d54-75b4-431b-adb2-eb6b9e546014';
         $fileType = new MIMEType('image/png');
-        $description = new Description('sexy ladies without clothes');
-        $copyrightHolder = new CopyrightHolder('Bart Ramakers');
+        $description = new Description('The Gleaners');
+        $copyrightHolder = new CopyrightHolder('Jean-François Millet');
         $location = Url::fromNative('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
         $language = new Language('en');
 

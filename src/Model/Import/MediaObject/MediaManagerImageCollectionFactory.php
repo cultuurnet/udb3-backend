@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
@@ -68,7 +67,7 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
                     $mediaObjectAggregate->getMediaObjectId(),
                     $mediaObjectAggregate->getMimeType(),
                     new Description($mediaObjectReference->getDescription()->toString()),
-                    new CopyrightHolder($mediaObjectReference->getCopyrightHolder()->toString()),
+                    $mediaObjectReference->getCopyrightHolder(),
                     $mediaObjectAggregate->getSourceLocation(),
                     new Language($mediaObjectReference->getLanguage()->toString())
                 );

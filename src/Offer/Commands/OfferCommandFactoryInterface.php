@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractRemoveImage;
@@ -31,7 +32,7 @@ interface OfferCommandFactoryInterface
 
     public function createRemoveImageCommand(string $id, Image $image): AbstractRemoveImage;
 
-    public function createUpdateImageCommand(string $id, UUID $mediaObjectId, StringLiteral $description, StringLiteral $copyrightHolder): AbstractUpdateImage;
+    public function createUpdateImageCommand(string $id, UUID $mediaObjectId, StringLiteral $description, CopyrightHolder $copyrightHolder): AbstractUpdateImage;
 
     public function createSelectMainImageCommand(string $id, Image $image): AbstractSelectMainImage;
 

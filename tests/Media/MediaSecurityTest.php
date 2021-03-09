@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\SecurityInterface;
@@ -42,7 +43,7 @@ class MediaSecurityTest extends TestCase
             UUID::fromNative('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             StringLiteral::fromNative('description'),
-            StringLiteral::fromNative('copyright'),
+            new CopyrightHolder('copyright'),
             StringLiteral::fromNative('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
             new Language('en')
         );

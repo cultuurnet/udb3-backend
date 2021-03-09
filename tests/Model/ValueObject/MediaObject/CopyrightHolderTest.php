@@ -32,4 +32,30 @@ class CopyrightHolderTest extends TestCase
 
         new CopyrightHolder('');
     }
+
+    /**
+     * @test
+     */
+    public function it_should_not_be_smaller_than_2_chars()
+    {
+        $shortCopyrightHolder = '1';
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("CopyrightHolder '$shortCopyrightHolder' should not be shorter than 2 chars.");
+
+        new CopyrightHolder($shortCopyrightHolder);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_be_bigger_than_250_chars()
+    {
+        $longCopyrightHolder = str_repeat('0123456789', 26);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("CopyrightHolder '$longCopyrightHolder' should not be longer than 250 chars.");
+
+        new CopyrightHolder($longCopyrightHolder);
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events\Image;
 
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -21,7 +22,7 @@ abstract class AbstractImageUpdated extends AbstractEvent
     protected $description;
 
     /**
-     * @var StringLiteral
+     * @var CopyrightHolder
      */
     protected $copyrightHolder;
 
@@ -29,7 +30,7 @@ abstract class AbstractImageUpdated extends AbstractEvent
         string $itemId,
         UUID $mediaObjectId,
         StringLiteral $description,
-        StringLiteral $copyrightHolder
+        CopyrightHolder $copyrightHolder
     ) {
         parent::__construct($itemId);
         $this->mediaObjectId = $mediaObjectId;
@@ -48,7 +49,7 @@ abstract class AbstractImageUpdated extends AbstractEvent
         return $this->description;
     }
 
-    public function getCopyrightHolder(): StringLiteral
+    public function getCopyrightHolder(): CopyrightHolder
     {
         return $this->copyrightHolder;
     }
@@ -58,7 +59,7 @@ abstract class AbstractImageUpdated extends AbstractEvent
         return parent::serialize() +  [
             'media_object_id' => (string) $this->mediaObjectId,
             'description' => (string) $this->description,
-            'copyright_holder' => (string) $this->copyrightHolder,
+            'copyright_holder' => $this->copyrightHolder->toString(),
         ];
     }
 
@@ -68,7 +69,7 @@ abstract class AbstractImageUpdated extends AbstractEvent
             $data['item_id'],
             new UUID($data['media_object_id']),
             new StringLiteral($data['description']),
-            new StringLiteral($data['copyright_holder'])
+            new CopyrightHolder($data['copyright_holder'])
         );
     }
 }

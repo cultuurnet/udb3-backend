@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Media\Commands;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\Identity\UUID;
@@ -29,7 +30,7 @@ class UploadImage implements AuthorizableCommandInterface
     protected $description;
 
     /**
-     * @var StringLiteral
+     * @var CopyrightHolder
      */
     protected $copyrightHolder;
 
@@ -47,7 +48,7 @@ class UploadImage implements AuthorizableCommandInterface
         UUID $fileId,
         MIMEType $mimeType,
         StringLiteral $description,
-        StringLiteral $copyrightHolder,
+        CopyrightHolder $copyrightHolder,
         StringLiteral $filePath,
         Language $language
     ) {
@@ -83,10 +84,7 @@ class UploadImage implements AuthorizableCommandInterface
         return $this->description;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getCopyrightHolder()
+    public function getCopyrightHolder(): CopyrightHolder
     {
         return $this->copyrightHolder;
     }

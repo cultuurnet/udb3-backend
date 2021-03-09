@@ -14,6 +14,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -188,19 +189,15 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
         );
     }
 
-    /**
-     * @param string $id
-     * @return string
-     */
     public function updateImage(
         $id,
         Image $image,
         StringLiteral $description,
-        StringLiteral $copyrightHolder
-    ) {
+        CopyrightHolder $copyrightHolder
+    ): void {
         $this->guardId($id);
 
-        return $this->commandBus->dispatch(
+        $this->commandBus->dispatch(
             $this->commandFactory->createUpdateImageCommand(
                 $id,
                 $image->getMediaObjectId(),

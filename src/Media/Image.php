@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use ValueObjects\Identity\UUID;
 use ValueObjects\Web\Url;
 
@@ -92,11 +92,18 @@ final class Image implements Serializable
 
     public static function deserialize(array $data): Image
     {
+        // There are some older events that contain copyright_holder with less then 2 characters.
+        // This is fixed here by adding an `_` instead of manually modifying the event store.
+        $copyrightHolderData = $data['copyright_holder'];
+        if (strlen($copyrightHolderData) < 2) {
+            $copyrightHolderData .= '_';
+        }
+
         return new self(
             new UUID($data['media_object_id']),
             new MIMEType($data['mime_type']),
             new Description($data['description']),
-            new CopyrightHolder($data['copyright_holder']),
+            new CopyrightHolder($copyrightHolderData),
             Url::fromNative($data['source_location']),
             array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl')
         );
@@ -108,7 +115,7 @@ final class Image implements Serializable
             'media_object_id' => (string) $this->getMediaObjectId(),
             'mime_type' => (string) $this->getMimeType(),
             'description' => (string) $this->getDescription(),
-            'copyright_holder' => (string) $this->getCopyrightHolder(),
+            'copyright_holder' => $this->getCopyrightHolder()->toString(),
             'source_location' => (string) $this->getSourceLocation(),
             'language' => (string) $this->getLanguage(),
         ];

@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use ValueObjects\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
 
 interface PlaceEditingServiceInterface
 {
@@ -115,13 +114,6 @@ interface PlaceEditingServiceInterface
      * @param string $id
      */
     public function addImage($id, UUID $imageId);
-
-    /**
-     * Update an image of the place.
-     *
-     * @param string $id
-     */
-    public function updateImage($id, Image $image, StringLiteral $description, StringLiteral $copyrightHolder);
 
     /**
      * Remove an image from the place.

@@ -78,21 +78,6 @@ interface EventEditingServiceInterface
     public function addImage($id, UUID $imageId);
 
     /**
-     * Update an image of the event.
-     *
-     * @param string $id
-     *
-     * @return string
-     *  The command id for this task.
-     */
-    public function updateImage(
-        $id,
-        Image $image,
-        StringLiteral $description,
-        StringLiteral $copyrightHolder
-    );
-
-    /**
      * Remove an image from an event.
      *
      * @param string $id

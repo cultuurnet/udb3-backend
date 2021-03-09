@@ -1273,8 +1273,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                         '@type' => 'schema:ImageObject',
                         'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                         'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'sexy ladies without clothes',
-                        'copyrightHolder' => 'Bart Ramakers',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
                     ],
                 ],
             ])
@@ -1286,8 +1286,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 '@type' => 'schema:ImageObject',
                 'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
                 'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                'description' => 'sexy ladies without clothes',
-                'copyrightHolder' => 'Bart Ramakers',
+                'description' => 'The Gleaners',
+                'copyrightHolder' => 'Jean-François Millet',
             ],
         ];
 

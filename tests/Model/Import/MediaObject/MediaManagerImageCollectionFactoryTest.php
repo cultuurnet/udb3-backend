@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\MediaObject as Udb3MediaObjectAggregate;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
-use CultuurNet\UDB3\Media\Properties\CopyrightHolder as Udb3CopyrightHolder;
 use CultuurNet\UDB3\Media\Properties\Description as Udb3Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -56,7 +55,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3UUID('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                 MIMEType::fromSubtype('jpeg'),
                 new Udb3Description('Example description'),
-                new Udb3CopyrightHolder('Bob'),
+                new CopyrightHolder('Bob'),
                 Udb3Url::fromNative('https://io.uitdatabank.be/images/b170224d-a5c6-40e3-a622-c4bac3a68f3a.jpg'),
                 new Udb3Language('en')
             ),
@@ -65,7 +64,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3UUID('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
                 MIMEType::fromSubtype('octet-stream'),
                 new Udb3Description('Filmpje'),
-                new Udb3CopyrightHolder('Bob'),
+                new CopyrightHolder('Bob'),
                 Udb3Url::fromNative('https://io.uitdatabank.be/images/9bad84d7-8200-4a23-af86-ec4decb3fe86.mov'),
                 new Udb3Language('en')
             ),
@@ -74,7 +73,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3UUID('a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb'),
                 MIMEType::fromSubtype('octet-stream'),
                 new Udb3Description('Filmpje 2'),
-                new Udb3CopyrightHolder('Bob'),
+                new CopyrightHolder('Bob'),
                 Udb3Url::fromNative('https://io.uitdatabank.be/images/a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb.mov'),
                 new Udb3Language('nl')
             ),
@@ -83,7 +82,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Udb3UUID('502c9436-02cd-4224-a690-04898b7c3a8d'),
                 MIMEType::fromSubtype('png'),
                 new Udb3Description('PNG Afbeelding'),
-                new Udb3CopyrightHolder('Bob'),
+                new CopyrightHolder('Bob'),
                 Udb3Url::fromNative('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
                 new Udb3Language('nl')
             ),
@@ -155,7 +154,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new Udb3UUID('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                     MIMEType::fromSubtype('jpeg'),
                     new Udb3Description('Voorbeeld beschrijving (aangepast)'),
-                    new Udb3CopyrightHolder('Bobby'),
+                    new CopyrightHolder('Bobby'),
                     Udb3Url::fromNative('https://io.uitdatabank.be/images/b170224d-a5c6-40e3-a622-c4bac3a68f3a.jpg'),
                     new Udb3Language('nl')
                 ),
@@ -163,7 +162,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new Udb3UUID('502c9436-02cd-4224-a690-04898b7c3a8d'),
                     MIMEType::fromSubtype('png'),
                     new Udb3Description('PNG Afbeelding'),
-                    new Udb3CopyrightHolder('Bob'),
+                    new CopyrightHolder('Bob'),
                     Udb3Url::fromNative('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
                     new Udb3Language('nl')
                 ),
