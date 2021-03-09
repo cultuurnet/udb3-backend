@@ -50,7 +50,7 @@ class Organizer extends EventSourcedAggregateRoot implements UpdateableWithCdbXm
     private $mainLanguage;
 
     /**
-     * @var Url
+     * @var Url|null
      */
     private $website;
 

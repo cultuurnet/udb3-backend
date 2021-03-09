@@ -10,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class SavedSearch implements \JsonSerializable
 {
     /**
-     * @var StringLiteral
+     * @var StringLiteral|null
      */
     protected $id;
 

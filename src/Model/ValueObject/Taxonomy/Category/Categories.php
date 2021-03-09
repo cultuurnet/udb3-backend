@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour\FiltersDuplicates;
 use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 /**
- * @method Category getFirst()
- * @method Category getLast()
+ * @method Category|null getFirst()
+ * @method Category|null getLast()
  * @method Category getByIndex($index)
  * @method Category[] toArray()
  * @method Categories with(Category $category)

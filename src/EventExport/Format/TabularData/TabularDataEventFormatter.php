@@ -297,36 +297,35 @@ class TabularDataEventFormatter
                     $uriParts = explode('/', $eventUri);
                     $eventId = array_pop($uriParts);
 
-                    $uitpasInfo = $this->uitpas->getEventInfo($eventId);
-                    if ($uitpasInfo) {
-                        $uitpasInfo = $this->uitpasInfoFormatter->format($uitpasInfo);
+                    $uitpasInfo = $this->uitpasInfoFormatter->format(
+                        $this->uitpas->getEventInfo($eventId)
+                    );
 
-                        $cardSystems = array_reduce(
-                            $uitpasInfo['prices'],
-                            function ($cardSystems, $tariff) {
-                                $cardSystem = isset($cardSystems[$tariff['cardSystem']])
-                                    ? $cardSystems[$tariff['cardSystem']]
-                                    : '';
-                                $cardSystem = empty($cardSystem)
-                                    ? $tariff['cardSystem'] . ': € ' . $tariff['price']
-                                    : $cardSystem . ' / € ' . $tariff['price'];
+                    $cardSystems = array_reduce(
+                        $uitpasInfo['prices'],
+                        function ($cardSystems, $tariff) {
+                            $cardSystem = isset($cardSystems[$tariff['cardSystem']])
+                                ? $cardSystems[$tariff['cardSystem']]
+                                : '';
+                            $cardSystem = empty($cardSystem)
+                                ? $tariff['cardSystem'] . ': € ' . $tariff['price']
+                                : $cardSystem . ' / € ' . $tariff['price'];
 
-                                $cardSystems[$tariff['cardSystem']] = $cardSystem;
-                                return $cardSystems;
-                            },
-                            []
-                        );
+                            $cardSystems[$tariff['cardSystem']] = $cardSystem;
+                            return $cardSystems;
+                        },
+                        []
+                    );
 
-                        $formattedTariffs = array_reduce(
-                            $cardSystems,
-                            function ($tariffs, $cardSystemPrices) {
-                                return $tariffs ? $tariffs . ' | ' . $cardSystemPrices : $cardSystemPrices;
-                            }
-                        );
-
-                        if (!empty($formattedTariffs)) {
-                            return $formattedTariffs;
+                    $formattedTariffs = array_reduce(
+                        $cardSystems,
+                        function ($tariffs, $cardSystemPrices) {
+                            return $tariffs ? $tariffs . ' | ' . $cardSystemPrices : $cardSystemPrices;
                         }
+                    );
+
+                    if (!empty($formattedTariffs)) {
+                        return $formattedTariffs;
                     }
                 },
                 'property' => 'kansentarief',

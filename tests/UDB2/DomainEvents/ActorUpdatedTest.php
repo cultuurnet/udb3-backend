@@ -57,23 +57,6 @@ class ActorUpdatedTest extends TestCase
         );
     }
 
-    public function testTime()
-    {
-        $time = new \DateTimeImmutable();
-        $expectedTime = clone $time;
-
-        $actorUpdated = $this->createActorUpdated($time);
-
-        // Adjustments to the time after creating the event should
-        // not affect the event time.
-        $time->modify('+5 days');
-
-        $this->assertEquals(
-            $expectedTime,
-            $actorUpdated->getTime()
-        );
-    }
-
     public function testUrl()
     {
         $actorUpdated = $this->createActorUpdated();

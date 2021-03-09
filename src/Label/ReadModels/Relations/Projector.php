@@ -65,14 +65,12 @@ class Projector extends AbstractProjector
         $LabelRelation = $this->createLabelRelation($labelAdded);
 
         try {
-            if (!is_null($LabelRelation)) {
-                $this->writeRepository->save(
-                    $LabelRelation->getLabelName(),
-                    $LabelRelation->getRelationType(),
-                    $LabelRelation->getRelationId(),
-                    false
-                );
-            }
+            $this->writeRepository->save(
+                $LabelRelation->getLabelName(),
+                $LabelRelation->getRelationType(),
+                $LabelRelation->getRelationId(),
+                false
+            );
         } catch (UniqueConstraintViolationException $exception) {
             // By design to catch unique exception.
         }
@@ -85,12 +83,10 @@ class Projector extends AbstractProjector
     {
         $labelRelation = $this->createLabelRelation($labelRemoved);
 
-        if (!is_null($labelRelation)) {
-            $this->writeRepository->deleteByLabelNameAndRelationId(
-                $labelRelation->getLabelName(),
-                $labelRelation->getRelationId()
-            );
-        }
+        $this->writeRepository->deleteByLabelNameAndRelationId(
+            $labelRelation->getLabelName(),
+            $labelRelation->getRelationId()
+        );
     }
 
     /**
@@ -222,10 +218,7 @@ class Projector extends AbstractProjector
         }
     }
 
-    /**
-     * @return LabelRelation
-     */
-    private function createLabelRelation(LabelEventInterface $labelEvent)
+    private function createLabelRelation(LabelEventInterface $labelEvent): LabelRelation
     {
         $labelRelation = null;
 

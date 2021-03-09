@@ -21,7 +21,7 @@ interface RoleReadingServiceInterface
     public function getUsersByRoleUuid(UUID $uuid);
 
     /**
-     * @return JsonDocument
+     * @return JsonDocument|null
      */
     public function getRolesByUserId(StringLiteral $userId);
 }

@@ -223,23 +223,6 @@ class EventLDProjector extends OfferLDProjector implements
             $this->slugger
         );
 
-        // Because we can not properly track media coming from UDB2 we simply
-        // ignore it and give priority to content added through UDB3.
-        // It's possible that an event has been deleted in udb3, but never
-        // in udb2. If an update comes for that event from udb2, it should
-        // be imported again. This is intended by design.
-        // @see https://jira.uitdatabank.be/browse/III-1092
-        try {
-            $document = $this->loadDocumentFromRepositoryByItemId($eventId);
-        } catch (DocumentGoneException $documentGoneException) {
-            $document = $this->newDocument($eventId);
-        }
-
-        $media = $this->UDB3Media($document);
-        if (!empty($media)) {
-            $jsonLd->mediaObject = $media;
-        }
-
         // When importing from UDB2 the main language is always nl.
         // When updating from UDB2 never change the main language.
         if (!isset($jsonLd->mainLanguage)) {
@@ -247,28 +230,6 @@ class EventLDProjector extends OfferLDProjector implements
         }
 
         return $jsonLd;
-    }
-
-    /**
-     * Return the media of an event if it already exists.
-     *
-     * @param JsonDocument $document The JsonDocument.
-     *
-     * @return array
-     *  A list of media objects.
-     */
-    private function UDB3Media($document)
-    {
-        $media = [];
-
-        if ($document) {
-            $item = $document->getBody();
-            // At the moment we do not include any media coming from UDB2.
-            // If the mediaObject property contains data it's coming from UDB3.
-            $item->mediaObject = isset($item->mediaObject) ? $item->mediaObject : [];
-        }
-
-        return $media;
     }
 
     /**

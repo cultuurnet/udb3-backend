@@ -217,9 +217,7 @@ class HTMLEventFormatter
     {
         if ($this->uitpas) {
             $uitpasInfo = $this->uitpas->getEventInfo($eventId);
-            if ($uitpasInfo) {
-                $formattedEvent['uitpas'] = $this->uitpasInfoFormatter->format($uitpasInfo);
-            }
+            $formattedEvent['uitpas'] = $this->uitpasInfoFormatter->format($uitpasInfo);
         }
     }
 

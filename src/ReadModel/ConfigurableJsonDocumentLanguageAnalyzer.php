@@ -139,7 +139,7 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
             $traversedProperties[] = $nestedPropertyName;
         }
 
-        if (is_object($propertyReference) && $propertyReference) {
+        if (is_object($propertyReference)) {
             return array_keys(get_object_vars($propertyReference));
         } else {
             return [];

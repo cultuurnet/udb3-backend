@@ -16,8 +16,7 @@ class LabelNameUniqueConstraintService implements UniqueConstraintServiceInterfa
     {
         $event = $domainMessage->getPayload();
 
-        return ($event instanceof Created ||
-            $event instanceof CopyCreated);
+        return $event instanceof Created;
     }
 
     /**

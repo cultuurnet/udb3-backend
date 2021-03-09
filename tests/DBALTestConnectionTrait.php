@@ -13,7 +13,7 @@ use PDO;
 trait DBALTestConnectionTrait
 {
     /**
-     * @var Connection
+     * @var Connection|null
      */
     private $connection;
 
@@ -37,7 +37,7 @@ trait DBALTestConnectionTrait
         );
     }
 
-    public function getConnection()
+    public function getConnection(): Connection
     {
         if (!$this->connection) {
             $this->initializeConnection();

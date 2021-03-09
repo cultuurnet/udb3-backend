@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\ReadModel\JSONLD;
 
+use CultureFeed_Cdb_Data_Address_PhysicalAddress;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
@@ -63,18 +64,18 @@ class CdbXMLImporter
             $addresses = $cdbContact->getAddresses();
 
             foreach ($addresses as $address) {
-                /* @var \CultureFeed_Cdb_Data_Address_PhysicalAddress $address */
-                $address = $address->getPhysicalAddress();
+                /** @var CultureFeed_Cdb_Data_Address_PhysicalAddress|null $physicalAddress */
+                $physicalAddress = $address->getPhysicalAddress();
 
-                if ($address) {
-                    $address = new Address(
-                        new Street($address->getStreet() . ' ' . $address->getHouseNumber()),
-                        new PostalCode($address->getZip()),
-                        new Locality($address->getCity()),
-                        Country::fromNative($address->getCountry())
+                if ($physicalAddress) {
+                    $physicalAddress = new Address(
+                        new Street($physicalAddress->getStreet() . ' ' . $physicalAddress->getHouseNumber()),
+                        new PostalCode($physicalAddress->getZip()),
+                        new Locality($physicalAddress->getCity()),
+                        Country::fromNative($physicalAddress->getCountry())
                     );
 
-                    $jsonLD->address->{$jsonLD->mainLanguage} = $address->toJsonLd();
+                    $jsonLD->address->{$jsonLD->mainLanguage} = $physicalAddress->toJsonLd();
                 }
             }
 

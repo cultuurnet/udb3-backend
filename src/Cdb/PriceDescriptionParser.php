@@ -29,13 +29,16 @@ class PriceDescriptionParser
      */
     private $currencyFormatter;
 
-
     public function __construct(
         NumberFormatRepositoryInterface $numberFormatRepository,
         CurrencyRepositoryInterface $currencyRepository
     ) {
         $this->numberFormatRepository = $numberFormatRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->currencyFormatter = new NumberFormatter(
+            $this->numberFormatRepository->get('nl-BE'),
+            NumberFormatter::CURRENCY
+        );
     }
 
     /**
@@ -86,10 +89,9 @@ class PriceDescriptionParser
         $priceName = trim($matches['name']);
         $priceValue = trim($matches['value']);
 
-        $currencyFormatter = $this->getCurrencyFormatter();
         $currency = $this->currencyRepository->get('EUR');
 
-        $priceValue = $currencyFormatter->parseCurrency(
+        $priceValue = $this->currencyFormatter->parseCurrency(
             $priceValue,
             $currency
         );
@@ -99,18 +101,5 @@ class PriceDescriptionParser
         }
 
         return [ $priceName => (float) $priceValue ];
-    }
-
-    private function getCurrencyFormatter()
-    {
-        if (!$this->currencyFormatter) {
-            $numberFormat = $this->numberFormatRepository->get('nl-BE');
-            $this->currencyFormatter = new NumberFormatter(
-                $numberFormat,
-                NumberFormatter::CURRENCY
-            );
-        }
-
-        return $this->currencyFormatter;
     }
 }

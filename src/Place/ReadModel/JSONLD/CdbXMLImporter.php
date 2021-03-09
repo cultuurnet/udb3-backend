@@ -105,20 +105,21 @@ class CdbXMLImporter
             $addresses = $contact_cdb->getAddresses();
 
             foreach ($addresses as $address) {
-                $address = $address->getPhysicalAddress();
+                /** @var \CultureFeed_Cdb_Data_Address_PhysicalAddress|null $physicalAddress */
+                $physicalAddress = $address->getPhysicalAddress();
 
-                if ($address) {
+                if ($physicalAddress) {
                     if (!isset($jsonLD->address)) {
                         $jsonLD->address = new \stdClass();
                     }
 
                     $jsonLD->address->nl = [
-                        'addressCountry' => $address->getCountry(),
-                        'addressLocality' => $address->getCity(),
-                        'postalCode' => $address->getZip(),
+                        'addressCountry' => $physicalAddress->getCountry(),
+                        'addressLocality' => $physicalAddress->getCity(),
+                        'postalCode' => $physicalAddress->getZip(),
                         'streetAddress' =>
-                            $address->getStreet() . ' ' .
-                            $address->getHouseNumber(),
+                            $physicalAddress->getStreet() . ' ' .
+                            $physicalAddress->getHouseNumber(),
                     ];
 
                     break;

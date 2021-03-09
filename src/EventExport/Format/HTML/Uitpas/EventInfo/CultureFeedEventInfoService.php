@@ -82,7 +82,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
 
         $resultSet = $this->uitpas->searchEvents($eventQuery);
 
-        /** @var CultureFeed_Uitpas_Event_CultureEvent $uitpasEvent */
+        /** @var CultureFeed_Uitpas_Event_CultureEvent|false $uitpasEvent */
         $uitpasEvent = reset($resultSet->objects);
 
         if ($uitpasEvent) {
@@ -189,7 +189,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
     ) {
         $uitpasPrices = [];
 
-        $tariffAsNumeric = is_integer($key->tariff) || is_float($key->tariff) ? $key->tariff : (float) ($key->tariff);
+        $tariffAsNumeric = (float) $key->tariff;
 
         if ($this->kansenTariefForCurrentCardSystem->isSatisfiedBy($key)) {
             $uitpasPrices[] = [

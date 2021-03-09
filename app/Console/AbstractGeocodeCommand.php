@@ -67,7 +67,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         return $this->geocodeByQuery($input, $output);
     }
 
-    private function geocodeManually(InputInterface $input, OutputInterface $output): ?int
+    private function geocodeManually(InputInterface $input, OutputInterface $output): int
     {
         $ids = array_values(array_filter($input->getOption('id')));
         $count = count($ids);
@@ -88,7 +88,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
         return 0;
     }
 
-    private function geocodeByQuery(InputInterface $input, OutputInterface $output): ?int
+    private function geocodeByQuery(InputInterface $input, OutputInterface $output): int
     {
         $query = $this->getQueryForMissingCoordinates();
         $count = $this->searchResultsGenerator->count($query);
