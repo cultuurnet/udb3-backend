@@ -668,6 +668,13 @@ class TabularDataEventFormatter
                 },
                 'property' => 'audience',
             ],
+            'status' => [
+                'name' => 'status',
+                'include' => function ($event) {
+                    return $this->formatStatus($event->status);
+                },
+                'property' => 'status',
+            ],
         ];
     }
 
@@ -799,5 +806,20 @@ class TabularDataEventFormatter
         $mainLanguage = $event->mainLanguage ?? 'nl';
 
         return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+    }
+
+    private function formatStatus(stdClass $status): string
+    {
+        $map = [
+            'Available' => 'Gaat door',
+            'TemporarilyUnavailable' => 'Uitgesteld',
+            'Unavailable' => 'Geannuleerd',
+        ];
+
+        if (!array_key_exists($status->type, $map)) {
+            return '';
+        }
+
+        return $map[$status->type];
     }
 }
