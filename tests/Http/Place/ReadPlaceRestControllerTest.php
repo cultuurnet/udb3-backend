@@ -47,7 +47,7 @@ class ReadPlaceRestControllerTest extends TestCase
             'existingId',
             json_encode(
                 [
-                    '@type' => 'Place',
+                    '@context' => '/contexts/place',
                     'status' => [
                         'type' => 'Available',
                     ],
