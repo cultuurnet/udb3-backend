@@ -981,6 +981,15 @@ class CdbXMLImporterTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_not_import_the_included_calendar_summary(): void
+    {
+        $jsonEvent = $this->createJsonEventFromCalendarSample('event_with_timestamp_and_start_and_end_time.xml');
+        $this->assertArrayNotHasKey('calendarSummary', (array) $jsonEvent);
+    }
+
     public function it_splits_contactinfo_into_contactpoint_and_bookinginfo()
     {
         $jsonEvent = $this->createJsonEventFromCdbXml('event_with_all_kinds_of_contact_info_2.cdbxml.xml');
