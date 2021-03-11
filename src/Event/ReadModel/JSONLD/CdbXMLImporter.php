@@ -104,8 +104,6 @@ class CdbXMLImporter
         $labelImporter = new LabelImporter();
         $labelImporter->importLabels($event, $jsonLD);
 
-        $jsonLD->calendarSummary = $detail->getCalendarSummary();
-
         $this->importLocation($event, $placeManager, $jsonLD);
 
         $this->importOrganizer($event, $organizerManager, $jsonLD);
