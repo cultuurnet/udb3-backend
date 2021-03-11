@@ -696,4 +696,28 @@ class TabularDataEventFormatterTest extends TestCase
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
     }
+
+    /**
+     * @test
+     *
+     * @group issue-III-1791
+     */
+    public function it_formats_status()
+    {
+        $includedProperties = [
+            'id',
+            'status',
+        ];
+
+        $event = $this->getJSONEventFromFile('event_with_status.json');
+        $formatter = new TabularDataEventFormatter($includedProperties);
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $expectedFormattedEvent = [
+            'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
+            'status' => 'Gaat door',
+        ];
+
+        $this->assertEquals($expectedFormattedEvent, $formattedEvent);
+    }
 }
