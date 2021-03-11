@@ -77,7 +77,7 @@ class ConsumeCommand extends Command
             pcntl_signal_dispatch();
 
             try {
-                $channel->wait(null, true, 4);
+                $channel->wait();
             } catch (AMQPTimeoutException $e) {
                 // Ignore this one.
             }
