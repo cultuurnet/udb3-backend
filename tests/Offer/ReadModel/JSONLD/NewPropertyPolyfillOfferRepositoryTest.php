@@ -198,6 +198,26 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
             ->assertReturnedDocumentDoesNotContainKey('location');
     }
 
+    /**
+     * @test
+     */
+    public function it_should_remove_calendarSummary_if_set(): void
+    {
+        $this
+            ->given(['calendarSummary' => 'Foo bar bla bla'])
+            ->assertReturnedDocumentDoesNotContainKey('calendarSummary');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_complain_if_calendarSummary_property_is_not_found(): void
+    {
+        $this
+            ->given(['@type' => 'Event'])
+            ->assertReturnedDocumentContains(['@type' => 'Event']);
+    }
+
     private function given(array $given): self
     {
         $this->repository->save(
