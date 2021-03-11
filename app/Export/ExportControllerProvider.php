@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Export;
 
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSVJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLDJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXMLJSONDeserializer;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDFJSONDeserializer;
@@ -24,15 +23,6 @@ class ExportControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new CommandDeserializerController(
                     new ExportEventsAsJsonLDJSONDeserializer(),
-                    $app['event_export_command_bus']
-                );
-            }
-        );
-
-        $app['csv_export_controller'] = $app->share(
-            function (Application $app) {
-                return new CommandDeserializerController(
-                    new ExportEventsAsCSVJSONDeserializer(),
                     $app['event_export_command_bus']
                 );
             }
@@ -60,7 +50,6 @@ class ExportControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/json', 'json_export_controller:handle');
-        $controllers->post('/csv', 'csv_export_controller:handle');
         $controllers->post('/ooxml', 'ooxml_export_controller:handle');
         $controllers->post('/pdf', 'pdf_export_controller:handle');
 
