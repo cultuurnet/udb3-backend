@@ -699,8 +699,6 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
-     *
-     * @group issue-III-1791
      */
     public function it_formats_status()
     {
