@@ -13,7 +13,9 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
         $document = parent::fetch($id, $includeMetadata);
-        return $this->polyfillNewProperties($document);
+        $document = $this->polyfillNewProperties($document);
+        $document = $this->removeObsoleteProperties($document);
+        return $document;
     }
 
     public function get(string $id, bool $includeMetadata = false): ?JsonDocument
@@ -24,7 +26,9 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             return null;
         }
 
-        return $this->polyfillNewProperties($document);
+        $document = $this->polyfillNewProperties($document);
+        $document = $this->removeObsoleteProperties($document);
+        return $document;
     }
 
     private function polyfillNewProperties(JsonDocument $jsonDocument): JsonDocument
@@ -99,5 +103,17 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
         }
 
         return $json;
+    }
+
+    private function removeObsoleteProperties(JsonDocument $jsonDocument): JsonDocument
+    {
+        $obsoleteProperties = ['calendarSummary'];
+
+        return $jsonDocument->applyAssoc(
+            function (array $json) use ($obsoleteProperties) {
+                $json = array_diff_key($json, array_flip($obsoleteProperties));
+                return $json;
+            }
+        );
     }
 }
