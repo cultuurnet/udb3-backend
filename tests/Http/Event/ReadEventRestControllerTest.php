@@ -64,7 +64,7 @@ class ReadEventRestControllerTest extends TestCase
             'id',
             json_encode(
                 [
-                    '@type' => 'Event',
+                    '@context' => '/contexts/event',
                     'status' => [
                         'type' => 'Available',
                     ],
