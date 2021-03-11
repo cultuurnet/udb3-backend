@@ -127,10 +127,6 @@ class ExportEventsJSONDeserializerTest extends TestCase
     {
         return [
             [
-                new ExportEventsAsCSVJSONDeserializer(),
-                ExportEventsAsCSV::class,
-            ],
-            [
                 new ExportEventsAsJsonLDJSONDeserializer(),
                 ExportEventsAsJsonLD::class,
             ],

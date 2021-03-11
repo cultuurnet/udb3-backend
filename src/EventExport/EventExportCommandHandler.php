@@ -6,14 +6,12 @@ namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\CommandHandling\SimpleCommandHandler;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
 use CultuurNet\UDB3\EventExport\Format\HTML\PDF\PDFWebArchiveFileFormat;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Format\JSONLD\JSONLDFileFormat;
-use CultuurNet\UDB3\EventExport\Format\TabularData\CSV\CSVFileFormat;
 use CultuurNet\UDB3\EventExport\Format\TabularData\OOXML\OOXMLFileFormat;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -71,18 +69,6 @@ class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAw
     ): void {
         $this->eventExportService->exportEvents(
             new JSONLDFileFormat($exportCommand->getInclude()),
-            $exportCommand->getQuery(),
-            $exportCommand->getAddress(),
-            $this->logger,
-            $exportCommand->getSelection()
-        );
-    }
-
-    public function handleExportEventsAsCSV(
-        ExportEventsAsCSV $exportCommand
-    ): void {
-        $this->eventExportService->exportEvents(
-            new CSVFileFormat($exportCommand->getInclude()),
             $exportCommand->getQuery(),
             $exportCommand->getAddress(),
             $this->logger,
