@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport;
 
-use CultuurNet\UDB3\EventExport\Command\ExportEventsAsCSV;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
@@ -12,7 +11,6 @@ use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveTemplate;
 use CultuurNet\UDB3\EventExport\Format\HTML\PDF\PDFWebArchiveFileFormat;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\EventExport\Format\JSONLD\JSONLDFileFormat;
-use CultuurNet\UDB3\EventExport\Format\TabularData\CSV\CSVFileFormat;
 use CultuurNet\UDB3\EventExport\Format\TabularData\OOXML\OOXMLFileFormat;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -79,31 +77,6 @@ class EventExportCommandHandlerTest extends TestCase
             );
 
         $this->eventExportCommandHandler->handle($exportEventsAsJsonLD);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_export_event_as_csv(): void
-    {
-        $exportEventsAsCSV = new ExportEventsAsCSV(
-            new EventExportQuery('query'),
-            new EmailAddress('jane@anonymous.com'),
-            null,
-            null
-        );
-
-        $this->eventExportService->expects($this->once())
-            ->method('exportEvents')
-            ->with(
-                new CSVFileFormat($exportEventsAsCSV->getInclude()),
-                new EventExportQuery('query'),
-                new EmailAddress('jane@anonymous.com'),
-                $this->logger,
-                null
-            );
-
-        $this->eventExportCommandHandler->handle($exportEventsAsCSV);
     }
 
     /**
