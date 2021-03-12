@@ -20,9 +20,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app->error(function (Exception $exception) use ($app) {
-            $app[SentryErrorHandler::class]->handle($exception);
-        });
 
         $app->error(
             function (GroupedValidationException $e) {
@@ -56,21 +53,24 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         );
 
         $app->error(
-            function (CultureFeed_Exception $e) {
+            function (CultureFeed_Exception $e) use ($app) {
+                $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblemFromCultureFeedException($e);
                 return new ApiProblemJsonResponse($problem);
             }
         );
 
         $app->error(
-            function (CultureFeed_HttpException $e) {
+            function (CultureFeed_HttpException $e) use ($app) {
+                $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblemFromCultureFeedException($e);
                 return new ApiProblemJsonResponse($problem);
             }
         );
 
         $app->error(
-            function (Exception $e) {
+            function (Exception $e) use ($app) {
+                $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
             }
