@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
+use CultuurNet\UDB3\Silex\PsrLoggerErrorHandler;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
 use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
@@ -263,11 +264,9 @@ $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 try {
     $app->run();
 } catch (\Throwable $throwable) {
-    // All Silex kernel exceptions are caught by the ErrorHandlerProvider and are:
-    //  - Pushed to Sentry
-    //  - Converted to ApiProblems.
-    // The uncaught runtime exceptions are caught here and captured in Sentry.
-    // The runtime exception is re-thrown to add it to system logs inside `var/log/`.
+    // All Silex kernel exceptions are caught by the ErrorHandlerProvider.
+    // Errors and uncaught runtime exceptions are caught here.
+    $app[PsrLoggerErrorHandler::class]->handle($throwable);
     $app[SentryErrorHandler::class]->handle($throwable);
     throw $throwable;
 }

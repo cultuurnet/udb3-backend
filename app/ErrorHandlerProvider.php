@@ -63,6 +63,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (CultureFeed_Exception $e) use ($app) {
+                $app[PsrLoggerErrorHandler::class]->handle($e);
                 $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblemFromCultureFeedException($e);
                 return new ApiProblemJsonResponse($problem);
@@ -71,6 +72,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (CultureFeed_HttpException $e) use ($app) {
+                $app[PsrLoggerErrorHandler::class]->handle($e);
                 $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblemFromCultureFeedException($e);
                 return new ApiProblemJsonResponse($problem);
@@ -79,6 +81,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (Exception $e) use ($app) {
+                $app[PsrLoggerErrorHandler::class]->handle($e);
                 $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
