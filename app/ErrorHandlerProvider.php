@@ -57,22 +57,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         );
 
         $app->error(
-            function (CultureFeed_Exception $e) use ($app) {
-                $app[PsrLoggerErrorHandler::class]->handle($e);
-                $problem = $this->createNewApiProblemFromCultureFeedException($e);
-                return new ApiProblemJsonResponse($problem);
-            }
-        );
-
-        $app->error(
-            function (CultureFeed_HttpException $e) use ($app) {
-                $app[PsrLoggerErrorHandler::class]->handle($e);
-                $problem = $this->createNewApiProblemFromCultureFeedException($e);
-                return new ApiProblemJsonResponse($problem);
-            }
-        );
-
-        $app->error(
             function (Exception $e) use ($app) {
                 if (!in_array(get_class($e), self::COMMON_USER_ERRORS)) {
                     $app[PsrLoggerErrorHandler::class]->handle($e);
@@ -86,6 +70,10 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
     private function createNewApiProblem(Exception $e): ApiProblem
     {
+        if ($e instanceof CultureFeed_Exception || $e instanceof CultureFeed_HttpException) {
+            return $this->createNewApiProblemFromCultureFeedException($e);
+        }
+
         $problem = new ApiProblem($e->getMessage());
         $problem->setStatus($e->getCode() ?: ApiProblemJsonResponse::HTTP_BAD_REQUEST);
         return $problem;
