@@ -78,15 +78,6 @@ class MediaServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['logger.media_manager'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('media-manager');
-                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/media_manager.log'));
-
-                return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
-            }
-        );
-
         $app['media_manager'] = $app->share(
             function (Application $app) {
                 $mediaManager = new MediaManager(
@@ -97,7 +88,11 @@ class MediaServiceProvider implements ServiceProviderInterface
                     $app['media.media_directory']
                 );
 
-                $mediaManager->setLogger($app['logger.media_manager']);
+                $logger = new Logger('media-manager');
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/media_manager.log'));
+                $logger = new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
+
+                $mediaManager->setLogger($logger);
 
                 return $mediaManager;
             }
