@@ -59,7 +59,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (CommandAuthorizationException $e) {
                 $problem = $this->createNewApiProblem($e);
-                $problem->setStatus(401);
                 return new ApiProblemJsonResponse($problem);
             }
         );
