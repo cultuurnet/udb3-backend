@@ -29,7 +29,7 @@ class CopyAwareEventStoreDecorator extends AbstractEventStoreDecorator
         $parentId = $this->identifyParent($oldestMessage);
         $parentEventStream = parent::load($parentId);
 
-        $inheritedEvents = $this->limitEventStreamToPlayhead($parentEventStream, $oldestMessage->getPlayhead());
+        $inheritedEvents = $this->limitEventStreamToPlayhead($parentEventStream, (int) $oldestMessage->getPlayhead());
         $combinedEvents = array_merge($inheritedEvents, $events);
 
         return $this->loadCompleteStream(new DomainEventStream($combinedEvents));
