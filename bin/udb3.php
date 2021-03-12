@@ -134,10 +134,8 @@ try {
     $consoleApp->run();
 } catch (\Exception $exception) {
     $app[PsrLoggerErrorHandler::class]->handle($exception);
-    $app[SentryErrorHandler::class]->handle($exception);
     $consoleApp->renderException($exception, new ConsoleOutput());
 } catch (\Error $error) {
     $app[PsrLoggerErrorHandler::class]->handle($error);
-    $app[SentryErrorHandler::class]->handle($error);
     throw $error;
 }

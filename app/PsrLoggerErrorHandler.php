@@ -24,6 +24,7 @@ final class PsrLoggerErrorHandler
         $this->logger->error(
             $throwable->getMessage(),
             [
+                'exception' => $throwable,
                 'type' => get_class($throwable),
                 'code' => $throwable->getCode(),
                 'file' => $throwable->getFile(),

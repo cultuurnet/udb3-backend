@@ -267,6 +267,5 @@ try {
     // All Silex kernel exceptions are caught by the ErrorHandlerProvider.
     // Errors and uncaught runtime exceptions are caught here.
     $app[PsrLoggerErrorHandler::class]->handle($throwable);
-    $app[SentryErrorHandler::class]->handle($throwable);
     throw $throwable;
 }

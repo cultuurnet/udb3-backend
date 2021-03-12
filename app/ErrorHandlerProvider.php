@@ -23,9 +23,10 @@ class ErrorHandlerProvider implements ServiceProviderInterface
     public function register(Application $app): void
     {
         $app[PsrLoggerErrorHandler::class] = $app::share(
-            function (): PsrLoggerErrorHandler {
+            function (Application $app): PsrLoggerErrorHandler {
                 $logger = new Logger('logger.errors');
                 $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/error.log'));
+                $logger = new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
                 return new PsrLoggerErrorHandler($logger);
             }
         );
@@ -64,7 +65,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (CultureFeed_Exception $e) use ($app) {
                 $app[PsrLoggerErrorHandler::class]->handle($e);
-                $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblemFromCultureFeedException($e);
                 return new ApiProblemJsonResponse($problem);
             }
@@ -73,7 +73,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (CultureFeed_HttpException $e) use ($app) {
                 $app[PsrLoggerErrorHandler::class]->handle($e);
-                $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblemFromCultureFeedException($e);
                 return new ApiProblemJsonResponse($problem);
             }
@@ -82,7 +81,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (Exception $e) use ($app) {
                 $app[PsrLoggerErrorHandler::class]->handle($e);
-                $app[SentryErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
             }
