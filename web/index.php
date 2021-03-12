@@ -7,14 +7,14 @@ use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Silex\ErrorHandler;
+use CultuurNet\UDB3\Silex\Error\ErrorHandler;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
-use CultuurNet\UDB3\Silex\PsrLoggerErrorHandler;
+use CultuurNet\UDB3\Silex\Error\PsrLoggerErrorHandler;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
 use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
-use CultuurNet\UDB3\Silex\SentryErrorHandler;
+use CultuurNet\UDB3\Silex\Error\SentryErrorHandler;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
@@ -217,7 +217,7 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\ErrorHandlerProvider());
+$app->register(new \CultuurNet\UDB3\Silex\Error\ErrorHandlerProvider());
 /* @deprecated */
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
 $app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());

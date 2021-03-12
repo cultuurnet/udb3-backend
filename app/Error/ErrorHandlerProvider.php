@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Error;
 
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
@@ -11,6 +11,10 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
+use CultuurNet\UDB3\Silex\Error\ChainedErrorHandler;
+use CultuurNet\UDB3\Silex\Error\ErrorHandler;
+use CultuurNet\UDB3\Silex\Error\PsrLoggerErrorHandler;
+use CultuurNet\UDB3\Silex\Error\SentryErrorHandler;
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

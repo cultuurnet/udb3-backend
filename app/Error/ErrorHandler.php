@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Error;
 
 use Throwable;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Error;
 
 use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
