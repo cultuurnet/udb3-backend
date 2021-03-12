@@ -11,7 +11,7 @@ use Sentry\State\Scope;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
-class SentryErrorHandler
+class SentryErrorHandler implements ErrorHandler
 {
     /** @var HubInterface */
     private $sentryHub;

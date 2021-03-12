@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-final class PsrLoggerErrorHandler
+final class PsrLoggerErrorHandler implements ErrorHandler
 {
     /**
      * @var LoggerInterface
