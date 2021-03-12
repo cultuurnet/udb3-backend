@@ -516,12 +516,6 @@ $app['logger.command_bus'] = $app->share(
         $handlers = $app['config']['log.command_bus'];
         foreach ($handlers as $handler_config) {
             switch ($handler_config['type']) {
-                case 'hipchat':
-                    $handler = new \Monolog\Handler\HipChatHandler(
-                        $handler_config['token'],
-                        $handler_config['room']
-                    );
-                    break;
                 case 'file':
                     $handler = new \Monolog\Handler\StreamHandler(
                         __DIR__ . '/web/' . $handler_config['path']
