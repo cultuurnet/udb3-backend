@@ -27,6 +27,8 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         CommandAuthorizationException::class,
         NotFoundHttpException::class,
         MethodNotAllowedException::class,
+        DataValidationException::class,
+        GroupedValidationException::class,
     ];
 
     public function register(Application $app): void
@@ -37,22 +39,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
                 $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/error.log'));
                 $logger = new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
                 return new PsrLoggerErrorHandler($logger);
-            }
-        );
-
-        $app->error(
-            function (GroupedValidationException $e) {
-                $problem = $this->createNewApiProblem($e);
-                $problem['validation_messages'] = $e->getMessages();
-                return new ApiProblemJsonResponse($problem);
-            }
-        );
-
-        $app->error(
-            function (DataValidationException $e) {
-                $problem = new ApiProblem('Invalid payload.');
-                $problem['validation_messages'] = $e->getValidationMessages();
-                return new ApiProblemJsonResponse($problem);
             }
         );
 
@@ -76,6 +62,16 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $problem = new ApiProblem($e->getMessage());
         $problem->setStatus($e->getCode() ?: ApiProblemJsonResponse::HTTP_BAD_REQUEST);
+
+        if ($e instanceof DataValidationException) {
+            $problem->setTitle('Invalid payload.');
+            $problem['validation_messages'] = $e->getValidationMessages();
+        }
+
+        if ($e instanceof GroupedValidationException) {
+            $problem['validation_messages'] = $e->getMessages();
+        }
+
         return $problem;
     }
 
