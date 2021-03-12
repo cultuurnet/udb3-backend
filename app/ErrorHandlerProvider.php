@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
-    private const COMMON_USER_ERRORS = [
+    private const ERRORS_EXCLUDED_FROM_LOGS = [
         EntityNotFoundException::class,
         CommandAuthorizationException::class,
         NotFoundHttpException::class,
@@ -44,7 +44,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (Exception $e) use ($app) {
-                if (!in_array(get_class($e), self::COMMON_USER_ERRORS)) {
+                if (!in_array(get_class($e), self::ERRORS_EXCLUDED_FROM_LOGS)) {
                     $app[PsrLoggerErrorHandler::class]->handle($e);
                 }
 
