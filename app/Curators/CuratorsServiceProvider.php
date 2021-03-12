@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Curators\LabelFactory;
 use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
 use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\Error\SentryErrorHandler;
+use CultuurNet\UDB3\Silex\Error\SentryPsrLoggerDecorator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -48,6 +50,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
 
                 $logger = new Logger('curators-events');
                 $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/curators-events.log'));
+                $logger = new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
 
                 $consumer->setLogger($logger);
 
