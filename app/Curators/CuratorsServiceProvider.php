@@ -20,20 +20,6 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['curators_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/curators-events.log');
-            }
-        );
-
-        $app['curators_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('curators-events');
-                $logger->pushHandler($app['curators_log_handler']);
-                return $logger;
-            }
-        );
-
         $app['curators_deserializer_locator'] = $app->share(
             function () {
                 $deserializerLocator = new SimpleDeserializerLocator();
@@ -60,7 +46,10 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['queue'])
                 );
 
-                $consumer->setLogger($app['curators_logger']);
+                $logger = new Logger('curators-events');
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/curators-events.log'));
+
+                $consumer->setLogger($logger);
 
                 return $consumer;
             }
