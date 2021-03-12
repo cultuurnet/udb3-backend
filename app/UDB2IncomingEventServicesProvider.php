@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
+use CultuurNet\UDB3\Silex\Error\SentryErrorHandler;
+use CultuurNet\UDB3\Silex\Error\SentryPsrLoggerDecorator;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreatedJSONDeserializer;
@@ -93,10 +95,18 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
             function (Application $app) {
+                $logger = new Logger('amqp.event_bus_forwarder');
+                $logger->pushHandler(new StreamHandler('php://stdout'));
+                $logger->pushHandler(new StreamHandler(
+                    __DIR__ . '/log/amqp.log',
+                    Logger::DEBUG
+                ));
+                $logger = new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
+
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),
                     $app['amqp.connection'],
-                    $app['logger.amqp.event_bus_forwarder'],
+                    $logger,
                     $app['udb2_deserializer_locator'],
                     $app['event_bus'],
                     new StringLiteral($app['config']['amqp']['consumer_tag'])

@@ -1008,21 +1008,6 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$app['logger.amqp.event_bus_forwarder'] = $app::share(
-    function (Application $app) {
-        $logger = new Monolog\Logger('amqp.event_bus_forwarder');
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
-
-        $logFileHandler = new \Monolog\Handler\StreamHandler(
-            __DIR__ . '/log/amqp.log',
-            \Monolog\Logger::DEBUG
-        );
-        $logger->pushHandler($logFileHandler);
-
-        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
-    }
-);
-
 $app['uitpas'] = $app->share(
     function (Application $app) {
         /** @var CultureFeed $cultureFeed */
