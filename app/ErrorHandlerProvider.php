@@ -12,6 +12,8 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Exception;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -20,6 +22,13 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
+        $app[PsrLoggerErrorHandler::class] = $app::share(
+            function (): PsrLoggerErrorHandler {
+                $logger = new Logger('logger.errors');
+                $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/error.log'));
+                return new PsrLoggerErrorHandler($logger);
+            }
+        );
 
         $app->error(
             function (GroupedValidationException $e) {
