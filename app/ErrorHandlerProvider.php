@@ -22,6 +22,13 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
+    private const COMMON_USER_ERRORS = [
+        EntityNotFoundException::class,
+        CommandAuthorizationException::class,
+        NotFoundHttpException::class,
+        MethodNotAllowedException::class,
+    ];
+
     public function register(Application $app): void
     {
         $app[PsrLoggerErrorHandler::class] = $app::share(
@@ -50,32 +57,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         );
 
         $app->error(
-            function (EntityNotFoundException $e) {
-                $problem = $this->createNewApiProblem($e);
-                return new ApiProblemJsonResponse($problem);
-            }
-        );
-
-        $app->error(
-            function (CommandAuthorizationException $e) {
-                $problem = $this->createNewApiProblem($e);
-                return new ApiProblemJsonResponse($problem);
-            }
-        );
-
-        $app->error(
-            function (NotFoundHttpException $e) {
-                return new ApiProblemJsonResponse($this->createNewApiProblem($e));
-            }
-        );
-
-        $app->error(
-            function (MethodNotAllowedException $e) {
-                return new ApiProblemJsonResponse($this->createNewApiProblem($e));
-            }
-        );
-
-        $app->error(
             function (CultureFeed_Exception $e) use ($app) {
                 $app[PsrLoggerErrorHandler::class]->handle($e);
                 $problem = $this->createNewApiProblemFromCultureFeedException($e);
@@ -93,7 +74,10 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (Exception $e) use ($app) {
-                $app[PsrLoggerErrorHandler::class]->handle($e);
+                if (!in_array(get_class($e), self::COMMON_USER_ERRORS)) {
+                    $app[PsrLoggerErrorHandler::class]->handle($e);
+                }
+
                 $problem = $this->createNewApiProblem($e);
                 return new ApiProblemJsonResponse($problem);
             }
