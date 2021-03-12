@@ -1037,15 +1037,6 @@ $app['uitpas'] = $app->share(
     }
 );
 
-$app['logger.uitpas'] = $app->share(
-    function (Application $app) {
-        $logger = new Monolog\Logger('uitpas');
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
-
-        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
-    }
-);
-
 // This service is used by the background worker to impersonate the user
 // who initially queued the command.
 $app['impersonator'] = $app->share(
