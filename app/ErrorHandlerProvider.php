@@ -17,6 +17,8 @@ use Monolog\Logger;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
@@ -59,6 +61,18 @@ class ErrorHandlerProvider implements ServiceProviderInterface
                 $problem = $this->createNewApiProblem($e);
                 $problem->setStatus(401);
                 return new ApiProblemJsonResponse($problem);
+            }
+        );
+
+        $app->error(
+            function (NotFoundHttpException $e) {
+                return new ApiProblemJsonResponse($this->createNewApiProblem($e));
+            }
+        );
+
+        $app->error(
+            function (MethodNotAllowedException $e) {
+                return new ApiProblemJsonResponse($this->createNewApiProblem($e));
             }
         );
 
