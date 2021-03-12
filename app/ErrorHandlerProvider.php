@@ -33,8 +33,8 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
     public function register(Application $app): void
     {
-        $app[PsrLoggerErrorHandler::class] = $app::share(
-            function (Application $app): PsrLoggerErrorHandler {
+        $app[ErrorHandler::class] = $app::share(
+            function (Application $app): ErrorHandler {
                 $logger = new Logger('logger.errors');
                 $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/error.log'));
                 $logger = new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
@@ -45,7 +45,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (Exception $e) use ($app) {
                 if (!in_array(get_class($e), self::ERRORS_EXCLUDED_FROM_LOGS)) {
-                    $app[PsrLoggerErrorHandler::class]->handle($e);
+                    $app[ErrorHandler::class]->handle($e);
                 }
 
                 $problem = $this->createNewApiProblem($e);

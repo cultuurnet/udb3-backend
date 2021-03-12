@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\ErrorHandler;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
@@ -133,9 +134,9 @@ $consoleApp->add(new ImportOfferAutoClassificationLabels($app['dbal_connection']
 try {
     $consoleApp->run();
 } catch (\Exception $exception) {
-    $app[PsrLoggerErrorHandler::class]->handle($exception);
+    $app[ErrorHandler::class]->handle($exception);
     $consoleApp->renderException($exception, new ConsoleOutput());
 } catch (\Error $error) {
-    $app[PsrLoggerErrorHandler::class]->handle($error);
+    $app[ErrorHandler::class]->handle($error);
     throw $error;
 }
