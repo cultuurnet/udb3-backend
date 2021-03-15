@@ -45,7 +45,12 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
                 $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
 
-                return new PsrLoggerErrorHandler($logger);
+                return new PsrLoggerErrorHandler(
+                    $logger,
+                    $app['jwt'] ?? null,
+                    $app['auth.api_key'] ?? null,
+                    $app['api_name'] ?? null
+                );
             }
         );
 
