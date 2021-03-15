@@ -16,11 +16,10 @@ use CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Sentry\Monolog\Handler as SentryHandler;
-use Sentry\State\HubInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Twig_Environment;
@@ -68,11 +67,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                     new EventOrganizerPromotionQueryFactory($app['clock'])
                 );
 
-                $logger = new Logger('uitpas');
-                $logger->pushHandler(new StreamHandler(__DIR__ . '/log/uitpas.log'));
-                $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
-
-                $eventInfoService->setLogger($logger);
+                $eventInfoService->setLogger(LoggerFactory::create($app, 'uitpas'));
 
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $app['event_export_service'],

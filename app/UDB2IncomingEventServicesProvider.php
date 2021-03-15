@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreatedJSONDeserializer;
@@ -36,8 +37,6 @@ use GuzzleHttp\Middleware;
 use Http\Adapter\Guzzle6\Client as ClientAdapter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Sentry\Monolog\Handler as SentryHandler;
-use Sentry\State\HubInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -95,13 +94,8 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
             function (Application $app) {
-                $logger = new Logger('amqp.event_bus_forwarder');
+                $logger = LoggerFactory::create($app, 'amqp', 'amqp.event_bus_forwarder');
                 $logger->pushHandler(new StreamHandler('php://stdout'));
-                $logger->pushHandler(new StreamHandler(
-                    __DIR__ . '/log/amqp.log',
-                    Logger::DEBUG
-                ));
-                $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
 
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),

@@ -12,11 +12,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Exception;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Respect\Validation\Exceptions\GroupedValidationException;
-use Sentry\Monolog\Handler as SentryHandler;
-use Sentry\State\HubInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,17 +33,8 @@ class ErrorHandlerProvider implements ServiceProviderInterface
     {
         $app[ErrorHandler::class] = $app::share(
             function (Application $app): ErrorHandler {
-                $logger = new Logger('logger.errors');
-
-                $fileLogger = new StreamHandler(__DIR__ . '/../../log/error.log');
-                $fileLogger->pushProcessor(new ContextExceptionConverterProcessor());
-                $fileLogger->pushProcessor(new ContextFilteringProcessor(['tags']));
-                $logger->pushHandler($fileLogger);
-
-                $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
-
                 return new ErrorHandler(
-                    $logger,
+                    LoggerFactory::create($app, 'error'),
                     $app['jwt'] ?? null,
                     $app['auth.api_key'] ?? null,
                     $app['api_name'] ?? null

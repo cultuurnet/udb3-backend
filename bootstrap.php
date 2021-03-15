@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesProvider;
@@ -515,6 +516,7 @@ $app['event_repository'] = $app->share(
 
 $app['logger.command_bus'] = $app::share(
     function ($app) {
+        $logger = LoggerFactory::create($app, 'command_bus');
 
         $redisConfig = [
             'host' => '127.0.0.1',
@@ -535,11 +537,8 @@ $app['logger.command_bus'] = $app::share(
             );
             $redis->connect();
         }
-
-        $logger = new Logger('command_bus');
-        $logger->pushHandler(new StreamHandler(__DIR__ . '/log/command_bus.log', Logger::DEBUG));
-        $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
         $logger->pushHandler(new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO));
+
         return $logger;
     }
 );

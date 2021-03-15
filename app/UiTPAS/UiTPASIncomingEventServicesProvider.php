@@ -7,14 +7,11 @@ namespace CultuurNet\UDB3\Silex\UiTPAS;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\ApiName;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Sentry\Monolog\Handler as SentryHandler;
-use Sentry\State\HubInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\Number\Natural;
@@ -24,17 +21,9 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['uitpas_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/uitpas-events.log');
-            }
-        );
-
         $app['uitpas_logger'] = $app->share(
             function (Application $app) {
-                $logger = new Logger('uitpas-events');
-                $logger->pushHandler($app['uitpas_log_handler']);
-                $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
+                return LoggerFactory::create($app, 'uitpas-events');
             }
         );
 
