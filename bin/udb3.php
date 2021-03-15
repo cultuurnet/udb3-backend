@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Silex\Error\ErrorHandler;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\Error\PsrLoggerErrorHandler;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\User\UserIdentityDetails;
