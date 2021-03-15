@@ -515,11 +515,6 @@ $app['event_repository'] = $app->share(
 
 $app['logger.command_bus'] = $app::share(
     function ($app) {
-        $logger = new Logger('command_bus');
-
-        $fileHandler = new StreamHandler(__DIR__ . '/log/command_bus.log');
-        $fileHandler->setLevel(Logger::DEBUG);
-        $logger->pushHandler($fileHandler);
 
         $redisConfig = [
             'host' => '127.0.0.1',
@@ -541,13 +536,10 @@ $app['logger.command_bus'] = $app::share(
             $redis->connect();
         }
 
-        $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis));
-        $socketIOHandler->setLevel(Logger::INFO);
-        $logger->pushHandler($socketIOHandler);
-
-        $sentryHandler = new SentryHandler($app[HubInterface::class], Logger::ERROR);
-        $logger->pushHandler($sentryHandler);
-
+        $logger = new Logger('command_bus');
+        $logger->pushHandler(new StreamHandler(__DIR__ . '/log/command_bus.log', Logger::DEBUG));
+        $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
+        $logger->pushHandler(new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO));
         return $logger;
     }
 );
