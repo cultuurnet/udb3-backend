@@ -24,17 +24,6 @@ class SentryServiceProvider implements ServiceProviderInterface
                 return SentrySdk::getCurrentHub();
             }
         );
-
-        $app[SentryErrorHandler::class] = $app->share(
-            function ($app) {
-                return new SentryErrorHandler(
-                    $app[HubInterface::class],
-                    $app['jwt'] ?? null,
-                    $app['auth.api_key'] ?? null,
-                    $app['api_name'] ?? null
-                );
-            }
-        );
     }
 
     public function boot(Application $app): void
