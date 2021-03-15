@@ -47,8 +47,6 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
-use CultuurNet\UDB3\Silex\Error\SentryErrorHandler;
-use CultuurNet\UDB3\Silex\Error\SentryPsrLoggerDecorator;
 use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\UserIdentityDetails;
@@ -57,6 +55,8 @@ use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Sentry\Monolog\Handler as SentryHandler;
+use Sentry\State\HubInterface;
 use Silex\Application;
 use SocketIO\Emitter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -545,7 +545,10 @@ $app['logger.command_bus'] = $app::share(
         $socketIOHandler->setLevel(Logger::INFO);
         $logger->pushHandler($socketIOHandler);
 
-        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
+        $sentryHandler = new SentryHandler($app[HubInterface::class], Logger::ERROR);
+        $logger->pushHandler($sentryHandler);
+
+        return $logger;
     }
 );
 
