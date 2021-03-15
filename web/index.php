@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
@@ -265,5 +266,12 @@ try {
     // All Silex kernel exceptions are caught by the ErrorHandlerProvider.
     // Errors and uncaught runtime exceptions are caught here.
     $app[ErrorLogger::class]->log($throwable);
-    throw $throwable;
+
+    // We're outside of the Silex app, so we cannot use the standard way to return a Response object.
+    http_response_code(500);
+    header('Content-Type: application/json');
+    $apiProblem = new ApiProblem('Internal Server Error');
+    $apiProblem->setStatus(500);
+    echo $apiProblem->asJson();
+    exit;
 }
