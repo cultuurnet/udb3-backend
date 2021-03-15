@@ -38,8 +38,13 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app[ErrorHandler::class] = $app::share(
             function (Application $app): ErrorHandler {
                 $logger = new Logger('logger.errors');
-                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/error.log'));
+
+                $fileLogger = new StreamHandler(__DIR__ . '/../../log/error.log');
+                $fileLogger->pushProcessor(new ContextExceptionConverterProcessor());
+                $logger->pushHandler($fileLogger);
+
                 $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
+
                 return new PsrLoggerErrorHandler($logger);
             }
         );
