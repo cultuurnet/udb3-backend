@@ -56,10 +56,6 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
     private function createNewApiProblem(Exception $e): ApiProblem
     {
-        if ($e instanceof CultureFeed_Exception || $e instanceof CultureFeed_HttpException) {
-            return $this->createNewApiProblemFromCultureFeedException($e);
-        }
-
         $problem = new ApiProblem($e->getMessage());
         $problem->setStatus($e->getCode() ?: ApiProblemJsonResponse::HTTP_BAD_REQUEST);
 
@@ -72,30 +68,20 @@ class ErrorHandlerProvider implements ServiceProviderInterface
             $problem['validation_messages'] = $e->getMessages();
         }
 
+        if ($e instanceof CultureFeed_Exception || $e instanceof CultureFeed_HttpException) {
+            $title = $problem->getTitle();
+
+            // Remove "URL CALLED" and everything after it.
+            // E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..."
+            // becomes "event is not known in uitpas ".
+            // The trailing space could easily be removed but it's there for backward compatibility with systems that
+            // might have implemented a comparison on the error message when this was introduced in udb3-uitpas-service
+            // in the past.
+            $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
+            $problem->setTitle($formattedTitle);
+        }
+
         return $problem;
-    }
-
-    /**
-     * Returns a new ApiProblem just like createNewApiProblem(), but also removes some internal debug info pertaining to
-     * CultureFeed from the error message.
-     *
-     * E.g. "event is not known in uitpas URL CALLED: https://acc.uitid.be/uitid/rest/uitpas/cultureevent/..." (etc)
-     * becomes "event is not known in uitpas ".
-     * The trailing space could easily be removed but it's there for backward compatibility with systems that might have
-     * implemented a comparison on the error message when this was introduced in udb3-uitpas-service in the past.
-     */
-    private function createNewApiProblemFromCultureFeedException(Exception $exception): ApiProblem
-    {
-        $apiProblem = $this->createNewApiProblem($exception);
-
-        $title = $apiProblem->getTitle();
-
-        // Remove "URL CALLED" and everything after it.
-        $formattedTitle = preg_replace('/URL CALLED.*/', '', $title);
-
-        $clonedApiProblem = clone $apiProblem;
-        $clonedApiProblem->setTitle($formattedTitle);
-        return $clonedApiProblem;
     }
 
     public function boot(Application $app): void
