@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
-    private const ERRORS_EXCLUDED_FROM_LOGS = [
+    private const BAD_REQUESTS = [
         EntityNotFoundException::class,
         CommandAuthorizationException::class,
         NotFoundHttpException::class,
@@ -44,20 +44,24 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (Exception $e) use ($app) {
-                if (!in_array(get_class($e), self::ERRORS_EXCLUDED_FROM_LOGS)) {
+                $defaultStatus = ApiProblemJsonResponse::HTTP_BAD_REQUEST;
+
+                $badRequest = in_array(get_class($e), self::BAD_REQUESTS);
+                if (!$badRequest) {
                     $app[ErrorLogger::class]->log($e);
+                    $defaultStatus = ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR;
                 }
 
-                $problem = $this->createNewApiProblem($e);
+                $problem = $this->createNewApiProblem($e, $defaultStatus);
                 return new ApiProblemJsonResponse($problem);
             }
         );
     }
 
-    private function createNewApiProblem(Exception $e): ApiProblem
+    public static function createNewApiProblem(Exception $e, int $defaultStatus): ApiProblem
     {
         $problem = new ApiProblem($e->getMessage());
-        $problem->setStatus($e->getCode() ?: ApiProblemJsonResponse::HTTP_BAD_REQUEST);
+        $problem->setStatus($e->getCode() ?: $defaultStatus);
 
         if ($e instanceof DataValidationException) {
             $problem->setTitle('Invalid payload.');
