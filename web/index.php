@@ -7,7 +7,7 @@ use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Silex\Error\ErrorHandler;
+use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
@@ -264,6 +264,6 @@ try {
 } catch (\Throwable $throwable) {
     // All Silex kernel exceptions are caught by the ErrorHandlerProvider.
     // Errors and uncaught runtime exceptions are caught here.
-    $app[ErrorHandler::class]->handle($throwable);
+    $app[ErrorLogger::class]->log($throwable);
     throw $throwable;
 }

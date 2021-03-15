@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Jwt\Udb3Token;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-final class ErrorHandler
+final class ErrorLogger
 {
     /**
      * @var LoggerInterface
@@ -43,7 +43,7 @@ final class ErrorHandler
         $this->apiName = $apiName;
     }
 
-    public function handle(Throwable $throwable): void
+    public function log(Throwable $throwable): void
     {
         $this->logger->error(
             $throwable->getMessage(),

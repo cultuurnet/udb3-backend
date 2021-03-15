@@ -31,9 +31,9 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
     public function register(Application $app): void
     {
-        $app[ErrorHandler::class] = $app::share(
-            function (Application $app): ErrorHandler {
-                return new ErrorHandler(
+        $app[ErrorLogger::class] = $app::share(
+            function (Application $app): ErrorLogger {
+                return new ErrorLogger(
                     LoggerFactory::create($app, 'error'),
                     $app['jwt'] ?? null,
                     $app['auth.api_key'] ?? null,
@@ -45,7 +45,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app->error(
             function (Exception $e) use ($app) {
                 if (!in_array(get_class($e), self::ERRORS_EXCLUDED_FROM_LOGS)) {
-                    $app[ErrorHandler::class]->handle($e);
+                    $app[ErrorLogger::class]->log($e);
                 }
 
                 $problem = $this->createNewApiProblem($e);
