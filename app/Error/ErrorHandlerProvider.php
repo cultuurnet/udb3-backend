@@ -15,6 +15,8 @@ use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Respect\Validation\Exceptions\GroupedValidationException;
+use Sentry\Monolog\Handler as SentryHandler;
+use Sentry\State\HubInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,11 +39,8 @@ class ErrorHandlerProvider implements ServiceProviderInterface
             function (Application $app): ErrorHandler {
                 $logger = new Logger('logger.errors');
                 $logger->pushHandler(new StreamHandler(__DIR__ . '/../log/error.log'));
-                $loggerHandler = new PsrLoggerErrorHandler($logger);
-
-                $sentryHandler = $app[SentryErrorHandler::class];
-
-                return new ChainedErrorHandler($loggerHandler, $sentryHandler);
+                $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
+                return new PsrLoggerErrorHandler($logger);
             }
         );
 
