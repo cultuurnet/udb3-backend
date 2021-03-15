@@ -28,7 +28,7 @@ class CommandAuthorizationException extends \Exception
     ) {
         parent::__construct(
             sprintf(
-                "User with id: %s has no permission: %s on item: %s when executing command: %s",
+                "User with id: %s has no permission: \"%s\" on item: %s when executing command: %s",
                 $userId->toNative(),
                 $command->getPermission()->toNative(),
                 $command->getItemId(),
