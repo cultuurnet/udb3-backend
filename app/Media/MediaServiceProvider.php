@@ -12,10 +12,10 @@ use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
 use CultuurNet\UDB3\Silex\AggregateType;
-use CultuurNet\UDB3\Silex\Error\SentryErrorHandler;
-use CultuurNet\UDB3\Silex\Error\SentryPsrLoggerDecorator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Sentry\Monolog\Handler as SentryHandler;
+use Sentry\State\HubInterface;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -90,7 +90,7 @@ class MediaServiceProvider implements ServiceProviderInterface
 
                 $logger = new Logger('media-manager');
                 $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/media_manager.log'));
-                $logger = new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
+                $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
 
                 $mediaManager->setLogger($logger);
 
