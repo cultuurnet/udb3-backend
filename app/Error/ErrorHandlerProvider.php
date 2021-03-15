@@ -41,6 +41,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
                 $fileLogger = new StreamHandler(__DIR__ . '/../../log/error.log');
                 $fileLogger->pushProcessor(new ContextExceptionConverterProcessor());
+                $fileLogger->pushProcessor(new ContextFilteringProcessor(['tags']));
                 $logger->pushHandler($fileLogger);
 
                 $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
