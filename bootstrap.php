@@ -2,6 +2,7 @@
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\MonologSocketIO\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
@@ -54,7 +55,10 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
+use SocketIO\Emitter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -509,71 +513,37 @@ $app['event_repository'] = $app->share(
     }
 );
 
-$app['logger.command_bus'] = $app->share(
+$app['logger.command_bus'] = $app::share(
     function ($app) {
-        $logger = new \Monolog\Logger('command_bus');
+        $logger = new Logger('command_bus');
 
-        $handlers = $app['config']['log.command_bus'];
-        foreach ($handlers as $handler_config) {
-            switch ($handler_config['type']) {
-                case 'file':
-                    $handler = new \Monolog\Handler\StreamHandler(
-                        __DIR__ . '/web/' . $handler_config['path']
-                    );
-                    break;
-                case 'socketioemitter':
-                    $redisConfig = isset($handler_config['redis']) ? $handler_config['redis'] : array();
-                    $redisConfig += array(
-                        'host' => '127.0.0.1',
-                        'port' => 6379,
-                    );
-                    if (extension_loaded('redis')) {
-                        $redis = new \Redis();
-                        $redis->connect(
-                            $redisConfig['host'],
-                            $redisConfig['port']
-                        );
-                    } else {
-                        $redis = new Predis\Client(
-                            [
-                                'host' => $redisConfig['host'],
-                                'port' => $redisConfig['port']
-                            ]
-                        );
-                        $redis->connect();
-                    }
+        $fileHandler = new StreamHandler(__DIR__ . '/log/command_bus.log');
+        $fileHandler->setLevel(Logger::DEBUG);
+        $logger->pushHandler($fileHandler);
 
-                    $emitter = new \SocketIO\Emitter($redis);
-
-                    if (isset($handler_config['namespace'])) {
-                        $emitter->of($handler_config['namespace']);
-                    }
-
-                    if (isset($handler_config['room'])) {
-                        $emitter->in($handler_config['room']);
-                    }
-
-                    $handler = new \CultuurNet\MonologSocketIO\SocketIOEmitterHandler(
-                        $emitter
-                    );
-                    break;
-
-                default:
-                    $handler = null;
-                    break;
-            }
-
-            if (!$handler) {
-                continue;
-            }
-
-            $handler->setLevel($handler_config['level']);
-            $handler->pushProcessor(
-                new \Monolog\Processor\PsrLogMessageProcessor()
+        $redisConfig = [
+            'host' => '127.0.0.1',
+            'port' => 6379,
+        ];
+        if (extension_loaded('redis')) {
+            $redis = new Redis();
+            $redis->connect(
+                $redisConfig['host'],
+                $redisConfig['port']
             );
-
-            $logger->pushHandler($handler);
+        } else {
+            $redis = new Predis\Client(
+                [
+                    'host' => $redisConfig['host'],
+                    'port' => $redisConfig['port']
+                ]
+            );
+            $redis->connect();
         }
+
+        $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis));
+        $socketIOHandler->setLevel(Logger::INFO);
+        $logger->pushHandler($socketIOHandler);
 
         return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
     }
