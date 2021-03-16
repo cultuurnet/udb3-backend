@@ -34,10 +34,10 @@ final class LoggerFactory
         ?string $loggerName = null,
         array $extraHandlers = []
     ): Logger {
-        $loggerName = $loggerName ?? $fileNameWithoutSuffix;
+        $loggerName = $loggerName ?? 'logger.' . $fileNameWithoutSuffix;
 
         if (!isset(self::$loggers[$loggerName])) {
-            self::$loggers[$loggerName] = new Logger($loggerName ?? 'logger.' . $fileNameWithoutSuffix);
+            self::$loggers[$loggerName] = new Logger($loggerName);
 
             $streamHandler = self::getStreamHandler($fileNameWithoutSuffix);
             $sentryHandler = self::getSentryHandler($app);
