@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\CommandHandling;
 
+use Psr\Log\LoggerInterface;
 use Resque_Job;
+use Throwable;
 
 class QueueJob
 {
@@ -23,16 +25,30 @@ class QueueJob
      */
     private static $commandBus;
 
+    /**
+     * @var LoggerInterface
+     */
+    private static $logger;
+
     public static function setCommandBus(ResqueCommandBus $commandBus): void
     {
         self::$commandBus = $commandBus;
     }
 
+    public static function setLogger(LoggerInterface $logger): void
+    {
+        self::$logger = $logger;
+    }
+
     public function perform(): void
     {
-        $command = unserialize(base64_decode($this->args['command']));
-        $context = unserialize(base64_decode($this->args['context']));
-        self::$commandBus->setContext($context);
-        self::$commandBus->deferredDispatch($this->job->payload['id'], $command);
+        try {
+            $command = unserialize(base64_decode($this->args['command']));
+            $context = unserialize(base64_decode($this->args['context']));
+            self::$commandBus->setLogger(self::$logger);
+            self::$commandBus->deferredDispatch($command, $context);
+        } catch (Throwable $e) {
+            self::$logger->error('job_failed', ['exception' => $e]);
+        }
     }
 }
