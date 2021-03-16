@@ -32,7 +32,6 @@ final class LoggerFactory
                 $app['api_name'] ?? null
             )
         );
-        $logger->pushHandler($sentryHandler);
 
         $handlers = new GroupHandler(array_merge([$fileLogger, $sentryHandler], $extraHandlers));
         $logger->pushHandler($handlers);
