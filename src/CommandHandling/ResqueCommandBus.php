@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Log\ContextEnrichingLogger;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Psr\Log\LoggerAwareInterface;
@@ -13,7 +12,6 @@ use Psr\Log\LoggerAwareTrait;
 use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\EventDispatcher;
 use Psr\Log\LoggerInterface;
-use Throwable;
 
 /**
  * Command bus decorator for asynchronous processing with PHP-Resque.
@@ -114,7 +112,6 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     /**
      * Really dispatches the command to the proper handler to be executed.
      *
-     * @param mixed $command
      *
      * @throws \Exception
      */
