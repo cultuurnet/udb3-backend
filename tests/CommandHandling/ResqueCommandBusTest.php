@@ -114,77 +114,7 @@ class ResqueCommandBusTest extends TestCase
             ->method('dispatch')
             ->with($command);
 
-        $this->commandBus->deferredDispatch(1, $command);
-    }
-
-    /**
-     * @test
-     */
-    public function after_deferred_dispatch_it_resets_the_context_of_the_decorated_context_aware_command_bus()
-    {
-        $command = new \stdClass();
-        $command->target = 'foo';
-
-        $context = new Metadata(
-            [
-                'user_id' => 1,
-                'user_nick' => 'admin',
-            ]
-        );
-
-        $this->commandBus->setContext($context);
-
-        $this->decoratedCommandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($command)
-            ->id('dispatched');
-
-        $this->decoratedCommandBus->expects($this->once())
-            ->method('setContext')
-            ->with(null)
-            ->after('dispatched');
-
-        $this->commandBus->deferredDispatch(1, $command);
-    }
-
-    /**
-     * @test
-     */
-    public function after_deferred_dispatch_even_after_exceptions_it_resets_the_context_of_the_decorated_context_aware_command_bus()
-    {
-        $exception = new \Exception(
-            'Something went wrong in the decorated command bus'
-        );
-
-        $command = new \stdClass();
-        $command->target = 'foo';
-
-        $context = new Metadata(
-            [
-                'user_id' => 1,
-                'user_nick' => 'admin',
-            ]
-        );
-
-        $this->commandBus->setContext($context);
-
-        $this->decoratedCommandBus->expects($this->once())
-            ->method('dispatch')
-            ->with($command)
-            ->willThrowException(
-                $exception
-            )
-            ->id('dispatched');
-
-        $this->decoratedCommandBus->expects($this->once())
-            ->method('setContext')
-            ->with(null)
-            ->after('dispatched');
-
-        $this->expectException(get_class($exception));
-        $this->expectExceptionMessage($exception->getMessage());
-
-        $this->commandBus->deferredDispatch(1, $command);
+        $this->commandBus->deferredDispatch($command);
     }
 
     /**
@@ -213,11 +143,6 @@ class ResqueCommandBusTest extends TestCase
             );
 
         $this->commandBus->setContext($context);
-
-        $command = new \stdClass();
-        $command->foo = 'bar';
-
-        $this->commandBus->deferredDispatch(1, $command);
     }
 }
 

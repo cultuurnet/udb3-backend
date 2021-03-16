@@ -46,9 +46,13 @@ class QueueJob
             $command = unserialize(base64_decode($this->args['command']));
             $context = unserialize(base64_decode($this->args['context']));
             self::$commandBus->setLogger(self::$logger);
-            self::$commandBus->deferredDispatch($command, $context);
+            self::$commandBus->setContext($context);
+            self::$commandBus->deferredDispatch($command);
         } catch (Throwable $e) {
             self::$logger->error('job_failed', ['exception' => $e]);
         }
+
+        // Make sure to revert the context, even if there was an Error/Exception.
+        self::$commandBus->setContext(null);
     }
 }

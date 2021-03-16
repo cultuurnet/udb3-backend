@@ -118,16 +118,12 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
      *
      * @throws \Exception
      */
-    public function deferredDispatch($command, Metadata $context): void
+    public function deferredDispatch($command): void
     {
-        $this->setContext($context);
-
         if ($this->decoratee instanceof LoggerAwareInterface && $this->logger instanceof LoggerInterface) {
             $this->decoratee->setLogger($this->logger);
         }
 
         parent::dispatch($command);
-
-        $this->setContext(null);
     }
 }
