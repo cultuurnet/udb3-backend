@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;

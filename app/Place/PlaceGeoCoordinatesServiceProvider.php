@@ -11,8 +11,6 @@ use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Place\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Place\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

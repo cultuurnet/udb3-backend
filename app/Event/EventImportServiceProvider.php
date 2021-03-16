@@ -14,9 +14,6 @@ use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Monolog\Processor\PsrLogMessageProcessor;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

@@ -36,7 +36,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use Http\Adapter\Guzzle6\Client as ClientAdapter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;

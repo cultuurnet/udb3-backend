@@ -17,8 +17,6 @@ use CultuurNet\UDB3\Model\Import\Command\ImportOrganizerDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportPlaceDocument;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use GuzzleHttp\Client;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
