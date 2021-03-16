@@ -34,10 +34,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app[ErrorLogger::class] = $app::share(
             function (Application $app): ErrorLogger {
                 return new ErrorLogger(
-                    LoggerFactory::create($app, 'error'),
-                    $app['jwt'] ?? null,
-                    $app['auth.api_key'] ?? null,
-                    $app['api_name'] ?? null
+                    LoggerFactory::create($app, 'error')
                 );
             }
         );

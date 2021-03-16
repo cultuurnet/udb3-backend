@@ -24,7 +24,15 @@ final class LoggerFactory
         $fileLogger->pushProcessor(new ContextFilteringProcessor(['tags']));
         $logger->pushHandler($fileLogger);
 
-        $logger->pushHandler(new SentryHandler($app[HubInterface::class], Logger::ERROR));
+        $sentryHandler = new SentryHandler($app[HubInterface::class], Logger::ERROR);
+        $sentryHandler->pushProcessor(
+            new SentryTagsProcessor(
+                $app['jwt'] ?? null,
+                $app['auth.api_key'] ?? null,
+                $app['api_name'] ?? null
+            )
+        );
+        $logger->pushHandler($sentryHandler);
 
         return $logger;
     }
