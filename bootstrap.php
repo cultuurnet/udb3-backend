@@ -516,8 +516,6 @@ $app['event_repository'] = $app->share(
 
 $app['logger.command_bus'] = $app::share(
     function ($app) {
-        $logger = LoggerFactory::create($app, 'command_bus');
-
         $redisConfig = [
             'host' => '127.0.0.1',
             'port' => 6379,
@@ -537,9 +535,9 @@ $app['logger.command_bus'] = $app::share(
             );
             $redis->connect();
         }
-        $logger->pushHandler(new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO));
+        $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
 
-        return $logger;
+        return LoggerFactory::create($app, 'command_bus', null, [$socketIOHandler]);
     }
 );
 

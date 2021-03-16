@@ -94,8 +94,12 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
             function (Application $app) {
-                $logger = LoggerFactory::create($app, 'amqp', 'amqp.event_bus_forwarder');
-                $logger->pushHandler(new StreamHandler('php://stdout'));
+                $logger = LoggerFactory::create(
+                    $app,
+                    'amqp',
+                    'amqp.event_bus_forwarder',
+                    [new StreamHandler('php://stdout')]
+                );
 
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),
