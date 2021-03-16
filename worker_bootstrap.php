@@ -30,6 +30,7 @@ Resque_Event::listen(
             QueueJob::setCommandBus($app[$commandBusServiceName]);
         } catch (Throwable $e) {
             $logger->error('job_failed', ['exception' => $e]);
+            $logger->info('job_finished');
 
             // Make sure to exit so the job doesn't get performed if there's an error in the beforePerform
             // Don't re-throw because it will pollute the logs
