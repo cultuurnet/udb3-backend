@@ -13,29 +13,65 @@ use Silex\Application;
 
 final class LoggerFactory
 {
+    /**
+     * @var Logger[]
+     */
+    private static $loggers;
+
+    /**
+     * @var StreamHandler[]
+     */
+    private static $streamHandlers = [];
+
+    /**
+     * @var SentryHandler|null
+     */
+    private static $sentryHandler;
+
     public static function create(
         Application $app,
         string $fileNameWithoutSuffix,
         ?string $loggerName = null,
         array $extraHandlers = []
     ): Logger {
-        $logger = new Logger($loggerName ?? 'logger.' . $fileNameWithoutSuffix);
+        $loggerName = $loggerName ?? $fileNameWithoutSuffix;
 
-        $fileLogger = new StreamHandler(__DIR__ . '/../../log/' . $fileNameWithoutSuffix . '.log', Logger::DEBUG);
-        $fileLogger->pushProcessor(new ContextExceptionConverterProcessor());
+        if (!isset(self::$loggers[$loggerName])) {
+            self::$loggers[$loggerName] = new Logger($loggerName ?? 'logger.' . $fileNameWithoutSuffix);
 
-        $sentryHandler = new SentryHandler($app[HubInterface::class], Logger::ERROR);
-        $sentryHandler->pushProcessor(
-            new SentryTagsProcessor(
-                $app['jwt'] ?? null,
-                $app['auth.api_key'] ?? null,
-                $app['api_name'] ?? null
-            )
-        );
+            $streamHandler = self::getStreamHandler($fileNameWithoutSuffix);
+            $sentryHandler = self::getSentryHandler($app);
 
-        $handlers = new GroupHandler(array_merge([$fileLogger, $sentryHandler], $extraHandlers));
-        $logger->pushHandler($handlers);
+            $handlers = new GroupHandler(array_merge([$streamHandler, $sentryHandler], $extraHandlers));
+            self::$loggers[$loggerName]->pushHandler($handlers);
+        }
 
-        return $logger;
+        return self::$loggers[$loggerName];
+    }
+
+    private static function getStreamHandler(string $name): StreamHandler
+    {
+        if (!isset(self::$streamHandlers[$name])) {
+            self::$streamHandlers[$name] = new StreamHandler(__DIR__ . '/../../log/' . $name . '.log', Logger::DEBUG);
+            self::$streamHandlers[$name]->pushProcessor(new ContextExceptionConverterProcessor());
+        }
+
+        return self::$streamHandlers[$name];
+    }
+
+    private static function getSentryHandler(Application $app): SentryHandler
+    {
+        if (!isset(self::$sentryHandler)) {
+            self::$sentryHandler = new SentryHandler($app[HubInterface::class], Logger::ERROR);
+            self::$sentryHandler->pushProcessor(
+                new SentryTagsProcessor(
+                    $app['jwt'] ?? null,
+                    $app['auth.api_key'] ?? null,
+                    $app['api_name'] ?? null
+                )
+            );
+        }
+
+        return self::$sentryHandler;
     }
 }
