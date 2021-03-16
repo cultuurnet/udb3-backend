@@ -21,12 +21,6 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['uitpas_logger'] = $app->share(
-            function (Application $app) {
-                return LoggerFactory::create($app, 'uitpas-events');
-            }
-        );
-
         $app['uitpas_deserializer_locator'] = $app->share(
             function () {
                 $deserializerLocator = new SimpleDeserializerLocator();
@@ -45,7 +39,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),
                     $app['amqp.connection'],
-                    $app['uitpas_logger'],
+                    LoggerFactory::create($app, 'uitpas-events'),
                     $app['uitpas_deserializer_locator'],
                     $app['event_bus'],
                     new StringLiteral($app['config']['amqp']['consumer_tag'])
@@ -83,7 +77,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventProcessManager(
                     $app['event_command_bus'],
                     $app[UiTPASLabelsRepository::class],
-                    $app['uitpas_logger']
+                    LoggerFactory::create($app, 'uitpas-events')
                 );
             }
         );
