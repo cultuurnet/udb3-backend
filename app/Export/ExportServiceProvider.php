@@ -76,7 +76,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                     $app['calendar_summary_repository'],
                     $app['event_export_twig_environment']
                 );
-                $eventExportCommandHandler->setLogger($app['event_export_logger']);
+                $eventExportCommandHandler->setLogger(LoggerFactory::create($app, 'export', 'event-export'));
                 return $eventExportCommandHandler;
             }
         );
@@ -87,20 +87,6 @@ class ExportServiceProvider implements ServiceProviderInterface
             function (CommandBus $commandBus, Application $app) {
                 $commandBus->subscribe($app['event_export_command_handler']);
                 return $commandBus;
-            }
-        );
-
-        $app['event_export_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/export.log');
-            }
-        );
-
-        $app['event_export_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('event-export');
-                $logger->pushHandler($app['event_export_log_handler']);
-                return $logger;
             }
         );
     }
