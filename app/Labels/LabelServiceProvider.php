@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Label\Services\ReadService;
 use CultuurNet\UDB3\Label\Services\WriteService;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Label\RelationshipModelLockedLabelRepository;
 use CultuurNet\UDB3\Silex\AggregateType;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
@@ -327,12 +328,13 @@ class LabelServiceProvider implements ServiceProviderInterface
     private function setUpLogger(Application $app)
     {
         $app[self::LOGGER] = $app->share(
-            function () {
-                $logger = new Logger('labels');
-                $logger->pushHandler(new StreamHandler('php://stdout'));
-                $logger->pushHandler(new StreamHandler(__DIR__ . '/../../log/labels.log'));
-
-                return $logger;
+            function (Application $app) {
+                return LoggerFactory::create(
+                    $app,
+                    'labels',
+                    null,
+                    [new StreamHandler('php://stdout')]
+                );
             }
         );
     }
