@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\Import\Command\HttpImportCommandHandler;
 use CultuurNet\UDB3\Model\Import\Command\ImportEventDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportOrganizerDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportPlaceDocument;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use GuzzleHttp\Client;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -29,20 +30,6 @@ class ImportConsumerServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['imports_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/import-commands.log');
-            }
-        );
-
-        $app['imports_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('import-commands');
-                $logger->pushHandler($app['imports_log_handler']);
-                return $logger;
-            }
-        );
-
         $app['event_import_iri_generator'] = $app->share(
             function (Application $app) {
                 $baseUrl = rtrim($app['config']['url'], '/');
@@ -155,7 +142,7 @@ class ImportConsumerServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['imports']['queue'])
                 );
 
-                $consumer->setLogger($app['imports_logger']);
+                $consumer->setLogger(LoggerFactory::create($app, 'import-commands'));
 
                 return $consumer;
             }
