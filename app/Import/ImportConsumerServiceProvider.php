@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Model\Import\Command\ImportEventDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportOrganizerDocument;
 use CultuurNet\UDB3\Model\Import\Command\ImportPlaceDocument;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use GuzzleHttp\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -140,7 +141,7 @@ class ImportConsumerServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['imports']['queue'])
                 );
 
-                $consumer->setLogger(LoggerFactory::create($app, 'import-commands'));
+                $consumer->setLogger(LoggerFactory::create($app, new LoggerName('import-commands')));
 
                 return $consumer;
             }

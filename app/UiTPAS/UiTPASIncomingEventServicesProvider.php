@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
@@ -39,7 +40,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),
                     $app['amqp.connection'],
-                    LoggerFactory::create($app, 'uitpas-events'),
+                    LoggerFactory::create($app, new LoggerName('uitpas-events')),
                     $app['uitpas_deserializer_locator'],
                     $app['event_bus'],
                     new StringLiteral($app['config']['amqp']['consumer_tag'])
@@ -77,7 +78,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventProcessManager(
                     $app['event_command_bus'],
                     $app[UiTPASLabelsRepository::class],
-                    LoggerFactory::create($app, 'uitpas-events')
+                    LoggerFactory::create($app, new LoggerName('uitpas-events'))
                 );
             }
         );

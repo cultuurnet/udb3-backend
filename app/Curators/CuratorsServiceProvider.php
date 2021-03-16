@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Curators\LabelFactory;
 use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -45,7 +46,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['queue'])
                 );
 
-                $consumer->setLogger(LoggerFactory::create($app, 'curators-events'));
+                $consumer->setLogger(LoggerFactory::create($app, new LoggerName('curators-events')));
 
                 return $consumer;
             }

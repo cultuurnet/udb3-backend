@@ -31,11 +31,11 @@ final class LoggerFactory
 
     public static function create(
         Application $app,
-        string $fileNameWithoutSuffix,
-        ?string $loggerName = null,
+        LoggerName $name,
         array $extraHandlers = []
     ): Logger {
-        $loggerName = $loggerName ?? 'logger.' . $fileNameWithoutSuffix;
+        $loggerName = $name->getLoggerName();
+        $fileNameWithoutSuffix = $name->getFileNameWithoutSuffix();
 
         if (!isset(self::$loggers[$loggerName])) {
             self::$loggers[$loggerName] = new Logger($loggerName);

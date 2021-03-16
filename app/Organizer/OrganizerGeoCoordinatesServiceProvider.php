@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -35,7 +36,7 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus'],
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($app, 'organizer-geocoordinates')
+                        LoggerFactory::create($app, new LoggerName('organizer-geocoordinates'))
                     )
                 );
             }

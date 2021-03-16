@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Media\SimplePathGenerator;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -85,7 +86,7 @@ class MediaServiceProvider implements ServiceProviderInterface
                     $app['media.media_directory']
                 );
 
-                $mediaManager->setLogger(LoggerFactory::create($app, 'media_manager'));
+                $mediaManager->setLogger(LoggerFactory::create($app, new LoggerName('media_manager')));
 
                 return $mediaManager;
             }

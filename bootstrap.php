@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesProvider;
@@ -534,7 +535,7 @@ $app['logger.command_bus'] = $app::share(
         }
         $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
 
-        return LoggerFactory::create($app, 'command_bus', null, [$socketIOHandler]);
+        return LoggerFactory::create($app, new LoggerName('command_bus'), [$socketIOHandler]);
     }
 );
 
