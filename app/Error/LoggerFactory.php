@@ -21,7 +21,6 @@ final class LoggerFactory
 
         $fileLogger = new StreamHandler(__DIR__ . '/../../log/' . $fileNameWithoutSuffix . '.log', Logger::DEBUG);
         $fileLogger->pushProcessor(new ContextExceptionConverterProcessor());
-        $fileLogger->pushProcessor(new ContextFilteringProcessor(['tags']));
         $logger->pushHandler($fileLogger);
 
         $sentryHandler = new SentryHandler($app[HubInterface::class], Logger::ERROR);
