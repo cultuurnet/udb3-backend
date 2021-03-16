@@ -16,6 +16,7 @@ final class ContextExceptionConverterProcessor implements ProcessorInterface
         $exception = $record['context']['exception'] ?? null;
         if ($exception instanceof Throwable) {
             $record['context']['type'] = get_class($exception);
+            $record['context']['message'] = $exception->getMessage();
             $record['context']['code'] = $exception->getCode();
             $record['context']['file'] = $exception->getFile();
             $record['context']['line'] = $exception->getLine();
