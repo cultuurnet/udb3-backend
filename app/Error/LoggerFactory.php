@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Silex\Error;
 use Monolog\Handler\GroupHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Processor\PsrLogMessageProcessor;
 use Sentry\Monolog\Handler as SentryHandler;
 use Sentry\State\HubInterface;
 use Silex\Application;
@@ -38,6 +39,7 @@ final class LoggerFactory
 
         if (!isset(self::$loggers[$loggerName])) {
             self::$loggers[$loggerName] = new Logger($loggerName);
+            self::$loggers[$loggerName]->pushProcessor(new PsrLogMessageProcessor());
 
             $streamHandler = self::getStreamHandler($fileNameWithoutSuffix);
             $sentryHandler = self::getSentryHandler($app);
