@@ -10,8 +10,8 @@ use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -30,27 +30,13 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['organizer_geocoordinates_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../log/organizer_geocoordinates.log');
-            }
-        );
-
-        $app['organizer_geocoordinates_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('organizer-geocoordinates');
-                $logger->pushHandler($app['organizer_geocoordinates_log_handler']);
-                return $logger;
-            }
-        );
-
         $app['organizer_geocoordinates_process_manager'] = $app->share(
             function (Application $app) {
                 return new ReplayFilteringEventListener(
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus'],
                         new CultureFeedAddressFactory(),
-                        $app['organizer_geocoordinates_logger']
+                        LoggerFactory::create($app, new LoggerName('organizer-geocoordinates'))
                     )
                 );
             }

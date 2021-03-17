@@ -28,12 +28,12 @@ use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\PurgeServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\Silex\SentryErrorHandler;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -132,9 +132,9 @@ $consoleApp->add(new ImportOfferAutoClassificationLabels($app['dbal_connection']
 try {
     $consoleApp->run();
 } catch (\Exception $exception) {
-    $app[SentryErrorHandler::class]->handle($exception);
+    $app[ErrorLogger::class]->log($exception);
     $consoleApp->renderException($exception, new ConsoleOutput());
 } catch (\Error $error) {
-    $app[SentryErrorHandler::class]->handle($error);
+    $app[ErrorLogger::class]->log($error);
     throw $error;
 }

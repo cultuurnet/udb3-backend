@@ -2,6 +2,7 @@
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\MonologSocketIO\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
@@ -31,6 +32,8 @@ use CultuurNet\UDB3\Silex\Auth0\Auth0ServiceProvider;
 use CultuurNet\UDB3\Silex\CommandHandling\LazyLoadingCommandBus;
 use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesProvider;
@@ -46,15 +49,15 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
-use CultuurNet\UDB3\Silex\SentryErrorHandler;
-use CultuurNet\UDB3\Silex\SentryPsrLoggerDecorator;
-use CultuurNet\UDB3\Silex\SentryServiceProvider;
+use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
+use Monolog\Logger;
 use Silex\Application;
+use SocketIO\Emitter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -65,7 +68,6 @@ $app = new Application();
 $adapter = new \League\Flysystem\Adapter\Local(__DIR__);
 $app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
 
-$app['debug'] = true;
 $app['api_name'] = ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
@@ -84,6 +86,8 @@ $app['config'] = array_merge_recursive(
         ],
     ]
 );
+
+$app['debug'] = $app['config']['debug'] ?? false;
 
 $app['event_store_factory'] = $app->protect(
     function (AggregateType $aggregateType) use ($app) {
@@ -509,79 +513,30 @@ $app['event_repository'] = $app->share(
     }
 );
 
-$app['logger.command_bus'] = $app->share(
+$app['logger.command_bus'] = $app::share(
     function ($app) {
-        $logger = new \Monolog\Logger('command_bus');
-
-        $handlers = $app['config']['log.command_bus'];
-        foreach ($handlers as $handler_config) {
-            switch ($handler_config['type']) {
-                case 'hipchat':
-                    $handler = new \Monolog\Handler\HipChatHandler(
-                        $handler_config['token'],
-                        $handler_config['room']
-                    );
-                    break;
-                case 'file':
-                    $handler = new \Monolog\Handler\StreamHandler(
-                        __DIR__ . '/web/' . $handler_config['path']
-                    );
-                    break;
-                case 'socketioemitter':
-                    $redisConfig = isset($handler_config['redis']) ? $handler_config['redis'] : array();
-                    $redisConfig += array(
-                        'host' => '127.0.0.1',
-                        'port' => 6379,
-                    );
-                    if (extension_loaded('redis')) {
-                        $redis = new \Redis();
-                        $redis->connect(
-                            $redisConfig['host'],
-                            $redisConfig['port']
-                        );
-                    } else {
-                        $redis = new Predis\Client(
-                            [
-                                'host' => $redisConfig['host'],
-                                'port' => $redisConfig['port']
-                            ]
-                        );
-                        $redis->connect();
-                    }
-
-                    $emitter = new \SocketIO\Emitter($redis);
-
-                    if (isset($handler_config['namespace'])) {
-                        $emitter->of($handler_config['namespace']);
-                    }
-
-                    if (isset($handler_config['room'])) {
-                        $emitter->in($handler_config['room']);
-                    }
-
-                    $handler = new \CultuurNet\MonologSocketIO\SocketIOEmitterHandler(
-                        $emitter
-                    );
-                    break;
-
-                default:
-                    $handler = null;
-                    break;
-            }
-
-            if (!$handler) {
-                continue;
-            }
-
-            $handler->setLevel($handler_config['level']);
-            $handler->pushProcessor(
-                new \Monolog\Processor\PsrLogMessageProcessor()
+        $redisConfig = [
+            'host' => '127.0.0.1',
+            'port' => 6379,
+        ];
+        if (extension_loaded('redis')) {
+            $redis = new Redis();
+            $redis->connect(
+                $redisConfig['host'],
+                $redisConfig['port']
             );
-
-            $logger->pushHandler($handler);
+        } else {
+            $redis = new Predis\Client(
+                [
+                    'host' => $redisConfig['host'],
+                    'port' => $redisConfig['port']
+                ]
+            );
+            $redis->connect();
         }
+        $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
 
-        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
+        return LoggerFactory::create($app, new LoggerName('command_bus'), [$socketIOHandler]);
     }
 );
 
@@ -1014,35 +969,11 @@ $app['event_export_notification_mail_factory'] = $app->share(
     }
 );
 
-$app['logger.amqp.event_bus_forwarder'] = $app::share(
-    function (Application $app) {
-        $logger = new Monolog\Logger('amqp.event_bus_forwarder');
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout'));
-
-        $logFileHandler = new \Monolog\Handler\StreamHandler(
-            __DIR__ . '/log/amqp.log',
-            \Monolog\Logger::DEBUG
-        );
-        $logger->pushHandler($logFileHandler);
-
-        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
-    }
-);
-
 $app['uitpas'] = $app->share(
     function (Application $app) {
         /** @var CultureFeed $cultureFeed */
         $cultureFeed = $app['culturefeed'];
         return $cultureFeed->uitpas();
-    }
-);
-
-$app['logger.uitpas'] = $app->share(
-    function (Application $app) {
-        $logger = new Monolog\Logger('uitpas');
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler(__DIR__ . '/log/uitpas.log'));
-
-        return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
     }
 );
 

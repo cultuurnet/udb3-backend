@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Silex;
+namespace CultuurNet\UDB3\Silex\Error;
 
 use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
@@ -22,17 +22,6 @@ class SentryServiceProvider implements ServiceProviderInterface
                 ]);
 
                 return SentrySdk::getCurrentHub();
-            }
-        );
-
-        $app[SentryErrorHandler::class] = $app->share(
-            function ($app) {
-                return new SentryErrorHandler(
-                    $app[HubInterface::class],
-                    $app['jwt'] ?? null,
-                    $app['auth.api_key'] ?? null,
-                    $app['api_name'] ?? null
-                );
             }
         );
     }

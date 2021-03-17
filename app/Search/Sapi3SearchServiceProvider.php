@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Search;
 
 use CultuurNet\UDB3\Search\ResultsGenerator;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Http\Adapter\Guzzle6\Client;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -84,22 +84,10 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
                 $resultsGenerator = new ResultsGenerator(
                     $app[self::SEARCH_SERVICE_OFFERS]
                 );
-                $resultsGenerator->setLogger($app['search_results_generator_logger']);
+                $resultsGenerator->setLogger(
+                    LoggerFactory::create($app, new LoggerName('search_results', 'search-results-generator'))
+                );
                 return $resultsGenerator;
-            }
-        );
-
-        $app['search_results_generator_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/search_results.log');
-            }
-        );
-
-        $app['search_results_generator_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('search-results-generator');
-                $logger->pushHandler($app['search_results_generator_log_handler']);
-                return $logger;
             }
         );
     }

@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdatedJSONDeserializer;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreatedJSONDeserializer;
@@ -35,7 +37,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use Http\Adapter\Guzzle6\Client as ClientAdapter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -52,12 +53,6 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
         $importFromSapi = $toggles->active(
             'import-from-sapi',
             $app['toggles.context']
-        );
-
-        $app['udb2_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../log/udb2.log');
-            }
         );
 
         $app['udb2_deserializer_locator'] = $app->share(
@@ -93,10 +88,16 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['udb2_event_bus_forwarding_consumer_factory'] = $app->share(
             function (Application $app) {
+                $logger = LoggerFactory::create(
+                    $app,
+                    new LoggerName('amqp', 'amqp.event_bus_forwarder'),
+                    [new StreamHandler('php://stdout')]
+                );
+
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),
                     $app['amqp.connection'],
-                    $app['logger.amqp.event_bus_forwarder'],
+                    $logger,
                     $app['udb2_deserializer_locator'],
                     $app['event_bus'],
                     new StringLiteral($app['config']['amqp']['consumer_tag'])
@@ -179,9 +180,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 
         $app['cdbxml_enricher_logger'] = $app->share(
             function (Application $app) {
-                $logger = new Logger('udb2-events-cdbxml-enricher');
-                $logger->pushHandler($app['udb2_log_handler']);
-                return $logger;
+                return LoggerFactory::create($app, new LoggerName('udb2', 'udb2-events-cdbxml-enricher'));
             }
         );
 
@@ -242,10 +241,9 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['event_command_bus']
                 );
 
-                $logger = new Logger('udb2-events-to-udb3-event-applier');
-                $logger->pushHandler($app['udb2_log_handler']);
-
-                $applier->setLogger($logger);
+                $applier->setLogger(
+                    LoggerFactory::create($app, new LoggerName('udb2', 'udb2-events-to-udb3-event-applier'))
+                );
 
                 return $applier;
             }
@@ -261,10 +259,9 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['udb2_media_importer']
                 );
 
-                $logger = new Logger('udb2-actor-events-to-udb3-place-applier');
-                $logger->pushHandler($app['udb2_log_handler']);
-
-                $applier->setLogger($logger);
+                $applier->setLogger(
+                    LoggerFactory::create($app, new LoggerName('udb2', 'udb2-actor-events-to-udb3-place-applier'))
+                );
 
                 return $applier;
             }
@@ -279,10 +276,9 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['related_udb3_labels_applier']
                 );
 
-                $logger = new Logger('udb2-actor-events-to-udb3-organizer-applier');
-                $logger->pushHandler($app['udb2_log_handler']);
-
-                $applier->setLogger($logger);
+                $applier->setLogger(
+                    LoggerFactory::create($app, new LoggerName('udb2', 'udb2-actor-events-to-udb3-organizer-applier'))
+                );
 
                 return $applier;
             }
@@ -294,9 +290,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['labels.constraint_aware_service']
                 );
 
-                $logger = new Logger('udb2-label-importer');
-                $logger->pushHandler($app['udb2_log_handler']);
-                $labelImporter->setLogger($logger);
+                $labelImporter->setLogger(LoggerFactory::create($app, new LoggerName('udb2', 'udb2-label-importer')));
 
                 return $labelImporter;
             }
@@ -309,9 +303,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     (new ImageCollectionFactory())->withUuidRegex($app['udb2_cdbxml_enricher.media_uuid_regex'])
                 );
 
-                $logger = new Logger('udb2-media-importer');
-                $logger->pushHandler($app['udb2_log_handler']);
-                $mediaImporter->setLogger($logger);
+                $mediaImporter->setLogger(LoggerFactory::create($app, new LoggerName('udb2', 'udb2-media-importer')));
 
                 return $mediaImporter;
             }

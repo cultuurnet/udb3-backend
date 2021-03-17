@@ -26,10 +26,16 @@ class CommandAuthorizationException extends \Exception
         StringLiteral $userId,
         AuthorizableCommandInterface $command
     ) {
-        parent::__construct('User with id: ' . $userId->toNative() .
-            ' has no permission: "' . $command->getPermission()->toNative() .
-            '" on item: ' . $command->getItemId() .
-            ' when executing command: ' . get_class($command));
+        parent::__construct(
+            sprintf(
+                'User with id: %s has no permission: "%s" on item: %s when executing command: %s',
+                $userId->toNative(),
+                $command->getPermission()->toNative(),
+                $command->getItemId(),
+                get_class($command)
+            ),
+            401
+        );
 
         $this->userId = $userId;
         $this->command = $command;

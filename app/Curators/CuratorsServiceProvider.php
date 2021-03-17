@@ -10,8 +10,8 @@ use CultuurNet\UDB3\Curators\Events\NewsArticleAboutEventAddedJSONDeserializer;
 use CultuurNet\UDB3\Curators\LabelFactory;
 use CultuurNet\UDB3\Curators\NewsArticleProcessManager;
 use CultuurNet\UDB3\Silex\ApiName;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -20,20 +20,6 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['curators_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/curators-events.log');
-            }
-        );
-
-        $app['curators_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('curators-events');
-                $logger->pushHandler($app['curators_log_handler']);
-                return $logger;
-            }
-        );
-
         $app['curators_deserializer_locator'] = $app->share(
             function () {
                 $deserializerLocator = new SimpleDeserializerLocator();
@@ -60,7 +46,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['queue'])
                 );
 
-                $consumer->setLogger($app['curators_logger']);
+                $consumer->setLogger(LoggerFactory::create($app, new LoggerName('curators-events')));
 
                 return $consumer;
             }

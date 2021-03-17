@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Log\ContextEnrichingLogger;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Broadway\Domain\Metadata;
 use Broadway\EventDispatcher\EventDispatcher;
+use Psr\Log\LoggerInterface;
 
 /**
  * Command bus decorator for asynchronous processing with PHP-Resque.
@@ -112,54 +112,15 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     /**
      * Really dispatches the command to the proper handler to be executed.
      *
-     * @param string $jobId
      *
      * @throws \Exception
      */
-    public function deferredDispatch($jobId, $command)
+    public function deferredDispatch($command): void
     {
-        $exception = null;
-        $currentCommandLogger = null;
-        if ($this->logger) {
-            $jobMetadata = [
-                'job_id' => $jobId,
-            ];
-            $currentCommandLogger = new ContextEnrichingLogger(
-                $this->logger,
-                $jobMetadata
-            );
+        if ($this->decoratee instanceof LoggerAwareInterface && $this->logger instanceof LoggerInterface) {
+            $this->decoratee->setLogger($this->logger);
         }
 
-        if ($currentCommandLogger) {
-            $currentCommandLogger->info('job_started');
-        }
-
-        if ($this->decoratee instanceof LoggerAwareInterface) {
-            $this->decoratee->setLogger($currentCommandLogger);
-        }
-
-        try {
-            parent::dispatch($command);
-        } catch (\Exception $e) {
-            if ($currentCommandLogger) {
-                $currentCommandLogger->error('job_failed');
-
-                $currentCommandLogger->debug(
-                    'exception caused job failure',
-                    ['exception' => $e]
-                );
-            }
-            $exception = $e;
-        }
-
-        $this->setContext(null);
-
-        if ($currentCommandLogger) {
-            $currentCommandLogger->info('job_finished');
-        }
-
-        if ($exception) {
-            throw $exception;
-        }
+        parent::dispatch($command);
     }
 }

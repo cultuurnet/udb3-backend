@@ -1,5 +1,6 @@
 <?php
 
+use CultuurNet\UDB3\CommandHandling\QueueJob;
 use CultuurNet\UDB3\Log\ContextEnrichingLogger;
 
 require_once 'vendor/autoload.php';
@@ -9,46 +10,43 @@ Resque_Event::listen(
     function (Resque_Job $job) {
         /** @var \Silex\Application $app */
         $app = require __DIR__ . '/bootstrap.php';
-
         $app->boot();
 
-        $args = $job->getArguments();
+        $logger = new ContextEnrichingLogger($app['logger.command_bus'], ['job_id' => $job->payload['id']]);
+        $logger->info('job_started');
 
-        $context = unserialize(base64_decode($args['context']));
-        $app['impersonator']->impersonate($context);
+        try {
+            $args = $job->getArguments();
 
-        $app['logger.fatal_job_error'] = new ContextEnrichingLogger(
-            $app['logger.command_bus'],
-            array('job_id' => $job->payload['id'])
-        );
+            $context = unserialize(base64_decode($args['context']));
+            $app['impersonator']->impersonate($context);
 
-        $errorLoggingShutdownHandler = function () use ($app) {
-            $error = error_get_last();
+            // Command bus service name is based on queue name + _command_bus_out.
+            // Eg. Queue "event" => command bus "event_command_bus_out".
+            $commandBusServiceName = getenv('QUEUE') . '_command_bus_out';
 
-            $fatalErrors = E_ERROR | E_RECOVERABLE_ERROR;
+            // Allows to access the command bus and logger in perform() of jobs that come out of the queue.
+            QueueJob::setLogger($logger);
+            QueueJob::setCommandBus($app[$commandBusServiceName]);
+        } catch (Throwable $e) {
+            $logger->error('job_failed', ['exception' => $e]);
+            $logger->info('job_finished');
 
-            $wasFatal = $fatalErrors & $error['type'];
+            // Make sure to exit so the job doesn't get performed if there's an error in the beforePerform
+            // Don't re-throw because it will pollute the logs
+            exit;
+        }
+    }
+);
 
-            if ($wasFatal) {
-                $app['logger.fatal_job_error']->error('job_failed');
+Resque_Event::listen(
+    'afterPerform',
+    function (Resque_Job $job) {
+        /** @var \Silex\Application $app */
+        $app = require __DIR__ . '/bootstrap.php';
+        $app->boot();
 
-                $app['logger.fatal_job_error']->debug(
-                    'error caused job failure',
-                    ['error' => $error]
-                );
-            }
-        };
-
-        register_shutdown_function($errorLoggingShutdownHandler);
-
-        // Command bus service name is based on queue name + _command_bus_out.
-        // Eg. Queue "event" => command bus "event_command_bus_out".
-        $commandBusServiceName = getenv('QUEUE') . '_command_bus_out';
-
-        // Allows to access the command bus in perform() of jobs that
-        // come out of the queue.
-        \CultuurNet\UDB3\CommandHandling\QueueJob::setCommandBus(
-            $app[$commandBusServiceName]
-        );
+        $logger = new ContextEnrichingLogger($app['logger.command_bus'], ['job_id' => $job->payload['id']]);
+        $logger->info('job_finished');
     }
 );

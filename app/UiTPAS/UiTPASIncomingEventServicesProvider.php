@@ -7,14 +7,12 @@ namespace CultuurNet\UDB3\Silex\UiTPAS;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Silex\ApiName;
-use CultuurNet\UDB3\Silex\SentryErrorHandler;
-use CultuurNet\UDB3\Silex\SentryPsrLoggerDecorator;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\Number\Natural;
@@ -24,20 +22,6 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['uitpas_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/uitpas-events.log');
-            }
-        );
-
-        $app['uitpas_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('uitpas-events');
-                $logger->pushHandler($app['uitpas_log_handler']);
-                return new SentryPsrLoggerDecorator($app[SentryErrorHandler::class], $logger);
-            }
-        );
-
         $app['uitpas_deserializer_locator'] = $app->share(
             function () {
                 $deserializerLocator = new SimpleDeserializerLocator();
@@ -56,7 +40,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),
                     $app['amqp.connection'],
-                    $app['uitpas_logger'],
+                    LoggerFactory::create($app, new LoggerName('uitpas-events')),
                     $app['uitpas_deserializer_locator'],
                     $app['event_bus'],
                     new StringLiteral($app['config']['amqp']['consumer_tag'])
@@ -94,7 +78,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventProcessManager(
                     $app['event_command_bus'],
                     $app[UiTPASLabelsRepository::class],
-                    $app['uitpas_logger']
+                    LoggerFactory::create($app, new LoggerName('uitpas-events'))
                 );
             }
         );

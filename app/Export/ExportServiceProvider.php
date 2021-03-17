@@ -16,9 +16,9 @@ use CultuurNet\UDB3\EventExport\Notification\Swift\NotificationMailer;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Twig_Environment;
@@ -66,7 +66,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                     new EventOrganizerPromotionQueryFactory($app['clock'])
                 );
 
-                $eventInfoService->setLogger($app['logger.uitpas']);
+                $eventInfoService->setLogger(LoggerFactory::create($app, new LoggerName('uitpas')));
 
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $app['event_export_service'],
@@ -75,7 +75,9 @@ class ExportServiceProvider implements ServiceProviderInterface
                     $app['calendar_summary_repository'],
                     $app['event_export_twig_environment']
                 );
-                $eventExportCommandHandler->setLogger($app['event_export_logger']);
+                $eventExportCommandHandler->setLogger(
+                    LoggerFactory::create($app, new LoggerName('export', 'event-export'))
+                );
                 return $eventExportCommandHandler;
             }
         );
@@ -86,20 +88,6 @@ class ExportServiceProvider implements ServiceProviderInterface
             function (CommandBus $commandBus, Application $app) {
                 $commandBus->subscribe($app['event_export_command_handler']);
                 return $commandBus;
-            }
-        );
-
-        $app['event_export_log_handler'] = $app->share(
-            function () {
-                return new StreamHandler(__DIR__ . '/../../log/export.log');
-            }
-        );
-
-        $app['event_export_logger'] = $app->share(
-            function (Application $app) {
-                $logger = new Logger('event-export');
-                $logger->pushHandler($app['event_export_log_handler']);
-                return $logger;
             }
         );
     }
