@@ -5,10 +5,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\AnyOfRequestMatcher;
 use CultuurNet\UDB3\HttpFoundation\RequestMatcher\PreflightRequestMatcher;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Error\ContextExceptionConverterProcessor;
+use CultuurNet\UDB3\Silex\Error\ErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
@@ -201,7 +203,7 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-$app->register(new \CultuurNet\UDB3\Silex\Error\ErrorHandlerProvider());
+$app->register(new ErrorHandlerProvider());
 /* @deprecated */
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
 $app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
@@ -253,16 +255,16 @@ try {
     // Errors and uncaught runtime exceptions are caught here.
     $app[ErrorLogger::class]->log($throwable);
 
+    // Errors always get a status 500, but we still need a default status code in case of runtime exceptions that
+    // weren't caught by Silex.
+    $apiProblem = ErrorHandlerProvider::createNewApiProblem(
+        $throwable,
+        ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR
+    );
+
     // We're outside of the Silex app, so we cannot use the standard way to return a Response object.
-    http_response_code(500);
+    http_response_code($apiProblem->getStatus());
     header('Content-Type: application/json');
-
-    $apiProblem = new ApiProblem('Internal Server Error');
-    $apiProblem->setStatus(500);
-    if ($app['debug'] === true) {
-        $apiProblem['debug'] = ContextExceptionConverterProcessor::convertThrowableToArray($throwable);
-    }
     echo $apiProblem->asJson();
-
     exit;
 }

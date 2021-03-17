@@ -11,15 +11,19 @@ use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
+use Error;
 use Exception;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Throwable;
 
 class ErrorHandlerProvider implements ServiceProviderInterface
 {
+    private static $debug = false;
+
     private const BAD_REQUESTS = [
         EntityNotFoundException::class,
         CommandAuthorizationException::class,
@@ -31,6 +35,8 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
     public function register(Application $app): void
     {
+        self::$debug = $app['debug'] === true;
+
         $app[ErrorLogger::class] = $app::share(
             function (Application $app): ErrorLogger {
                 return new ErrorLogger(
@@ -51,19 +57,20 @@ class ErrorHandlerProvider implements ServiceProviderInterface
 
                 $problem = $this::createNewApiProblem($e, $defaultStatus);
 
-                if ($app['debug'] === true) {
-                    $problem['debug'] = ContextExceptionConverterProcessor::convertThrowableToArray($e);
-                }
-
                 return new ApiProblemJsonResponse($problem);
             }
         );
     }
 
-    public static function createNewApiProblem(Exception $e, int $defaultStatus): ApiProblem
+    public static function createNewApiProblem(Throwable $e, int $defaultStatus): ApiProblem
     {
         $problem = new ApiProblem($e->getMessage());
         $problem->setStatus($e->getCode() ?: $defaultStatus);
+
+        if ($e instanceof Error) {
+            $problem->setTitle('Internal server error');
+            $problem->setStatus(ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         if ($e instanceof DataValidationException) {
             $problem->setTitle('Invalid payload.');
@@ -87,10 +94,15 @@ class ErrorHandlerProvider implements ServiceProviderInterface
             $problem->setTitle($formattedTitle);
         }
 
+        if (self::$debug) {
+            $problem['debug'] = ContextExceptionConverterProcessor::convertThrowableToArray($e);
+        }
+
         return $problem;
     }
 
     public function boot(Application $app): void
     {
+        self::$debug = $app['debug'] === true;
     }
 }
