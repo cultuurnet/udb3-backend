@@ -59,3 +59,7 @@ The following logs contain info about specific services that can be part of HTTP
 - `place-geocoordinates.log` contains logs about the geocoding of places
 - `search_results.log` contains logs about the search results used in services like exports and other bulk commands
 - `uitpas.log` contains logs about requests to UiTPAS _in the event exports_
+
+### Adding a new logger
+
+Use the `LoggerFactory::create()` method to quickly create a new logger. This way it gets stored in the right directory, correct formatting of exceptions, automatic Sentry integration, etc.
