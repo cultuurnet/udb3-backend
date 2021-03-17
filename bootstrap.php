@@ -68,7 +68,6 @@ $app = new Application();
 $adapter = new \League\Flysystem\Adapter\Local(__DIR__);
 $app['local_file_system'] = new \League\Flysystem\Filesystem($adapter);
 
-$app['debug'] = true;
 $app['api_name'] = ApiName::UNKNOWN;
 
 if (!isset($udb3ConfigLocation)) {
@@ -87,6 +86,8 @@ $app['config'] = array_merge_recursive(
         ],
     ]
 );
+
+$app['debug'] = $app['config']['debug'] ?? false;
 
 $app['event_store_factory'] = $app->protect(
     function (AggregateType $aggregateType) use ($app) {

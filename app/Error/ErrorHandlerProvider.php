@@ -49,7 +49,12 @@ class ErrorHandlerProvider implements ServiceProviderInterface
                     $defaultStatus = ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR;
                 }
 
-                $problem = $this->createNewApiProblem($e, $defaultStatus);
+                $problem = $this::createNewApiProblem($e, $defaultStatus);
+
+                if ($app['debug'] === true) {
+                    $problem['debug'] = ContextExceptionConverterProcessor::convertThrowableToArray($e);
+                }
+
                 return new ApiProblemJsonResponse($problem);
             }
         );

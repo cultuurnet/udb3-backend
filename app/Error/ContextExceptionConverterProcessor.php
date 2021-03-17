@@ -15,14 +15,21 @@ final class ContextExceptionConverterProcessor implements ProcessorInterface
         // information and add it to the context.
         $exception = $record['context']['exception'] ?? null;
         if ($exception instanceof Throwable) {
-            $record['context']['type'] = get_class($exception);
-            $record['context']['message'] = $exception->getMessage();
-            $record['context']['code'] = $exception->getCode();
-            $record['context']['file'] = $exception->getFile();
-            $record['context']['line'] = $exception->getLine();
-            $record['context']['trace'] = $exception->getTraceAsString();
+            $record['context'] = array_merge($record['context'], self::convertThrowableToArray($exception));
             unset($record['context']['exception']);
         }
         return $record;
+    }
+
+    public static function convertThrowableToArray(Throwable $e): array
+    {
+        return [
+            'type' => get_class($e),
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString(),
+        ];
     }
 }
