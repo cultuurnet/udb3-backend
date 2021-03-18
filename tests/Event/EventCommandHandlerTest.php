@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
@@ -97,7 +98,10 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
         $calendar = new Calendar(CalendarType::PERMANENT());
         $theme = new Theme('0.1.0.1.0.1', 'blues');
-        $publicationDate = new \DateTimeImmutable();
+
+        $now = Chronos::now();
+        Chronos::setTestNow($now);
+        $publicationDate = $now;
 
         $command = new CreateEvent(
             $id,
@@ -113,7 +117,10 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId($id)
             ->when($command)
-            ->then([new EventCreated($id, $language, $title, $type, $location, $calendar, $theme, $publicationDate)]);
+            ->then([new EventCreated($id, $language, $title, $type, $location, $calendar, $theme, $now)]);
+
+        // reset mocked time
+        Chronos::setTestNow();
     }
 
     /**

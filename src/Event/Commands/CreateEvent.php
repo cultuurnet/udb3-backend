@@ -122,11 +122,12 @@ class CreateEvent extends AbstractCreateCommand
         return $this->location;
     }
 
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getPublicationDate()
+    public function getPublicationDate(DateTimeImmutable $default): ?DateTimeImmutable
     {
+        if ($this->publicationDate && $this->publicationDate < $default) {
+            return $default;
+        }
+
         return $this->publicationDate;
     }
 }

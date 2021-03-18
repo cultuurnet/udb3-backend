@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Event\Commands\AddImage;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\DeleteCurrentOrganizer;
@@ -55,7 +56,7 @@ class EventCommandHandler extends OfferCommandHandler implements LoggerAwareInte
             $command->getLocation(),
             $command->getCalendar(),
             $command->getTheme(),
-            $command->getPublicationDate()
+            $command->getPublicationDate(Chronos::now())
         );
 
         $this->offerRepository->save($event);
