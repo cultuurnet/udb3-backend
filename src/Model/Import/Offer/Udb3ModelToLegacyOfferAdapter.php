@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use DateTimeImmutable;
 
 class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
 {
@@ -183,7 +184,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
     /**
      * @inheritdoc
      */
-    public function getAvailableFrom(\DateTimeImmutable $default = null)
+    public function getAvailableFrom(DateTimeImmutable $default)
     {
         $availableFrom = $this->offer->getAvailableFrom();
         if (!$availableFrom) {

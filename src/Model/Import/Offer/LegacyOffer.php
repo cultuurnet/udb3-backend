@@ -80,7 +80,7 @@ interface LegacyOffer
     /**
      * @return \DateTimeImmutable|null
      */
-    public function getAvailableFrom(\DateTimeImmutable $default = null);
+    public function getAvailableFrom(\DateTimeImmutable $default);
 
     /**
      * @return Title[]
