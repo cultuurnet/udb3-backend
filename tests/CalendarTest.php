@@ -356,6 +356,39 @@ class CalendarTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_handles_incorrect_start_and_end_date(): void
+    {
+        $calendar = [
+            'type' => 'single',
+            'startDate' => '2021-03-18T14:00:00+01:00',
+            'endDate' => '2021-03-18T10:00:00+01:00',
+            'timestamps' => [
+                [
+                    'startDate' => '2021-03-18T14:00:00+01:00',
+                    'endDate' => '2021-03-18T10:00:00+01:00',
+                ]
+            ]
+        ];
+
+        $this->assertEquals(
+            new Calendar(
+                CalendarType::SINGLE(),
+                new DateTime('2021-03-18T14:00:00+01:00'),
+                new DateTime('2021-03-18T14:00:00+01:00'),
+                [
+                    new Timestamp(
+                        DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                        DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00')
+                    ),
+                ]
+            ),
+            Calendar::deserialize($calendar)
+        );
+    }
+
+    /**
+     * @test
      * @dataProvider jsonldCalendarProvider
      */
     public function it_should_generate_the_expected_json_for_a_calendar_of_each_type(
