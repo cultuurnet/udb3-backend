@@ -187,7 +187,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
     public function getAvailableFrom(DateTimeImmutable $default)
     {
         $availableFrom = $this->offer->getAvailableFrom();
-        if (!$availableFrom) {
+        if (!$availableFrom || $availableFrom < $default) {
             $availableFrom = $default;
         }
         return $availableFrom;
