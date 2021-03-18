@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Silex\Error;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
+use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
@@ -31,6 +33,8 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         MethodNotAllowedException::class,
         DataValidationException::class,
         GroupedValidationException::class,
+        RequestAuthenticationException::class,
+        MissingValueException::class,
     ];
 
     public function register(Application $app): void
