@@ -367,8 +367,8 @@ class CalendarTest extends TestCase
                 [
                     'startDate' => '2021-03-18T14:00:00+01:00',
                     'endDate' => '2021-03-18T10:00:00+01:00',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertEquals(
