@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\EventEditingServiceInterface;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\Place\PlaceEditingServiceInterface;
@@ -182,7 +183,7 @@ abstract class OfferRestBaseController
     {
         $bodyContent = json_decode($request->getContent());
         $description = new StringLiteral($bodyContent->description);
-        $copyrightHolder = new StringLiteral($bodyContent->copyrightHolder);
+        $copyrightHolder = new CopyrightHolder($bodyContent->copyrightHolder);
         $imageId = new UUID($mediaObjectId);
 
         // Can we be sure that the given $mediaObjectId points to an image and not a different type?
