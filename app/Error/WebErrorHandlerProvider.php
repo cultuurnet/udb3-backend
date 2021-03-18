@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 
-class ErrorHandlerProvider implements ServiceProviderInterface
+class WebErrorHandlerProvider implements ServiceProviderInterface
 {
     private static $debug = false;
 
@@ -40,7 +40,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app[ErrorLogger::class] = $app::share(
             function (Application $app): ErrorLogger {
                 return new ErrorLogger(
-                    LoggerFactory::create($app, new LoggerName('error'))
+                    LoggerFactory::create($app, new LoggerName('web'))
                 );
             }
         );
