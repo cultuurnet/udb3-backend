@@ -6,14 +6,20 @@ namespace CultuurNet\UDB3\Http;
 
 use CultuurNet\UDB3\BookingInfo;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
+use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\Offer\OfferEditingServiceInterface;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Web\Url;
 
 class OfferRestBaseControllerTest extends TestCase
 {
@@ -131,6 +137,52 @@ class OfferRestBaseControllerTest extends TestCase
             );
 
         $response = $this->offerRestBaseController->updateBookingInfo($givenRequest, $givenOfferId);
+
+        $this->assertEquals(204, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_update_an_image(): void
+    {
+        $offerId = '2b0682a4-c751-4440-81c5-3739965f2cea';
+        $imageId = '0d24c18a-0bd5-46c1-b331-1fa38012bded';
+        $json = json_encode(
+            [
+                'description' => 'new description',
+                'copyrightHolder' => 'new copyrightholder',
+            ]
+        );
+
+        $image = new Image(
+            new UUID($imageId),
+            MIMEType::fromSubtype('jpeg'),
+            new Description('description'),
+            new CopyrightHolder('copyrightholder'),
+            Url::fromNative('https://url.com/image.jpeg'),
+            new Language('nl')
+        );
+
+        $this->mediaManager
+            ->method('getImage')
+            ->with(new UUID($imageId))
+            ->willReturn($image);
+
+        $this->offerEditingService
+            ->method('updateImage')
+            ->with(
+                $offerId,
+                $image,
+                new StringLiteral('new description'),
+                new CopyrightHolder('new copyrightholder')
+            );
+
+        $response = $this->offerRestBaseController->updateImage(
+            new Request([], [], [], [], [], [], $json),
+            $offerId,
+            $imageId
+        );
 
         $this->assertEquals(204, $response->getStatusCode());
     }
