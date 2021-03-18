@@ -403,7 +403,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_default_available_form_if_there_is_none()
+    public function it_should_return_default_available_form_if_there_is_none(): void
     {
         $now = new DateTimeImmutable();
         $actual = $this->adapter->getAvailableFrom($now);
@@ -413,7 +413,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_available_from_if_there_is_one()
+    public function it_should_return_available_from_if_there_is_one(): void
     {
         $expected = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2040-01-01T10:00:00+01:00');
         $actual = $this->completeAdapter->getAvailableFrom(new DateTimeImmutable());
@@ -423,7 +423,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_default_if_available_from_is_in_the_past()
+    public function it_should_return_default_if_available_from_is_in_the_past(): void
     {
         $now = new DateTimeImmutable();
         $dateInThePast = new DateTimeImmutable('2019-02-14');

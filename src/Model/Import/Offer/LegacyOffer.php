@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Offer\AgeRange;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
+use DateTimeImmutable;
 
 interface LegacyOffer
 {
@@ -77,10 +78,7 @@ interface LegacyOffer
      */
     public function getContactPoint();
 
-    /**
-     * @return \DateTimeImmutable|null
-     */
-    public function getAvailableFrom(\DateTimeImmutable $default);
+    public function getAvailableFrom(\DateTimeImmutable $default): DateTimeImmutable;
 
     /**
      * @return Title[]

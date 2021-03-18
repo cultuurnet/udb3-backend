@@ -181,10 +181,7 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         return ContactPoint::fromUdb3ModelContactPoint($contactPoint);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAvailableFrom(DateTimeImmutable $default)
+    public function getAvailableFrom(DateTimeImmutable $default): DateTimeImmutable
     {
         $availableFrom = $this->offer->getAvailableFrom();
         if (!$availableFrom || $availableFrom < $default) {
