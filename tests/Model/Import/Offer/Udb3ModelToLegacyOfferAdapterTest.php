@@ -47,6 +47,7 @@ use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -145,8 +146,8 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
                     new TelephoneNumber('044/444444'),
                     new EmailAddress('info@publiq.be'),
                     new BookingAvailability(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T10:00:00+01:00')
+                        DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00'),
+                        DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T10:00:00+01:00')
                     )
                 )
             )
@@ -167,7 +168,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
                 )
             )
             ->withAvailableFrom(
-                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00')
+                DateTimeImmutable::createFromFormat(\DATE_ATOM, '2040-01-01T10:00:00+01:00')
             );
 
         $this->adapter = new Udb3ModelToLegacyOfferAdapter($this->offer);
@@ -368,8 +369,8 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             ),
             '044/444444',
             'info@publiq.be',
-            new \DateTimeImmutable('2018-01-01T10:00:00+01:00'),
-            new \DateTimeImmutable('2018-01-10T10:00:00+01:00')
+            new DateTimeImmutable('2018-01-01T10:00:00+01:00'),
+            new DateTimeImmutable('2018-01-10T10:00:00+01:00')
         );
         $actual = $this->completeAdapter->getBookingInfo();
         $this->assertEquals($expected, $actual);
@@ -402,20 +403,33 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_no_available_from_by_default()
+    public function it_should_return_default_available_from_if_there_is_none(): void
     {
-        $actual = $this->adapter->getAvailableFrom();
-        $this->assertNull($actual);
+        $now = new DateTimeImmutable();
+        $actual = $this->adapter->getAvailableFrom($now);
+        $this->assertEquals($now, $actual);
     }
 
     /**
      * @test
      */
-    public function it_should_return_available_from_if_there_is_one()
+    public function it_should_return_available_from_if_there_is_one(): void
     {
-        $expected = \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T10:00:00+01:00');
-        $actual = $this->completeAdapter->getAvailableFrom();
+        $expected = DateTimeImmutable::createFromFormat(\DATE_ATOM, '2040-01-01T10:00:00+01:00');
+        $actual = $this->completeAdapter->getAvailableFrom(new DateTimeImmutable());
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_default_if_available_from_is_in_the_past(): void
+    {
+        $now = new DateTimeImmutable();
+        $dateInThePast = new DateTimeImmutable('2019-02-14');
+        $offer = $this->completeOffer->withAvailableFrom($dateInThePast);
+        $adapter = new Udb3ModelToLegacyOfferAdapter($offer);
+        $this->assertEquals($now, $adapter->getAvailableFrom($now));
     }
 
     /**
