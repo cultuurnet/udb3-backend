@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
-use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
