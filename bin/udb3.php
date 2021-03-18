@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Silex\Console\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueLabels;
 use CultuurNet\UDB3\Silex\Console\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Silex\Console\ValidatePlaceJsonLdCommand;
+use CultuurNet\UDB3\Silex\Error\CliErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
@@ -42,6 +43,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 /** @var \Silex\Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
+
+$app->register(new CliErrorHandlerProvider());
 
 $app->register(
     new ConsoleServiceProvider(),
