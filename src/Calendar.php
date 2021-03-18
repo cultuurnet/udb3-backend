@@ -158,20 +158,25 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     {
         $calendarType = CalendarType::fromNative($data['type']);
 
+        $startDate = !empty($data['startDate']) ? self::deserializeDateTime($data['startDate']) : null;
+        $endDate = !empty($data['endDate']) ? self::deserializeDateTime($data['endDate']) : null;
+
+        // Fix for old events that could have a end date before the start date
+        if ($startDate && $endDate && ($startDate > $endDate)) {
+            $endDate = $startDate;
+        }
+
         // Backwards compatibility for serialized single or multiple calendar types that are missing timestamps but do
         // have a start and end date.
         $defaultTimeStamps = [];
         if ($calendarType->sameValueAs(CalendarType::SINGLE()) || $calendarType->sameValueAs(CalendarType::MULTIPLE())) {
-            $defaultTimeStampStartDate = !empty($data['startDate']) ? self::deserializeDateTime($data['startDate']) : null;
-            $defaultTimeStampEndDate = !empty($data['endDate']) ? self::deserializeDateTime($data['endDate']) : $defaultTimeStampStartDate;
-            $defaultTimeStamp = $defaultTimeStampStartDate && $defaultTimeStampEndDate ? new Timestamp($defaultTimeStampStartDate, $defaultTimeStampEndDate) : null;
-            $defaultTimeStamps = $defaultTimeStamp ? [$defaultTimeStamp] : [];
+            $defaultTimeStamps = $startDate ? [new Timestamp($startDate, $endDate ?: $startDate)] : [];
         }
 
         $calendar = new self(
             $calendarType,
-            !empty($data['startDate']) ? self::deserializeDateTime($data['startDate']) : null,
-            !empty($data['endDate']) ? self::deserializeDateTime($data['endDate']) : null,
+            $startDate,
+            $endDate,
             !empty($data['timestamps']) ? array_map(
                 function ($timestamp) {
                     return Timestamp::deserialize($timestamp);
