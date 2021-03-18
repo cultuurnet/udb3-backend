@@ -422,6 +422,18 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
+    public function it_should_return_default_if_available_from_is_in_the_past()
+    {
+        $now = new DateTimeImmutable();
+        $dateInThePast = new DateTimeImmutable('2019-02-14');
+        $offer = $this->completeOffer->withAvailableFrom($dateInThePast);
+        $adapter = new Udb3ModelToLegacyOfferAdapter($offer);
+        $this->assertEquals($now, $adapter->getAvailableFrom($now));
+    }
+
+    /**
+     * @test
+     */
     public function it_should_return_the_title_translations()
     {
         $expected = [
