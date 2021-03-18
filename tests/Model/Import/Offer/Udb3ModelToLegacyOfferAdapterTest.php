@@ -403,7 +403,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_default_available_form_if_there_is_none(): void
+    public function it_should_return_default_available_from_if_there_is_none(): void
     {
         $now = new DateTimeImmutable();
         $actual = $this->adapter->getAvailableFrom($now);
