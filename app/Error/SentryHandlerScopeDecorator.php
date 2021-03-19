@@ -96,9 +96,10 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         return $this->decoratedHandler->isHandling($record);
     }
 
-    public function pushProcessor($callback): void
+    public function pushProcessor($callback): self
     {
         $this->decoratedHandler->pushProcessor($callback);
+        return $this;
     }
 
     public function popProcessor(): callable
@@ -106,9 +107,10 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         return $this->decoratedHandler->popProcessor();
     }
 
-    public function setFormatter(FormatterInterface $formatter): void
+    public function setFormatter(FormatterInterface $formatter): self
     {
         $this->decoratedHandler->setFormatter($formatter);
+        return $this;
     }
 
     public function getFormatter(): FormatterInterface
