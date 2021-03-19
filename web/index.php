@@ -8,7 +8,7 @@ use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Jwt\Silex\JwtServiceProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Silex\Error\ErrorHandlerProvider;
+use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
 use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
@@ -26,6 +26,8 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 
 /** @var Application $app */
 $app = require __DIR__ . '/../bootstrap.php';
+
+$app->register(new WebErrorHandlerProvider());
 
 /**
  * Allow to use services as controllers.
@@ -200,7 +202,6 @@ $app->get(
 
 $app->mount('saved-searches', new \CultuurNet\UDB3\Silex\SavedSearches\SavedSearchesControllerProvider());
 
-$app->register(new ErrorHandlerProvider());
 /* @deprecated */
 $app->mount('/', new \CultuurNet\UDB3\Silex\Place\DeprecatedPlaceControllerProvider());
 $app->mount('/places', new \CultuurNet\UDB3\Silex\Place\PlaceControllerProvider());
@@ -254,7 +255,7 @@ try {
 
     // Errors always get a status 500, but we still need a default status code in case of runtime exceptions that
     // weren't caught by Silex.
-    $apiProblem = ErrorHandlerProvider::createNewApiProblem(
+    $apiProblem = WebErrorHandlerProvider::createNewApiProblem(
         $throwable,
         ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR
     );

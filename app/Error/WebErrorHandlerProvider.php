@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Silex\Error;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
+use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
@@ -20,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 
-class ErrorHandlerProvider implements ServiceProviderInterface
+class WebErrorHandlerProvider implements ServiceProviderInterface
 {
     private static $debug = false;
 
@@ -31,6 +33,8 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         MethodNotAllowedException::class,
         DataValidationException::class,
         GroupedValidationException::class,
+        RequestAuthenticationException::class,
+        MissingValueException::class,
     ];
 
     public function register(Application $app): void
@@ -40,7 +44,7 @@ class ErrorHandlerProvider implements ServiceProviderInterface
         $app[ErrorLogger::class] = $app::share(
             function (Application $app): ErrorLogger {
                 return new ErrorLogger(
-                    LoggerFactory::create($app, new LoggerName('error'))
+                    LoggerFactory::create($app, new LoggerName('web'))
                 );
             }
         );
