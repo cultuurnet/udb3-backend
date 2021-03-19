@@ -99,9 +99,19 @@ class ProductionRepository extends AbstractDBALRepository
      */
     public function search(string $keyword, int $start, int $limit): array
     {
-        $query = $this->createSearchQuery($keyword)
+        $subQuery = $this->createSearchQuery($keyword)
             ->setFirstResult($start)
             ->setMaxResults($limit);
+
+        $query = $this->getConnection()->createQueryBuilder()
+            ->select('p1.production_id, p1.name, p1.event_id')
+            ->from($this->getTableName()->toNative(), 'p1')
+            ->innerJoin('p1', sprintf('(%s)', $subQuery->getSQL()), 'p2', 'p1.production_id = p2.production_id');
+
+        if (!empty($keyword)) {
+            $keyword .= '*';
+            $query->setParameter(':keyword', $keyword);
+        }
 
         $results = $query->execute()->fetchAll();
 
@@ -137,7 +147,7 @@ class ProductionRepository extends AbstractDBALRepository
     private function createSearchQuery(string $keyword): QueryBuilder
     {
         $query = $this->getConnection()->createQueryBuilder()
-            ->select('production_id, name, event_id')
+            ->select('DISTINCT production_id')
             ->from($this->getTableName()->toNative());
 
         if (!empty($keyword)) {
