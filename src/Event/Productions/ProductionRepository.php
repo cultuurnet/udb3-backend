@@ -99,6 +99,7 @@ class ProductionRepository extends AbstractDBALRepository
      */
     public function search(string $keyword, int $start, int $limit): array
     {
+        $keyword = $this->addWildardToKeyword($keyword);
         $subQuery = $this->createSearchQuery($keyword)
             ->setFirstResult($start)
             ->setMaxResults($limit);
@@ -109,7 +110,6 @@ class ProductionRepository extends AbstractDBALRepository
             ->innerJoin('p1', sprintf('(%s)', $subQuery->getSQL()), 'p2', 'p1.production_id = p2.production_id');
 
         if (!empty($keyword)) {
-            $keyword .= '*';
             $query->setParameter(':keyword', $keyword);
         }
 
@@ -141,6 +141,7 @@ class ProductionRepository extends AbstractDBALRepository
 
     public function count(string $keyword): int
     {
+        $keyword = $this->addWildardToKeyword($keyword);
         return (int) $this->createSearchQuery($keyword)->execute()->rowCount();
     }
 
@@ -151,12 +152,19 @@ class ProductionRepository extends AbstractDBALRepository
             ->from($this->getTableName()->toNative());
 
         if (!empty($keyword)) {
-            $keyword .= '*';
             $query = $query->where('MATCH(name) AGAINST(:keyword IN BOOLEAN MODE)')
                 ->setParameter(':keyword', $keyword);
         }
 
         return $query;
+    }
+
+    private function addWildardToKeyword(string $keyword): string
+    {
+        if (!empty($keyword)) {
+            $keyword .= '*';
+        }
+        return $keyword;
     }
 
     public function findProductionForEventId(string $eventId): Production
