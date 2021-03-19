@@ -111,7 +111,7 @@ class ReadEventRestController
 
         $style = $request->query->get('style', 'text');
         $langCode = $request->query->get('langCode', 'nl_BE');
-        $hidePastDates = (bool) $request->query->get('hidePast', false);
+        $hidePastDates = $request->query->getBoolean('hidePast', false);
         $timeZone = $request->query->get('timeZone', 'Europe/Brussels');
         $format = $request->query->get('format', 'lg');
 
