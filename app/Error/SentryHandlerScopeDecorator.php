@@ -96,11 +96,6 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         return $this->decoratedHandler->isHandling($record);
     }
 
-    public function close(): void
-    {
-        $this->decoratedHandler->close();
-    }
-
     public function pushProcessor($callback): void
     {
         $this->decoratedHandler->pushProcessor($callback);
