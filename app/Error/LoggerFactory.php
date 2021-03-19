@@ -25,7 +25,7 @@ final class LoggerFactory
     private static $streamHandlers = [];
 
     /**
-     * @var SentryHandler|null
+     * @var SentryHandlerScopeDecorator|null
      */
     private static $sentryHandler;
 
@@ -61,16 +61,14 @@ final class LoggerFactory
         return self::$streamHandlers[$name];
     }
 
-    private static function getSentryHandler(Application $app): SentryHandler
+    private static function getSentryHandler(Application $app): SentryHandlerScopeDecorator
     {
         if (!isset(self::$sentryHandler)) {
-            self::$sentryHandler = new SentryHandler($app[HubInterface::class], Logger::ERROR);
-            self::$sentryHandler->pushProcessor(
-                new SentryTagsProcessor(
-                    $app['jwt'] ?? null,
-                    $app['auth.api_key'] ?? null,
-                    $app['api_name'] ?? null
-                )
+            self::$sentryHandler = new SentryHandlerScopeDecorator(
+                new SentryHandler($app[HubInterface::class], Logger::ERROR),
+                $app['jwt'] ?? null,
+                $app['auth.api_key'] ?? null,
+                $app['api_name'] ?? null
             );
         }
 
