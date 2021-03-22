@@ -74,20 +74,13 @@ class ReadRestController
 
         $totalEntities = $this->readService->searchTotalLabels($query);
 
-        if ($totalEntities->toNative() > 0) {
-            $entities = $this->readService->search($query);
+        $entities = $totalEntities->toNative() > 0 ? $this->readService->search($query) : [];
 
-            return $this->createPagedCollectionResponse(
-                $query,
-                $entities !== null ? $entities : [],
-                $totalEntities
-            );
-        } else {
-            $apiProblem = new ApiProblem('No label found for search query.');
-            $apiProblem->setStatus(Response::HTTP_NOT_FOUND);
-
-            return new ApiProblemJsonResponse($apiProblem);
-        }
+        return $this->createPagedCollectionResponse(
+            $query,
+            $entities,
+            $totalEntities
+        );
     }
 
     /**

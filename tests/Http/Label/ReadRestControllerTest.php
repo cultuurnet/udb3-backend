@@ -155,6 +155,40 @@ class ReadRestControllerTest extends TestCase
         $this->assertEquals($expectedJson, json_decode($jsonResponse->getContent(), true));
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_collection_when_no_labels_are_found(): void
+    {
+        $readService = $this->createMock(ReadServiceInterface::class);
+
+        $readService->method('searchTotalLabels')
+            ->with($this->query)
+            ->willReturn(new Natural(0));
+
+        $readService->method('search')
+            ->with($this->query)
+            ->willReturn([]);
+
+        $readRestController = new ReadRestController(
+            $readService,
+            $this->queryFactory
+        );
+
+        $jsonResponse = $readRestController->search($this->request);
+
+        $expectedJson = [
+            '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+            '@type' => 'PagedCollection',
+            'itemsPerPage' => 2,
+            'totalItems' => 0,
+            'member' => [],
+        ];
+
+        $this->assertEquals(200, $jsonResponse->getStatusCode());
+        $this->assertEquals($expectedJson, json_decode($jsonResponse->getContent(), true));
+    }
+
     private function mockGetByUuid()
     {
         $this->readService->method('getByUuid')
