@@ -53,7 +53,16 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
             function (Exception $e) use ($app) {
                 $defaultStatus = ApiProblemJsonResponse::HTTP_BAD_REQUEST;
 
-                $badRequest = in_array(get_class($e), self::BAD_REQUESTS);
+                $badRequest = false;
+                // Don't log exceptions that are caused by user errors.
+                // Use an instanceof check instead of in_array to also allow filtering on parent class or interface.
+                foreach (self::BAD_REQUESTS as $badRequestExceptionClass) {
+                    if ($e instanceof $badRequestExceptionClass) {
+                        $badRequest = true;
+                        break;
+                    }
+                }
+
                 if (!$badRequest) {
                     $app[ErrorLogger::class]->log($e);
                     $defaultStatus = ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR;
