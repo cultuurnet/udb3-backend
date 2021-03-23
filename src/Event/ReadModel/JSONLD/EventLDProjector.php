@@ -302,7 +302,7 @@ class EventLDProjector extends OfferLDProjector implements
         $jsonLD->audience = $defaultAudience->serialize();
 
         $jsonLD->metadata = (object)[
-            'createdByApiConsumer' => $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata())
+            'createdByApiConsumer' => $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata()),
         ];
 
         return $document->withBody($jsonLD);

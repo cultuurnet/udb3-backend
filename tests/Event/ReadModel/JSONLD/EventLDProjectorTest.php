@@ -170,7 +170,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'de' => 'Basisrate',
             ],
             [
-                self::UDB_API_KEY => 'uitdatabank-ui'
+                self::UDB_API_KEY => 'uitdatabank-ui',
             ]
         );
     }
@@ -378,7 +378,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ],
         ];
         $jsonLD->metadata = (object)[
-            'createdByApiConsumer' => $expected
+            'createdByApiConsumer' => $expected,
         ];
 
         $this->mockPlaceService();
