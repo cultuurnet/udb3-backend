@@ -68,6 +68,6 @@ final class LoggerName
 
     private static function appendSuffixToFilename(string $fileName, ?string $suffix = null): string
     {
-        return $suffix ? $fileName . '.' . $suffix : $fileName;;
+        return $suffix ? $fileName . '.' . $suffix : $fileName;
     }
 }
