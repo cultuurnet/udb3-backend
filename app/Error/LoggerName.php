@@ -16,7 +16,7 @@ final class LoggerName
      */
     private $loggerName;
 
-    public function __construct(string $fileNameWithoutSuffix, ?string $customLoggerName = null)
+    private public function __construct(string $fileNameWithoutSuffix, ?string $customLoggerName = null)
     {
         $fileNameWithoutSuffix = str_replace('_', '-', $fileNameWithoutSuffix);
         $customLoggerName = $customLoggerName ? str_replace('_', '-', $customLoggerName) : null;
