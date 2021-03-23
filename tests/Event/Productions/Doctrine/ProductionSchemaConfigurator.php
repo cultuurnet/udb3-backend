@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions\Doctrine;
 
-use CultuurNet\UDB3\Event\Productions\ProductionRepository;
+use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
@@ -16,7 +16,7 @@ class ProductionSchemaConfigurator
      */
     public static function getTableDefinition(Schema $schema)
     {
-        $table = $schema->createTable(ProductionRepository::TABLE_NAME);
+        $table = $schema->createTable(DBALProductionRepository::TABLE_NAME);
 
         $table->addColumn('event_id', Type::GUID)->setLength(36)->setNotnull(true);
         $table->addColumn('production_id', Type::GUID)->setLength(36)->setNotnull(true);

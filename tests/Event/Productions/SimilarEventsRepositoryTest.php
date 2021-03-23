@@ -20,7 +20,7 @@ class SimilarEventsRepositoryTest extends TestCase
     private $repository;
 
     /**
-     * @var ProductionRepository
+     * @var DBALProductionRepository
      */
     private $productionsRepository;
 
@@ -45,7 +45,7 @@ class SimilarEventsRepositoryTest extends TestCase
 
         $this->repository = new SimilarEventsRepository($this->getConnection());
 
-        $this->productionsRepository = new ProductionRepository($this->getConnection());
+        $this->productionsRepository = new DBALProductionRepository($this->getConnection());
 
         $this->skippedRepository = new SkippedSimilarEventsRepository($this->getConnection());
     }

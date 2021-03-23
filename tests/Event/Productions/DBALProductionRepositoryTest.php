@@ -11,12 +11,12 @@ use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class ProductionRepositoryTest extends TestCase
+class DBALProductionRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
     /**
-     * @var ProductionRepository
+     * @var DBALProductionRepository
      */
     private $repository;
 
@@ -27,7 +27,7 @@ class ProductionRepositoryTest extends TestCase
             ProductionSchemaConfigurator::getTableDefinition($schema)
         );
 
-        $this->repository = new ProductionRepository($this->getConnection());
+        $this->repository = new DBALProductionRepository($this->getConnection());
     }
 
     /**

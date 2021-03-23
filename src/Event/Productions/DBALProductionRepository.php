@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ProductionRepository extends AbstractDBALRepository
+class DBALProductionRepository extends AbstractDBALRepository
 {
     public const TABLE_NAME = 'productions';
 

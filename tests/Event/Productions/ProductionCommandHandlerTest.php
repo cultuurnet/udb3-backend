@@ -18,7 +18,7 @@ class ProductionCommandHandlerTest extends TestCase
     use DBALTestConnectionTrait;
 
     /**
-     * @var ProductionRepository
+     * @var DBALProductionRepository
      */
     private $productionRepository;
 
@@ -44,7 +44,7 @@ class ProductionCommandHandlerTest extends TestCase
             ProductionSchemaConfigurator::getTableDefinition($schema)
         );
 
-        $this->productionRepository = new ProductionRepository($this->getConnection());
+        $this->productionRepository = new DBALProductionRepository($this->getConnection());
         $this->skippedSimilarEventsRepository = $this->createMock(SkippedSimilarEventsRepository::class);
         $this->eventRepository = $this->createMock(DocumentRepository::class);
         $this->commandHandler = new ProductionCommandHandler(

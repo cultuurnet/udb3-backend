@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Event;
 
-use CultuurNet\UDB3\Event\Productions\ProductionRepository;
+use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Http\Productions\CreateProductionValidator;
 use CultuurNet\UDB3\Http\Productions\ProductionsSearchController;
@@ -32,7 +32,7 @@ class ProductionControllerProvider implements ControllerProviderInterface
         $app[ProductionsSearchController::class] = $app->share(
             function (Application $app) {
                 return new ProductionsSearchController(
-                    $app[ProductionRepository::class]
+                    $app[DBALProductionRepository::class]
                 );
             }
         );

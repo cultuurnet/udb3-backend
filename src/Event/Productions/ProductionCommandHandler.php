@@ -13,7 +13,7 @@ use Doctrine\DBAL\DBALException;
 class ProductionCommandHandler extends Udb3CommandHandler
 {
     /**
-     * @var ProductionRepository
+     * @var DBALProductionRepository
      */
     private $productionRepository;
 
@@ -28,7 +28,7 @@ class ProductionCommandHandler extends Udb3CommandHandler
     private $eventRepository;
 
     public function __construct(
-        ProductionRepository $productionRepository,
+        DBALProductionRepository $productionRepository,
         SkippedSimilarEventsRepository $skippedSimilarEventsRepository,
         DocumentRepository $eventRepository
     ) {

@@ -20,7 +20,7 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
     private $productionEnrichedEventRepository;
 
     /**
-     * @var ProductionRepository | MockObject
+     * @var DBALProductionRepository | MockObject
      */
     private $productionRepository;
 
@@ -37,7 +37,7 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
     protected function setUp(): void
     {
         $this->eventRepository = $this->createMock(DocumentRepository::class);
-        $this->productionRepository = $this->createMock(ProductionRepository::class);
+        $this->productionRepository = $this->createMock(DBALProductionRepository::class);
         $this->iriGenerator = $this->createMock(IriGeneratorInterface::class);
 
         $this->productionEnrichedEventRepository = new ProductionEnrichedEventRepository(
