@@ -117,7 +117,7 @@ jwt:
       iss: http://culudb-jwt-provider.dev
   auth0:
     keys:
-    dummy_place_ids      public:
+      public:
         file: public-auth0.pem
     validation:
       iss: https://publiq-acc.eu.auth0.com/
@@ -173,4 +173,5 @@ sentry:
   dsn: ***
   environment: development
 
-api_key_consumers: []
+api_key_consumers:
+  - 'deb306a6-6f46-4c98-89ce-b03ec4fd11e2': 'uitdatabank-ui'
