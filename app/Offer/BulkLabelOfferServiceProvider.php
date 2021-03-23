@@ -30,7 +30,7 @@ class BulkLabelOfferServiceProvider implements ServiceProviderInterface
                     $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_OFFERS]
                 );
                 $searchResultsGenerator->setLogger(
-                    LoggerFactory::create($app, LoggerName::forResqueWorker('bulk-labelling', 'search'))
+                    LoggerFactory::create($app, LoggerName::forResqueWorker('bulk-label-offer', 'search'))
                 );
 
                 return new BulkLabelCommandHandler(
