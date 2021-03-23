@@ -66,7 +66,9 @@ class ExportServiceProvider implements ServiceProviderInterface
                     new EventOrganizerPromotionQueryFactory($app['clock'])
                 );
 
-                $eventInfoService->setLogger(LoggerFactory::create($app, new LoggerName('uitpas')));
+                $eventInfoService->setLogger(
+                    LoggerFactory::create($app, LoggerName::forResqueWorker('event-export', 'uitpas'))
+                );
 
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $app['event_export_service'],
@@ -76,7 +78,7 @@ class ExportServiceProvider implements ServiceProviderInterface
                     $app['event_export_twig_environment']
                 );
                 $eventExportCommandHandler->setLogger(
-                    LoggerFactory::create($app, new LoggerName('export', 'event-export'))
+                    LoggerFactory::create($app, LoggerName::forResqueWorker('event-export'))
                 );
                 return $eventExportCommandHandler;
             }
