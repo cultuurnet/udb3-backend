@@ -40,7 +40,7 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus'],
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($app, new LoggerName('place-geocoordinates'))
+                        LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'place'))
                     )
                 );
             }

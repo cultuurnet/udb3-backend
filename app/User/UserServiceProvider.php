@@ -27,7 +27,7 @@ class UserServiceProvider implements ServiceProviderInterface
                     $app['user_identity_resolver']
                 );
 
-                $resolver->setLogger(LoggerFactory::create($app, new LoggerName('cdbxml_created_by_resolver')));
+                $resolver->setLogger(LoggerFactory::create($app, LoggerName::forService('xml-conversion', 'created-by-resolver')));
 
                 return $resolver;
             }

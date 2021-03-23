@@ -52,15 +52,11 @@ The following logs contain info about CLI commands that run continuously as supe
 
 The following logs contain info about specific services that can be part of HTTP requests, CLI commands, or both.
 
-- `cdbxml_created_by_resolver.log` contains logs about the mapping of `createdby` in XML files to a user identifier that UDB3 understands
-- `event_importer.log` contains logs about event JSON-LD imports
-- `export.log` contains logs about event exports (any format)
-- `labels.log` contains logs about the projection of label aggregates to the label tables in the database
-- `media_manager.log` contains logs about the media manager, i.e. about uploads and edits of images and media objects
-- `organizer-geocoordinates.log` contains logs about the geocoding of organizers
-- `place-geocoordinates.log` contains logs about the geocoding of places
-- `search_results.log` contains logs about the search results used in services like exports and other bulk commands
-- `uitpas.log` contains logs about requests to UiTPAS _in the event exports_
+- `service.xml-conversion.log` contains logs about parsing/projection of previously imported XML
+- `service.json-imports.log` contains logs about JSON-LD imports
+- `service.labels.log` contains logs about label (aggregates)
+- `service.media.log` contains logs about the media manager, i.e. about uploads and edits of images and media objects
+- `service.geo-coordinates.log` contains logs about the geocoding of organizers and places
 
 ### Adding a new logger
 

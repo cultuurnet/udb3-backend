@@ -51,7 +51,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     $app['imports_command_bus'],
                     $app['should_auto_approve_new_offer'],
                     $app['labels.labels_locked_for_import_repository'],
-                    LoggerFactory::create($app, new LoggerName('event_importer'))
+                    LoggerFactory::create($app, LoggerName::forService('json-imports', 'event'))
                 );
 
                 $termPreProcessor = new TermPreProcessingDocumentImporter(

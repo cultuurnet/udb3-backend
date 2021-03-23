@@ -36,7 +36,7 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     new GeoCoordinatesProcessManager(
                         $app['event_command_bus'],
                         new CultureFeedAddressFactory(),
-                        LoggerFactory::create($app, new LoggerName('organizer-geocoordinates'))
+                        LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'organizer'))
                     )
                 );
             }

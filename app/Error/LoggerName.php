@@ -39,6 +39,13 @@ final class LoggerName
         return new self($fileName, $loggerName);
     }
 
+    public static function forService(string $serviceName, ?string $suffix = null): self
+    {
+        $fileName = 'service.' . $serviceName;
+        $loggerName = self::appendSuffixToFilename($fileName, $suffix);
+        return new self($fileName, $loggerName);
+    }
+
     private static function appendSuffixToFilename(string $fileName, ?string $suffix = null): string
     {
         return $suffix ? $fileName . '.' . $suffix : $fileName;;
