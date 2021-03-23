@@ -78,18 +78,6 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
                 );
             }
         );
-
-        $app['search_results_generator'] = $app->share(
-            function (Application $app) {
-                $resultsGenerator = new ResultsGenerator(
-                    $app[self::SEARCH_SERVICE_OFFERS]
-                );
-                $resultsGenerator->setLogger(
-                    LoggerFactory::create($app, new LoggerName('search_results', 'search-results-generator'))
-                );
-                return $resultsGenerator;
-            }
-        );
     }
 
     public function boot(Application $app)
