@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Silex;
 use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
 use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Geocoder\Provider\GoogleMaps;
 use Ivory\HttpAdapter\CurlHttpAdapter;
 use Silex\Application;
@@ -32,7 +34,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                         true,
                         $googleMapsApiKey
                     ),
-                    $app['logger.command_bus']
+                    LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'google'))
                 );
             }
         );

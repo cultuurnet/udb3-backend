@@ -28,7 +28,7 @@ class PlaceGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     $app['geocoding_service']
                 );
 
-                $handler->setLogger($app['logger.command_bus']);
+                $handler->setLogger(LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'place')));
 
                 return $handler;
             }
