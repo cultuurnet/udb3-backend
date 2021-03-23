@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use CultuurNet\UDB3\EntityNotFoundException;
-
 interface ProductionRepository
 {
     public function add(Production $production): void;
