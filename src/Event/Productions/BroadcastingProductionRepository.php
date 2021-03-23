@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
+use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 
 final class BroadcastingProductionRepository implements ProductionRepository
@@ -37,6 +39,7 @@ final class BroadcastingProductionRepository implements ProductionRepository
     public function add(Production $production): void
     {
         $this->repository->add($production);
+        $this->dispatchEventsProjectedToJsonLd(...$production->getEventIds());
     }
 
     public function addEvent(string $eventId, Production $production): void
@@ -72,5 +75,16 @@ final class BroadcastingProductionRepository implements ProductionRepository
     public function count(string $keyword): int
     {
         return $this->repository->count($keyword);
+    }
+
+    private function dispatchEventsProjectedToJsonLd(string ...$eventIds): void
+    {
+        $domainMessages = [];
+        foreach ($eventIds as $eventId) {
+            $eventProjectedToJsonLd = $this->eventFactory->createEvent($eventId);
+            $domainMessages[] = (new DomainMessageBuilder())->create($eventProjectedToJsonLd);
+        }
+        $stream = new DomainEventStream($domainMessages);
+        $this->eventBus->publish($stream);
     }
 }
