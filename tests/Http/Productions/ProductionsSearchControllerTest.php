@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Productions;
 
 use CultuurNet\UDB3\Event\Productions\Production;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
-use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ProductionsSearchControllerTest extends TestCase
 {
     /**
-     * @var DBALProductionRepository|MockObject
+     * @var ProductionRepository|MockObject
      */
     private $repository;
 
@@ -26,7 +26,7 @@ class ProductionsSearchControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->repository = $this->createMock(DBALProductionRepository::class);
+        $this->repository = $this->createMock(ProductionRepository::class);
         $this->controller = new ProductionsSearchController($this->repository);
     }
 
