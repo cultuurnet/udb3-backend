@@ -18,8 +18,11 @@ final class LoggerName
 
     public function __construct(string $fileNameWithoutSuffix, ?string $customLoggerName = null)
     {
+        $fileNameWithoutSuffix = str_replace('_', '-', $fileNameWithoutSuffix);
+        $customLoggerName = $customLoggerName ? str_replace('_', '-', $customLoggerName) : null;
+
         $this->fileNameWithoutSuffix = $fileNameWithoutSuffix;
-        $this->loggerName = $customLoggerName ?? 'logger.' . $this->fileNameWithoutSuffix;
+        $this->loggerName = $customLoggerName ?? $this->fileNameWithoutSuffix;
     }
 
     public function getFileNameWithoutSuffix(): string
@@ -35,6 +38,13 @@ final class LoggerName
     public static function forAmqpWorker(string $workerName, ?string $suffix = null): self
     {
         $fileName = 'amqp.' . $workerName;
+        $loggerName = self::appendSuffixToFilename($fileName, $suffix);
+        return new self($fileName, $loggerName);
+    }
+
+    public static function forResqueWorker(string $queueName, ?string $suffix = null): self
+    {
+        $fileName = 'resque.' . $queueName;
         $loggerName = self::appendSuffixToFilename($fileName, $suffix);
         return new self($fileName, $loggerName);
     }

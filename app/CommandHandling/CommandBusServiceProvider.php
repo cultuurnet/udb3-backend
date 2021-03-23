@@ -123,7 +123,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                         $app['command_bus_event_dispatcher']
                     );
 
-                    $commandBus->setLogger($app['logger.command_bus']);
+                    $commandBus->setLogger($app['logger_factory.resque_worker']($queueName));
 
                     return $commandBus;
                 };

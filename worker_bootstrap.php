@@ -12,7 +12,10 @@ Resque_Event::listen(
         $app = require __DIR__ . '/bootstrap.php';
         $app->boot();
 
-        $logger = new ContextEnrichingLogger($app['logger.command_bus'], ['job_id' => $job->payload['id']]);
+        $logger = new ContextEnrichingLogger(
+            $app['logger_factory.resque_worker']($job->queue),
+            ['job_id' => $job->payload['id']]
+        );
         $logger->info('job_started');
 
         try {
@@ -23,7 +26,7 @@ Resque_Event::listen(
 
             // Command bus service name is based on queue name + _command_bus_out.
             // Eg. Queue "event" => command bus "event_command_bus_out".
-            $commandBusServiceName = getenv('QUEUE') . '_command_bus_out';
+            $commandBusServiceName = $job->queue . '_command_bus_out';
 
             // Allows to access the command bus and logger in perform() of jobs that come out of the queue.
             QueueJob::setLogger($logger);
@@ -46,7 +49,10 @@ Resque_Event::listen(
         $app = require __DIR__ . '/bootstrap.php';
         $app->boot();
 
-        $logger = new ContextEnrichingLogger($app['logger.command_bus'], ['job_id' => $job->payload['id']]);
+        $logger = new ContextEnrichingLogger(
+            $app['logger_factory.resque_worker']($job->queue),
+            ['job_id' => $job->payload['id']]
+        );
         $logger->info('job_finished');
     }
 );

@@ -513,8 +513,8 @@ $app['event_repository'] = $app->share(
     }
 );
 
-$app['logger.command_bus'] = $app::share(
-    function ($app) {
+$app['logger_factory.resque_worker'] = $app::protect(
+    function ($queueName) use ($app) {
         $redisConfig = [
             'host' => '127.0.0.1',
             'port' => 6379,
@@ -536,7 +536,7 @@ $app['logger.command_bus'] = $app::share(
         }
         $socketIOHandler = new SocketIOEmitterHandler(new Emitter($redis), Logger::INFO);
 
-        return LoggerFactory::create($app, new LoggerName('command_bus'), [$socketIOHandler]);
+        return LoggerFactory::create($app, LoggerName::forResqueWorker($queueName), [$socketIOHandler]);
     }
 );
 
