@@ -58,6 +58,7 @@ The following logs contain info about specific services that can be part of HTTP
 - `service.labels.log` contains logs about label (aggregates)
 - `service.media.log` contains logs about the media manager, i.e. about uploads and edits of images and media objects
 - `service.geo-coordinates.log` contains logs about the geocoding of organizers and places
+- `service.uitpas.log` contains logs about general calls _to_ UiTPAS, e.g. to check for ticket sales
 
 ### Adding a new logger
 

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\UiTPAS;
 
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
+use CultuurNet\UDB3\Silex\Error\LoggerFactory;
+use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation\EventHasTicketSalesCommandValidator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -17,7 +19,7 @@ class UiTPASCommandValidatorServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new EventHasTicketSalesCommandValidator(
                     $app['uitpas'],
-                    $app['logger.command_bus']
+                    LoggerFactory::create($app, LoggerName::forService('uitpas', 'ticket-sales'))
                 );
             }
         );
