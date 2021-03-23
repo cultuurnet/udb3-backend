@@ -45,6 +45,7 @@ final class BroadcastingProductionRepository implements ProductionRepository
     public function addEvent(string $eventId, Production $production): void
     {
         $this->repository->addEvent($eventId, $production);
+        $this->dispatchEventsProjectedToJsonLd($eventId, ...$production->getEventIds());
     }
 
     public function removeEvent(string $eventId, ProductionId $productionId): void
