@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 
@@ -51,6 +52,8 @@ final class BroadcastingProductionRepository implements ProductionRepository
     public function removeEvent(string $eventId, ProductionId $productionId): void
     {
         $this->repository->removeEvent($eventId, $productionId);
+        $otherEventIds = $this->getEventIdsForProductionId($productionId);
+        $this->dispatchEventsProjectedToJsonLd($eventId, ...$otherEventIds);
     }
 
     public function moveEvents(ProductionId $from, Production $to): void
@@ -76,6 +79,19 @@ final class BroadcastingProductionRepository implements ProductionRepository
     public function count(string $keyword): int
     {
         return $this->repository->count($keyword);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getEventIdsForProductionId(ProductionId $productionId): array
+    {
+        try {
+            $production = $this->repository->find($productionId);
+            return $production->getEventIds();
+        } catch (EntityNotFoundException $e) {
+            return [];
+        }
     }
 
     private function dispatchEventsProjectedToJsonLd(string ...$eventIds): void
