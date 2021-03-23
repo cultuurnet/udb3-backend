@@ -192,33 +192,4 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
         return $production;
     }
-
-    /**
-     * @return SimilarEventPair[]
-     * @throws EntityNotFoundException
-     */
-    public function findEventPairs(string $forEventId, ProductionId $inProductionId): array
-    {
-        $results = $this->getConnection()->fetchAll(
-            'SELECT * FROM productions WHERE production_id = :productionId AND event_id != :eventId
-                    AND 1 = (SELECT COUNT(*) FROM productions 
-                            WHERE production_id = :productionId 
-                            AND event_id = :eventId)',
-            [
-                'productionId' => $inProductionId->toNative(),
-                'eventId' => $forEventId,
-            ]
-        );
-
-        if (!$results) {
-            throw new EntityNotFoundException('No event pairs found');
-        }
-
-        return array_map(
-            static function (array $data) use ($forEventId) {
-                return new SimilarEventPair($forEventId, $data['event_id']);
-            },
-            $results
-        );
-    }
 }

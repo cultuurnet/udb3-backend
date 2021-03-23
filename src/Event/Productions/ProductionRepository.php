@@ -26,10 +26,4 @@ interface ProductionRepository
     public function count(string $keyword): int;
 
     public function findProductionForEventId(string $eventId): Production;
-
-    /**
-     * @return SimilarEventPair[]
-     * @throws EntityNotFoundException
-     */
-    public function findEventPairs(string $forEventId, ProductionId $inProductionId): array;
 }
