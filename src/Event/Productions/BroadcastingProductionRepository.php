@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
+use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
+
 final class BroadcastingProductionRepository implements ProductionRepository
 {
     /**
@@ -11,10 +14,24 @@ final class BroadcastingProductionRepository implements ProductionRepository
      */
     private $repository;
 
+    /**
+     * @var EventBus
+     */
+    private $eventBus;
+
+    /**
+     * @var DocumentEventFactory
+     */
+    private $eventFactory;
+
     public function __construct(
-        ProductionRepository $repository
+        ProductionRepository $repository,
+        EventBus $eventBus,
+        DocumentEventFactory $eventFactory
     ) {
         $this->repository = $repository;
+        $this->eventBus = $eventBus;
+        $this->eventFactory = $eventFactory;
     }
 
     public function add(Production $production): void
