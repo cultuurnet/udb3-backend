@@ -59,6 +59,10 @@ final class BroadcastingProductionRepository implements ProductionRepository
     public function moveEvents(ProductionId $from, Production $to): void
     {
         $this->repository->moveEvents($from, $to);
+
+        // Make sure to fetch the updated list of event ids for the destination production
+        $groupedEventIds = $this->getEventIdsForProductionId($to->getProductionId());
+        $this->dispatchEventsProjectedToJsonLd(...$groupedEventIds);
     }
 
     public function find(ProductionId $productionId): Production
