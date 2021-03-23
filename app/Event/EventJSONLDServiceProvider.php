@@ -76,7 +76,8 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
                         new EventJsonDocumentLanguageAnalyzer()
                     ),
                     new EventTypeResolver(),
-                    $app['config']['base_price_translations']
+                    $app['config']['base_price_translations'],
+                    $app['config']['udb_api_key']
                 );
 
                 return $projector;

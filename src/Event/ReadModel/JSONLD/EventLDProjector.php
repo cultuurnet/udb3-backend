@@ -121,7 +121,7 @@ class EventLDProjector extends OfferLDProjector implements
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations,
-        string $udbApiKey = ''
+        string $udbApiKey
     ) {
         parent::__construct(
             $repository,
