@@ -117,7 +117,7 @@ jwt:
       iss: http://culudb-jwt-provider.dev
   auth0:
     keys:
-      public:
+    dummy_place_ids      public:
         file: public-auth0.pem
     validation:
       iss: https://publiq-acc.eu.auth0.com/
@@ -173,4 +173,4 @@ sentry:
   dsn: ***
   environment: development
 
-udb_api_key: ***
+api_key_consumers: []

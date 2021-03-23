@@ -169,7 +169,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'en' => 'Base tariff',
                 'de' => 'Basisrate',
             ],
-            self::UDB_API_KEY
+            [
+                self::UDB_API_KEY => 'uitdatabank-ui'
+            ]
         );
     }
 
@@ -195,6 +197,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'label' => 'concert',
                 'domain' => 'eventtype',
             ],
+        ];
+
+        $jsonLD->metadata = (object)[
+            'createdByApiConsumer' => 'unknown',
         ];
 
         $this->mockPlaceService();
@@ -236,6 +242,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'label' => 'theme label',
                 'domain' => 'theme',
             ],
+        ];
+
+        $jsonLD->metadata = (object)[
+            'createdByApiConsumer' => 'unknown',
         ];
 
         $this->mockPlaceService();
@@ -285,6 +295,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ],
         ];
         $jsonLD->creator = $expectedCreator;
+
+        $jsonLD->metadata = (object)[
+            'createdByApiConsumer' => 'unknown',
+        ];
 
         $this->mockPlaceService();
 
@@ -495,6 +509,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = '20a72430-7e3e-4b75-ab59-043156b3169c';
 
+        $expectedJsonLD->metadata = (object)[
+            'createdByApiConsumer' => 'unknown',
+        ];
+
         $this->assertEquals($expectedJsonLD, $body);
     }
 
@@ -530,6 +548,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = $userId;
+
+        $expectedJsonLD->metadata = (object)[
+            'createdByApiConsumer' => 'unknown',
+        ];
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -670,6 +692,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'label' => 'theme label',
                 'domain' => 'theme',
             ],
+        ];
+
+        $jsonLD->metadata = (object)[
+            'createdByApiConsumer' => 'unknown',
         ];
 
         $this->mockPlaceService();

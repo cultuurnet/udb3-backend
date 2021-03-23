@@ -103,9 +103,9 @@ class EventLDProjector extends OfferLDProjector implements
     private $eventTypeResolver;
 
     /**
-     * @var string
+     * @var array<string,string>
      */
-    private $udbApiKey;
+    private $apiKeyConsumerMapping;
 
     /**
      * @param string[] $basePriceTranslations
@@ -121,7 +121,7 @@ class EventLDProjector extends OfferLDProjector implements
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations,
-        string $udbApiKey
+        array $apiKeyConsumerMapping
     ) {
         parent::__construct(
             $repository,
@@ -137,7 +137,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
-        $this->udbApiKey = $udbApiKey;
+        $this->apiKeyConsumerMapping = $apiKeyConsumerMapping;
     }
 
     /**
@@ -528,7 +528,7 @@ class EventLDProjector extends OfferLDProjector implements
         return null;
     }
 
-    private function getCreatedByApiConsumerFromMetadata(Metadata $metadata): ?string
+    private function getCreatedByApiConsumerFromMetadata(Metadata $metadata): string
     {
         $properties = $metadata->serialize();
 
@@ -537,11 +537,11 @@ class EventLDProjector extends OfferLDProjector implements
         }
 
         $apiKey = $properties['auth_api_key'];
-        if ($apiKey === $this->udbApiKey) {
-            return 'uitdatabank-ui';
+        if (!array_key_exists($apiKey, $this->apiKeyConsumerMapping)) {
+            return 'other';
         }
 
-        return 'other';
+        return $this->apiKeyConsumerMapping[$apiKey];
     }
 
     /**
