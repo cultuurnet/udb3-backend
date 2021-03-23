@@ -47,7 +47,7 @@ The following logs contain info about CLI commands that run continuously as supe
 - `amqp.json-imports.log` contains logs about JSON-LD imports that get processed through the `amqp-listen-imports` CLI command
 - `amqp.xml-imports.log` contains logs about XML imports that get processed through the `amqp-listen` CLI command
 - `amqp.uitpas.log` contains logs about UiTPAS events that get processed through the `amqp-listen-uitpas` CLI command
-- `resque.bulk-labelling.log` contains about the resque worker for bulk labelling
+- `resque.bulk-labelling.log` contains logs about the resque worker for bulk labelling
   
 ### Service logs
 
