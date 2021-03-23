@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Search;
 
-use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
-use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Http\Adapter\Guzzle6\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
