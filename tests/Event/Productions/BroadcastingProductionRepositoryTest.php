@@ -135,4 +135,52 @@ class BroadcastingProductionRepositoryTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_broadcast_event_projected_to_jsonld_for_events_in_a_production_when_an_event_is_removed(): void
+    {
+        $removeEventId = 'bf1668d0-ce82-4e38-b284-2947f12850d6';
+
+        $productionId = ProductionId::fromNative('599fc3af-0023-4c59-a0ab-05c9ad7f54cc');
+        $productionAfterRemoval = new Production(
+            $productionId,
+            'mock production',
+            [
+                'd6a65aa8-d871-4a3e-a7ef-81926ad62371',
+                'a40ca8ff-cdae-406c-9124-f5874ef8056a',
+            ]
+        );
+
+        $this->decoratee->expects($this->once())
+            ->method('removeEvent')
+            ->with($removeEventId, $productionId);
+
+        $this->decoratee->expects($this->once())
+            ->method('find')
+            ->with($productionId)
+            ->willReturn($productionAfterRemoval);
+
+        $this->repository->removeEvent($removeEventId, $productionId);
+
+        $expected = [
+            new EventProjectedToJSONLD(
+                'bf1668d0-ce82-4e38-b284-2947f12850d6',
+                'https://io.uitdatabank.be/events/bf1668d0-ce82-4e38-b284-2947f12850d6'
+            ),
+            new EventProjectedToJSONLD(
+                'd6a65aa8-d871-4a3e-a7ef-81926ad62371',
+                'https://io.uitdatabank.be/events/d6a65aa8-d871-4a3e-a7ef-81926ad62371'
+            ),
+            new EventProjectedToJSONLD(
+                'a40ca8ff-cdae-406c-9124-f5874ef8056a',
+                'https://io.uitdatabank.be/events/a40ca8ff-cdae-406c-9124-f5874ef8056a'
+            ),
+        ];
+
+        $actual = $this->eventBus->getEvents();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
