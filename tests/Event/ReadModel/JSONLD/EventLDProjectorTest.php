@@ -65,6 +65,7 @@ use ValueObjects\DateTime\Minute;
 class EventLDProjectorTest extends OfferLDProjectorTestBase
 {
     public const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
+    private const UDB_API_KEY = 'udb_api_key';
 
     /**
      * @var PlaceService|MockObject
@@ -167,7 +168,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'fr' => 'Tarif de base',
                 'en' => 'Base tariff',
                 'de' => 'Basisrate',
-            ]
+            ],
+            self::UDB_API_KEY
         );
     }
 
@@ -328,6 +330,80 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     ]
                 ),
                 '20a72430-7e3e-4b75-ab59-043156b3169c',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider createdByApiConsumerDataProvider
+     */
+    public function it_handles_new_events_with_create_by_api_consumer(Metadata $metadata, string $expected)
+    {
+        $eventId = '1';
+        $calendar = new Calendar(
+            CalendarType::PERIODIC(),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00'),
+            \DateTime::createFromFormat(\DateTime::ATOM, '2015-01-26T13:25:21+01:00')
+        );
+        $theme = new Theme('123', 'theme label');
+
+        $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
+
+        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD->terms = [
+            (object)[
+                'id' => '0.50.4.0.0',
+                'label' => 'concert',
+                'domain' => 'eventtype',
+            ],
+            (object)[
+                'id' => '123',
+                'label' => 'theme label',
+                'domain' => 'theme',
+            ],
+        ];
+        $jsonLD->metadata = (object)[
+            'createdByApiConsumer' => $expected
+        ];
+
+        $this->mockPlaceService();
+
+        $body = $this->project(
+            $eventCreated,
+            $eventId,
+            $metadata,
+            DateTime::fromString('2015-01-20T13:25:21+01:00')
+        );
+
+        $this->assertEquals($jsonLD, $body);
+    }
+
+    /**
+     * @return array
+     */
+    public function createdByApiConsumerDataProvider()
+    {
+        return [
+            'without api key' => [
+                new Metadata([]),
+                'unknown',
+            ],
+            'with udb api key' => [
+                new Metadata(
+                    [
+                        'auth_api_key' => self::UDB_API_KEY,
+                    ]
+                ),
+                'uitdatabank-ui',
+            ],
+            'with other api key' => [
+                new Metadata(
+                    [
+                        'auth_api_key' => 'other-api-key',
+                    ]
+                ),
+                'other',
             ],
         ];
     }

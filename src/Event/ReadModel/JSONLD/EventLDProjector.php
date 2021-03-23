@@ -103,6 +103,11 @@ class EventLDProjector extends OfferLDProjector implements
     private $eventTypeResolver;
 
     /**
+     * @var string
+     */
+    private $udbApiKey;
+
+    /**
      * @param string[] $basePriceTranslations
      */
     public function __construct(
@@ -115,7 +120,8 @@ class EventLDProjector extends OfferLDProjector implements
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
         EventTypeResolver $eventTypeResolver,
-        array $basePriceTranslations
+        array $basePriceTranslations,
+        string $udbApiKey = ''
     ) {
         parent::__construct(
             $repository,
@@ -131,6 +137,7 @@ class EventLDProjector extends OfferLDProjector implements
 
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
+        $this->udbApiKey = $udbApiKey;
     }
 
     /**
@@ -293,6 +300,10 @@ class EventLDProjector extends OfferLDProjector implements
 
         $defaultAudience = new Audience(AudienceType::EVERYONE());
         $jsonLD->audience = $defaultAudience->serialize();
+
+        $jsonLD->metadata = (object)[
+            'createdByApiConsumer' => $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata())
+        ];
 
         return $document->withBody($jsonLD);
     }
@@ -515,6 +526,22 @@ class EventLDProjector extends OfferLDProjector implements
         }
 
         return null;
+    }
+
+    private function getCreatedByApiConsumerFromMetadata(Metadata $metadata): ?string
+    {
+        $properties = $metadata->serialize();
+
+        if (!isset($properties['auth_api_key'])) {
+            return 'unknown';
+        }
+
+        $apiKey = $properties['auth_api_key'];
+        if ($apiKey === $this->udbApiKey) {
+            return 'uitdatabank-ui';
+        }
+
+        return 'other';
     }
 
     /**
