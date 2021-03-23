@@ -13,7 +13,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
 {
     /**
-     * @var DBALProductionRepository
+     * @var ProductionRepository
      */
     private $productionRepository;
 
@@ -24,7 +24,7 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
 
     public function __construct(
         DocumentRepository $repository,
-        DBALProductionRepository $productionRepository,
+        ProductionRepository $productionRepository,
         IriGeneratorInterface $iriGenerator
     ) {
         parent::__construct($repository);

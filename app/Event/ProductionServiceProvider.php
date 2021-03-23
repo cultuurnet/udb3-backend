@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Event\Productions\SkippedSimilarEventsRepository;
 use Silex\Application;
@@ -15,7 +16,7 @@ class ProductionServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app[DBALProductionRepository::class] = $app->share(
+        $app[ProductionRepository::class] = $app->share(
             function ($app) {
                 return new DBALProductionRepository($app['dbal_connection']);
             }
@@ -36,7 +37,7 @@ class ProductionServiceProvider implements ServiceProviderInterface
         $app[ProductionCommandHandler::class] = $app->share(
             function ($app) {
                 return new ProductionCommandHandler(
-                    $app[DBALProductionRepository::class],
+                    $app[ProductionRepository::class],
                     $app[SkippedSimilarEventsRepository::class],
                     $app['event_jsonld_repository']
                 );

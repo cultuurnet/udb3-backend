@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Productions;
 
 use CultuurNet\UDB3\Event\Productions\Production;
-use CultuurNet\UDB3\Event\Productions\DBALProductionRepository;
+use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Http\Response\PagedCollectionResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +16,11 @@ class ProductionsSearchController
     private const DEFAULT_LIMIT = 30;
 
     /**
-     * @var DBALProductionRepository
+     * @var ProductionRepository
      */
     private $repository;
 
-    public function __construct(DBALProductionRepository $repository)
+    public function __construct(ProductionRepository $repository)
     {
         $this->repository = $repository;
     }
