@@ -183,4 +183,67 @@ class BroadcastingProductionRepositoryTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_broadcast_event_projected_to_jsonld_for_events_in_a_production_when_events_get_moved(): void
+    {
+        $productionIdFrom = ProductionId::fromNative('bf1668d0-ce82-4e38-b284-2947f12850d6');
+        $productionIdTo = ProductionId::fromNative('06e32aa2-5b1c-4f95-b715-0cb444f520ea');
+
+        $productionTo = new Production(
+            $productionIdTo,
+            'mock production 2',
+            [
+                'd6a65aa8-d871-4a3e-a7ef-81926ad62371',
+                'a40ca8ff-cdae-406c-9124-f5874ef8056a',
+            ]
+        );
+
+        $productionMerged = new Production(
+            $productionIdTo,
+            'mock production 2',
+            [
+                'd6a65aa8-d871-4a3e-a7ef-81926ad62371',
+                'a40ca8ff-cdae-406c-9124-f5874ef8056a',
+                '8b6dd26a-26c0-4334-8738-12f04a978d34',
+                '4926608d-e396-4d06-a274-119666cf828f',
+            ]
+        );
+
+        $this->decoratee->expects($this->once())
+            ->method('moveEvents')
+            ->with($productionIdFrom, $productionTo);
+
+        $this->decoratee->expects($this->once())
+            ->method('find')
+            ->with($productionIdTo)
+            ->willReturn($productionMerged);
+
+        $this->repository->moveEvents($productionIdFrom, $productionTo);
+
+        $expected = [
+            new EventProjectedToJSONLD(
+                'd6a65aa8-d871-4a3e-a7ef-81926ad62371',
+                'https://io.uitdatabank.be/events/d6a65aa8-d871-4a3e-a7ef-81926ad62371'
+            ),
+            new EventProjectedToJSONLD(
+                'a40ca8ff-cdae-406c-9124-f5874ef8056a',
+                'https://io.uitdatabank.be/events/a40ca8ff-cdae-406c-9124-f5874ef8056a'
+            ),
+            new EventProjectedToJSONLD(
+                '8b6dd26a-26c0-4334-8738-12f04a978d34',
+                'https://io.uitdatabank.be/events/8b6dd26a-26c0-4334-8738-12f04a978d34'
+            ),
+            new EventProjectedToJSONLD(
+                '4926608d-e396-4d06-a274-119666cf828f',
+                'https://io.uitdatabank.be/events/4926608d-e396-4d06-a274-119666cf828f'
+            ),
+        ];
+
+        $actual = $this->eventBus->getEvents();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
