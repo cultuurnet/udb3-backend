@@ -40,7 +40,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventBusForwardingConsumerFactory(
                     new Natural(0),
                     $app['amqp.connection'],
-                    LoggerFactory::create($app, new LoggerName('uitpas-events')),
+                    LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas')),
                     $app['uitpas_deserializer_locator'],
                     $app['event_bus'],
                     new StringLiteral($app['config']['amqp']['consumer_tag'])
@@ -78,7 +78,7 @@ class UiTPASIncomingEventServicesProvider implements ServiceProviderInterface
                 return new EventProcessManager(
                     $app['event_command_bus'],
                     $app[UiTPASLabelsRepository::class],
-                    LoggerFactory::create($app, new LoggerName('uitpas-events'))
+                    LoggerFactory::create($app, LoggerName::forAmqpWorker('uitpas'))
                 );
             }
         );

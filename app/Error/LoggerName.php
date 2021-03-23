@@ -31,4 +31,16 @@ final class LoggerName
     {
         return $this->loggerName;
     }
+
+    public static function forAmqpWorker(string $workerName, ?string $suffix = null): self
+    {
+        $fileName = 'amqp.' . $workerName;
+        $loggerName = self::appendSuffixToFilename($fileName, $suffix);
+        return new self($fileName, $loggerName);
+    }
+
+    private static function appendSuffixToFilename(string $fileName, ?string $suffix = null): string
+    {
+        return $suffix ? $fileName . '.' . $suffix : $fileName;;
+    }
 }

@@ -46,7 +46,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['queue'])
                 );
 
-                $consumer->setLogger(LoggerFactory::create($app, new LoggerName('curators-events')));
+                $consumer->setLogger(LoggerFactory::create($app, LoggerName::forAmqpWorker('curators')));
 
                 return $consumer;
             }

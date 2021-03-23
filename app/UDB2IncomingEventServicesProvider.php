@@ -90,7 +90,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             function (Application $app) {
                 $logger = LoggerFactory::create(
                     $app,
-                    new LoggerName('amqp', 'amqp.event_bus_forwarder'),
+                    LoggerName::forAmqpWorker('xml-imports', 'messages'),
                     [new StreamHandler('php://stdout')]
                 );
 
@@ -178,9 +178,9 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
             }
         );
 
-        $app['cdbxml_enricher_logger'] = $app->share(
+        $app['logger.xml-imports.enricher'] = $app->share(
             function (Application $app) {
-                return LoggerFactory::create($app, new LoggerName('udb2', 'udb2-events-cdbxml-enricher'));
+                return LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'enricher'));
             }
         );
 
@@ -192,7 +192,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['event_cdbxml_enricher_xml_validation_service']
                 );
 
-                $enricher->setLogger($app['cdbxml_enricher_logger']);
+                $enricher->setLogger($app['logger.xml-imports.enricher']);
 
                 if ($importFromSapi) {
                     $eventUrlFormat = $app['udb2_cdbxml_enricher.event_url_format'];
@@ -215,7 +215,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['actor_cdbxml_enricher_xml_validation_service']
                 );
 
-                $enricher->setLogger($app['cdbxml_enricher_logger']);
+                $enricher->setLogger($app['logger.xml-imports.enricher']);
 
                 if ($importFromSapi) {
                     $actorUrlFormat = $app['udb2_cdbxml_enricher.actor_url_format'];
@@ -242,7 +242,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 $applier->setLogger(
-                    LoggerFactory::create($app, new LoggerName('udb2', 'udb2-events-to-udb3-event-applier'))
+                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'event'))
                 );
 
                 return $applier;
@@ -260,7 +260,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 $applier->setLogger(
-                    LoggerFactory::create($app, new LoggerName('udb2', 'udb2-actor-events-to-udb3-place-applier'))
+                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'place'))
                 );
 
                 return $applier;
@@ -277,7 +277,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                 );
 
                 $applier->setLogger(
-                    LoggerFactory::create($app, new LoggerName('udb2', 'udb2-actor-events-to-udb3-organizer-applier'))
+                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'organizer'))
                 );
 
                 return $applier;
@@ -290,7 +290,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     $app['labels.constraint_aware_service']
                 );
 
-                $labelImporter->setLogger(LoggerFactory::create($app, new LoggerName('udb2', 'udb2-label-importer')));
+                $labelImporter->setLogger(LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'labels')));
 
                 return $labelImporter;
             }
@@ -303,7 +303,9 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
                     (new ImageCollectionFactory())->withUuidRegex($app['udb2_cdbxml_enricher.media_uuid_regex'])
                 );
 
-                $mediaImporter->setLogger(LoggerFactory::create($app, new LoggerName('udb2', 'udb2-media-importer')));
+                $mediaImporter->setLogger(
+                    LoggerFactory::create($app, LoggerName::forAmqpWorker('xml-imports', 'media'))
+                );
 
                 return $mediaImporter;
             }
