@@ -329,7 +329,11 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::LOGGER] = $app->share(
             function (Application $app) {
-                return LoggerFactory::create($app, new LoggerName('labels'), [new StreamHandler('php://stdout')]);
+                return LoggerFactory::create(
+                    $app,
+                    LoggerName::forService('labels'),
+                    [new StreamHandler('php://stdout')]
+                );
             }
         );
     }

@@ -42,25 +42,24 @@ Logs are located in the `./logs` directory.
 
 The following logs contain info about CLI commands that run continuously as supervisor scripts.
 
-- `curators-events.log` contains logs about the [uit-curatoren](https://github.com/cultuurnet/uit-curatoren/) events that get processed through the `amqp-listen-curators` CLI command
-- `command_bus.log` contains logs about the commands handled by resque workers (e.g. bulk labelling and exports)
-- `import-commands.log` contains logs about JSON-LD imports that get processed through the `amqp-listen-imports` CLI command
-- `udb2.log` contains logs about XML imports that get processed through the `amqp-listen` CLI command
-- `uitpas-events.log` contains logs about UiTPAS events that get processed through the `amqp-listen-uitpas` CLI command
+- `amqp.curators.log` contains logs about the [uit-curatoren](https://github.com/cultuurnet/uit-curatoren/) events that get processed through the `amqp-listen-curators` CLI command
+- `amqp.json-imports.log` contains logs about JSON-LD imports that get processed through the `amqp-listen-imports` CLI command
+- `amqp.xml-imports.log` contains logs about XML imports that get processed through the `amqp-listen` CLI command
+- `amqp.uitpas.log` contains logs about UiTPAS events that get processed through the `amqp-listen-uitpas` CLI command
+- `resque.bulk-label-offer.log` contains logs about the resque worker for the `bulk_label_offer` queue
+- `resque.event-export.log` contains logs about the resque worker for the `event_export` queue
+- `resque.imports.log` contains logs about the resque worker for the (JSON-LD) `imports` queue
   
 ### Service logs
 
 The following logs contain info about specific services that can be part of HTTP requests, CLI commands, or both.
 
-- `cdbxml_created_by_resolver.log` contains logs about the mapping of `createdby` in XML files to a user identifier that UDB3 understands
-- `event_importer.log` contains logs about event JSON-LD imports
-- `export.log` contains logs about event exports (any format)
-- `labels.log` contains logs about the projection of label aggregates to the label tables in the database
-- `media_manager.log` contains logs about the media manager, i.e. about uploads and edits of images and media objects
-- `organizer-geocoordinates.log` contains logs about the geocoding of organizers
-- `place-geocoordinates.log` contains logs about the geocoding of places
-- `search_results.log` contains logs about the search results used in services like exports and other bulk commands
-- `uitpas.log` contains logs about requests to UiTPAS _in the event exports_
+- `service.xml-conversion.log` contains logs about parsing/projection of previously imported XML
+- `service.json-imports.log` contains logs about JSON-LD imports
+- `service.labels.log` contains logs about label (aggregates)
+- `service.media.log` contains logs about the media manager, i.e. about uploads and edits of images and media objects
+- `service.geo-coordinates.log` contains logs about the geocoding of organizers and places
+- `service.uitpas.log` contains logs about general calls _to_ UiTPAS, e.g. to check for ticket sales
 
 ### Adding a new logger
 

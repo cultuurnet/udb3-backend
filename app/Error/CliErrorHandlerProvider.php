@@ -14,7 +14,7 @@ class CliErrorHandlerProvider implements ServiceProviderInterface
         $app[ErrorLogger::class] = $app::share(
             function (Application $app): ErrorLogger {
                 return new ErrorLogger(
-                    LoggerFactory::create($app, new LoggerName('cli'))
+                    LoggerFactory::create($app, LoggerName::forCli())
                 );
             }
         );

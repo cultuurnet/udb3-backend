@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Search;
 
-use CultuurNet\UDB3\Search\ResultsGenerator;
-use CultuurNet\UDB3\Silex\Error\LoggerFactory;
-use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Http\Adapter\Guzzle6\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -76,18 +73,6 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
                     new Client(new \GuzzleHttp\Client()),
                     $app['config']['search']['v3']['api_key'] ?? null
                 );
-            }
-        );
-
-        $app['search_results_generator'] = $app->share(
-            function (Application $app) {
-                $resultsGenerator = new ResultsGenerator(
-                    $app[self::SEARCH_SERVICE_OFFERS]
-                );
-                $resultsGenerator->setLogger(
-                    LoggerFactory::create($app, new LoggerName('search_results', 'search-results-generator'))
-                );
-                return $resultsGenerator;
             }
         );
     }

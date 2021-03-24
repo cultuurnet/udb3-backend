@@ -86,7 +86,7 @@ class MediaServiceProvider implements ServiceProviderInterface
                     $app['media.media_directory']
                 );
 
-                $mediaManager->setLogger(LoggerFactory::create($app, new LoggerName('media_manager')));
+                $mediaManager->setLogger(LoggerFactory::create($app, LoggerName::forService('media', 'manager')));
 
                 return $mediaManager;
             }

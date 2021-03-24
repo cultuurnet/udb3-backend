@@ -141,7 +141,7 @@ class ImportConsumerServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['config']['amqp']['consumers']['imports']['queue'])
                 );
 
-                $consumer->setLogger(LoggerFactory::create($app, new LoggerName('import-commands')));
+                $consumer->setLogger(LoggerFactory::create($app, LoggerName::forAmqpWorker('json-imports')));
 
                 return $consumer;
             }
