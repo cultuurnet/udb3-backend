@@ -165,7 +165,7 @@ class OfferMetadataProjectorTest extends TestCase
             'with udb api key' => [
                 new Metadata(
                     [
-                        'auth_api_key' => 'udb_api_key'
+                        'auth_api_key' => 'udb_api_key',
                     ]
                 ),
                 new OfferMetadata(self::OFFER_ID, 'uitdatabank-ui'),
