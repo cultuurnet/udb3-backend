@@ -10,6 +10,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\Place\Events\PlaceCreated;
 
 class OfferMetadataProjector implements EventListener
 {
@@ -39,6 +40,20 @@ class OfferMetadataProjector implements EventListener
             $offerMetadata = $this->repository->get($eventCreated->getEventId());
         } catch (EntityNotFoundException $e) {
             $offerMetadata = OfferMetadata::default($eventCreated->getEventId());
+        }
+
+        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
+        $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
+
+        $this->repository->save($offerMetadata);
+    }
+
+    public function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage)
+    {
+        try {
+            $offerMetadata = $this->repository->get($placeCreated->getPlaceId());
+        } catch (EntityNotFoundException $e) {
+            $offerMetadata = OfferMetadata::default($placeCreated->getPlaceId());
         }
 
         $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
