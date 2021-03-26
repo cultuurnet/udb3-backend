@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
@@ -54,6 +55,20 @@ class OfferMetadataProjector implements EventListener
             $offerMetadata = $this->repository->get($placeCreated->getPlaceId());
         } catch (EntityNotFoundException $e) {
             $offerMetadata = OfferMetadata::default($placeCreated->getPlaceId());
+        }
+
+        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
+        $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
+
+        $this->repository->save($offerMetadata);
+    }
+
+    public function applyEventCopied(EventCopied $eventCopied, DomainMessage $domainMessage)
+    {
+        try {
+            $offerMetadata = $this->repository->get($eventCopied->getItemId());
+        } catch (EntityNotFoundException $e) {
+            $offerMetadata = OfferMetadata::default($eventCopied->getItemId());
         }
 
         $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());

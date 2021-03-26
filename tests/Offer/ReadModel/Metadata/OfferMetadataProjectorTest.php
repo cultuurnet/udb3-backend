@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
+use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -90,6 +91,26 @@ class OfferMetadataProjectorTest extends TestCase
     }
 
     /**
+     * @dataProvider createdByApiConsumerDataProvider
+     */
+    public function testItWillProjectOfferMetadataOnEventCopied(
+        Metadata $metadata,
+        OfferMetadata $expected
+    ): void {
+        $this->repository
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($expected);
+
+        $this->project($this->createEventCopied(), $metadata);
+    }
+
+    /**
      * @return array
      */
     public function createdByApiConsumerDataProvider()
@@ -143,6 +164,15 @@ class OfferMetadataProjectorTest extends TestCase
                 new Locality('Leuven'),
                 Country::fromNative('BE')
             ),
+            new Calendar(CalendarType::PERMANENT())
+        );
+    }
+
+    private function createEventCopied(): EventCopied
+    {
+        return new EventCopied(
+            self::OFFER_ID,
+            'original_event_id',
             new Calendar(CalendarType::PERMANENT())
         );
     }
