@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
+use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -132,6 +133,26 @@ class OfferMetadataProjectorTest extends TestCase
     }
 
     /**
+     * @dataProvider createdByApiConsumerDataProvider
+     */
+    public function testItWillProjectOfferMetadataOnPlaceImportedFromUdb2(
+        Metadata $metadata,
+        OfferMetadata $expected
+    ): void {
+        $this->repository
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($expected);
+
+        $this->project($this->createPlaceImportedFromUdb2(), $metadata);
+    }
+
+    /**
      * @return array
      */
     public function createdByApiConsumerDataProvider()
@@ -201,6 +222,15 @@ class OfferMetadataProjectorTest extends TestCase
     private function createEventImportedFromUdb2(): EventImportedFromUDB2
     {
         return new EventImportedFromUDB2(
+            self::OFFER_ID,
+            'CDB_XML',
+            'NAMESPACE_URI'
+        );
+    }
+
+    private function createPlaceImportedFromUdb2(): PlaceImportedFromUDB2
+    {
+        return new PlaceImportedFromUDB2(
             self::OFFER_ID,
             'CDB_XML',
             'NAMESPACE_URI'
