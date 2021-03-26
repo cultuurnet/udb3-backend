@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
@@ -111,6 +112,26 @@ class OfferMetadataProjectorTest extends TestCase
     }
 
     /**
+     * @dataProvider createdByApiConsumerDataProvider
+     */
+    public function testItWillProjectOfferMetadataOnEventImportedFromUdb2(
+        Metadata $metadata,
+        OfferMetadata $expected
+    ): void {
+        $this->repository
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($expected);
+
+        $this->project($this->createEventImportedFromUdb2(), $metadata);
+    }
+
+    /**
      * @return array
      */
     public function createdByApiConsumerDataProvider()
@@ -174,6 +195,15 @@ class OfferMetadataProjectorTest extends TestCase
             self::OFFER_ID,
             'original_event_id',
             new Calendar(CalendarType::PERMANENT())
+        );
+    }
+
+    private function createEventImportedFromUdb2(): EventImportedFromUDB2
+    {
+        return new EventImportedFromUDB2(
+            self::OFFER_ID,
+            'CDB_XML',
+            'NAMESPACE_URI'
         );
     }
 
