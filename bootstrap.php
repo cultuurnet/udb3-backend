@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
+use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
@@ -440,6 +441,7 @@ $app['event_bus'] = function ($app) {
             'role_users_projector',
             'user_roles_projector',
             UserPermissionsServiceProvider::USER_PERMISSIONS_PROJECTOR,
+            OfferMetadataProjector::class,
             'place_geocoordinates_process_manager',
             'event_geocoordinates_process_manager',
             'organizer_geocoordinates_process_manager',
