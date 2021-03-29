@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
+use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
+use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -24,6 +26,21 @@ class OfferServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        $app[OfferMetadataRepository::class] = $app->share(
+            function (Application $app) {
+                return new OfferMetadataRepository($app['dbal_connection']);
+            }
+        );
+
+        $app[OfferMetadataProjector::class] = $app->share(
+            function (Application $app) {
+                return new OfferMetadataProjector(
+                    $app[OfferMetadataRepository::class],
+                    $app['config']['api_key_consumers']
+                );
+            }
+        );
+
         $app[PopularityRepository::class] = $app->share(
             function (Application $app) {
                 return new DBALPopularityRepository(
