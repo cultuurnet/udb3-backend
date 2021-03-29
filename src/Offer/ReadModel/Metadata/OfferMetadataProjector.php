@@ -39,69 +39,38 @@ class OfferMetadataProjector implements EventListener
 
     public function applyEventCreated(EventCreated $eventCreated, DomainMessage $domainMessage)
     {
-        try {
-            $offerMetadata = $this->repository->get($eventCreated->getEventId());
-        } catch (EntityNotFoundException $e) {
-            $offerMetadata = OfferMetadata::default($eventCreated->getEventId());
-        }
-
-        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
-        $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
-
-        $this->repository->save($offerMetadata);
+        $this->projectMetadataForOffer($eventCreated->getEventId(), $domainMessage->getMetadata());
     }
 
     public function applyPlaceCreated(PlaceCreated $placeCreated, DomainMessage $domainMessage)
     {
-        try {
-            $offerMetadata = $this->repository->get($placeCreated->getPlaceId());
-        } catch (EntityNotFoundException $e) {
-            $offerMetadata = OfferMetadata::default($placeCreated->getPlaceId());
-        }
-
-        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
-        $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
-
-        $this->repository->save($offerMetadata);
+        $this->projectMetadataForOffer($placeCreated->getPlaceId(), $domainMessage->getMetadata());
     }
 
     public function applyEventCopied(EventCopied $eventCopied, DomainMessage $domainMessage)
     {
-        try {
-            $offerMetadata = $this->repository->get($eventCopied->getItemId());
-        } catch (EntityNotFoundException $e) {
-            $offerMetadata = OfferMetadata::default($eventCopied->getItemId());
-        }
-
-        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
-        $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
-
-        $this->repository->save($offerMetadata);
+        $this->projectMetadataForOffer($eventCopied->getItemId(), $domainMessage->getMetadata());
     }
 
     public function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImportedFromUDB2, DomainMessage $domainMessage)
     {
-        try {
-            $offerMetadata = $this->repository->get($eventImportedFromUDB2->getEventId());
-        } catch (EntityNotFoundException $e) {
-            $offerMetadata = OfferMetadata::default($eventImportedFromUDB2->getEventId());
-        }
-
-        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
-        $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
-
-        $this->repository->save($offerMetadata);
+        $this->projectMetadataForOffer($eventImportedFromUDB2->getEventId(), $domainMessage->getMetadata());
     }
 
     public function applyPlaceImportedFromUDB2(PlaceImportedFromUDB2 $placeImportedFromUDB2, DomainMessage $domainMessage)
     {
+        $this->projectMetadataForOffer($placeImportedFromUDB2->getActorId(), $domainMessage->getMetadata());
+    }
+
+    private function projectMetadataForOffer(string $offerId, Metadata $metadata): void
+    {
         try {
-            $offerMetadata = $this->repository->get($placeImportedFromUDB2->getActorId());
+            $offerMetadata = $this->repository->get($offerId);
         } catch (EntityNotFoundException $e) {
-            $offerMetadata = OfferMetadata::default($placeImportedFromUDB2->getActorId());
+            $offerMetadata = OfferMetadata::default($offerId);
         }
 
-        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($domainMessage->getMetadata());
+        $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($metadata);
         $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
 
         $this->repository->save($offerMetadata);
