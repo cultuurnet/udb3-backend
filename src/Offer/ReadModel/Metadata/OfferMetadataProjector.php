@@ -22,7 +22,7 @@ class OfferMetadataProjector implements EventListener
     /**
      * @var OfferMetadataRepository
      */
-    private $repository;
+    private $offerMetadataRepository;
 
     /**
      * @var array<string,string>
@@ -33,7 +33,7 @@ class OfferMetadataProjector implements EventListener
         OfferMetadataRepository $repository,
         array $apiKeyConsumerMapping
     ) {
-        $this->repository = $repository;
+        $this->offerMetadataRepository = $repository;
         $this->apiKeyConsumerMapping = $apiKeyConsumerMapping;
     }
 
@@ -65,7 +65,7 @@ class OfferMetadataProjector implements EventListener
     private function projectMetadataForOffer(string $offerId, Metadata $metadata): void
     {
         try {
-            $offerMetadata = $this->repository->get($offerId);
+            $offerMetadata = $this->offerMetadataRepository->get($offerId);
         } catch (EntityNotFoundException $e) {
             $offerMetadata = OfferMetadata::default($offerId);
         }
@@ -73,7 +73,7 @@ class OfferMetadataProjector implements EventListener
         $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($metadata);
         $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
 
-        $this->repository->save($offerMetadata);
+        $this->offerMetadataRepository->save($offerMetadata);
     }
 
     private function getCreatedByApiConsumerFromMetadata(Metadata $metadata): string
