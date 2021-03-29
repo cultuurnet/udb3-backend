@@ -64,12 +64,7 @@ class OfferMetadataProjector implements EventListener
 
     private function projectMetadataForOffer(string $offerId, Metadata $metadata): void
     {
-        try {
-            $offerMetadata = $this->offerMetadataRepository->get($offerId);
-        } catch (EntityNotFoundException $e) {
-            $offerMetadata = OfferMetadata::default($offerId);
-        }
-
+        $offerMetadata = OfferMetadata::default($offerId);
         $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($metadata);
         $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
 
