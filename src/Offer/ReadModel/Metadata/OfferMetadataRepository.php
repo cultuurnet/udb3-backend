@@ -39,46 +39,13 @@ class OfferMetadataRepository extends AbstractDBALRepository
         );
     }
 
-    private function exists(string $offerId): bool
-    {
-        try {
-            $this->get($offerId);
-            return true;
-        } catch (EntityNotFoundException $e) {
-            return false;
-        }
-    }
-
-
     public function save(OfferMetadata $offerMetadata): void
-    {
-        if (!$this->exists($offerMetadata->getOfferId())) {
-            $this->insert($offerMetadata);
-        } else {
-            $this->update($offerMetadata);
-        }
-    }
-
-    private function insert(OfferMetadata $offerMetadata): void
     {
         $this->getConnection()->insert(
             self::TABLE,
             [
                 'id' => $offerMetadata->getOfferId(),
                 'created_by_api_consumer' => $offerMetadata->getCreatedByApiConsumer(),
-            ]
-        );
-    }
-
-    private function update(OfferMetadata $offerMetadata): void
-    {
-        $this->getConnection()->update(
-            self::TABLE,
-            [
-                'created_by_api_consumer' => $offerMetadata->getCreatedByApiConsumer(),
-            ],
-            [
-                'id' => $offerMetadata->getOfferId(),
             ]
         );
     }
