@@ -161,10 +161,16 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
     public function addWildcardToKeyword(string $keyword): string
     {
-        if (!empty($keyword)) {
-            $keyword .= '*';
+        if (empty($keyword)) {
+            return '';
         }
-        return $keyword;
+
+        // return keyword as is for keywords ending in non-alphanumeric characters
+        if (!ctype_alnum(substr($keyword, -1))) {
+            return $keyword;
+        }
+
+        return $keyword . '*';
     }
 
     public function findProductionForEventId(string $eventId): Production
