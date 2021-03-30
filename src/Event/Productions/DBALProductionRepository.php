@@ -159,7 +159,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
         return $query;
     }
 
-    private function addWildcardToKeyword(string $keyword): string
+    public function addWildcardToKeyword(string $keyword): string
     {
         if (!empty($keyword)) {
             $keyword .= '*';

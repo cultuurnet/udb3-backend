@@ -158,4 +158,34 @@ class DBALProductionRepositoryTest extends TestCase
 
         return $production;
     }
+
+    /**
+     * @test
+     * @dataProvider provideKeywordsWithWildcards
+     */
+    public function it_correctly_adds_wildcard_to_keyword_when_needed(string $keyword, string $expected): void
+    {
+        $this->assertSame(
+            $expected,
+            $this->repository->addWildcardToKeyword($keyword)
+        );
+    }
+
+    public function provideKeywordsWithWildcards(): array
+    {
+        return [
+            'empty' => [
+                '',
+                '',
+            ],
+            'wildcard after alphanumeric character' => [
+                'foo',
+                'foo*'
+            ],
+            'no wildcard after non-alphanumeric character' => [
+                'foo (bar)',
+                'foo (bar)',
+            ],
+        ];
+    }
 }
