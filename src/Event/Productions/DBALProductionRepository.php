@@ -99,7 +99,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
      */
     public function search(string $keyword, int $start, int $limit): array
     {
-        $keyword = $this->addWildardToKeyword($keyword);
+        $keyword = $this->addWildcardToKeyword($keyword);
         $subQuery = $this->createSearchQuery($keyword)
             ->setFirstResult($start)
             ->setMaxResults($limit);
@@ -141,7 +141,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
 
     public function count(string $keyword): int
     {
-        $keyword = $this->addWildardToKeyword($keyword);
+        $keyword = $this->addWildcardToKeyword($keyword);
         return (int) $this->createSearchQuery($keyword)->execute()->rowCount();
     }
 
@@ -159,7 +159,7 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
         return $query;
     }
 
-    private function addWildardToKeyword(string $keyword): string
+    private function addWildcardToKeyword(string $keyword): string
     {
         if (!empty($keyword)) {
             $keyword .= '*';
