@@ -180,7 +180,7 @@ class DBALProductionRepositoryTest extends TestCase
             ],
             'wildcard after alphanumeric character' => [
                 'foo',
-                'foo*'
+                'foo*',
             ],
             'no wildcard after non-alphanumeric character' => [
                 'foo (bar)',
