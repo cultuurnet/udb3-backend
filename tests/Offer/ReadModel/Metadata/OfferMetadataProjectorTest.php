@@ -61,6 +61,11 @@ class OfferMetadataProjectorTest extends TestCase
     ): void {
         $this->repository
             ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
+        $this->repository
+            ->expects($this->once())
             ->method('save')
             ->with($expected);
 
@@ -74,6 +79,11 @@ class OfferMetadataProjectorTest extends TestCase
         Metadata $metadata,
         OfferMetadata $expected
     ): void {
+        $this->repository
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
         $this->repository
             ->expects($this->once())
             ->method('save')
@@ -91,6 +101,11 @@ class OfferMetadataProjectorTest extends TestCase
     ): void {
         $this->repository
             ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
+        $this->repository
+            ->expects($this->once())
             ->method('save')
             ->with($expected);
 
@@ -106,6 +121,11 @@ class OfferMetadataProjectorTest extends TestCase
     ): void {
         $this->repository
             ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
+        $this->repository
+            ->expects($this->once())
             ->method('save')
             ->with($expected);
 
@@ -119,6 +139,11 @@ class OfferMetadataProjectorTest extends TestCase
         Metadata $metadata,
         OfferMetadata $expected
     ): void {
+        $this->repository
+            ->expects($this->once())
+            ->method('get')
+            ->willReturn(OfferMetadata::default(self::OFFER_ID));
+
         $this->repository
             ->expects($this->once())
             ->method('save')
