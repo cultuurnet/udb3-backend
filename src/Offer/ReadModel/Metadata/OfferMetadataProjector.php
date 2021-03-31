@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Metadata;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
@@ -63,7 +64,12 @@ class OfferMetadataProjector implements EventListener
 
     private function projectMetadataForOffer(string $offerId, Metadata $metadata): void
     {
-        $offerMetadata = OfferMetadata::default($offerId);
+        try {
+            $offerMetadata = $this->offerMetadataRepository->get($offerId);
+        } catch (EntityNotFoundException $e) {
+            $offerMetadata = OfferMetadata::default($offerId);
+        }
+
         $createdByApiConsumer = $this->getCreatedByApiConsumerFromMetadata($metadata);
         $offerMetadata = $offerMetadata->withCreatedByApiConsumer($createdByApiConsumer);
 
