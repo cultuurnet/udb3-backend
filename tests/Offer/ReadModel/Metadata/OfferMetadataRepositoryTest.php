@@ -52,4 +52,24 @@ class OfferMetadataRepositoryTest extends TestCase
         $this->expectException(EntityNotFoundException::class);
         $this->repository->get('offer_id');
     }
+
+    /**
+     * @test
+     */
+    public function it_can_update_existing_offer_metadata(): void
+    {
+        $offerId = 'offer_id';
+        $createdByApiConsumer = 'uitdatabank-ui';
+        $updatedCreatedByApiConsumer = 'other-api-consumer';
+
+        $offerMetadata = new OfferMetadata($offerId, $createdByApiConsumer);
+        $this->repository->save($offerMetadata);
+
+        $updatedOfferMetadata = $offerMetadata->withCreatedByApiConsumer($updatedCreatedByApiConsumer);
+        $this->repository->save($updatedOfferMetadata);
+
+        $persistedOfferMetadata = $this->repository->get($offerId);
+        $this->assertEquals($updatedCreatedByApiConsumer, $persistedOfferMetadata->getCreatedByApiConsumer());
+        $this->assertEquals($offerId, $persistedOfferMetadata->getOfferId());
+    }
 }
