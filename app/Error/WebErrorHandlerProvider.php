@@ -4,20 +4,31 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Error;
 
+use Broadway\Repository\AggregateNotFoundException;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
+use CultuurNet\CalendarSummaryV3\FormatterException;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\MissingValueException;
+use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\EntityNotFoundException;
+use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
+use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Jwt\JwtParserException;
+use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
+use CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation\EventHasTicketSalesException;
 use Error;
 use Exception;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
@@ -35,6 +46,17 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         GroupedValidationException::class,
         RequestAuthenticationException::class,
         MissingValueException::class,
+        AggregateNotFoundException::class,
+        MethodNotAllowedHttpException::class,
+        EventHasTicketSalesException::class,
+        MediaObjectNotFoundException::class,
+        JwtParserException::class,
+        DocumentDoesNotExist::class,
+        NotWellFormedException::class,
+        BadRequestHttpException::class,
+        FormatterException::class,
+        EventCannotBeAddedToProduction::class,
+        EventCannotBeRemovedFromProduction::class,
     ];
 
     public function register(Application $app): void
