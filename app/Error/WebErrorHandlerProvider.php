@@ -7,35 +7,18 @@ namespace CultuurNet\UDB3\Silex\Error;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
-use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Deserializer\MissingValueException;
-use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
-use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
 use Exception;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
 {
     private static $debug = false;
-
-    private const BAD_REQUESTS = [
-        EntityNotFoundException::class,
-        CommandAuthorizationException::class,
-        NotFoundHttpException::class,
-        MethodNotAllowedException::class,
-        DataValidationException::class,
-        GroupedValidationException::class,
-        RequestAuthenticationException::class,
-        MissingValueException::class,
-    ];
 
     public function register(Application $app): void
     {
@@ -51,21 +34,11 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
         $app->error(
             function (Exception $e) use ($app) {
-                $defaultStatus = ApiProblemJsonResponse::HTTP_BAD_REQUEST;
+                $app[ErrorLogger::class]->log($e);
 
-                $badRequest = false;
-                // Don't log exceptions that are caused by user errors.
-                // Use an instanceof check instead of in_array to also allow filtering on parent class or interface.
-                foreach (self::BAD_REQUESTS as $badRequestExceptionClass) {
-                    if ($e instanceof $badRequestExceptionClass) {
-                        $badRequest = true;
-                        break;
-                    }
-                }
-
-                if (!$badRequest) {
-                    $app[ErrorLogger::class]->log($e);
-                    $defaultStatus = ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR;
+                $defaultStatus = ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR;
+                if (ErrorLogger::isBadRequestException($e)) {
+                    $defaultStatus = ApiProblemJsonResponse::HTTP_BAD_REQUEST;
                 }
 
                 $problem = $this::createNewApiProblem($e, $defaultStatus);
