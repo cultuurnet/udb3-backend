@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Silex\Console;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use PDO;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,14 +60,14 @@ class UpdateUniqueOrganizers extends Command
             $organizerEvents = $this->getAllOrganizerEvents($offset);
 
             foreach ($organizerEvents as $organizerEvent) {
-                $organizerUuid = $this->getOrganizerUuid($organizerEvent);
+                $organizerUuid = $organizerEvent['uuid'];
                 $organizerUrl = $this->getOrganizerWebsite($organizerEvent);
 
                 $updated = $this->updateOrganizer($organizerUuid, $organizerUrl);
                 if ($updated) {
-                    $messages[] = 'Added/updated organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid->toString();
+                    $messages[] = 'Added/updated organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid;
                 } else {
-                    $messages[] = 'Skipped organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid->toString();
+                    $messages[] = 'Skipped organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid;
                 }
 
                 $progressBar->advance();
@@ -123,7 +121,7 @@ class UpdateUniqueOrganizers extends Command
     /**
      * @throws DBALException
      */
-    private function updateOrganizer(Uuid $organizerUuid, Url $organizerUrl): bool
+    private function updateOrganizer(string $organizerUuid, Url $organizerUrl): bool
     {
         // There are 3 possible states:
         // 1. The organizer uuid is present with the correct url
@@ -134,7 +132,7 @@ class UpdateUniqueOrganizers extends Command
             ->select('unique_col')
             ->from('organizer_unique_websites')
             ->where('uuid_col = :uuid')
-            ->setParameter('uuid', $organizerUuid->toString())
+            ->setParameter('uuid', $organizerUuid)
             ->execute()
             ->fetchAll(PDO::FETCH_COLUMN);
 
@@ -149,7 +147,7 @@ class UpdateUniqueOrganizers extends Command
                 ->insert(
                     'organizer_unique_websites',
                     [
-                        'uuid_col' => $organizerUuid->toString(),
+                        'uuid_col' => $organizerUuid,
                         'unique_col' => (string) $organizerUrl,
                     ]
                 );
@@ -161,20 +159,15 @@ class UpdateUniqueOrganizers extends Command
             ->update(
                 'organizer_unique_websites',
                 [
-                    'uuid_col' => $organizerUuid->toString(),
+                    'uuid_col' => $organizerUuid,
                     'unique_col' => (string) $organizerUrl,
                 ],
                 [
-                    'uuid_col' => $organizerUuid->toString(),
+                    'uuid_col' => $organizerUuid,
                 ]
             );
 
         return true;
-    }
-
-    private function getOrganizerUuid(array $organizerEvent): UuidInterface
-    {
-        return Uuid::fromString($organizerEvent['uuid']);
     }
 
     private function getOrganizerWebsite(array $organizerEvent): Url
