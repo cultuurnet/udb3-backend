@@ -553,12 +553,6 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
         );
 
         $commandBus->subscribe(
-            new \CultuurNet\UDB3\Event\ConcludeCommandHandler(
-                $app['event_repository']
-            )
-        );
-
-        $commandBus->subscribe(
             new \CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsStatusHandler(
                 $app['event_repository']
             )
