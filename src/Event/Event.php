@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Description;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
-use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
@@ -94,11 +93,6 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
      * @var LocationId|null
      */
     private $locationId;
-
-    /**
-     * @var boolean
-     */
-    private $concluded = false;
 
     public static function create(
         string $eventId,
@@ -700,18 +694,5 @@ class Event extends Offer implements UpdateableWithCdbXmlInterface
         $uncommittedEvents = $property->getValue($this);
 
         return !empty($uncommittedEvents);
-    }
-
-    public function conclude()
-    {
-        if (!$this->concluded) {
-            $this->apply(new Concluded($this->eventId));
-        }
-    }
-
-
-    protected function applyConcluded(Concluded $concluded)
-    {
-        $this->concluded = true;
     }
 }
