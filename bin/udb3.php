@@ -8,8 +8,6 @@ use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwner;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwnerInBulk;
-use CultuurNet\UDB3\Silex\Console\ConcludeByCdbidCommand;
-use CultuurNet\UDB3\Silex\Console\ConcludeCommand;
 use CultuurNet\UDB3\Silex\Console\ConsumeCommand;
 use CultuurNet\UDB3\Silex\Console\DispatchMarkedAsDuplicateEventCommand;
 use CultuurNet\UDB3\Silex\Console\EventAncestorsCommand;
@@ -96,8 +94,6 @@ $consoleApp->add(
 $consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app['event_bus'], new ConfigWriter($app)));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
 $consoleApp->add(new PurgeModelCommand($app[PurgeServiceProvider::PURGE_SERVICE_MANAGER]));
-$consoleApp->add(new ConcludeCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS]));
-$consoleApp->add(new ConcludeByCdbidCommand($app['event_command_bus']));
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES], $app['place_jsonld_repository']));
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS], $app['event_jsonld_repository']));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
