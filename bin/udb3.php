@@ -57,7 +57,7 @@ $app->register(
 $consoleApp = $app['console'];
 $consoleApp->setCatchExceptions(false);
 
-// An udb3 system user is needed for conclude and geocode commands.
+// An udb3 system user is needed for geocode commands.
 // Because of the changes for geocoding the amqp forwarding for udb2 imports also needs a user.
 // To avoid fixing this locally in the amqp-silex lib, all CLI commands are executed as udb3 system user.
 $app['impersonator']->impersonate(
