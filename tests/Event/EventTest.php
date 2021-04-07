@@ -13,7 +13,6 @@ use CultuurNet\UDB3\ContactPoint;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
-use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -1138,33 +1137,6 @@ class EventTest extends AggregateRootScenarioTestCase
                     ),
                 ]
             );
-    }
-
-    /**
-     * @test
-     * @group issue-III-1807
-     */
-    public function it_can_be_concluded()
-    {
-        $this->scenario
-            ->withAggregateId('d2b41f1d-598c-46af-a3a5-10e373faa6fe')
-            ->given([
-                $this->getCreationEvent(),
-            ])
-            ->when(
-                function (Event $event) {
-                    $event->conclude();
-                }
-            )
-            ->then(
-                [new Concluded('d2b41f1d-598c-46af-a3a5-10e373faa6fe')]
-            )
-            ->when(
-                function (Event $event) {
-                    $event->conclude();
-                }
-            )
-            ->then([]);
     }
 
     /**

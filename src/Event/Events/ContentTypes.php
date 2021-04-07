@@ -64,7 +64,6 @@ class ContentTypes
             Rejected::class => 'application/vnd.cultuurnet.udb3-events.moderation.event-rejected+json',
             FlaggedAsDuplicate::class => 'application/vnd.cultuurnet.udb3-events.moderation.event-flagged-as-duplicate+json',
             FlaggedAsInappropriate::class => 'application/vnd.cultuurnet.udb3-events.moderation.event-flagged-as-inappropriate+json',
-            Concluded::class => 'application/vnd.cultuurnet.udb3-events.event-concluded+json',
         ];
     }
 }
