@@ -26,10 +26,6 @@ class UserControllerProvider implements ControllerProviderInterface
 
         $controllers->get('users/emails/{emailAddress}', 'user_identity_controller:getByEmailAddress');
 
-        // @TODO remove after testing!
-        $controllers->get('users/{id}', 'user_identity_controller:getById');
-        $controllers->get('users/nick/{nick}', 'user_identity_controller:getByNick');
-
         return $controllers;
     }
 }

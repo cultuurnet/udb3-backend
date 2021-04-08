@@ -11,7 +11,6 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolverInterface;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\Exception\InvalidNativeArgumentException;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
 class UserIdentityController
@@ -26,38 +25,6 @@ class UserIdentityController
         UserIdentityResolverInterface $userIdentityResolver
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
-    }
-
-    /**
-     * @TODO remove after testing!
-     */
-    public function getById(string $id): Response
-    {
-        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($id));
-
-        if (!($userIdentity instanceof UserIdentityDetails)) {
-            return $this->createUserNotFoundResponse();
-        }
-
-        return (new JsonLdResponse())
-            ->setData($userIdentity)
-            ->setPrivate();
-    }
-
-    /**
-     * @TODO remove after testing!
-     */
-    public function getByNick(string $nick): Response
-    {
-        $userIdentity = $this->userIdentityResolver->getUserByNick(new StringLiteral($nick));
-
-        if (!($userIdentity instanceof UserIdentityDetails)) {
-            return $this->createUserNotFoundResponse();
-        }
-
-        return (new JsonLdResponse())
-            ->setData($userIdentity)
-            ->setPrivate();
     }
 
     public function getByEmailAddress(string $emailAddress): Response
