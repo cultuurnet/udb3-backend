@@ -58,6 +58,7 @@ use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Monolog\Logger;
 use Silex\Application;
+use Silex\Provider\Psr7ServiceProvider;
 use SocketIO\Emitter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -1106,6 +1107,7 @@ $app->register(new \CultuurNet\UDB3\Silex\Media\MediaImportServiceProvider());
 $app->register(new CuratorsServiceProvider());
 
 $app->register(new Auth0ServiceProvider());
+$app->register(new Psr7ServiceProvider());
 
 if (isset($app['config']['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($app['config']['bookable_event']['dummy_place_ids']);
