@@ -8,7 +8,8 @@ use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolverInterface;
+use CultuurNet\UDB3\User\UserIdentityResolver;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Web\EmailAddress;
@@ -27,10 +28,10 @@ class UserIdentityController
         $this->userIdentityResolver = $userIdentityResolver;
     }
 
-    public function getByEmailAddress(string $emailAddress): Response
+    public function getByEmailAddress(ServerRequestInterface $request): Response
     {
         try {
-            $emailAddress = new EmailAddress($emailAddress);
+            $emailAddress = new EmailAddress($request->getAttribute('emailAddress'));
         } catch (InvalidNativeArgumentException $e) {
             return $this->createUserNotFoundResponse();
         }
