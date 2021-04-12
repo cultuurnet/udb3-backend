@@ -8,8 +8,6 @@ use Crell\ApiProblem\ApiProblem;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
- * Response type application/problem+json.
- *
  * @see https://tools.ietf.org/html/draft-nottingham-http-problem-07
  **/
 class ApiProblemJsonResponse extends JsonResponse
@@ -20,9 +18,6 @@ class ApiProblemJsonResponse extends JsonResponse
 
         $status = 400;
         if (null !== $problem->getStatus()) {
-            $headers += [
-                'X-Status-Code' => $problem->getStatus(),
-            ];
             $status = $problem->getStatus();
         }
 
