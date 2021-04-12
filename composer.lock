@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8a251a0afd6a52d10d670b3b35e20a3",
+    "content-hash": "026e8b151cf904eeda81f20a6967eb5a",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -2679,6 +2679,54 @@
                 "typehint"
             ],
             "time": "2015-10-04T17:35:32+00:00"
+        },
+        {
+            "name": "marvin_b8/psr-7-service-provider",
+            "version": "1.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mbutkereit/psr-7-service-provider.git",
+                "reference": "1163ae1ba7d30a9ea1e2539864defc46ae5ddff2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mbutkereit/psr-7-service-provider/zipball/1163ae1ba7d30a9ea1e2539864defc46ae5ddff2",
+                "reference": "1163ae1ba7d30a9ea1e2539864defc46ae5ddff2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "silex/silex": "~1.0",
+                "symfony/psr-http-message-bridge": "^0.2.0",
+                "zendframework/zend-diactoros": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Silex\\": "src/Silex"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marvin Butkereit"
+                }
+            ],
+            "description": "A Psr-7 service provider for Silex.",
+            "homepage": "https://github.com/mbutkereit/psr-7-service-provider",
+            "keywords": [
+                "psr-7",
+                "service-provider",
+                "silex"
+            ],
+            "support": {
+                "issues": "https://github.com/mbutkereit/psr-7-service-provider/issues",
+                "source": "https://github.com/mbutkereit/psr-7-service-provider/tree/1.0"
+            },
+            "time": "2015-10-03T21:41:10+00:00"
         },
         {
             "name": "mathiasverraes/money",

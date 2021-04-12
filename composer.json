@@ -50,6 +50,7 @@
     "league/flysystem-ziparchive": "~1.0",
     "league/period": "^3.3",
     "league/uri": "~4.2",
+    "marvin_b8/psr-7-service-provider": "^1.0",
     "monolog/monolog": "~1.11",
     "nesbot/carbon": "^1.22",
     "php-amqplib/php-amqplib": "^2.12",
