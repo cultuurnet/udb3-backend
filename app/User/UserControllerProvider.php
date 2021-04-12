@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\User;
 
 use CultuurNet\UDB3\Http\User\UserIdentityController;
+use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -16,7 +17,7 @@ class UserControllerProvider implements ControllerProviderInterface
         $app['user_identity_controller'] = $app->share(
             function (Application $app) {
                 return new UserIdentityController(
-                    $app['user_identity_resolver']
+                    $app[Auth0UserIdentityResolver::class]
                 );
             }
         );

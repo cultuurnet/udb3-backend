@@ -24,7 +24,7 @@ class UserServiceProvider implements ServiceProviderInterface
         $app['cdbxml_created_by_resolver'] = $app->share(
             function (Application $app) {
                 $resolver = new CdbXmlCreatedByToUserIdResolver(
-                    $app['user_identity_resolver']
+                    $app[Auth0UserIdentityResolver::class]
                 );
 
                 $resolver->setLogger(LoggerFactory::create($app, LoggerName::forService('xml-conversion', 'created-by-resolver')));
