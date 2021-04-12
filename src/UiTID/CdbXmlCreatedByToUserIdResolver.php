@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\UiTID;
 
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolverInterface;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -21,11 +21,11 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
     use LoggerAwareTrait;
 
     /**
-     * @var UserIdentityResolverInterface
+     * @var UserIdentityResolver
      */
     private $users;
 
-    public function __construct(UserIdentityResolverInterface $users)
+    public function __construct(UserIdentityResolver $users)
     {
         $this->users = $users;
         $this->logger = new NullLogger();

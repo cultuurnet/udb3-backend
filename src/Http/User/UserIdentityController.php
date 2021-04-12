@@ -16,13 +16,13 @@ use ValueObjects\Web\EmailAddress;
 class UserIdentityController
 {
     /**
-     * @var UserIdentityResolverInterface
+     * @var UserIdentityResolver
      */
     private $userIdentityResolver;
 
 
     public function __construct(
-        UserIdentityResolverInterface $userIdentityResolver
+        UserIdentityResolver $userIdentityResolver
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
     }

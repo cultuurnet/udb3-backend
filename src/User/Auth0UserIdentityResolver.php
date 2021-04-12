@@ -8,7 +8,7 @@ use Auth0\SDK\API\Management;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-final class Auth0UserIdentityResolver implements UserIdentityResolverInterface
+final class Auth0UserIdentityResolver implements UserIdentityResolver
 {
     /**
      * @var Management

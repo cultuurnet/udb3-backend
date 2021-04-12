@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Role\Events\RoleDeleted;
 use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolverInterface;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
@@ -30,7 +30,7 @@ class RoleUsersProjectorTest extends TestCase
     private $repository;
 
     /**
-     * @var UserIdentityResolverInterface|MockObject
+     * @var UserIdentityResolver|MockObject
      */
     private $userIdentityResolver;
 
@@ -49,7 +49,7 @@ class RoleUsersProjectorTest extends TestCase
         $this->repository = $this->createMock(DocumentRepository::class);
 
         $this->userIdentityResolver = $this->createMock(
-            UserIdentityResolverInterface::class
+            UserIdentityResolver::class
         );
 
         $this->roleUsersProjector = new RoleUsersProjector(
