@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\User;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
-use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Web\EmailAddress;
+use Zend\Diactoros\Response\JsonResponse;
 
 class UserIdentityController
 {
@@ -28,7 +28,7 @@ class UserIdentityController
         $this->userIdentityResolver = $userIdentityResolver;
     }
 
-    public function getByEmailAddress(ServerRequestInterface $request): Response
+    public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
     {
         try {
             $emailAddress = new EmailAddress($request->getAttribute('emailAddress'));
@@ -42,9 +42,7 @@ class UserIdentityController
             return $this->createUserNotFoundResponse();
         }
 
-        return (new JsonLdResponse())
-            ->setData($userIdentity)
-            ->setPrivate();
+        return (new JsonLdResponse($userIdentity));
     }
 
     private function createUserNotFoundResponse(): ApiProblemJsonResponse
