@@ -127,7 +127,7 @@ class ReadEventRestControllerTest extends TestCase
             );
 
         $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
-        $documentRepositoryInterface->method('get')
+        $documentRepositoryInterface->method('fetch')
             ->willReturnCallback(
                 function ($id) {
                     switch ($id) {
@@ -136,7 +136,7 @@ class ReadEventRestControllerTest extends TestCase
                         case self::REMOVED_ID:
                             throw DocumentDoesNotExist::gone(self::REMOVED_ID);
                         default:
-                            return null;
+                            throw DocumentDoesNotExist::notFound($id);
                     }
                 }
             );

@@ -80,27 +80,25 @@ class ReadEventRestController
         }
 
         try {
-            $document = $this->historyRepository->get($cdbid);
+            $document = $this->historyRepository->fetch($cdbid);
+            $history = array_reverse(
+                array_values(
+                    json_decode($document->getRawBody(), true) ?? []
+                )
+            );
 
-            if ($document) {
-                $history = array_reverse(
-                    array_values(
-                        json_decode($document->getRawBody(), true) ?? []
-                    )
-                );
+            $response = JsonResponse::create()
+                ->setContent(json_encode($history));
+            $response->headers->set('Vary', 'Origin');
 
-                $response = JsonResponse::create()
-                    ->setContent(json_encode($history));
+            return $response;
 
-                $response->headers->set('Vary', 'Origin');
-            } else {
-                $response = $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $cdbid);
+        } catch (DocumentDoesNotExist $e) {
+            if ($e->isGone()) {
+                return $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $cdbid);
             }
-        } catch (DocumentDoesNotExist $documentGoneException) {
-            $response = $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $cdbid);
+            return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $cdbid);
         }
-
-        return $response;
     }
 
     public function getCalendarSummary(string $cdbid, Request $request): string
