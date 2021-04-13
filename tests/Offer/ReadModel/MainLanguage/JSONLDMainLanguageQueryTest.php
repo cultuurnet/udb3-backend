@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\MainLanguage;
 
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,8 +35,14 @@ class JSONLDMainLanguageQueryTest extends TestCase
      */
     public function it_should_throw_an_exception_if_no_document_can_be_found_for_the_given_cdbid()
     {
+        $id = '03f5dfde-de64-426e-9a0f-5a2f249b0be5';
+        $this->documentRepository
+            ->expects($this->once())
+            ->method('fetch')
+            ->willThrowException(DocumentDoesNotExist::notFound($id));
+
         $this->expectException(EntityNotFoundException::class);
-        $this->query->execute('03f5dfde-de64-426e-9a0f-5a2f249b0be5');
+        $this->query->execute($id);
     }
 
     /**
@@ -74,7 +81,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
         $document = new JsonDocument($cdbid, json_encode($data));
 
         $this->documentRepository->expects($this->any())
-            ->method('get')
+            ->method('fetch')
             ->with($cdbid)
             ->willReturn($document);
     }
