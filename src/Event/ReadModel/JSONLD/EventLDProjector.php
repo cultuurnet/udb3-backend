@@ -304,7 +304,7 @@ class EventLDProjector extends OfferLDProjector implements
         EventCopied $eventCopied,
         DomainMessage $domainMessage
     ) {
-        $originalDocument = $this->repository->get($eventCopied->getOriginalEventId());
+        $originalDocument = $this->repository->fetch($eventCopied->getOriginalEventId());
         $eventJsonLD = $originalDocument->getBody();
 
         // Set the created and modified date.
