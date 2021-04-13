@@ -12,7 +12,6 @@ class ReadOrganizerRestController
 {
     use ApiProblemJsonResponseTrait;
     public const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
-    public const GET_ERROR_GONE = 'An error occurred while getting the event with id %s which was removed!';
 
     /**
      * @var EntityServiceInterface
