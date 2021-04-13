@@ -92,7 +92,6 @@ class ReadEventRestController
             $response->headers->set('Vary', 'Origin');
 
             return $response;
-
         } catch (DocumentDoesNotExist $e) {
             if ($e->isGone()) {
                 return $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $cdbid);
