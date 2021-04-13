@@ -65,7 +65,7 @@ class PlaceReferenceExistsValidatorTest extends TestCase
         $jsonDocument = new JsonDocument('b458d34c-af5c-462f-a004-85516c1b1e0a', '{}');
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with('b458d34c-af5c-462f-a004-85516c1b1e0a')
             ->willReturn($jsonDocument);
 
@@ -77,12 +77,13 @@ class PlaceReferenceExistsValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_no_place_document_exists_for_the_given_id()
     {
-        $location = ['@id' => 'https://io.uitdatabank.be/places/b458d34c-af5c-462f-a004-85516c1b1e0a'];
+        $id = 'b458d34c-af5c-462f-a004-85516c1b1e0a';
+        $location = ['@id' => 'https://io.uitdatabank.be/places/' . $id];
 
         $this->repository->expects($this->once())
-            ->method('get')
-            ->with('b458d34c-af5c-462f-a004-85516c1b1e0a')
-            ->willReturn(null);
+            ->method('fetch')
+            ->with($id)
+            ->willThrowException(DocumentDoesNotExist::notFound($id));
 
         $expected = [
             'Location with id https://io.uitdatabank.be/places/b458d34c-af5c-462f-a004-85516c1b1e0a does not exist.',
@@ -107,7 +108,7 @@ class PlaceReferenceExistsValidatorTest extends TestCase
         $location = ['@id' => 'https://io.uitdatabank.be/places/' . $id];
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($id)
             ->willThrowException(DocumentDoesNotExist::gone($id));
 

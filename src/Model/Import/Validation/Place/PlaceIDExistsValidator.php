@@ -21,8 +21,8 @@ class PlaceIDExistsValidator extends Callback
             try {
                 $url = new Url($idUrl);
                 $id = $placeIDParser->fromUrl($url);
-                $document = $placeDocumentRepository->get($id->toString());
-                return !is_null($document);
+                $placeDocumentRepository->fetch($id->toString());
+                return true;
             } catch (DocumentDoesNotExist $e) {
                 // The place is deleted, so it can't be coupled to the event.
                 return false;
