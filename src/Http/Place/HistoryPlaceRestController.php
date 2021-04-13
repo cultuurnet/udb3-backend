@@ -46,11 +46,7 @@ class HistoryPlaceRestController
         }
 
         try {
-            $document = $this->historyRepository->get($placeId);
-
-            if ($document === null) {
-                return $this->notFoundResponse($placeId);
-            }
+            $document = $this->historyRepository->fetch($placeId);
 
             $history = array_reverse(
                 array_values(
@@ -62,8 +58,11 @@ class HistoryPlaceRestController
                 ->setContent(json_encode($history));
             $response->headers->set('Vary', 'Origin');
             return $response;
-        } catch (DocumentDoesNotExist $documentGoneException) {
-            return $this->documentGoneResponse($placeId);
+        } catch (DocumentDoesNotExist $e) {
+            if ($e->isGone()) {
+                return $this->documentGoneResponse($placeId);
+            }
+            return $this->notFoundResponse($placeId);
         }
     }
 
