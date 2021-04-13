@@ -4,41 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Http\Place\EditPlaceRestController;
-use CultuurNet\UDB3\Http\Place\ReadPlaceRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 
 class DeprecatedPlaceControllerProvider implements ControllerProviderInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function connect(Application $app)
     {
-        $app['place_controller'] = $app->share(
-            function (Application $app) {
-                return new ReadPlaceRestController(
-                    $app['place_service']
-                );
-            }
-        );
-
-        $app['place_editing_controller'] = $app->share(
-            function (Application $app) {
-                return new EditPlaceRestController(
-                    $app['place_editing_service'],
-                    $app['event_relations_repository'],
-                    $app['media_manager'],
-                    $app['place_iri_generator'],
-                    $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
-                    $app['should_auto_approve_new_offer']
-                );
-            }
-        );
-
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
