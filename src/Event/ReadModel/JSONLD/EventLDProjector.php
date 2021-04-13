@@ -63,7 +63,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\OrganizerService;
-use CultuurNet\UDB3\PlaceService;
+use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
@@ -83,7 +83,7 @@ class EventLDProjector extends OfferLDProjector implements
     PlaceServiceInterface
 {
     /**
-     * @var PlaceService
+     * @var LocalPlaceService
      */
     protected $placeService;
 
@@ -108,7 +108,7 @@ class EventLDProjector extends OfferLDProjector implements
     public function __construct(
         DocumentRepository $repository,
         IriGeneratorInterface $iriGenerator,
-        PlaceService $placeService,
+        LocalPlaceService $placeService,
         OrganizerService $organizerService,
         MediaObjectSerializer $mediaObjectSerializer,
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory,

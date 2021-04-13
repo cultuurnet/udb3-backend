@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\PlaceService;
+use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -41,7 +41,7 @@ class RelatedEventLDProjectorTest extends TestCase
     private $eventService;
 
     /**
-     * @var PlaceService|MockObject
+     * @var LocalPlaceService|MockObject
      */
     private $placeService;
 
@@ -66,7 +66,7 @@ class RelatedEventLDProjectorTest extends TestCase
 
         $this->eventService = $this->createMock(EventServiceInterface::class);
 
-        $this->placeService = $this->createMock(PlaceService::class);
+        $this->placeService = $this->createMock(LocalPlaceService::class);
 
         $this->iriOfferIdentifierFactory = $this->createMock(IriOfferIdentifierFactoryInterface::class);
 

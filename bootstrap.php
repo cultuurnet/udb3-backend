@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
@@ -676,13 +677,12 @@ $app['place_repository'] = $app->share(
 
 $app['place_service'] = $app->share(
     function ($app) {
-        $service = new \CultuurNet\UDB3\PlaceService(
+        return new LocalPlaceService(
             $app['place_jsonld_repository'],
             $app['place_repository'],
+            $app['place_relations_repository'],
             $app['place_iri_generator']
         );
-
-        return $service;
     }
 );
 

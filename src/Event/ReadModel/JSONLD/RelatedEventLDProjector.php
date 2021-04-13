@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
-use CultuurNet\UDB3\PlaceService;
+use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use ValueObjects\Web\Url;
 
@@ -25,7 +25,7 @@ class RelatedEventLDProjector implements EventListener
     private $repository;
 
     /**
-     * @var PlaceService
+     * @var LocalPlaceService
      */
     protected $placeService;
 
@@ -48,7 +48,7 @@ class RelatedEventLDProjector implements EventListener
     public function __construct(
         DocumentRepository $repository,
         EventServiceInterface $eventService,
-        PlaceService $placeService,
+        LocalPlaceService $placeService,
         OrganizerService $organizerService,
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory
     ) {
