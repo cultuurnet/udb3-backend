@@ -54,12 +54,11 @@ class ProductionSuggestionController
     private function getEventBody(string $eventId): array
     {
         try {
-            $event = $this->enrichedEventRepository->get($eventId);
+            $event = $this->enrichedEventRepository->fetch($eventId);
         } catch (DocumentDoesNotExist $e) {
-            throw new SuggestedEventRemovedException($eventId);
-        }
-
-        if ($event === null) {
+            if ($e->isGone()) {
+                throw new SuggestedEventRemovedException($eventId);
+            }
             throw new SuggestedEventNotFoundException($eventId);
         }
 
