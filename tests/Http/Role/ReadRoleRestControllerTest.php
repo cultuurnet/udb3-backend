@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Role;
 
 use CultuurNet\UDB3\EntityServiceInterface;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
@@ -87,7 +87,7 @@ class ReadRoleRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return $this->jsonDocument->getRawBody();
                         case self::REMOVED_ID:
-                            throw new DocumentGoneException();
+                            throw DocumentDoesNotExist::gone(self::REMOVED_ID);
                         default:
                             return '';
                     }

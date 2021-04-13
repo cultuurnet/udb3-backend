@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
@@ -69,7 +69,7 @@ class HistoryPlaceRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return new JsonDocument('id', $this->rawHistory);
                         case self::REMOVED_ID:
-                            throw new DocumentGoneException();
+                            throw DocumentDoesNotExist::gone(self::REMOVED_ID);
                         default:
                             return null;
                     }

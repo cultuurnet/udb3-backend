@@ -22,13 +22,13 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Location\LocationNotFound;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\OfferCommandFactoryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Title;
@@ -120,7 +120,7 @@ class EventEditingServiceTest extends TestCase
     {
         $id = 'some-unknown-id';
 
-        $this->expectException(DocumentGoneException::class);
+        $this->expectException(DocumentDoesNotExist::class);
 
         $this->setUpEventNotFound($id);
 
@@ -138,7 +138,7 @@ class EventEditingServiceTest extends TestCase
     {
         $id = 'some-unknown-id';
 
-        $this->expectException(DocumentGoneException::class);
+        $this->expectException(DocumentDoesNotExist::class);
 
         $this->setUpEventNotFound($id);
 
@@ -541,6 +541,6 @@ class EventEditingServiceTest extends TestCase
         $this->readRepository->expects($this->once())
             ->method('get')
             ->with($id)
-            ->willThrowException(new DocumentGoneException());
+            ->willThrowException(DocumentDoesNotExist::notFound($id));
     }
 }
