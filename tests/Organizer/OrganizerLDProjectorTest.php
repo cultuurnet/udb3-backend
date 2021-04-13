@@ -403,7 +403,7 @@ class OrganizerLDProjectorTest extends TestCase
         $organizerJson->name->en = 'English name';
         $organizerJson = json_encode($organizerJson);
 
-        $this->documentRepository->method('get')
+        $this->documentRepository->method('fetch')
             ->with($organizerId)
             ->willReturn(new JsonDocument($organizerId, $organizerJson));
 
@@ -709,7 +709,7 @@ class OrganizerLDProjectorTest extends TestCase
         $actorId = $organizerUpdatedFromUdb2->getActorId();
 
         $this->documentRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($actorId)
             ->willThrowException(DocumentDoesNotExist::gone($actorId));
 
@@ -858,7 +858,7 @@ class OrganizerLDProjectorTest extends TestCase
     private function mockGet($organizerId, $fileName)
     {
         $organizerJson = file_get_contents(__DIR__ . '/Samples/' . $fileName);
-        $this->documentRepository->method('get')
+        $this->documentRepository->method('fetch')
             ->with($organizerId)
             ->willReturn(new JsonDocument($organizerId, $organizerJson));
     }

@@ -247,7 +247,7 @@ class OrganizerLDProjector implements EventListener
     {
         $organizerId = $websiteUpdated->getOrganizerId();
 
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
         $jsonLD->url = (string) $websiteUpdated->getWebsite();
@@ -294,7 +294,7 @@ class OrganizerLDProjector implements EventListener
     public function applyAddressRemoved(AddressRemoved $addressRemoved)
     {
         $organizerId = $addressRemoved->getOrganizerId();
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
         $jsonLD = $document->getBody();
 
         unset($jsonLD->address);
@@ -310,7 +310,7 @@ class OrganizerLDProjector implements EventListener
         $organizerId = $contactPointUpdated->getOrganizerId();
         $contactPoint = $contactPointUpdated->getContactPoint();
 
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
         $jsonLD->contactPoint = $contactPoint->toJsonLd();
@@ -355,7 +355,7 @@ class OrganizerLDProjector implements EventListener
      */
     private function applyLabelAdded(LabelAdded $labelAdded)
     {
-        $document = $this->repository->get($labelAdded->getOrganizerId());
+        $document = $this->repository->fetch($labelAdded->getOrganizerId());
 
         $jsonLD = $document->getBody();
 
@@ -376,7 +376,7 @@ class OrganizerLDProjector implements EventListener
      */
     private function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
-        $document = $this->repository->get($labelRemoved->getOrganizerId());
+        $document = $this->repository->fetch($labelRemoved->getOrganizerId());
         $jsonLD = $document->getBody();
 
         // Don't presume that the label visibility is correct when removing.
@@ -409,7 +409,7 @@ class OrganizerLDProjector implements EventListener
 
     private function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): JsonDocument
     {
-        $document = $this->repository->get($organizerDeleted->getOrganizerId());
+        $document = $this->repository->fetch($organizerDeleted->getOrganizerId());
 
         $jsonLD = $document->getBody();
 
@@ -447,7 +447,7 @@ class OrganizerLDProjector implements EventListener
     ) {
         $organizerId = $organizerEvent->getOrganizerId();
 
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
 
@@ -476,7 +476,7 @@ class OrganizerLDProjector implements EventListener
         Language $language = null
     ): JsonDocument {
         $organizerId = $addressUpdated->getOrganizerId();
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
         $jsonLD = $document->getBody();
 
         $mainLanguage = $this->getMainLanguage($jsonLD);
@@ -495,7 +495,7 @@ class OrganizerLDProjector implements EventListener
 
     public function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
     {
-        $document = $this->repository->get($geoCoordinatesUpdated->getOrganizerId());
+        $document = $this->repository->fetch($geoCoordinatesUpdated->getOrganizerId());
 
         $jsonLD = $document->getBody();
 
@@ -512,7 +512,7 @@ class OrganizerLDProjector implements EventListener
      */
     private function loadDocumentFromRepository(ActorEvent $actor)
     {
-        $document = $this->repository->get($actor->getActorId());
+        $document = $this->repository->fetch($actor->getActorId());
 
         if (!$document) {
             return $this->newDocument($actor->getActorId());
