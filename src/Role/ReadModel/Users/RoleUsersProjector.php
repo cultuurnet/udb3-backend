@@ -13,19 +13,19 @@ use CultuurNet\UDB3\Role\Events\UserAdded;
 use CultuurNet\UDB3\Role\Events\UserRemoved;
 use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolverInterface;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use ValueObjects\Identity\UUID;
 
 class RoleUsersProjector extends RoleProjector
 {
     /**
-     * @var UserIdentityResolverInterface
+     * @var UserIdentityResolver
      */
     private $userIdentityResolver;
 
     public function __construct(
         DocumentRepository $repository,
-        UserIdentityResolverInterface $userIdentityResolver
+        UserIdentityResolver $userIdentityResolver
     ) {
         parent::__construct($repository);
 

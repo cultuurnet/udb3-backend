@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
+use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Http\Adapter\Guzzle6\Client;
@@ -947,7 +948,7 @@ $app['role_users_projector'] = $app->share(
     function ($app) {
         return new \CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector(
             $app['role_users_read_repository'],
-            $app['user_identity_resolver']
+            $app[Auth0UserIdentityResolver::class]
         );
     }
 );

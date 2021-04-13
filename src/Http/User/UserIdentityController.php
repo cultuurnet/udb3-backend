@@ -5,32 +5,33 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\User;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
-use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
+use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
+use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolverInterface;
-use Symfony\Component\HttpFoundation\Response;
+use CultuurNet\UDB3\User\UserIdentityResolver;
+use Psr\Http\Message\ServerRequestInterface;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Web\EmailAddress;
+use Zend\Diactoros\Response\JsonResponse;
 
 class UserIdentityController
 {
     /**
-     * @var UserIdentityResolverInterface
+     * @var UserIdentityResolver
      */
     private $userIdentityResolver;
 
 
     public function __construct(
-        UserIdentityResolverInterface $userIdentityResolver
+        UserIdentityResolver $userIdentityResolver
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
     }
 
-    public function getByEmailAddress(string $emailAddress): Response
+    public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
     {
         try {
-            $emailAddress = new EmailAddress($emailAddress);
+            $emailAddress = new EmailAddress($request->getAttribute('emailAddress'));
         } catch (InvalidNativeArgumentException $e) {
             return $this->createUserNotFoundResponse();
         }
@@ -41,9 +42,7 @@ class UserIdentityController
             return $this->createUserNotFoundResponse();
         }
 
-        return (new JsonLdResponse())
-            ->setData($userIdentity)
-            ->setPrivate();
+        return (new JsonLdResponse($userIdentity));
     }
 
     private function createUserNotFoundResponse(): ApiProblemJsonResponse

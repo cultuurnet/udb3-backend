@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTID;
 
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolverInterface;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -16,7 +16,7 @@ use ValueObjects\Web\EmailAddress;
 class CdbXmlCreatedByToUserIdResolverTest extends TestCase
 {
     /**
-     * @var UserIdentityResolverInterface|MockObject
+     * @var UserIdentityResolver|MockObject
      */
     private $users;
 
@@ -32,7 +32,7 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
 
     public function setUp()
     {
-        $this->users = $this->createMock(UserIdentityResolverInterface::class);
+        $this->users = $this->createMock(UserIdentityResolver::class);
         $this->resolver = new CdbXmlCreatedByToUserIdResolver($this->users);
 
         $this->logger = $this->createMock(LoggerInterface::class);
