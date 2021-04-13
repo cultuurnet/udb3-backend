@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\History;
 
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
@@ -22,9 +23,9 @@ abstract class BaseHistoryProjector implements EventListener
 
     protected function loadDocumentFromRepositoryByEventId(string $eventId): JsonDocument
     {
-        $historyDocument = $this->documentRepository->get($eventId);
-
-        if (!$historyDocument) {
+        try {
+            $historyDocument = $this->documentRepository->fetch($eventId);
+        } catch (DocumentDoesNotExist $e) {
             $historyDocument = new JsonDocument($eventId, '[]');
         }
 
