@@ -34,8 +34,6 @@ class ReadOrganizerRestController
      */
     public function get($cdbid)
     {
-        $response = null;
-
         $organizer = $this->service->getEntity($cdbid);
 
         if ($organizer) {
