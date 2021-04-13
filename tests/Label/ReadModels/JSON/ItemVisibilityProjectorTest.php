@@ -76,7 +76,7 @@ class ItemVisibilityProjectorTest extends TestCase
 
         $this->itemRepository
             ->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($jsonDocument->getId())
             ->willReturn($jsonDocument);
     }
@@ -427,7 +427,7 @@ class ItemVisibilityProjectorTest extends TestCase
 
         $this->itemRepository
             ->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->willThrowException(DocumentDoesNotExist::gone((string) $placeId));
 
         $domainMessage = $this->createDomainMessage(

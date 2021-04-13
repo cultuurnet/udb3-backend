@@ -105,11 +105,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
 
         foreach ($labelRelations as $labelRelation) {
             try {
-                $document = $this->itemRepository->get((string)$labelRelation->getRelationId());
-
-                if ($document) {
-                    yield $document;
-                }
+                yield $this->itemRepository->fetch((string)$labelRelation->getRelationId());
             } catch (DocumentDoesNotExist $exception) {
                 $this->logger->alert(
                     'Can not update visibility of label: "' . $labelRelation->getLabelName() . '"'
