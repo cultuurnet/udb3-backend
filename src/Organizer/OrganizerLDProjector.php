@@ -512,9 +512,9 @@ class OrganizerLDProjector implements EventListener
      */
     private function loadDocumentFromRepository(ActorEvent $actor)
     {
-        $document = $this->repository->fetch($actor->getActorId());
-
-        if (!$document) {
+        try {
+            $document = $this->repository->fetch($actor->getActorId());
+        } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($actor->getActorId());
         }
 
