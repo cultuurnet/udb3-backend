@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\JSONLD;
 
-use CultuurNet\UDB3\Http\JsonLdResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 

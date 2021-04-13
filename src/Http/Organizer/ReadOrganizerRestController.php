@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Organizer;
 
 use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
-use CultuurNet\UDB3\Http\JsonLdResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 
 class ReadOrganizerRestController
 {
