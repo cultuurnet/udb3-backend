@@ -121,7 +121,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->cdbXMLEventFactory = new CdbXMLEventFactory();
 
-        $this->placeService = $this->createMock(PlaceService::class);
+        $this->placeService = $this->createMock(LocalPlaceService::class);
 
         $this->iriGenerator = new CallableIriGenerator(
             function ($id) {
