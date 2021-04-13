@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\EntityNotFoundException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Doctrine\DBAL\DBALException;
 
@@ -102,12 +102,8 @@ class ProductionCommandHandler extends Udb3CommandHandler
     private function assertEventCanBeAddedToProduction(string $eventId)
     {
         try {
-            $event = $this->eventRepository->get($eventId);
-        } catch (DocumentGoneException $e) {
-            $event = null;
-        }
-
-        if (!$event) {
+            $this->eventRepository->fetch($eventId);
+        } catch (DocumentDoesNotExist $e) {
             throw EventCannotBeAddedToProduction::becauseItDoesNotExist($eventId);
         }
     }
@@ -115,9 +111,9 @@ class ProductionCommandHandler extends Udb3CommandHandler
     private function assertEventCanBeRemovedFromProduction(string $eventId, ProductionId $productionId)
     {
         try {
-            $this->eventRepository->get($eventId);
+            $this->eventRepository->fetch($eventId);
             $this->productionRepository->find($productionId);
-        } catch (DocumentGoneException $e) {
+        } catch (DocumentDoesNotExist $e) {
             throw EventCannotBeRemovedFromProduction::becauseItDoesNotExist($eventId);
         } catch (EntityNotFoundException $e) {
             throw EventCannotBeRemovedFromProduction::becauseProductionDoesNotExist($eventId, $productionId);

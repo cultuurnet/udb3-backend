@@ -10,7 +10,6 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
@@ -32,6 +31,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
@@ -247,7 +247,7 @@ class OrganizerLDProjector implements EventListener
     {
         $organizerId = $websiteUpdated->getOrganizerId();
 
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
         $jsonLD->url = (string) $websiteUpdated->getWebsite();
@@ -294,7 +294,7 @@ class OrganizerLDProjector implements EventListener
     public function applyAddressRemoved(AddressRemoved $addressRemoved)
     {
         $organizerId = $addressRemoved->getOrganizerId();
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
         $jsonLD = $document->getBody();
 
         unset($jsonLD->address);
@@ -310,7 +310,7 @@ class OrganizerLDProjector implements EventListener
         $organizerId = $contactPointUpdated->getOrganizerId();
         $contactPoint = $contactPointUpdated->getContactPoint();
 
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
         $jsonLD->contactPoint = $contactPoint->toJsonLd();
@@ -333,7 +333,7 @@ class OrganizerLDProjector implements EventListener
             $document = $this->loadDocumentFromRepository(
                 $organizerUpdatedFromUDB2
             );
-        } catch (DocumentGoneException $e) {
+        } catch (DocumentDoesNotExist $e) {
             $document = $this->newDocument($organizerUpdatedFromUDB2->getActorId());
         }
 
@@ -355,7 +355,7 @@ class OrganizerLDProjector implements EventListener
      */
     private function applyLabelAdded(LabelAdded $labelAdded)
     {
-        $document = $this->repository->get($labelAdded->getOrganizerId());
+        $document = $this->repository->fetch($labelAdded->getOrganizerId());
 
         $jsonLD = $document->getBody();
 
@@ -376,7 +376,7 @@ class OrganizerLDProjector implements EventListener
      */
     private function applyLabelRemoved(LabelRemoved $labelRemoved)
     {
-        $document = $this->repository->get($labelRemoved->getOrganizerId());
+        $document = $this->repository->fetch($labelRemoved->getOrganizerId());
         $jsonLD = $document->getBody();
 
         // Don't presume that the label visibility is correct when removing.
@@ -409,7 +409,7 @@ class OrganizerLDProjector implements EventListener
 
     private function applyOrganizerDeleted(OrganizerDeleted $organizerDeleted): JsonDocument
     {
-        $document = $this->repository->get($organizerDeleted->getOrganizerId());
+        $document = $this->repository->fetch($organizerDeleted->getOrganizerId());
 
         $jsonLD = $document->getBody();
 
@@ -447,7 +447,7 @@ class OrganizerLDProjector implements EventListener
     ) {
         $organizerId = $organizerEvent->getOrganizerId();
 
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
 
         $jsonLD = $document->getBody();
 
@@ -476,7 +476,7 @@ class OrganizerLDProjector implements EventListener
         Language $language = null
     ): JsonDocument {
         $organizerId = $addressUpdated->getOrganizerId();
-        $document = $this->repository->get($organizerId);
+        $document = $this->repository->fetch($organizerId);
         $jsonLD = $document->getBody();
 
         $mainLanguage = $this->getMainLanguage($jsonLD);
@@ -495,7 +495,7 @@ class OrganizerLDProjector implements EventListener
 
     public function applyGeoCoordinatesUpdated(GeoCoordinatesUpdated $geoCoordinatesUpdated)
     {
-        $document = $this->repository->get($geoCoordinatesUpdated->getOrganizerId());
+        $document = $this->repository->fetch($geoCoordinatesUpdated->getOrganizerId());
 
         $jsonLD = $document->getBody();
 
@@ -512,9 +512,9 @@ class OrganizerLDProjector implements EventListener
      */
     private function loadDocumentFromRepository(ActorEvent $actor)
     {
-        $document = $this->repository->get($actor->getActorId());
-
-        if (!$document) {
+        try {
+            $document = $this->repository->fetch($actor->getActorId());
+        } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($actor->getActorId());
         }
 

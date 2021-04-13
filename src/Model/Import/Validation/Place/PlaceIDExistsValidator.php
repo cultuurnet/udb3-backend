@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Validation\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Respect\Validation\Exceptions\CallbackException;
 use Respect\Validation\Rules\Callback;
@@ -21,9 +21,9 @@ class PlaceIDExistsValidator extends Callback
             try {
                 $url = new Url($idUrl);
                 $id = $placeIDParser->fromUrl($url);
-                $document = $placeDocumentRepository->get($id->toString());
-                return !is_null($document);
-            } catch (DocumentGoneException $e) {
+                $placeDocumentRepository->fetch($id->toString());
+                return true;
+            } catch (DocumentDoesNotExist $e) {
                 // The place is deleted, so it can't be coupled to the event.
                 return false;
             } catch (\Exception $e) {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
 use CultuurNet\UDB3\Role\Events\LabelRemoved;
@@ -56,7 +56,7 @@ class LabelRolesProjector extends RoleProjector
 
         try {
             $document = $this->repository->get($uuid->toNative());
-        } catch (DocumentGoneException $e) {
+        } catch (DocumentDoesNotExist $e) {
         }
 
         return $document;

@@ -51,7 +51,6 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Event\EventTypeResolver;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ValueObjects\Audience;
 use CultuurNet\UDB3\Event\ValueObjects\AudienceType;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -64,6 +63,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
 use CultuurNet\UDB3\OrganizerService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
@@ -304,7 +304,7 @@ class EventLDProjector extends OfferLDProjector implements
         EventCopied $eventCopied,
         DomainMessage $domainMessage
     ) {
-        $originalDocument = $this->repository->get($eventCopied->getOriginalEventId());
+        $originalDocument = $this->repository->fetch($eventCopied->getOriginalEventId());
         $eventJsonLD = $originalDocument->getBody();
 
         // Set the created and modified date.
@@ -489,7 +489,7 @@ class EventLDProjector extends OfferLDProjector implements
             return [
                 '@id' => $this->placeService->iri($placeId),
             ];
-        } catch (DocumentGoneException $e) {
+        } catch (DocumentDoesNotExist $e) {
             // In case the place can not be found at the moment, just add its ID
             return [
                 '@id' => $this->placeService->iri($placeId),

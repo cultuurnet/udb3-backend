@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\ReadModel;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-
 interface DocumentRepository
 {
     /**
@@ -16,7 +14,7 @@ interface DocumentRepository
     /**
      * @deprecated use DocumentRepository::fetch() instead for easier error handling in case the document does not
      *   exist.
-     * @throws DocumentGoneException
+     * @throws DocumentDoesNotExist
      */
     public function get(string $id, bool $includeMetadata = false): ?JsonDocument;
 

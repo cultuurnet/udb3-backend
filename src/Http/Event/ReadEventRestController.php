@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Event;
 use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
 use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\CalendarSummaryV3\Offer\Offer;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
@@ -81,27 +80,24 @@ class ReadEventRestController
         }
 
         try {
-            $document = $this->historyRepository->get($cdbid);
+            $document = $this->historyRepository->fetch($cdbid);
+            $history = array_reverse(
+                array_values(
+                    json_decode($document->getRawBody(), true) ?? []
+                )
+            );
 
-            if ($document) {
-                $history = array_reverse(
-                    array_values(
-                        json_decode($document->getRawBody(), true) ?? []
-                    )
-                );
+            $response = JsonResponse::create()
+                ->setContent(json_encode($history));
+            $response->headers->set('Vary', 'Origin');
 
-                $response = JsonResponse::create()
-                    ->setContent(json_encode($history));
-
-                $response->headers->set('Vary', 'Origin');
-            } else {
-                $response = $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $cdbid);
+            return $response;
+        } catch (DocumentDoesNotExist $e) {
+            if ($e->isGone()) {
+                return $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $cdbid);
             }
-        } catch (DocumentGoneException $documentGoneException) {
-            $response = $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $cdbid);
+            return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $cdbid);
         }
-
-        return $response;
     }
 
     public function getCalendarSummary(string $cdbid, Request $request): string

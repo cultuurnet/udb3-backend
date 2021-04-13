@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Label;
@@ -38,6 +37,7 @@ use CultuurNet\UDB3\Organizer\Events\TitleTranslated;
 use CultuurNet\UDB3\Organizer\Events\TitleUpdated;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\OrganizerJsonDocumentLanguageAnalyzer;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
@@ -403,7 +403,7 @@ class OrganizerLDProjectorTest extends TestCase
         $organizerJson->name->en = 'English name';
         $organizerJson = json_encode($organizerJson);
 
-        $this->documentRepository->method('get')
+        $this->documentRepository->method('fetch')
             ->with($organizerId)
             ->willReturn(new JsonDocument($organizerId, $organizerJson));
 
@@ -709,9 +709,9 @@ class OrganizerLDProjectorTest extends TestCase
         $actorId = $organizerUpdatedFromUdb2->getActorId();
 
         $this->documentRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($actorId)
-            ->willThrowException(new DocumentGoneException());
+            ->willThrowException(DocumentDoesNotExist::gone($actorId));
 
         $this->documentRepository->expects($this->once())
             ->method('save')
@@ -858,7 +858,7 @@ class OrganizerLDProjectorTest extends TestCase
     private function mockGet($organizerId, $fileName)
     {
         $organizerJson = file_get_contents(__DIR__ . '/Samples/' . $fileName);
-        $this->documentRepository->method('get')
+        $this->documentRepository->method('fetch')
             ->with($organizerId)
             ->willReturn(new JsonDocument($organizerId, $organizerJson));
     }

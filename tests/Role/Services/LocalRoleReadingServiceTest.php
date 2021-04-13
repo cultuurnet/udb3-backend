@@ -82,7 +82,7 @@ class LocalRoleReadingServiceTest extends TestCase
         $expectedRole = $document->withBody($json);
 
         $this->roleReadRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($roleId)
             ->willReturn($expectedRole);
 

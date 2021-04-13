@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Validation\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -65,7 +65,7 @@ class PlaceReferenceExistsValidatorTest extends TestCase
         $jsonDocument = new JsonDocument('b458d34c-af5c-462f-a004-85516c1b1e0a', '{}');
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with('b458d34c-af5c-462f-a004-85516c1b1e0a')
             ->willReturn($jsonDocument);
 
@@ -77,12 +77,13 @@ class PlaceReferenceExistsValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_no_place_document_exists_for_the_given_id()
     {
-        $location = ['@id' => 'https://io.uitdatabank.be/places/b458d34c-af5c-462f-a004-85516c1b1e0a'];
+        $id = 'b458d34c-af5c-462f-a004-85516c1b1e0a';
+        $location = ['@id' => 'https://io.uitdatabank.be/places/' . $id];
 
         $this->repository->expects($this->once())
-            ->method('get')
-            ->with('b458d34c-af5c-462f-a004-85516c1b1e0a')
-            ->willReturn(null);
+            ->method('fetch')
+            ->with($id)
+            ->willThrowException(DocumentDoesNotExist::notFound($id));
 
         $expected = [
             'Location with id https://io.uitdatabank.be/places/b458d34c-af5c-462f-a004-85516c1b1e0a does not exist.',
@@ -103,12 +104,13 @@ class PlaceReferenceExistsValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_the_place_document_for_the_given_id_was_deleted()
     {
-        $location = ['@id' => 'https://io.uitdatabank.be/places/b458d34c-af5c-462f-a004-85516c1b1e0a'];
+        $id = 'b458d34c-af5c-462f-a004-85516c1b1e0a';
+        $location = ['@id' => 'https://io.uitdatabank.be/places/' . $id];
 
         $this->repository->expects($this->once())
-            ->method('get')
-            ->with('b458d34c-af5c-462f-a004-85516c1b1e0a')
-            ->willThrowException(new DocumentGoneException());
+            ->method('fetch')
+            ->with($id)
+            ->willThrowException(DocumentDoesNotExist::gone($id));
 
         $expected = [
             'Location with id https://io.uitdatabank.be/places/b458d34c-af5c-462f-a004-85516c1b1e0a does not exist.',

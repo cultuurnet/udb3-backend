@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\MainLanguage;
 
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
@@ -34,9 +35,9 @@ class JSONLDMainLanguageQuery implements MainLanguageQueryInterface
      */
     public function execute($cdbid)
     {
-        $document = $this->documentRepository->get($cdbid);
-
-        if (!$document) {
+        try {
+            $document = $this->documentRepository->fetch($cdbid);
+        } catch (DocumentDoesNotExist $e) {
             throw new EntityNotFoundException('Could not load JSON-LD document for cdbid ' . $cdbid);
         }
 
