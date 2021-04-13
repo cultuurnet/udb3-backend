@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Doctrine\ReadModel;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -39,7 +38,7 @@ class CacheDocumentRepository implements DocumentRepository
         $value = $this->cache->fetch($id);
 
         if ('GONE' === $value) {
-            throw new DocumentGoneException();
+            throw DocumentDoesNotExist::gone($id);
         }
 
         if (false === $value) {

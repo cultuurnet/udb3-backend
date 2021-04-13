@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\ReadModel;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-
 class InMemoryDocumentRepository implements DocumentRepository
 {
     /**
@@ -30,7 +28,7 @@ class InMemoryDocumentRepository implements DocumentRepository
     {
         if (isset($this->documents[$id])) {
             if ('GONE' === $this->documents[$id]) {
-                throw new DocumentGoneException();
+                throw DocumentDoesNotExist::gone($id);
             }
 
             return $this->documents[$id];

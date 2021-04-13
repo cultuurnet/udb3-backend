@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,7 +62,7 @@ class HistoryPlaceRestController
                 ->setContent(json_encode($history));
             $response->headers->set('Vary', 'Origin');
             return $response;
-        } catch (DocumentGoneException $documentGoneException) {
+        } catch (DocumentDoesNotExist $documentGoneException) {
             return $this->documentGoneResponse($placeId);
         }
     }

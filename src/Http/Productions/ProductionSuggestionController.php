@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Http\Productions;
 
 use CultuurNet\UDB3\Event\Productions\SimilarEventsRepository;
 use CultuurNet\UDB3\Event\Productions\SuggestionsNotFound;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,7 +55,7 @@ class ProductionSuggestionController
     {
         try {
             $event = $this->enrichedEventRepository->get($eventId);
-        } catch (DocumentGoneException $e) {
+        } catch (DocumentDoesNotExist $e) {
             throw new SuggestedEventRemovedException($eventId);
         }
 

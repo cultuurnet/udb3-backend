@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Users;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
@@ -95,7 +95,7 @@ class RoleUsersProjector extends RoleProjector
 
         try {
             $document = $this->repository->get($uuid->toNative());
-        } catch (DocumentGoneException $e) {
+        } catch (DocumentDoesNotExist $e) {
         }
 
         return $document;

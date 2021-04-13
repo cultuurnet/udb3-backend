@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Label\Events\MadeInvisible;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -110,7 +110,7 @@ class ItemVisibilityProjector implements EventListener, LoggerAwareInterface
                 if ($document) {
                     yield $document;
                 }
-            } catch (DocumentGoneException $exception) {
+            } catch (DocumentDoesNotExist $exception) {
                 $this->logger->alert(
                     'Can not update visibility of label: "' . $labelRelation->getLabelName() . '"'
                     . ' for the relation with id: "' . $labelRelation->getRelationId() . '"'
