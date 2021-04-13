@@ -8,6 +8,7 @@ use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\RepositoryInterface as RelationsRepositoryInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -69,6 +70,7 @@ class LocalEventServiceTest extends TestCase
     {
         $id = 'some-unknown-id';
 
+        $this->documentRepository->method('fetch')->willThrowException(DocumentDoesNotExist::gone($id));
         $this->eventRepository->expects($this->once())
             ->method('load')
             ->with($id)

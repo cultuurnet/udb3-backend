@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 class LocalEntityService implements EntityServiceInterface
 {
@@ -39,10 +39,9 @@ class LocalEntityService implements EntityServiceInterface
 
     public function getEntity(string $id): string
     {
-        /** @var JsonDocument|null $document */
-        $document = $this->documentRepository->get($id);
-
-        if (!$document) {
+        try {
+            $document = $this->documentRepository->fetch($id);
+        } catch (DocumentDoesNotExist $e) {
             // If the read model is not initialized yet, try to load
             // the entity, which will initialize the read model.
             try {
@@ -53,10 +52,9 @@ class LocalEntityService implements EntityServiceInterface
                 );
             }
 
-            /** @var JsonDocument|null $document */
-            $document = $this->documentRepository->get($id);
-
-            if (!$document) {
+            try {
+                $document = $this->documentRepository->fetch($id);
+            } catch (DocumentDoesNotExist $e) {
                 throw new EntityNotFoundException(
                     sprintf('Entity with id: %s not found.', $id)
                 );
