@@ -12,7 +12,6 @@ use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use CultuurNet\UDB3\UDB2\Event\Events\EventCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Event\Events\EventUpdatedEnrichedWithCdbXml;
-use CultuurNet\UDB3\UDB2\OfferToSapiUrlTransformer;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationError;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationException;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceInterface;
@@ -109,24 +108,6 @@ class EventCdbXmlEnricherTest extends TestCase
 
         $this->expectException(XMLValidationException::class);
         $this->expectExceptionMessage('Oops (Line: 0, column: 0)');
-
-        $this->publish($incomingEvent);
-    }
-
-    /**
-     * @dataProvider messagesProvider
-     * @test
-     * @param EventUpdated|EventCreated $incomingEvent
-     */
-    public function it_should_retrieve_cdbxml_from_sapi_with_a_transformer($incomingEvent)
-    {
-        $this->expectHttpClientToReturnCdbXmlFromUrl(
-            'http://search-prod.lodgon.com/search/rest/detail/event/d53c2bc9-8f0e-4c9a-8457-77e8b3cab3d1?noauth=true&version=3.3'
-        );
-
-        $transformer = new OfferToSapiUrlTransformer('http://search-prod.lodgon.com/search/rest/detail/event/%s?noauth=true&version=3.3');
-
-        $this->enricher->withUrlTransformer($transformer);
 
         $this->publish($incomingEvent);
     }
