@@ -1451,8 +1451,7 @@ class HistoryProjectorTest extends TestCase
 
     protected function assertHistoryContainsLogs(string $eventId, array $history): void
     {
-        /** @var JsonDocument $document */
-        $document = $this->documentRepository->get($eventId);
+        $document = $this->documentRepository->fetch($eventId);
         $body = array_values((array) $document->getBody());
 
         $body = array_map(function (\stdClass $log) {
