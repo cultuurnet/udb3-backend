@@ -101,7 +101,7 @@ class LocalRoleReadingServiceTest extends TestCase
         $expectedLabels = (new JsonDocument($roleId))->withAssocBody([]);
 
         $this->roleLabelsReadRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($roleId)
             ->willReturn($expectedLabels);
 

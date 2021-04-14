@@ -10,18 +10,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface RoleReadingServiceInterface
 {
-    /**
-     * @return JsonDocument
-     */
-    public function getLabelsByRoleUuid(UUID $uuid);
+    public function getLabelsByRoleUuid(UUID $uuid): JsonDocument;
 
-    /**
-     * @return JsonDocument
-     */
-    public function getUsersByRoleUuid(UUID $uuid);
+    public function getUsersByRoleUuid(UUID $uuid): JsonDocument;
 
-    /**
-     * @return JsonDocument|null
-     */
-    public function getRolesByUserId(StringLiteral $userId);
+    public function getRolesByUserId(StringLiteral $userId): JsonDocument;
 }
