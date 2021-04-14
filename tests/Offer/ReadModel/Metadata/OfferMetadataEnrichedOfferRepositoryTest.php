@@ -49,10 +49,8 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->offerMetadataEnrichedOfferRepository->fetch($offerId, false);
-        $getJsonLd = $this->offerMetadataEnrichedOfferRepository->get($offerId, false);
 
         $this->assertEquals($jsonLd, $fetchJsonLd);
-        $this->assertEquals($jsonLd, $getJsonLd);
     }
 
     /**
@@ -70,7 +68,6 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->offerMetadataEnrichedOfferRepository->fetch($offerId, true);
-        $getJsonLd = $this->offerMetadataEnrichedOfferRepository->get($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
@@ -85,7 +82,6 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
         );
 
         $this->assertEquals($expectedJsonLd, $fetchJsonLd);
-        $this->assertEquals($expectedJsonLd, $getJsonLd);
     }
 
     /**
@@ -103,7 +99,6 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->offerMetadataEnrichedOfferRepository->fetch($offerId, true);
-        $getJsonLd = $this->offerMetadataEnrichedOfferRepository->get($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
@@ -118,6 +113,5 @@ class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
         );
 
         $this->assertEquals($expectedJsonLd, $fetchJsonLd);
-        $this->assertEquals($expectedJsonLd, $getJsonLd);
     }
 }
