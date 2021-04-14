@@ -83,7 +83,7 @@ class ReadPlaceRestControllerTest extends TestCase
                         case self::REMOVED_ID:
                             throw DocumentDoesNotExist::withId($id);
                         default:
-                            throw DocumentDoesNotExist::notFound($id);
+                            throw DocumentDoesNotExist::withId($id);
                     }
                 }
             );

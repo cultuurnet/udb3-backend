@@ -213,7 +213,7 @@ class DefaultOfferEditingServiceTest extends TestCase
         $this->offerRepository->expects($this->once())
             ->method('fetch')
             ->with($unknownId)
-            ->willThrowException(DocumentDoesNotExist::notFound($unknownId));
+            ->willThrowException(DocumentDoesNotExist::withId($unknownId));
 
         $this->expectException(EntityNotFoundException::class);
 

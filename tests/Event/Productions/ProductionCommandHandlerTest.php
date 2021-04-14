@@ -116,7 +116,7 @@ class ProductionCommandHandlerTest extends TestCase
     {
         $event = Uuid::uuid4()->toString();
 
-        $this->eventRepository->method('fetch')->willThrowException(DocumentDoesNotExist::notFound($event));
+        $this->eventRepository->method('fetch')->willThrowException(DocumentDoesNotExist::withId($event));
         $this->expectException(EventCannotBeAddedToProduction::class);
         $this->commandHandler->handle(
             GroupEventsAsProduction::withProductionName(
@@ -190,7 +190,7 @@ class ProductionCommandHandlerTest extends TestCase
     public function it_cannot_add_a_non_existing_event_to_a_production(): void
     {
         $eventId = Uuid::uuid4()->toString();
-        $this->eventRepository->method('fetch')->with($eventId)->willThrowException(DocumentDoesNotExist::notFound($eventId));
+        $this->eventRepository->method('fetch')->with($eventId)->willThrowException(DocumentDoesNotExist::withId($eventId));
 
         $this->expectException(EventCannotBeAddedToProduction::class);
         $this->commandHandler->handle(

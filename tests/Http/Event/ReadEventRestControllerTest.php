@@ -121,7 +121,7 @@ class ReadEventRestControllerTest extends TestCase
                         case self::REMOVED_ID:
                             throw DocumentDoesNotExist::withId($id);
                         default:
-                            throw DocumentDoesNotExist::notFound($id);
+                            throw DocumentDoesNotExist::withId($id);
                     }
                 }
             );
@@ -136,7 +136,7 @@ class ReadEventRestControllerTest extends TestCase
                         case self::REMOVED_ID:
                             throw DocumentDoesNotExist::withId(self::REMOVED_ID);
                         default:
-                            throw DocumentDoesNotExist::notFound($id);
+                            throw DocumentDoesNotExist::withId($id);
                     }
                 }
             );
