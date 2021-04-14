@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "026e8b151cf904eeda81f20a6967eb5a",
+    "content-hash": "0ec6f460edc9738e4befa757a2d0721f",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -4149,64 +4149,6 @@
                 "psr-3"
             ],
             "time": "2021-03-02T15:02:34+00:00"
-        },
-        {
-            "name": "qandidate/toggle",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/qandidate-labs/qandidate-toggle.git",
-                "reference": "a7f7f4e478373622f945a6e9c163adb5b50b3265"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/qandidate-labs/qandidate-toggle/zipball/a7f7f4e478373622f945a6e9c163adb5b50b3265",
-                "reference": "a7f7f4e478373622f945a6e9c163adb5b50b3265",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.35",
-                "predis/predis": "~0.8",
-                "symfony/expression-language": "~2.4"
-            },
-            "suggest": {
-                "predis/predis": "To use the PredisCollection to persist toggles in redis",
-                "symfony/expression-language": "To use the ExpressionCondition to add conditions as a symfony language expression"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Qandidate\\Toggle\\": "lib/Qandidate/Toggle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexander",
-                    "email": "iam.asm89@gmail.com"
-                },
-                {
-                    "name": "Qandidate.com",
-                    "homepage": "http://labs.qandidate.com/"
-                }
-            ],
-            "description": "Feature toggling for your PHP application.",
-            "keywords": [
-                "bits",
-                "feature",
-                "flip",
-                "flipping",
-                "switch",
-                "toggle",
-                "trigger"
-            ],
-            "time": "2017-11-20T14:59:50+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
