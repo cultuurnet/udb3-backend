@@ -76,9 +76,4 @@ class HistoryPlaceRestController
     {
         return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $eventId);
     }
-
-    private function documentGoneResponse(string $eventId): ApiProblemJsonResponse
-    {
-        return $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $eventId);
-    }
 }
