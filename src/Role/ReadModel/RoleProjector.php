@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Role\ReadModel;
 
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
@@ -44,9 +45,9 @@ class RoleProjector implements EventListener
      */
     protected function loadDocumentFromRepositoryByUuid($uuid)
     {
-        $document = $this->repository->get($uuid);
-
-        if (!$document) {
+        try {
+            $document = $this->repository->fetch($uuid);
+        } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($uuid);
         }
 

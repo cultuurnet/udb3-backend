@@ -147,7 +147,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->initialDocument());
 
@@ -224,7 +224,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->initialDocument());
 
@@ -269,7 +269,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->documentWithConstraint(SapiVersion::V2(), $queryV2));
 
@@ -312,7 +312,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->documentWithConstraint(
                 $constraintUpdated->getSapiVersion(),
@@ -359,7 +359,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->documentWithConstraint(
                 SapiVersion::V2(),
@@ -404,7 +404,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->documentWithEmptyConstraint(
                 $constraintRemoved->getSapiVersion()
@@ -460,7 +460,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($initialDocument);
 
@@ -548,7 +548,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->initialDocument());
 
@@ -584,6 +584,10 @@ class ProjectorTest extends TestCase
             BroadwayDateTime::fromString('2016-06-30T13:25:21+01:00')
         );
 
+        $this->repository->expects($this->any())
+            ->method('fetch')
+            ->willReturn($this->initialDocument());
+
         $this->projector->handle($domainMessage);
 
         $domainMessageRemoved = $this->createDomainMessage(
@@ -602,7 +606,7 @@ class ProjectorTest extends TestCase
         $document = $document->withBody($json);
 
         $this->repository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($this->uuid->toNative())
             ->willReturn($this->documentWithPermission($permission));
 
