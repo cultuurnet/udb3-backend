@@ -24,19 +24,6 @@ class InMemoryDocumentRepository implements DocumentRepository
         return $this->documents[$id];
     }
 
-    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
-    {
-        if (isset($this->documents[$id])) {
-            if ('GONE' === $this->documents[$id]) {
-                throw DocumentDoesNotExist::gone($id);
-            }
-
-            return $this->documents[$id];
-        }
-
-        return null;
-    }
-
     public function save(JsonDocument $readModel): void
     {
         $this->documents[$readModel->getId()] = $readModel;

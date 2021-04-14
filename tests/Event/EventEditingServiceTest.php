@@ -14,6 +14,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Calendar;
 use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Description;
+use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
@@ -120,7 +121,7 @@ class EventEditingServiceTest extends TestCase
     {
         $id = 'some-unknown-id';
 
-        $this->expectException(DocumentDoesNotExist::class);
+        $this->expectException(EntityNotFoundException::class);
 
         $this->setUpEventNotFound($id);
 
@@ -138,7 +139,7 @@ class EventEditingServiceTest extends TestCase
     {
         $id = 'some-unknown-id';
 
-        $this->expectException(DocumentDoesNotExist::class);
+        $this->expectException(EntityNotFoundException::class);
 
         $this->setUpEventNotFound($id);
 
@@ -477,7 +478,7 @@ class EventEditingServiceTest extends TestCase
             ->willReturn($expectedCommandId);
 
         $this->readRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($eventId)
             ->willReturn(new JsonDocument($eventId));
 
@@ -526,7 +527,7 @@ class EventEditingServiceTest extends TestCase
             ->willReturn($expectedCommandId);
 
         $this->readRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($eventId)
             ->willReturn(new JsonDocument($eventId));
 
@@ -539,7 +540,7 @@ class EventEditingServiceTest extends TestCase
     private function setUpEventNotFound($id)
     {
         $this->readRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($id)
             ->willThrowException(DocumentDoesNotExist::notFound($id));
     }

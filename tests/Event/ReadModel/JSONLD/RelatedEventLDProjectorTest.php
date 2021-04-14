@@ -321,7 +321,7 @@ class RelatedEventLDProjectorTest extends TestCase
      */
     protected function getBody($id)
     {
-        $document = $this->documentRepository->get($id);
+        $document = $this->documentRepository->fetch($id);
         return $document->getBody();
     }
 }

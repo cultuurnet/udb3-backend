@@ -341,13 +341,13 @@ class DefaultOfferEditingService implements OfferEditingServiceInterface
     /**
      * @param string $id
      *
-     * @throws EntityNotFoundException|DocumentDoesNotExist
+     * @throws EntityNotFoundException
      */
     public function guardId($id)
     {
-        $offer = $this->readRepository->get($id);
-
-        if (is_null($offer)) {
+        try {
+            $this->readRepository->fetch($id);
+        } catch (DocumentDoesNotExist $e) {
             throw new EntityNotFoundException(
                 sprintf('Offer with id: %s not found.', $id)
             );

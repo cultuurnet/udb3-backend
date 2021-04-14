@@ -21,11 +21,6 @@ abstract class DocumentRepositoryDecorator implements DocumentRepository
         return $this->decoratedRepository->fetch($id, $includeMetadata);
     }
 
-    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
-    {
-        return $this->decoratedRepository->get($id, $includeMetadata);
-    }
-
     public function save(JsonDocument $readModel): void
     {
         $this->decoratedRepository->save($readModel);

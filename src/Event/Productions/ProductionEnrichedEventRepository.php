@@ -39,17 +39,6 @@ class ProductionEnrichedEventRepository extends DocumentRepositoryDecorator
         );
     }
 
-    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
-    {
-        $document = parent::get($id);
-
-        if (is_null($document)) {
-            return null;
-        }
-
-        return $this->enrich($document);
-    }
-
     private function enrich(JsonDocument $document): JsonDocument
     {
         $jsonObject = $document->getBody();

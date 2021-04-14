@@ -48,6 +48,7 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsInappropriate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
 use CultuurNet\UDB3\Offer\WorkflowStatus;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
@@ -959,9 +960,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
      */
     protected function loadDocumentFromRepositoryByItemId($itemId)
     {
-        $document = $this->repository->get($itemId);
-
-        if (!$document) {
+        try {
+            $document = $this->repository->fetch($itemId);
+        } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($itemId);
         }
 

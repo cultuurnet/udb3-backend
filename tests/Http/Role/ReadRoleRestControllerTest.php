@@ -221,7 +221,7 @@ class ReadRoleRestControllerTest extends TestCase
         $this->roleService->expects($this->once())
             ->method('getRolesByUserId')
             ->with($userId)
-            ->willReturn(null);
+            ->willThrowException(DocumentDoesNotExist::notFound($userId->toNative()));
 
         $response = $this->roleRestController->getUserRoles($userId->toNative());
         $responseJson = $response->getContent();

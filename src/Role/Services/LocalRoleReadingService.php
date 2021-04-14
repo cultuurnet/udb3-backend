@@ -8,6 +8,7 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\LocalEntityService;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -47,27 +48,18 @@ class LocalRoleReadingService extends LocalEntityService implements RoleReadingS
         $this->userRolesReadRepository = $userRolesReadRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getLabelsByRoleUuid(UUID $uuid)
+    public function getLabelsByRoleUuid(UUID $uuid): JsonDocument
     {
-        return $this->roleLabelsReadRepository->get($uuid->toNative());
+        return $this->roleLabelsReadRepository->fetch($uuid->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUsersByRoleUuid(UUID $uuid)
+    public function getUsersByRoleUuid(UUID $uuid): JsonDocument
     {
-        return $this->roleUsersReadRepository->get($uuid->toNative());
+        return $this->roleUsersReadRepository->fetch($uuid->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getRolesByUserId(StringLiteral $userId)
+    public function getRolesByUserId(StringLiteral $userId): JsonDocument
     {
-        return $this->userRolesReadRepository->get($userId->toNative());
+        return $this->userRolesReadRepository->fetch($userId->toNative());
     }
 }

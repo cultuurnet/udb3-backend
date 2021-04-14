@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Role;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\EntityServiceInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\Services\RoleReadingServiceInterface;
@@ -108,17 +109,16 @@ class ReadRoleRestController
 
     public function getUserRoles(string $userId): Response
     {
-        $userId = new StringLiteral((string) $userId);
-        $document = $this->roleService->getRolesByUserId($userId);
-
-        // It's possible the document does not exist if the user exists but has
-        // no roles, since we don't have a "UserCreated" event to listen to and
-        // we can't create an empty document of roles in the projector.
-        // @todo Should we check if the user exists using culturefeed?
-        // @see https://jira.uitdatabank.be/browse/III-1292
-        if ($document) {
+        $userId = new StringLiteral($userId);
+        try {
+            $document = $this->roleService->getRolesByUserId($userId);
             $body = json_decode($document->getRawBody(), true);
-        } else {
+        } catch (DocumentDoesNotExist $e) {
+            // It's possible the document does not exist if the user exists but has
+            // no roles, since we don't have a "UserCreated" event to listen to and
+            // we can't create an empty document of roles in the projector.
+            // @todo Should we check if the user exists using culturefeed?
+            // @see https://jira.uitdatabank.be/browse/III-1292
             $body = [];
         }
 

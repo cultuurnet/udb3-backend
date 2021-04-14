@@ -33,21 +33,6 @@ class CacheDocumentRepository implements DocumentRepository
         return new JsonDocument($id, $value);
     }
 
-    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
-    {
-        $value = $this->cache->fetch($id);
-
-        if ('GONE' === $value) {
-            throw DocumentDoesNotExist::gone($id);
-        }
-
-        if (false === $value) {
-            return null;
-        }
-
-        return new JsonDocument($id, $value);
-    }
-
     public function save(JsonDocument $document): void
     {
         $this->cache->save($document->getId(), $document->getRawBody(), 0);

@@ -175,7 +175,7 @@ class LabelRolesProjectorTest extends TestCase
     private function mockLabelRolesGet(UUID $labelId, JsonDocument $jsonDocument)
     {
         $this->labelRolesRepository
-            ->method('get')
+            ->method('fetch')
             ->with($labelId)
             ->willReturn($jsonDocument);
     }

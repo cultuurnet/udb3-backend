@@ -32,17 +32,6 @@ final class PopularityEnrichedOfferRepository extends DocumentRepositoryDecorato
         return $jsonDocument;
     }
 
-    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
-    {
-        $jsonDocument = parent::get($id, $includeMetadata);
-
-        if ($includeMetadata && $jsonDocument instanceof JsonDocument) {
-            $jsonDocument = $this->enrich($jsonDocument);
-        }
-
-        return $jsonDocument;
-    }
-
     private function enrich(JsonDocument $jsonDocument): JsonDocument
     {
         $popularity = $this->popularityRepository->get($jsonDocument->getId());

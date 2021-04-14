@@ -18,19 +18,6 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
         return $document;
     }
 
-    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
-    {
-        $document = parent::get($id, $includeMetadata);
-
-        if (is_null($document)) {
-            return null;
-        }
-
-        $document = $this->polyfillNewProperties($document);
-        $document = $this->removeObsoleteProperties($document);
-        return $document;
-    }
-
     private function polyfillNewProperties(JsonDocument $jsonDocument): JsonDocument
     {
         return $jsonDocument->applyAssoc(

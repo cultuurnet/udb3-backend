@@ -45,20 +45,16 @@ class UserRolesProjector extends RoleProjector
         $roleId = $userAdded->getUuid()->toNative();
 
         try {
-            $roleDetailsDocument = $this->roleDetailsDocumentRepository->get($roleId);
+            $roleDetailsDocument = $this->roleDetailsDocumentRepository->fetch($roleId);
         } catch (DocumentDoesNotExist $e) {
-            return;
-        }
-
-        if (empty($roleDetailsDocument)) {
             return;
         }
 
         $roleDetails = $roleDetailsDocument->getBody();
 
-        $document = $this->repository->get($userId);
-
-        if (empty($document)) {
+        try {
+            $document = $this->repository->fetch($userId);
+        } catch (DocumentDoesNotExist $e) {
             $document = new JsonDocument(
                 $userId,
                 json_encode([])
@@ -80,12 +76,8 @@ class UserRolesProjector extends RoleProjector
         $roleId = $userRemoved->getUuid()->toNative();
 
         try {
-            $document = $this->repository->get($userId);
+            $document = $this->repository->fetch($userId);
         } catch (DocumentDoesNotExist $e) {
-            return;
-        }
-
-        if (empty($document)) {
             return;
         }
 
@@ -103,22 +95,14 @@ class UserRolesProjector extends RoleProjector
         $roleId = $roleDetailsProjectedToJSONLD->getUuid()->toNative();
 
         try {
-            $roleDetailsDocument = $this->roleDetailsDocumentRepository->get($roleId);
+            $roleDetailsDocument = $this->roleDetailsDocumentRepository->fetch($roleId);
         } catch (DocumentDoesNotExist $e) {
-            return;
-        }
-
-        if (is_null($roleDetailsDocument)) {
             return;
         }
 
         try {
-            $roleUsersDocument = $this->roleUsersDocumentRepository->get($roleId);
+            $roleUsersDocument = $this->roleUsersDocumentRepository->fetch($roleId);
         } catch (DocumentDoesNotExist $e) {
-            return;
-        }
-
-        if (is_null($roleUsersDocument)) {
             return;
         }
 
@@ -128,11 +112,7 @@ class UserRolesProjector extends RoleProjector
         $roleUserIds = array_keys($roleUsers);
 
         foreach ($roleUserIds as $roleUserId) {
-            $userRolesDocument = $this->repository->get($roleUserId);
-
-            if (is_null($userRolesDocument)) {
-                continue;
-            }
+            $userRolesDocument = $this->repository->fetch($roleUserId);
 
             $userRoles = json_decode($userRolesDocument->getRawBody(), true);
             $userRoles[$roleId] = $roleDetails;

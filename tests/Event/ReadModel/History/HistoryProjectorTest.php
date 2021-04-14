@@ -70,7 +70,6 @@ use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
 use CultuurNet\UDB3\Title;
 use DateTimeImmutable;
@@ -1451,8 +1450,7 @@ class HistoryProjectorTest extends TestCase
 
     protected function assertHistoryContainsLogs(string $eventId, array $history): void
     {
-        /** @var JsonDocument $document */
-        $document = $this->documentRepository->get($eventId);
+        $document = $this->documentRepository->fetch($eventId);
         $body = array_values((array) $document->getBody());
 
         $body = array_map(function (\stdClass $log) {

@@ -232,17 +232,13 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     private function assertReturnedDocumentContains(array $expected): void
     {
         $actualFromFetch = $this->repository->fetch(self::DOCUMENT_ID)->getAssocBody();
-        $actualFromGet = $this->repository->get(self::DOCUMENT_ID)->getAssocBody();
         $this->assertArrayContainsExpectedKeys($expected, $actualFromFetch);
-        $this->assertArrayContainsExpectedKeys($expected, $actualFromGet);
     }
 
     private function assertReturnedDocumentDoesNotContainKey(string $key): void
     {
         $actualFromFetch = $this->repository->fetch(self::DOCUMENT_ID)->getAssocBody();
-        $actualFromGet = $this->repository->get(self::DOCUMENT_ID)->getAssocBody();
         $this->assertArrayNotHasKey($key, $actualFromFetch);
-        $this->assertArrayNotHasKey($key, $actualFromGet);
     }
 
     private function assertArrayContainsExpectedKeys(array $expected, array $actual): void

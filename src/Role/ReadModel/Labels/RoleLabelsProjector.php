@@ -79,20 +79,22 @@ class RoleLabelsProjector extends RoleProjector
     public function applyLabelDetailsProjectedToJSONLD(LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD)
     {
         $labelId = $labelDetailsProjectedToJSONLD->getUuid()->toNative();
-        $document = $this->labelRolesRepository->get($labelId);
+        try {
+            $document = $this->labelRolesRepository->fetch($labelId);
+        } catch (DocumentDoesNotExist $e) {
+            return;
+        }
 
-        if ($document) {
-            $roles = json_decode($document->getRawBody());
+        $roles = json_decode($document->getRawBody());
 
-            foreach ($roles as $roleId) {
-                $role = $this->getDocument(new UUID($roleId));
+        foreach ($roles as $roleId) {
+            $role = $this->getDocument(new UUID($roleId));
 
-                if ($role) {
-                    $labelDetails = $this->getLabelDetails($role);
-                    $labelDetails[$labelId] = $this->labelJsonRepository->getByUuid($labelDetailsProjectedToJSONLD->getUuid());
-                    $role = $role->withAssocBody($labelDetails);
-                    $this->repository->save($role);
-                }
+            if ($role) {
+                $labelDetails = $this->getLabelDetails($role);
+                $labelDetails[$labelId] = $this->labelJsonRepository->getByUuid($labelDetailsProjectedToJSONLD->getUuid());
+                $role = $role->withAssocBody($labelDetails);
+                $this->repository->save($role);
             }
         }
     }
@@ -110,19 +112,13 @@ class RoleLabelsProjector extends RoleProjector
         $this->repository->remove($roleDeleted->getUuid());
     }
 
-    /**
-     * @return JsonDocument|null
-     */
-    private function getDocument(UUID $uuid)
+    private function getDocument(UUID $uuid): ?JsonDocument
     {
-        $document = null;
-
         try {
-            $document = $this->repository->get($uuid->toNative());
+            return $this->repository->fetch($uuid->toNative());
         } catch (DocumentDoesNotExist $e) {
+            return null;
         }
-
-        return $document;
     }
 
     /**

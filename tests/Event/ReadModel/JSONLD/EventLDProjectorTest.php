@@ -1258,7 +1258,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->assertEquals(
             $expectedMediaObjects,
-            $this->documentRepository->get(CdbXMLEventFactory::AN_EVENT_ID)->getBody()->mediaObject
+            $this->documentRepository->fetch(CdbXMLEventFactory::AN_EVENT_ID)->getBody()->mediaObject
         );
     }
 
