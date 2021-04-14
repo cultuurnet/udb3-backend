@@ -109,7 +109,7 @@ class ReadRoleRestController
 
     public function getUserRoles(string $userId): Response
     {
-        $userId = new StringLiteral((string) $userId);
+        $userId = new StringLiteral($userId);
         try {
             $document = $this->roleService->getRolesByUserId($userId);
             $body = json_decode($document->getRawBody(), true);
