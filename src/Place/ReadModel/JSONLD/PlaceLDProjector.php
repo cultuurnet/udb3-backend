@@ -136,11 +136,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
             $actorImportedFromUDB2->getCdbXml()
         );
 
-        try {
-            $document = $this->loadPlaceDocumentFromRepositoryById($actorId);
-        } catch (DocumentDoesNotExist $e) {
-            $document = $this->newDocument($actorId);
-        }
+        $document = $this->loadPlaceDocumentFromRepositoryById($actorId);
 
         $actorLd = $document->getBody();
 
@@ -399,11 +395,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
      * @param string $itemId
      * @return JsonDocument
      */
-    protected function loadPlaceDocumentFromRepositoryById($itemId)
+    protected function loadPlaceDocumentFromRepositoryById($itemId): JsonDocument
     {
-        $document = $this->repository->get($itemId);
-
-        if (!$document) {
+        try {
+            $document = $this->repository->fetch($itemId);
+        } catch (DocumentDoesNotExist $e) {
             return $this->newDocument($itemId);
         }
 
