@@ -22,12 +22,8 @@ class CacheDocumentRepository implements DocumentRepository
     {
         $value = $this->cache->fetch($id);
 
-        if ($value === 'GONE') {
-            throw DocumentDoesNotExist::gone($id);
-        }
-
-        if ($value === false) {
-            throw DocumentDoesNotExist::notFound($id);
+        if ($value === false || $value === 'GONE') {
+            throw DocumentDoesNotExist::withId($id);
         }
 
         return new JsonDocument($id, $value);

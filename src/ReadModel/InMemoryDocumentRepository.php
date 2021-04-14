@@ -14,11 +14,7 @@ class InMemoryDocumentRepository implements DocumentRepository
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
         if (!isset($this->documents[$id])) {
-            throw DocumentDoesNotExist::notFound($id);
-        }
-
-        if ('GONE' === $this->documents[$id]) {
-            throw DocumentDoesNotExist::gone($id);
+            throw DocumentDoesNotExist::withId($id);
         }
 
         return $this->documents[$id];
@@ -31,6 +27,6 @@ class InMemoryDocumentRepository implements DocumentRepository
 
     public function remove($id): void
     {
-        $this->documents[$id] = 'GONE';
+        unset($this->documents[$id]);
     }
 }

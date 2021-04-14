@@ -119,7 +119,7 @@ class ReadEventRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
                         case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::gone($id);
+                            throw DocumentDoesNotExist::withId($id);
                         default:
                             throw DocumentDoesNotExist::notFound($id);
                     }
@@ -134,7 +134,7 @@ class ReadEventRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return $this->historyJsonDocument;
                         case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::gone(self::REMOVED_ID);
+                            throw DocumentDoesNotExist::withId(self::REMOVED_ID);
                         default:
                             throw DocumentDoesNotExist::notFound($id);
                     }
@@ -171,17 +171,6 @@ class ReadEventRestControllerTest extends TestCase
         $jsonResponse = $this->eventRestController->history(self::NON_EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function returns_a_http_response_with_error_HTTP_GONE_for_a_removed_event(): void
-    {
-        $this->givenGodUser();
-        $jsonResponse = $this->eventRestController->history(self::REMOVED_ID);
-
-        $this->assertEquals(Response::HTTP_GONE, $jsonResponse->getStatusCode());
     }
 
     /**

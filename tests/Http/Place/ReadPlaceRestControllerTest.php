@@ -81,7 +81,7 @@ class ReadPlaceRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
                         case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::gone($id);
+                            throw DocumentDoesNotExist::withId($id);
                         default:
                             throw DocumentDoesNotExist::notFound($id);
                     }

@@ -110,7 +110,7 @@ class PlaceReferenceExistsValidatorTest extends TestCase
         $this->repository->expects($this->once())
             ->method('fetch')
             ->with($id)
-            ->willThrowException(DocumentDoesNotExist::gone($id));
+            ->willThrowException(DocumentDoesNotExist::withId($id));
 
         $expected = [
             'Location with id https://io.uitdatabank.be/places/b458d34c-af5c-462f-a004-85516c1b1e0a does not exist.',
