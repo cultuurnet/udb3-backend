@@ -60,7 +60,6 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
 
 
         $this->eventRepository->method('fetch')->with($eventId)->willReturn($originalJsonDocument);
-        $this->eventRepository->method('get')->with($eventId)->willReturn($originalJsonDocument);
 
         $this->productionRepository->method('findProductionForEventId')->willThrowException(
             new EntityNotFoundException()
@@ -97,7 +96,6 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
         );
 
         $this->eventRepository->method('fetch')->with($eventId)->willReturn($originalJsonDocument);
-        $this->eventRepository->method('get')->with($eventId)->willReturn($originalJsonDocument);
         $this->productionRepository->method('findProductionForEventId')->willReturn($production);
         $this->iriGenerator->method('iri')->with($otherEventId)->willReturn('foo/' . $otherEventId);
 
