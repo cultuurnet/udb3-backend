@@ -11,9 +11,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
-use CultuurNet\UDB3\Offer\LocalOfferReadingService;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
@@ -46,14 +44,6 @@ class OfferServiceProvider implements ServiceProviderInterface
                 return new DBALPopularityRepository(
                     $app['dbal_connection']
                 );
-            }
-        );
-
-        $app['offer_reading_service'] = $app->share(
-            function (Application $app) {
-                return (new LocalOfferReadingService($app['iri_offer_identifier_factory']))
-                    ->withDocumentRepository(OfferType::EVENT(), $app['event_jsonld_repository'])
-                    ->withDocumentRepository(OfferType::PLACE(), $app['place_jsonld_repository']);
             }
         );
 
