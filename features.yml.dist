@@ -1,5 +1,0 @@
-toggles:
-  jobs-endpoint:
-    name: jobs-endpoint
-    conditions: {}
-    status: inactive
