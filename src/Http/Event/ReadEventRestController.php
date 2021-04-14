@@ -21,7 +21,6 @@ class ReadEventRestController
     use ApiProblemJsonResponseTrait;
     private const HISTORY_ERROR_FORBIDDEN = 'Forbidden to access event history.';
     private const HISTORY_ERROR_NOT_FOUND = 'An error occurred while getting the history of the event with id %s!';
-    private const HISTORY_ERROR_GONE = 'An error occurred while getting the history of the event with id %s which was removed!';
     private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     /**
