@@ -152,11 +152,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
      */
     private function getActorXml(Url $url)
     {
-        try {
-            $response = $this->internalSendRequest($url);
-        } catch (ActorNotFoundException $exception) {
-            throw $exception;
-        }
+        $response = $this->internalSendRequest($url);
 
         $xml = $response->getBody()->getContents();
 

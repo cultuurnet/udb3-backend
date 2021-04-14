@@ -116,11 +116,7 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
      */
     private function retrieveXml(Url $url)
     {
-        try {
-            $response = $this->internalSendRequest($url);
-        } catch (EventNotFoundException $exception) {
-            throw $exception;
-        }
+        $response = $this->internalSendRequest($url);
 
         $xml = $response->getBody()->getContents();
 
