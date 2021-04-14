@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleCreated;
@@ -123,7 +124,7 @@ class RoleUsersProjectorTest extends TestCase
             $userAdded
         );
 
-        $this->mockGet(
+        $this->mockFetch(
             $userAdded->getUuid(),
             $this->createEmptyJsonDocument($userAdded->getUuid())
         );
@@ -160,7 +161,7 @@ class RoleUsersProjectorTest extends TestCase
             $userRemoved
         );
 
-        $this->mockGet(
+        $this->mockFetch(
             $userRemoved->getUuid(),
             $this->createJsonDocumentWithUserIdentityDetail(
                 $userRemoved->getUuid(),
@@ -190,7 +191,10 @@ class RoleUsersProjectorTest extends TestCase
             $userAdded
         );
 
-        $this->mockGet($userAdded->getUuid());
+        $this->repository
+            ->method('fetch')
+            ->with($userAdded->getUuid()->toNative())
+            ->willThrowException(DocumentDoesNotExist::notFound($userAdded->getUuid()->toNative()));
 
         $this->userIdentityResolver->expects($this->never())
             ->method('getUserById');
@@ -216,7 +220,7 @@ class RoleUsersProjectorTest extends TestCase
             $userAdded
         );
 
-        $this->mockGet(
+        $this->mockFetch(
             $userAdded->getUuid(),
             $this->createEmptyJsonDocument($userAdded->getUuid())
         );
@@ -248,7 +252,10 @@ class RoleUsersProjectorTest extends TestCase
             $userRemoved
         );
 
-        $this->mockGet($userRemoved->getUuid());
+        $this->repository
+            ->method('fetch')
+            ->with($userRemoved->getUuid()->toNative())
+            ->willThrowException(DocumentDoesNotExist::notFound($userRemoved->getUuid()->toNative()));
 
         $this->userIdentityResolver->expects($this->never())
             ->method('getUserById');
@@ -262,10 +269,10 @@ class RoleUsersProjectorTest extends TestCase
     /**
      * @param JsonDocument $jsonDocument
      */
-    private function mockGet(UUID $uuid, JsonDocument $jsonDocument = null)
+    private function mockFetch(UUID $uuid, JsonDocument $jsonDocument = null)
     {
         $this->repository
-            ->method('get')
+            ->method('fetch')
             ->with($uuid)
             ->willReturn($jsonDocument);
     }

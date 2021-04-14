@@ -86,19 +86,13 @@ class RoleUsersProjector extends RoleProjector
         $this->repository->remove($roleDeleted->getUuid());
     }
 
-    /**
-     * @return JsonDocument|null
-     */
-    private function getDocument(UUID $uuid)
+    private function getDocument(UUID $uuid): ?JsonDocument
     {
-        $document = null;
-
         try {
-            $document = $this->repository->get($uuid->toNative());
+            return $this->repository->fetch($uuid->toNative());
         } catch (DocumentDoesNotExist $e) {
+            return null;
         }
-
-        return $document;
     }
 
     /**
