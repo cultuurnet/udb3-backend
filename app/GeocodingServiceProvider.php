@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
-use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Geocoder\Provider\GoogleMaps;

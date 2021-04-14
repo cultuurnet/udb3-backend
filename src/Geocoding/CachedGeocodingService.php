@@ -9,12 +9,12 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use Doctrine\Common\Cache\Cache;
 
-class CachedGeocodingService implements GeocodingServiceInterface
+class CachedGeocodingService implements GeocodingService
 {
     public const NO_COORDINATES_FOUND = 'NO_COORDINATES_FOUND';
 
     /**
-     * @var GeocodingServiceInterface
+     * @var GeocodingService
      */
     private $geocodingService;
 
@@ -24,7 +24,7 @@ class CachedGeocodingService implements GeocodingServiceInterface
     private $cache;
 
 
-    public function __construct(GeocodingServiceInterface $geocodingService, Cache $cache)
+    public function __construct(GeocodingService $geocodingService, Cache $cache)
     {
         $this->geocodingService = $geocodingService;
         $this->cache = $cache;
