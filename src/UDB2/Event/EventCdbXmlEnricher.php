@@ -117,7 +117,6 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
     private function retrieveXml(Url $url)
     {
         $originalUrl = $url;
-        $url = $this->transformUrl($url);
 
         try {
             $response = $this->internalSendRequest($url);
