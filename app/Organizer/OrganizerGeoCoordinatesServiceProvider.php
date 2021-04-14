@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Address\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateGeoCoordinatesFromAddressCommandHandler;
 use CultuurNet\UDB3\Organizer\ProcessManager\GeoCoordinatesProcessManager;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
@@ -25,7 +26,7 @@ class OrganizerGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     $app['organizer_repository'],
                     new DefaultAddressFormatter(),
                     new LocalityAddressFormatter(),
-                    $app['geocoding_service']
+                    $app[GeocodingService::class]
                 );
             }
         );

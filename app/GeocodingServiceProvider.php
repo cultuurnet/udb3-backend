@@ -18,7 +18,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['geocoding_service'] = $app->share(
+        $app[GeocodingService::class] = $app->share(
             function (Application $app) {
                 $googleMapsApiKey = null;
 
