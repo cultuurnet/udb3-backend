@@ -15,7 +15,6 @@ class HistoryPlaceRestControllerTest extends TestCase
 {
     public const EXISTING_ID = 'existingId';
     public const NON_EXISTING_ID = 'nonExistingId';
-    public const REMOVED_ID = 'removedId';
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|UserIdentificationInterface
@@ -68,8 +67,6 @@ class HistoryPlaceRestControllerTest extends TestCase
                     switch ($id) {
                         case self::EXISTING_ID:
                             return new JsonDocument('id', $this->rawHistory);
-                        case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::withId(self::REMOVED_ID);
                         default:
                             throw DocumentDoesNotExist::withId($id);
                     }
