@@ -38,7 +38,6 @@ use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
@@ -1052,12 +1051,6 @@ $app['predis.client'] = $app->share(function ($app) {
 
 $app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
-
-$app->register(
-    new FeatureTogglesProvider(
-        isset($app['config']['toggles']) ? $app['config']['toggles'] : []
-    )
-);
 
 $app->register(
     new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider(),
