@@ -9,6 +9,7 @@ use CultuurNet\UDB3\EntityServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\ReadModel\Relations\RepositoryInterface;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class RelatedPlaceLDProjector implements EventListener
@@ -65,9 +66,9 @@ class RelatedPlaceLDProjector implements EventListener
 
     private function updateEmbeddedOrganizer(string $placeId, $organizerJSONLD)
     {
-        $document = $this->repository->get($placeId);
-
-        if (!$document) {
+        try {
+            $document = $this->repository->fetch($placeId);
+        } catch (DocumentDoesNotExist $e) {
             return;
         }
 

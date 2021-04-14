@@ -178,12 +178,12 @@ class RelatedPlaceLDProjectorTest extends TestCase
 
         $this->assertEquals(
             $expectedKantoorLeuvenBody,
-            $this->documentRepository->get($kantoorLeuvenId)->getBody()
+            $this->documentRepository->fetch($kantoorLeuvenId)->getBody()
         );
 
         $this->assertEquals(
             $expectedKantoorKesselLoBody,
-            $this->documentRepository->get($kantoorKesselLoId)->getBody()
+            $this->documentRepository->fetch($kantoorKesselLoId)->getBody()
         );
     }
 }
