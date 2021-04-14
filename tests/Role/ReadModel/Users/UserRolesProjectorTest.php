@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\RoleDetailsProjectedToJSONLD;
@@ -81,7 +82,7 @@ class UserRolesProjectorTest extends TestCase
             'newRole'
         );
         // Which will come from the role details repo.
-        $this->roleDetailsDocumentRepository->method('get')
+        $this->roleDetailsDocumentRepository->method('fetch')
             ->with($newRoleUuid)
             ->willReturn($newRoleDetailsDocument);
 
@@ -93,7 +94,7 @@ class UserRolesProjectorTest extends TestCase
         );
         // Which is part from the existing user roles document.
         $roles[$existingRoleUuid->toNative()] = $existingRoleDetailsDocument->getBody();
-        $this->userRolesDocumentRepository->method('get')
+        $this->userRolesDocumentRepository->method('fetch')
             ->with($userAdded->getUserId()->toNative())
             ->willReturn(new JsonDocument(
                 $userAdded->getUserId()->toNative(),
@@ -138,9 +139,16 @@ class UserRolesProjectorTest extends TestCase
             $userAdded->getUuid(),
             'roleName'
         );
-        $this->roleDetailsDocumentRepository->method('get')
+
+        $this->roleDetailsDocumentRepository
+            ->method('fetch')
             ->with($userAdded->getUuid())
             ->willReturn($roleDetailsDocument);
+
+        $this->userRolesDocumentRepository
+            ->method('fetch')
+            ->with($userAdded->getUserId())
+            ->willThrowException(DocumentDoesNotExist::notFound($userAdded->getUserId()->toNative()));
 
         $roles[$userAdded->getUuid()->toNative()] = $roleDetailsDocument->getBody();
         $jsonDocument = new JsonDocument(
@@ -175,7 +183,7 @@ class UserRolesProjectorTest extends TestCase
             json_encode([$userRemoved->getUuid()->toNative()])
         );
 
-        $this->userRolesDocumentRepository->method('get')
+        $this->userRolesDocumentRepository->method('fetch')
             ->with($userRemoved->getUserId())
             ->willReturn($jsonDocument);
 
@@ -200,7 +208,7 @@ class UserRolesProjectorTest extends TestCase
             $roleDetailsProjectedToJSONLD->getUuid(),
             'newRoleName'
         );
-        $this->roleDetailsDocumentRepository->method('get')
+        $this->roleDetailsDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toNative())
             ->willReturn($newRoleDetailsDocument);
 
@@ -215,7 +223,7 @@ class UserRolesProjectorTest extends TestCase
             $roleDetailsProjectedToJSONLD->getUuid()->toNative(),
             json_encode($users)
         );
-        $this->roleUsersDocumentRepository->method('get')
+        $this->roleUsersDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toNative())
             ->willReturn($roleUsersDocument);
 
@@ -229,7 +237,7 @@ class UserRolesProjectorTest extends TestCase
             'userId',
             json_encode($roles)
         );
-        $this->userRolesDocumentRepository->method('get')
+        $this->userRolesDocumentRepository->method('fetch')
             ->with('userId')
             ->willReturn($existingUserRolesDocument);
 
@@ -265,12 +273,12 @@ class UserRolesProjectorTest extends TestCase
             $userAdded
         );
 
-        $this->roleDetailsDocumentRepository->method('get')
+        $this->roleDetailsDocumentRepository->method('fetch')
             ->with($userAdded->getUuid())
-            ->willReturn(null);
+            ->willThrowException(DocumentDoesNotExist::notFound($userAdded->getUuid()->toNative()));
 
         $this->userRolesDocumentRepository->expects($this->never())
-            ->method('get');
+            ->method('fetch');
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('save');
@@ -293,9 +301,9 @@ class UserRolesProjectorTest extends TestCase
             $userRemoved
         );
 
-        $this->userRolesDocumentRepository->method('get')
+        $this->userRolesDocumentRepository->method('fetch')
             ->with($userRemoved->getUserId())
-            ->willReturn(null);
+            ->willThrowException(DocumentDoesNotExist::notFound($userRemoved->getUserId()->toNative()));
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('save');
@@ -312,15 +320,15 @@ class UserRolesProjectorTest extends TestCase
             new UUID()
         );
 
-        $this->roleDetailsDocumentRepository->method('get')
+        $this->roleDetailsDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toNative())
-            ->willReturn(null);
+            ->willThrowException(DocumentDoesNotExist::notFound($roleDetailsProjectedToJSONLD->getUuid()->toNative()));
 
         $this->roleUsersDocumentRepository->expects($this->never())
-            ->method('get');
+            ->method('fetch');
 
         $this->userRolesDocumentRepository->expects($this->never())
-            ->method('get');
+            ->method('fetch');
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('save');
@@ -345,13 +353,13 @@ class UserRolesProjectorTest extends TestCase
             $roleDetailsProjectedToJSONLD->getUuid(),
             'newRoleName'
         );
-        $this->roleDetailsDocumentRepository->method('get')
+        $this->roleDetailsDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toNative())
             ->willReturn($newRoleDetailsDocument);
 
-        $this->roleUsersDocumentRepository->method('get')
+        $this->roleUsersDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toNative())
-            ->willReturn(null);
+            ->willThrowException(DocumentDoesNotExist::notFound($roleDetailsProjectedToJSONLD->getUuid()->toNative()));
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('save');
