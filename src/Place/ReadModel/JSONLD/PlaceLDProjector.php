@@ -393,7 +393,6 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
 
     /**
      * @param string $itemId
-     * @return JsonDocument
      */
     protected function loadPlaceDocumentFromRepositoryById($itemId): JsonDocument
     {
