@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PDO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -143,31 +144,51 @@ class UpdateUniqueOrganizers extends Command
         }
 
         if ($existingOrganizerUrl === null) {
+            try {
+                $this->connection
+                    ->insert(
+                        'organizer_unique_websites',
+                        [
+                            'uuid_col' => $organizerUuid,
+                            'unique_col' => (string)$organizerUrl,
+                        ]
+                    );
+                return true;
+            } catch (UniqueConstraintViolationException $e) {
+                // The website is already in use by another organizer.
+                // This happened because the organizer_unique_websites table was truncated at some point, which caused
+                // the unique check to malfunction. The goal of this script is to get the websites back into the unique
+                // table regardless of their organizer id so the unique check works again, before we can start cleaning
+                // up the duplicates, so we need to handle this gracefully and continue without crashing.
+                return false;
+            }
+        }
+
+        try {
             $this->connection
-                ->insert(
+                ->update(
                     'organizer_unique_websites',
                     [
                         'uuid_col' => $organizerUuid,
-                        'unique_col' => (string) $organizerUrl,
+                        'unique_col' => (string)$organizerUrl,
+                    ],
+                    [
+                        'uuid_col' => $organizerUuid,
                     ]
                 );
-
             return true;
+        } catch (UniqueConstraintViolationException $e) {
+            // The website is already in use by another organizer. See comment in the catch block above.
+            // In this case we need to release the organizer's previous website though so it becomes available again.
+            $this->connection
+                ->delete(
+                    'organizer_unique_websites',
+                    [
+                        'uuid_col' => $organizerUuid,
+                    ]
+                );
+            return false;
         }
-
-        $this->connection
-            ->update(
-                'organizer_unique_websites',
-                [
-                    'uuid_col' => $organizerUuid,
-                    'unique_col' => (string) $organizerUrl,
-                ],
-                [
-                    'uuid_col' => $organizerUuid,
-                ]
-            );
-
-        return true;
     }
 
     private function getOrganizerWebsite(array $organizerEvent): Url
