@@ -34,16 +34,6 @@ class DummyPlaceProjectionEnricher implements DocumentRepository
         );
     }
 
-    public function get(string $id, bool $includeMetadata = false): ?JsonDocument
-    {
-        $readModel = $this->repository->get($id, $includeMetadata);
-        if (!$readModel) {
-            return $readModel;
-        }
-
-        return $this->enrich($readModel);
-    }
-
     public function save(JsonDocument $readModel): void
     {
         $this->repository->save($readModel);
