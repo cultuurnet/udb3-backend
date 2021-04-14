@@ -16,7 +16,6 @@ use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use CultuurNet\UDB3\UDB2\Event\Events\EventCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Event\Events\EventUpdatedEnrichedWithCdbXml;
-use CultuurNet\UDB3\UDB2\UrlTransformingTrait;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationException;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceInterface;
 use DOMDocument;
@@ -37,7 +36,6 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use DelegateEventHandlingToSpecificMethodTrait;
-    use UrlTransformingTrait;
 
     /**
      * @var EventBus
