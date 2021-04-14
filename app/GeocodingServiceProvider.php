@@ -26,7 +26,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                     $googleMapsApiKey = $app['geocoding_service.google_maps_api_key'];
                 }
 
-                return new DefaultGeocodingService(
+                $geocodingService = new DefaultGeocodingService(
                     new GoogleMaps(
                         new CurlHttpAdapter(),
                         null,
@@ -36,12 +36,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                     ),
                     LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'google'))
                 );
-            }
-        );
 
-        $app->extend(
-            'geocoding_service',
-            function (GeocodingServiceInterface $geocodingService, Application $app) {
                 return new CachedGeocodingService(
                     $geocodingService,
                     $app['cache']('geocoords')
@@ -49,7 +44,6 @@ class GeocodingServiceProvider implements ServiceProviderInterface
             }
         );
     }
-
 
     public function boot(Application $app)
     {
