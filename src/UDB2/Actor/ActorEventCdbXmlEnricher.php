@@ -155,13 +155,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
         try {
             $response = $this->internalSendRequest($url);
         } catch (ActorNotFoundException $exception) {
-            if (false) {
-                // Fallback when url was replaced.
-                $response = $this->internalSendRequest($url);
-            } else {
-                // No fallback just throw it.
-                throw $exception;
-            }
+            throw $exception;
         }
 
         $xml = $response->getBody()->getContents();
