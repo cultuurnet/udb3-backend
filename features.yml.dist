@@ -7,7 +7,3 @@ toggles:
     name: jobs-endpoint
     conditions: {}
     status: inactive
-  import-from-sapi:
-    name: import-from-sapi
-    conditions: {}
-    status: inactive

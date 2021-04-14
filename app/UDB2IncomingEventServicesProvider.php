@@ -47,13 +47,7 @@ class UDB2IncomingEventServicesProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        /** @var \Qandidate\Toggle\ToggleManager $toggles */
-        $toggles = $app['toggles'];
-
-        $importFromSapi = $toggles->active(
-            'import-from-sapi',
-            $app['toggles.context']
-        );
+        $importFromSapi = false;
 
         $app['udb2_deserializer_locator'] = $app->share(
             function () {
