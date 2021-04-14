@@ -22,15 +22,11 @@ class JobsControllerProvider implements ControllerProviderInterface
                 return new ReadRestController(new ResqueJobStatusFactory());
             }
         );
-        return $this->setUpEndpoints($app['controllers_factory']);
-    }
 
-    /**
-     * @return ControllerCollection
-     */
-    private function setUpEndpoints(ControllerCollection $controllers)
-    {
+        /** @var ControllerCollection $controllers */
+        $controllers = $app['controllers_factory'];
         $controllers->get('/{jobId}', 'jobs.read_rest_controller:get');
+
         return $controllers;
     }
 }
