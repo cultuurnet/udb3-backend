@@ -17,17 +17,12 @@ class JobsControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $this->setUpReadRestController($app);
-        return $this->setUpEndpoints($app['controllers_factory']);
-    }
-
-    private function setUpReadRestController(Application $app)
-    {
         $app['jobs.read_rest_controller'] = $app->share(
             function (Application $app) {
                 return new ReadRestController(new ResqueJobStatusFactory());
             }
         );
+        return $this->setUpEndpoints($app['controllers_factory']);
     }
 
     /**
