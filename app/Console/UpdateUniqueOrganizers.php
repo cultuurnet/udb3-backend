@@ -164,19 +164,31 @@ class UpdateUniqueOrganizers extends Command
             }
         }
 
-        $this->connection
-            ->update(
-                'organizer_unique_websites',
-                [
-                    'uuid_col' => $organizerUuid,
-                    'unique_col' => (string) $organizerUrl,
-                ],
-                [
-                    'uuid_col' => $organizerUuid,
-                ]
-            );
-
-        return true;
+        try {
+            $this->connection
+                ->update(
+                    'organizer_unique_websites',
+                    [
+                        'uuid_col' => $organizerUuid,
+                        'unique_col' => (string)$organizerUrl,
+                    ],
+                    [
+                        'uuid_col' => $organizerUuid,
+                    ]
+                );
+            return true;
+        } catch (UniqueConstraintViolationException $e) {
+            // The website is already in use by another organizer. See comment in the catch block above.
+            // In this case we need to release the organizer's previous website though so it becomes available again.
+            $this->connection
+                ->delete(
+                    'organizer_unique_websites',
+                    [
+                        'uuid_col' => $organizerUuid,
+                    ]
+                );
+            return false;
+        }
     }
 
     private function getOrganizerWebsite(array $organizerEvent): Url
