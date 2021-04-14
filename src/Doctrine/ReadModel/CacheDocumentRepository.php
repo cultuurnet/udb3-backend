@@ -36,6 +36,6 @@ class CacheDocumentRepository implements DocumentRepository
 
     public function remove($id): void
     {
-        $this->cache->save($id, 'GONE', 0);
+        $this->cache->delete($id);
     }
 }
