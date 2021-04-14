@@ -67,13 +67,10 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
         );
 
         $fetchActual = $this->productionEnrichedEventRepository->fetch($eventId);
-        $getActual = $this->productionEnrichedEventRepository->get($eventId);
 
         $this->assertEquals($eventId, $fetchActual->getBody()->{'@id'});
-        $this->assertEquals($eventId, $getActual->getBody()->{'@id'});
 
         $this->assertNull($fetchActual->getBody()->production);
-        $this->assertNull($getActual->getBody()->production);
     }
 
     /**
@@ -105,29 +102,10 @@ class ProductionEnrichedEventRepositoryTest extends TestCase
         $this->iriGenerator->method('iri')->with($otherEventId)->willReturn('foo/' . $otherEventId);
 
         $fetchActual = $this->productionEnrichedEventRepository->fetch($eventId);
-        $getActual = $this->productionEnrichedEventRepository->get($eventId);
 
         $this->assertEquals($eventId, $fetchActual->getBody()->{'@id'});
-        $this->assertEquals($eventId, $getActual->getBody()->{'@id'});
-
         $this->assertEquals($productionId->toNative(), $fetchActual->getBody()->production->id);
-        $this->assertEquals($productionId->toNative(), $getActual->getBody()->production->id);
-
         $this->assertEquals($productionName, $fetchActual->getBody()->production->title);
-        $this->assertEquals($productionName, $getActual->getBody()->production->title);
-
         $this->assertEquals(['foo/' . $otherEventId], $fetchActual->getBody()->production->otherEvents);
-        $this->assertEquals(['foo/' . $otherEventId], $getActual->getBody()->production->otherEvents);
-    }
-
-    /**
-     * @test
-     */
-    public function it_will_return_null_when_getting_a_non_existing_document(): void
-    {
-        $eventId = Uuid::uuid4()->toString();
-        $this->eventRepository->method('get')->willReturn(null);
-        $actual = $this->productionEnrichedEventRepository->get($eventId);
-        $this->assertNull($actual);
     }
 }
