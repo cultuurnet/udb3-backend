@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Popularity;
 
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
@@ -50,10 +51,8 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->popularityEnrichedOfferRepository->fetch($offerId, false);
-        $getJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, false);
 
         $this->assertEquals($jsonLd, $fetchJsonLd);
-        $this->assertEquals($jsonLd, $getJsonLd);
     }
 
     /**
@@ -66,9 +65,8 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $popularity = new Popularity(1234567);
         $this->popularityRepository->saveScore($offerId, $popularity);
 
-        $returnedJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, true);
-
-        $this->assertNull($returnedJsonLd);
+        $this->expectException(DocumentDoesNotExist::class);
+        $this->popularityEnrichedOfferRepository->fetch($offerId, true);
     }
 
     /**
@@ -85,7 +83,6 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         $this->decoratedRepository->save($jsonLd);
 
         $fetchJsonLd = $this->popularityEnrichedOfferRepository->fetch($offerId, true);
-        $getJsonLd = $this->popularityEnrichedOfferRepository->get($offerId, true);
 
         $expectedJsonLd = new JsonDocument(
             $offerId,
@@ -100,6 +97,5 @@ class PopularityEnrichedOfferRepositoryTest extends TestCase
         );
 
         $this->assertEquals($expectedJsonLd, $fetchJsonLd);
-        $this->assertEquals($expectedJsonLd, $getJsonLd);
     }
 }
