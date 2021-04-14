@@ -93,9 +93,6 @@ class ReadEventRestController
 
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            if ($e->isGone()) {
-                return $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $cdbid);
-            }
             return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $cdbid);
         }
     }

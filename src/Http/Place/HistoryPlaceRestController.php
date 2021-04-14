@@ -59,9 +59,6 @@ class HistoryPlaceRestController
             $response->headers->set('Vary', 'Origin');
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            if ($e->isGone()) {
-                return $this->documentGoneResponse($placeId);
-            }
             return $this->notFoundResponse($placeId);
         }
     }

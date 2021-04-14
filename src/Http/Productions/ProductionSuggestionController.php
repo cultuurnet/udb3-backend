@@ -56,9 +56,6 @@ class ProductionSuggestionController
         try {
             $event = $this->enrichedEventRepository->fetch($eventId);
         } catch (DocumentDoesNotExist $e) {
-            if ($e->isGone()) {
-                throw new SuggestedEventRemovedException($eventId);
-            }
             throw new SuggestedEventNotFoundException($eventId);
         }
 
