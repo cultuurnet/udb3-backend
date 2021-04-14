@@ -127,7 +127,7 @@ class RoleLabelsProjectorTest extends TestCase
 
         $jsonDocument = $this->createEmptyJsonDocument($labelAdded->getUuid());
 
-        $this->mockRoleLabelsGet(
+        $this->mockRoleLabelsFetch(
             $labelAdded->getUuid(),
             $jsonDocument
         );
@@ -171,7 +171,7 @@ class RoleLabelsProjectorTest extends TestCase
             $labelRemoved->getLabelId()
         );
 
-        $this->mockRoleLabelsGet(
+        $this->mockRoleLabelsFetch(
             $labelRemoved->getUuid(),
             $jsonDocument
         );
@@ -209,13 +209,13 @@ class RoleLabelsProjectorTest extends TestCase
         );
 
         $this->labelRolesRepository
-            ->method('get')
+            ->method('fetch')
             ->with($labelProjected->getUuid()->toNative())
             ->willReturn($jsonDocument);
 
         $jsonDocument = $this->createJsonDocument($roleId, $labelProjected->getUuid());
 
-        $this->mockRoleLabelsGet($roleId, $jsonDocument);
+        $this->mockRoleLabelsFetch($roleId, $jsonDocument);
 
         $labelEntity = $this->createLabelEntity($labelProjected->getUuid());
 
@@ -277,13 +277,10 @@ class RoleLabelsProjectorTest extends TestCase
         );
     }
 
-    /**
-     * @param JsonDocument $jsonDocument
-     */
-    private function mockRoleLabelsGet(UUID $uuid, JsonDocument $jsonDocument = null)
+    private function mockRoleLabelsFetch(UUID $uuid, JsonDocument $jsonDocument): void
     {
         $this->roleLabelsRepository
-            ->method('get')
+            ->method('fetch')
             ->with($uuid->toNative())
             ->willReturn($jsonDocument);
     }
