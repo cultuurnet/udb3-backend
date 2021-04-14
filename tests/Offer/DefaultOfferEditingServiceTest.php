@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Offer\Item\Commands\UpdateType;
 use CultuurNet\UDB3\PriceInfo\BasePrice;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\PriceInfo\PriceInfo;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Theme;
@@ -109,7 +110,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     public function it_can_update_a_title_in_a_given_language()
     {
         $this->offerRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with('foo')
             ->willReturn(new JsonDocument('foo'));
 
@@ -137,7 +138,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     public function it_can_update_the_description_in_a_given_language()
     {
         $this->offerRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with('foo')
             ->willReturn(new JsonDocument('foo'));
 
@@ -190,7 +191,7 @@ class DefaultOfferEditingServiceTest extends TestCase
             ->willReturn($expectedCommandId);
 
         $this->offerRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with('940ce4d1-740b-43d2-a1a6-85be04a3eb30')
             ->willReturn(new JsonDocument('940ce4d1-740b-43d2-a1a6-85be04a3eb30'));
 
@@ -210,9 +211,9 @@ class DefaultOfferEditingServiceTest extends TestCase
         $unknownId = '8FEFDA81-993D-4F33-851F-C19F8CB90712';
 
         $this->offerRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($unknownId)
-            ->willReturn(null);
+            ->willThrowException(DocumentDoesNotExist::notFound($unknownId));
 
         $this->expectException(EntityNotFoundException::class);
 
@@ -225,7 +226,7 @@ class DefaultOfferEditingServiceTest extends TestCase
     private function expectPlaceholderDocument($offerId)
     {
         $this->offerRepository->expects($this->once())
-            ->method('get')
+            ->method('fetch')
             ->with($offerId)
             ->willReturn(new JsonDocument($offerId));
     }

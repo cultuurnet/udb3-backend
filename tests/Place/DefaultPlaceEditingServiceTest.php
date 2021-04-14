@@ -89,7 +89,7 @@ class DefaultPlaceEditingServiceTest extends TestCase
         );
 
         $this->readRepository->expects($this->any())
-            ->method('get')
+            ->method('fetch')
             ->with('ad93103d-1395-4af7-a52a-2829d466c232')
             ->willReturn(new JsonDocument('ad93103d-1395-4af7-a52a-2829d466c232'));
 
