@@ -47,7 +47,7 @@ class ReadOrganizerRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return $this->jsonDocument->getRawBody();
                         default:
-                            throw DocumentDoesNotExist::notFound($id);
+                            throw DocumentDoesNotExist::withId($id);
                     }
                 }
             );
