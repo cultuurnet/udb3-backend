@@ -68,8 +68,6 @@ class ReadEventRestController
 
     public function history(string $cdbid): JsonResponse
     {
-        $response = null;
-
         if (!$this->userIdentification->isGodUser()) {
             return $this->createApiProblemJsonResponse(
                 self::HISTORY_ERROR_FORBIDDEN,
@@ -98,9 +96,6 @@ class ReadEventRestController
 
     public function getCalendarSummary(string $cdbid, Request $request): string
     {
-        $data = null;
-        $response = null;
-
         $style = $request->query->get('style', 'text');
         $langCode = $request->query->get('langCode', 'nl_BE');
         $hidePastDates = $request->query->getBoolean('hidePast', false);
