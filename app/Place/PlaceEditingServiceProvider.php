@@ -30,7 +30,7 @@ class PlaceEditingServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['place_organizer_relation_service'] = $app->share(
+        $app[PlaceOrganizerRelationService::class] = $app->share(
             function ($app) {
                 return new PlaceOrganizerRelationService(
                     $app['place_editing_service'],

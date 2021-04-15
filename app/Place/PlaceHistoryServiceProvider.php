@@ -13,7 +13,7 @@ final class PlaceHistoryServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['place_history_projector'] = $app->share(
+        $app[HistoryProjector::class] = $app->share(
             function ($app) {
                 $projector = new HistoryProjector(
                     $app['places_history_repository']

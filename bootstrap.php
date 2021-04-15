@@ -5,6 +5,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\MonologSocketIO\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Clock\SystemClock;
+use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
 use CultuurNet\UDB3\CalendarFactory;
@@ -26,6 +27,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
+use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
 use CultuurNet\UDB3\Silex\AggregateType;
 use CultuurNet\UDB3\Silex\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\Silex\AMQP\AMQPPublisherServiceProvider;
@@ -414,8 +416,8 @@ $app['event_bus'] = function ($app) {
             'place_relations_projector',
             EventJSONLDServiceProvider::PROJECTOR,
             EventJSONLDServiceProvider::RELATED_PROJECTOR,
-            'event_history_projector',
-            'place_history_projector',
+            \CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector::class,
+            \CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector::class,
             PlaceJSONLDServiceProvider::PROJECTOR,
             PlaceJSONLDServiceProvider::RELATED_PROJECTOR,
             OrganizerJSONLDServiceProvider::PROJECTOR,
@@ -574,8 +576,8 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
 
         $commandBus->subscribe(
             (new \CultuurNet\UDB3\Organizer\OrganizerCommandHandler($app['organizer_repository']))
-                ->withOrganizerRelationService($app['place_organizer_relation_service'])
-                ->withOrganizerRelationService($app['event_organizer_relation_service'])
+                ->withOrganizerRelationService($app[PlaceOrganizerRelationService::class])
+                ->withOrganizerRelationService($app[EventOrganizerRelationService::class])
         );
 
         $commandBus->subscribe(
