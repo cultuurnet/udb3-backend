@@ -13,7 +13,7 @@ final class EventHistoryServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app): void
     {
-        $app['event_history_projector'] = $app->share(
+        $app[HistoryProjector::class] = $app->share(
             function ($app) {
                 $projector = new HistoryProjector(
                     $app['event_history_repository']
