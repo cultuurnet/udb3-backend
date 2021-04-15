@@ -17,40 +17,16 @@ class JobsControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        if ($this->isJobsEndpointEnabled($app)) {
-            $this->setUpReadRestController($app);
-            return $this->setUpEndpoints($app['controllers_factory']);
-        } else {
-            return $app['controllers_factory'];
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    private function isJobsEndpointEnabled(Application $app)
-    {
-        /** @var \Qandidate\Toggle\ToggleManager $toggles */
-        $toggles = $app['toggles'];
-        return $toggles->active('jobs-endpoint', $app['toggles.context']);
-    }
-
-
-    private function setUpReadRestController(Application $app)
-    {
         $app['jobs.read_rest_controller'] = $app->share(
             function (Application $app) {
                 return new ReadRestController(new ResqueJobStatusFactory());
             }
         );
-    }
 
-    /**
-     * @return ControllerCollection
-     */
-    private function setUpEndpoints(ControllerCollection $controllers)
-    {
+        /** @var ControllerCollection $controllers */
+        $controllers = $app['controllers_factory'];
         $controllers->get('/{jobId}', 'jobs.read_rest_controller:get');
+
         return $controllers;
     }
 }

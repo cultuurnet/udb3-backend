@@ -38,7 +38,6 @@ use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
-use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Silex\Metadata\MetadataServiceProvider;
@@ -1054,12 +1053,6 @@ $app->register(new Sapi3SearchServiceProvider());
 $app->register(new \CultuurNet\UDB3\Silex\Offer\BulkLabelOfferServiceProvider());
 
 $app->register(
-    new FeatureTogglesProvider(
-        isset($app['config']['toggles']) ? $app['config']['toggles'] : []
-    )
-);
-
-$app->register(
     new \CultuurNet\UDB3\Silex\Authentication\UitidApiKeyServiceProvider(),
     [
         'auth.api_key.group_id' => $app['config']['api_key']['group_id'],
@@ -1074,8 +1067,6 @@ $app->register(
         'udb2_organizer_external_id_mapping.yml_file_location' => $udb3ConfigLocation . '/external_id_mapping_organizer.yml',
         'udb2_cdbxml_enricher.http_response_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_response_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_response_timeout'] : 3,
         'udb2_cdbxml_enricher.http_connect_timeout' => isset($app['config']['udb2_cdbxml_enricher']['http_connect_timeout']) ? $app['config']['udb2_cdbxml_enricher']['http_connect_timeout'] : 1,
-        'udb2_cdbxml_enricher.event_url_format' => isset($app['config']['udb2_cdbxml_enricher']['event_url_format']) ? $app['config']['udb2_cdbxml_enricher']['event_url_format'] : null,
-        'udb2_cdbxml_enricher.actor_url_format' => isset($app['config']['udb2_cdbxml_enricher']['actor_url_format']) ? $app['config']['udb2_cdbxml_enricher']['actor_url_format'] : null,
         'udb2_cdbxml_enricher.xsd' => $app['config']['udb2_cdbxml_enricher']['xsd'],
         'udb2_cdbxml_enricher.media_uuid_regex' => $app['config']['udb2_cdbxml_enricher']['media_uuid_regex'],
     ]

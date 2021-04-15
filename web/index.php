@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationEntryPoint;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Silex\Error\WebErrorHandlerProvider;
 use CultuurNet\UDB3\Silex\Error\ErrorLogger;
-use CultuurNet\UDB3\Silex\FeatureToggles\FeatureTogglesControllerProvider;
 use CultuurNet\UDB3\Silex\Import\ImportControllerProvider;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Management\PermissionsVoter;
@@ -238,11 +237,6 @@ $app->get(
             ->setPrivate();
     }
 );
-
-/**
- * Basic REST API for feature toggles.
- */
-$app->mount('/', new FeatureTogglesControllerProvider());
 
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
