@@ -17,7 +17,6 @@ class HistoryPlaceRestController
     use ApiProblemJsonResponseTrait;
 
     private const HISTORY_ERROR_NOT_FOUND = 'An error occurred while getting the history of the place with id %s!';
-    private const HISTORY_ERROR_GONE = 'An error occurred while getting the history of the place with id %s which was removed!';
     private const HISTORY_ERROR_FORBIDDEN = 'Forbidden to access place history.';
 
     /**
@@ -59,9 +58,6 @@ class HistoryPlaceRestController
             $response->headers->set('Vary', 'Origin');
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            if ($e->isGone()) {
-                return $this->documentGoneResponse($placeId);
-            }
             return $this->notFoundResponse($placeId);
         }
     }
@@ -78,10 +74,5 @@ class HistoryPlaceRestController
     private function notFoundResponse(string $eventId): ApiProblemJsonResponse
     {
         return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $eventId);
-    }
-
-    private function documentGoneResponse(string $eventId): ApiProblemJsonResponse
-    {
-        return $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $eventId);
     }
 }

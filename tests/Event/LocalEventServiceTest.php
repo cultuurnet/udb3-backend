@@ -70,7 +70,7 @@ class LocalEventServiceTest extends TestCase
     {
         $id = 'some-unknown-id';
 
-        $this->documentRepository->method('fetch')->willThrowException(DocumentDoesNotExist::gone($id));
+        $this->documentRepository->method('fetch')->willThrowException(DocumentDoesNotExist::withId($id));
         $this->eventRepository->expects($this->once())
             ->method('load')
             ->with($id)

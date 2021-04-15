@@ -15,7 +15,6 @@ class HistoryPlaceRestControllerTest extends TestCase
 {
     public const EXISTING_ID = 'existingId';
     public const NON_EXISTING_ID = 'nonExistingId';
-    public const REMOVED_ID = 'removedId';
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|UserIdentificationInterface
@@ -68,10 +67,8 @@ class HistoryPlaceRestControllerTest extends TestCase
                     switch ($id) {
                         case self::EXISTING_ID:
                             return new JsonDocument('id', $this->rawHistory);
-                        case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::gone(self::REMOVED_ID);
                         default:
-                            throw DocumentDoesNotExist::notFound($id);
+                            throw DocumentDoesNotExist::withId($id);
                     }
                 }
             );
@@ -105,17 +102,6 @@ class HistoryPlaceRestControllerTest extends TestCase
         $jsonResponse = $this->controller->get(self::NON_EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
-    }
-
-    /**
-     * @test
-     */
-    public function returns_a_http_response_with_error_HTTP_GONE_for_a_removed_event(): void
-    {
-        $this->givenGodUser();
-        $jsonResponse = $this->controller->get(self::REMOVED_ID);
-
-        $this->assertEquals(Response::HTTP_GONE, $jsonResponse->getStatusCode());
     }
 
     /**

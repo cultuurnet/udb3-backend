@@ -148,7 +148,7 @@ class UserRolesProjectorTest extends TestCase
         $this->userRolesDocumentRepository
             ->method('fetch')
             ->with($userAdded->getUserId())
-            ->willThrowException(DocumentDoesNotExist::notFound($userAdded->getUserId()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userAdded->getUserId()->toNative()));
 
         $roles[$userAdded->getUuid()->toNative()] = $roleDetailsDocument->getBody();
         $jsonDocument = new JsonDocument(
@@ -275,7 +275,7 @@ class UserRolesProjectorTest extends TestCase
 
         $this->roleDetailsDocumentRepository->method('fetch')
             ->with($userAdded->getUuid())
-            ->willThrowException(DocumentDoesNotExist::notFound($userAdded->getUuid()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userAdded->getUuid()->toNative()));
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('fetch');
@@ -303,7 +303,7 @@ class UserRolesProjectorTest extends TestCase
 
         $this->userRolesDocumentRepository->method('fetch')
             ->with($userRemoved->getUserId())
-            ->willThrowException(DocumentDoesNotExist::notFound($userRemoved->getUserId()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userRemoved->getUserId()->toNative()));
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('save');
@@ -322,7 +322,7 @@ class UserRolesProjectorTest extends TestCase
 
         $this->roleDetailsDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toNative())
-            ->willThrowException(DocumentDoesNotExist::notFound($roleDetailsProjectedToJSONLD->getUuid()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($roleDetailsProjectedToJSONLD->getUuid()->toNative()));
 
         $this->roleUsersDocumentRepository->expects($this->never())
             ->method('fetch');
@@ -359,7 +359,7 @@ class UserRolesProjectorTest extends TestCase
 
         $this->roleUsersDocumentRepository->method('fetch')
             ->with($roleDetailsProjectedToJSONLD->getUuid()->toNative())
-            ->willThrowException(DocumentDoesNotExist::notFound($roleDetailsProjectedToJSONLD->getUuid()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($roleDetailsProjectedToJSONLD->getUuid()->toNative()));
 
         $this->userRolesDocumentRepository->expects($this->never())
             ->method('save');

@@ -87,7 +87,7 @@ class ReadRoleRestControllerTest extends TestCase
                         case self::EXISTING_ID:
                             return $this->jsonDocument->getRawBody();
                         case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::gone(self::REMOVED_ID);
+                            throw DocumentDoesNotExist::withId(self::REMOVED_ID);
                         default:
                             return '';
                     }
@@ -221,7 +221,7 @@ class ReadRoleRestControllerTest extends TestCase
         $this->roleService->expects($this->once())
             ->method('getRolesByUserId')
             ->with($userId)
-            ->willThrowException(DocumentDoesNotExist::notFound($userId->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userId->toNative()));
 
         $response = $this->roleRestController->getUserRoles($userId->toNative());
         $responseJson = $response->getContent();

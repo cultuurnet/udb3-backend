@@ -39,7 +39,7 @@ class JSONLDMainLanguageQueryTest extends TestCase
         $this->documentRepository
             ->expects($this->once())
             ->method('fetch')
-            ->willThrowException(DocumentDoesNotExist::notFound($id));
+            ->willThrowException(DocumentDoesNotExist::withId($id));
 
         $this->expectException(EntityNotFoundException::class);
         $this->query->execute($id);

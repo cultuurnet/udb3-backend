@@ -15,7 +15,6 @@ class ReadOrganizerRestControllerTest extends TestCase
 {
     public const EXISTING_ID = 'existingId';
     public const NON_EXISTING_ID = 'nonExistingId';
-    public const REMOVED_ID = 'removedId';
 
     /**
      * @var EntityServiceInterface|MockObject
@@ -47,10 +46,8 @@ class ReadOrganizerRestControllerTest extends TestCase
                     switch ($id) {
                         case self::EXISTING_ID:
                             return $this->jsonDocument->getRawBody();
-                        case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::gone(self::REMOVED_ID);
                         default:
-                            return null;
+                            throw DocumentDoesNotExist::withId($id);
                     }
                 }
             );

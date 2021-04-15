@@ -21,7 +21,6 @@ class ReadEventRestController
     use ApiProblemJsonResponseTrait;
     private const HISTORY_ERROR_FORBIDDEN = 'Forbidden to access event history.';
     private const HISTORY_ERROR_NOT_FOUND = 'An error occurred while getting the history of the event with id %s!';
-    private const HISTORY_ERROR_GONE = 'An error occurred while getting the history of the event with id %s which was removed!';
     private const GET_ERROR_NOT_FOUND = 'An error occurred while getting the event with id %s!';
 
     /**
@@ -69,8 +68,6 @@ class ReadEventRestController
 
     public function history(string $cdbid): JsonResponse
     {
-        $response = null;
-
         if (!$this->userIdentification->isGodUser()) {
             return $this->createApiProblemJsonResponse(
                 self::HISTORY_ERROR_FORBIDDEN,
@@ -93,18 +90,12 @@ class ReadEventRestController
 
             return $response;
         } catch (DocumentDoesNotExist $e) {
-            if ($e->isGone()) {
-                return $this->createApiProblemJsonResponseGone(self::HISTORY_ERROR_GONE, $cdbid);
-            }
             return $this->createApiProblemJsonResponseNotFound(self::HISTORY_ERROR_NOT_FOUND, $cdbid);
         }
     }
 
     public function getCalendarSummary(string $cdbid, Request $request): string
     {
-        $data = null;
-        $response = null;
-
         $style = $request->query->get('style', 'text');
         $langCode = $request->query->get('langCode', 'nl_BE');
         $hidePastDates = $request->query->getBoolean('hidePast', false);

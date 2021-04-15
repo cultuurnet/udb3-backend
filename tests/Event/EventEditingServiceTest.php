@@ -542,6 +542,6 @@ class EventEditingServiceTest extends TestCase
         $this->readRepository->expects($this->once())
             ->method('fetch')
             ->with($id)
-            ->willThrowException(DocumentDoesNotExist::notFound($id));
+            ->willThrowException(DocumentDoesNotExist::withId($id));
     }
 }

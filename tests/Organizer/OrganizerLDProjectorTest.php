@@ -711,7 +711,7 @@ class OrganizerLDProjectorTest extends TestCase
         $this->documentRepository->expects($this->once())
             ->method('fetch')
             ->with($actorId)
-            ->willThrowException(DocumentDoesNotExist::gone($actorId));
+            ->willThrowException(DocumentDoesNotExist::withId($actorId));
 
         $this->documentRepository->expects($this->once())
             ->method('save')

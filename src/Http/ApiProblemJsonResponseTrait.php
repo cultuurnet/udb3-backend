@@ -27,20 +27,6 @@ trait ApiProblemJsonResponseTrait
     /**
      * @param string $message
      * @param string $cdbid
-     * @return ApiProblemJsonResponse
-     */
-    private function createApiProblemJsonResponseGone($message, $cdbid)
-    {
-        return $this->createApiProblemJsonResponse(
-            $message,
-            $cdbid,
-            Response::HTTP_GONE
-        );
-    }
-
-    /**
-     * @param string $message
-     * @param string $cdbid
      * @param int $statusCode
      * @return ApiProblemJsonResponse
      */

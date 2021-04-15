@@ -194,7 +194,7 @@ class RoleUsersProjectorTest extends TestCase
         $this->repository
             ->method('fetch')
             ->with($userAdded->getUuid()->toNative())
-            ->willThrowException(DocumentDoesNotExist::notFound($userAdded->getUuid()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userAdded->getUuid()->toNative()));
 
         $this->userIdentityResolver->expects($this->never())
             ->method('getUserById');
@@ -255,7 +255,7 @@ class RoleUsersProjectorTest extends TestCase
         $this->repository
             ->method('fetch')
             ->with($userRemoved->getUuid()->toNative())
-            ->willThrowException(DocumentDoesNotExist::notFound($userRemoved->getUuid()->toNative()));
+            ->willThrowException(DocumentDoesNotExist::withId($userRemoved->getUuid()->toNative()));
 
         $this->userIdentityResolver->expects($this->never())
             ->method('getUserById');

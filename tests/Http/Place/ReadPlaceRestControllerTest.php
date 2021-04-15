@@ -16,7 +16,6 @@ class ReadPlaceRestControllerTest extends TestCase
 {
     private const EXISTING_ID = 'existingId';
     private const NON_EXISTING_ID = 'nonExistingId';
-    private const REMOVED_ID = 'removedId';
 
     /**
      * @var ReadPlaceRestController
@@ -80,10 +79,8 @@ class ReadPlaceRestControllerTest extends TestCase
                     switch ($id) {
                         case self::EXISTING_ID:
                             return $includeMetadata ? $this->jsonDocumentWithMetadata : $this->jsonDocument;
-                        case self::REMOVED_ID:
-                            throw DocumentDoesNotExist::gone($id);
                         default:
-                            throw DocumentDoesNotExist::notFound($id);
+                            throw DocumentDoesNotExist::withId($id);
                     }
                 }
             );
