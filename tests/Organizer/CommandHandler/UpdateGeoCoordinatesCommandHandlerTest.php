@@ -10,7 +10,7 @@ use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\Locality;
@@ -38,7 +38,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
     private $localityAddressFormatter;
 
     /**
-     * @var GeocodingServiceInterface|MockObject
+     * @var GeocodingService|MockObject
      */
     private $geocodingService;
 
@@ -52,7 +52,7 @@ class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestC
         $this->defaultAddressFormatter = new DefaultAddressFormatter();
         $this->localityAddressFormatter = new LocalityAddressFormatter();
 
-        $this->geocodingService = $this->createMock(GeocodingServiceInterface::class);
+        $this->geocodingService = $this->createMock(GeocodingService::class);
 
         return new UpdateGeoCoordinatesFromAddressCommandHandler(
             $organizerRepository,

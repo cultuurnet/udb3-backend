@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Geocoding;
 
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 
-interface GeocodingServiceInterface
+interface GeocodingService
 {
     /**
      * Gets the coordinates of the given address.

@@ -1,13 +1,5 @@
 toggles:
-  search-include-places:
-    name: search-include-places
-    conditions: {}
-    status: inactive
   jobs-endpoint:
     name: jobs-endpoint
-    conditions: {}
-    status: inactive
-  import-from-sapi:
-    name: import-from-sapi
     conditions: {}
     status: inactive

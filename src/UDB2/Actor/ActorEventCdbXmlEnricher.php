@@ -15,7 +15,6 @@ use CultuurNet\UDB3\UDB2\Actor\Events\ActorCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Actor\Events\ActorUpdatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreated;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorUpdated;
-use CultuurNet\UDB3\UDB2\UrlTransformingTrait;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationException;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceInterface;
 use DOMDocument;
@@ -37,7 +36,6 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
 {
     use DelegateEventHandlingToSpecificMethodTrait;
     use LoggerAwareTrait;
-    use UrlTransformingTrait;
 
     /**
      * @var HttpClient
@@ -152,20 +150,7 @@ class ActorEventCdbXmlEnricher implements EventListener, LoggerAwareInterface
      */
     private function getActorXml(Url $url)
     {
-        $originalUrl = $url;
-        $url = $this->transformUrl($url);
-
-        try {
-            $response = $this->internalSendRequest($url);
-        } catch (ActorNotFoundException $exception) {
-            if ($originalUrl != $url) {
-                // Fallback when url was replaced.
-                $response = $this->internalSendRequest($originalUrl);
-            } else {
-                // No fallback just throw it.
-                throw $exception;
-            }
-        }
+        $response = $this->internalSendRequest($url);
 
         $xml = $response->getBody()->getContents();
 

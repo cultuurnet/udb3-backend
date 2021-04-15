@@ -19,7 +19,7 @@ class CachedGeocodingServiceTest extends TestCase
     private $cache;
 
     /**
-     * @var GeocodingServiceInterface|MockObject
+     * @var GeocodingService|MockObject
      */
     private $decoratee;
 
@@ -31,7 +31,7 @@ class CachedGeocodingServiceTest extends TestCase
     public function setUp()
     {
         $this->cache = new ArrayCache();
-        $this->decoratee = $this->createMock(GeocodingServiceInterface::class);
+        $this->decoratee = $this->createMock(GeocodingService::class);
         $this->service = new CachedGeocodingService($this->decoratee, $this->cache);
     }
 

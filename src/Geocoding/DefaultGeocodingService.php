@@ -12,7 +12,7 @@ use Geocoder\Exception\Exception;
 use Geocoder\Geocoder;
 use Psr\Log\LoggerInterface;
 
-class DefaultGeocodingService implements GeocodingServiceInterface
+class DefaultGeocodingService implements GeocodingService
 {
     /**
      * @var Geocoder

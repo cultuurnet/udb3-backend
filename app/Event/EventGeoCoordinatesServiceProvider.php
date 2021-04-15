@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Address\DefaultAddressFormatter;
 use CultuurNet\UDB3\Address\LocalityAddressFormatter;
 use CultuurNet\UDB3\Event\GeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Event\GeoCoordinatesProcessManager;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Psr\Log\NullLogger;
@@ -26,7 +27,7 @@ class EventGeoCoordinatesServiceProvider implements ServiceProviderInterface
                     $app['event_repository'],
                     new DefaultAddressFormatter(),
                     new LocalityAddressFormatter(),
-                    $app['geocoding_service']
+                    $app[GeocodingService::class]
                 );
 
                 $handler->setLogger(LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'event')));

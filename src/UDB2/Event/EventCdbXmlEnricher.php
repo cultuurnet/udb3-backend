@@ -16,7 +16,6 @@ use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventUpdated;
 use CultuurNet\UDB3\UDB2\Event\Events\EventCreatedEnrichedWithCdbXml;
 use CultuurNet\UDB3\UDB2\Event\Events\EventUpdatedEnrichedWithCdbXml;
-use CultuurNet\UDB3\UDB2\UrlTransformingTrait;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationException;
 use CultuurNet\UDB3\UDB2\XML\XMLValidationServiceInterface;
 use DOMDocument;
@@ -37,7 +36,6 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
 {
     use LoggerAwareTrait;
     use DelegateEventHandlingToSpecificMethodTrait;
-    use UrlTransformingTrait;
 
     /**
      * @var EventBus
@@ -116,20 +114,7 @@ class EventCdbXmlEnricher implements EventListener, LoggerAwareInterface
      */
     private function retrieveXml(Url $url)
     {
-        $originalUrl = $url;
-        $url = $this->transformUrl($url);
-
-        try {
-            $response = $this->internalSendRequest($url);
-        } catch (EventNotFoundException $exception) {
-            if ($originalUrl != $url) {
-                // Fallback when url was replaced.
-                $response = $this->internalSendRequest($originalUrl);
-            } else {
-                // No fallback just throw it.
-                throw $exception;
-            }
-        }
+        $response = $this->internalSendRequest($url);
 
         $xml = $response->getBody()->getContents();
 

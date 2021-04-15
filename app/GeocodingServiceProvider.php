@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use CultuurNet\UDB3\Geocoding\CachedGeocodingService;
 use CultuurNet\UDB3\Geocoding\DefaultGeocodingService;
-use CultuurNet\UDB3\Geocoding\GeocodingServiceInterface;
+use CultuurNet\UDB3\Geocoding\GeocodingService;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use Geocoder\Provider\GoogleMaps;
@@ -18,7 +18,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['geocoding_service'] = $app->share(
+        $app[GeocodingService::class] = $app->share(
             function (Application $app) {
                 $googleMapsApiKey = null;
 
@@ -26,7 +26,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                     $googleMapsApiKey = $app['geocoding_service.google_maps_api_key'];
                 }
 
-                return new DefaultGeocodingService(
+                $geocodingService = new DefaultGeocodingService(
                     new GoogleMaps(
                         new CurlHttpAdapter(),
                         null,
@@ -36,12 +36,7 @@ class GeocodingServiceProvider implements ServiceProviderInterface
                     ),
                     LoggerFactory::create($app, LoggerName::forService('geo-coordinates', 'google'))
                 );
-            }
-        );
 
-        $app->extend(
-            'geocoding_service',
-            function (GeocodingServiceInterface $geocodingService, Application $app) {
                 return new CachedGeocodingService(
                     $geocodingService,
                     $app['cache']('geocoords')
@@ -49,7 +44,6 @@ class GeocodingServiceProvider implements ServiceProviderInterface
             }
         );
     }
-
 
     public function boot(Application $app)
     {

@@ -17,14 +17,12 @@ use CultuurNet\UDB3\Storage\PurgeServiceManager;
  */
 class PurgeServiceProvider implements ServiceProviderInterface
 {
-    public const PURGE_SERVICE_MANAGER = 'purgeServiceManager';
-
     /**
      * @inheritdoc
      */
     public function register(Application $application)
     {
-        $application[self::PURGE_SERVICE_MANAGER] = $application->share(
+        $application[PurgeServiceManager::class] = $application->share(
             function (Application $application) {
                 return $this->createPurgeServiceManager($application);
             }
