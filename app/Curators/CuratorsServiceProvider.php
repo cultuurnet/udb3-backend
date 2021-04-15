@@ -20,19 +20,14 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['curators_deserializer_locator'] = $app->share(
-            function () {
+        $app['curators_event_bus_forwarding_consumer'] = $app->share(
+            function (Application $app) {
                 $deserializerLocator = new SimpleDeserializerLocator();
                 $deserializerLocator->registerDeserializer(
                     NewsArticleAboutEventAddedJSONDeserializer::getContentType(),
                     new NewsArticleAboutEventAddedJSONDeserializer()
                 );
-                return $deserializerLocator;
-            }
-        );
 
-        $app['curators_event_bus_forwarding_consumer'] = $app->share(
-            function (Application $app) {
                 // If this service gets instantiated, it's because we're running the AMQP listener for Curators messages
                 // so we should set the API name to Curators listener.
                 $app['api_name'] = ApiName::CURATORS_LISTENER;
@@ -40,7 +35,7 @@ final class CuratorsServiceProvider implements ServiceProviderInterface
                 $consumer = new EventBusForwardingConsumer(
                     $app['amqp.connection'],
                     $app['event_bus'],
-                    $app['curators_deserializer_locator'],
+                    $deserializerLocator,
                     new StringLiteral($app['config']['amqp']['consumer_tag']),
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['exchange']),
                     new StringLiteral($app['config']['amqp']['consumers']['curators']['queue'])
