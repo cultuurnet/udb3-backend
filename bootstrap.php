@@ -326,8 +326,6 @@ $app['dbal_connection:keepalive'] = $app->protect(
     }
 );
 
-$app->register(new \CultuurNet\UDB3\Silex\PurgeServiceProvider());
-
 $app['dbal_event_store'] = $app->share(
     function ($app) {
         return $app['event_store_factory'](AggregateType::EVENT());
