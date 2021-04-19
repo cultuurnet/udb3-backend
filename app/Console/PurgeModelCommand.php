@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Storage\PurgeServiceManager;
+use CultuurNet\UDB3\Storage\PurgeServiceInterface;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,14 +12,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PurgeModelCommand extends Command
 {
     /**
-     * @var PurgeServiceManager
+     * @var PurgeServiceInterface[]
      */
-    private $purgeServiceManager;
+    private $purgeServices;
 
-    public function __construct(PurgeServiceManager $purgeServiceManager)
+    /**
+     * @param PurgeServiceInterface[] $purgeServices
+     */
+    public function __construct(array $purgeServices)
     {
         parent::__construct();
-        $this->purgeServiceManager = $purgeServiceManager;
+        $this->purgeServices = $purgeServices;
     }
 
     protected function configure()
@@ -29,7 +32,7 @@ class PurgeModelCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->purgeServiceManager->getPurgeServices() as $purgeService) {
+        foreach ($this->purgeServices as $purgeService) {
             $purgeService->purgeAll();
         }
 
