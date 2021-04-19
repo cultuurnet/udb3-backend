@@ -45,7 +45,6 @@ class PurgeServiceProvider implements ServiceProviderInterface
         $connection = $application['dbal_connection'];
 
         $this->addReadModels($purgerServiceManager, $connection);
-        $this->addWriteModels($purgerServiceManager, $connection);
 
         return $purgerServiceManager;
     }
@@ -73,26 +72,6 @@ class PurgeServiceProvider implements ServiceProviderInterface
                 new DBALPurgeService(
                     $connection,
                     $dbalReadModel
-                )
-            );
-        }
-    }
-
-
-    private function addWriteModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
-    {
-        $dbalWriteModels = [
-            'events',
-            'media_objects',
-            'organizers',
-            'places',
-        ];
-
-        foreach ($dbalWriteModels as $dbalWriteModel) {
-            $purgeServiceManager->addWriteModelPurgeService(
-                new DBALPurgeService(
-                    $connection,
-                    $dbalWriteModel
                 )
             );
         }
