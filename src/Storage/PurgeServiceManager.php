@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Storage;
 
-/**
- * Class PurgeServiceManager
- * @package CultuurNet\UDB3\Storage
- */
 class PurgeServiceManager
 {
     /**
@@ -15,9 +11,6 @@ class PurgeServiceManager
      */
     private $purgeServices;
 
-    /**
-     * PurgeServiceManager constructor.
-     */
     public function __construct(array $purgeServices)
     {
         $this->purgeServices = $purgeServices;
@@ -26,7 +19,7 @@ class PurgeServiceManager
     /**
      * @return PurgeServiceInterface[]
      */
-    public function getPurgeServices()
+    public function getPurgeServices(): array
     {
         return $this->purgeServices;
     }
