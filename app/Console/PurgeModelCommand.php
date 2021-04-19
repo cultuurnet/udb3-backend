@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex\Console;
 use CultuurNet\UDB3\Storage\PurgeServiceInterface;
 use CultuurNet\UDB3\Storage\PurgeServiceManager;
 use Knp\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -18,11 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeModelCommand extends Command
 {
-    public const MODEL_ARGUMENT = 'model';
-
-    public const WRITE_MODEL = 'mysql-write';
-    public const READ_MODEL = 'mysql-read';
-
     /**
      * @var PurgeServiceManager
      */
@@ -39,12 +33,7 @@ class PurgeModelCommand extends Command
     {
         $this
             ->setName('purge')
-            ->setDescription('Purge the specified model')
-            ->addArgument(
-                self::MODEL_ARGUMENT,
-                InputArgument::REQUIRED,
-                'Which model to purge: mysql-write, mysql-read'
-            );
+            ->setDescription('Purge all read models');
     }
 
     /**
@@ -52,14 +41,8 @@ class PurgeModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $model = $input->getArgument(self::MODEL_ARGUMENT);
-
-        if ($this->isModelValid($model)) {
-            $purgeServices = $this->getPurgeServices($model);
-            $this->purge($purgeServices);
-        } else {
-            $output->writeln('Model option is not valid!');
-        }
+        $purgeServices = $this->getPurgeServices();
+        $this->purge($purgeServices);
 
         return 0;
     }
@@ -67,17 +50,9 @@ class PurgeModelCommand extends Command
     /**
      * @return PurgeServiceInterface[]
      */
-    private function getPurgeServices(string $model): array
+    private function getPurgeServices(): array
     {
-        $purgeServices = [];
-
-        if (self::READ_MODEL === $model) {
-            $purgeServices = $this->purgeServiceManager->getReadModelPurgeServices();
-        } elseif (self::WRITE_MODEL === $model) {
-            $purgeServices = $this->purgeServiceManager->getWriteModelPurgeServices();
-        }
-
-        return $purgeServices;
+        return $this->purgeServiceManager->getReadModelPurgeServices();
     }
 
     /**
@@ -88,13 +63,5 @@ class PurgeModelCommand extends Command
         foreach ($purgeServices as $purgeService) {
             $purgeService->purgeAll();
         }
-    }
-
-    private function isModelValid(string $model): bool
-    {
-        return (
-            self::READ_MODEL === $model ||
-            self::WRITE_MODEL === $model
-        );
     }
 }
