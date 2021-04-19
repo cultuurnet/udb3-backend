@@ -13,27 +13,27 @@ class PurgeServiceManager
     /**
      * @var PurgeServiceInterface[]
      */
-    private $readModelPurgeServices;
+    private $purgeServices;
 
     /**
      * PurgeServiceManager constructor.
      */
     public function __construct()
     {
-        $this->readModelPurgeServices = [];
+        $this->purgeServices = [];
     }
 
 
-    public function addReadModelPurgeService(PurgeServiceInterface $purgeService)
+    public function addPurgeService(PurgeServiceInterface $purgeService)
     {
-        $this->readModelPurgeServices[] = $purgeService;
+        $this->purgeServices[] = $purgeService;
     }
 
     /**
      * @return PurgeServiceInterface[]
      */
-    public function getReadModelPurgeServices()
+    public function getPurgeServices()
     {
-        return $this->readModelPurgeServices;
+        return $this->purgeServices;
     }
 }

@@ -68,7 +68,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
         ];
 
         foreach ($dbalReadModels as $dbalReadModel) {
-            $purgeServiceManager->addReadModelPurgeService(
+            $purgeServiceManager->addPurgeService(
                 new DBALPurgeService(
                     $connection,
                     $dbalReadModel
