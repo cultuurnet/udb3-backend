@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Silex;
 use CultuurNet\UDB3\Silex\Console\PurgeModelCommand;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use CultuurNet\UDB3\Storage\DBALPurgeService;
 
 class PurgeServiceProvider implements ServiceProviderInterface
 {
@@ -31,9 +30,8 @@ class PurgeServiceProvider implements ServiceProviderInterface
         $application[PurgeModelCommand::class] = $application->share(
             function (Application $application) {
                 return new PurgeModelCommand(
-                    array_map(function (string $table) use ($application) {
-                        return new DBALPurgeService($application['dbal_connection'], $table);
-                    }, self::TABLES_TO_PURGE)
+                    self::TABLES_TO_PURGE,
+                    $application['dbal_connection']
                 );
             }
         );

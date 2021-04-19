@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
-use CultuurNet\UDB3\Storage\PurgeServiceInterface;
+use Doctrine\DBAL\Connection;
 use Knp\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,17 +12,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 class PurgeModelCommand extends Command
 {
     /**
-     * @var PurgeServiceInterface[]
+     * @var string[]
      */
-    private $purgeServices;
+    private $tablesToPurge;
 
     /**
-     * @param PurgeServiceInterface[] $purgeServices
+     * @var Connection
      */
-    public function __construct(array $purgeServices)
+    private $connection;
+
+    /**
+     * @param string[] $tablesToPurge
+     */
+    public function __construct(array $tablesToPurge, Connection $connection)
     {
         parent::__construct();
-        $this->purgeServices = $purgeServices;
+        $this->tablesToPurge = $tablesToPurge;
+        $this->connection = $connection;
     }
 
     protected function configure()
@@ -32,8 +38,10 @@ class PurgeModelCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->purgeServices as $purgeService) {
-            $purgeService->purgeAll();
+        foreach ($this->tablesToPurge as $tableToPurge) {
+            $platform = $this->connection->getDatabasePlatform();
+            $sql = $platform->getTruncateTableSQL($tableToPurge);
+            $this->connection->exec($sql);
         }
 
         return 0;
