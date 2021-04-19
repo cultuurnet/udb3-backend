@@ -19,13 +19,7 @@ class PurgeServiceProvider implements ServiceProviderInterface
     {
         $application[PurgeModelCommand::class] = $application->share(
             function (Application $application) {
-                return new PurgeModelCommand($application[PurgeServiceManager::class]);
-            }
-        );
-
-        $application[PurgeServiceManager::class] = $application->share(
-            function (Application $application) {
-                return $this->createPurgeServiceManager($application);
+                return new PurgeModelCommand($this->createPurgeServiceManager($application));
             }
         );
     }
