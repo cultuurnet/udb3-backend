@@ -18,7 +18,7 @@ class PurgeServiceManager
     /**
      * PurgeServiceManager constructor.
      */
-    public function __construct()
+    public function __construct(array $purgeServices)
     {
         $this->purgeServices = [];
     }

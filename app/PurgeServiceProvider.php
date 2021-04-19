@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex;
 
-use Doctrine\DBAL\Connection;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use CultuurNet\UDB3\Storage\DBALPurgeService;
 use CultuurNet\UDB3\Storage\PurgeServiceManager;
 
-/**
- * Class PurgeServiceProvider
- *
- * @package CultuurNet\UDB3\Silex
- */
 class PurgeServiceProvider implements ServiceProviderInterface
 {
     /**
@@ -36,23 +30,9 @@ class PurgeServiceProvider implements ServiceProviderInterface
     {
     }
 
-    /**
-     * @return PurgeServiceManager
-     */
-    private function createPurgeServiceManager(Application $application)
+    private function createPurgeServiceManager(Application $application): PurgeServiceManager
     {
-        $purgerServiceManager = new PurgeServiceManager();
-        $connection = $application['dbal_connection'];
-
-        $this->addReadModels($purgerServiceManager, $connection);
-
-        return $purgerServiceManager;
-    }
-
-
-    private function addReadModels(PurgeServiceManager $purgeServiceManager, Connection $connection)
-    {
-        $dbalReadModels = [
+        $tablesToPurge = [
             'event_permission_readmodel',
             'event_relations',
             'labels_json',
@@ -67,13 +47,10 @@ class PurgeServiceProvider implements ServiceProviderInterface
             'offer_metadata',
         ];
 
-        foreach ($dbalReadModels as $dbalReadModel) {
-            $purgeServiceManager->addPurgeService(
-                new DBALPurgeService(
-                    $connection,
-                    $dbalReadModel
-                )
-            );
-        }
+        return new PurgeServiceManager(
+            array_map(function (string $table) use ($application) {
+                return new DBALPurgeService($application['dbal_connection'], $table);
+            }, $tablesToPurge)
+        );
     }
 }
