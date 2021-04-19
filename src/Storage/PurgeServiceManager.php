@@ -20,13 +20,7 @@ class PurgeServiceManager
      */
     public function __construct(array $purgeServices)
     {
-        $this->purgeServices = [];
-    }
-
-
-    public function addPurgeService(PurgeServiceInterface $purgeService)
-    {
-        $this->purgeServices[] = $purgeService;
+        $this->purgeServices = $purgeServices;
     }
 
     /**
