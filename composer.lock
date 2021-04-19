@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ec6f460edc9738e4befa757a2d0721f",
+    "content-hash": "817d33681f03d9b9188880c75d593d3f",
     "packages": [
         {
             "name": "auth0/auth0-php",
@@ -777,50 +777,6 @@
             ],
             "description": "Culturefeed PHP library",
             "time": "2021-02-01T15:03:11+00:00"
-        },
-        {
-            "name": "cultuurnet/monolog-socketio",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/monolog-socketio.git",
-                "reference": "4d5eb0829cc786a313ef91a21028725678d4836f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/monolog-socketio/zipball/4d5eb0829cc786a313ef91a21028725678d4836f",
-                "reference": "4d5eb0829cc786a313ef91a21028725678d4836f",
-                "shasum": ""
-            },
-            "require": {
-                "monolog/monolog": "~1.11",
-                "rase/socket.io-emitter": "0.6.1"
-            },
-            "provide": {
-                "ext-redis": "*"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\MonologSocketIO\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "time": "2018-06-29T14:28:08+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
