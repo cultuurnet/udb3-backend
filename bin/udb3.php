@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\Storage\PurgeServiceManager;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -93,7 +92,7 @@ $consoleApp->add(
 
 $consoleApp->add(new ReplayCommand($app['event_command_bus'], $app['dbal_connection'], $app['eventstore_payload_serializer'], $app['event_bus'], new ConfigWriter($app)));
 $consoleApp->add(new EventAncestorsCommand($app['event_command_bus'], $app['event_store']));
-$consoleApp->add(new PurgeModelCommand($app[PurgeServiceManager::class]));
+$consoleApp->add($app[PurgeModelCommand::class]);
 $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_PLACES], $app['place_jsonld_repository']));
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS], $app['event_jsonld_repository']));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));

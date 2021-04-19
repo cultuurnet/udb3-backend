@@ -7,10 +7,6 @@ namespace CultuurNet\UDB3\Storage;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 
-/**
- * Class DBALPurgeService
- * @package CultuurNet\UDB3\Storage
- */
 class DBALPurgeService implements PurgeServiceInterface
 {
     /**
@@ -23,21 +19,15 @@ class DBALPurgeService implements PurgeServiceInterface
      */
     private $tableName;
 
-    /**
-     * DBALPurgeService constructor.
-     * @param Connection $connection
-     * @param string $tableName
-     */
     public function __construct(
-        $connection,
-        $tableName
+        Connection $connection,
+        string $tableName
     ) {
         $this->connection = $connection;
-
         $this->tableName = $tableName;
     }
 
-    public function purgeAll()
+    public function purgeAll(): void
     {
         $platform = $this->connection->getDatabasePlatform();
         $sql = $platform->getTruncateTableSQL($this->tableName);
