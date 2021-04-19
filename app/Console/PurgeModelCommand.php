@@ -41,27 +41,10 @@ class PurgeModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $purgeServices = $this->getPurgeServices();
-        $this->purge($purgeServices);
-
-        return 0;
-    }
-
-    /**
-     * @return PurgeServiceInterface[]
-     */
-    private function getPurgeServices(): array
-    {
-        return $this->purgeServiceManager->getReadModelPurgeServices();
-    }
-
-    /**
-     * @param PurgeServiceInterface[] $purgeServices
-     */
-    private function purge(array $purgeServices)
-    {
-        foreach ($purgeServices as $purgeService) {
+        foreach ($this->purgeServiceManager->getReadModelPurgeServices() as $purgeService) {
             $purgeService->purgeAll();
         }
+
+        return 0;
     }
 }
