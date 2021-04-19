@@ -11,23 +11,29 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PurgeModelCommand extends Command
 {
-    /**
-     * @var string[]
-     */
-    private $tablesToPurge;
+    private const TABLES_TO_PURGE = [
+        'event_permission_readmodel',
+        'event_relations',
+        'labels_json',
+        'label_roles',
+        'labels_relations',
+        'organizer_permission_readmodel',
+        'place_permission_readmodel',
+        'place_relations',
+        'role_permissions',
+        'roles_search_v3',
+        'user_roles',
+        'offer_metadata',
+    ];
 
     /**
      * @var Connection
      */
     private $connection;
 
-    /**
-     * @param string[] $tablesToPurge
-     */
-    public function __construct(array $tablesToPurge, Connection $connection)
+    public function __construct(Connection $connection)
     {
         parent::__construct();
-        $this->tablesToPurge = $tablesToPurge;
         $this->connection = $connection;
     }
 
@@ -38,7 +44,7 @@ class PurgeModelCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->tablesToPurge as $tableToPurge) {
+        foreach (self::TABLES_TO_PURGE as $tableToPurge) {
             $platform = $this->connection->getDatabasePlatform();
             $sql = $platform->getTruncateTableSQL($tableToPurge);
             $this->connection->exec($sql);
