@@ -61,17 +61,20 @@ class Projector extends AbstractProjector
 
     public function applyCopyCreated(CopyCreated $copyCreated)
     {
-        $entity = $this->readRepository->getByUuid($copyCreated->getUuid());
+        $labelWithSameUuid = $this->readRepository->getByUuid($copyCreated->getUuid());
+        $labelWithSameName = $this->readRepository->getByName($copyCreated->getName());
 
-        if (is_null($entity)) {
-            $this->writeRepository->save(
-                $copyCreated->getUuid(),
-                $copyCreated->getName(),
-                $copyCreated->getVisibility(),
-                $copyCreated->getPrivacy(),
-                $copyCreated->getParentUuid()
-            );
+        if ($labelWithSameUuid ||  $labelWithSameName) {
+            return;
         }
+
+        $this->writeRepository->save(
+            $copyCreated->getUuid(),
+            $copyCreated->getName(),
+            $copyCreated->getVisibility(),
+            $copyCreated->getPrivacy(),
+            $copyCreated->getParentUuid()
+        );
     }
 
 

@@ -185,11 +185,11 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_copy_created_when_uuid_unique()
+    public function it_handles_copy_created_when_uuid_and_name_are_unique()
     {
         $copyCreated = new CopyCreated(
             $this->unknownId,
-            $this->labelName,
+            $this->unknownLabelName,
             $this->entity->getVisibility(),
             $this->entity->getPrivacy(),
             $this->entity->getParentUuid()
@@ -199,7 +199,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                $this->entity->getName(),
+                $this->unknownLabelName,
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy(),
                 $this->entity->getParentUuid()
@@ -220,6 +220,30 @@ class ProjectorTest extends TestCase
     {
         $copyCreated = new CopyCreated(
             $this->uuid,
+            $this->unknownLabelName,
+            $this->entity->getVisibility(),
+            $this->entity->getPrivacy(),
+            $this->entity->getParentUuid()
+        );
+
+        $this->writeRepository->expects($this->never())
+            ->method('save');
+
+        $domainMessage = $this->createDomainMessage(
+            $this->unknownId,
+            $copyCreated
+        );
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_handle_copy_created_when_name_not_unique()
+    {
+        $copyCreated = new CopyCreated(
+            $this->unknownId,
             $this->labelName,
             $this->entity->getVisibility(),
             $this->entity->getPrivacy(),
