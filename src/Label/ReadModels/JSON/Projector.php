@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
 use ValueObjects\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class Projector extends AbstractProjector
 {
@@ -45,32 +44,37 @@ class Projector extends AbstractProjector
 
     public function applyCreated(Created $created)
     {
-        $entity = $this->readRepository->getByUuid($created->getUuid());
+        $labelWithSameUuid = $this->readRepository->getByUuid($created->getUuid());
+        $labelWithSameName = $this->readRepository->getByName($created->getName());
 
-        if (is_null($entity)) {
-            $this->writeRepository->save(
-                $created->getUuid(),
-                $created->getName(),
-                $created->getVisibility(),
-                $created->getPrivacy()
-            );
+        if ($labelWithSameUuid ||  $labelWithSameName) {
+            return;
         }
+        $this->writeRepository->save(
+            $created->getUuid(),
+            $created->getName(),
+            $created->getVisibility(),
+            $created->getPrivacy()
+        );
     }
 
 
     public function applyCopyCreated(CopyCreated $copyCreated)
     {
-        $entity = $this->readRepository->getByUuid($copyCreated->getUuid());
+        $labelWithSameUuid = $this->readRepository->getByUuid($copyCreated->getUuid());
+        $labelWithSameName = $this->readRepository->getByName($copyCreated->getName());
 
-        if (is_null($entity)) {
-            $this->writeRepository->save(
-                $copyCreated->getUuid(),
-                $copyCreated->getName(),
-                $copyCreated->getVisibility(),
-                $copyCreated->getPrivacy(),
-                $copyCreated->getParentUuid()
-            );
+        if ($labelWithSameUuid ||  $labelWithSameName) {
+            return;
         }
+
+        $this->writeRepository->save(
+            $copyCreated->getUuid(),
+            $copyCreated->getName(),
+            $copyCreated->getVisibility(),
+            $copyCreated->getPrivacy(),
+            $copyCreated->getParentUuid()
+        );
     }
 
 
@@ -136,9 +140,9 @@ class Projector extends AbstractProjector
     {
         $uuid = null;
 
-        $name = new StringLiteral((string) $labelEvent->getLabel());
-
+        $name = $labelEvent->getLabel()->getName();
         $entity = $this->readRepository->getByName($name);
+
         if ($entity !== null) {
             $uuid = $entity->getUuid();
         }

@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Place\Events\LabelRemoved as LabelRemovedFromPlace;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class ProjectorTest extends TestCase
 {
@@ -103,6 +102,14 @@ class ProjectorTest extends TestCase
         $this->readRepository->method('getByUuid')
             ->will($this->returnValueMap($uuidMap));
 
+        $this->readRepository->method('getByName')
+            ->willReturnCallback(function (LabelName $value) {
+                if ($value->sameValueAs($this->labelName)) {
+                    return $this->entity;
+                }
+                return null;
+            });
+
         $this->projector = new Projector(
             $this->writeRepository,
             $this->readRepository
@@ -112,11 +119,11 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_created_when_uuid_unique()
+    public function it_handles_created_when_uuid_and_name_unique()
     {
         $created = new Created(
             $this->unknownId,
-            $this->labelName,
+            $this->unknownLabelName,
             $this->entity->getVisibility(),
             $this->entity->getPrivacy()
         );
@@ -125,7 +132,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                $this->entity->getName(),
+                $this->unknownLabelName,
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy()
             );
@@ -158,11 +165,31 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_copy_created_when_uuid_unique()
+    public function it_does_not_handle_created_when_name_not_unique()
+    {
+        $created = new Created(
+            $this->unknownId,
+            $this->labelName,
+            $this->entity->getVisibility(),
+            $this->entity->getPrivacy()
+        );
+
+        $this->writeRepository->expects($this->never())
+            ->method('save');
+
+        $domainMessage = $this->createDomainMessage($this->unknownId, $created);
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_copy_created_when_uuid_and_name_are_unique()
     {
         $copyCreated = new CopyCreated(
             $this->unknownId,
-            $this->labelName,
+            $this->unknownLabelName,
             $this->entity->getVisibility(),
             $this->entity->getPrivacy(),
             $this->entity->getParentUuid()
@@ -172,7 +199,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                $this->entity->getName(),
+                $this->unknownLabelName,
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy(),
                 $this->entity->getParentUuid()
@@ -193,6 +220,30 @@ class ProjectorTest extends TestCase
     {
         $copyCreated = new CopyCreated(
             $this->uuid,
+            $this->unknownLabelName,
+            $this->entity->getVisibility(),
+            $this->entity->getPrivacy(),
+            $this->entity->getParentUuid()
+        );
+
+        $this->writeRepository->expects($this->never())
+            ->method('save');
+
+        $domainMessage = $this->createDomainMessage(
+            $this->unknownId,
+            $copyCreated
+        );
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_handle_copy_created_when_name_not_unique()
+    {
+        $copyCreated = new CopyCreated(
+            $this->unknownId,
             $this->labelName,
             $this->entity->getVisibility(),
             $this->entity->getPrivacy(),
@@ -285,7 +336,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToEvent(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleAdding($labelAdded);
@@ -298,7 +349,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromEvent(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleDeleting($labelRemoved);
@@ -311,7 +362,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToPlace(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleAdding($labelAdded);
@@ -324,7 +375,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromPlace(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleDeleting($labelRemoved);
@@ -369,11 +420,6 @@ class ProjectorTest extends TestCase
             $labelEvent->getItemId(),
             $labelEvent
         );
-
-        $this->readRepository->expects($this->once())
-            ->method('getByName')
-            ->with(new StringLiteral($this->labelName->toNative()))
-            ->willReturn($this->entity);
 
         $this->writeRepository->expects($this->once())
             ->method($expectedMethod)
