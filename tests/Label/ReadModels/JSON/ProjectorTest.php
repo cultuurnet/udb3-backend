@@ -103,6 +103,14 @@ class ProjectorTest extends TestCase
         $this->readRepository->method('getByUuid')
             ->will($this->returnValueMap($uuidMap));
 
+        $this->readRepository->method('getByName')
+            ->willReturnCallback(function (LabelName $value) {
+                if ($value->sameValueAs($this->labelName)) {
+                    return $this->entity;
+                }
+                return null;
+            });
+
         $this->projector = new Projector(
             $this->writeRepository,
             $this->readRepository
@@ -112,11 +120,11 @@ class ProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_created_when_uuid_unique()
+    public function it_handles_created_when_uuid_and_name_unique()
     {
         $created = new Created(
             $this->unknownId,
-            $this->labelName,
+            $this->unknownLabelName,
             $this->entity->getVisibility(),
             $this->entity->getPrivacy()
         );
@@ -125,7 +133,7 @@ class ProjectorTest extends TestCase
             ->method('save')
             ->with(
                 $this->unknownId,
-                $this->entity->getName(),
+                $this->unknownLabelName,
                 $this->entity->getVisibility(),
                 $this->entity->getPrivacy()
             );
@@ -142,6 +150,26 @@ class ProjectorTest extends TestCase
     {
         $created = new Created(
             $this->uuid,
+            $this->labelName,
+            $this->entity->getVisibility(),
+            $this->entity->getPrivacy()
+        );
+
+        $this->writeRepository->expects($this->never())
+            ->method('save');
+
+        $domainMessage = $this->createDomainMessage($this->unknownId, $created);
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_handle_created_when_name_not_unique()
+    {
+        $created = new Created(
+            $this->unknownId,
             $this->labelName,
             $this->entity->getVisibility(),
             $this->entity->getPrivacy()
