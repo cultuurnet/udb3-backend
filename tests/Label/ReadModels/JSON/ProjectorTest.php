@@ -313,7 +313,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToEvent(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleAdding($labelAdded);
@@ -326,7 +326,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromEvent(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleDeleting($labelRemoved);
@@ -339,7 +339,7 @@ class ProjectorTest extends TestCase
     {
         $labelAdded = new LabelAddedToPlace(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleAdding($labelAdded);
@@ -352,7 +352,7 @@ class ProjectorTest extends TestCase
     {
         $labelRemoved = new LabelRemovedFromPlace(
             'itemId',
-            new Label('labelName')
+            new Label($this->labelName->toNative())
         );
 
         $this->handleDeleting($labelRemoved);
@@ -397,11 +397,6 @@ class ProjectorTest extends TestCase
             $labelEvent->getItemId(),
             $labelEvent
         );
-
-        $this->readRepository->expects($this->once())
-            ->method('getByName')
-            ->with(new StringLiteral($this->labelName->toNative()))
-            ->willReturn($this->entity);
 
         $this->writeRepository->expects($this->once())
             ->method($expectedMethod)

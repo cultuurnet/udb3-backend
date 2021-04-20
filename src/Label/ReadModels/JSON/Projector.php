@@ -136,9 +136,9 @@ class Projector extends AbstractProjector
     {
         $uuid = null;
 
-        $name = new StringLiteral((string) $labelEvent->getLabel());
-
+        $name = $labelEvent->getLabel()->getName();
         $entity = $this->readRepository->getByName($name);
+
         if ($entity !== null) {
             $uuid = $entity->getUuid();
         }
