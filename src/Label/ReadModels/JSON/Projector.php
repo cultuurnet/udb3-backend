@@ -45,16 +45,18 @@ class Projector extends AbstractProjector
 
     public function applyCreated(Created $created)
     {
-        $entity = $this->readRepository->getByUuid($created->getUuid());
+        $labelWithSameUuid = $this->readRepository->getByUuid($created->getUuid());
+        $labelWithSameName = $this->readRepository->getByName($created->getName());
 
-        if (is_null($entity)) {
-            $this->writeRepository->save(
-                $created->getUuid(),
-                $created->getName(),
-                $created->getVisibility(),
-                $created->getPrivacy()
-            );
+        if ($labelWithSameUuid ||  $labelWithSameName) {
+            return;
         }
+        $this->writeRepository->save(
+        $created->getUuid(),
+            $created->getName(),
+            $created->getVisibility(),
+            $created->getPrivacy()
+        );
     }
 
 
