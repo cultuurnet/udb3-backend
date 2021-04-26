@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Organizer\Events;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
 {
@@ -21,7 +20,7 @@ class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
         return $domainMessage->getPayload() instanceof WebsiteUpdated;
     }
 
-    public function getUniqueConstraintValue(DomainMessage $domainMessage): StringLiteral
+    public function getUniqueConstraintValue(DomainMessage $domainMessage): string
     {
         if (!$this->hasUniqueConstraint($domainMessage)) {
             throw new \InvalidArgumentException('Given domain message has no unique constraint.');
@@ -31,8 +30,6 @@ class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
         $payload = $domainMessage->getPayload();
 
         $websiteWithNoProtocol = preg_replace('/^https?:\/\/(www.)?/i', '', $payload->getWebsite());
-        $websiteWithNoProtocolOrSlash = preg_replace('/\/$/', '', $websiteWithNoProtocol);
-
-        return new StringLiteral($websiteWithNoProtocolOrSlash);
+        return preg_replace('/\/$/', '', $websiteWithNoProtocol);
     }
 }

@@ -129,7 +129,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
                     $this->uniqueTableName,
                     [
                         self::UUID_COLUMN => $domainMessage->getId(),
-                        self::UNIQUE_COLUMN => $uniqueValue->toNative(),
+                        self::UNIQUE_COLUMN => $uniqueValue,
                     ]
                 );
             } catch (UniqueConstraintViolationException $e) {
@@ -148,19 +148,15 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         }
     }
 
-    /**
-     * @param string $id
-     * @throws UniqueConstraintException
-     */
     private function updateUniqueConstraint(
-        $id,
-        StringLiteral $uniqueValue
+        string $id,
+        string $uniqueValue
     ) {
         try {
             $this->connection->update(
                 $this->uniqueTableName,
                 [
-                    self::UNIQUE_COLUMN => $uniqueValue->toNative(),
+                    self::UNIQUE_COLUMN => $uniqueValue,
                 ],
                 [
                     self::UUID_COLUMN => $id,
