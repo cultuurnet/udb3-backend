@@ -13,7 +13,6 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 {
@@ -21,34 +20,28 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     public const UNIQUE_COLUMN = 'unique_col';
 
     /**
-     * @var EventStore
-     */
-    private $dbalEventStore;
-
-    /**
      * @var Connection
      */
     private $connection;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $uniqueTableName;
 
     /**
-     * @var UniqueConstraintServiceInterface
+     * @var UniqueConstraintService
      */
     private $uniqueConstraintService;
 
     public function __construct(
         EventStore $dbalEventStore,
         Connection $connection,
-        StringLiteral $uniqueTableName,
-        UniqueConstraintServiceInterface $uniqueConstraintService
+        string $uniqueTableName,
+        UniqueConstraintService $uniqueConstraintService
     ) {
         parent::__construct($dbalEventStore);
 
-        $this->dbalEventStore = $dbalEventStore;
         $this->connection = $connection;
         $this->uniqueTableName = $uniqueTableName;
         $this->uniqueConstraintService = $uniqueConstraintService;
@@ -78,27 +71,20 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function configureSchema(Schema $schema)
+    public function configureSchema(Schema $schema): ?Table
     {
-        if ($schema->hasTable($this->uniqueTableName->toNative())) {
+        if ($schema->hasTable($this->uniqueTableName)) {
             return null;
         }
 
         return $this->createUniqueTable($this->uniqueTableName);
     }
 
-    /**
-     * @return Table
-     */
-    private function createUniqueTable(
-        StringLiteral $tableName
-    ) {
+    private function createUniqueTable(string $tableName): Table
+    {
         $schema = new Schema();
 
-        $table = $schema->createTable($tableName->toNative());
+        $table = $schema->createTable($tableName);
 
         $table->addColumn(self::UUID_COLUMN, Type::GUID)
             ->setLength(36)
@@ -124,12 +110,16 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         if ($this->uniqueConstraintService->hasUniqueConstraint($domainMessage)) {
             $uniqueValue = $this->uniqueConstraintService->getUniqueConstraintValue($domainMessage);
 
+            if ($this->uniqueConstraintService->needsPreflightLookup()) {
+                $this->executePreflightLookup($uniqueValue, $domainMessage->getId());
+            }
+
             try {
                 $this->connection->insert(
                     $this->uniqueTableName,
                     [
                         self::UUID_COLUMN => $domainMessage->getId(),
-                        self::UNIQUE_COLUMN => $uniqueValue->toNative(),
+                        self::UNIQUE_COLUMN => $uniqueValue,
                     ]
                 );
             } catch (UniqueConstraintViolationException $e) {
@@ -148,19 +138,13 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         }
     }
 
-    /**
-     * @param string $id
-     * @throws UniqueConstraintException
-     */
-    private function updateUniqueConstraint(
-        $id,
-        StringLiteral $uniqueValue
-    ) {
+    private function updateUniqueConstraint(string $id, string $uniqueValue): void
+    {
         try {
             $this->connection->update(
                 $this->uniqueTableName,
                 [
-                    self::UNIQUE_COLUMN => $uniqueValue->toNative(),
+                    self::UNIQUE_COLUMN => $uniqueValue,
                 ],
                 [
                     self::UUID_COLUMN => $id,
@@ -169,6 +153,30 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         } catch (UniqueConstraintViolationException $e) {
             throw new UniqueConstraintException(
                 $id,
+                $uniqueValue
+            );
+        }
+    }
+
+    private function executePreflightLookup(string $uniqueValue, string $domainMessageId): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $likeUniqueValue = $queryBuilder->expr()->like(
+            self::UNIQUE_COLUMN,
+            ':uniqueValue'
+        );
+
+        $rows = $queryBuilder->select(self::UUID_COLUMN)
+            ->from($this->uniqueTableName)
+            ->where($likeUniqueValue)
+            ->setParameter('uniqueValue', '%' . $uniqueValue . '%')
+            ->execute()
+            ->fetchAll();
+
+        if (!empty($rows)) {
+            throw new UniqueConstraintException(
+                $domainMessageId,
                 $uniqueValue
             );
         }

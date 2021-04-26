@@ -13,7 +13,6 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class UniqueDBALEventStoreDecoratorTest extends TestCase
 {
@@ -30,12 +29,12 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     private $uniqueDBALEventStoreDecorator;
 
     /**
-     * @var UniqueConstraintServiceInterface|MockObject
+     * @var UniqueConstraintService|MockObject
      */
     private $uniqueConstraintService;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $uniqueTableName;
 
@@ -50,9 +49,9 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             ->enableProxyingToOriginalMethods()
             ->getMock();
 
-        $this->uniqueTableName = new StringLiteral('uniqueTableName');
+        $this->uniqueTableName = 'uniqueTableName';
 
-        $this->uniqueConstraintService = $this->createMock(UniqueConstraintServiceInterface::class);
+        $this->uniqueConstraintService = $this->createMock(UniqueConstraintService::class);
 
         $this->uniqueConstraintService->expects($this->any())
             ->method('hasUniqueConstraint')
@@ -60,7 +59,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
         $this->uniqueConstraintService->expects($this->any())
             ->method('getUniqueConstraintValue')
-            ->willReturn(new StringLiteral(self::UNIQUE_VALUE));
+            ->willReturn(self::UNIQUE_VALUE);
 
         $this->uniqueDBALEventStoreDecorator = new UniqueDBALEventStoreDecorator(
             $dbalEventStore,
@@ -82,7 +81,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_append_domain_messages_with_a_unique_value_if_the_unique_value_has_not_been_used_before()
+    public function it_can_append_domain_messages_with_a_unique_value_if_the_unique_value_has_not_been_used_before(): void
     {
         $this->insert(self::OTHER_ID, self::OTHER_UNIQUE_VALUE);
 
@@ -107,7 +106,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_append_domain_messages_with_a_unique_value_if_the_unique_value_has_been_used_before()
+    public function it_does_not_append_domain_messages_with_a_unique_value_if_the_unique_value_has_been_used_before(): void
     {
         $this->insert(self::OTHER_ID, self::UNIQUE_VALUE);
 
@@ -148,7 +147,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_unique_value_when_the_new_value_has_not_yet_been_used()
+    public function it_can_update_a_unique_value_when_the_new_value_has_not_yet_been_used(): void
     {
         $this->insert(self::ID, self::OTHER_UNIQUE_VALUE);
 
@@ -177,7 +176,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_update_a_unique_value_when_the_new_value_has_already_been_used()
+    public function it_does_not_update_a_unique_value_when_the_new_value_has_already_been_used(): void
     {
         $this->insert(self::ID, self::OTHER_UNIQUE_VALUE);
         $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
@@ -203,22 +202,43 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     }
 
     /**
-     * @param string $uuid
-     * @param string $unique
+     * @test
      */
-    private function insert($uuid, $unique)
+    public function it_does_not_insert_when_preflight_lookup_throws(): void
+    {
+        $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
+
+        $this->uniqueConstraintService->expects($this->once())
+            ->method('needsPreflightLookup')
+            ->willReturn(true);
+
+        $this->uniqueConstraintService->expects($this->never())
+            ->method('needsUpdateUniqueConstraint');
+
+        $this->expectException(UniqueConstraintException::class);
+
+        $domainMessage = new DomainMessage(
+            self::ID,
+            0,
+            new Metadata(),
+            new \stdClass(),
+            BroadwayDateTime::now()
+        );
+
+        $this->uniqueDBALEventStoreDecorator->append(
+            $domainMessage->getId(),
+            new DomainEventStream([$domainMessage])
+        );
+    }
+
+    private function insert(string $uuid, string $unique): void
     {
         $sql = 'INSERT INTO ' . $this->uniqueTableName . ' VALUES (?, ?)';
 
         $this->connection->executeQuery($sql, [$uuid, $unique]);
     }
 
-    /**
-     * @param string $uuid
-     * @returns string
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    private function select($uuid)
+    private function select(string $uuid): string
     {
         $tableName = $this->uniqueTableName;
         $where = ' WHERE ' . UniqueDBALEventStoreDecorator::UUID_COLUMN . ' = ?';

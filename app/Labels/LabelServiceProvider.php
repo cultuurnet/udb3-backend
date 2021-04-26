@@ -211,7 +211,7 @@ class LabelServiceProvider implements ServiceProviderInterface
                 return new UniqueDBALEventStoreDecorator(
                     $eventStore,
                     $app['dbal_connection'],
-                    new StringLiteral('labels_unique'),
+                    'labels_unique',
                     new LabelNameUniqueConstraintService()
                 );
             }

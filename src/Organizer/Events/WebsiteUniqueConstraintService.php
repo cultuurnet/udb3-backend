@@ -5,39 +5,37 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
+use InvalidArgumentException;
 
-class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
+class WebsiteUniqueConstraintService implements UniqueConstraintService
 {
-    /**
-     * @inheritdoc
-     */
-    public function hasUniqueConstraint(DomainMessage $domainMessage)
+    public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return $domainMessage->getPayload() instanceof OrganizerCreatedWithUniqueWebsite ||
             $domainMessage->getPayload() instanceof WebsiteUpdated;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage)
+    public function needsPreflightLookup(): bool
+    {
+        return true;
+    }
+
+    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return $domainMessage->getPayload() instanceof WebsiteUpdated;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUniqueConstraintValue(DomainMessage $domainMessage)
+    public function getUniqueConstraintValue(DomainMessage $domainMessage): string
     {
         if (!$this->hasUniqueConstraint($domainMessage)) {
-            throw new \InvalidArgumentException('Given domain message has no unique constraint.');
+            throw new InvalidArgumentException('Given domain message has no unique constraint.');
         }
 
         /* @var OrganizerCreatedWithUniqueWebsite|WebsiteUpdated $payload */
         $payload = $domainMessage->getPayload();
-        return new StringLiteral((string) $payload->getWebsite());
+
+        $websiteWithNoProtocol = preg_replace('/^https?:\/\/(www.)?/i', '', $payload->getWebsite());
+        return preg_replace('/\/$/', '', $websiteWithNoProtocol);
     }
 }

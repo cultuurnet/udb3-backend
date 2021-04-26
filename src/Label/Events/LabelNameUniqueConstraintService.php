@@ -5,36 +5,32 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 
-class LabelNameUniqueConstraintService implements UniqueConstraintServiceInterface
+class LabelNameUniqueConstraintService implements UniqueConstraintService
 {
-    /**
-     * @inheritdoc
-     */
-    public function hasUniqueConstraint(DomainMessage $domainMessage)
+    public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {
         $event = $domainMessage->getPayload();
 
         return $event instanceof Created;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage)
+    public function needsPreflightLookup(): bool
     {
         return false;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUniqueConstraintValue(DomainMessage $domainMessage)
+    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool
+    {
+        return false;
+    }
+
+    public function getUniqueConstraintValue(DomainMessage $domainMessage): string
     {
         /** @var Created|CopyCreated $event */
         $event = $domainMessage->getPayload();
 
-        return $event->getName();
+        return $event->getName()->toNative();
     }
 }
