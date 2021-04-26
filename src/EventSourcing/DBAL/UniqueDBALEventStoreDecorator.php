@@ -110,6 +110,10 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         if ($this->uniqueConstraintService->hasUniqueConstraint($domainMessage)) {
             $uniqueValue = $this->uniqueConstraintService->getUniqueConstraintValue($domainMessage);
 
+            if ($this->uniqueConstraintService->needsPreflightLookup()) {
+                $this->executePreflightLookup($uniqueValue, $domainMessage->getId());
+            }
+
             try {
                 $this->connection->insert(
                     $this->uniqueTableName,
@@ -149,6 +153,30 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         } catch (UniqueConstraintViolationException $e) {
             throw new UniqueConstraintException(
                 $id,
+                $uniqueValue
+            );
+        }
+    }
+
+    private function executePreflightLookup(string $uniqueValue, string $domainMessageId): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $likeUniqueValue = $queryBuilder->expr()->like(
+            self::UNIQUE_COLUMN,
+            ':uniqueValue'
+        );
+
+        $rows = $queryBuilder->select(self::UUID_COLUMN)
+            ->from($this->uniqueTableName)
+            ->where($likeUniqueValue)
+            ->setParameter('uniqueValue', '%' . $uniqueValue . '%')
+            ->execute()
+            ->fetchAll();
+
+        if (!empty($rows)) {
+            throw new UniqueConstraintException(
+                $domainMessageId,
                 $uniqueValue
             );
         }

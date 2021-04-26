@@ -201,6 +201,36 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_does_not_insert_when_preflight_lookup_throws(): void
+    {
+        $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
+
+        $this->uniqueConstraintService->expects($this->once())
+            ->method('needsPreflightLookup')
+            ->willReturn(true);
+
+        $this->uniqueConstraintService->expects($this->never())
+            ->method('needsUpdateUniqueConstraint');
+
+        $this->expectException(UniqueConstraintException::class);
+
+        $domainMessage = new DomainMessage(
+            self::ID,
+            0,
+            new Metadata(),
+            new \stdClass(),
+            BroadwayDateTime::now()
+        );
+
+        $this->uniqueDBALEventStoreDecorator->append(
+            $domainMessage->getId(),
+            new DomainEventStream([$domainMessage])
+        );
+    }
+
     private function insert(string $uuid, string $unique): void
     {
         $sql = 'INSERT INTO ' . $this->uniqueTableName . ' VALUES (?, ?)';
