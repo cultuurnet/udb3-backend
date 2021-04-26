@@ -21,11 +21,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     public const UNIQUE_COLUMN = 'unique_col';
 
     /**
-     * @var EventStore
-     */
-    private $dbalEventStore;
-
-    /**
      * @var Connection
      */
     private $connection;
@@ -48,7 +43,6 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     ) {
         parent::__construct($dbalEventStore);
 
-        $this->dbalEventStore = $dbalEventStore;
         $this->connection = $connection;
         $this->uniqueTableName = $uniqueTableName;
         $this->uniqueConstraintService = $uniqueConstraintService;
