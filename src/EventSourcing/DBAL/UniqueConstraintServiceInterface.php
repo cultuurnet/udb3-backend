@@ -9,18 +9,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface UniqueConstraintServiceInterface
 {
-    /**
-     * @return bool
-     */
-    public function hasUniqueConstraint(DomainMessage $domainMessage);
+    public function hasUniqueConstraint(DomainMessage $domainMessage): bool;
 
-    /**
-     * @return bool
-     */
-    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage);
+    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool;
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUniqueConstraintValue(DomainMessage $domainMessage);
+    public function getUniqueConstraintValue(DomainMessage $domainMessage): StringLiteral;
 }

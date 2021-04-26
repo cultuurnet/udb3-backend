@@ -6,31 +6,23 @@ namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelNameUniqueConstraintService implements UniqueConstraintServiceInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function hasUniqueConstraint(DomainMessage $domainMessage)
+    public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {
         $event = $domainMessage->getPayload();
 
         return $event instanceof Created;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage)
+    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return false;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUniqueConstraintValue(DomainMessage $domainMessage)
+    public function getUniqueConstraintValue(DomainMessage $domainMessage): StringLiteral
     {
         /** @var Created|CopyCreated $event */
         $event = $domainMessage->getPayload();

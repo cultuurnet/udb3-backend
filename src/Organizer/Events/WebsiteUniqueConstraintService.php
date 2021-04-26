@@ -10,27 +10,18 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function hasUniqueConstraint(DomainMessage $domainMessage)
+    public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return $domainMessage->getPayload() instanceof OrganizerCreatedWithUniqueWebsite ||
             $domainMessage->getPayload() instanceof WebsiteUpdated;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage)
+    public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return $domainMessage->getPayload() instanceof WebsiteUpdated;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getUniqueConstraintValue(DomainMessage $domainMessage)
+    public function getUniqueConstraintValue(DomainMessage $domainMessage): StringLiteral
     {
         if (!$this->hasUniqueConstraint($domainMessage)) {
             throw new \InvalidArgumentException('Given domain message has no unique constraint.');
