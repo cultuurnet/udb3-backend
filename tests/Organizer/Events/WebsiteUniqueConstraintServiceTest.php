@@ -80,8 +80,6 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
                 []
             )
         );
-
-        $this->uniqueConstraintValue = new StringLiteral('http://cultuurnet.be');
     }
 
     /**
