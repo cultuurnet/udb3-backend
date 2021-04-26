@@ -102,7 +102,8 @@ class EditOrganizerRestController
                 $website
             );
         } catch (UniqueConstraintException $e) {
-            $e = new DataValidationException(
+            $e = new DataValidationException();
+            $e->setValidationMessages(
                 [
                     'url' => 'Should be unique but is already in use.',
                 ]
