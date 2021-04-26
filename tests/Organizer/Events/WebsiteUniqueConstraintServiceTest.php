@@ -39,11 +39,6 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
      */
     private $unsupportedEvent;
 
-    /**
-     * @var StringLiteral
-     */
-    private $uniqueConstraintValue;
-
     public function setUp()
     {
         $this->service = new WebsiteUniqueConstraintService();
@@ -134,19 +129,77 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     }
 
     /**
+     * @dataProvider organizerWebsiteUrlProvider
      * @test
      */
-    public function it_returns_the_unique_constraint_value_from_supported_events()
+    public function it_returns_the_unique_constraint_value_from_supported_events(string $organizerWebsiteUrl)
     {
-        $this->assertEquals(
-            $this->uniqueConstraintValue,
-            $this->service->getUniqueConstraintValue($this->websiteCreatedEvent)
+        $uniqueConstraintValue = new StringLiteral('decorridor.be');
+
+        $websiteCreatedEvent = DomainMessage::recordNow(
+            $this->organizerId,
+            0,
+            new Metadata([]),
+            new OrganizerCreatedWithUniqueWebsite(
+                $this->organizerId,
+                new Language('en'),
+                Url::fromNative($organizerWebsiteUrl),
+                new Title('CultuurNet')
+            )
+        );
+
+        $websiteUpdatedEvent = DomainMessage::recordNow(
+            $this->organizerId,
+            0,
+            new Metadata([]),
+            new WebsiteUpdated(
+                $this->organizerId,
+                Url::fromNative($organizerWebsiteUrl)
+            )
         );
 
         $this->assertEquals(
-            $this->uniqueConstraintValue,
-            $this->service->getUniqueConstraintValue($this->websiteUpdatedEvent)
+            $uniqueConstraintValue,
+            $this->service->getUniqueConstraintValue($websiteCreatedEvent)
         );
+
+        $this->assertEquals(
+            $uniqueConstraintValue,
+            $this->service->getUniqueConstraintValue($websiteUpdatedEvent)
+        );
+    }
+
+    public function organizerWebsiteUrlProvider(): array
+    {
+        return [
+            'http://decorridor.be' => [
+                'http://decorridor.be',
+            ],
+            'https://decorridor.be' => [
+                'https://decorridor.be',
+            ],
+            'http://decorridor.be/' => [
+                'http://decorridor.be/',
+            ],
+            'https://decorridor.be/' => [
+                'https://decorridor.be/',
+            ],
+            'http://www.decorridor.be' => [
+                'http://www.decorridor.be',
+            ],
+            'https://www.decorridor.be' => [
+                'https://www.decorridor.be',
+            ],
+            'http://www.decorridor.be/' => [
+                'http://www.decorridor.be/',
+            ],
+            'https://www.decorridor.be/' => [
+                'https://www.decorridor.be/',
+            ],
+            'HTtps://www.decorridor.be/' => [
+                'HTtps://www.decorridor.be/',
+            ],
+        ];
     }
 
     /**
