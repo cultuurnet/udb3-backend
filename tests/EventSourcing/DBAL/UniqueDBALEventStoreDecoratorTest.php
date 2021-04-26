@@ -13,7 +13,6 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Silex\AggregateType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class UniqueDBALEventStoreDecoratorTest extends TestCase
 {
@@ -35,7 +34,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     private $uniqueConstraintService;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $uniqueTableName;
 
@@ -50,7 +49,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             ->enableProxyingToOriginalMethods()
             ->getMock();
 
-        $this->uniqueTableName = new StringLiteral('uniqueTableName');
+        $this->uniqueTableName = 'uniqueTableName';
 
         $this->uniqueConstraintService = $this->createMock(UniqueConstraintService::class);
 
@@ -60,7 +59,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
         $this->uniqueConstraintService->expects($this->any())
             ->method('getUniqueConstraintValue')
-            ->willReturn(new StringLiteral(self::UNIQUE_VALUE));
+            ->willReturn(self::UNIQUE_VALUE);
 
         $this->uniqueDBALEventStoreDecorator = new UniqueDBALEventStoreDecorator(
             $dbalEventStore,

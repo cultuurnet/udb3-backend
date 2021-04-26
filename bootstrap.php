@@ -725,7 +725,7 @@ $app['organizer_store'] = $app->share(
         return new UniqueDBALEventStoreDecorator(
             $eventStore,
             $app['dbal_connection'],
-            new StringLiteral('organizer_unique_websites'),
+            'organizer_unique_websites',
             new WebsiteUniqueConstraintService()
         );
     }

@@ -13,7 +13,6 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
 {
@@ -26,7 +25,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     private $connection;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $uniqueTableName;
 
@@ -38,7 +37,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     public function __construct(
         EventStore $dbalEventStore,
         Connection $connection,
-        StringLiteral $uniqueTableName,
+        string $uniqueTableName,
         UniqueConstraintService $uniqueConstraintService
     ) {
         parent::__construct($dbalEventStore);
@@ -72,27 +71,20 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function configureSchema(Schema $schema)
+    public function configureSchema(Schema $schema): ?Table
     {
-        if ($schema->hasTable($this->uniqueTableName->toNative())) {
+        if ($schema->hasTable($this->uniqueTableName)) {
             return null;
         }
 
         return $this->createUniqueTable($this->uniqueTableName);
     }
 
-    /**
-     * @return Table
-     */
-    private function createUniqueTable(
-        StringLiteral $tableName
-    ) {
+    private function createUniqueTable(string $tableName): Table
+    {
         $schema = new Schema();
 
-        $table = $schema->createTable($tableName->toNative());
+        $table = $schema->createTable($tableName);
 
         $table->addColumn(self::UUID_COLUMN, Type::GUID)
             ->setLength(36)
@@ -142,10 +134,8 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         }
     }
 
-    private function updateUniqueConstraint(
-        string $id,
-        string $uniqueValue
-    ) {
+    private function updateUniqueConstraint(string $id, string $uniqueValue): void
+    {
         try {
             $this->connection->update(
                 $this->uniqueTableName,

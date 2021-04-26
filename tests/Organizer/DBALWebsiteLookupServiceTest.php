@@ -9,7 +9,6 @@ use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Url;
 
 class DBALWebsiteLookupServiceTest extends TestCase
@@ -39,7 +38,7 @@ class DBALWebsiteLookupServiceTest extends TestCase
         $uniqueDBALEventStoreDecorator = new UniqueDBALEventStoreDecorator(
             $dbalEventStore,
             $this->getConnection(),
-            new StringLiteral($this->tableName),
+            $this->tableName,
             $uniqueConstraintService
         );
 
