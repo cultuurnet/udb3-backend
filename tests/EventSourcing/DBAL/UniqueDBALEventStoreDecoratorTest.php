@@ -81,7 +81,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_append_domain_messages_with_a_unique_value_if_the_unique_value_has_not_been_used_before()
+    public function it_can_append_domain_messages_with_a_unique_value_if_the_unique_value_has_not_been_used_before(): void
     {
         $this->insert(self::OTHER_ID, self::OTHER_UNIQUE_VALUE);
 
@@ -106,7 +106,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_append_domain_messages_with_a_unique_value_if_the_unique_value_has_been_used_before()
+    public function it_does_not_append_domain_messages_with_a_unique_value_if_the_unique_value_has_been_used_before(): void
     {
         $this->insert(self::OTHER_ID, self::UNIQUE_VALUE);
 
@@ -147,7 +147,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_update_a_unique_value_when_the_new_value_has_not_yet_been_used()
+    public function it_can_update_a_unique_value_when_the_new_value_has_not_yet_been_used(): void
     {
         $this->insert(self::ID, self::OTHER_UNIQUE_VALUE);
 
@@ -176,7 +176,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_update_a_unique_value_when_the_new_value_has_already_been_used()
+    public function it_does_not_update_a_unique_value_when_the_new_value_has_already_been_used(): void
     {
         $this->insert(self::ID, self::OTHER_UNIQUE_VALUE);
         $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
@@ -201,23 +201,14 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
         );
     }
 
-    /**
-     * @param string $uuid
-     * @param string $unique
-     */
-    private function insert($uuid, $unique)
+    private function insert(string $uuid, string $unique): void
     {
         $sql = 'INSERT INTO ' . $this->uniqueTableName . ' VALUES (?, ?)';
 
         $this->connection->executeQuery($sql, [$uuid, $unique]);
     }
 
-    /**
-     * @param string $uuid
-     * @returns string
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    private function select($uuid)
+    private function select(string $uuid): string
     {
         $tableName = $this->uniqueTableName;
         $where = ' WHERE ' . UniqueDBALEventStoreDecorator::UUID_COLUMN . ' = ?';
