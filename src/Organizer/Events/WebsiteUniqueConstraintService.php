@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 use InvalidArgumentException;
 
-class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
+class WebsiteUniqueConstraintService implements UniqueConstraintService
 {
     public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {

@@ -30,7 +30,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     private $uniqueDBALEventStoreDecorator;
 
     /**
-     * @var UniqueConstraintServiceInterface|MockObject
+     * @var UniqueConstraintService|MockObject
      */
     private $uniqueConstraintService;
 
@@ -52,7 +52,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
         $this->uniqueTableName = new StringLiteral('uniqueTableName');
 
-        $this->uniqueConstraintService = $this->createMock(UniqueConstraintServiceInterface::class);
+        $this->uniqueConstraintService = $this->createMock(UniqueConstraintService::class);
 
         $this->uniqueConstraintService->expects($this->any())
             ->method('hasUniqueConstraint')

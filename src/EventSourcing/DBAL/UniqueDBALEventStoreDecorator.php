@@ -36,7 +36,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
     private $uniqueTableName;
 
     /**
-     * @var UniqueConstraintServiceInterface
+     * @var UniqueConstraintService
      */
     private $uniqueConstraintService;
 
@@ -44,7 +44,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         EventStore $dbalEventStore,
         Connection $connection,
         StringLiteral $uniqueTableName,
-        UniqueConstraintServiceInterface $uniqueConstraintService
+        UniqueConstraintService $uniqueConstraintService
     ) {
         parent::__construct($dbalEventStore);
 

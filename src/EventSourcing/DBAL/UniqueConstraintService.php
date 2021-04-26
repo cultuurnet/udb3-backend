@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\EventSourcing\DBAL;
 
 use Broadway\Domain\DomainMessage;
 
-interface UniqueConstraintServiceInterface
+interface UniqueConstraintService
 {
     public function hasUniqueConstraint(DomainMessage $domainMessage): bool;
 

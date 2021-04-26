@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 
-class LabelNameUniqueConstraintService implements UniqueConstraintServiceInterface
+class LabelNameUniqueConstraintService implements UniqueConstraintService
 {
     public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {

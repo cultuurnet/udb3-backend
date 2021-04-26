@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Organizer;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
-use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
+use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -33,8 +33,8 @@ class DBALWebsiteLookupServiceTest extends TestCase
 
         $this->tableName = 'mock_organizer_unique_websites';
 
-        /* @var UniqueConstraintServiceInterface $uniqueConstraintService */
-        $uniqueConstraintService = $this->createMock(UniqueConstraintServiceInterface::class);
+        /* @var UniqueConstraintService $uniqueConstraintService */
+        $uniqueConstraintService = $this->createMock(UniqueConstraintService::class);
 
         $uniqueDBALEventStoreDecorator = new UniqueDBALEventStoreDecorator(
             $dbalEventStore,
