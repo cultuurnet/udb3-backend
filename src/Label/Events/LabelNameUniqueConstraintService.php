@@ -16,6 +16,11 @@ class LabelNameUniqueConstraintService implements UniqueConstraintService
         return $event instanceof Created;
     }
 
+    public function needsPreflightLookup(): bool
+    {
+        return false;
+    }
+
     public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return false;

@@ -10,6 +10,8 @@ interface UniqueConstraintService
 {
     public function hasUniqueConstraint(DomainMessage $domainMessage): bool;
 
+    public function needsPreflightLookup(): bool;
+
     public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool;
 
     public function getUniqueConstraintValue(DomainMessage $domainMessage): string;

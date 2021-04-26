@@ -16,6 +16,11 @@ class WebsiteUniqueConstraintService implements UniqueConstraintService
             $domainMessage->getPayload() instanceof WebsiteUpdated;
     }
 
+    public function needsPreflightLookup(): bool
+    {
+        return true;
+    }
+
     public function needsUpdateUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return $domainMessage->getPayload() instanceof WebsiteUpdated;
