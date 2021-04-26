@@ -131,7 +131,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
      */
     public function it_returns_the_unique_constraint_value_from_supported_events(string $organizerWebsiteUrl)
     {
-        $uniqueConstraintValue = new StringLiteral('decorridor.be');
+        $uniqueConstraintValue = 'decorridor.be';
 
         $websiteCreatedEvent = DomainMessage::recordNow(
             $this->organizerId,
