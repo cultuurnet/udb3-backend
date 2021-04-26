@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Organizer\Events;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintServiceInterface;
+use InvalidArgumentException;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
 {
@@ -23,7 +24,7 @@ class WebsiteUniqueConstraintService implements UniqueConstraintServiceInterface
     public function getUniqueConstraintValue(DomainMessage $domainMessage): string
     {
         if (!$this->hasUniqueConstraint($domainMessage)) {
-            throw new \InvalidArgumentException('Given domain message has no unique constraint.');
+            throw new InvalidArgumentException('Given domain message has no unique constraint.');
         }
 
         /* @var OrganizerCreatedWithUniqueWebsite|WebsiteUpdated $payload */
