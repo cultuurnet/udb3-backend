@@ -137,5 +137,7 @@ try {
     exit(1);
 } catch (\Error $error) {
     $app[ErrorLogger::class]->log($error);
+    // The version of Symfony Console that we are on does not support rendering of Errors yet, so after logging it we
+    // should re-throw it so PHP itself prints a message and then exits with a non-zero status code.
     throw $error;
 }
