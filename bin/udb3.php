@@ -132,7 +132,12 @@ try {
 } catch (\Exception $exception) {
     $app[ErrorLogger::class]->log($exception);
     $consoleApp->renderException($exception, new ConsoleOutput());
+    // Exit with a non-zero status code so a script executing this command gets feedback on whether it was successful or
+    // not. This is also how Symfony Console normally does it when it catches exceptions. (Which we disabled)
+    exit(1);
 } catch (\Error $error) {
     $app[ErrorLogger::class]->log($error);
+    // The version of Symfony Console that we are on does not support rendering of Errors yet, so after logging it we
+    // should re-throw it so PHP itself prints a message and then exits with a non-zero status code.
     throw $error;
 }
