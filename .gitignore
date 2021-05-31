@@ -12,4 +12,5 @@
 phpunit.xml
 external_id_mapping_organizer.yml
 external_id_mapping_place.yml
+term_mapping_*.yml
 .php_cs.cache
