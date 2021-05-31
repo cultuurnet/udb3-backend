@@ -37,22 +37,30 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
     {
         $app['event_jsonld_repository'] = $app->share(
             function ($app) {
+                $repository = new CacheDocumentRepository(
+                    $app['event_jsonld_cache']
+                );
+
+                $repository = new ProductionEnrichedEventRepository(
+                    $repository,
+                    $app[ProductionRepository::class],
+                    $app['event_iri_generator']
+                );
+
+                $repository = new OfferMetadataEnrichedOfferRepository(
+                    $app[OfferMetadataRepository::class],
+                    $repository
+                );
+
+                $repository = new PopularityEnrichedOfferRepository(
+                    $app[PopularityRepository::class],
+                    $repository
+                );
+
+                $repository = new NewPropertyPolyfillOfferRepository($repository);
+
                 return new BroadcastingDocumentRepositoryDecorator(
-                    new NewPropertyPolyfillOfferRepository(
-                        new PopularityEnrichedOfferRepository(
-                            $app[PopularityRepository::class],
-                            new OfferMetadataEnrichedOfferRepository(
-                                $app[OfferMetadataRepository::class],
-                                new ProductionEnrichedEventRepository(
-                                    new CacheDocumentRepository(
-                                        $app['event_jsonld_cache']
-                                    ),
-                                    $app[ProductionRepository::class],
-                                    $app['event_iri_generator']
-                                )
-                            )
-                        )
-                    ),
+                    $repository,
                     $app['event_bus'],
                     new EventFactory(
                         $app['event_iri_generator']
