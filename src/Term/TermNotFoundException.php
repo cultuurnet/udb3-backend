@@ -10,6 +10,6 @@ final class TermNotFoundException extends RuntimeException
 {
     public static function forId(string $id): TermNotFoundException
     {
-        return new self("No term found with id " . $id);
+        return new self('No term found with id ' . $id);
     }
 }
