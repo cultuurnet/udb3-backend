@@ -20,10 +20,12 @@ use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Term\TermRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -37,22 +39,32 @@ class EventJSONLDServiceProvider implements ServiceProviderInterface
     {
         $app['event_jsonld_repository'] = $app->share(
             function ($app) {
+                $repository = new CacheDocumentRepository(
+                    $app['event_jsonld_cache']
+                );
+
+                $repository = new ProductionEnrichedEventRepository(
+                    $repository,
+                    $app[ProductionRepository::class],
+                    $app['event_iri_generator']
+                );
+
+                $repository = new OfferMetadataEnrichedOfferRepository(
+                    $app[OfferMetadataRepository::class],
+                    $repository
+                );
+
+                $repository = new PopularityEnrichedOfferRepository(
+                    $app[PopularityRepository::class],
+                    $repository
+                );
+
+                $repository = new NewPropertyPolyfillOfferRepository($repository);
+
+                $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
+
                 return new BroadcastingDocumentRepositoryDecorator(
-                    new NewPropertyPolyfillOfferRepository(
-                        new PopularityEnrichedOfferRepository(
-                            $app[PopularityRepository::class],
-                            new OfferMetadataEnrichedOfferRepository(
-                                $app[OfferMetadataRepository::class],
-                                new ProductionEnrichedEventRepository(
-                                    new CacheDocumentRepository(
-                                        $app['event_jsonld_cache']
-                                    ),
-                                    $app[ProductionRepository::class],
-                                    $app['event_iri_generator']
-                                )
-                            )
-                        )
-                    ),
+                    $repository,
                     $app['event_bus'],
                     new EventFactory(
                         $app['event_iri_generator']

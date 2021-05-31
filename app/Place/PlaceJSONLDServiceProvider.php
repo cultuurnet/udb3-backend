@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\NewPropertyPolyfillOfferRepository;
+use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\DummyPlaceProjectionEnricher;
@@ -22,6 +23,7 @@ use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceLDProjector;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\RelatedPlaceLDProjector;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
+use CultuurNet\UDB3\Term\TermRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -97,6 +99,8 @@ class PlaceJSONLDServiceProvider implements ServiceProviderInterface
                 );
 
                 $repository = new NewPropertyPolyfillOfferRepository($repository);
+
+                $repository = new TermLabelOfferRepositoryDecorator($repository, $app[TermRepository::class]);
 
                 return new BroadcastingDocumentRepositoryDecorator(
                     $repository,
