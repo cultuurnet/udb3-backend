@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Term;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
