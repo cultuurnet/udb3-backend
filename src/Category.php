@@ -31,10 +31,6 @@ class Category implements Serializable, JsonLdSerializableInterface
             throw new InvalidArgumentException('Category ID can not be empty.');
         }
 
-        if (!is_string($domain)) {
-            throw new InvalidArgumentException('Domain should be a string.');
-        }
-
         $this->id = $id;
         $this->label = $label;
         $this->domain = $domain;
