@@ -98,6 +98,10 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
             return [];
         }
 
+        if (!is_object($json->{$propertyName})) {
+            return [];
+        }
+
         return array_keys(
             get_object_vars($json->{$propertyName})
         );
