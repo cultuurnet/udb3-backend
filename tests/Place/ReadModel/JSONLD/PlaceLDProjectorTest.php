@@ -340,7 +340,6 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $metadata = new Metadata(
             [
                 'user_id' => '20a72430-7e3e-4b75-ab59-043156b3169c',
-                'user_nick' => 'Tester',
             ]
         );
 
