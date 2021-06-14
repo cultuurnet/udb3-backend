@@ -305,7 +305,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             [
                 new Metadata(
                     [
-                        'user_email' => 'foo@bar.com',
                         'user_id' => '20a72430-7e3e-4b75-ab59-043156b3169c',
                     ]
                 ),
