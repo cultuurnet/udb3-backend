@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Security;
 use CultureFeed_User;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CultureFeedUserIdentification implements UserIdentificationInterface
+class UserIdentification implements UserIdentificationInterface
 {
     /**
      * @var CultureFeed_User

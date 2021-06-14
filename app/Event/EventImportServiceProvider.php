@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\Import\PreProcessing\LabelPreProcessingDocumentImporte
 use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter;
 use CultuurNet\UDB3\Model\Import\Validation\Event\EventImportValidator;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
-use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
+use CultuurNet\UDB3\Security\UserIdentification;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -31,7 +31,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     new EventImportValidator(
                         $app['place_jsonld_repository'],
                         new EventIDParser(),
-                        new CultureFeedUserIdentification(
+                        new UserIdentification(
                             $app['current_user'],
                             $app['config']['user_permissions']
                         ),

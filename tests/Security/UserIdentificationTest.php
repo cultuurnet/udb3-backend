@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Security;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CultureFeedUserIdentificationTest extends TestCase
+class UserIdentificationTest extends TestCase
 {
     /**
      * @var \CultureFeed_User
@@ -20,7 +20,7 @@ class CultureFeedUserIdentificationTest extends TestCase
     private $permissionList;
 
     /**
-     * @var CultureFeedUserIdentification
+     * @var UserIdentification
      */
     private $cultureFeedUserIdentification;
 
@@ -31,7 +31,7 @@ class CultureFeedUserIdentificationTest extends TestCase
 
         $this->permissionList['allow_all'] = ['godUserId', 'otherGodUserId'];
 
-        $this->cultureFeedUserIdentification = new CultureFeedUserIdentification(
+        $this->cultureFeedUserIdentification = new UserIdentification(
             $this->cultureFeedUser,
             $this->permissionList
         );
@@ -53,7 +53,7 @@ class CultureFeedUserIdentificationTest extends TestCase
         $cultureFeedUser = new \CultureFeed_User();
         $cultureFeedUser->id = 'normalUserId';
 
-        $cultureFeedUserIdentification = new CultureFeedUserIdentification(
+        $cultureFeedUserIdentification = new UserIdentification(
             $cultureFeedUser,
             $this->permissionList
         );
