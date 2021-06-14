@@ -22,11 +22,6 @@ final class Udb3Token
         $this->token = $token;
     }
 
-    public function email(): string
-    {
-        return $this->token->getClaim('email');
-    }
-
     public function id(): string
     {
         if ($this->token->hasClaim('uid')) {

@@ -69,21 +69,4 @@ final class Udb3TokenTest extends TestCase
 
         $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $token->id());
     }
-
-    /**
-     * @test
-     */
-    public function it_returns_email_claim_as_email(): void
-    {
-        $token = new Udb3Token(
-            new Token(
-                ['alg' => 'none'],
-                [
-                    'email' => new Basic('email', 'zvonimir@madewithlove.be'),
-                ]
-            )
-        );
-
-        $this->assertEquals('zvonimir@madewithlove.be', $token->email());
-    }
 }
