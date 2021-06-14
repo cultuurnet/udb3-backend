@@ -84,16 +84,6 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_and_returns_user_identification()
-    {
-        $userIdentification = $this->authorizedCommandBus->getUserIdentification();
-
-        $this->assertEquals($this->userIdentification, $userIdentification);
-    }
-
-    /**
-     * @test
-     */
     public function it_stores_and_returns_user_id()
     {
         $userId = $this->authorizedCommandBus->getUserId();

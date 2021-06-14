@@ -12,7 +12,5 @@ interface AuthorizedCommandBusInterface extends CommandBus
 {
     public function isAuthorized(AuthorizableCommandInterface $command): bool;
 
-    public function getUserIdentification(): UserIdentificationInterface;
-
     public function getUserId(): string;
 }
