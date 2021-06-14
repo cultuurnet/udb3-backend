@@ -12,9 +12,14 @@ use CultuurNet\UDB3\Jwt\Udb3Token;
 class Impersonator
 {
     /**
-     * @var CultureFeed_User
+     * @var CultureFeed_User|null
      */
     private $user;
+
+    /**
+     * @var string|null
+     */
+    private $userId;
 
     /**
      * @var Udb3Token|null
@@ -29,6 +34,11 @@ class Impersonator
     public function getUser(): ?CultureFeed_User
     {
         return $this->user;
+    }
+
+    public function getUserId(): ?string
+    {
+        return $this->userId;
     }
 
     public function getJwt(): ?Udb3Token
@@ -47,6 +57,7 @@ class Impersonator
 
         $this->user = new CultureFeed_User();
         $this->user->id = $metadata['user_id'];
+        $this->userId = $metadata['user_id'];
         $this->jwt = $metadata['auth_jwt'] ?? null;
         $this->apiKey = $metadata['auth_api_key'] ?? null;
     }
