@@ -33,7 +33,7 @@ class GeneralSecurityServiceProvider implements ServiceProviderInterface
         $app['current_user_identification'] = $app->share(
             function (Application $app) {
                 return new UserIdentification(
-                    $app['current_user'],
+                    $app['current_user_id'],
                     $app['config']['user_permissions']
                 );
             }

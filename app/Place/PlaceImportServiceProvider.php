@@ -29,7 +29,7 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
                     new PlaceImportValidator(
                         new PlaceIDParser(),
                         new UserIdentification(
-                            $app['current_user'],
+                            $app['current_user_id'],
                             $app['config']['user_permissions']
                         ),
                         $app[LabelServiceProvider::JSON_READ_REPOSITORY],

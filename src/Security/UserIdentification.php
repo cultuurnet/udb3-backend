@@ -10,9 +10,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 class UserIdentification implements UserIdentificationInterface
 {
     /**
-     * @var CultureFeed_User
+     * @var string
      */
-    private $cultureFeedUser;
+    private $userId;
 
     /**
      * @var string[][]
@@ -23,30 +23,23 @@ class UserIdentification implements UserIdentificationInterface
      * @param string[][] $permissionList
      */
     public function __construct(
-        CultureFeed_User $cultureFeedUser,
+        string $userId,
         array $permissionList
     ) {
-        $this->cultureFeedUser = $cultureFeedUser;
+        $this->userId = $userId;
         $this->permissionList = $permissionList;
     }
 
-
-    /**
-     * @return bool
-     */
-    public function isGodUser()
+    public function isGodUser(): bool
     {
         return in_array(
-            $this->cultureFeedUser->id,
+            $this->userId,
             $this->permissionList['allow_all']
         );
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getId()
+    public function getId(): StringLiteral
     {
-        return new StringLiteral($this->cultureFeedUser->id);
+        return new StringLiteral($this->userId);
     }
 }
