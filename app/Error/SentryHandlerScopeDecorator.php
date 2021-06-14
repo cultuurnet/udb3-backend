@@ -78,7 +78,6 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
         return [
             'id' => $this->udb3Token->id(),
-            'username' => $this->udb3Token->userName(),
             'email' => $this->udb3Token->email(),
             'uid' => $this->udb3Token->jwtToken()->getClaim('uid', 'null'),
             'uitidv1id' => $this->udb3Token->jwtToken()->getClaim('https://publiq.be/uitidv1id', 'null'),

@@ -223,7 +223,6 @@ $app['current_user'] = $app::share(
             $jwt = $token->getCredentials();
 
             $cfUser->id = $jwt->id();
-            $cfUser->nick = $jwt->userName();
             $cfUser->mbox = $jwt->email();
 
             return $cfUser;
