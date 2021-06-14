@@ -47,8 +47,6 @@ class Impersonator
 
         $this->user = new CultureFeed_User();
         $this->user->id = $metadata['user_id'];
-        $this->user->nick = $metadata['user_nick'];
-        $this->user->mbox = $metadata['user_email'] ?? null;
         $this->jwt = $metadata['auth_jwt'] ?? null;
         $this->apiKey = $metadata['auth_api_key'] ?? null;
     }

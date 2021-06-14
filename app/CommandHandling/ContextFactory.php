@@ -27,8 +27,6 @@ final class ContextFactory
 
         if ($user) {
             $contextValues['user_id'] = $user->id;
-            $contextValues['user_nick'] = $user->nick;
-            $contextValues['user_email'] = $user->mbox;
         }
 
         if ($jwt) {

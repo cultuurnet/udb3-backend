@@ -63,7 +63,6 @@ $app['impersonator']->impersonate(
     new Metadata(
         [
             'user_id' => UserIdentityDetails::SYSTEM_USER_UUID,
-            'user_nick' => 'udb3',
         ]
     )
 );
