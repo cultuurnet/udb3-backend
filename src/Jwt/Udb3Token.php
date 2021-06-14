@@ -7,13 +7,8 @@ namespace CultuurNet\UDB3\Jwt;
 use Lcobucci\JWT\Token;
 
 /**
- * Class Udb3Token
- * @package CultuurNet\UDB3\Jwt
- *
- * A wrapper class around jwt token
- * to provide fallback functionality for
- * different claim name (a "dirty but
- * works" solution).
+ * A wrapper class around the current jwt token to hide away the complexity of determining the correct id based on
+ * multiple claims etc.
  */
 final class Udb3Token
 {
