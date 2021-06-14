@@ -46,7 +46,10 @@ class AuthorizedCommandBusTest extends TestCase
     {
         $this->decoratee = $this->createMock([CommandBus::class, ContextAwareInterface::class]);
 
+        $this->userId = '9bd817a3-670e-4720-affa-7636e29073ce';
         $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
+        $this->userIdentification->method('getId')
+            ->willReturn(new StringLiteral($this->userId));
 
         $this->security = $this->createMock(SecurityInterface::class);
 
@@ -86,6 +89,16 @@ class AuthorizedCommandBusTest extends TestCase
         $userIdentification = $this->authorizedCommandBus->getUserIdentification();
 
         $this->assertEquals($this->userIdentification, $userIdentification);
+    }
+
+    /**
+     * @test
+     */
+    public function it_stores_and_returns_user_id()
+    {
+        $userId = $this->authorizedCommandBus->getUserId();
+
+        $this->assertEquals($this->userId, $userId);
     }
 
     /**

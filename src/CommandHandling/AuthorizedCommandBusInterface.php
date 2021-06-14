@@ -19,4 +19,6 @@ interface AuthorizedCommandBusInterface extends CommandBus
      * @return UserIdentificationInterface
      */
     public function getUserIdentification();
+
+    public function getUserId(): string;
 }

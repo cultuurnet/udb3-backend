@@ -78,6 +78,11 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         return $this->userIdentification;
     }
 
+    public function getUserId(): string
+    {
+        return $this->userIdentification->getId()->toNative();
+    }
+
     public function setLogger(LoggerInterface $logger): void
     {
         if ($this->decoratee instanceof LoggerAwareInterface) {
