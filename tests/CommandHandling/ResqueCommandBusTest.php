@@ -54,7 +54,6 @@ class ResqueCommandBusTest extends TestCase
         $context = new Metadata(
             [
                 'user_id' => 1,
-                'user_nick' => 'admin',
             ]
         );
 
@@ -125,7 +124,6 @@ class ResqueCommandBusTest extends TestCase
         $context = new Metadata(
             [
                 'user_id' => 1,
-                'user_nick' => 'admin',
             ]
         );
 

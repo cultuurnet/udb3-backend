@@ -61,7 +61,6 @@ class SimpleContextAwareCommandBusTest extends TestCase
         $context = new Metadata(
             [
                 'user_id' => 1,
-                'user_nick' => 'admin',
             ]
         );
 
