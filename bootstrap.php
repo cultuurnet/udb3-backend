@@ -231,6 +231,34 @@ $app['current_user'] = $app::share(
     }
 );
 
+$app['current_user_id'] = $app::share(
+    function (Application $app) {
+        /* @var Impersonator $impersonator */
+        $impersonator = $app['impersonator'];
+        if ($impersonator->getUserId()) {
+            return $impersonator->getUserId();
+        }
+
+        try {
+            /* @var TokenStorageInterface $tokenStorage */
+            $tokenStorage = $app['security.token_storage'];
+        } catch (\InvalidArgumentException $e) {
+            // Running from CLI or unauthorized (will be further handled by the firewall).
+            return null;
+        }
+
+        $token = $tokenStorage->getToken();
+        if (!($token instanceof JwtUserToken)) {
+            // The token in the firewall storage is not supported.
+            return null;
+        }
+
+        // Get the actual Udb3Token from the Symfony Firewall "token", and return the user's id.
+        $jwt = $token->getCredentials();
+        return $jwt->id();
+    }
+);
+
 $app['jwt'] = $app::share(
     function (Application $app) {
         // Check first if we're impersonating someone.
