@@ -15,7 +15,7 @@ use Lcobucci\JWT\Token;
  * different claim name (a "dirty but
  * works" solution).
  */
-class Udb3Token
+final class Udb3Token
 {
     /**
      * @var Token
