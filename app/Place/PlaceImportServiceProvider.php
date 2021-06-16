@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\Import\PreProcessing\TermPreProcessingDocumentImporter
 use CultuurNet\UDB3\Model\Import\Validation\Place\PlaceImportValidator;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
-use CultuurNet\UDB3\Security\UserIdentification;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

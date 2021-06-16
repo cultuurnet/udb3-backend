@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 
 class OrganizerImportValidator extends OrganizerValidator
 {
