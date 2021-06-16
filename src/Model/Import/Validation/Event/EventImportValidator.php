@@ -45,7 +45,7 @@ class EventImportValidator extends EventValidator
             ),
             new DocumentLabelPermissionRule(
                 $uuidParser,
-                $userIdentification,
+                $userIdentification->getId()->toNative(),
                 $labelsRepository,
                 $labelRelationsRepository
             ),

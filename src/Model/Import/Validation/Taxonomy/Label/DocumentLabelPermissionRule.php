@@ -19,9 +19,9 @@ class DocumentLabelPermissionRule extends AbstractRule
     private $uuidParser;
 
     /**
-     * @var UserIdentificationInterface
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var LabelsRepository
@@ -36,12 +36,12 @@ class DocumentLabelPermissionRule extends AbstractRule
 
     public function __construct(
         UUIDParser $uuidParser,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         LabelsRepository $labelsRepository,
         LabelRelationsRepository $labelsRelationsRepository
     ) {
         $this->uuidParser = $uuidParser;
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
         $this->labelsRepository = $labelsRepository;
         $this->labelRelationsRepository = $labelsRelationsRepository;
     }
@@ -65,7 +65,7 @@ class DocumentLabelPermissionRule extends AbstractRule
 
         $labelPermissionRule = new LabelPermissionRule(
             $id,
-            $this->userIdentification->getId()->toNative(),
+            $this->userId,
             $this->labelsRepository,
             $this->labelRelationsRepository
         );

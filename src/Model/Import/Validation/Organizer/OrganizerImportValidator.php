@@ -33,7 +33,7 @@ class OrganizerImportValidator extends OrganizerValidator
             ),
             new DocumentLabelPermissionRule(
                 $uuidParser,
-                $userIdentification,
+                $userIdentification->getId()->toNative(),
                 $labelsRepository,
                 $labelRelationsRepository
             ),

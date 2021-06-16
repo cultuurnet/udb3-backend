@@ -21,9 +21,9 @@ class DocumentLabelPermissionRuleTest extends TestCase
     private $uuidParser;
 
     /**
-     * @var UserIdentificationInterface|MockObject
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var LabelsRepository|MockObject
@@ -44,7 +44,7 @@ class DocumentLabelPermissionRuleTest extends TestCase
     {
         $this->uuidParser = new EventIDParser();
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
+        $this->userId = 'user_id';
 
         $this->labelsRepository = $this->createMock(LabelsRepository::class);
 
@@ -52,7 +52,7 @@ class DocumentLabelPermissionRuleTest extends TestCase
 
         $this->documentLabelPermissionRule = new DocumentLabelPermissionRule(
             $this->uuidParser,
-            $this->userIdentification,
+            $this->userId,
             $this->labelsRepository,
             $this->labelRelationsRepository
         );
@@ -140,8 +140,6 @@ class DocumentLabelPermissionRuleTest extends TestCase
             ],
         ];
 
-        $userId = new StringLiteral('user_id');
-
         $this->labelRelationsRepository->expects($this->exactly(4))
             ->method('getLabelRelationsForItem')
             ->with(new StringLiteral('c33b4498-0932-4fbe-816f-c6641f30ba3b'))
@@ -156,10 +154,6 @@ class DocumentLabelPermissionRuleTest extends TestCase
                     return false;
                 }
             });
-
-        $this->userIdentification->expects($this->exactly(1))
-            ->method('getId')
-            ->willReturn($userId);
 
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('no permission to use labels bar, ipsum');

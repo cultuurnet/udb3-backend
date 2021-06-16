@@ -37,7 +37,7 @@ class PlaceImportValidator extends PlaceValidator
             ),
             new DocumentLabelPermissionRule(
                 $uuidParser,
-                $userIdentification,
+                $userIdentification->getId()->toNative(),
                 $labelsRepository,
                 $labelRelationsRepository
             ),
