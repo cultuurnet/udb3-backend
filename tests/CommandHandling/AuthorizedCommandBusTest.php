@@ -23,9 +23,9 @@ class AuthorizedCommandBusTest extends TestCase
     private $decoratee;
 
     /**
-     * @var UserIdentificationInterface|MockObject
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var SecurityInterface|MockObject
@@ -47,9 +47,6 @@ class AuthorizedCommandBusTest extends TestCase
         $this->decoratee = $this->createMock([CommandBus::class, ContextAwareInterface::class]);
 
         $this->userId = '9bd817a3-670e-4720-affa-7636e29073ce';
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
-        $this->userIdentification->method('getId')
-            ->willReturn(new StringLiteral($this->userId));
 
         $this->security = $this->createMock(SecurityInterface::class);
 
@@ -57,7 +54,7 @@ class AuthorizedCommandBusTest extends TestCase
 
         $this->authorizedCommandBus = new AuthorizedCommandBus(
             $this->decoratee,
-            $this->userIdentification,
+            $this->userId,
             $this->security
         );
     }
@@ -110,17 +107,20 @@ class AuthorizedCommandBusTest extends TestCase
      */
     public function it_throws_command_authorization_exception_when_not_authorized()
     {
-        $this->mockIsAuthorized(false);
+        $authorizedCommandBus = new AuthorizedCommandBus(
+            $this->decoratee,
+            'notAuthorizedUserId',
+            $this->security
+        );
 
-        $userId = new StringLiteral('userId');
-        $this->mockGetId($userId);
+        $this->mockIsAuthorized(false);
 
         $this->mockGetPermission(Permission::AANBOD_BEWERKEN());
         $this->mockGetItemId('itemId');
 
         $this->expectException(CommandAuthorizationException::class);
 
-        $this->authorizedCommandBus->dispatch($this->command);
+        $authorizedCommandBus->dispatch($this->command);
     }
 
     /**
@@ -161,14 +161,6 @@ class AuthorizedCommandBusTest extends TestCase
             ->method('isAuthorized')
             ->willReturn($isAuthorized);
     }
-
-
-    private function mockGetId(StringLiteral $userId)
-    {
-        $this->userIdentification->method('getId')
-            ->willReturn($userId);
-    }
-
 
     private function mockGetPermission(Permission $permission)
     {

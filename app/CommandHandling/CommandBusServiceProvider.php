@@ -85,10 +85,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
             function () use ($app) {
                 return new AuthorizedCommandBus(
                     new SimpleContextAwareCommandBus(),
-                    new UserIdentification(
-                        $app['current_user_id'],
-                        $app['config']['user_permissions']
-                    ),
+                    $app['current_user_id'],
                     $app['command_bus.security']
                 );
             }
