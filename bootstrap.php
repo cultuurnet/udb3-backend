@@ -87,7 +87,7 @@ $app['config'] = array_merge_recursive(
     [
         'user_permissions' => [
             'allow_all' => [
-                UserIdentityDetails::SYSTEM_USER_UUID
+                $app['system_user_id']
             ],
         ],
     ]

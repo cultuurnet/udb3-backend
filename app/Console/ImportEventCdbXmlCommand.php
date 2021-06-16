@@ -23,14 +23,20 @@ class ImportEventCdbXmlCommand extends AbstractCommand
     private const URL = 'url';
 
     /**
+     * @var string
+     */
+    private $systemUserId;
+
+    /**
      * @var EventBus
      */
     private $eventBus;
 
-    public function __construct(CommandBus $commandBus, EventBus $eventBus)
+    public function __construct(CommandBus $commandBus, EventBus $eventBus, string $systemUserId)
     {
         parent::__construct($commandBus);
         $this->eventBus = $eventBus;
+        $this->systemUserId = $systemUserId;
     }
 
     /**
@@ -61,12 +67,12 @@ class ImportEventCdbXmlCommand extends AbstractCommand
         $incomingUdb2Event = new EventCreated(
             new StringLiteral($input->getArgument(self::ID)),
             new DateTimeImmutable(),
-            new StringLiteral(UserIdentityDetails::SYSTEM_USER_UUID),
+            new StringLiteral($this->systemUserId),
             Url::fromNative($input->getArgument(self::URL))
         );
 
         $domainMessage = (new DomainMessageBuilder())
-            ->setUserId(UserIdentityDetails::SYSTEM_USER_UUID)
+            ->setUserId($this->systemUserId)
             ->create($incomingUdb2Event);
 
         $this->eventBus->publish(new DomainEventStream([$domainMessage]));
