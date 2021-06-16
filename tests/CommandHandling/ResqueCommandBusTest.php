@@ -69,15 +69,12 @@ class ResqueCommandBusTest extends TestCase
      */
     public function it_throws_command_authorization_exception_when_decoratee_is_an_instance_of_authorized_command_bus_and_command_is_an_instance_of_authorizable_command()
     {
-        $userIdentification = $this->createMock(UserIdentificationInterface::class);
-        $userIdentification->method('getId')
-            ->willReturn(new StringLiteral('userId'));
 
         $decoratee = $this->createMock(AuthorizedCommandBusInterface::class);
         $decoratee->method('isAuthorized')
             ->willReturn(false);
-        $decoratee->method('getUserIdentification')
-            ->willReturn($userIdentification);
+        $decoratee->method('getUserId')
+            ->willReturn('userId');
 
         $queueName = 'test';
 
