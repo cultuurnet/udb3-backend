@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
-use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +16,6 @@ class ReadEventRestControllerTest extends TestCase
     public const EXISTING_ID = 'existingId';
     public const NON_EXISTING_ID = 'nonExistingId';
     public const REMOVED_ID = 'removedId';
-
-    /**
-     * @var ReadEventRestController
-     */
-    private $eventRestController;
 
     /**
      * @var JsonDocument

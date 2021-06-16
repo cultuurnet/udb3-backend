@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusValidator;
-use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;

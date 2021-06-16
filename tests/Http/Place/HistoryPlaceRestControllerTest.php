@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -15,16 +14,6 @@ class HistoryPlaceRestControllerTest extends TestCase
 {
     public const EXISTING_ID = 'existingId';
     public const NON_EXISTING_ID = 'nonExistingId';
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UserIdentificationInterface
-     */
-    private $userIdentification;
-
-    /**
-     * @var HistoryPlaceRestController
-     */
-    private $controller;
 
     /**
      * @var string
