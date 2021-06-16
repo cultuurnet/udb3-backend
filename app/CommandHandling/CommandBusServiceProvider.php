@@ -60,7 +60,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 
                 $security = new SecurityWithLabelPrivacy(
                     $security,
-                    $app['current_user_identification'],
+                    $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
 

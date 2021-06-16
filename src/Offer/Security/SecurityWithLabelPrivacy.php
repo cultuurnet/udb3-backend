@@ -9,32 +9,28 @@ use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\LabelSecurityInterface;
 use CultuurNet\UDB3\Security\SecurityDecoratorBase;
 use CultuurNet\UDB3\Security\SecurityInterface;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class SecurityWithLabelPrivacy extends SecurityDecoratorBase
 {
     /**
-     * @var UserIdentificationInterface
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var ReadRepositoryInterface
      */
     private $labelReadRepository;
 
-    /**
-     * SecurityWithLabelPrivacy constructor.
-     *
-     */
     public function __construct(
         SecurityInterface $decoratee,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         ReadRepositoryInterface $labelReadRepository
     ) {
         parent::__construct($decoratee);
 
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
         $this->labelReadRepository = $labelReadRepository;
     }
 
@@ -68,7 +64,7 @@ class SecurityWithLabelPrivacy extends SecurityDecoratorBase
     {
         foreach ($command->getNames() as $labelName) {
             if (!$this->labelReadRepository->canUseLabel(
-                $this->userIdentification->getId(),
+                new StringLiteral($this->userId),
                 $labelName
             )) {
                 return false;

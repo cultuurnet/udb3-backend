@@ -25,9 +25,9 @@ class SecurityWithLabelPrivacyTest extends TestCase
     private $securityDecoratee;
 
     /**
-     * @var UserIdentificationInterface|MockObject
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var ReadRepositoryInterface|MockObject
@@ -48,9 +48,7 @@ class SecurityWithLabelPrivacyTest extends TestCase
     {
         $this->securityDecoratee = $this->createMock(SecurityInterface::class);
 
-        $this->userIdentification = $this->createMock(
-            UserIdentificationInterface::class
-        );
+        $this->userId = '82650413-baf2-4257-a25b-d25dc18999dc';
 
         $this->labelReadRepository = $this->createMock(
             ReadRepositoryInterface::class
@@ -58,7 +56,7 @@ class SecurityWithLabelPrivacyTest extends TestCase
 
         $this->securityWithLabelPrivacy = new SecurityWithLabelPrivacy(
             $this->securityDecoratee,
-            $this->userIdentification,
+            $this->userId,
             $this->labelReadRepository
         );
 
@@ -112,9 +110,6 @@ class SecurityWithLabelPrivacyTest extends TestCase
             ]
         );
 
-        $this->userIdentification->method('getId')
-            ->willReturn(new StringLiteral('82650413-baf2-4257-a25b-d25dc18999dc'));
-
         $this->labelReadRepository->expects($this->once())
             ->method('canUseLabel');
 
@@ -126,9 +121,6 @@ class SecurityWithLabelPrivacyTest extends TestCase
      */
     public function a_user_can_only_use_labels_he_is_allowed_to_use()
     {
-        $this->userIdentification->method('getId')
-            ->willReturn(new StringLiteral('82650413-baf2-4257-a25b-d25dc18999dc'));
-
         $this->labelReadRepository->method('canUseLabel')
             ->willReturn(true);
 
