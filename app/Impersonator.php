@@ -5,17 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex;
 
 use Broadway\Domain\Metadata;
-use CultureFeed_User;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 
 class Impersonator
 {
-    /**
-     * @var CultureFeed_User|null
-     */
-    private $user;
-
     /**
      * @var string|null
      */
@@ -30,11 +24,6 @@ class Impersonator
      * @var ApiKey|null
      */
     private $apiKey;
-
-    public function getUser(): ?CultureFeed_User
-    {
-        return $this->user;
-    }
 
     public function getUserId(): ?string
     {
@@ -55,8 +44,6 @@ class Impersonator
     {
         $metadata = $metadata->serialize();
 
-        $this->user = new CultureFeed_User();
-        $this->user->id = $metadata['user_id'];
         $this->userId = $metadata['user_id'];
         $this->jwt = $metadata['auth_jwt'] ?? null;
         $this->apiKey = $metadata['auth_api_key'] ?? null;
