@@ -68,7 +68,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 
                 $security = new SecurityWithUserPermission(
                     $security,
-                    $app['current_user_identification'],
+                    $app['current_user_id'],
                     $app['facility_permission_voter'],
                     new ClassNameCommandFilter(
                         new StringLiteral(PlaceUpdateFacilities::class),
