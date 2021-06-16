@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class ContextFactory
 {
     public static function createContext(
-        ?CultureFeed_User $user = null,
+        ?string $userId = null,
         ?Udb3Token $jwt = null,
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
@@ -25,8 +25,8 @@ final class ContextFactory
     ): Metadata {
         $contextValues = [];
 
-        if ($user) {
-            $contextValues['user_id'] = $user->id;
+        if ($userId) {
+            $contextValues['user_id'] = $userId;
         }
 
         if ($jwt) {
@@ -62,7 +62,7 @@ final class ContextFactory
         }
 
         return self::createContext(
-            $application['current_user'],
+            $application['current_user_id'],
             $application['jwt'],
             $application['api_key'],
             $application['api_name'],
