@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultureFeed_User;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class UserIdentification implements UserIdentificationInterface

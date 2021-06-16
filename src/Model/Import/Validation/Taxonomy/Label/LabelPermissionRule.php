@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Rules\AbstractRule;
 use ValueObjects\StringLiteral\StringLiteral;

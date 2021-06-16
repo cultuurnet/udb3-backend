@@ -9,7 +9,6 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\Security\SecurityInterface;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
