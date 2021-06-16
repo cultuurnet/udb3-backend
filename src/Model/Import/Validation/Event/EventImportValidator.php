@@ -25,7 +25,7 @@ class EventImportValidator extends EventValidator
     public function __construct(
         DocumentRepository $placeRepository,
         UUIDParser $uuidParser,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         LabelsRepository $labelsRepository,
         LabelRelationsRepository $labelRelationsRepository
     ) {
@@ -45,7 +45,7 @@ class EventImportValidator extends EventValidator
             ),
             new DocumentLabelPermissionRule(
                 $uuidParser,
-                $userIdentification->getId()->toNative(),
+                $userId,
                 $labelsRepository,
                 $labelRelationsRepository
             ),

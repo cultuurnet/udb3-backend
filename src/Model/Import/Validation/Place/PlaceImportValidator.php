@@ -21,7 +21,7 @@ class PlaceImportValidator extends PlaceValidator
 {
     public function __construct(
         UUIDParser $uuidParser,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         LabelsRepository $labelsRepository,
         LabelRelationsRepository $labelRelationsRepository
     ) {
@@ -37,7 +37,7 @@ class PlaceImportValidator extends PlaceValidator
             ),
             new DocumentLabelPermissionRule(
                 $uuidParser,
-                $userIdentification->getId()->toNative(),
+                $userId,
                 $labelsRepository,
                 $labelRelationsRepository
             ),

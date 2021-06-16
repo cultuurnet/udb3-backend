@@ -31,10 +31,7 @@ class EventImportServiceProvider implements ServiceProviderInterface
                     new EventImportValidator(
                         $app['place_jsonld_repository'],
                         new EventIDParser(),
-                        new UserIdentification(
-                            $app['current_user_id'],
-                            $app['config']['user_permissions']
-                        ),
+                        $app['current_user_id'],
                         $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                         $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
                     )

@@ -28,10 +28,7 @@ class PlaceImportServiceProvider implements ServiceProviderInterface
                 return new PlaceDenormalizer(
                     new PlaceImportValidator(
                         new PlaceIDParser(),
-                        new UserIdentification(
-                            $app['current_user_id'],
-                            $app['config']['user_permissions']
-                        ),
+                        $app['current_user_id'],
                         $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                         $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY]
                     )

@@ -26,11 +26,6 @@ class OrganizerImportValidatorTest extends TestCase
     private $websiteLookupService;
 
     /**
-     * @var UserIdentificationInterface|MockObject
-     */
-    private $userIdentification;
-
-    /**
      * @var LabelsRepository|MockObject
      */
     private $labelsRepository;
@@ -46,8 +41,6 @@ class OrganizerImportValidatorTest extends TestCase
 
         $this->websiteLookupService = $this->createMock(WebsiteLookupServiceInterface::class);
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
-
         $this->labelsRepository = $this->createMock(LabelsRepository::class);
 
         $this->labelRelationsRepository = $this->createMock(LabelRelationsRepository::class);
@@ -61,7 +54,7 @@ class OrganizerImportValidatorTest extends TestCase
         $organizerDocumentValidator = new OrganizerImportValidator(
             $this->websiteLookupService,
             $this->uuidParser,
-            $this->userIdentification,
+            'user_id',
             $this->labelsRepository,
             $this->labelRelationsRepository,
             true

@@ -20,11 +20,6 @@ class PlaceImportValidatorTest extends TestCase
     private $uuidParser;
 
     /**
-     * @var UserIdentificationInterface|MockObject
-     */
-    private $userIdentification;
-
-    /**
      * @var LabelsRepository|MockObject
      */
     private $labelsRepository;
@@ -38,8 +33,6 @@ class PlaceImportValidatorTest extends TestCase
     {
         $this->uuidParser = $this->createMock(UUIDParser::class);
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
-
         $this->labelsRepository = $this->createMock(LabelsRepository::class);
 
         $this->labelRelationsRepository = $this->createMock(LabelRelationsRepository::class);
@@ -52,7 +45,7 @@ class PlaceImportValidatorTest extends TestCase
     {
         $placeDocumentValidator = new PlaceImportValidator(
             $this->uuidParser,
-            $this->userIdentification,
+            'user_id',
             $this->labelsRepository,
             $this->labelRelationsRepository
         );

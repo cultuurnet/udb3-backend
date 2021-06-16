@@ -21,7 +21,7 @@ class OrganizerImportValidator extends OrganizerValidator
     public function __construct(
         WebsiteLookupServiceInterface $websiteLookupService,
         UUIDParser $uuidParser,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         LabelsRepository $labelsRepository,
         LabelRelationsRepository $labelRelationsRepository,
         $urlRequired = false
@@ -33,7 +33,7 @@ class OrganizerImportValidator extends OrganizerValidator
             ),
             new DocumentLabelPermissionRule(
                 $uuidParser,
-                $userIdentification->getId()->toNative(),
+                $userId,
                 $labelsRepository,
                 $labelRelationsRepository
             ),
