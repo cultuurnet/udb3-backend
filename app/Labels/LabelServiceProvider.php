@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
-use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
