@@ -51,7 +51,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
         $app['command_bus.security'] = $app->share(
             function ($app) {
                 $security = new Security(
-                    $app['current_user_identification'],
+                    $app['current_user_id'],
                     new CompositeVoter(
                         $app['god_user_voter'],
                         $app['command_bus.split_permission_voter']
