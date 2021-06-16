@@ -23,9 +23,9 @@ class LabelPermissionRuleTest extends TestCase
     private $documentId;
 
     /**
-     * @var UserIdentificationInterface|MockObject
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var LabelsRepository|MockObject
@@ -46,7 +46,7 @@ class LabelPermissionRuleTest extends TestCase
     {
         $this->documentId = new UUID('f32227be-a621-4cbd-8803-19762d7f9a23');
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
+        $this->userId = 'user_id';
 
         $this->labelsRepository = $this->createMock(LabelsRepository::class);
 
@@ -54,7 +54,7 @@ class LabelPermissionRuleTest extends TestCase
 
         $this->labelPermissionRule = new LabelPermissionRule(
             $this->documentId,
-            $this->userIdentification,
+            $this->userId,
             $this->labelsRepository,
             $this->labelRelationsRepository
         );
@@ -86,9 +86,6 @@ class LabelPermissionRuleTest extends TestCase
         $this->labelsRepository->expects($this->never())
             ->method('canUseLabel');
 
-        $this->userIdentification->expects($this->never())
-            ->method('getId');
-
         $this->assertTrue(
             $this->labelPermissionRule->validate('foo')
         );
@@ -99,8 +96,6 @@ class LabelPermissionRuleTest extends TestCase
      */
     public function it_delegates_validation_to_label_repository_for_new_labels_and_non_god_user()
     {
-        $userId = new StringLiteral('user_id');
-
         $this->labelRelationsRepository->expects($this->once())
             ->method('getLabelRelationsForItem')
             ->with(new StringLiteral($this->documentId->toString()))
@@ -115,12 +110,8 @@ class LabelPermissionRuleTest extends TestCase
 
         $this->labelsRepository->expects($this->once())
             ->method('canUseLabel')
-            ->with($userId, new StringLiteral('foo'))
+            ->with($this->userId, new StringLiteral('foo'))
             ->willReturn(true);
-
-        $this->userIdentification->expects($this->once())
-            ->method('getId')
-            ->willReturn($userId);
 
         $this->assertTrue(
             $this->labelPermissionRule->validate('foo')
@@ -132,8 +123,6 @@ class LabelPermissionRuleTest extends TestCase
      */
     public function it_creates_label_permission_rule_exception_on_assert()
     {
-        $userId = new StringLiteral('user_id');
-
         $this->labelRelationsRepository->expects($this->once())
             ->method('getLabelRelationsForItem')
             ->with(new StringLiteral($this->documentId->toString()))
@@ -148,12 +137,8 @@ class LabelPermissionRuleTest extends TestCase
 
         $this->labelsRepository->expects($this->once())
             ->method('canUseLabel')
-            ->with($userId, new StringLiteral('foo'))
+            ->with($this->userId, new StringLiteral('foo'))
             ->willReturn(false);
-
-        $this->userIdentification->expects($this->once())
-            ->method('getId')
-            ->willReturn($userId);
 
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('no permission to use label foo');

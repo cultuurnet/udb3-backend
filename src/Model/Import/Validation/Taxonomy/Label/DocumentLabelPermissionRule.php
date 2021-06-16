@@ -66,7 +66,7 @@ class DocumentLabelPermissionRule extends AbstractRule
 
         $labelPermissionRule = new LabelPermissionRule(
             $id,
-            $this->userIdentification,
+            $this->userIdentification->getId()->toNative(),
             $this->labelsRepository,
             $this->labelRelationsRepository
         );

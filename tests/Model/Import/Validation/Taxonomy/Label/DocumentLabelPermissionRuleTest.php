@@ -157,7 +157,7 @@ class DocumentLabelPermissionRuleTest extends TestCase
                 }
             });
 
-        $this->userIdentification->expects($this->exactly(4))
+        $this->userIdentification->expects($this->exactly(1))
             ->method('getId')
             ->willReturn($userId);
 
