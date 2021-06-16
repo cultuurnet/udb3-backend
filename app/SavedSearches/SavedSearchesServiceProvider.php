@@ -22,13 +22,11 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
     {
         $app['udb3_saved_searches_repo_sapi3'] = $app->share(
             function (Application $app) {
-                $user = $app['current_user'];
-
                 return new UDB3SavedSearchRepository(
                     $app['dbal_connection'],
                     new StringLiteral('saved_searches_sapi3'),
                     $app['uuid_generator'],
-                    new StringLiteral($user->id)
+                    new StringLiteral($app['current_user_id'])
                 );
             }
         );
