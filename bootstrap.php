@@ -204,39 +204,6 @@ $app['external_event_service'] = $app->share(
     }
 );
 
-$app['current_user'] = $app::share(
-    function (Application $app) {
-        // Check first if we're impersonating someone.
-        /* @var Impersonator $impersonator */
-        $impersonator = $app['impersonator'];
-        if ($impersonator->getUser()) {
-            return $impersonator->getUser();
-        }
-
-        try {
-            /* @var TokenStorageInterface $tokenStorage */
-            $tokenStorage = $app['security.token_storage'];
-        } catch (\InvalidArgumentException $e) {
-            // Running from CLI.
-            return null;
-        }
-
-        $token = $tokenStorage->getToken();
-
-        $cfUser = new \CultureFeed_User();
-
-        if ($token instanceof JwtUserToken) {
-            $jwt = $token->getCredentials();
-
-            $cfUser->id = $jwt->id();
-
-            return $cfUser;
-        } else {
-            return null;
-        }
-    }
-);
-
 $app['current_user_id'] = $app::share(
     function (Application $app) {
         /* @var Impersonator $impersonator */
