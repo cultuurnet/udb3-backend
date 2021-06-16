@@ -263,7 +263,7 @@ $app['current_user_is_god_user'] = $app::share(
     function (Application $app) {
         return in_array(
             $app['current_user_id'],
-            $app['config']['user_permissions'],
+            $app['config']['user_permissions']['allow_all'],
             true
         );
     }
