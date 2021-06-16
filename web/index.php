@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Http\Management\UserPermissionsVoter;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceEventControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceLabelsControllerProvider;
 use CultuurNet\UDB3\Silex\UiTPASService\UiTPASServiceOrganizerControllerProvider;
+use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -224,15 +225,24 @@ $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider()
 $app->get(
     '/user',
     function (Application $app) {
+        /** @var Auth0UserIdentityResolver $userResolver */
+        $userResolver = $app[Auth0UserIdentityResolver::class];
+
+        $user = $userResolver->getUserById( new \ValueObjects\StringLiteral\StringLiteral($app['current_user_id']));
+
+        if (!$user) {
+            return (new \Symfony\Component\HttpFoundation\Response(null, 404));
+        }
+
         return (new JsonResponse())
             ->setData((object)[
                 'uuid' => $app['current_user_id'],
-                'username' => $app['current_user']->nick,
-                'email' => $app['current_user']->mbox,
+                'username' => $user->getUserName()->toNative(),
+                'email' => $user->getEmailAddress()->toNative(),
 
                 // Keep `id` and `nick` for backwards compatibility with older API clients
                 'id' => $app['current_user_id'],
-                'nick' => $app['current_user']->nick,
+                'nick' => $user->getUserName()->toNative(),
             ])
             ->setPrivate();
     }
