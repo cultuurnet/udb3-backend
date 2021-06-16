@@ -42,6 +42,11 @@ class ReadRoleRestControllerTest extends TestCase
     private $jsonDocument;
 
     /**
+     * @var EntityServiceInterface|MockObject
+     */
+    private $entityServiceInterface;
+
+    /**
      * @var RepositoryInterface|MockObject
      */
     private $roleSearchRepository;
@@ -50,16 +55,6 @@ class ReadRoleRestControllerTest extends TestCase
      * @var JsonEquals
      */
     private $jsonEquals;
-
-    /**
-     * @var \CultureFeed_User
-     */
-    private $cfUser;
-
-    /**
-     * @var array
-     */
-    private $authorizationList;
 
     /**
      * @var UserPermissionsReadRepositoryInterface|MockObject
@@ -73,14 +68,13 @@ class ReadRoleRestControllerTest extends TestCase
     {
         $this->jsonDocument = new JsonDocument('id', 'role');
 
-        /** @var EntityServiceInterface|MockObject $entityServiceInterface */
-        $entityServiceInterface = $this->createMock(EntityServiceInterface::class);
+        $this->entityServiceInterface = $this->createMock(EntityServiceInterface::class);
 
         $this->roleService = $this->createMock(RoleReadingServiceInterface::class);
 
         $this->permissionsRepository = $this->createMock(UserPermissionsReadRepositoryInterface::class);
 
-        $entityServiceInterface->method('getEntity')
+        $this->entityServiceInterface->method('getEntity')
             ->willReturnCallback(
                 function ($id) {
                     switch ($id) {
@@ -96,18 +90,11 @@ class ReadRoleRestControllerTest extends TestCase
 
         $this->roleSearchRepository = $this->createMock(RepositoryInterface::class);
 
-        $this->cfUser = new \CultureFeed_User();
-        $this->authorizationList = [
-            'allow_all' => [
-                0 => '948cf2a5-65c5-470e-ab55-97ee4b05f576',
-            ],
-        ];
-
         $this->roleRestController = new ReadRoleRestController(
-            $entityServiceInterface,
+            $this->entityServiceInterface,
             $this->roleService,
-            $this->cfUser,
-            $this->authorizationList,
+            '12345',
+            false,
             $this->roleSearchRepository,
             $this->permissionsRepository
         );
@@ -234,20 +221,17 @@ class ReadRoleRestControllerTest extends TestCase
      */
     public function it_responds_with_an_array_of_roles_for_the_current_user()
     {
-        $userId = new StringLiteral('12345');
-        $this->cfUser->id = $userId->toNative();
-
         $readmodelJson = file_get_contents(__DIR__ . '/samples/user_roles_readmodel.json');
         $expectedResponseJson = file_get_contents(__DIR__ . '/samples/user_roles_response.json');
 
         $readmodelDocument = new JsonDocument(
-            $userId->toNative(),
+            '12345',
             $readmodelJson
         );
 
         $this->roleService->expects($this->once())
             ->method('getRolesByUserId')
-            ->with($userId)
+            ->with(new StringLiteral('12345'))
             ->willReturn($readmodelDocument);
 
         $response = $this->roleRestController->getCurrentUserRoles();
@@ -283,10 +267,16 @@ class ReadRoleRestControllerTest extends TestCase
      */
     public function it_returns_an_array_of_permissions_for_the_current_god_user()
     {
-        $userId = new StringLiteral('948cf2a5-65c5-470e-ab55-97ee4b05f576');
-        $this->cfUser->id = $userId->toNative();
+        $controller = new ReadRoleRestController(
+            $this->entityServiceInterface,
+            $this->roleService,
+            '12345',
+            true,
+            $this->roleSearchRepository,
+            $this->permissionsRepository
+        );
 
-        $response = $this->roleRestController->getUserPermissions();
+        $response = $controller->getUserPermissions();
         $responseJson = $response->getContent();
 
         $expectedResponseJson = json_encode([
@@ -310,9 +300,6 @@ class ReadRoleRestControllerTest extends TestCase
      */
     public function it_returns_an_array_of_permissions_for_the_current_user()
     {
-        $userId = new StringLiteral('948cf2a5-65c5-470e-ab55-97ee4b05f577');
-        $this->cfUser->id = $userId->toNative();
-
         $permissions = [
             0 => Permission::getByName('AANBOD_MODEREREN'),
         ];
