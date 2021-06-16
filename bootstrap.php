@@ -81,6 +81,12 @@ if (!isset($udb3ConfigLocation)) {
 }
 $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
 
+$app['system_user_id'] = $app::share(
+    function () {
+        return '00000000-0000-0000-0000-000000000000';
+    }
+);
+
 // Add the system user to the list of god users.
 $app['config'] = array_merge_recursive(
     $app['config'],
@@ -266,12 +272,6 @@ $app['current_user_is_god_user'] = $app::share(
             $app['config']['user_permissions']['allow_all'],
             true
         );
-    }
-);
-
-$app['system_user_id'] = $app::share(
-    function () {
-        return '00000000-0000-0000-0000-000000000000';
     }
 );
 
