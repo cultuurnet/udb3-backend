@@ -9,7 +9,6 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\UDB2\DomainEvents\EventCreated;
-use CultuurNet\UDB3\User\UserIdentityDetails;
 use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

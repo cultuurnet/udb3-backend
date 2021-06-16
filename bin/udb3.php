@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\User\UserIdentityDetails;
 use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
