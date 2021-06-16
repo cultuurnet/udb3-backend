@@ -37,14 +37,10 @@ class OrganizerControllerProvider implements ControllerProviderInterface
 
         $app['organizer_permissions_controller'] = $app->share(
             function (Application $app) {
-                $currentUserId = null;
-                if (!is_null($app['current_user'])) {
-                    $currentUserId = new StringLiteral($app['current_user']->id);
-                }
                 return new OfferPermissionsController(
                     [Permission::ORGANISATIES_BEWERKEN()],
                     $app['organizer_permission_voter'],
-                    $currentUserId
+                    $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
                 );
             }
         );

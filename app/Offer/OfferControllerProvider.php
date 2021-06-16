@@ -93,10 +93,6 @@ class OfferControllerProvider implements ControllerProviderInterface
 
             $app[$permissionsControllerName] = $app->share(
                 function (Application $app) {
-                    $currentUserId = null;
-                    if (!is_null($app['current_user'])) {
-                        $currentUserId = new StringLiteral($app['current_user']->id);
-                    }
                     $permissionsToCheck = [
                         Permission::AANBOD_BEWERKEN(),
                         Permission::AANBOD_MODEREREN(),
@@ -105,7 +101,7 @@ class OfferControllerProvider implements ControllerProviderInterface
                     return new OfferPermissionsController(
                         $permissionsToCheck,
                         $app['offer_permission_voter'],
-                        $currentUserId
+                        $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
                     );
                 }
             );
@@ -113,15 +109,10 @@ class OfferControllerProvider implements ControllerProviderInterface
             /** @deprecated */
             $app[$permissionControllerName] = $app->share(
                 function (Application $app) {
-                    $currentUserId = null;
-                    if (!is_null($app['current_user'])) {
-                        $currentUserId = new StringLiteral($app['current_user']->id);
-                    }
-
                     return new OfferPermissionController(
                         Permission::AANBOD_BEWERKEN(),
                         $app['offer_permission_voter'],
-                        $currentUserId
+                        $app['current_user_id'] ? new StringLiteral($app['current_user_id']) : null
                     );
                 }
             );
