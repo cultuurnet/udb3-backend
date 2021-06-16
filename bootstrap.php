@@ -269,6 +269,12 @@ $app['current_user_is_god_user'] = $app::share(
     }
 );
 
+$app['system_user_id'] = $app::share(
+    function () {
+        return '00000000-0000-0000-0000-000000000000';
+    }
+);
+
 $app['jwt'] = $app::share(
     function (Application $app) {
         // Check first if we're impersonating someone.
