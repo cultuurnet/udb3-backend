@@ -314,12 +314,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::QUERY_FACTORY] = $app->share(
             function (Application $app) {
-                $userIdentification = new CultureFeedUserIdentification(
-                    $app['current_user'],
-                    $app['config']['user_permissions']
-                );
-
-                return new QueryFactory($userIdentification);
+                return new QueryFactory($app['current_user_is_god_user'] ? null : $app['current_user_id']);
             }
         );
     }
