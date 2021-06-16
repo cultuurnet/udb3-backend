@@ -50,11 +50,6 @@ class ReadEventRestControllerTest extends TestCase
     private $calSum;
 
     /**
-     * @var UserIdentificationInterface|MockObject
-     */
-    private $userIdentification;
-
-    /**
      * @inheritdoc
      */
     public function setUp()
@@ -110,7 +105,10 @@ class ReadEventRestControllerTest extends TestCase
         );
 
         $this->calSum = 'Zondag 7 oktober 2018 van 12:15 tot 18:00';
+    }
 
+    private function createController(bool $godUser): ReadEventRestController
+    {
         $jsonRepository = $this->createMock(DocumentRepository::class);
         $jsonRepository->method('fetch')
             ->willReturnCallback(
@@ -141,12 +139,10 @@ class ReadEventRestControllerTest extends TestCase
                 }
             );
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
-
-        $this->eventRestController = new ReadEventRestController(
+        return new ReadEventRestController(
             $jsonRepository,
             $documentRepositoryInterface,
-            $this->userIdentification
+            $godUser
         );
     }
 
@@ -155,8 +151,8 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_json_history_for_an_event(): void
     {
-        $this->givenGodUser();
-        $jsonResponse = $this->eventRestController->history(self::EXISTING_ID);
+        $controller = $this->createController(true);
+        $jsonResponse = $controller->history(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
         $this->assertEquals($this->historyReponseContent, $jsonResponse->getContent());
@@ -167,8 +163,8 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_event(): void
     {
-        $this->givenGodUser();
-        $jsonResponse = $this->eventRestController->history(self::NON_EXISTING_ID);
+        $controller = $this->createController(true);
+        $jsonResponse = $controller->history(self::NON_EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
     }
@@ -178,8 +174,8 @@ class ReadEventRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_error_FORBIDDEN_for_a_regular_user(): void
     {
-        $this->givenRegularUser();
-        $jsonResponse = $this->eventRestController->history(self::EXISTING_ID);
+        $controller = $this->createController(false);
+        $jsonResponse = $controller->history(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $jsonResponse->getStatusCode());
     }
@@ -190,7 +186,9 @@ class ReadEventRestControllerTest extends TestCase
     public function it_returns_a_http_response_with_json_get_for_an_event(): void
     {
         $request = new Request();
-        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID, $request);
+
+        $controller = $this->createController(true);
+        $jsonResponse = $controller->get(self::EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
         $this->assertEquals($this->jsonDocument->getRawBody(), $jsonResponse->getContent());
@@ -202,7 +200,9 @@ class ReadEventRestControllerTest extends TestCase
     public function it_returns_a_http_response_with_json_including_metadata_for_an_event(): void
     {
         $request = new Request(['includeMetadata' => 'true']);
-        $jsonResponse = $this->eventRestController->get(self::EXISTING_ID, $request);
+
+        $controller = $this->createController(true);
+        $jsonResponse = $controller->get(self::EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
         $this->assertEquals($this->jsonDocumentWithMetadata->getRawBody(), $jsonResponse->getContent());
@@ -214,7 +214,9 @@ class ReadEventRestControllerTest extends TestCase
     public function it_returns_a_http_response_with_error_NOT_FOUND_for_getting_a_non_existing_event(): void
     {
         $request = new Request();
-        $jsonResponse = $this->eventRestController->get(self::NON_EXISTING_ID, $request);
+
+        $controller = $this->createController(true);
+        $jsonResponse = $controller->get(self::NON_EXISTING_ID, $request);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
     }
@@ -225,7 +227,9 @@ class ReadEventRestControllerTest extends TestCase
     public function it_returns_a_http_response_with_a_calendar_summary_for_an_event(): void
     {
         $request = new Request(['style' => 'text', 'format' => 'lg']);
-        $calSumResponse = $this->eventRestController->getCalendarSummary(self::EXISTING_ID, $request);
+
+        $controller = $this->createController(true);
+        $calSumResponse = $controller->getCalendarSummary(self::EXISTING_ID, $request);
 
         $this->assertEquals($this->calSum, $calSumResponse);
     }
@@ -238,20 +242,8 @@ class ReadEventRestControllerTest extends TestCase
         $this->expectException(DocumentDoesNotExist::class);
 
         $request = new Request(['style' => 'text', 'format' => 'lg']);
-        $this->eventRestController->getCalendarSummary(self::NON_EXISTING_ID, $request);
-    }
 
-    private function givenGodUser(): void
-    {
-        $this->userIdentification
-            ->method('isGodUser')
-            ->willReturn(true);
-    }
-
-    private function givenRegularUser(): void
-    {
-        $this->userIdentification
-            ->method('isGodUser')
-            ->willReturn(false);
+        $controller = $this->createController(true);
+        $controller->getCalendarSummary(self::NON_EXISTING_ID, $request);
     }
 }

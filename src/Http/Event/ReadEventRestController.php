@@ -34,18 +34,18 @@ class ReadEventRestController
     private $historyRepository;
 
     /**
-     * @var UserIdentificationInterface
+     * @var bool
      */
-    private $userIdentification;
+    private $userIsGodUser;
 
     public function __construct(
         DocumentRepository $jsonRepository,
         DocumentRepository $historyRepository,
-        UserIdentificationInterface $userIdentification
+        bool $userIsGodUser
     ) {
         $this->jsonRepository = $jsonRepository;
         $this->historyRepository = $historyRepository;
-        $this->userIdentification = $userIdentification;
+        $this->userIsGodUser = $userIsGodUser;
     }
 
     public function get(string $cdbid, Request $request): JsonResponse
@@ -68,7 +68,7 @@ class ReadEventRestController
 
     public function history(string $cdbid): JsonResponse
     {
-        if (!$this->userIdentification->isGodUser()) {
+        if (!$this->userIsGodUser) {
             return $this->createApiProblemJsonResponse(
                 self::HISTORY_ERROR_FORBIDDEN,
                 $cdbid,
