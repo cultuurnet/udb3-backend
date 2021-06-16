@@ -44,10 +44,7 @@ class PlaceControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new HistoryPlaceRestController(
                     $app['places_history_repository'],
-                    new CultureFeedUserIdentification(
-                        $app['current_user'],
-                        $app['config']['user_permissions']
-                    )
+                    $app['current_user_is_god_user']
                 );
             }
         );

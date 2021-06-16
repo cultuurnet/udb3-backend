@@ -25,22 +25,21 @@ class HistoryPlaceRestController
     private $historyRepository;
 
     /**
-     * @var UserIdentificationInterface
+     * @var bool
      */
-    private $userIdentification;
-
+    private $userIsGodUser;
 
     public function __construct(
         DocumentRepository $documentRepository,
-        UserIdentificationInterface $userIdentification
+        bool $userIsGodUser
     ) {
         $this->historyRepository = $documentRepository;
-        $this->userIdentification = $userIdentification;
+        $this->userIsGodUser = $userIsGodUser;
     }
 
     public function get(string $placeId): JsonResponse
     {
-        if (!$this->userIdentification->isGodUser()) {
+        if (!$this->userIsGodUser) {
             return $this->forbiddenResponse($placeId);
         }
 
