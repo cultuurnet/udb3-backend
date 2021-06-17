@@ -9,9 +9,9 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\Security\SecurityInterface;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use ValueObjects\StringLiteral\StringLiteral;
 
 class AuthorizedCommandBus extends CommandBusDecoratorBase implements AuthorizedCommandBusInterface, LoggerAwareInterface, ContextAwareInterface
 {
@@ -21,9 +21,9 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
     protected $metadata;
 
     /**
-     * @var UserIdentificationInterface
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var SecurityInterface
@@ -32,12 +32,12 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
 
     public function __construct(
         CommandBus $decoratee,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         SecurityInterface $security
     ) {
         parent::__construct($decoratee);
 
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
         $this->security = $security;
     }
 
@@ -56,26 +56,20 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
             parent::dispatch($command);
         } else {
             throw new CommandAuthorizationException(
-                $this->userIdentification->getId(),
+                new StringLiteral($this->userId),
                 $command
             );
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function isAuthorized(AuthorizableCommandInterface $command)
+    public function isAuthorized(AuthorizableCommandInterface $command): bool
     {
         return $this->security->isAuthorized($command);
     }
 
-    /**
-     * @return UserIdentificationInterface
-     */
-    public function getUserIdentification()
+    public function getUserId(): string
     {
-        return $this->userIdentification;
+        return $this->userId;
     }
 
     public function setLogger(LoggerInterface $logger): void

@@ -10,10 +10,8 @@ use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\Security\SecurityInterface;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class AuthorizedCommandBusTest extends TestCase
 {
@@ -23,9 +21,9 @@ class AuthorizedCommandBusTest extends TestCase
     private $decoratee;
 
     /**
-     * @var UserIdentificationInterface|MockObject
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var SecurityInterface|MockObject
@@ -46,7 +44,7 @@ class AuthorizedCommandBusTest extends TestCase
     {
         $this->decoratee = $this->createMock([CommandBus::class, ContextAwareInterface::class]);
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
+        $this->userId = '9bd817a3-670e-4720-affa-7636e29073ce';
 
         $this->security = $this->createMock(SecurityInterface::class);
 
@@ -54,7 +52,7 @@ class AuthorizedCommandBusTest extends TestCase
 
         $this->authorizedCommandBus = new AuthorizedCommandBus(
             $this->decoratee,
-            $this->userIdentification,
+            $this->userId,
             $this->security
         );
     }
@@ -81,11 +79,11 @@ class AuthorizedCommandBusTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_and_returns_user_identification()
+    public function it_stores_and_returns_user_id()
     {
-        $userIdentification = $this->authorizedCommandBus->getUserIdentification();
+        $userId = $this->authorizedCommandBus->getUserId();
 
-        $this->assertEquals($this->userIdentification, $userIdentification);
+        $this->assertEquals($this->userId, $userId);
     }
 
     /**
@@ -107,17 +105,20 @@ class AuthorizedCommandBusTest extends TestCase
      */
     public function it_throws_command_authorization_exception_when_not_authorized()
     {
-        $this->mockIsAuthorized(false);
+        $authorizedCommandBus = new AuthorizedCommandBus(
+            $this->decoratee,
+            'notAuthorizedUserId',
+            $this->security
+        );
 
-        $userId = new StringLiteral('userId');
-        $this->mockGetId($userId);
+        $this->mockIsAuthorized(false);
 
         $this->mockGetPermission(Permission::AANBOD_BEWERKEN());
         $this->mockGetItemId('itemId');
 
         $this->expectException(CommandAuthorizationException::class);
 
-        $this->authorizedCommandBus->dispatch($this->command);
+        $authorizedCommandBus->dispatch($this->command);
     }
 
     /**
@@ -158,14 +159,6 @@ class AuthorizedCommandBusTest extends TestCase
             ->method('isAuthorized')
             ->willReturn($isAuthorized);
     }
-
-
-    private function mockGetId(StringLiteral $userId)
-    {
-        $this->userIdentification->method('getId')
-            ->willReturn($userId);
-    }
-
 
     private function mockGetPermission(Permission $permission)
     {

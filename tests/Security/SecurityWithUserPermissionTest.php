@@ -19,9 +19,9 @@ class SecurityWithUserPermissionTest extends TestCase
     private $security;
 
     /**
-     * @var UserIdentificationInterface|MockObject
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var PermissionVoterInterface|MockObject
@@ -42,7 +42,7 @@ class SecurityWithUserPermissionTest extends TestCase
     {
         $this->security = $this->createMock(SecurityInterface::class);
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
+        $this->userId = '315820fe-9ba4-43b3-b567-5a1e43ec430d';
 
         $this->permissionVoter = $this->createMock(PermissionVoterInterface::class);
 
@@ -50,7 +50,7 @@ class SecurityWithUserPermissionTest extends TestCase
 
         $this->securityWithUserPermission = new SecurityWithUserPermission(
             $this->security,
-            $this->userIdentification,
+            $this->userId,
             $this->permissionVoter,
             $this->commandFilter
         );
@@ -67,17 +67,12 @@ class SecurityWithUserPermissionTest extends TestCase
             ->method('getPermission')
             ->willReturn(Permission::VOORZIENINGEN_BEWERKEN());
 
-        $userId = new StringLiteral('315820fe-9ba4-43b3-b567-5a1e43ec430d');
-        $this->userIdentification->expects($this->once())
-            ->method('getId')
-            ->willReturn($userId);
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
                 Permission::VOORZIENINGEN_BEWERKEN(),
                 new StringLiteral(''),
-                $userId
+                new StringLiteral($this->userId)
             )
             ->willReturn(
                 true

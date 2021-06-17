@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Label\Query;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
-use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -17,16 +16,13 @@ class QueryFactory implements QueryFactoryInterface
     public const LIMIT = 'limit';
 
     /**
-     * @var UserIdentificationInterface
+     * @var ?string
      */
-    private $userIdentification;
+    private $userId;
 
-    /**
-     * QueryFactory constructor.
-     */
-    public function __construct(UserIdentificationInterface $userIdentification)
+    public function __construct(?string $userId)
     {
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
     }
 
     /**
@@ -37,8 +33,7 @@ class QueryFactory implements QueryFactoryInterface
         $value = $request->query->get(self::QUERY) !== null
             ? new StringLiteral($request->query->get(self::QUERY)) : new StringLiteral('');
 
-        $userId = $this->userIdentification->isGodUser()
-            ? null : $this->userIdentification->getId();
+        $userId = $this->userId ? new StringLiteral($this->userId) : null;
 
         $offset = $request->query->get(self::START, null) !== null
             ? new Natural($request->query->get(self::START)) : null;

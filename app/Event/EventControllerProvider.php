@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Http\Event\ReadEventRestController;
 use CultuurNet\UDB3\Http\Offer\UpdateStatusRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsStatusValidator;
-use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -26,10 +25,7 @@ class EventControllerProvider implements ControllerProviderInterface
                 return new ReadEventRestController(
                     $app['event_jsonld_repository'],
                     $app['event_history_repository'],
-                    new CultureFeedUserIdentification(
-                        $app['current_user'],
-                        $app['config']['user_permissions']
-                    )
+                    $app['current_user_is_god_user']
                 );
             }
         );

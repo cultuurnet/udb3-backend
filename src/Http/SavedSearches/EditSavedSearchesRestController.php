@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\SavedSearches;
 
 use Broadway\CommandHandling\CommandBus;
-use CultureFeed_User;
 use CultuurNet\UDB3\SavedSearches\Command\SubscribeToSavedSearchJSONDeserializer;
 use CultuurNet\UDB3\SavedSearches\Command\UnsubscribeFromSavedSearch;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
@@ -16,9 +15,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 class EditSavedSearchesRestController
 {
     /**
-     * @var CultureFeed_User
+     * @var string
      */
-    private $user;
+    private $userId;
 
     /**
      * @var CommandBus
@@ -26,17 +25,17 @@ class EditSavedSearchesRestController
     private $commandBus;
 
     public function __construct(
-        CultureFeed_User $user,
+        string $userId,
         CommandBus $commandBus
     ) {
-        $this->user = $user;
+        $this->userId = $userId;
         $this->commandBus = $commandBus;
     }
 
     public function save(Request $request): Response
     {
         $commandDeserializer = new SubscribeToSavedSearchJSONDeserializer(
-            new StringLiteral($this->user->id)
+            new StringLiteral($this->userId)
         );
 
         $command = $commandDeserializer->deserialize(
@@ -51,7 +50,7 @@ class EditSavedSearchesRestController
     public function delete(string $id): Response
     {
         $command = new UnsubscribeFromSavedSearch(
-            new StringLiteral($this->user->id),
+            new StringLiteral($this->userId),
             new StringLiteral($id)
         );
 

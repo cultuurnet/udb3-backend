@@ -36,9 +36,9 @@ class ReadRoleRestController
     private $roleService;
 
     /**
-     * @var \CultureFeed_User
+     * @var string
      */
-    private $currentUser;
+    private $currentUserId;
 
     /**
      * @var UserPermissionsReadRepositoryInterface
@@ -46,22 +46,22 @@ class ReadRoleRestController
     private $permissionsRepository;
 
     /**
-     * @var array
+     * @var bool
      */
-    private $authorizationList;
+    private $userIsGodUser;
 
     public function __construct(
         EntityServiceInterface $service,
         RoleReadingServiceInterface $roleService,
-        \CultureFeed_User $currentUser,
-        array $authorizationList,
+        string $currentUserId,
+        bool $userIsGodUser,
         RepositoryInterface $roleSearchRepository,
         UserPermissionsReadRepositoryInterface $permissionsRepository
     ) {
         $this->service = $service;
         $this->roleService = $roleService;
-        $this->currentUser = $currentUser;
-        $this->authorizationList = $authorizationList;
+        $this->currentUserId = $currentUserId;
+        $this->userIsGodUser = $userIsGodUser;
         $this->roleSearchRepository = $roleSearchRepository;
         $this->permissionsRepository = $permissionsRepository;
     }
@@ -138,14 +138,14 @@ class ReadRoleRestController
 
     public function getCurrentUserRoles(): Response
     {
-        return $this->getUserRoles($this->currentUser->id);
+        return $this->getUserRoles($this->currentUserId);
     }
 
     public function getUserPermissions(): Response
     {
-        $userId = new StringLiteral($this->currentUser->id);
+        $userId = new StringLiteral($this->currentUserId);
 
-        if (in_array((string) $userId, $this->authorizationList['allow_all'])) {
+        if ($this->userIsGodUser) {
             $list = $this->createPermissionsList(Permission::getConstants());
         } else {
             $list = array_map(

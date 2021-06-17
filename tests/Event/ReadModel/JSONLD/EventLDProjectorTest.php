@@ -305,8 +305,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             [
                 new Metadata(
                     [
-                        'user_email' => 'foo@bar.com',
-                        'user_nick' => 'foo',
                         'user_id' => '20a72430-7e3e-4b75-ab59-043156b3169c',
                     ]
                 ),
@@ -315,7 +313,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             [
                 new Metadata(
                     [
-                        'user_nick' => 'foo',
                         'user_id' => '20a72430-7e3e-4b75-ab59-043156b3169c',
                     ]
                 ),
@@ -1294,7 +1291,6 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $importedDate = '2015-03-01T10:17:19.176169+02:00';
 
         $metadata = [];
-        $metadata['user_nick'] = 'Jantest';
         $metadata['consumer']['name'] = 'UiTDatabank';
 
         $eventUpdatedFromUDB2 = new EventUpdatedFromUDB2(

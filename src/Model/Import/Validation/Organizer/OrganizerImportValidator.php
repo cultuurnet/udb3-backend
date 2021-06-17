@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Organizer\WebsiteLookupServiceInterface;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 
 class OrganizerImportValidator extends OrganizerValidator
 {
@@ -21,7 +20,7 @@ class OrganizerImportValidator extends OrganizerValidator
     public function __construct(
         WebsiteLookupServiceInterface $websiteLookupService,
         UUIDParser $uuidParser,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         LabelsRepository $labelsRepository,
         LabelRelationsRepository $labelRelationsRepository,
         $urlRequired = false
@@ -33,7 +32,7 @@ class OrganizerImportValidator extends OrganizerValidator
             ),
             new DocumentLabelPermissionRule(
                 $uuidParser,
-                $userIdentification,
+                $userId,
                 $labelsRepository,
                 $labelRelationsRepository
             ),

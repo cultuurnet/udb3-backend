@@ -253,7 +253,7 @@ class HistoryProjectorTest extends TestCase
             4,
             new Metadata(
                 [
-                    'user_nick' => 'Jan Janssen',
+                    'user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'auth_api_key' => 'my-super-duper-key',
                     'api' => 'json-api',
                     'consumer' => [
@@ -272,7 +272,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => $now->format('c'),
-                    'author' => 'Jan Janssen',
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => 'Event aangemaakt in UiTdatabank',
                     'apiKey' => 'my-super-duper-key',
                     'api' => 'json-api',
@@ -301,7 +301,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $eventId,
             4,
-            new Metadata(['user_nick' => 'Jan Janssen']),
+            new Metadata(['user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6']),
             $eventCopied,
             DateTime::fromString($now->format(\DateTime::ATOM))
         );
@@ -313,7 +313,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => $now->format('c'),
-                    'author' => 'Jan Janssen',
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => 'Event gekopieerd van ' . $originalEventId,
                 ],
             ]
@@ -336,7 +336,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $titleTranslated->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JohnDoe']),
+            new Metadata(['user_id' => '3d4a9602-44ee-45c9-809e-621e2671e0c8']),
             $titleTranslated,
             DateTime::fromString($translatedDate)
         );
@@ -348,7 +348,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-26T10:17:19+02:00',
-                    'author' => 'JohnDoe',
+                    'author' => '3d4a9602-44ee-45c9-809e-621e2671e0c8',
                     'description' => 'Titel vertaald (fr)',
                 ],
             ]
@@ -371,7 +371,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $descriptionTranslated->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $descriptionTranslated,
             DateTime::fromString($translatedDate)
         );
@@ -383,7 +383,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Beschrijving vertaald (fr)',
                 ],
             ]
@@ -405,7 +405,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $eventWasTagged->getItemId(),
             2,
-            new Metadata(['user_nick' => 'Jan Janssen']),
+            new Metadata(['user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6']),
             $eventWasTagged,
             DateTime::fromString($taggedDate)
         );
@@ -417,7 +417,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'Jan Janssen',
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => "Label 'foo' toegepast",
                 ],
             ]
@@ -439,7 +439,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $tagErased->getItemId(),
             2,
-            new Metadata(['user_nick' => 'Jan Janssen']),
+            new Metadata(['user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6']),
             $tagErased,
             DateTime::fromString($tagErasedDate)
         );
@@ -451,7 +451,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'Jan Janssen',
+                    'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => "Label 'foo' verwijderd",
                 ],
             ]
@@ -468,7 +468,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -480,7 +480,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Goedgekeurd',
                 ],
             ]
@@ -497,7 +497,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -509,7 +509,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Toegang aangepast',
                 ],
             ]
@@ -526,7 +526,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -538,7 +538,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Reservatie-info aangepast',
                 ],
             ]
@@ -555,7 +555,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -567,7 +567,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Kalender-info aangepast',
                 ],
             ]
@@ -584,7 +584,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -596,7 +596,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Contact-info aangepast',
                 ],
             ]
@@ -613,7 +613,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -625,7 +625,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Beschrijving aangepast',
                 ],
             ]
@@ -642,7 +642,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -654,7 +654,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Event verwijderd uit UiTdatabank',
                 ],
             ]
@@ -671,7 +671,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -683,7 +683,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Voorzieningen aangepast',
                 ],
             ]
@@ -700,7 +700,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -712,7 +712,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afgekeurd als duplicaat',
                 ],
             ]
@@ -729,7 +729,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -741,7 +741,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afgekeurd als ongepast',
                 ],
             ]
@@ -764,7 +764,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -776,7 +776,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Geocoördinaten automatisch aangepast',
                 ],
             ]
@@ -802,7 +802,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -814,7 +814,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' toegevoegd',
                 ],
             ]
@@ -840,7 +840,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -852,7 +852,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' verwijderd',
                 ],
             ]
@@ -874,7 +874,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -886,7 +886,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast',
                 ],
             ]
@@ -926,7 +926,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -938,12 +938,12 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' geïmporteerd uit UDB2',
                 ],
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' geïmporteerd uit UDB2',
                 ],
             ]
@@ -983,7 +983,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -995,12 +995,12 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\' aangepast via UDB2',
                 ],
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Afbeelding \'f1926870-136c-4b06-b2a1-1fab01590847\' aangepast via UDB2',
                 ],
             ]
@@ -1017,7 +1017,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1029,7 +1029,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Labels geïmporteerd uit JSON-LD',
                 ],
             ]
@@ -1046,7 +1046,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1058,7 +1058,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => "Locatie aangepast naar '827b7d8d-8821-4870-a48b-bea9d44f557c'",
                 ],
             ]
@@ -1084,7 +1084,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1096,7 +1096,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Hoofdafbeelding geselecteerd: \'0aa8d12d-26d6-409f-aa68-e8200e5c91a0\'',
                 ],
             ]
@@ -1119,7 +1119,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1131,7 +1131,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'MajorInfo aangepast',
                 ],
             ]
@@ -1151,7 +1151,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1163,7 +1163,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Organisatie \'0d7d2247-ebaa-4ff0-baf9-8ea274579cc3\' verwijderd',
                 ],
             ]
@@ -1183,7 +1183,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1195,7 +1195,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Organisatie \'0d7d2247-ebaa-4ff0-baf9-8ea274579cc3\' toegevoegd',
                 ],
             ]
@@ -1220,7 +1220,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1232,7 +1232,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Prijs-info aangepast',
                 ],
             ]
@@ -1255,7 +1255,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1267,7 +1267,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Gepubliceerd (publicatiedatum: \'2015-04-30T02:00:00+02:00\')',
                 ],
             ]
@@ -1284,7 +1284,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1296,7 +1296,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => "Afgekeurd, reden: 'not good enough'",
                 ],
             ]
@@ -1313,7 +1313,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1325,7 +1325,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Thema aangepast',
                 ],
             ]
@@ -1342,7 +1342,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1354,7 +1354,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Titel aangepast',
                 ],
             ]
@@ -1371,7 +1371,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1383,7 +1383,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Type aangepast',
                 ],
             ]
@@ -1400,7 +1400,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1412,7 +1412,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Leeftijds-info verwijderd',
                 ],
             ]
@@ -1429,7 +1429,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $event->getItemId(),
             3,
-            new Metadata(['user_nick' => 'JaneDoe']),
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
             $event,
             DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
         );
@@ -1441,7 +1441,7 @@ class HistoryProjectorTest extends TestCase
             [
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
-                    'author' => 'JaneDoe',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                     'description' => 'Leeftijds-info aangepast',
                 ],
             ]
@@ -1460,22 +1460,5 @@ class HistoryProjectorTest extends TestCase
         foreach ($history as $log) {
             $this->assertContains((array) $log, $body);
         }
-    }
-
-    /**
-     * @param string $userNick
-     * @param string $consumerName
-     * @return Metadata
-     */
-    protected function entryApiMetadata($userNick, $consumerName)
-    {
-        $values = [
-            'user_nick' => $userNick,
-            'consumer' => [
-                'name' => $consumerName,
-            ],
-        ];
-
-        return new Metadata($values);
     }
 }

@@ -29,8 +29,8 @@ class RoleControllerProvider implements ControllerProviderInterface
                 return new ReadRoleRestController(
                     $app['role_service'],
                     $app['role_reading_service'],
-                    $app['current_user'],
-                    $app['config']['user_permissions'],
+                    $app['current_user_id'],
+                    $app['current_user_is_god_user'],
                     $app['role_search_v3_repository'],
                     $app[UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY]
                 );

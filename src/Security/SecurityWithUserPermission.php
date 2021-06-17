@@ -11,9 +11,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 class SecurityWithUserPermission extends SecurityDecoratorBase
 {
     /**
-     * @var UserIdentificationInterface
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var PermissionVoterInterface
@@ -28,13 +28,13 @@ class SecurityWithUserPermission extends SecurityDecoratorBase
 
     public function __construct(
         SecurityInterface $decoratee,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         PermissionVoterInterface $permissionVoter,
         CommandFilterInterface $commandFilter
     ) {
         parent::__construct($decoratee);
 
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
         $this->permissionVoter = $permissionVoter;
         $this->commandFilter = $commandFilter;
     }
@@ -48,7 +48,7 @@ class SecurityWithUserPermission extends SecurityDecoratorBase
             return $this->permissionVoter->isAllowed(
                 $command->getPermission(),
                 new StringLiteral(''),
-                $this->userIdentification->getId()
+                new StringLiteral($this->userId)
             );
         }
 

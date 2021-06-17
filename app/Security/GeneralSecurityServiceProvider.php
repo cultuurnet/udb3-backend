@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Silex\Security;
 
 use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
-use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -26,15 +25,6 @@ class GeneralSecurityServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new GodUserVoter(
                     $app['config']['user_permissions']['allow_all']
-                );
-            }
-        );
-
-        $app['current_user_identification'] = $app->share(
-            function (Application $app) {
-                return new CultureFeedUserIdentification(
-                    $app['current_user'],
-                    $app['config']['user_permissions']
                 );
             }
         );

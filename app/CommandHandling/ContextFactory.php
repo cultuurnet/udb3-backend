@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\CommandHandling;
 
 use Broadway\Domain\Metadata;
-use CultureFeed_User;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\Jwt\Udb3Token;
@@ -16,7 +15,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class ContextFactory
 {
     public static function createContext(
-        ?CultureFeed_User $user = null,
+        ?string $userId = null,
         ?Udb3Token $jwt = null,
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
@@ -25,10 +24,8 @@ final class ContextFactory
     ): Metadata {
         $contextValues = [];
 
-        if ($user) {
-            $contextValues['user_id'] = $user->id;
-            $contextValues['user_nick'] = $user->nick;
-            $contextValues['user_email'] = $user->mbox;
+        if ($userId) {
+            $contextValues['user_id'] = $userId;
         }
 
         if ($jwt) {
@@ -64,7 +61,7 @@ final class ContextFactory
         }
 
         return self::createContext(
-            $application['current_user'],
+            $application['current_user_id'],
             $application['jwt'],
             $application['api_key'],
             $application['api_name'],

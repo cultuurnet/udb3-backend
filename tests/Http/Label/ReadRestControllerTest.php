@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactoryInterface;
-use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,11 +40,6 @@ class ReadRestControllerTest extends TestCase
      * @var ReadServiceInterface|MockObject
      */
     private $readService;
-
-    /**
-     * @var UserIdentificationInterface|MockObject
-     */
-    private $userIdentification;
 
     /**
      * @var QueryFactoryInterface|MockObject
@@ -84,10 +78,6 @@ class ReadRestControllerTest extends TestCase
         $this->mockGetByName();
         $this->mockSearch();
         $this->mockSearchTotalLabels();
-
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
-        $this->mockIsGodUser();
-        $this->mockGetId();
 
         $this->queryFactory = $this->createMock(QueryFactory::class);
         $this->mockCreateQuery();
@@ -215,18 +205,6 @@ class ReadRestControllerTest extends TestCase
         $this->readService->method('searchTotalLabels')
             ->with($this->query)
             ->willReturn(new Natural(2));
-    }
-
-    private function mockIsGodUser()
-    {
-        $this->userIdentification->method('isGodUser')
-            ->willReturn(false);
-    }
-
-    private function mockGetId()
-    {
-        $this->userIdentification->method('getId')
-            ->willReturn(new StringLiteral('userId'));
     }
 
     private function mockCreateQuery()

@@ -56,7 +56,6 @@ use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
-use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\ValueObject\SapiVersion;
 use Http\Adapter\Guzzle6\Client;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
@@ -81,13 +80,19 @@ if (!isset($udb3ConfigLocation)) {
 }
 $app->register(new YamlConfigServiceProvider($udb3ConfigLocation . '/config.yml'));
 
+$app['system_user_id'] = $app::share(
+    function () {
+        return '00000000-0000-0000-0000-000000000000';
+    }
+);
+
 // Add the system user to the list of god users.
 $app['config'] = array_merge_recursive(
     $app['config'],
     [
         'user_permissions' => [
             'allow_all' => [
-                UserIdentityDetails::SYSTEM_USER_UUID
+                $app['system_user_id']
             ],
         ],
     ]
@@ -198,38 +203,41 @@ $app['external_event_service'] = $app->share(
     }
 );
 
-$app['current_user'] = $app::share(
+$app['current_user_id'] = $app::share(
     function (Application $app) {
-        // Check first if we're impersonating someone.
         /* @var Impersonator $impersonator */
         $impersonator = $app['impersonator'];
-        if ($impersonator->getUser()) {
-            return $impersonator->getUser();
+        if ($impersonator->getUserId()) {
+            return $impersonator->getUserId();
         }
 
         try {
             /* @var TokenStorageInterface $tokenStorage */
             $tokenStorage = $app['security.token_storage'];
         } catch (\InvalidArgumentException $e) {
-            // Running from CLI.
+            // Running from CLI or unauthorized (will be further handled by the firewall).
             return null;
         }
 
         $token = $tokenStorage->getToken();
-
-        $cfUser = new \CultureFeed_User();
-
-        if ($token instanceof JwtUserToken) {
-            $jwt = $token->getCredentials();
-
-            $cfUser->id = $jwt->id();
-            $cfUser->nick = $jwt->userName();
-            $cfUser->mbox = $jwt->email();
-
-            return $cfUser;
-        } else {
+        if (!($token instanceof JwtUserToken)) {
+            // The token in the firewall storage is not supported.
             return null;
         }
+
+        // Get the actual Udb3Token from the Symfony Firewall "token", and return the user's id.
+        $jwt = $token->getCredentials();
+        return $jwt->id();
+    }
+);
+
+$app['current_user_is_god_user'] = $app::share(
+    function (Application $app) {
+        return in_array(
+            $app['current_user_id'],
+            $app['config']['user_permissions']['allow_all'],
+            true
+        );
     }
 );
 

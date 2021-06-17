@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Place;
 
-use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -15,16 +14,6 @@ class HistoryPlaceRestControllerTest extends TestCase
 {
     public const EXISTING_ID = 'existingId';
     public const NON_EXISTING_ID = 'nonExistingId';
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UserIdentificationInterface
-     */
-    private $userIdentification;
-
-    /**
-     * @var HistoryPlaceRestController
-     */
-    private $controller;
 
     /**
      * @var string
@@ -59,7 +48,10 @@ class HistoryPlaceRestControllerTest extends TestCase
                 ],
             ]
         );
+    }
 
+    private function createController(bool $godUser): HistoryPlaceRestController
+    {
         $documentRepositoryInterface = $this->createMock(DocumentRepository::class);
         $documentRepositoryInterface->method('fetch')
             ->willReturnCallback(
@@ -73,11 +65,10 @@ class HistoryPlaceRestControllerTest extends TestCase
                 }
             );
 
-        $this->userIdentification = $this->createMock(UserIdentificationInterface::class);
         /** @var DocumentRepository $documentRepositoryInterface */
-        $this->controller = new HistoryPlaceRestController(
+        return new HistoryPlaceRestController(
             $documentRepositoryInterface,
-            $this->userIdentification
+            $godUser
         );
     }
 
@@ -86,8 +77,8 @@ class HistoryPlaceRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_json_history_for_an_event(): void
     {
-        $this->givenGodUser();
-        $jsonResponse = $this->controller->get(self::EXISTING_ID);
+        $controller = $this->createController(true);
+        $jsonResponse = $controller->get(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_OK, $jsonResponse->getStatusCode());
         $this->assertEquals($this->expectedProcessedHistory, $jsonResponse->getContent());
@@ -98,8 +89,8 @@ class HistoryPlaceRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_error_NOT_FOUND_for_a_non_existing_event(): void
     {
-        $this->givenGodUser();
-        $jsonResponse = $this->controller->get(self::NON_EXISTING_ID);
+        $controller = $this->createController(true);
+        $jsonResponse = $controller->get(self::NON_EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_NOT_FOUND, $jsonResponse->getStatusCode());
     }
@@ -109,23 +100,9 @@ class HistoryPlaceRestControllerTest extends TestCase
      */
     public function returns_a_http_response_with_error_FORBIDDEN_for_a_regular_user(): void
     {
-        $this->givenRegularUser();
-        $jsonResponse = $this->controller->get(self::EXISTING_ID);
+        $controller = $this->createController(false);
+        $jsonResponse = $controller->get(self::EXISTING_ID);
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $jsonResponse->getStatusCode());
-    }
-
-    private function givenGodUser(): void
-    {
-        $this->userIdentification
-            ->method('isGodUser')
-            ->willReturn(true);
-    }
-
-    private function givenRegularUser(): void
-    {
-        $this->userIdentification
-            ->method('isGodUser')
-            ->willReturn(false);
     }
 }

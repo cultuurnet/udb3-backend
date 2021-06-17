@@ -29,7 +29,7 @@ class SavedSearchesControllerProvider implements ControllerProviderInterface
         $app['saved_searches_edit_controller'] = $app->share(
             function (Application $app) {
                 return new EditSavedSearchesRestController(
-                    $app['current_user'],
+                    $app['current_user_id'],
                     $app['event_command_bus']
                 );
             }

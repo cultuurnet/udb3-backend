@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Http\Label\Query\QueryFactory;
-use CultuurNet\UDB3\Http\Management\User\CultureFeedUserIdentification;
 use CultuurNet\UDB3\UDB2\Label\RelatedUDB3LabelApplier;
 use Monolog\Handler\StreamHandler;
 use Silex\Application;
@@ -314,12 +313,7 @@ class LabelServiceProvider implements ServiceProviderInterface
     {
         $app[self::QUERY_FACTORY] = $app->share(
             function (Application $app) {
-                $userIdentification = new CultureFeedUserIdentification(
-                    $app['current_user'],
-                    $app['config']['user_permissions']
-                );
-
-                return new QueryFactory($userIdentification);
+                return new QueryFactory($app['current_user_is_god_user'] ? null : $app['current_user_id']);
             }
         );
     }

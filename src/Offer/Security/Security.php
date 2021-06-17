@@ -9,35 +9,28 @@ use CultuurNet\UDB3\Offer\Commands\PreflightCommand;
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\SecurityInterface;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Security implements SecurityInterface
 {
     /**
-     * @var UserIdentificationInterface
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var PermissionVoterInterface
      */
     private $permissionVoter;
 
-    /**
-     * Security constructor.
-     */
     public function __construct(
-        UserIdentificationInterface $userIdentification,
+        ?string $userId = null,
         PermissionVoterInterface $permissionVoter
     ) {
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
         $this->permissionVoter = $permissionVoter;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function allowsUpdateWithCdbXml(StringLiteral $offerId)
     {
         return $this->currentUiTIDUserCanEditOffer(
@@ -46,9 +39,6 @@ class Security implements SecurityInterface
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function isAuthorized(AuthorizableCommandInterface $command)
     {
         $offerId = new StringLiteral($command->getItemId());
@@ -56,21 +46,18 @@ class Security implements SecurityInterface
         return $this->currentUiTIDUserCanEditOffer($offerId, $command);
     }
 
-    /**
-     * @return bool
-     */
     private function currentUiTIDUserCanEditOffer(
         StringLiteral $offerId,
         AuthorizableCommandInterface $command
-    ) {
-        if (!$this->userIdentification->getId()) {
+    ): bool {
+        if (!$this->userId) {
             return false;
         }
 
         return $this->permissionVoter->isAllowed(
             $command->getPermission(),
             $offerId,
-            $this->userIdentification->getId()
+            new StringLiteral($this->userId)
         );
     }
 }

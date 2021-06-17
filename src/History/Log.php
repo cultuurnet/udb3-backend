@@ -136,7 +136,7 @@ class Log implements JsonSerializable
 
         $metadata = $domainMessage->getMetadata()->serialize();
 
-        $author = $metadata['user_nick'] ?? null;
+        $author = $metadata['user_id'] ?? null;
         $apiKey = $metadata['auth_api_key'] ?? null;
         $api = $metadata['api'] ?? null;
         $consumer = $metadata['consumer']['name'] ?? null;

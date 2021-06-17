@@ -9,7 +9,6 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\UDB2\DomainEvents\ActorCreated;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
-use CultuurNet\UDB3\User\UserIdentityDetails;
 use DateTimeImmutable;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,10 +25,16 @@ class ImportPlaceCdbXmlCommand extends AbstractCommand
      */
     private $eventBus;
 
-    public function __construct(CommandBus $commandBus, EventBus $eventBus)
+    /**
+     * @var string
+     */
+    private $systemUserId;
+
+    public function __construct(CommandBus $commandBus, EventBus $eventBus, string $systemUserId)
     {
         parent::__construct($commandBus);
         $this->eventBus = $eventBus;
+        $this->systemUserId = $systemUserId;
     }
 
     /**
@@ -60,12 +65,12 @@ class ImportPlaceCdbXmlCommand extends AbstractCommand
         $incomingUdb2Event = new ActorCreated(
             new StringLiteral($input->getArgument(self::ID)),
             new DateTimeImmutable(),
-            new StringLiteral(UserIdentityDetails::SYSTEM_USER_UUID),
+            new StringLiteral($this->systemUserId),
             Url::fromNative($input->getArgument(self::URL))
         );
 
         $domainMessage = (new DomainMessageBuilder())
-            ->setUserId(UserIdentityDetails::SYSTEM_USER_UUID)
+            ->setUserId($this->systemUserId)
             ->create($incomingUdb2Event);
 
         $this->eventBus->publish(new DomainEventStream([$domainMessage]));

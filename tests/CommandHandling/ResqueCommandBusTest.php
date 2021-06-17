@@ -10,10 +10,8 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class ResqueCommandBusTest extends TestCase
 {
@@ -54,7 +52,6 @@ class ResqueCommandBusTest extends TestCase
         $context = new Metadata(
             [
                 'user_id' => 1,
-                'user_nick' => 'admin',
             ]
         );
 
@@ -70,15 +67,11 @@ class ResqueCommandBusTest extends TestCase
      */
     public function it_throws_command_authorization_exception_when_decoratee_is_an_instance_of_authorized_command_bus_and_command_is_an_instance_of_authorizable_command()
     {
-        $userIdentification = $this->createMock(UserIdentificationInterface::class);
-        $userIdentification->method('getId')
-            ->willReturn(new StringLiteral('userId'));
-
         $decoratee = $this->createMock(AuthorizedCommandBusInterface::class);
         $decoratee->method('isAuthorized')
             ->willReturn(false);
-        $decoratee->method('getUserIdentification')
-            ->willReturn($userIdentification);
+        $decoratee->method('getUserId')
+            ->willReturn('userId');
 
         $queueName = 'test';
 
@@ -125,7 +118,6 @@ class ResqueCommandBusTest extends TestCase
         $context = new Metadata(
             [
                 'user_id' => 1,
-                'user_nick' => 'admin',
             ]
         );
 

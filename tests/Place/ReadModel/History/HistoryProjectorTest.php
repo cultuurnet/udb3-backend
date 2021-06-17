@@ -84,7 +84,7 @@ use ValueObjects\Web\Url;
 
 class HistoryProjectorTest extends TestCase
 {
-    private const META_USER_NICK = 'Jan Janssen';
+    private const META_USER_ID = 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7';
     private const META_AUTH_API_KEY = 'my-super-duper-key';
     private const META_API = 'json-api';
     private const META_CONSUMER = 'My super duper name';
@@ -944,7 +944,7 @@ class HistoryProjectorTest extends TestCase
     {
         return new Metadata(
             [
-                'user_nick' => self::META_USER_NICK,
+                'user_id' => self::META_USER_ID,
                 'auth_api_key' => self::META_AUTH_API_KEY,
                 'api' => self::META_API,
                 'consumer' => [
@@ -1042,7 +1042,7 @@ class HistoryProjectorTest extends TestCase
             [
                 [
                     'date' => self::OCCURRED_ON_FORMATTED,
-                    'author' => self::META_USER_NICK,
+                    'author' => self::META_USER_ID,
                     'description' => $eventDescription,
                     'apiKey' => self::META_AUTH_API_KEY,
                     'api' => self::META_API,

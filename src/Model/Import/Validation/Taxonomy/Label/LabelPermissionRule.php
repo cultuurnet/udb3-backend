@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Model\Import\Validation\Taxonomy\Label;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as LabelsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Rules\AbstractRule;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -20,9 +19,9 @@ class LabelPermissionRule extends AbstractRule
     private $documentId;
 
     /**
-     * @var UserIdentificationInterface
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var LabelsRepository
@@ -37,12 +36,12 @@ class LabelPermissionRule extends AbstractRule
 
     public function __construct(
         UUID $documentId,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         LabelsRepository $labelsRepository,
         LabelRelationsRepository $labelsRelationsRepository
     ) {
         $this->documentId = $documentId;
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
         $this->labelsRepository = $labelsRepository;
         $this->labelRelationsRepository = $labelsRelationsRepository;
     }
@@ -67,7 +66,7 @@ class LabelPermissionRule extends AbstractRule
 
         // The label is not yet present on the item, do a permission check for the active user.
         return $this->labelsRepository->canUseLabel(
-            $this->userIdentification->getId(),
+            new StringLiteral($this->userId),
             new StringLiteral($input)
         );
     }

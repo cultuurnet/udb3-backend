@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Place;
 
 use CultuurNet\UDB3\Http\ApiProblemJsonResponseTrait;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
-use CultuurNet\UDB3\Http\Management\User\UserIdentificationInterface;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,22 +24,21 @@ class HistoryPlaceRestController
     private $historyRepository;
 
     /**
-     * @var UserIdentificationInterface
+     * @var bool
      */
-    private $userIdentification;
-
+    private $userIsGodUser;
 
     public function __construct(
         DocumentRepository $documentRepository,
-        UserIdentificationInterface $userIdentification
+        bool $userIsGodUser
     ) {
         $this->historyRepository = $documentRepository;
-        $this->userIdentification = $userIdentification;
+        $this->userIsGodUser = $userIsGodUser;
     }
 
     public function get(string $placeId): JsonResponse
     {
-        if (!$this->userIdentification->isGodUser()) {
+        if (!$this->userIsGodUser) {
             return $this->forbiddenResponse($placeId);
         }
 

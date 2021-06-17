@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface as 
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface as LabelRelationsRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Security\UserIdentificationInterface;
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Rules\AbstractRule;
 
@@ -20,9 +19,9 @@ class DocumentLabelPermissionRule extends AbstractRule
     private $uuidParser;
 
     /**
-     * @var UserIdentificationInterface
+     * @var string
      */
-    private $userIdentification;
+    private $userId;
 
     /**
      * @var LabelsRepository
@@ -37,12 +36,12 @@ class DocumentLabelPermissionRule extends AbstractRule
 
     public function __construct(
         UUIDParser $uuidParser,
-        UserIdentificationInterface $userIdentification,
+        string $userId,
         LabelsRepository $labelsRepository,
         LabelRelationsRepository $labelsRelationsRepository
     ) {
         $this->uuidParser = $uuidParser;
-        $this->userIdentification = $userIdentification;
+        $this->userId = $userId;
         $this->labelsRepository = $labelsRepository;
         $this->labelRelationsRepository = $labelsRelationsRepository;
     }
@@ -66,7 +65,7 @@ class DocumentLabelPermissionRule extends AbstractRule
 
         $labelPermissionRule = new LabelPermissionRule(
             $id,
-            $this->userIdentification,
+            $this->userId,
             $this->labelsRepository,
             $this->labelRelationsRepository
         );

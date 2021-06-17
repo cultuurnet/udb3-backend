@@ -200,7 +200,6 @@ class OrganizerLDProjectorTest extends TestCase
                 new Metadata(
                     [
                         'user_id' => '28f69301-13bc-4153-a9d2-e91e89cbe156',
-                        'user_nick' => 'JohnDoe',
                     ]
                 ),
                 $organizerCreated,
@@ -251,7 +250,6 @@ class OrganizerLDProjectorTest extends TestCase
                 new Metadata(
                     [
                         'user_id' => '28f69301-13bc-4153-a9d2-e91e89cbe156',
-                        'user_nick' => 'JohnDoe',
                     ]
                 ),
                 $organizerCreated,

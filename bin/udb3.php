@@ -32,7 +32,6 @@ use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
-use CultuurNet\UDB3\User\UserIdentityDetails;
 use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -62,8 +61,7 @@ $consoleApp->setCatchExceptions(false);
 $app['impersonator']->impersonate(
     new Metadata(
         [
-            'user_id' => UserIdentityDetails::SYSTEM_USER_UUID,
-            'user_nick' => 'udb3',
+            'user_id' => $app['system_user_id'],
         ]
     )
 );
@@ -97,8 +95,8 @@ $consoleApp->add(new GeocodePlaceCommand($app['event_command_bus'], $app[Sapi3Se
 $consoleApp->add(new GeocodeEventCommand($app['event_command_bus'], $app[Sapi3SearchServiceProvider::SEARCH_SERVICE_EVENTS], $app['event_jsonld_repository']));
 $consoleApp->add(new FireProjectedToJSONLDForRelationsCommand($app['event_bus'], $app['dbal_connection'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
 $consoleApp->add(new FireProjectedToJSONLDCommand($app['event_bus'], $app[OrganizerJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY], $app[PlaceJSONLDServiceProvider::JSONLD_PROJECTED_EVENT_FACTORY]));
-$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
-$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus']));
+$consoleApp->add(new ImportEventCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
+$consoleApp->add(new ImportPlaceCdbXmlCommand($app['event_command_bus'], $app['event_bus'], $app['system_user_id']));
 $consoleApp->add(new ValidatePlaceJsonLdCommand($app['event_command_bus']));
 $consoleApp->add(new MarkPlaceAsDuplicateCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class]));
 $consoleApp->add(new DispatchMarkedAsDuplicateEventCommand($app['event_command_bus'], $app[LocationMarkedAsDuplicateProcessManager::class], $app['event_bus']));

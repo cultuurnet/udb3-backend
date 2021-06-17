@@ -8,32 +8,33 @@ use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use ValueObjects\StringLiteral\StringLiteral;
 
-/**
- * Sapi3FixedSavedSearchRepository is used for Sapi3.
- *
- * Class FixedSavedSearchRepository
- * @package CultuurNet\UDB3\SavedSearches
- */
 class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
 {
     /**
-     * @var \CultureFeed_User
+     * @var string
      */
-    private $user;
+    private $userId;
+
+    /**
+     * @var UserIdentityResolver
+     */
+    private $userIdentityResolver;
 
     /**
      * @var CreatedByQueryMode
      */
     protected $createdByQueryMode;
 
-
     public function __construct(
-        \CultureFeed_User $user,
+        string $userId,
+        UserIdentityResolver $userIdentityResolver,
         CreatedByQueryMode $createdByQueryMode
     ) {
-        $this->user = $user;
+        $this->userId = $userId;
+        $this->userIdentityResolver = $userIdentityResolver;
         $this->createdByQueryMode = $createdByQueryMode;
     }
 
@@ -43,27 +44,39 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
     public function ownedByCurrentUser(): array
     {
         $name = new StringLiteral('Door mij ingevoerd');
+        $creatorQueryString = $this->getCreatorQueryString();
+        return [
+            new SavedSearch($name, $creatorQueryString),
+        ];
+    }
 
-        switch ($this->createdByQueryMode->toNative()) {
-            case CreatedByQueryMode::EMAIL:
-                $createdByQueryString = new CreatorQueryString(
-                    $this->user->mbox
-                );
-                break;
-            case CreatedByQueryMode::MIXED:
-                $createdByQueryString = new CreatorQueryString(
-                    $this->user->mbox,
-                    $this->user->id
-                );
-                break;
-            default:
-                $createdByQueryString = new CreatorQueryString(
-                    $this->user->id
-                );
+    private function getCreatorQueryString(): CreatorQueryString
+    {
+        // If the creator query mode is set to uuid only, return early to avoid fetching user info from auth0 because
+        // it's not needed.
+        if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::UUID()) {
+            return new CreatorQueryString($this->userId);
         }
 
-        return [
-            new SavedSearch($name, $createdByQueryString),
-        ];
+        // If the user is not found on Auth0, just return a query that filters the creator on user id since we don't
+        // have an email to filter on anyway.
+        $user = $this->userIdentityResolver->getUserById(new StringLiteral($this->userId));
+        if (!$user) {
+            return new CreatorQueryString($this->userId);
+        }
+
+        // If the user is found and the mode is set to mixed, return a query that filters the creator on either email
+        // or user id.
+        if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::MIXED) {
+            return new CreatorQueryString(
+                $user->getEmailAddress()->toNative(),
+                $this->userId
+            );
+        }
+
+        // Otherwise return a query that filters the creator on email (original/historical behaviour).
+        return new CreatorQueryString(
+            $user->getEmailAddress()->toNative()
+        );
     }
 }

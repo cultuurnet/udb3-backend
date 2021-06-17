@@ -9,6 +9,7 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
+use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -22,13 +23,11 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
     {
         $app['udb3_saved_searches_repo_sapi3'] = $app->share(
             function (Application $app) {
-                $user = $app['current_user'];
-
                 return new UDB3SavedSearchRepository(
                     $app['dbal_connection'],
                     new StringLiteral('saved_searches_sapi3'),
                     $app['uuid_generator'],
-                    new StringLiteral($user->id)
+                    new StringLiteral($app['current_user_id'])
                 );
             }
         );
@@ -37,7 +36,8 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CombinedSavedSearchRepository(
                     new Sapi3FixedSavedSearchRepository(
-                        $app['current_user'],
+                        $app['current_user_id'],
+                        $app[Auth0UserIdentityResolver::class],
                         $this->getCreatedByQueryMode($app)
                     ),
                     $app['udb3_saved_searches_repo_sapi3']

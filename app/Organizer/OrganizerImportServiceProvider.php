@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\Import\Validation\Organizer\OrganizerImportValidator;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Organizer\DBALWebsiteLookupService;
-use CultuurNet\UDB3\Security\CultureFeedUserIdentification;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -30,10 +29,7 @@ class OrganizerImportServiceProvider implements ServiceProviderInterface
                         'organizer_unique_websites'
                     ),
                     new OrganizerIDParser(),
-                    new CultureFeedUserIdentification(
-                        $app['current_user'],
-                        $app['config']['user_permissions']
-                    ),
+                    $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY],
                     $app[LabelServiceProvider::RELATIONS_READ_REPOSITORY],
                     true
