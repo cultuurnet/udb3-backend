@@ -14,11 +14,14 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
+use CultuurNet\UDB3\HttpFoundation\Response\ForbiddenResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\UnauthorizedResponse;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
@@ -65,9 +68,9 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
         $app['consumer'] = null;
 
         $app->before(
-            function (Request $request, Application $app) {
+            function (Request $request, Application $app): ?Response {
                 if ($app['auth.api_key_bypass']) {
-                    return;
+                    return null;
                 }
 
                 /** @var AuthorizationChecker $security */
@@ -84,21 +87,25 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
                         // The request is not authenticated so we don't need to do additional checks since the
                         // firewall will return an unauthorized error response.
-                        return;
+                        return null;
                     }
                 } catch (AuthenticationCredentialsNotFoundException $exception) {
                     // The request is for a public URL so we can skip any checks.
-                    return;
+                    return null;
                 }
 
                 /** @var Udb3Token $token */
                 $token = $app['jwt'];
                 $clientId = $token->getClientId();
                 if ($clientId) {
-                    return;
+                    // return null;
                 }
 
-                $apiKeyAuthenticator->authenticate($psr7Request);
+                try {
+                    $apiKeyAuthenticator->authenticate($psr7Request);
+                } catch (RequestAuthenticationException $e) {
+                    return new UnauthorizedResponse($e->getMessage());
+                }
 
                 // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
                 $permissionCheck = new ConsumerIsInPermissionGroup(
@@ -111,7 +118,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
 
                 if (!$permissionCheck->satisfiedBy($consumer)) {
-                    throw new RequestAuthenticationException('Given API key is not authorized to use EntryAPI.');
+                    return new ForbiddenResponse('Given API key is not authorized to use EntryAPI.');
                 }
 
                 $app['consumer'] = $consumer;
