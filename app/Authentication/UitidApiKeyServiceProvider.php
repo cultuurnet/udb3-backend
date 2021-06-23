@@ -120,6 +120,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 }
 
                 $app['consumer'] = $consumer;
+                return null;
             },
             Application::LATE_EVENT
         );
