@@ -26,12 +26,14 @@ class JwtAuthenticationEntryPointTest extends TestCase
     public function it_returns_a_response_with_status_401_and_a_json_body()
     {
         $request = new Request();
-        $exception = new AuthenticationException('JWT is expired.');
+        $exception = new AuthenticationException('No token found in TokenStorage');
 
         $expectedBody = json_encode(
             [
-                'error' => 'Unauthorized',
-                'details' => 'JWT is expired.',
+                'title' => 'Unauthorized',
+                'type' => 'https://api.publiq.be/probs/auth/unauthorized',
+                'status' => 401,
+                'detail' => 'This endpoint requires a token but none found in the request.',
             ]
         );
 
