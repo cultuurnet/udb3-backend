@@ -189,6 +189,45 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_the_azp_claim_is_present_but_the_token_cannot_be_used_on_entry_api(): void
+    {
+        $jwt = new Udb3Token(
+            new Jwt(
+                ['alg' => 'none'],
+                [
+                    'azp' => new Basic('azp', 'Pwf7f2pSU3FsCCbGZz0gexx8NWOW9Hj9'),
+                    'https://publiq.be/publiq-apis' => new Basic('https://publiq.be/publiq-apis', 'ups'),
+                ]
+            )
+        );
+        $token = new JwtUserToken($jwt);
+
+        $this->decoderService->expects($this->once())
+            ->method('verifySignature')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateData')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage(
+            'The given token and its related client are not allowed to access EntryAPI.'
+        );
+
+        $this->authenticationProvider->authenticate($token);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
     {
         $jwt = new Udb3Token(
@@ -196,6 +235,7 @@ class JwtAuthenticationProviderTest extends TestCase
                 ['alg' => 'none'],
                 [
                     'azp' => new Basic('azp', 'Pwf7f2pSU3FsCCbGZz0gexx8NWOW9Hj9'),
+                    'https://publiq.be/publiq-apis' => new Basic('https://publiq.be/publiq-apis', 'ups entry'),
                 ]
             )
         );

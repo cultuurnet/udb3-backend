@@ -70,11 +70,22 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        if (!$jwt->isAccessToken()) {
+        if ($jwt->isAccessToken()) {
+            $this->validateAccessToken($jwt);
+        } else {
             $this->validateIdToken($jwt);
         }
 
         return new JwtUserToken($jwt, true);
+    }
+
+    private function validateAccessToken(Udb3Token $jwt): void
+    {
+        if (!$jwt->canUseEntryAPI()) {
+            throw new AuthenticationException(
+                'The given token and its related client are not allowed to access EntryAPI.'
+            );
+        }
     }
 
     private function validateIdToken(Udb3Token $jwt): void
