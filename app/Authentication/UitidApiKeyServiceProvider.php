@@ -98,7 +98,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 $token = $app['jwt'];
                 $clientId = $token->getClientId();
                 if ($clientId) {
-                    // return null;
+                    return null;
                 }
 
                 try {
