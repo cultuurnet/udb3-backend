@@ -94,10 +94,8 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     return null;
                 }
 
-                /** @var Udb3Token $token */
-                $token = $app['jwt'];
-                $clientId = $token->getClientId();
-                if ($clientId) {
+                // Don't do an API key check if an access token with Auth0 client id is used.
+                if (!is_null($app['api_client_id'])) {
                     return null;
                 }
 
