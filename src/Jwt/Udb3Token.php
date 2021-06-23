@@ -39,4 +39,14 @@ final class Udb3Token
     {
         return $this->token;
     }
+
+    public function getClientId(): ?string
+    {
+        // Check first if the token has the claim, to prevent an OutOfBoundsException (thrown if the default is set to
+        // null and the claim is missing).
+        if ($this->token->hasClaim('azp')) {
+            return (string) $this->token->getClaim('azp');
+        }
+        return null;
+    }
 }

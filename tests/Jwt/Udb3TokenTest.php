@@ -69,4 +69,38 @@ final class Udb3TokenTest extends TestCase
 
         $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $token->id());
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_client_id_from_azp_claim_if_present(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'azp' => new Basic('azp', 'jndYaQY9BSa9W7FQqDEGI0WEi4KlU6vJ'),
+                ]
+            )
+        );
+
+        $this->assertEquals('jndYaQY9BSa9W7FQqDEGI0WEi4KlU6vJ', $token->getClientId());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_as_client_id_if_azp_claim_is_missing(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'sub' => new Basic('sub', 'auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87'),
+                ]
+            )
+        );
+
+        $this->assertNull($token->getClientId());
+    }
 }
