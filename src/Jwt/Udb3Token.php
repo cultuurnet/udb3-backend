@@ -49,4 +49,19 @@ final class Udb3Token
         }
         return null;
     }
+
+    public function audienceContains(string $audience): bool
+    {
+        if (!$this->token->hasClaim('aud')) {
+            return false;
+        }
+
+        // The aud claim can be a string or an array. Convert string to array with one value for consistency.
+        $aud = $this->token->getClaim('aud');
+        if (is_string($aud)) {
+            $aud = [$aud];
+        }
+
+        return in_array($audience, $aud, true);
+    }
 }
