@@ -73,6 +73,11 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     return null;
                 }
 
+                // Don't do an API key check if an access token with Auth0 client id is used.
+                if (!is_null($app['api_client_id'])) {
+                    return null;
+                }
+
                 /** @var AuthorizationChecker $security */
                 $security = $app['security.authorization_checker'];
                 /** @var ApiKeyRequestAuthenticator $apiKeyAuthenticator */
@@ -91,11 +96,6 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     }
                 } catch (AuthenticationCredentialsNotFoundException $exception) {
                     // The request is for a public URL so we can skip any checks.
-                    return null;
-                }
-
-                // Don't do an API key check if an access token with Auth0 client id is used.
-                if (!is_null($app['api_client_id'])) {
                     return null;
                 }
 
