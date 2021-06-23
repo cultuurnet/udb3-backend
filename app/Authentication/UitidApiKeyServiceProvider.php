@@ -16,7 +16,6 @@ use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\HttpFoundation\Response\ForbiddenResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\UnauthorizedResponse;
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
