@@ -16,11 +16,17 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     private $decoderService;
 
+    /**
+     * @var string
+     */
+    private $jwtProviderClientId;
 
     public function __construct(
-        JwtDecoderServiceInterface $decoderService
+        JwtDecoderServiceInterface $decoderService,
+        string $jwtProviderClientId
     ) {
         $this->decoderService = $decoderService;
+        $this->jwtProviderClientId = $jwtProviderClientId;
     }
 
     /**
@@ -60,6 +66,12 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
         if (!$this->decoderService->validateRequiredClaims($jwt)) {
             throw new AuthenticationException(
                 'Token is missing one of its required claims.'
+            );
+        }
+
+        if (!$jwt->getClientId() && !$jwt->audienceContains($this->jwtProviderClientId)) {
+            throw new AuthenticationException(
+                'Token has no azp claim. Did you accidentally use an id token instead of an access token?'
             );
         }
 

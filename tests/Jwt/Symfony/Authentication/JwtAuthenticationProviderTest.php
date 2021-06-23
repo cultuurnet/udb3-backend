@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
 use CultuurNet\UDB3\Jwt\Udb3Token;
+use Lcobucci\JWT\Claim\Basic;
 use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +30,8 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->decoderService = $this->createMock(JwtDecoderServiceInterface::class);
 
         $this->authenticationProvider = new JwtAuthenticationProvider(
-            $this->decoderService
+            $this->decoderService,
+            'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'
         );
     }
 
@@ -149,9 +151,54 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_the_azp_claim_is_missing_and_the_token_is_not_from_the_jwt_provider(): void
+    {
+        $jwt = new Udb3Token(
+            new Jwt(
+                ['alg' => 'none'],
+                [
+                    'aud' => new Basic('aud', 'bla'),
+                ]
+            )
+        );
+        $token = new JwtUserToken($jwt);
+
+        $this->decoderService->expects($this->once())
+            ->method('verifySignature')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateData')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage(
+            'Token has no azp claim. Did you accidentally use an id token instead of an access token?'
+        );
+
+        $this->authenticationProvider->authenticate($token);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
     {
-        $jwt = new Udb3Token(new Jwt());
+        $jwt = new Udb3Token(
+            new Jwt(
+                ['alg' => 'none'],
+                [
+                    'azp' => new Basic('azp', 'Pwf7f2pSU3FsCCbGZz0gexx8NWOW9Hj9'),
+                ]
+            )
+        );
         $token = new JwtUserToken($jwt);
 
         $this->decoderService->expects($this->once())
