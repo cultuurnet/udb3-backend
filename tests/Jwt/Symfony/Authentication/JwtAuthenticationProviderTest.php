@@ -180,7 +180,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            'Token has no azp claim. Did you accidentally use an id token instead of an access token?'
+            'Only legacy id tokens are supported. Please use an access token instead.'
         );
 
         $this->authenticationProvider->authenticate($token);

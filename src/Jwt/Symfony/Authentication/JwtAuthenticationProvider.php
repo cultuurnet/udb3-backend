@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -69,12 +70,19 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        if (!$jwt->getClientId() && !$jwt->audienceContains($this->jwtProviderClientId)) {
-            throw new AuthenticationException(
-                'Token has no azp claim. Did you accidentally use an id token instead of an access token?'
-            );
+        if (!$jwt->isAccessToken()) {
+            $this->validateIdToken($jwt);
         }
 
         return new JwtUserToken($jwt, true);
+    }
+
+    private function validateIdToken(Udb3Token $jwt): void
+    {
+        if (!$jwt->audienceContains($this->jwtProviderClientId)) {
+            throw new AuthenticationException(
+                'Only legacy id tokens are supported. Please use an access token instead.'
+            );
+        }
     }
 }
