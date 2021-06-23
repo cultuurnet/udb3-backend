@@ -14,6 +14,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
@@ -87,6 +88,13 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                     }
                 } catch (AuthenticationCredentialsNotFoundException $exception) {
                     // The request is for a public URL so we can skip any checks.
+                    return;
+                }
+
+                /** @var Udb3Token $token */
+                $token = $app['jwt'];
+                $clientId = $token->getClientId();
+                if ($clientId) {
                     return;
                 }
 
