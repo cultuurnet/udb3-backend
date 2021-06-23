@@ -83,7 +83,8 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
     {
         if (!$jwt->canUseEntryAPI()) {
             throw new AuthenticationException(
-                'The given token and its related client are not allowed to access EntryAPI.'
+                'The given token and its related client are not allowed to access EntryAPI.',
+                403
             );
         }
     }
