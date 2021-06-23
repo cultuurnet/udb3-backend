@@ -64,4 +64,16 @@ final class Udb3Token
 
         return in_array($audience, $aud, true);
     }
+
+    public function canUseEntryAPI(): bool
+    {
+        $apis = $this->token->getClaim('https://publiq.be/publiq-apis', '');
+
+        if (!is_string($apis)) {
+            return false;
+        }
+
+        $apis = explode(' ', $apis);
+        return in_array('entry', $apis, true);
+    }
 }
