@@ -10,7 +10,7 @@ interface JwtDecoderServiceInterface
 {
     public function parse(StringLiteral $tokenString): Udb3Token;
 
-    public function validateData(Udb3Token $jwt): bool;
+    public function validateTimeSensitiveClaims(Udb3Token $jwt): bool;
 
     public function validateRequiredClaims(Udb3Token $udb3Token): bool;
 

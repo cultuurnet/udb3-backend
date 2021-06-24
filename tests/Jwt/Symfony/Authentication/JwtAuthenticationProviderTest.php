@@ -103,13 +103,13 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(false);
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            'Token claims validation failed. This most likely means the token is expired.'
+            'Token expired (or not yet usable yet).'
         );
 
         $this->authenticationProvider->authenticate($token);
@@ -129,7 +129,7 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
@@ -160,7 +160,7 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
@@ -196,7 +196,7 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 

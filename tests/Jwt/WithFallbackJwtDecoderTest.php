@@ -99,14 +99,14 @@ class WithFallbackJwtDecoderTest extends TestCase
     public function it_uses_primary_decoder_for_validation(): void
     {
         $this->primaryDecoder->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($this->token)
             ->willReturn(true);
 
         $this->secondaryDecoder->expects($this->never())
-            ->method('validateData');
+            ->method('validateTimeSensitiveClaims');
 
-        $this->assertTrue($this->withFallBackJwtDecoder->validateData($this->token));
+        $this->assertTrue($this->withFallBackJwtDecoder->validateTimeSensitiveClaims($this->token));
     }
 
     /**
@@ -115,16 +115,16 @@ class WithFallbackJwtDecoderTest extends TestCase
     public function it_fall_back_to_secondary_decoder_for_validation(): void
     {
         $this->primaryDecoder->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($this->token)
             ->willReturn(false);
 
         $this->secondaryDecoder->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($this->token)
             ->willReturn(true);
 
-        $this->assertTrue($this->withFallBackJwtDecoder->validateData($this->token));
+        $this->assertTrue($this->withFallBackJwtDecoder->validateTimeSensitiveClaims($this->token));
     }
 
     /**

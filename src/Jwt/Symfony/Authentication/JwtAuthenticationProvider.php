@@ -51,9 +51,9 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        if (!$this->decoderService->validateData($jwt)) {
+        if (!$this->decoderService->validateTimeSensitiveClaims($jwt)) {
             throw new AuthenticationException(
-                'Token claims validation failed. This most likely means the token is expired.'
+                'Token expired (or not yet usable yet).'
             );
         }
 

@@ -174,7 +174,7 @@ class JwtDecoderServiceTest extends TestCase
     {
         // Test token should have been expired.
         $this->assertFalse(
-            $this->decoderService->validateData($this->token)
+            $this->decoderService->validateTimeSensitiveClaims($this->token)
         );
 
         // Mock a later expiration date.
@@ -191,7 +191,7 @@ class JwtDecoderServiceTest extends TestCase
         );
 
         $this->assertTrue(
-            $this->decoderService->validateData(new Udb3Token($unexpiredToken))
+            $this->decoderService->validateTimeSensitiveClaims(new Udb3Token($unexpiredToken))
         );
 
         // Change the iss claim of the unexpired token, which should cause
@@ -206,7 +206,7 @@ class JwtDecoderServiceTest extends TestCase
         );
 
         $this->assertFalse(
-            $this->decoderService->validateData(new Udb3Token($unexpiredTokenWithDifferentIssuer))
+            $this->decoderService->validateTimeSensitiveClaims(new Udb3Token($unexpiredTokenWithDifferentIssuer))
         );
     }
 

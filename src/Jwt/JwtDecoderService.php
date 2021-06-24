@@ -77,7 +77,7 @@ class JwtDecoderService implements JwtDecoderServiceInterface
         }
     }
 
-    public function validateData(Udb3Token $udb3Token): bool
+    public function validateTimeSensitiveClaims(Udb3Token $udb3Token): bool
     {
         return $udb3Token->jwtToken()->validate(new ValidationData());
     }
