@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Jwt\JwtDecoderService;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\ValidationData;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
