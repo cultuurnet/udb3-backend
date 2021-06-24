@@ -38,24 +38,38 @@ class JwtDecoderService implements JwtDecoderServiceInterface
     private $requiredClaims;
 
     /**
+     * @var string[]
+     */
+    private $validIssuers;
+
+    /**
      * @param string[] $requiredClaims
+     * @param string[] $validIssuers
      */
     public function __construct(
         Parser $parser,
         ValidationData $validationData,
         Signer $signer,
         Key $publicKey,
-        array $requiredClaims = []
+        array $requiredClaims = [],
+        array $validIssuers = []
     ) {
         $this->parser = $parser;
         $this->validationData = $validationData;
         $this->signer = $signer;
         $this->publicKey = $publicKey;
         $this->requiredClaims = $requiredClaims;
+        $this->validIssuers = $validIssuers;
 
         if (count($requiredClaims) !== count(array_filter($this->requiredClaims, 'is_string'))) {
             throw new \InvalidArgumentException(
                 'All required claims should be strings.'
+            );
+        }
+
+        if (count($validIssuers) !== count(array_filter($this->validIssuers, 'is_string'))) {
+            throw new \InvalidArgumentException(
+                'All valid issuers should be strings.'
             );
         }
     }
@@ -84,6 +98,18 @@ class JwtDecoderService implements JwtDecoderServiceInterface
         }
 
         return true;
+    }
+
+    public function validateIssuer(Udb3Token $udb3Token): bool
+    {
+        $jwt = $udb3Token->jwtToken();
+
+        if (!$jwt->hasClaim('iss')) {
+            return false;
+        }
+
+        $issuer = $jwt->getClaim('iss');
+        return in_array($issuer, $this->validIssuers, true);
     }
 
     public function verifySignature(Udb3Token $udb3Token): bool

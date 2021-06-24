@@ -14,5 +14,7 @@ interface JwtDecoderServiceInterface
 
     public function validateRequiredClaims(Udb3Token $udb3Token): bool;
 
+    public function validateIssuer(Udb3Token $udb3Token): bool;
+
     public function verifySignature(Udb3Token $udb3Token): bool;
 }

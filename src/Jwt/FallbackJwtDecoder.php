@@ -60,6 +60,11 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
         return $this->fallbackDecoder->validateRequiredClaims($udb3Token);
     }
 
+    public function validateIssuer(Udb3Token $udb3Token): bool
+    {
+        return $this->primary->validateIssuer($udb3Token) || $this->fallbackDecoder->validateIssuer($udb3Token);
+    }
+
     public function verifySignature(Udb3Token $udb3Token): bool
     {
         if ($this->primary->verifySignature($udb3Token)) {

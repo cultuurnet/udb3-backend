@@ -160,7 +160,8 @@ class JwtDecoderServiceTest extends TestCase
             $this->validationData,
             $this->signer,
             $this->publicKey,
-            $this->requiredCLaims
+            $this->requiredCLaims,
+            ['iss1', 'http://culudb-jwt-provider.dev', 'iss2']
         );
     }
 
@@ -248,6 +249,25 @@ class JwtDecoderServiceTest extends TestCase
         $this->assertTrue($decoderWithoutRequiredClaims->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
         $this->assertTrue($this->decoderService->validateRequiredClaims($this->token));
         $this->assertFalse($this->decoderService->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_validate_that_a_token_has_a_valid_issuer_from_a_list_of_issuers(): void
+    {
+        // Mock a missing iss claim.
+        $manipulatedClaims = $this->tokenClaimsAsValueObjects;
+        unset($manipulatedClaims['iss']);
+        $tokenWithoutIss = new Token(
+            $this->tokenHeaders,
+            $manipulatedClaims,
+            $this->signature,
+            $this->payload
+        );
+
+        $this->assertTrue($this->decoderService->validateIssuer($this->token));
+        $this->assertFalse($this->decoderService->validateIssuer(new Udb3Token($tokenWithoutIss)));
     }
 
     /**
