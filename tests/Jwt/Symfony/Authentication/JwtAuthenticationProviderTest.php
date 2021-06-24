@@ -149,6 +149,42 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_an_exception_when_the_jwt_has_an_invalid_claim(): void
+    {
+        $jwt = new Udb3Token(new Jwt());
+        $token = new JwtUserToken($jwt);
+
+        $this->decoderService->expects($this->once())
+            ->method('verifySignature')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateData')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateIssuer')
+            ->with($jwt)
+            ->willReturn(false);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage(
+            'Token is not issued by a valid issuer.'
+        );
+
+        $this->authenticationProvider->authenticate($token);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
     {
         $jwt = new Udb3Token(new Jwt());
@@ -166,6 +202,11 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->decoderService->expects($this->once())
             ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
 

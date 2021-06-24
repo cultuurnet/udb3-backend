@@ -63,6 +63,12 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
+        if (!$this->decoderService->validateIssuer($jwt)) {
+            throw new AuthenticationException(
+                'Token is not issued by a valid issuer.'
+            );
+        }
+
         return new JwtUserToken($jwt, true);
     }
 }
