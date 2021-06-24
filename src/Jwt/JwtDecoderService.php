@@ -77,6 +77,10 @@ class JwtDecoderService implements JwtDecoderServiceInterface
         }
     }
 
+    /**
+     * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
+     * the past.
+     */
     public function validateTimeSensitiveClaims(Udb3Token $udb3Token): bool
     {
         return $udb3Token->jwtToken()->validate(new ValidationData());
