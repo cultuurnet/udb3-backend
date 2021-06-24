@@ -16,7 +16,6 @@ use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token as Jwt;
 use Lcobucci\JWT\Token;
-use Lcobucci\JWT\ValidationData;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -66,11 +65,6 @@ class JwtDecoderServiceTest extends TestCase
      * @var Parser
      */
     private $parser;
-
-    /**
-     * @var ValidationData
-     */
-    private $validationData;
 
     /**
      * @var Sha256
@@ -143,9 +137,6 @@ class JwtDecoderServiceTest extends TestCase
 
         $this->parser = new Parser();
 
-        $this->validationData = new ValidationData();
-        $this->validationData->setIssuer('http://culudb-jwt-provider.dev');
-
         $this->signer = new Sha256();
         $this->publicKey = new Key($this->publicKeyString);
 
@@ -157,7 +148,6 @@ class JwtDecoderServiceTest extends TestCase
 
         $this->decoderService = new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey,
             $this->requiredCLaims,
@@ -227,7 +217,6 @@ class JwtDecoderServiceTest extends TestCase
     {
         $decoderWithoutRequiredClaims = new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey
         );
@@ -320,7 +309,6 @@ class JwtDecoderServiceTest extends TestCase
 
         new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey,
             $required
@@ -336,7 +324,6 @@ class JwtDecoderServiceTest extends TestCase
 
         $this->decoderService = new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey
         );

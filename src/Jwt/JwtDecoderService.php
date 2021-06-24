@@ -18,11 +18,6 @@ class JwtDecoderService implements JwtDecoderServiceInterface
     private $parser;
 
     /**
-     * @var ValidationData
-     */
-    private $validationData;
-
-    /**
      * @var Signer
      */
     private $signer;
@@ -48,14 +43,12 @@ class JwtDecoderService implements JwtDecoderServiceInterface
      */
     public function __construct(
         Parser $parser,
-        ValidationData $validationData,
         Signer $signer,
         Key $publicKey,
         array $requiredClaims = [],
         array $validIssuers = []
     ) {
         $this->parser = $parser;
-        $this->validationData = $validationData;
         $this->signer = $signer;
         $this->publicKey = $publicKey;
         $this->requiredClaims = $requiredClaims;
@@ -86,7 +79,7 @@ class JwtDecoderService implements JwtDecoderServiceInterface
 
     public function validateData(Udb3Token $udb3Token): bool
     {
-        return $udb3Token->jwtToken()->validate($this->validationData);
+        return $udb3Token->jwtToken()->validate(new ValidationData());
     }
 
     public function validateRequiredClaims(Udb3Token $udb3Token): bool
