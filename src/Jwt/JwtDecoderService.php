@@ -85,7 +85,9 @@ class JwtDecoderService implements JwtDecoderServiceInterface
     {
         // Use the built-in validation provided by Lcobucci without any extra validation data.
         // This will automatically validate the time-sensitive claims.
-        return $udb3Token->jwtToken()->validate(new ValidationData());
+        // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
+        // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
+        return $udb3Token->jwtToken()->validate(new ValidationData(null, 30));
     }
 
     public function validateRequiredClaims(Udb3Token $udb3Token): bool
