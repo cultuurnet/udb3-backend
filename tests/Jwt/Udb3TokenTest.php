@@ -69,4 +69,121 @@ final class Udb3TokenTest extends TestCase
 
         $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $token->id());
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_client_id_from_azp_claim_if_present(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'azp' => new Basic('azp', 'jndYaQY9BSa9W7FQqDEGI0WEi4KlU6vJ'),
+                ]
+            )
+        );
+
+        $this->assertEquals('jndYaQY9BSa9W7FQqDEGI0WEi4KlU6vJ', $token->getClientId());
+        $this->assertTrue($token->isAccessToken());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_null_as_client_id_if_azp_claim_is_missing(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'sub' => new Basic('sub', 'auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87'),
+                ]
+            )
+        );
+
+        $this->assertNull($token->getClientId());
+        $this->assertFalse($token->isAccessToken());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_check_if_the_aud_claim_contains_a_specific_value(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'aud' => new Basic('aud', ['vsCe0hXlLaR255wOrW56Fau7vYO5qvqD']),
+                ]
+            )
+        );
+
+        $this->assertTrue($token->audienceContains('vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'));
+        $this->assertFalse($token->audienceContains('bla'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_false_if_the_aud_claim_is_missing(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                []
+            )
+        );
+
+        $this->assertFalse($token->audienceContains('vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_handle_string_as_aud_claim(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'aud' => new Basic('aud', 'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'),
+                ]
+            )
+        );
+
+        $this->assertTrue($token->audienceContains('vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'));
+        $this->assertFalse($token->audienceContains('bla'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_check_if_a_token_can_be_used_on_entry_api(): void
+    {
+        $tokenWithoutApis = new Udb3Token(new Token());
+        $tokenWithOnlyEntry = $this->createTokenForPubliqApis('entry');
+        $tokenWithMultipleIncludingEntry = $this->createTokenForPubliqApis('ups entry sapi');
+        $tokenWithMultipleExcludingEntry = $this->createTokenForPubliqApis('ups sapi');
+        $tokenWithMultipleAndTooManySpaces = $this->createTokenForPubliqApis(' ups  entry  sapi ');
+
+        $this->assertFalse($tokenWithoutApis->canUseEntryAPI());
+        $this->assertTrue($tokenWithOnlyEntry->canUseEntryAPI());
+        $this->assertTrue($tokenWithMultipleIncludingEntry->canUseEntryAPI());
+        $this->assertFalse($tokenWithMultipleExcludingEntry->canUseEntryAPI());
+        $this->assertTrue($tokenWithMultipleAndTooManySpaces->canUseEntryAPI());
+    }
+
+    private function createTokenForPubliqApis(string $publiqApis): Udb3Token
+    {
+        return new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'https://publiq.be/publiq-apis' => new Basic('https://publiq.be/publiq-apis', $publiqApis),
+                ]
+            )
+        );
+    }
 }

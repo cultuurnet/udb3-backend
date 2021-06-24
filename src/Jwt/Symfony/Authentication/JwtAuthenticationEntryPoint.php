@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use CultuurNet\UDB3\HttpFoundation\Response\UnauthorizedResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -23,12 +23,6 @@ class JwtAuthenticationEntryPoint implements AuthenticationEntryPointInterface
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $responseData = ['error' => 'Unauthorized'];
-
-        if (!is_null($authException)) {
-            $responseData['details'] = $authException->getMessage();
-        }
-
-        return JsonResponse::create($responseData, 401);
+        return new UnauthorizedResponse('This endpoint requires a token but none found in the request.');
     }
 }

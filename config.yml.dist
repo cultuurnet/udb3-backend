@@ -124,6 +124,7 @@ jwt:
     domain: publiq-acc.eu.auth0.com
     client_id:
     client_secret:
+    jwt_provider_client_id:
 
 api_key:
   group_id: ***

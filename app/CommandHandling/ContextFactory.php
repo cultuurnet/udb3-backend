@@ -32,6 +32,10 @@ final class ContextFactory
             $contextValues['auth_jwt'] = $jwt;
         }
 
+        if ($jwt && $jwt->getClientId()) {
+            $contextValues['auth_api_client_id'] = $jwt->getClientId();
+        }
+
         if ($apiKey) {
             $contextValues['auth_api_key'] = $apiKey;
         }
