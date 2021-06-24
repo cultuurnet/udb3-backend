@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
@@ -282,6 +283,16 @@ $app['api_key'] = $app->share(
         // It is possible to work without api key then null is returned
         // and will be handled with a pass through authorizer.
         return isset($app['auth.api_key']) ? $app['auth.api_key'] : null;
+    }
+);
+
+$app['api_client_id'] = $app::share(
+    function (Application $app) {
+        $token = $app['jwt'];
+        if ($token instanceof Udb3Token) {
+            return $token->getClientId();
+        }
+        return null;
     }
 );
 

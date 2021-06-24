@@ -11,6 +11,6 @@ class JwtParserException extends \InvalidArgumentException
 {
     public function __construct($e)
     {
-        parent::__construct($e->getMessage(), 403);
+        parent::__construct($e->getMessage(), 401);
     }
 }

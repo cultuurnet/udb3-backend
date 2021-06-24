@@ -64,7 +64,9 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
     private function createApiTags(): array
     {
+        $clientId = $this->udb3Token ? $this->udb3Token->getClientId() : null;
         return [
+            'api_client_id' => $clientId ?? 'null',
             'api_key' => $this->apiKey ? $this->apiKey->toString() : 'null',
             'api_name' => $this->apiName ?? 'null',
         ];

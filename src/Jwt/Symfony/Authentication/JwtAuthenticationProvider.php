@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -16,11 +17,17 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     private $decoderService;
 
+    /**
+     * @var string
+     */
+    private $jwtProviderClientId;
 
     public function __construct(
-        JwtDecoderServiceInterface $decoderService
+        JwtDecoderServiceInterface $decoderService,
+        string $jwtProviderClientId
     ) {
         $this->decoderService = $decoderService;
+        $this->jwtProviderClientId = $jwtProviderClientId;
     }
 
     /**
@@ -63,6 +70,31 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
+        if ($jwt->isAccessToken()) {
+            $this->validateAccessToken($jwt);
+        } else {
+            $this->validateIdToken($jwt);
+        }
+
         return new JwtUserToken($jwt, true);
+    }
+
+    private function validateAccessToken(Udb3Token $jwt): void
+    {
+        if (!$jwt->canUseEntryAPI()) {
+            throw new AuthenticationException(
+                'The given token and its related client are not allowed to access EntryAPI.',
+                403
+            );
+        }
+    }
+
+    private function validateIdToken(Udb3Token $jwt): void
+    {
+        if (!$jwt->audienceContains($this->jwtProviderClientId)) {
+            throw new AuthenticationException(
+                'Only legacy id tokens are supported. Please use an access token instead.'
+            );
+        }
     }
 }

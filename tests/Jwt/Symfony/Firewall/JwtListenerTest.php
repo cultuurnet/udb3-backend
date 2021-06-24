@@ -203,7 +203,6 @@ class JwtListenerTest extends TestCase
             ->method('setResponse')
             ->willReturnCallback(
                 function (Response $response) {
-                    $this->assertEquals('Authentication failed', $response->getContent());
                     $this->assertEquals(401, $response->getStatusCode());
                 }
             );
