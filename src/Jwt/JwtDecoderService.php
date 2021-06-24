@@ -83,6 +83,8 @@ class JwtDecoderService implements JwtDecoderServiceInterface
      */
     public function validateTimeSensitiveClaims(Udb3Token $udb3Token): bool
     {
+        // Use the built-in validation provided by Lcobucci without any extra validation data.
+        // This will automatically validate the time-sensitive claims.
         return $udb3Token->jwtToken()->validate(new ValidationData());
     }
 
