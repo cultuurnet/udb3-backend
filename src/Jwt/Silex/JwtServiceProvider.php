@@ -36,7 +36,7 @@ class JwtServiceProvider implements ServiceProviderInterface
                                 new Sha256(),
                                 new Key($options['auth0']['public_key']),
                                 $options['auth0']['required_claims'],
-                                $options['auht0']['valid_issuers']
+                                $options['auth0']['valid_issuers']
                             )
                         );
                     }
