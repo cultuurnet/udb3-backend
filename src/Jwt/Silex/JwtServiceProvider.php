@@ -52,14 +52,16 @@ class JwtServiceProvider implements ServiceProviderInterface
                                 $validationData($options['uitid']['validation'] ?? []),
                                 new Sha256(),
                                 new Key($options['uitid']['public_key']),
-                                $options['uitid']['required_claims']
+                                $options['uitid']['required_claims'],
+                                $options['uitid']['valid_issuers']
                             ),
                             new JwtDecoderService(
                                 new Parser(),
                                 $validationData($options['auth0']['validation'] ?? []),
                                 new Sha256(),
                                 new Key($options['auth0']['public_key']),
-                                $options['auth0']['required_claims']
+                                $options['auth0']['required_claims'],
+                                $options['auht0']['valid_issuers']
                             )
                         );
                     }

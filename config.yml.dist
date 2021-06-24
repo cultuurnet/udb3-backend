@@ -114,12 +114,17 @@ jwt:
         file: public.pem
     validation:
       iss: http://culudb-jwt-provider.dev
+    valid_issuers:
+      - http://culudb-jwt-provider.dev
   auth0:
     keys:
       public:
         file: public-auth0.pem
     validation:
       iss: https://publiq-acc.eu.auth0.com/
+    valid_issuers:
+      - https://publiq-acc.eu.auth0.com/
+      - https://account-acc.uitid.be/
     domain: publiq-acc.eu.auth0.com
     client_id:
     client_secret:
