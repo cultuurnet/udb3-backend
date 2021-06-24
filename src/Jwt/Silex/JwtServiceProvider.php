@@ -22,7 +22,7 @@ class JwtServiceProvider implements ServiceProviderInterface
         $app['security.authentication_listener.factory.jwt'] = $app->protect(
             function ($name, $options) use ($app) {
                 $app['security.token_decoder.' . $name . '.jwt'] = $app->share(
-                    function (Application $app) use ($options, $validationData) {
+                    function () use ($options) {
                         return new FallbackJwtDecoder(
                             new JwtDecoderService(
                                 new Parser(),
