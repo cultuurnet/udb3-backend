@@ -15,26 +15,26 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
     /**
      * @var JwtValidatorInterface
      */
-    private $uitIdJwtValidator;
+    private $v1JwtValidator;
 
     /**
      * @var JwtValidatorInterface
      */
-    private $auth0JwtValidator;
+    private $v2JwtValidator;
 
     /**
      * @var string
      */
-    private $jwtProviderClientId;
+    private $v2JwtProviderAuth0ClientId;
 
     public function __construct(
-        JwtValidatorInterface $uitIdJwtValidator,
-        JwtValidatorInterface $auth0JwtValidator,
-        string $jwtProviderClientId
+        JwtValidatorInterface $v1JwtValidator,
+        JwtValidatorInterface $v2JwtValidator,
+        string $v2JwtValidatorAuth0ClientId
     ) {
-        $this->uitIdJwtValidator = $uitIdJwtValidator;
-        $this->auth0JwtValidator = $auth0JwtValidator;
-        $this->jwtProviderClientId = $jwtProviderClientId;
+        $this->v1JwtValidator = $v1JwtValidator;
+        $this->v2JwtValidator = $v2JwtValidator;
+        $this->v2JwtProviderAuth0ClientId = $v2JwtValidatorAuth0ClientId;
     }
 
     /**
@@ -59,16 +59,16 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $jwt = $token->getCredentials();
 
-        $validUiTIDSignature = $this->uitIdJwtValidator->verifySignature($jwt);
-        $validAuth0Signature = $this->auth0JwtValidator->verifySignature($jwt);
+        $validV1Signature = $this->v1JwtValidator->verifySignature($jwt);
+        $validV2Signature = $this->v2JwtValidator->verifySignature($jwt);
 
-        if (!$validUiTIDSignature && !$validAuth0Signature) {
+        if (!$validV1Signature && !$validV2Signature) {
             throw new AuthenticationException(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );
         }
 
-        $validator = $validUiTIDSignature ? $this->uitIdJwtValidator : $this->auth0JwtValidator;
+        $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
 
         if (!$validator->validateTimeSensitiveClaims($jwt)) {
             throw new AuthenticationException(
@@ -88,23 +88,23 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        if ($validAuth0Signature) {
-            $this->validateAuth0Token($jwt);
+        if ($validV2Signature) {
+            $this->validateV2Token($jwt);
         }
 
         return new JwtUserToken($jwt, true);
     }
 
-    private function validateAuth0Token(Udb3Token $jwt): void
+    private function validateV2Token(Udb3Token $jwt): void
     {
         if ($jwt->isAccessToken()) {
-            $this->validateAuth0AccessToken($jwt);
+            $this->validateV2AccessToken($jwt);
         } else {
-            $this->validateAuth0IdToken($jwt);
+            $this->validateV2IdToken($jwt);
         }
     }
 
-    private function validateAuth0AccessToken(Udb3Token $jwt): void
+    private function validateV2AccessToken(Udb3Token $jwt): void
     {
         if (!$jwt->canUseEntryAPI()) {
             throw new AuthenticationException(
@@ -114,9 +114,9 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
         }
     }
 
-    private function validateAuth0IdToken(Udb3Token $jwt): void
+    private function validateV2IdToken(Udb3Token $jwt): void
     {
-        if (!$jwt->audienceContains($this->jwtProviderClientId)) {
+        if (!$jwt->audienceContains($this->v2JwtProviderAuth0ClientId)) {
             throw new AuthenticationException(
                 'Only legacy id tokens are supported. Please use an access token instead.'
             );

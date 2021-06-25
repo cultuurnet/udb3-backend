@@ -25,17 +25,17 @@ class JwtServiceProvider implements ServiceProviderInterface
                         return new JwtAuthenticationProvider(
                             new JwtValidator(
                                 new Sha256(),
-                                new Key($options['uitid']['public_key']),
-                                $options['uitid']['required_claims'],
-                                $options['uitid']['valid_issuers']
+                                new Key($options['v1']['public_key']),
+                                $options['v1']['required_claims'],
+                                $options['v1']['valid_issuers']
                             ),
                             new JwtValidator(
                                 new Sha256(),
-                                new Key($options['auth0']['public_key']),
-                                $options['auth0']['required_claims'],
-                                $options['auth0']['valid_issuers']
+                                new Key($options['v2']['public_key']),
+                                $options['v2']['required_claims'],
+                                $options['v2']['valid_issuers']
                             ),
-                            $app['config']['jwt']['auth0']['jwt_provider_client_id']
+                            $app['config']['jwt']['v2']['jwt_provider_client_id']
                         );
                     }
                 );

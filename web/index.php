@@ -74,19 +74,19 @@ $app['security.firewalls'] = array(
     'secured' => array(
         'pattern' => '^.*$',
         'jwt' => [
-            'uitid' => [
-                'valid_issuers' => $app['config']['jwt']['uitid']['valid_issuers'],
+            'v1' => [
+                'valid_issuers' => $app['config']['jwt']['v1']['valid_issuers'],
                 'required_claims' => [
                     'uid',
                 ],
-                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['uitid']['keys']['public']['file']
+                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v1']['keys']['public']['file']
             ],
-            'auth0' => [
-                'valid_issuers' => $app['config']['jwt']['auth0']['valid_issuers'],
+            'v2' => [
+                'valid_issuers' => $app['config']['jwt']['v2']['valid_issuers'],
                 'required_claims' => [
                     'sub',
                 ],
-                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['auth0']['keys']['public']['file']
+                'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v2']['keys']['public']['file']
             ],
         ],
         'stateless' => true,

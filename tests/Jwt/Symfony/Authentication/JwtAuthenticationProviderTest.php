@@ -18,12 +18,12 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @var JwtValidatorInterface|MockObject
      */
-    private $uitIdValidator;
+    private $v1JwtValidator;
 
     /**
      * @var JwtValidatorInterface|MockObject
      */
-    private $auth0Validator;
+    private $v2JwtValidator;
 
     /**
      * @var JwtAuthenticationProvider
@@ -32,12 +32,12 @@ class JwtAuthenticationProviderTest extends TestCase
 
     public function setUp()
     {
-        $this->uitIdValidator = $this->createMock(JwtValidatorInterface::class);
-        $this->auth0Validator = $this->createMock(JwtValidatorInterface::class);
+        $this->v1JwtValidator = $this->createMock(JwtValidatorInterface::class);
+        $this->v2JwtValidator = $this->createMock(JwtValidatorInterface::class);
 
         $this->authenticationProvider = new JwtAuthenticationProvider(
-            $this->uitIdValidator,
-            $this->auth0Validator,
+            $this->v1JwtValidator,
+            $this->v2JwtValidator,
             'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'
         );
     }
@@ -85,12 +85,12 @@ class JwtAuthenticationProviderTest extends TestCase
         $jwt = new Udb3Token(new Jwt());
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
@@ -111,17 +111,17 @@ class JwtAuthenticationProviderTest extends TestCase
         $jwt = new Udb3Token(new Jwt());
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(false);
@@ -142,22 +142,22 @@ class JwtAuthenticationProviderTest extends TestCase
         $jwt = new Udb3Token(new Jwt());
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateRequiredClaims')
             ->with($jwt)
             ->willReturn(false);
@@ -178,27 +178,27 @@ class JwtAuthenticationProviderTest extends TestCase
         $jwt = new Udb3Token(new Jwt());
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateRequiredClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(false);
@@ -214,7 +214,7 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_the_azp_claim_is_missing_from_auth0_token_and_it_is_not_from_the_jwt_provider(): void
+    public function it_throws_if_the_azp_claim_is_missing_from_v2_token_and_it_is_not_from_the_jwt_provider(): void
     {
         $jwt = new Udb3Token(
             new Jwt(
@@ -227,27 +227,27 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('validateRequiredClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
@@ -263,7 +263,7 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_throw_for_missing_azp_or_aud_claim_in_uitid_tokens(): void
+    public function it_does_not_throw_for_missing_azp_or_aud_claim_in_v1_tokens(): void
     {
         $jwt = new Udb3Token(
             new Jwt(
@@ -276,27 +276,27 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateRequiredClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
@@ -321,27 +321,27 @@ class JwtAuthenticationProviderTest extends TestCase
         );
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('validateRequiredClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
@@ -370,27 +370,27 @@ class JwtAuthenticationProviderTest extends TestCase
         );
         $token = new JwtUserToken($jwt);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->auth0Validator->expects($this->once())
+        $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
             ->willReturn(false);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateRequiredClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->v1JwtValidator->expects($this->once())
             ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
