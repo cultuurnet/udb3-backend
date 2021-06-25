@@ -211,7 +211,59 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->authenticationProvider->authenticate($token);
     }
 
-    public function it_throws_if_the_azp_claim_is_missing_and_the_token_is_not_from_the_jwt_provider(): void
+    /**
+     * @test
+     */
+    public function it_throws_if_the_azp_claim_is_missing_from_auth0_token_and_it_is_not_from_the_jwt_provider(): void
+    {
+        $jwt = new Udb3Token(
+            new Jwt(
+                ['alg' => 'none'],
+                [
+                    'aud' => new Basic('aud', 'bla'),
+                ]
+            )
+        );
+
+        $token = new JwtUserToken($jwt);
+
+        $this->uitIdValidator->expects($this->once())
+            ->method('verifySignature')
+            ->with($jwt)
+            ->willReturn(false);
+
+        $this->auth0Validator->expects($this->once())
+            ->method('verifySignature')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->auth0Validator->expects($this->once())
+            ->method('validateTimeSensitiveClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->auth0Validator->expects($this->once())
+            ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->auth0Validator->expects($this->once())
+            ->method('validateIssuer')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage(
+            'Only legacy id tokens are supported. Please use an access token instead.'
+        );
+
+        $this->authenticationProvider->authenticate($token);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_throw_for_missing_azp_or_aud_claim_in_uitid_tokens(): void
     {
         $jwt = new Udb3Token(
             new Jwt(
@@ -249,12 +301,8 @@ class JwtAuthenticationProviderTest extends TestCase
             ->with($jwt)
             ->willReturn(true);
 
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage(
-            'Only legacy id tokens are supported. Please use an access token instead.'
-        );
-
-        $this->authenticationProvider->authenticate($token);
+        $token = $this->authenticationProvider->authenticate($token);
+        $this->assertInstanceOf(JwtUserToken::class, $token);
     }
 
     /**
@@ -276,24 +324,24 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->uitIdValidator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
-            ->willReturn(true);
+            ->willReturn(false);
 
         $this->auth0Validator->expects($this->once())
             ->method('verifySignature')
             ->with($jwt)
-            ->willReturn(false);
+            ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->auth0Validator->expects($this->once())
             ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->auth0Validator->expects($this->once())
             ->method('validateRequiredClaims')
             ->with($jwt)
             ->willReturn(true);
 
-        $this->uitIdValidator->expects($this->once())
+        $this->auth0Validator->expects($this->once())
             ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);

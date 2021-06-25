@@ -88,16 +88,23 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        if ($jwt->isAccessToken()) {
-            $this->validateAccessToken($jwt);
-        } else {
-            $this->validateIdToken($jwt);
+        if ($validAuth0Signature) {
+            $this->validateAuth0Token($jwt);
         }
 
         return new JwtUserToken($jwt, true);
     }
 
-    private function validateAccessToken(Udb3Token $jwt): void
+    private function validateAuth0Token(Udb3Token $jwt): void
+    {
+        if ($jwt->isAccessToken()) {
+            $this->validateAuth0AccessToken($jwt);
+        } else {
+            $this->validateAuth0IdToken($jwt);
+        }
+    }
+
+    private function validateAuth0AccessToken(Udb3Token $jwt): void
     {
         if (!$jwt->canUseEntryAPI()) {
             throw new AuthenticationException(
@@ -107,7 +114,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
         }
     }
 
-    private function validateIdToken(Udb3Token $jwt): void
+    private function validateAuth0IdToken(Udb3Token $jwt): void
     {
         if (!$jwt->audienceContains($this->jwtProviderClientId)) {
             throw new AuthenticationException(
