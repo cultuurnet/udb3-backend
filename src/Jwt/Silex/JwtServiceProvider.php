@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Jwt\Silex;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
-use CultuurNet\UDB3\Jwt\FallbackJwtValidator;
 use CultuurNet\UDB3\Jwt\JwtValidator;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
