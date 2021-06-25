@@ -42,13 +42,13 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
         }
     }
 
-    public function validateData(Udb3Token $jwt): bool
+    public function validateTimeSensitiveClaims(Udb3Token $jwt): bool
     {
-        if ($this->primary->validateData($jwt)) {
+        if ($this->primary->validateTimeSensitiveClaims($jwt)) {
             return true;
         }
 
-        return $this->fallbackDecoder->validateData($jwt);
+        return $this->fallbackDecoder->validateTimeSensitiveClaims($jwt);
     }
 
     public function validateRequiredClaims(Udb3Token $udb3Token): bool
@@ -58,6 +58,11 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
         }
 
         return $this->fallbackDecoder->validateRequiredClaims($udb3Token);
+    }
+
+    public function validateIssuer(Udb3Token $udb3Token): bool
+    {
+        return $this->primary->validateIssuer($udb3Token) || $this->fallbackDecoder->validateIssuer($udb3Token);
     }
 
     public function verifySignature(Udb3Token $udb3Token): bool

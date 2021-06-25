@@ -18,11 +18,6 @@ class JwtDecoderService implements JwtDecoderServiceInterface
     private $parser;
 
     /**
-     * @var ValidationData
-     */
-    private $validationData;
-
-    /**
      * @var Signer
      */
     private $signer;
@@ -38,24 +33,36 @@ class JwtDecoderService implements JwtDecoderServiceInterface
     private $requiredClaims;
 
     /**
+     * @var string[]
+     */
+    private $validIssuers;
+
+    /**
      * @param string[] $requiredClaims
+     * @param string[] $validIssuers
      */
     public function __construct(
         Parser $parser,
-        ValidationData $validationData,
         Signer $signer,
         Key $publicKey,
-        array $requiredClaims = []
+        array $requiredClaims = [],
+        array $validIssuers = []
     ) {
         $this->parser = $parser;
-        $this->validationData = $validationData;
         $this->signer = $signer;
         $this->publicKey = $publicKey;
         $this->requiredClaims = $requiredClaims;
+        $this->validIssuers = $validIssuers;
 
         if (count($requiredClaims) !== count(array_filter($this->requiredClaims, 'is_string'))) {
             throw new \InvalidArgumentException(
                 'All required claims should be strings.'
+            );
+        }
+
+        if (count($validIssuers) !== count(array_filter($this->validIssuers, 'is_string'))) {
+            throw new \InvalidArgumentException(
+                'All valid issuers should be strings.'
             );
         }
     }
@@ -70,9 +77,17 @@ class JwtDecoderService implements JwtDecoderServiceInterface
         }
     }
 
-    public function validateData(Udb3Token $udb3Token): bool
+    /**
+     * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
+     * the past.
+     */
+    public function validateTimeSensitiveClaims(Udb3Token $udb3Token): bool
     {
-        return $udb3Token->jwtToken()->validate($this->validationData);
+        // Use the built-in validation provided by Lcobucci without any extra validation data.
+        // This will automatically validate the time-sensitive claims.
+        // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
+        // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
+        return $udb3Token->jwtToken()->validate(new ValidationData(null, 30));
     }
 
     public function validateRequiredClaims(Udb3Token $udb3Token): bool
@@ -84,6 +99,18 @@ class JwtDecoderService implements JwtDecoderServiceInterface
         }
 
         return true;
+    }
+
+    public function validateIssuer(Udb3Token $udb3Token): bool
+    {
+        $jwt = $udb3Token->jwtToken();
+
+        if (!$jwt->hasClaim('iss')) {
+            return false;
+        }
+
+        $issuer = $jwt->getClaim('iss');
+        return in_array($issuer, $this->validIssuers, true);
     }
 
     public function verifySignature(Udb3Token $udb3Token): bool

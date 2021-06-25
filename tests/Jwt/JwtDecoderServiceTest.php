@@ -16,7 +16,6 @@ use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token as Jwt;
 use Lcobucci\JWT\Token;
-use Lcobucci\JWT\ValidationData;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -66,11 +65,6 @@ class JwtDecoderServiceTest extends TestCase
      * @var Parser
      */
     private $parser;
-
-    /**
-     * @var ValidationData
-     */
-    private $validationData;
 
     /**
      * @var Sha256
@@ -143,9 +137,6 @@ class JwtDecoderServiceTest extends TestCase
 
         $this->parser = new Parser();
 
-        $this->validationData = new ValidationData();
-        $this->validationData->setIssuer('http://culudb-jwt-provider.dev');
-
         $this->signer = new Sha256();
         $this->publicKey = new Key($this->publicKeyString);
 
@@ -157,10 +148,10 @@ class JwtDecoderServiceTest extends TestCase
 
         $this->decoderService = new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey,
-            $this->requiredCLaims
+            $this->requiredCLaims,
+            ['iss1', 'http://culudb-jwt-provider.dev', 'iss2']
         );
     }
 
@@ -183,7 +174,7 @@ class JwtDecoderServiceTest extends TestCase
     {
         // Test token should have been expired.
         $this->assertFalse(
-            $this->decoderService->validateData($this->token)
+            $this->decoderService->validateTimeSensitiveClaims($this->token)
         );
 
         // Mock a later expiration date.
@@ -200,7 +191,7 @@ class JwtDecoderServiceTest extends TestCase
         );
 
         $this->assertTrue(
-            $this->decoderService->validateData(new Udb3Token($unexpiredToken))
+            $this->decoderService->validateTimeSensitiveClaims(new Udb3Token($unexpiredToken))
         );
 
         // Change the iss claim of the unexpired token, which should cause
@@ -215,7 +206,7 @@ class JwtDecoderServiceTest extends TestCase
         );
 
         $this->assertFalse(
-            $this->decoderService->validateData(new Udb3Token($unexpiredTokenWithDifferentIssuer))
+            $this->decoderService->validateTimeSensitiveClaims(new Udb3Token($unexpiredTokenWithDifferentIssuer))
         );
     }
 
@@ -226,7 +217,6 @@ class JwtDecoderServiceTest extends TestCase
     {
         $decoderWithoutRequiredClaims = new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey
         );
@@ -248,6 +238,25 @@ class JwtDecoderServiceTest extends TestCase
         $this->assertTrue($decoderWithoutRequiredClaims->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
         $this->assertTrue($this->decoderService->validateRequiredClaims($this->token));
         $this->assertFalse($this->decoderService->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_validate_that_a_token_has_a_valid_issuer_from_a_list_of_issuers(): void
+    {
+        // Mock a missing iss claim.
+        $manipulatedClaims = $this->tokenClaimsAsValueObjects;
+        unset($manipulatedClaims['iss']);
+        $tokenWithoutIss = new Token(
+            $this->tokenHeaders,
+            $manipulatedClaims,
+            $this->signature,
+            $this->payload
+        );
+
+        $this->assertTrue($this->decoderService->validateIssuer($this->token));
+        $this->assertFalse($this->decoderService->validateIssuer(new Udb3Token($tokenWithoutIss)));
     }
 
     /**
@@ -300,7 +309,6 @@ class JwtDecoderServiceTest extends TestCase
 
         new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey,
             $required
@@ -316,7 +324,6 @@ class JwtDecoderServiceTest extends TestCase
 
         $this->decoderService = new JwtDecoderService(
             $this->parser,
-            $this->validationData,
             $this->signer,
             $this->publicKey
         );

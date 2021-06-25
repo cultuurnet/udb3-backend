@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Jwt\JwtDecoderService;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\ValidationData;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -21,45 +20,22 @@ class JwtServiceProvider implements ServiceProviderInterface
     {
         $app['security.authentication_listener.factory.jwt'] = $app->protect(
             function ($name, $options) use ($app) {
-                $validationData = function (array $claims) {
-                    $validationData = new ValidationData();
-                    foreach ($claims as $claim => $value) {
-                        switch ($claim) {
-                            case 'jti':
-                                $validationData->setId($value);
-                                break;
-                            case 'iss':
-                                $validationData->setIssuer($value);
-                                break;
-                            case 'aud':
-                                $validationData->setAudience($value);
-                                break;
-                            case 'sub':
-                                $validationData->setSubject($value);
-                                break;
-                            case 'current_time':
-                                $validationData->setCurrentTime($value);
-                                break;
-                        }
-                    }
-                    return $validationData;
-                };
                 $app['security.token_decoder.' . $name . '.jwt'] = $app->share(
-                    function (Application $app) use ($options, $validationData) {
+                    function () use ($options) {
                         return new FallbackJwtDecoder(
                             new JwtDecoderService(
                                 new Parser(),
-                                $validationData($options['uitid']['validation'] ?? []),
                                 new Sha256(),
                                 new Key($options['uitid']['public_key']),
-                                $options['uitid']['required_claims']
+                                $options['uitid']['required_claims'],
+                                $options['uitid']['valid_issuers']
                             ),
                             new JwtDecoderService(
                                 new Parser(),
-                                $validationData($options['auth0']['validation'] ?? []),
                                 new Sha256(),
                                 new Key($options['auth0']['public_key']),
-                                $options['auth0']['required_claims']
+                                $options['auth0']['required_claims'],
+                                $options['auth0']['valid_issuers']
                             )
                         );
                     }

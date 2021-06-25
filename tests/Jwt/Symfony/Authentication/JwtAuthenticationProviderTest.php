@@ -105,13 +105,13 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(false);
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            'Token claims validation failed. This most likely means the token is expired.'
+            'Token expired (or not yet usable).'
         );
 
         $this->authenticationProvider->authenticate($token);
@@ -131,7 +131,7 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
@@ -151,6 +151,39 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_an_exception_when_the_jwt_has_an_invalid_claim(): void
+    {
+        $jwt = new Udb3Token(new Jwt());
+        $token = new JwtUserToken($jwt);
+
+        $this->decoderService->expects($this->once())
+            ->method('verifySignature')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateTimeSensitiveClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateIssuer')
+            ->with($jwt)
+            ->willReturn(false);
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage(
+            'Token is not issued by a valid issuer.'
+        );
+
+        $this->authenticationProvider->authenticate($token);
+    }
+
     public function it_throws_if_the_azp_claim_is_missing_and_the_token_is_not_from_the_jwt_provider(): void
     {
         $jwt = new Udb3Token(
@@ -161,6 +194,7 @@ class JwtAuthenticationProviderTest extends TestCase
                 ]
             )
         );
+
         $token = new JwtUserToken($jwt);
 
         $this->decoderService->expects($this->once())
@@ -169,12 +203,17 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
             ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
 
@@ -208,12 +247,17 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
             ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
 
@@ -247,12 +291,17 @@ class JwtAuthenticationProviderTest extends TestCase
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
-            ->method('validateData')
+            ->method('validateTimeSensitiveClaims')
             ->with($jwt)
             ->willReturn(true);
 
         $this->decoderService->expects($this->once())
             ->method('validateRequiredClaims')
+            ->with($jwt)
+            ->willReturn(true);
+
+        $this->decoderService->expects($this->once())
+            ->method('validateIssuer')
             ->with($jwt)
             ->willReturn(true);
 

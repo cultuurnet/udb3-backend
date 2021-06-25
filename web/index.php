@@ -75,14 +75,14 @@ $app['security.firewalls'] = array(
         'pattern' => '^.*$',
         'jwt' => [
             'uitid' => [
-                'validation' => $app['config']['jwt']['uitid']['validation'],
+                'valid_issuers' => $app['config']['jwt']['uitid']['valid_issuers'],
                 'required_claims' => [
                     'uid',
                 ],
                 'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['uitid']['keys']['public']['file']
             ],
             'auth0' => [
-                'validation' => $app['config']['jwt']['auth0']['validation'],
+                'valid_issuers' => $app['config']['jwt']['auth0']['valid_issuers'],
                 'required_claims' => [
                     'sub',
                 ],
