@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\ValidationData;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class JwtDecoderService implements JwtDecoderServiceInterface
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
-
     /**
      * @var Signer
      */
@@ -42,13 +35,11 @@ class JwtDecoderService implements JwtDecoderServiceInterface
      * @param string[] $validIssuers
      */
     public function __construct(
-        Parser $parser,
         Signer $signer,
         Key $publicKey,
         array $requiredClaims = [],
         array $validIssuers = []
     ) {
-        $this->parser = $parser;
         $this->signer = $signer;
         $this->publicKey = $publicKey;
         $this->requiredClaims = $requiredClaims;
@@ -64,16 +55,6 @@ class JwtDecoderService implements JwtDecoderServiceInterface
             throw new \InvalidArgumentException(
                 'All valid issuers should be strings.'
             );
-        }
-    }
-
-    public function parse(StringLiteral $tokenString): Udb3Token
-    {
-        try {
-            $token = $this->parser->parse($tokenString->toNative());
-            return new Udb3Token($token);
-        } catch (\InvalidArgumentException $e) {
-            throw new JwtParserException($e);
         }
     }
 

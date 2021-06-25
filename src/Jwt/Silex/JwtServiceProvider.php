@@ -24,14 +24,12 @@ class JwtServiceProvider implements ServiceProviderInterface
                     function () use ($options) {
                         return new FallbackJwtDecoder(
                             new JwtDecoderService(
-                                new Parser(),
                                 new Sha256(),
                                 new Key($options['uitid']['public_key']),
                                 $options['uitid']['required_claims'],
                                 $options['uitid']['valid_issuers']
                             ),
                             new JwtDecoderService(
-                                new Parser(),
                                 new Sha256(),
                                 new Key($options['auth0']['public_key']),
                                 $options['auth0']['required_claims'],

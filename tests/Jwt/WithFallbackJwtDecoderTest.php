@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use Exception;
 use Lcobucci\JWT\Token;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -56,41 +55,6 @@ class WithFallbackJwtDecoderTest extends TestCase
         );
 
         $this->token = new Udb3Token(new Token());
-    }
-
-    /**
-     * @test
-     */
-    public function it_uses_primary_decoder_for_parsing(): void
-    {
-        $this->primaryDecoder->expects($this->once())
-            ->method('parse')
-            ->with($this->tokenString)
-            ->willReturn($this->token);
-
-        $this->secondaryDecoder->expects($this->never())
-            ->method('parse');
-
-        $result = $this->withFallBackJwtDecoder->parse($this->tokenString);
-        $this->assertEquals($result, $this->token);
-    }
-
-    /**
-     * @test
-     */
-    public function it_fall_backs_to_secondary_decoder(): void
-    {
-        $this->primaryDecoder->method('parse')
-            ->willThrowException(new JwtParserException(new Exception()));
-
-        $this->secondaryDecoder->expects($this->once())
-            ->method('parse')
-            ->with($this->tokenString)
-            ->willReturn($this->token);
-
-        $result = $this->withFallBackJwtDecoder->parse($this->tokenString);
-
-        $this->assertEquals($result, $this->token);
     }
 
     /**

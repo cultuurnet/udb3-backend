@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use ValueObjects\StringLiteral\StringLiteral;
-
 /**
  * Class FallbackJwtDecoder
  * @package CultuurNet\UDB3\Jwt
@@ -31,15 +29,6 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
     ) {
         $this->primary = $jwtDecoderService;
         $this->fallbackDecoder = $newDecoderService;
-    }
-
-    public function parse(StringLiteral $tokenString): Udb3Token
-    {
-        try {
-            return $this->primary->parse($tokenString);
-        } catch (JwtParserException $e) {
-            return $this->fallbackDecoder->parse($tokenString);
-        }
     }
 
     public function validateTimeSensitiveClaims(Udb3Token $jwt): bool

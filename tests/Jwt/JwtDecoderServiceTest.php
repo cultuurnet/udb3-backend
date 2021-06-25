@@ -17,7 +17,6 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token as Jwt;
 use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class JwtDecoderServiceTest extends TestCase
 {
@@ -147,24 +146,11 @@ class JwtDecoderServiceTest extends TestCase
         ];
 
         $this->decoderService = new JwtDecoderService(
-            $this->parser,
             $this->signer,
             $this->publicKey,
             $this->requiredCLaims,
             ['iss1', 'http://culudb-jwt-provider.dev', 'iss2']
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_parse_a_jwt_string_into_a_token_object_and_read_its_contents()
-    {
-        $actualToken = $this->decoderService->parse(
-            new StringLiteral($this->tokenString)
-        );
-
-        $this->assertEquals($this->token, $actualToken);
     }
 
     /**
@@ -216,7 +202,6 @@ class JwtDecoderServiceTest extends TestCase
     public function it_can_validate_that_a_token_has_all_required_claims()
     {
         $decoderWithoutRequiredClaims = new JwtDecoderService(
-            $this->parser,
             $this->signer,
             $this->publicKey
         );
@@ -308,31 +293,9 @@ class JwtDecoderServiceTest extends TestCase
         $this->expectExceptionMessage('All required claims should be strings.');
 
         new JwtDecoderService(
-            $this->parser,
             $this->signer,
             $this->publicKey,
             $required
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_rethrows_a_jwtparserexception_when_parse_fails()
-    {
-        $this->expectException(JwtParserException::class);
-
-        $this->decoderService = new JwtDecoderService(
-            $this->parser,
-            $this->signer,
-            $this->publicKey
-        );
-
-        $this->tokenString = str_repeat(rtrim(
-            file_get_contents(__DIR__ . '/samples/token.txt'),
-            '\\r\\n'
-        ), 2);
-
-        $this->decoderService->parse(new StringLiteral($this->tokenString));
     }
 }
