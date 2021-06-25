@@ -59,8 +59,16 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $jwt = $token->getCredentials();
 
-        $validV1Signature = $this->v1JwtValidator->verifySignature($jwt);
-        $validV2Signature = $this->v2JwtValidator->verifySignature($jwt);
+        $validV1Signature = false;
+        $validV2Signature = false;
+
+        try {
+            $this->v1JwtValidator->verifySignature($jwt);
+            $validV1Signature = true;
+        } catch (AuthenticationException $e) {
+            $this->v2JwtValidator->verifySignature($jwt);
+            $validV2Signature = true;
+        }
 
         if (!$validV1Signature && !$validV2Signature) {
             throw new AuthenticationException(
@@ -70,23 +78,9 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        if (!$validator->validateTimeSensitiveClaims($jwt)) {
-            throw new AuthenticationException(
-                'Token expired (or not yet usable).'
-            );
-        }
-
-        if (!$validator->validateRequiredClaims($jwt)) {
-            throw new AuthenticationException(
-                'Token is missing one of its required claims.'
-            );
-        }
-
-        if (!$validator->validateIssuer($jwt)) {
-            throw new AuthenticationException(
-                'Token is not issued by a valid issuer.'
-            );
-        }
+        $validator->validateTimeSensitiveClaims($jwt);
+        $validator->validateRequiredClaims($jwt);
+        $validator->validateIssuer($jwt);
 
         if ($validV2Signature) {
             $this->validateV2Token($jwt);
