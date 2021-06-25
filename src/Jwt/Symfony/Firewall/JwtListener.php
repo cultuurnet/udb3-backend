@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use CultuurNet\UDB3\HttpFoundation\Response\ForbiddenResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\UnauthorizedResponse;
-use CultuurNet\UDB3\Jwt\JwtParserException;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
-use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
+use CultuurNet\UDB3\Jwt\Udb3Token;
+use InvalidArgumentException;
+use Lcobucci\JWT\Parser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class JwtListener implements ListenerInterface
 {
@@ -30,19 +30,18 @@ class JwtListener implements ListenerInterface
     private $authenticationManager;
 
     /**
-     * @var JwtDecoderServiceInterface
+     * @var Parser
      */
-    private $decoderService;
-
+    private $parser;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AuthenticationManagerInterface $authenticationManager,
-        JwtDecoderServiceInterface $decoderService
+        Parser $parser
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->authenticationManager = $authenticationManager;
-        $this->decoderService = $decoderService;
+        $this->parser = $parser;
     }
 
 
@@ -56,14 +55,14 @@ class JwtListener implements ListenerInterface
         }
 
         try {
-            $jwt = $this->decoderService->parse(new StringLiteral($jwtString));
-        } catch (JwtParserException $e) {
+            $jwt = $this->parser->parse($jwtString);
+        } catch (InvalidArgumentException $e) {
             $response = new UnauthorizedResponse('Could not parse the given JWT.');
             $event->setResponse($response);
             return;
         }
 
-        $token = new JwtUserToken($jwt);
+        $token = new JwtUserToken(new Udb3Token($jwt));
 
         try {
             $authenticatedToken = $this->authenticationManager->authenticate($token);

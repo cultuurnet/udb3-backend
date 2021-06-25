@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
-use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
 use CultuurNet\UDB3\Jwt\Udb3Token;
+use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class JwtListenerTest extends TestCase
 {
@@ -31,9 +30,9 @@ class JwtListenerTest extends TestCase
     private $authenticationManager;
 
     /**
-     * @var JwtDecoderServiceInterface|MockObject
+     * @var Parser|MockObject
      */
-    private $jwtDecoderService;
+    private $parser;
 
     /**
      * @var JwtListener
@@ -49,12 +48,12 @@ class JwtListenerTest extends TestCase
     {
         $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
         $this->authenticationManager = $this->createMock(AuthenticationManagerInterface::class);
-        $this->jwtDecoderService = $this->createMock(JwtDecoderServiceInterface::class);
+        $this->parser = $this->createMock(Parser::class);
 
         $this->listener = new JwtListener(
             $this->tokenStorage,
             $this->authenticationManager,
-            $this->jwtDecoderService
+            $this->parser
         );
 
         $this->getResponseEvent = $this->createMock(GetResponseEvent::class);
@@ -71,7 +70,7 @@ class JwtListenerTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $this->jwtDecoderService->expects($this->never())
+        $this->parser->expects($this->never())
             ->method('parse');
 
         $this->authenticationManager->expects($this->never())
@@ -105,17 +104,15 @@ class JwtListenerTest extends TestCase
     {
         $tokenString = 'headers.payload.signature';
 
-        $jwt = new Udb3Token(
-            new Jwt(
-                ['alg' => 'none'],
-                [],
-                null,
-                ['headers', 'payload']
-            )
+        $jwt = new Jwt(
+            ['alg' => 'none'],
+            [],
+            null,
+            ['headers', 'payload']
         );
 
-        $token = new JwtUserToken($jwt);
-        $authenticatedToken = new JwtUserToken($jwt, true);
+        $token = new JwtUserToken(new Udb3Token($jwt));
+        $authenticatedToken = new JwtUserToken(new Udb3Token($jwt), true);
 
         $request = new Request(
             [],
@@ -131,11 +128,9 @@ class JwtListenerTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $this->jwtDecoderService->expects($this->once())
+        $this->parser->expects($this->once())
             ->method('parse')
-            ->with(
-                new StringLiteral($tokenString)
-            )
+            ->with($tokenString)
             ->willReturn($jwt);
 
         $this->authenticationManager->expects($this->once())
@@ -157,16 +152,14 @@ class JwtListenerTest extends TestCase
     {
         $tokenString = 'headers.payload.signature';
 
-        $jwt = new Udb3Token(
-            new Jwt(
-                ['alg' => 'none'],
-                [],
-                null,
-                ['headers', 'payload']
-            )
+        $jwt = new Jwt(
+            ['alg' => 'none'],
+            [],
+            null,
+            ['headers', 'payload']
         );
 
-        $token = new JwtUserToken($jwt);
+        $token = new JwtUserToken(new Udb3Token($jwt));
 
         $request = new Request(
             [],
@@ -182,11 +175,9 @@ class JwtListenerTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $this->jwtDecoderService->expects($this->once())
+        $this->parser->expects($this->once())
             ->method('parse')
-            ->with(
-                new StringLiteral($tokenString)
-            )
+            ->with($tokenString)
             ->willReturn($jwt);
 
         $authenticationException = new AuthenticationException(

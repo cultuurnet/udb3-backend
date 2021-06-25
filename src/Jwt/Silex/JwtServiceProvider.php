@@ -53,11 +53,11 @@ class JwtServiceProvider implements ServiceProviderInterface
 
                 // define the authentication listener object
                 $app['security.authentication_listener.' . $name . '.jwt'] = $app->share(
-                    function () use ($app, $name) {
+                    function () use ($app) {
                         return new JwtListener(
                             $app['security.token_storage'],
                             $app['security.authentication_manager'],
-                            $app['security.token_decoder.' . $name . '.jwt']
+                            new Parser()
                         );
                     }
                 );
