@@ -20,9 +20,10 @@ class JwtServiceProvider implements ServiceProviderInterface
     {
         $app['security.authentication_listener.factory.jwt'] = $app->protect(
             function ($name, $options) use ($app) {
-                $app['security.token_validator.' . $name . '.jwt'] = $app->share(
-                    function () use ($options) {
-                        return new FallbackJwtValidator(
+                // define the authentication provider object
+                $app['security.authentication_provider.' . $name . '.jwt'] = $app->share(
+                    function () use ($app, $options) {
+                        return new JwtAuthenticationProvider(
                             new JwtValidator(
                                 new Sha256(),
                                 new Key($options['uitid']['public_key']),
@@ -34,16 +35,7 @@ class JwtServiceProvider implements ServiceProviderInterface
                                 new Key($options['auth0']['public_key']),
                                 $options['auth0']['required_claims'],
                                 $options['auth0']['valid_issuers']
-                            )
-                        );
-                    }
-                );
-
-                // define the authentication provider object
-                $app['security.authentication_provider.' . $name . '.jwt'] = $app->share(
-                    function () use ($app, $name) {
-                        return new JwtAuthenticationProvider(
-                            $app['security.token_validator.' . $name . '.jwt'],
+                            ),
                             $app['config']['jwt']['auth0']['jwt_provider_client_id']
                         );
                     }

@@ -15,7 +15,12 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
     /**
      * @var JwtValidatorInterface
      */
-    private $jwtValidator;
+    private $uitIdJwtValidator;
+
+    /**
+     * @var JwtValidatorInterface
+     */
+    private $auth0JwtValidator;
 
     /**
      * @var string
@@ -23,10 +28,12 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
     private $jwtProviderClientId;
 
     public function __construct(
-        JwtValidatorInterface $jwtValidator,
+        JwtValidatorInterface $uitIdJwtValidator,
+        JwtValidatorInterface $auth0JwtValidator,
         string $jwtProviderClientId
     ) {
-        $this->jwtValidator = $jwtValidator;
+        $this->uitIdJwtValidator = $uitIdJwtValidator;
+        $this->auth0JwtValidator = $auth0JwtValidator;
         $this->jwtProviderClientId = $jwtProviderClientId;
     }
 
@@ -52,25 +59,30 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $jwt = $token->getCredentials();
 
-        if (!$this->jwtValidator->verifySignature($jwt)) {
+        $validUiTIDSignature = $this->uitIdJwtValidator->verifySignature($jwt);
+        $validAuth0Signature = $this->auth0JwtValidator->verifySignature($jwt);
+
+        if (!$validUiTIDSignature && !$validAuth0Signature) {
             throw new AuthenticationException(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );
         }
 
-        if (!$this->jwtValidator->validateTimeSensitiveClaims($jwt)) {
+        $validator = $validUiTIDSignature ? $this->uitIdJwtValidator : $this->auth0JwtValidator;
+
+        if (!$validator->validateTimeSensitiveClaims($jwt)) {
             throw new AuthenticationException(
                 'Token expired (or not yet usable).'
             );
         }
 
-        if (!$this->jwtValidator->validateRequiredClaims($jwt)) {
+        if (!$validator->validateRequiredClaims($jwt)) {
             throw new AuthenticationException(
                 'Token is missing one of its required claims.'
             );
         }
 
-        if (!$this->jwtValidator->validateIssuer($jwt)) {
+        if (!$validator->validateIssuer($jwt)) {
             throw new AuthenticationException(
                 'Token is not issued by a valid issuer.'
             );
