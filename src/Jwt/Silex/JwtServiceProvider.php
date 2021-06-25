@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Jwt\Silex;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
-use CultuurNet\UDB3\Jwt\JwtValidator;
+use CultuurNet\UDB3\Jwt\JwtBaseValidator;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
@@ -23,13 +23,13 @@ class JwtServiceProvider implements ServiceProviderInterface
                 $app['security.authentication_provider.' . $name . '.jwt'] = $app->share(
                     function () use ($app, $options) {
                         return new JwtAuthenticationProvider(
-                            new JwtValidator(
+                            new JwtBaseValidator(
                                 new Sha256(),
                                 new Key($options['v1']['public_key']),
                                 $options['v1']['required_claims'],
                                 $options['v1']['valid_issuers']
                             ),
-                            new JwtValidator(
+                            new JwtBaseValidator(
                                 new Sha256(),
                                 new Key($options['v2']['public_key']),
                                 $options['v2']['required_claims'],

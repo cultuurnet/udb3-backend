@@ -10,7 +10,7 @@ use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class JwtValidator implements JwtValidatorInterface
+class JwtBaseValidator implements JwtValidatorInterface
 {
     /**
      * @var Signer

@@ -11,7 +11,7 @@ use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class JwtValidatorTest extends TestCase
+class JwtBaseValidatorTest extends TestCase
 {
     /**
      * @var Builder
@@ -34,7 +34,7 @@ class JwtValidatorTest extends TestCase
     private $privateKey;
 
     /**
-     * @var JwtValidator
+     * @var JwtBaseValidator
      */
     private $validator;
 
@@ -45,7 +45,7 @@ class JwtValidatorTest extends TestCase
         $this->publicKey = new Key(file_get_contents(__DIR__ . '/samples/public.pem'));
         $this->privateKey = new Key(file_get_contents(__DIR__ . '/samples/private.pem'), 'secret');
 
-        $this->validator = new JwtValidator(
+        $this->validator = new JwtBaseValidator(
             $this->signer,
             $this->publicKey,
             ['sub'],
