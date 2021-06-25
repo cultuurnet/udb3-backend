@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt;
 
 use Lcobucci\JWT\Builder;
@@ -132,4 +134,3 @@ class JwtV2ValidatorTest extends TestCase
         $this->v2Validator->validateClaims($tokenWithUnknownAud);
     }
 }
-
