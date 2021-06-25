@@ -60,7 +60,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         if (!$this->decoderService->validateTimeSensitiveClaims($jwt)) {
             throw new AuthenticationException(
-                'Token expired (or not yet usable yet).'
+                'Token expired (or not yet usable).'
             );
         }
 

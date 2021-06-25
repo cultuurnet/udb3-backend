@@ -111,7 +111,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
-            'Token expired (or not yet usable yet).'
+            'Token expired (or not yet usable).'
         );
 
         $this->authenticationProvider->authenticate($token);
