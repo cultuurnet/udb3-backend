@@ -17,5 +17,4 @@ interface JwtValidatorInterface
      * @throws AuthenticationException
      */
     public function validateClaims(Udb3Token $udb3Token): void;
-
 }

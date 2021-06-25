@@ -132,7 +132,7 @@ class JwtAuthenticationProviderTest extends TestCase
                 ['alg' => 'none'],
                 [
                     'azp' => new Basic('azp', 'bla'),
-                    'https://publiq.be/publiq-apis' =>  new Basic('https://publiq.be/publiq-apis', 'entry')
+                    'https://publiq.be/publiq-apis' =>  new Basic('https://publiq.be/publiq-apis', 'entry'),
                 ]
             )
         );
