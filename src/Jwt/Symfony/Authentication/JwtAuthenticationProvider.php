@@ -22,19 +22,12 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     private $v2JwtValidator;
 
-    /**
-     * @var string
-     */
-    private $v2JwtProviderAuth0ClientId;
-
     public function __construct(
         JwtValidator $v1JwtValidator,
-        JwtValidator $v2JwtValidator,
-        string $v2JwtValidatorAuth0ClientId
+        JwtValidator $v2JwtValidator
     ) {
         $this->v1JwtValidator = $v1JwtValidator;
         $this->v2JwtValidator = $v2JwtValidator;
-        $this->v2JwtProviderAuth0ClientId = $v2JwtValidatorAuth0ClientId;
     }
 
     /**
@@ -80,38 +73,6 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator->validateClaims($udb3Token->jwtToken());
 
-        if ($validV2Signature) {
-            $this->validateV2Token($udb3Token);
-        }
-
         return new JwtUserToken($udb3Token, true);
-    }
-
-    private function validateV2Token(Udb3Token $jwt): void
-    {
-        if ($jwt->isAccessToken()) {
-            $this->validateV2AccessToken($jwt);
-        } else {
-            $this->validateV2IdToken($jwt);
-        }
-    }
-
-    private function validateV2AccessToken(Udb3Token $jwt): void
-    {
-        if (!$jwt->canUseEntryAPI()) {
-            throw new AuthenticationException(
-                'The given token and its related client are not allowed to access EntryAPI.',
-                403
-            );
-        }
-    }
-
-    private function validateV2IdToken(Udb3Token $jwt): void
-    {
-        if (!$jwt->audienceContains($this->v2JwtProviderAuth0ClientId)) {
-            throw new AuthenticationException(
-                'Only legacy id tokens are supported. Please use an access token instead.'
-            );
-        }
     }
 }

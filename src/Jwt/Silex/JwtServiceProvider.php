@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Silex;
 
+use CultuurNet\UDB3\Jwt\JwtV2Validator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
 use CultuurNet\UDB3\Jwt\JwtBaseValidator;
@@ -29,13 +30,15 @@ class JwtServiceProvider implements ServiceProviderInterface
                                 $options['v1']['required_claims'],
                                 $options['v1']['valid_issuers']
                             ),
-                            new JwtBaseValidator(
-                                new Sha256(),
-                                new Key($options['v2']['public_key']),
-                                $options['v2']['required_claims'],
-                                $options['v2']['valid_issuers']
-                            ),
-                            $app['config']['jwt']['v2']['jwt_provider_client_id']
+                            new JwtV2Validator(
+                                new JwtBaseValidator(
+                                    new Sha256(),
+                                    new Key($options['v2']['public_key']),
+                                    $options['v2']['required_claims'],
+                                    $options['v2']['valid_issuers']
+                                ),
+                                $app['config']['jwt']['v2']['jwt_provider_client_id']
+                            )
                         );
                     }
                 );

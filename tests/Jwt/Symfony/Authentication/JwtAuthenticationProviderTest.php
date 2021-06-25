@@ -37,8 +37,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->authenticationProvider = new JwtAuthenticationProvider(
             $this->v1JwtValidator,
-            $this->v2JwtValidator,
-            'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'
+            $this->v2JwtValidator
         );
     }
 
@@ -151,80 +150,6 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->v2JwtValidator->expects($this->once())
             ->method('validateClaims')
             ->with($udb3Token->jwtToken());
-
-        $this->authenticationProvider->authenticate($token);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_if_the_azp_claim_is_missing_from_v2_token_and_it_is_not_from_the_jwt_provider(): void
-    {
-        $udb3Token = new Udb3Token(
-            new Jwt(
-                ['alg' => 'none'],
-                [
-                    'aud' => new Basic('aud', 'bla'),
-                ]
-            )
-        );
-
-        $token = new JwtUserToken($udb3Token);
-
-        $this->v1JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($udb3Token->jwtToken())
-            ->willThrowException(new AuthenticationException());
-
-        $this->v2JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($udb3Token->jwtToken());
-
-        $this->v2JwtValidator->expects($this->once())
-            ->method('validateClaims')
-            ->with($udb3Token->jwtToken());
-
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage(
-            'Only legacy id tokens are supported. Please use an access token instead.'
-        );
-
-        $this->authenticationProvider->authenticate($token);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_if_the_token_is_v2_and_an_access_token_but_is_not_usable_on_entry_api(): void
-    {
-        $udb3Token = new Udb3Token(
-            new Jwt(
-                ['alg' => 'none'],
-                [
-                    'azp' => new Basic('azp', 'Pwf7f2pSU3FsCCbGZz0gexx8NWOW9Hj9'),
-                    'https://publiq.be/publiq-apis' => new Basic('https://publiq.be/publiq-apis', 'ups'),
-                ]
-            )
-        );
-        $token = new JwtUserToken($udb3Token);
-
-        $this->v1JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($udb3Token->jwtToken())
-            ->willThrowException(new AuthenticationException());
-
-        $this->v2JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($udb3Token->jwtToken());
-
-        $this->v2JwtValidator->expects($this->once())
-            ->method('validateClaims')
-            ->with($udb3Token->jwtToken());
-
-        $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage(
-            'The given token and its related client are not allowed to access EntryAPI.'
-        );
 
         $this->authenticationProvider->authenticate($token);
     }
