@@ -78,9 +78,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        $validator->validateTimeSensitiveClaims($jwt);
-        $validator->validateRequiredClaims($jwt);
-        $validator->validateIssuer($jwt);
+        $validator->validateClaims($jwt);
 
         if ($validV2Signature) {
             $this->validateV2Token($jwt);

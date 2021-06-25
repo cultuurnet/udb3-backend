@@ -59,11 +59,18 @@ class JwtValidator implements JwtValidatorInterface
         }
     }
 
+    public function validateClaims(Udb3Token $udb3Token): void
+    {
+        $this->validateTimeSensitiveClaims($udb3Token);
+        $this->validateIssuer($udb3Token);
+        $this->validateRequiredClaims($udb3Token);
+    }
+
     /**
      * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
      * the past.
      */
-    public function validateTimeSensitiveClaims(Udb3Token $udb3Token): void
+    private function validateTimeSensitiveClaims(Udb3Token $udb3Token): void
     {
         // Use the built-in validation provided by Lcobucci without any extra validation data.
         // This will automatically validate the time-sensitive claims.
@@ -76,7 +83,7 @@ class JwtValidator implements JwtValidatorInterface
         }
     }
 
-    public function validateRequiredClaims(Udb3Token $udb3Token): void
+    private function validateRequiredClaims(Udb3Token $udb3Token): void
     {
         foreach ($this->requiredClaims as $claim) {
             if (!$udb3Token->jwtToken()->hasClaim($claim)) {
@@ -87,7 +94,7 @@ class JwtValidator implements JwtValidatorInterface
         }
     }
 
-    public function validateIssuer(Udb3Token $udb3Token): void
+    private function validateIssuer(Udb3Token $udb3Token): void
     {
         $jwt = $udb3Token->jwtToken();
 
