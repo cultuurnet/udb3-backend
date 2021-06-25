@@ -18,7 +18,7 @@ use Lcobucci\JWT\Token as Jwt;
 use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
 
-class JwtDecoderServiceTest extends TestCase
+class JwtValidatorTest extends TestCase
 {
     /**
      * @var string
@@ -81,9 +81,9 @@ class JwtDecoderServiceTest extends TestCase
     private $requiredCLaims;
 
     /**
-     * @var JwtDecoderService
+     * @var JwtValidator
      */
-    private $decoderService;
+    private $validator;
 
     public function setUp()
     {
@@ -145,7 +145,7 @@ class JwtDecoderServiceTest extends TestCase
             'email',
         ];
 
-        $this->decoderService = new JwtDecoderService(
+        $this->validator = new JwtValidator(
             $this->signer,
             $this->publicKey,
             $this->requiredCLaims,
@@ -160,7 +160,7 @@ class JwtDecoderServiceTest extends TestCase
     {
         // Test token should have been expired.
         $this->assertFalse(
-            $this->decoderService->validateTimeSensitiveClaims($this->token)
+            $this->validator->validateTimeSensitiveClaims($this->token)
         );
 
         // Mock a later expiration date.
@@ -177,7 +177,7 @@ class JwtDecoderServiceTest extends TestCase
         );
 
         $this->assertTrue(
-            $this->decoderService->validateTimeSensitiveClaims(new Udb3Token($unexpiredToken))
+            $this->validator->validateTimeSensitiveClaims(new Udb3Token($unexpiredToken))
         );
 
         // Change the iss claim of the unexpired token, which should cause
@@ -192,7 +192,7 @@ class JwtDecoderServiceTest extends TestCase
         );
 
         $this->assertFalse(
-            $this->decoderService->validateTimeSensitiveClaims(new Udb3Token($unexpiredTokenWithDifferentIssuer))
+            $this->validator->validateTimeSensitiveClaims(new Udb3Token($unexpiredTokenWithDifferentIssuer))
         );
     }
 
@@ -201,7 +201,7 @@ class JwtDecoderServiceTest extends TestCase
      */
     public function it_can_validate_that_a_token_has_all_required_claims()
     {
-        $decoderWithoutRequiredClaims = new JwtDecoderService(
+        $validatorWithoutRequiredClaims = new JwtValidator(
             $this->signer,
             $this->publicKey
         );
@@ -219,10 +219,10 @@ class JwtDecoderServiceTest extends TestCase
             $this->payload
         );
 
-        $this->assertTrue($decoderWithoutRequiredClaims->validateRequiredClaims($this->token));
-        $this->assertTrue($decoderWithoutRequiredClaims->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
-        $this->assertTrue($this->decoderService->validateRequiredClaims($this->token));
-        $this->assertFalse($this->decoderService->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
+        $this->assertTrue($validatorWithoutRequiredClaims->validateRequiredClaims($this->token));
+        $this->assertTrue($validatorWithoutRequiredClaims->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
+        $this->assertTrue($this->validator->validateRequiredClaims($this->token));
+        $this->assertFalse($this->validator->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
     }
 
     /**
@@ -240,8 +240,8 @@ class JwtDecoderServiceTest extends TestCase
             $this->payload
         );
 
-        $this->assertTrue($this->decoderService->validateIssuer($this->token));
-        $this->assertFalse($this->decoderService->validateIssuer(new Udb3Token($tokenWithoutIss)));
+        $this->assertTrue($this->validator->validateIssuer($this->token));
+        $this->assertFalse($this->validator->validateIssuer(new Udb3Token($tokenWithoutIss)));
     }
 
     /**
@@ -250,7 +250,7 @@ class JwtDecoderServiceTest extends TestCase
     public function it_can_verify_a_token_signature()
     {
         $this->assertTrue(
-            $this->decoderService->verifySignature(
+            $this->validator->verifySignature(
                 new Udb3Token(
                     $this->parser->parse($this->tokenString)
                 )
@@ -272,7 +272,7 @@ class JwtDecoderServiceTest extends TestCase
         $manipulatedTokenString = implode('.', $manipulatedPayload);
 
         $this->assertFalse(
-            $this->decoderService->verifySignature(
+            $this->validator->verifySignature(
                 new Udb3Token(
                     $this->parser->parse($manipulatedTokenString)
                 )
@@ -292,7 +292,7 @@ class JwtDecoderServiceTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('All required claims should be strings.');
 
-        new JwtDecoderService(
+        new JwtValidator(
             $this->signer,
             $this->publicKey,
             $required

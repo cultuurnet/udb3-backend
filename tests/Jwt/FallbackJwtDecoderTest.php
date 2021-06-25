@@ -11,17 +11,17 @@ use PHPUnit\Framework\TestCase;
 class FallbackJwtDecoderTest extends TestCase
 {
     /**
-     * @var JwtDecoderServiceInterface|MockObject
+     * @var JwtValidatorInterface|MockObject
      */
     private $primaryDecoder;
 
     /**
-     * @var JwtDecoderServiceInterface|MockObject
+     * @var JwtValidatorInterface|MockObject
      */
     private $secondaryDecoder;
 
     /**
-     * @var FallbackJwtDecoder
+     * @var FallbackJwtValidator
      */
     private $decoder;
 
@@ -32,9 +32,9 @@ class FallbackJwtDecoderTest extends TestCase
 
     public function setUp(): void
     {
-        $this->primaryDecoder = $this->createMock(JwtDecoderServiceInterface::class);
-        $this->secondaryDecoder = $this->createMock(JwtDecoderServiceInterface::class);
-        $this->decoder = new FallbackJwtDecoder($this->primaryDecoder, $this->secondaryDecoder);
+        $this->primaryDecoder = $this->createMock(JwtValidatorInterface::class);
+        $this->secondaryDecoder = $this->createMock(JwtValidatorInterface::class);
+        $this->decoder = new FallbackJwtValidator($this->primaryDecoder, $this->secondaryDecoder);
         $this->token = new Udb3Token(new Token());
     }
 

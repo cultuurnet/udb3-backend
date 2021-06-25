@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Jwt\Silex;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
-use CultuurNet\UDB3\Jwt\FallbackJwtDecoder;
-use CultuurNet\UDB3\Jwt\JwtDecoderService;
+use CultuurNet\UDB3\Jwt\FallbackJwtValidator;
+use CultuurNet\UDB3\Jwt\JwtValidator;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
@@ -20,16 +20,16 @@ class JwtServiceProvider implements ServiceProviderInterface
     {
         $app['security.authentication_listener.factory.jwt'] = $app->protect(
             function ($name, $options) use ($app) {
-                $app['security.token_decoder.' . $name . '.jwt'] = $app->share(
+                $app['security.token_validator.' . $name . '.jwt'] = $app->share(
                     function () use ($options) {
-                        return new FallbackJwtDecoder(
-                            new JwtDecoderService(
+                        return new FallbackJwtValidator(
+                            new JwtValidator(
                                 new Sha256(),
                                 new Key($options['uitid']['public_key']),
                                 $options['uitid']['required_claims'],
                                 $options['uitid']['valid_issuers']
                             ),
-                            new JwtDecoderService(
+                            new JwtValidator(
                                 new Sha256(),
                                 new Key($options['auth0']['public_key']),
                                 $options['auth0']['required_claims'],
@@ -43,7 +43,7 @@ class JwtServiceProvider implements ServiceProviderInterface
                 $app['security.authentication_provider.' . $name . '.jwt'] = $app->share(
                     function () use ($app, $name) {
                         return new JwtAuthenticationProvider(
-                            $app['security.token_decoder.' . $name . '.jwt'],
+                            $app['security.token_validator.' . $name . '.jwt'],
                             $app['config']['jwt']['auth0']['jwt_provider_client_id']
                         );
                     }

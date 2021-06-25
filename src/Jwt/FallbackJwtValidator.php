@@ -5,30 +5,27 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt;
 
 /**
- * Class FallbackJwtDecoder
- * @package CultuurNet\UDB3\Jwt
- *
  * A wrapper class that enables backwards compatibility
  * with old Authorization tokens
  */
-class FallbackJwtDecoder implements JwtDecoderServiceInterface
+class FallbackJwtValidator implements JwtValidatorInterface
 {
     /**
-     * @var JwtDecoderServiceInterface
+     * @var JwtValidatorInterface
      */
     private $primary;
 
     /**
-     * @var JwtDecoderServiceInterface
+     * @var JwtValidatorInterface
      */
-    private $fallbackDecoder;
+    private $secondary;
 
     public function __construct(
-        JwtDecoderServiceInterface $jwtDecoderService,
-        JwtDecoderServiceInterface $newDecoderService
+        JwtValidatorInterface $primary,
+        JwtValidatorInterface $secondary
     ) {
-        $this->primary = $jwtDecoderService;
-        $this->fallbackDecoder = $newDecoderService;
+        $this->primary = $primary;
+        $this->secondary = $secondary;
     }
 
     public function validateTimeSensitiveClaims(Udb3Token $jwt): bool
@@ -37,7 +34,7 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
             return true;
         }
 
-        return $this->fallbackDecoder->validateTimeSensitiveClaims($jwt);
+        return $this->secondary->validateTimeSensitiveClaims($jwt);
     }
 
     public function validateRequiredClaims(Udb3Token $udb3Token): bool
@@ -46,12 +43,12 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
             return true;
         }
 
-        return $this->fallbackDecoder->validateRequiredClaims($udb3Token);
+        return $this->secondary->validateRequiredClaims($udb3Token);
     }
 
     public function validateIssuer(Udb3Token $udb3Token): bool
     {
-        return $this->primary->validateIssuer($udb3Token) || $this->fallbackDecoder->validateIssuer($udb3Token);
+        return $this->primary->validateIssuer($udb3Token) || $this->secondary->validateIssuer($udb3Token);
     }
 
     public function verifySignature(Udb3Token $udb3Token): bool
@@ -60,6 +57,6 @@ class FallbackJwtDecoder implements JwtDecoderServiceInterface
             return true;
         }
 
-        return $this->fallbackDecoder->verifySignature($udb3Token);
+        return $this->secondary->verifySignature($udb3Token);
     }
 }

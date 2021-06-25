@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
+use CultuurNet\UDB3\Jwt\JwtValidatorInterface;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -13,9 +13,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class JwtAuthenticationProvider implements AuthenticationProviderInterface
 {
     /**
-     * @var JwtDecoderServiceInterface
+     * @var JwtValidatorInterface
      */
-    private $decoderService;
+    private $jwtValidator;
 
     /**
      * @var string
@@ -23,10 +23,10 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
     private $jwtProviderClientId;
 
     public function __construct(
-        JwtDecoderServiceInterface $decoderService,
+        JwtValidatorInterface $jwtValidator,
         string $jwtProviderClientId
     ) {
-        $this->decoderService = $decoderService;
+        $this->jwtValidator = $jwtValidator;
         $this->jwtProviderClientId = $jwtProviderClientId;
     }
 
@@ -52,25 +52,25 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $jwt = $token->getCredentials();
 
-        if (!$this->decoderService->verifySignature($jwt)) {
+        if (!$this->jwtValidator->verifySignature($jwt)) {
             throw new AuthenticationException(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );
         }
 
-        if (!$this->decoderService->validateTimeSensitiveClaims($jwt)) {
+        if (!$this->jwtValidator->validateTimeSensitiveClaims($jwt)) {
             throw new AuthenticationException(
                 'Token expired (or not yet usable).'
             );
         }
 
-        if (!$this->decoderService->validateRequiredClaims($jwt)) {
+        if (!$this->jwtValidator->validateRequiredClaims($jwt)) {
             throw new AuthenticationException(
                 'Token is missing one of its required claims.'
             );
         }
 
-        if (!$this->decoderService->validateIssuer($jwt)) {
+        if (!$this->jwtValidator->validateIssuer($jwt)) {
             throw new AuthenticationException(
                 'Token is not issued by a valid issuer.'
             );

@@ -8,7 +8,7 @@ use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\ValidationData;
 
-class JwtDecoderService implements JwtDecoderServiceInterface
+class JwtValidator implements JwtValidatorInterface
 {
     /**
      * @var Signer

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-interface JwtDecoderServiceInterface
+interface JwtValidatorInterface
 {
     public function validateTimeSensitiveClaims(Udb3Token $jwt): bool;
 
