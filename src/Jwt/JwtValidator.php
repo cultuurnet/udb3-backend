@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Jwt;
 use Lcobucci\JWT\Token;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-interface JwtValidatorInterface
+interface JwtValidator
 {
     /**
      * @throws AuthenticationException

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use CultuurNet\UDB3\Jwt\JwtValidatorInterface;
+use CultuurNet\UDB3\Jwt\JwtValidator;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -13,12 +13,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class JwtAuthenticationProvider implements AuthenticationProviderInterface
 {
     /**
-     * @var JwtValidatorInterface
+     * @var JwtValidator
      */
     private $v1JwtValidator;
 
     /**
-     * @var JwtValidatorInterface
+     * @var JwtValidator
      */
     private $v2JwtValidator;
 
@@ -28,8 +28,8 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
     private $v2JwtProviderAuth0ClientId;
 
     public function __construct(
-        JwtValidatorInterface $v1JwtValidator,
-        JwtValidatorInterface $v2JwtValidator,
+        JwtValidator $v1JwtValidator,
+        JwtValidator $v2JwtValidator,
         string $v2JwtValidatorAuth0ClientId
     ) {
         $this->v1JwtValidator = $v1JwtValidator;

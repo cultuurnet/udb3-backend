@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use CultuurNet\UDB3\Jwt\JwtValidatorInterface;
+use CultuurNet\UDB3\Jwt\JwtValidator;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Claim\Basic;
 use Lcobucci\JWT\Token as Jwt;
@@ -16,12 +16,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class JwtAuthenticationProviderTest extends TestCase
 {
     /**
-     * @var JwtValidatorInterface|MockObject
+     * @var JwtValidator|MockObject
      */
     private $v1JwtValidator;
 
     /**
-     * @var JwtValidatorInterface|MockObject
+     * @var JwtValidator|MockObject
      */
     private $v2JwtValidator;
 
@@ -32,8 +32,8 @@ class JwtAuthenticationProviderTest extends TestCase
 
     public function setUp()
     {
-        $this->v1JwtValidator = $this->createMock(JwtValidatorInterface::class);
-        $this->v2JwtValidator = $this->createMock(JwtValidatorInterface::class);
+        $this->v1JwtValidator = $this->createMock(JwtValidator::class);
+        $this->v2JwtValidator = $this->createMock(JwtValidator::class);
 
         $this->authenticationProvider = new JwtAuthenticationProvider(
             $this->v1JwtValidator,
