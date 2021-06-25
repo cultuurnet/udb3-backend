@@ -57,16 +57,16 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        $jwt = $token->getCredentials();
+        $udb3Token = $token->getCredentials();
 
         $validV1Signature = false;
         $validV2Signature = false;
 
         try {
-            $this->v1JwtValidator->verifySignature($jwt);
+            $this->v1JwtValidator->verifySignature($udb3Token->jwtToken());
             $validV1Signature = true;
         } catch (AuthenticationException $e) {
-            $this->v2JwtValidator->verifySignature($jwt);
+            $this->v2JwtValidator->verifySignature($udb3Token->jwtToken());
             $validV2Signature = true;
         }
 
@@ -78,13 +78,13 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        $validator->validateClaims($jwt);
+        $validator->validateClaims($udb3Token->jwtToken());
 
         if ($validV2Signature) {
-            $this->validateV2Token($jwt);
+            $this->validateV2Token($udb3Token);
         }
 
-        return new JwtUserToken($jwt, true);
+        return new JwtUserToken($udb3Token, true);
     }
 
     private function validateV2Token(Udb3Token $jwt): void

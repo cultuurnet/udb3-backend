@@ -89,7 +89,7 @@ class JwtValidatorTest extends TestCase
         );
 
         $this->expectException(AuthenticationException::class);
-        $this->validator->validateClaims(new Udb3Token($token));
+        $this->validator->validateClaims($token);
     }
 
     /**
@@ -106,7 +106,7 @@ class JwtValidatorTest extends TestCase
         );
 
         $this->expectException(AuthenticationException::class);
-        $this->validator->validateClaims(new Udb3Token($token));
+        $this->validator->validateClaims($token);
     }
 
     /**
@@ -124,7 +124,7 @@ class JwtValidatorTest extends TestCase
         );
 
         $this->expectException(AuthenticationException::class);
-        $this->validator->validateClaims(new Udb3Token($token));
+        $this->validator->validateClaims($token);
     }
 
     /**
@@ -142,7 +142,7 @@ class JwtValidatorTest extends TestCase
         );
 
         $this->expectException(AuthenticationException::class);
-        $this->validator->validateClaims(new Udb3Token($token));
+        $this->validator->validateClaims($token);
     }
 
     /**
@@ -160,7 +160,7 @@ class JwtValidatorTest extends TestCase
             ]
         );
 
-        $this->validator->validateClaims(new Udb3Token($token));
+        $this->validator->validateClaims($token);
         $this->addToAssertionCount(1);
     }
 
@@ -175,7 +175,7 @@ class JwtValidatorTest extends TestCase
         );
 
         $this->expectException(AuthenticationException::class);
-        $this->validator->verifySignature(new Udb3Token($token));
+        $this->validator->verifySignature($token);
     }
 
     /**
@@ -184,7 +184,7 @@ class JwtValidatorTest extends TestCase
     public function it_does_not_throw_if_the_signature_is_valid(): void
     {
         $token = $this->createValidToken();
-        $this->validator->verifySignature(new Udb3Token($token));
+        $this->validator->verifySignature($token);
         $this->addToAssertionCount(1);
     }
 }

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Jwt;
 
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -59,34 +60,34 @@ class JwtValidator implements JwtValidatorInterface
         }
     }
 
-    public function validateClaims(Udb3Token $udb3Token): void
+    public function validateClaims(Token $token): void
     {
-        $this->validateTimeSensitiveClaims($udb3Token);
-        $this->validateIssuer($udb3Token);
-        $this->validateRequiredClaims($udb3Token);
+        $this->validateTimeSensitiveClaims($token);
+        $this->validateIssuer($token);
+        $this->validateRequiredClaims($token);
     }
 
     /**
      * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
      * the past.
      */
-    private function validateTimeSensitiveClaims(Udb3Token $udb3Token): void
+    private function validateTimeSensitiveClaims(Token $token): void
     {
         // Use the built-in validation provided by Lcobucci without any extra validation data.
         // This will automatically validate the time-sensitive claims.
         // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
         // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        if (!$udb3Token->jwtToken()->validate(new ValidationData(null, 30))) {
+        if (!$token->validate(new ValidationData(null, 30))) {
             throw new AuthenticationException(
                 'Token expired (or not yet usable).'
             );
         }
     }
 
-    private function validateRequiredClaims(Udb3Token $udb3Token): void
+    private function validateRequiredClaims(Token $token): void
     {
         foreach ($this->requiredClaims as $claim) {
-            if (!$udb3Token->jwtToken()->hasClaim($claim)) {
+            if (!$token->hasClaim($claim)) {
                 throw new AuthenticationException(
                     'Token is missing one of its required claims.'
                 );
@@ -94,20 +95,18 @@ class JwtValidator implements JwtValidatorInterface
         }
     }
 
-    private function validateIssuer(Udb3Token $udb3Token): void
+    private function validateIssuer(Token $token): void
     {
-        $jwt = $udb3Token->jwtToken();
-
-        if (!$jwt->hasClaim('iss') || !in_array($jwt->getClaim('iss'), $this->validIssuers, true)) {
+        if (!$token->hasClaim('iss') || !in_array($token->getClaim('iss'), $this->validIssuers, true)) {
             throw new AuthenticationException(
                 'Token is not issued by a valid issuer.'
             );
         }
     }
 
-    public function verifySignature(Udb3Token $udb3Token): void
+    public function verifySignature(Token $token): void
     {
-        $isVerified = $udb3Token->jwtToken()->verify(
+        $isVerified = $token->verify(
             $this->signer,
             $this->publicKey
         );

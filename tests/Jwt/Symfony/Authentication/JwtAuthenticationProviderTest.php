@@ -82,17 +82,17 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_throws_an_exception_when_the_jwt_signature_is_invalid()
     {
-        $jwt = new Udb3Token(new Jwt());
-        $token = new JwtUserToken($jwt);
+        $udb3Token = new Udb3Token(new Jwt());
+        $token = new JwtUserToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt)
+            ->with($udb3Token->jwtToken())
             ->willThrowException(new AuthenticationException());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt)
+            ->with($udb3Token->jwtToken())
             ->willThrowException(new AuthenticationException());
 
         $this->expectException(AuthenticationException::class);
@@ -105,19 +105,19 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_calls_the_validation_methods_on_the_v1_validator_if_the_signature_is_v1(): void
     {
-        $jwt = new Udb3Token(new Jwt());
-        $token = new JwtUserToken($jwt);
+        $udb3Token = new Udb3Token(new Jwt());
+        $token = new JwtUserToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->v2JwtValidator->expects($this->never())
             ->method('verifySignature');
 
         $this->v1JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->authenticationProvider->authenticate($token);
     }
@@ -127,7 +127,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_calls_the_claim_validation_method_on_the_v2_validator_if_the_signature_is_v2(): void
     {
-        $jwt = new Udb3Token(
+        $udb3Token = new Udb3Token(
             new Jwt(
                 ['alg' => 'none'],
                 [
@@ -136,21 +136,21 @@ class JwtAuthenticationProviderTest extends TestCase
                 ]
             )
         );
-        $token = new JwtUserToken($jwt);
+        $token = new JwtUserToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt)
+            ->with($udb3Token->jwtToken())
             ->willThrowException(new AuthenticationException());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt)
+            ->with($udb3Token->jwtToken())
             ->willReturn(true);
 
         $this->v2JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->authenticationProvider->authenticate($token);
     }
@@ -160,7 +160,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_throws_if_the_azp_claim_is_missing_from_v2_token_and_it_is_not_from_the_jwt_provider(): void
     {
-        $jwt = new Udb3Token(
+        $udb3Token = new Udb3Token(
             new Jwt(
                 ['alg' => 'none'],
                 [
@@ -169,20 +169,20 @@ class JwtAuthenticationProviderTest extends TestCase
             )
         );
 
-        $token = new JwtUserToken($jwt);
+        $token = new JwtUserToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt)
+            ->with($udb3Token->jwtToken())
             ->willThrowException(new AuthenticationException());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
@@ -197,7 +197,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_throws_if_the_token_is_v2_and_an_access_token_but_is_not_usable_on_entry_api(): void
     {
-        $jwt = new Udb3Token(
+        $udb3Token = new Udb3Token(
             new Jwt(
                 ['alg' => 'none'],
                 [
@@ -206,20 +206,20 @@ class JwtAuthenticationProviderTest extends TestCase
                 ]
             )
         );
-        $token = new JwtUserToken($jwt);
+        $token = new JwtUserToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt)
+            ->with($udb3Token->jwtToken())
             ->willThrowException(new AuthenticationException());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage(
@@ -234,7 +234,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
     {
-        $jwt = new Udb3Token(
+        $udb3Token = new Udb3Token(
             new Jwt(
                 ['alg' => 'none'],
                 [
@@ -243,22 +243,22 @@ class JwtAuthenticationProviderTest extends TestCase
                 ]
             )
         );
-        $token = new JwtUserToken($jwt);
+        $token = new JwtUserToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $this->v2JwtValidator->expects($this->never())
             ->method('verifySignature');
 
         $this->v1JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($jwt);
+            ->with($udb3Token->jwtToken());
 
         $authToken = $this->authenticationProvider->authenticate($token);
 
-        $this->assertEquals($jwt, $authToken->getCredentials());
+        $this->assertEquals($udb3Token, $authToken->getCredentials());
         $this->assertTrue($authToken->isAuthenticated());
     }
 }
