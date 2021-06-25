@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Jwt;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\ValidationData;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class JwtValidator implements JwtValidatorInterface
 {
@@ -62,43 +63,52 @@ class JwtValidator implements JwtValidatorInterface
      * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
      * the past.
      */
-    public function validateTimeSensitiveClaims(Udb3Token $udb3Token): bool
+    public function validateTimeSensitiveClaims(Udb3Token $udb3Token): void
     {
         // Use the built-in validation provided by Lcobucci without any extra validation data.
         // This will automatically validate the time-sensitive claims.
         // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
         // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        return $udb3Token->jwtToken()->validate(new ValidationData(null, 30));
+        if (!$udb3Token->jwtToken()->validate(new ValidationData(null, 30))) {
+            throw new AuthenticationException(
+                'Token expired (or not yet usable).'
+            );
+        }
     }
 
-    public function validateRequiredClaims(Udb3Token $udb3Token): bool
+    public function validateRequiredClaims(Udb3Token $udb3Token): void
     {
         foreach ($this->requiredClaims as $claim) {
             if (!$udb3Token->jwtToken()->hasClaim($claim)) {
-                return false;
+                throw new AuthenticationException(
+                    'Token is missing one of its required claims.'
+                );
             }
         }
-
-        return true;
     }
 
-    public function validateIssuer(Udb3Token $udb3Token): bool
+    public function validateIssuer(Udb3Token $udb3Token): void
     {
         $jwt = $udb3Token->jwtToken();
 
-        if (!$jwt->hasClaim('iss')) {
-            return false;
+        if (!$jwt->hasClaim('iss') || !in_array($jwt->getClaim('iss'), $this->validIssuers, true)) {
+            throw new AuthenticationException(
+                'Token is not issued by a valid issuer.'
+            );
         }
-
-        $issuer = $jwt->getClaim('iss');
-        return in_array($issuer, $this->validIssuers, true);
     }
 
-    public function verifySignature(Udb3Token $udb3Token): bool
+    public function verifySignature(Udb3Token $udb3Token): void
     {
-        return $udb3Token->jwtToken()->verify(
+        $isVerified = $udb3Token->jwtToken()->verify(
             $this->signer,
             $this->publicKey
         );
+
+        if (!$isVerified) {
+            throw new AuthenticationException(
+                'Token signature verification failed. The token is likely forged or manipulated.'
+            );
+        }
     }
 }

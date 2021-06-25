@@ -17,6 +17,7 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token as Jwt;
 use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class JwtValidatorTest extends TestCase
 {
@@ -100,20 +101,16 @@ class JwtValidatorTest extends TestCase
         ];
 
         $this->tokenClaims = [
-            'uid' => '1',
-            'nick' => 'foo',
-            'email' => 'foo@bar.com',
-            'iss' => 'http://culudb-jwt-provider.dev',
+            'sub' => 'auth0|1',
+            'iss' => 'https://account-acc.uitid.be',
             'iat' => '1461829061',
             'exp' => '1461829061',
             'nbf' => '1461829061',
         ];
 
         $this->tokenClaimsAsValueObjects = [
-            'uid' => new Basic('uid', '1'),
-            'nick' => new Basic('nick', 'foo'),
-            'email' => new Basic('email', 'foo@bar.com'),
-            'iss' => new EqualsTo('iss', 'http://culudb-jwt-provider.dev'),
+            'sub' => new Basic('sub', 'auth0|1'),
+            'iss' => new EqualsTo('iss', 'https://account-acc.uitid.be'),
             'iat' =>  new LesserOrEqualsTo('iat', '1461829061'),
             'exp' =>  new GreaterOrEqualsTo('exp', '1461829061'),
             'nbf' => new LesserOrEqualsTo('nbf', '1461829061'),
@@ -140,29 +137,31 @@ class JwtValidatorTest extends TestCase
         $this->publicKey = new Key($this->publicKeyString);
 
         $this->requiredCLaims = [
-            'uid',
-            'nick',
-            'email',
+            'sub',
         ];
 
         $this->validator = new JwtValidator(
             $this->signer,
             $this->publicKey,
             $this->requiredCLaims,
-            ['iss1', 'http://culudb-jwt-provider.dev', 'iss2']
+            ['iss1', 'https://account-acc.uitid.be', 'iss2']
         );
     }
 
     /**
      * @test
      */
-    public function it_can_validate_a_token()
+    public function it_throws_if_the_token_is_expired(): void
     {
-        // Test token should have been expired.
-        $this->assertFalse(
-            $this->validator->validateTimeSensitiveClaims($this->token)
-        );
+        $this->expectException(AuthenticationException::class);
+        $this->validator->validateTimeSensitiveClaims($this->token);
+    }
 
+    /**
+     * @test
+     */
+    public function it_accepts_a_token_that_has_not_expired(): void
+    {
         // Mock a later expiration date.
         // This token will not have a valid signature, but data validation does
         // not take the signature into account.
@@ -176,41 +175,25 @@ class JwtValidatorTest extends TestCase
             $this->payload
         );
 
-        $this->assertTrue(
-            $this->validator->validateTimeSensitiveClaims(new Udb3Token($unexpiredToken))
-        );
-
-        // Change the iss claim of the unexpired token, which should cause
-        // validation to fail again.
-        $manipulatedClaims['iss'] = new EqualsTo('exp', 'http://hooli.com');
-
-        $unexpiredTokenWithDifferentIssuer = new Token(
-            $this->tokenHeaders,
-            $manipulatedClaims,
-            $this->signature,
-            $this->payload
-        );
-
-        $this->assertFalse(
-            $this->validator->validateTimeSensitiveClaims(new Udb3Token($unexpiredTokenWithDifferentIssuer))
-        );
+        $this->validator->validateTimeSensitiveClaims(new Udb3Token($unexpiredToken));
+        $this->addToAssertionCount(1);
     }
 
     /**
      * @test
      */
-    public function it_can_validate_that_a_token_has_all_required_claims()
+    public function it_accepts_a_token_that_has_all_required_claims(): void
     {
         $validatorWithoutRequiredClaims = new JwtValidator(
             $this->signer,
             $this->publicKey
         );
 
-        // Mock a missing nick claim.
+        // Mock a missing sub claim.
         // This token will not have a valid signature, but claim validation does
         // not take the signature into account.
         $manipulatedClaims = $this->tokenClaimsAsValueObjects;
-        unset($manipulatedClaims['nick']);
+        unset($manipulatedClaims['sub']);
 
         $tokenWithoutNick = new Token(
             $this->tokenHeaders,
@@ -219,16 +202,32 @@ class JwtValidatorTest extends TestCase
             $this->payload
         );
 
-        $this->assertTrue($validatorWithoutRequiredClaims->validateRequiredClaims($this->token));
-        $this->assertTrue($validatorWithoutRequiredClaims->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
-        $this->assertTrue($this->validator->validateRequiredClaims($this->token));
-        $this->assertFalse($this->validator->validateRequiredClaims(new Udb3Token($tokenWithoutNick)));
+        $validatorWithoutRequiredClaims->validateRequiredClaims($this->token);
+        $this->addToAssertionCount(1);
+
+        $validatorWithoutRequiredClaims->validateRequiredClaims(new Udb3Token($tokenWithoutNick));
+        $this->addToAssertionCount(1);
+
+        $this->validator->validateRequiredClaims($this->token);
+        $this->addToAssertionCount(1);
+
+        $this->expectException(AuthenticationException::class);
+        $this->validator->validateRequiredClaims(new Udb3Token($tokenWithoutNick));
     }
 
     /**
      * @test
      */
-    public function it_can_validate_that_a_token_has_a_valid_issuer_from_a_list_of_issuers(): void
+    public function it_accepts_a_token_that_has_a_valid_issuer_from_an_allowed_list(): void
+    {
+        $this->validator->validateIssuer($this->token);
+        $this->addToAssertionCount(1);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_the_issuer_is_missing(): void
     {
         // Mock a missing iss claim.
         $manipulatedClaims = $this->tokenClaimsAsValueObjects;
@@ -240,23 +239,47 @@ class JwtValidatorTest extends TestCase
             $this->payload
         );
 
-        $this->assertTrue($this->validator->validateIssuer($this->token));
-        $this->assertFalse($this->validator->validateIssuer(new Udb3Token($tokenWithoutIss)));
+        $this->expectException(AuthenticationException::class);
+        $this->validator->validateIssuer(new Udb3Token($tokenWithoutIss));
     }
 
     /**
      * @test
      */
-    public function it_can_verify_a_token_signature()
+    public function it_throws_if_the_issuer_is_invalid(): void
     {
-        $this->assertTrue(
-            $this->validator->verifySignature(
-                new Udb3Token(
-                    $this->parser->parse($this->tokenString)
-                )
-            )
+        // Mock an invalid iss claim.
+        $manipulatedClaims = $this->tokenClaimsAsValueObjects;
+        $manipulatedClaims['iss'] = new Basic('iss', 'invalid');
+        $tokenWithInvalidIss = new Token(
+            $this->tokenHeaders,
+            $manipulatedClaims,
+            $this->signature,
+            $this->payload
         );
 
+        $this->expectException(AuthenticationException::class);
+        $this->validator->validateIssuer(new Udb3Token($tokenWithInvalidIss));
+    }
+
+    /**
+     * @test
+     */
+    public function it_accepts_a_token_with_a_valid_signature(): void
+    {
+        $this->validator->verifySignature(
+            new Udb3Token(
+                $this->parser->parse($this->tokenString)
+            )
+        );
+        $this->addToAssertionCount(1);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_the_signature_is_invalid_for_the_payload(): void
+    {
         // Change one of the claims, but keep the original header and
         // signature.
         $manipulatedClaims = $this->tokenClaimsAsValueObjects;
@@ -271,11 +294,10 @@ class JwtValidatorTest extends TestCase
         // but with manipulated claims.
         $manipulatedTokenString = implode('.', $manipulatedPayload);
 
-        $this->assertFalse(
-            $this->validator->verifySignature(
-                new Udb3Token(
-                    $this->parser->parse($manipulatedTokenString)
-                )
+        $this->expectException(AuthenticationException::class);
+        $this->validator->verifySignature(
+            new Udb3Token(
+                $this->parser->parse($manipulatedTokenString)
             )
         );
     }
@@ -283,7 +305,7 @@ class JwtValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_checks_that_the_required_claims_are_strings()
+    public function it_checks_that_the_required_claims_are_strings(): void
     {
         $required = [
             new Basic('uid', null),

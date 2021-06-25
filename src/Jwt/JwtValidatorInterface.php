@@ -4,13 +4,27 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+
 interface JwtValidatorInterface
 {
-    public function validateTimeSensitiveClaims(Udb3Token $jwt): bool;
+    /**
+     * @throws AuthenticationException
+     */
+    public function validateTimeSensitiveClaims(Udb3Token $jwt): void;
 
-    public function validateRequiredClaims(Udb3Token $udb3Token): bool;
+    /**
+     * @throws AuthenticationException
+     */
+    public function validateRequiredClaims(Udb3Token $udb3Token): void;
 
-    public function validateIssuer(Udb3Token $udb3Token): bool;
+    /**
+     * @throws AuthenticationException
+     */
+    public function validateIssuer(Udb3Token $udb3Token): void;
 
-    public function verifySignature(Udb3Token $udb3Token): bool;
+    /**
+     * @throws AuthenticationException
+     */
+    public function verifySignature(Udb3Token $udb3Token): void;
 }
