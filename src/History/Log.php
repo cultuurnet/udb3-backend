@@ -39,6 +39,11 @@ class Log implements JsonSerializable
     /**
      * @var string
      */
+    private $auth0ClientId;
+
+    /**
+     * @var string
+     */
     private $api;
 
     /**
@@ -52,6 +57,7 @@ class Log implements JsonSerializable
         string $description,
         string $author = null,
         string $apiKey = null,
+        string $auth0ClientId = null,
         string $api = null,
         string $consumerName = null
     ) {
@@ -60,6 +66,7 @@ class Log implements JsonSerializable
         $this->description = $description;
         $this->author = $author;
         $this->apiKey = $apiKey;
+        $this->auth0ClientId = $auth0ClientId;
         $this->api = $api;
         $this->consumerName = $consumerName;
     }
@@ -108,6 +115,10 @@ class Log implements JsonSerializable
             $log['apiKey'] = $this->apiKey;
         }
 
+        if ($this->auth0ClientId) {
+            $log['auth0ClientId'] = $this->auth0ClientId;
+        }
+
         if ($this->api) {
             $log['api'] = $this->api;
         }
@@ -138,6 +149,7 @@ class Log implements JsonSerializable
 
         $author = $metadata['user_id'] ?? null;
         $apiKey = $metadata['auth_api_key'] ?? null;
+        $auth0ClientId = $metadata['auth_api_client_id'] ?? null;
         $api = $metadata['api'] ?? null;
         $consumer = $metadata['consumer']['name'] ?? null;
 
@@ -147,6 +159,6 @@ class Log implements JsonSerializable
             $apiKey = null;
         }
 
-        return new Log($id, $date, $description, $author, $apiKey, $api, $consumer);
+        return new Log($id, $date, $description, $author, $apiKey, $auth0ClientId, $api, $consumer);
     }
 }
