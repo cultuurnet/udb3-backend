@@ -31,7 +31,7 @@ class OfferMetadataProjectorTest extends TestCase
     private const OFFER_ID = 'OFFER_ID';
     private const TEST_MAPPING = [
         'udb_api_key' => 'uitdatabank-ui',
-        'auth0_client_id' => 'uitdatabank-ui-auth0'
+        'auth0_client_id' => 'uitdatabank-ui-auth0',
     ];
 
     /**
