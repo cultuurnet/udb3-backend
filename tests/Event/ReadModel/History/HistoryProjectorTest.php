@@ -229,10 +229,45 @@ class HistoryProjectorTest extends TestCase
         );
     }
 
+    public function metadataProvider(): array
+    {
+        return [
+            'with api key' => [
+                new Metadata(
+                    [
+                        'user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
+                        'auth_api_key' => 'my-super-duper-key',
+                        'api' => 'json-api',
+                        'consumer' => [
+                            'name' => 'My super duper name',
+                        ],
+                    ]
+                ),
+                'apiKey',
+                'my-super-duper-key',
+            ],
+            'with auth0 client id' => [
+                new Metadata(
+                    [
+                        'user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
+                        'auth_api_client_id' => 'my-auth0-client-id',
+                        'api' => 'json-api',
+                        'consumer' => [
+                            'name' => 'My super duper name',
+                        ],
+                    ]
+                ),
+                'auth0ClientId',
+                'my-auth0-client-id',
+            ]
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider metadataProvider
      */
-    public function it_logs_creating_an_event()
+    public function it_logs_creating_an_event(Metadata $metadata, string $keyName, string $keyValue)
     {
         $eventId = 'f2b227c5-4756-49f6-a25d-8286b6a2351f';
 
@@ -251,16 +286,7 @@ class HistoryProjectorTest extends TestCase
         $domainMessage = new DomainMessage(
             $eventId,
             4,
-            new Metadata(
-                [
-                    'user_id' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
-                    'auth_api_key' => 'my-super-duper-key',
-                    'api' => 'json-api',
-                    'consumer' => [
-                        'name' => 'My super duper name',
-                    ],
-                ]
-            ),
+            $metadata,
             $eventCreated,
             DateTime::fromString($now->format(\DateTime::ATOM))
         );
@@ -274,7 +300,7 @@ class HistoryProjectorTest extends TestCase
                     'date' => $now->format('c'),
                     'author' => 'e75fa25f-18e7-4834-bb5e-6f2acaedd3c6',
                     'description' => 'Event aangemaakt in UiTdatabank',
-                    'apiKey' => 'my-super-duper-key',
+                    $keyName => $keyValue,
                     'api' => 'json-api',
                     'consumerName' => 'My super duper name',
                 ],
