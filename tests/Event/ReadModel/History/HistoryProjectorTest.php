@@ -259,7 +259,7 @@ class HistoryProjectorTest extends TestCase
                 ),
                 'auth0ClientId',
                 'my-auth0-client-id',
-            ]
+            ],
         ];
     }
 
