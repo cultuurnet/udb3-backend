@@ -31,6 +31,7 @@ class OfferMetadataProjectorTest extends TestCase
     private const OFFER_ID = 'OFFER_ID';
     private const TEST_MAPPING = [
         'udb_api_key' => 'uitdatabank-ui',
+        'auth0_client_id' => 'uitdatabank-ui-auth0'
     ];
 
     /**
@@ -170,10 +171,26 @@ class OfferMetadataProjectorTest extends TestCase
                 ),
                 new OfferMetadata(self::OFFER_ID, 'uitdatabank-ui'),
             ],
+            'with auth0 client id' => [
+                new Metadata(
+                    [
+                        'auth_api_client_id' => 'auth0_client_id',
+                    ]
+                ),
+                new OfferMetadata(self::OFFER_ID, 'uitdatabank-ui-auth0'),
+            ],
             'with other api key' => [
                 new Metadata(
                     [
                         'auth_api_key' => 'other-api-key',
+                    ]
+                ),
+                new OfferMetadata(self::OFFER_ID, 'other'),
+            ],
+            'with other auth0 client id' => [
+                new Metadata(
+                    [
+                        'auth_api_client_id' => 'other_auth0_client_id-api-key',
                     ]
                 ),
                 new OfferMetadata(self::OFFER_ID, 'other'),
