@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
-use ValueObjects\StringLiteral\StringLiteral;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class JwtDecoderService implements JwtDecoderServiceInterface
+class JwtBaseValidator implements JwtValidator
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
-
     /**
      * @var Signer
      */
@@ -42,13 +37,11 @@ class JwtDecoderService implements JwtDecoderServiceInterface
      * @param string[] $validIssuers
      */
     public function __construct(
-        Parser $parser,
         Signer $signer,
         Key $publicKey,
         array $requiredClaims = [],
         array $validIssuers = []
     ) {
-        $this->parser = $parser;
         $this->signer = $signer;
         $this->publicKey = $publicKey;
         $this->requiredClaims = $requiredClaims;
@@ -67,57 +60,61 @@ class JwtDecoderService implements JwtDecoderServiceInterface
         }
     }
 
-    public function parse(StringLiteral $tokenString): Udb3Token
+    public function validateClaims(Token $token): void
     {
-        try {
-            $token = $this->parser->parse($tokenString->toNative());
-            return new Udb3Token($token);
-        } catch (\InvalidArgumentException $e) {
-            throw new JwtParserException($e);
-        }
+        $this->validateTimeSensitiveClaims($token);
+        $this->validateIssuer($token);
+        $this->validateRequiredClaims($token);
     }
 
     /**
      * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
      * the past.
      */
-    public function validateTimeSensitiveClaims(Udb3Token $udb3Token): bool
+    private function validateTimeSensitiveClaims(Token $token): void
     {
         // Use the built-in validation provided by Lcobucci without any extra validation data.
         // This will automatically validate the time-sensitive claims.
         // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
         // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        return $udb3Token->jwtToken()->validate(new ValidationData(null, 30));
+        if (!$token->validate(new ValidationData(null, 30))) {
+            throw new AuthenticationException(
+                'Token expired (or not yet usable).'
+            );
+        }
     }
 
-    public function validateRequiredClaims(Udb3Token $udb3Token): bool
+    private function validateRequiredClaims(Token $token): void
     {
         foreach ($this->requiredClaims as $claim) {
-            if (!$udb3Token->jwtToken()->hasClaim($claim)) {
-                return false;
+            if (!$token->hasClaim($claim)) {
+                throw new AuthenticationException(
+                    'Token is missing one of its required claims.'
+                );
             }
         }
-
-        return true;
     }
 
-    public function validateIssuer(Udb3Token $udb3Token): bool
+    private function validateIssuer(Token $token): void
     {
-        $jwt = $udb3Token->jwtToken();
-
-        if (!$jwt->hasClaim('iss')) {
-            return false;
+        if (!$token->hasClaim('iss') || !in_array($token->getClaim('iss'), $this->validIssuers, true)) {
+            throw new AuthenticationException(
+                'Token is not issued by a valid issuer.'
+            );
         }
-
-        $issuer = $jwt->getClaim('iss');
-        return in_array($issuer, $this->validIssuers, true);
     }
 
-    public function verifySignature(Udb3Token $udb3Token): bool
+    public function verifySignature(Token $token): void
     {
-        return $udb3Token->jwtToken()->verify(
+        $isVerified = $token->verify(
             $this->signer,
             $this->publicKey
         );
+
+        if (!$isVerified) {
+            throw new AuthenticationException(
+                'Token signature verification failed. The token is likely forged or manipulated.'
+            );
+        }
     }
 }

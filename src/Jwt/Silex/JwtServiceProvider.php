@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Silex;
 
+use CultuurNet\UDB3\Jwt\JwtV2Validator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
-use CultuurNet\UDB3\Jwt\FallbackJwtDecoder;
-use CultuurNet\UDB3\Jwt\JwtDecoderService;
+use CultuurNet\UDB3\Jwt\JwtBaseValidator;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
@@ -20,44 +20,36 @@ class JwtServiceProvider implements ServiceProviderInterface
     {
         $app['security.authentication_listener.factory.jwt'] = $app->protect(
             function ($name, $options) use ($app) {
-                $app['security.token_decoder.' . $name . '.jwt'] = $app->share(
-                    function () use ($options) {
-                        return new FallbackJwtDecoder(
-                            new JwtDecoderService(
-                                new Parser(),
-                                new Sha256(),
-                                new Key($options['uitid']['public_key']),
-                                $options['uitid']['required_claims'],
-                                $options['uitid']['valid_issuers']
-                            ),
-                            new JwtDecoderService(
-                                new Parser(),
-                                new Sha256(),
-                                new Key($options['auth0']['public_key']),
-                                $options['auth0']['required_claims'],
-                                $options['auth0']['valid_issuers']
-                            )
-                        );
-                    }
-                );
-
                 // define the authentication provider object
                 $app['security.authentication_provider.' . $name . '.jwt'] = $app->share(
-                    function () use ($app, $name) {
+                    function () use ($app, $options) {
                         return new JwtAuthenticationProvider(
-                            $app['security.token_decoder.' . $name . '.jwt'],
-                            $app['config']['jwt']['auth0']['jwt_provider_client_id']
+                            new JwtBaseValidator(
+                                new Sha256(),
+                                new Key($options['v1']['public_key']),
+                                $options['v1']['required_claims'],
+                                $options['v1']['valid_issuers']
+                            ),
+                            new JwtV2Validator(
+                                new JwtBaseValidator(
+                                    new Sha256(),
+                                    new Key($options['v2']['public_key']),
+                                    $options['v2']['required_claims'],
+                                    $options['v2']['valid_issuers']
+                                ),
+                                $app['config']['jwt']['v2']['jwt_provider_client_id']
+                            )
                         );
                     }
                 );
 
                 // define the authentication listener object
                 $app['security.authentication_listener.' . $name . '.jwt'] = $app->share(
-                    function () use ($app, $name) {
+                    function () use ($app) {
                         return new JwtListener(
                             $app['security.token_storage'],
                             $app['security.authentication_manager'],
-                            $app['security.token_decoder.' . $name . '.jwt']
+                            new Parser()
                         );
                     }
                 );

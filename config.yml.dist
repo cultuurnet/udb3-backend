@@ -108,23 +108,25 @@ search_proxy:
   redirect_port: 80
 
 jwt:
-  uitid:
+  v1:
     keys:
       public:
         file: public.pem
     valid_issuers:
       - http://culudb-jwt-provider.dev
-  auth0:
+  v2:
     keys:
       public:
         file: public-auth0.pem
     valid_issuers:
       - https://publiq-acc.eu.auth0.com/
       - https://account-acc.uitid.be/
-    domain: publiq-acc.eu.auth0.com
-    client_id:
-    client_secret:
     jwt_provider_client_id:
+
+auth0:
+  domain: publiq-acc.eu.auth0.com
+  client_id:
+  client_secret:
 
 api_key:
   group_id: ***

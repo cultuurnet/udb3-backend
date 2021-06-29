@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use CultuurNet\UDB3\Jwt\JwtDecoderServiceInterface;
-use CultuurNet\UDB3\Jwt\Udb3Token;
+use CultuurNet\UDB3\Jwt\JwtValidator;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -13,21 +12,21 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class JwtAuthenticationProvider implements AuthenticationProviderInterface
 {
     /**
-     * @var JwtDecoderServiceInterface
+     * @var JwtValidator
      */
-    private $decoderService;
+    private $v1JwtValidator;
 
     /**
-     * @var string
+     * @var JwtValidator
      */
-    private $jwtProviderClientId;
+    private $v2JwtValidator;
 
     public function __construct(
-        JwtDecoderServiceInterface $decoderService,
-        string $jwtProviderClientId
+        JwtValidator $v1JwtValidator,
+        JwtValidator $v2JwtValidator
     ) {
-        $this->decoderService = $decoderService;
-        $this->jwtProviderClientId = $jwtProviderClientId;
+        $this->v1JwtValidator = $v1JwtValidator;
+        $this->v2JwtValidator = $v2JwtValidator;
     }
 
     /**
@@ -50,57 +49,29 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        $jwt = $token->getCredentials();
+        $udb3Token = $token->getCredentials();
 
-        if (!$this->decoderService->verifySignature($jwt)) {
+        $validV1Signature = false;
+        $validV2Signature = false;
+
+        try {
+            $this->v1JwtValidator->verifySignature($udb3Token->jwtToken());
+            $validV1Signature = true;
+        } catch (AuthenticationException $e) {
+            $this->v2JwtValidator->verifySignature($udb3Token->jwtToken());
+            $validV2Signature = true;
+        }
+
+        if (!$validV1Signature && !$validV2Signature) {
             throw new AuthenticationException(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );
         }
 
-        if (!$this->decoderService->validateTimeSensitiveClaims($jwt)) {
-            throw new AuthenticationException(
-                'Token expired (or not yet usable).'
-            );
-        }
+        $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        if (!$this->decoderService->validateRequiredClaims($jwt)) {
-            throw new AuthenticationException(
-                'Token is missing one of its required claims.'
-            );
-        }
+        $validator->validateClaims($udb3Token->jwtToken());
 
-        if (!$this->decoderService->validateIssuer($jwt)) {
-            throw new AuthenticationException(
-                'Token is not issued by a valid issuer.'
-            );
-        }
-
-        if ($jwt->isAccessToken()) {
-            $this->validateAccessToken($jwt);
-        } else {
-            $this->validateIdToken($jwt);
-        }
-
-        return new JwtUserToken($jwt, true);
-    }
-
-    private function validateAccessToken(Udb3Token $jwt): void
-    {
-        if (!$jwt->canUseEntryAPI()) {
-            throw new AuthenticationException(
-                'The given token and its related client are not allowed to access EntryAPI.',
-                403
-            );
-        }
-    }
-
-    private function validateIdToken(Udb3Token $jwt): void
-    {
-        if (!$jwt->audienceContains($this->jwtProviderClientId)) {
-            throw new AuthenticationException(
-                'Only legacy id tokens are supported. Please use an access token instead.'
-            );
-        }
+        return new JwtUserToken($udb3Token, true);
     }
 }

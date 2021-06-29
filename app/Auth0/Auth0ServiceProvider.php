@@ -23,9 +23,9 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
                 $provider = new Auth0ManagementTokenProvider(
                     new Auth0ManagementTokenGenerator(
                         new Client(),
-                        $app['config']['jwt']['auth0']['client_id'],
-                        $app['config']['jwt']['auth0']['domain'],
-                        $app['config']['jwt']['auth0']['client_secret']
+                        $app['config']['auth0']['client_id'],
+                        $app['config']['auth0']['domain'],
+                        $app['config']['auth0']['client_secret']
                     ),
                     new CacheRepository(
                         $app['cache']('auth0-management-token')
@@ -41,7 +41,7 @@ final class Auth0ServiceProvider implements ServiceProviderInterface
                 return new Auth0UserIdentityResolver(
                     new Management(
                         $app['auth0.management-token'],
-                        $app['config']['jwt']['auth0']['domain']
+                        $app['config']['auth0']['domain']
                     )
                 );
             }

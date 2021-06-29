@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
-use CultuurNet\UDB3\Jwt\JwtParserException;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
@@ -41,7 +40,6 @@ final class ErrorLogger
         MethodNotAllowedHttpException::class,
         EventHasTicketSalesException::class,
         MediaObjectNotFoundException::class,
-        JwtParserException::class,
         DocumentDoesNotExist::class,
         NotWellFormedException::class,
         BadRequestHttpException::class,
