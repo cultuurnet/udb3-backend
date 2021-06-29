@@ -26,6 +26,11 @@ class JsonWebToken extends AbstractToken
         $this->jwt = $jwt;
     }
 
+    public function authenticate(): JsonWebToken
+    {
+        return new self($this->getCredentials(), true);
+    }
+
     public function getUserId(): string
     {
         if ($this->jwt->hasClaim('uid')) {

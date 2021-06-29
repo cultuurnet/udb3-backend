@@ -23,8 +23,8 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_can_be_set_as_authenticated(): void
     {
-        $jwt = JsonWebTokenFactory::createWithClaims([]);
-        $jwt = new JsonWebToken($jwt->getCredentials(), true);
+        $jwt = JsonWebTokenFactory::createWithClaims([])
+            ->authenticate();
         $this->assertTrue($jwt->isAuthenticated());
     }
 

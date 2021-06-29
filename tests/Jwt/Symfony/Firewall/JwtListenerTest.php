@@ -104,7 +104,7 @@ class JwtListenerTest extends TestCase
     {
         $token = JsonWebTokenFactory::createWithClaims([]);
         $tokenString = (string) $token->getCredentials();
-        $authenticatedToken = new JsonWebToken($token->getCredentials(), true);
+        $authenticatedToken = $token->authenticate();
 
         $request = new Request(
             [],

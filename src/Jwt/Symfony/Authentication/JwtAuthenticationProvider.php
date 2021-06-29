@@ -42,7 +42,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function authenticate(TokenInterface $token)
     {
-        /* @var JsonWebToken $token */
+        /** @var JsonWebToken $token */
         if (!$this->supports($token)) {
             throw new AuthenticationException(
                 'Token type ' . get_class($token) . ' not supported.'
@@ -70,6 +70,6 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator->validateClaims($token);
 
-        return new JsonWebToken($token->getCredentials(), true);
+        return $token->authenticate();
     }
 }
