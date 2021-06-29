@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtValidator;
 use Lcobucci\JWT\Claim\Basic;
-use Lcobucci\JWT\Token as Jwt;
+use Lcobucci\JWT\Token;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -54,7 +54,7 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->assertTrue(
             $this->authenticationProvider->supports(
                 new JsonWebToken(
-                    new Jwt()
+                    new Token()
                 )
             )
         );
@@ -80,7 +80,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_throws_an_exception_when_the_jwt_signature_is_invalid()
     {
-        $token = new JsonWebToken(new Jwt());
+        $token = new JsonWebToken(new Token());
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
@@ -102,7 +102,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_calls_the_validation_methods_on_the_v1_validator_if_the_signature_is_v1(): void
     {
-        $token = new JsonWebToken(new Jwt());
+        $token = new JsonWebToken(new Token());
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
@@ -124,7 +124,7 @@ class JwtAuthenticationProviderTest extends TestCase
     public function it_calls_the_claim_validation_method_on_the_v2_validator_if_the_signature_is_v2(): void
     {
         $token = new JsonWebToken(
-            new Jwt(
+            new Token(
                 ['alg' => 'none'],
                 [
                     'azp' => new Basic('azp', 'bla'),
@@ -156,7 +156,7 @@ class JwtAuthenticationProviderTest extends TestCase
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
     {
         $token = new JsonWebToken(
-            new Jwt(
+            new Token(
                 ['alg' => 'none'],
                 [
                     'azp' => new Basic('azp', 'Pwf7f2pSU3FsCCbGZz0gexx8NWOW9Hj9'),

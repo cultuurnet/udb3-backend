@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Token as Jwt;
+use Lcobucci\JWT\Token;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,7 +103,7 @@ class JwtListenerTest extends TestCase
     {
         $tokenString = 'headers.payload.signature';
 
-        $jwt = new Jwt(
+        $jwt = new Token(
             ['alg' => 'none'],
             [],
             null,
@@ -151,7 +151,7 @@ class JwtListenerTest extends TestCase
     {
         $tokenString = 'headers.payload.signature';
 
-        $jwt = new Jwt(
+        $jwt = new Token(
             ['alg' => 'none'],
             [],
             null,
