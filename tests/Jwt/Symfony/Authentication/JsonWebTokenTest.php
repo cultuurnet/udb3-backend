@@ -10,7 +10,7 @@ use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\TestCase;
 
-class JwtUserTokenTest extends TestCase
+class JsonWebTokenTest extends TestCase
 {
     /**
      * @test
