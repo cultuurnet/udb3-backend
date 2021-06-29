@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Jwt\JwtV2Validator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
 use CultuurNet\UDB3\Jwt\JwtBaseValidator;
-use Lcobucci\JWT\Parser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use Lcobucci\JWT\Token;
 use PHPUnit\Framework\TestCase;
 
 class JsonWebTokenTest extends TestCase
