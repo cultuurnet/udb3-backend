@@ -66,10 +66,6 @@ class JwtBaseValidator implements JwtValidator
         $this->validateRequiredClaims($token);
     }
 
-    /**
-     * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
-     * the past.
-     */
     private function validateTimeSensitiveClaims(JsonWebToken $token): void
     {
         if (!$token->isUsableAtCurrentTime()) {
