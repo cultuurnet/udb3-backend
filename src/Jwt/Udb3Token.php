@@ -12,6 +12,8 @@ use Lcobucci\JWT\Token;
  */
 final class Udb3Token
 {
+    private const CLIENTS = '@clients';
+
     /**
      * @var Token
      */
@@ -46,6 +48,18 @@ final class Udb3Token
         // if it has no specific aud. However we require our integrators to always include the "https://api.publiq.be"
         // aud, so access tokens should always have an azp in our case.
         return !is_null($this->getClientId());
+
+    public function isClientToken(): bool
+    {
+        if ($this->getClientId() === null) {
+            return false;
+        }
+
+        if (!$this->token->hasClaim('sub')) {
+            return false;
+        }
+
+        return $this->endsWith($this->token->getClaim('sub'), self::CLIENTS);
     }
 
     public function getClientId(): ?string
