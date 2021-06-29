@@ -7,44 +7,25 @@ namespace CultuurNet\UDB3\Http\Management;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Claim\Basic as BasicClaim;
-use Lcobucci\JWT\Token as JwtToken;
-use PHPUnit\Framework\MockObject\MockBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
+use Lcobucci\JWT\Token;
 
 trait TokenMockingTrait
 {
     /**
      * @param string $userId
      *
-     * @return JsonWebToken|MockObject
+     * @return JsonWebToken
      */
-    private function createMockToken($userId)
+    private function createMockToken($userId): JsonWebToken
     {
-        /** @var MockBuilder $mockBuilder */
-        $mockBuilder = $this->getMockBuilder(JsonWebToken::class);
-
-        /** @var JsonWebToken|MockObject $token */
-        $token = $mockBuilder
-            ->setMethods(['isAuthenticated', 'getCredentials'])
-            ->setMockClassName('JwtUserToken')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $jwtCredentials = new Udb3Token(
-            new JwtToken(
-                ['alg' => 'none'],
-                ['uid' => new BasicClaim('uid', $userId)]
-            )
+        return new JsonWebToken(
+            new Udb3Token(
+                new Token(
+                    ['alg' => 'none'],
+                    ['uid' => new BasicClaim('uid', $userId)]
+                )
+            ),
+            true
         );
-
-        $token
-            ->method('isAuthenticated')
-            ->willReturn(true);
-
-        $token
-            ->method('getCredentials')
-            ->willReturn($jwtCredentials);
-
-        return $token;
     }
 }
