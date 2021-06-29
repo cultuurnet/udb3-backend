@@ -17,7 +17,7 @@ final class JsonWebTokenFactory
             $builder = $builder->withClaim($claim, $value);
         }
         return new JsonWebToken(
-            $builder->getToken(
+            (string) $builder->getToken(
                 new Sha256(),
                 new Key(file_get_contents(__DIR__ . '/../../samples/private.pem'), 'secret')
             )
@@ -27,7 +27,7 @@ final class JsonWebTokenFactory
     public static function createWithInvalidSignature(): JsonWebToken
     {
         return new JsonWebToken(
-            (new Builder())->getToken(
+            (string) (new Builder())->getToken(
                 new Sha256(),
                 new Key(file_get_contents(__DIR__ . '/../../samples/private-invalid.pem'))
             )

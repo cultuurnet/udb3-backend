@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
+use InvalidArgumentException;
+use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
@@ -15,20 +17,30 @@ class JsonWebToken extends AbstractToken
     private const TIME_LEEWAY = 30;
 
     /**
+     * @var string
+     */
+    private $jwt;
+
+    /**
      * @var Token
      */
     private $token;
 
-    public function __construct(Token $token, bool $authenticated = false)
+    /**
+     * @throws InvalidArgumentException
+     *   If the provided JWT string cannot be parsed
+     */
+    public function __construct(string $jwt, bool $authenticated = false)
     {
         parent::__construct();
         $this->setAuthenticated($authenticated);
-        $this->token = $token;
+        $this->jwt = $jwt;
+        $this->token = (new Parser())->parse($jwt);
     }
 
     public function authenticate(): JsonWebToken
     {
-        return new self($this->getCredentials(), true);
+        return new self((string) $this->getCredentials(), true);
     }
 
     public function getUserId(): string

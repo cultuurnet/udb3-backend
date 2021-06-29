@@ -54,14 +54,12 @@ class JwtListener implements ListenerInterface
         }
 
         try {
-            $jwt = $this->parser->parse($jwtString);
+            $token = new JsonWebToken($jwtString);
         } catch (InvalidArgumentException $e) {
             $response = new UnauthorizedResponse('Could not parse the given JWT.');
             $event->setResponse($response);
             return;
         }
-
-        $token = new JsonWebToken($jwt);
 
         try {
             $authenticatedToken = $this->authenticationManager->authenticate($token);
