@@ -74,14 +74,14 @@ final class JwtV2Validator implements JwtValidator
 
     private function validateIdToken(Udb3Token $jwt): void
     {
-        if (!$this->audienceContains($jwt, $this->v2JwtProviderAuth0ClientId)) {
+        if (!$this->isFromJwtProviderV2($jwt)) {
             throw new AuthenticationException(
                 'Only legacy id tokens are supported. Please use an access token instead.'
             );
         }
     }
 
-    private function audienceContains(Udb3Token $jwt, string $audience): bool
+    private function isFromJwtProviderV2(Udb3Token $jwt): bool
     {
         if (!$jwt->jwtToken()->hasClaim('aud')) {
             return false;
@@ -93,6 +93,6 @@ final class JwtV2Validator implements JwtValidator
             $aud = [$aud];
         }
 
-        return in_array($audience, $aud, true);
+        return in_array($this->v2JwtProviderAuth0ClientId, $aud, true);
     }
 }
