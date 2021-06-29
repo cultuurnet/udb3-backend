@@ -47,7 +47,16 @@ final class Udb3Token
         // This does not 100% guarantee that the token is an access token, because an access token does not have an azp
         // if it has no specific aud. However we require our integrators to always include the "https://api.publiq.be"
         // aud, so access tokens should always have an azp in our case.
-        return !is_null($this->getClientId());
+        if ($this->getClientId() === null) {
+            return false;
+        }
+
+        if (!$this->token->hasClaim('sub')) {
+            return true;
+        }
+
+        return !$this->endsWith($this->token->getClaim('sub'), self::CLIENTS);
+    }
 
     public function isClientToken(): bool
     {
