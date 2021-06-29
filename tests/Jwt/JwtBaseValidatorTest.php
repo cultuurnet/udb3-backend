@@ -5,28 +5,16 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class JwtBaseValidatorTest extends TestCase
 {
     /**
-     * @var Builder
+     * @var JsonWebTokenFactory
      */
-    private $builder;
-
-    /**
-     * @var Sha256
-     */
-    private $signer;
-
-    /**
-     * @var Key
-     */
-    private $privateKey;
+    private $tokenFactory;
 
     /**
      * @var JwtBaseValidator
@@ -35,9 +23,10 @@ class JwtBaseValidatorTest extends TestCase
 
     public function setUp()
     {
-        $this->builder = new Builder();
-        $this->signer = new Sha256();
-        $this->privateKey = new Key(file_get_contents(__DIR__ . '/samples/private.pem'), 'secret');
+        $this->tokenFactory = new JsonWebTokenFactory(
+            file_get_contents(__DIR__ . '/samples/private.pem'),
+            'secret'
+        );
 
         $this->validator = new JwtBaseValidator(
             file_get_contents(__DIR__ . '/samples/public.pem'),
@@ -46,18 +35,9 @@ class JwtBaseValidatorTest extends TestCase
         );
     }
 
-    private function createTokenWithClaims(array $claims): JsonWebToken
-    {
-        $builder = clone $this->builder;
-        foreach ($claims as $claim => $value) {
-            $builder = $builder->withClaim($claim, $value);
-        }
-        return new JsonWebToken($builder->getToken($this->signer, $this->privateKey));
-    }
-
     private function createValidToken(): JsonWebToken
     {
-        return $this->createTokenWithClaims(
+        return $this->tokenFactory->createWithClaims(
             [
                 'iat' => time() - 3600,
                 'nbf' => time() - 3600,
@@ -73,7 +53,7 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_token_is_expired(): void
     {
-        $token = $this->createTokenWithClaims(
+        $token = $this->tokenFactory->createWithClaims(
             [
                 'iat' => time() - 3600,
                 'nbf' => time() - 3600,
@@ -90,7 +70,7 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_issuer_is_missing(): void
     {
-        $token = $this->createTokenWithClaims(
+        $token = $this->tokenFactory->createWithClaims(
             [
                 'iat' => time() - 3600,
                 'nbf' => time() - 3600,
@@ -107,7 +87,7 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_issuer_is_invalid(): void
     {
-        $token = $this->createTokenWithClaims(
+        $token = $this->tokenFactory->createWithClaims(
             [
                 'iat' => time() - 3600,
                 'nbf' => time() - 3600,
@@ -125,7 +105,7 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_a_required_claim_is_missing(): void
     {
-        $token = $this->createTokenWithClaims(
+        $token = $this->tokenFactory->createWithClaims(
             [
                 'iat' => time() - 3600,
                 'nbf' => time() - 3600,
@@ -143,7 +123,7 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_does_not_throw_if_all_claims_are_valid(): void
     {
-        $token = $this->createTokenWithClaims(
+        $token = $this->tokenFactory->createWithClaims(
             [
                 'iat' => time() - 3600,
                 'nbf' => time() - 3600,
@@ -162,13 +142,8 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_signature_is_invalid(): void
     {
-        $token = new JsonWebToken(
-            $this->builder->getToken(
-                $this->signer,
-                new Key(file_get_contents(__DIR__ . '/samples/private-invalid.pem'))
-            )
-        );
-
+        $factory = new JsonWebTokenFactory(file_get_contents(__DIR__ . '/samples/private-invalid.pem'));
+        $token = $factory->createWithClaims([]);
         $this->expectException(AuthenticationException::class);
         $this->validator->verifySignature($token);
     }
