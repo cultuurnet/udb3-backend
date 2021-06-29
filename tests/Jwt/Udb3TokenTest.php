@@ -85,7 +85,6 @@ final class Udb3TokenTest extends TestCase
         );
 
         $this->assertEquals('jndYaQY9BSa9W7FQqDEGI0WEi4KlU6vJ', $token->getClientId());
-        $this->assertTrue($token->isAccessToken());
     }
 
     /**
@@ -103,7 +102,6 @@ final class Udb3TokenTest extends TestCase
         );
 
         $this->assertNull($token->getClientId());
-        $this->assertFalse($token->isAccessToken());
     }
 
     /**

@@ -35,11 +35,19 @@ final class JwtV2Validator implements JwtValidator
         $this->baseValidator->validateClaims($token);
 
         $udb3Token = new Udb3Token($token);
-        if ($udb3Token->isAccessToken()) {
+        if ($this->isAccessToken($udb3Token)) {
             $this->validateAccessToken($udb3Token);
         } else {
             $this->validateIdToken($udb3Token);
         }
+    }
+
+    private function isAccessToken(Udb3Token $jwt): bool
+    {
+        // This does not 100% guarantee that the token is an access token, because an access token does not have an azp
+        // if it has no specific aud. However we require our integrators to always include the "https://api.publiq.be"
+        // aud, so access tokens should always have an azp in our case.
+        return !is_null($jwt->getClientId());
     }
 
     private function validateAccessToken(Udb3Token $jwt): void
