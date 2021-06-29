@@ -5,40 +5,37 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 final class JsonWebTokenFactory
 {
-    /**
-     * @var Builder
-     */
-    private $builder;
-
-    /**
-     * @var Signer
-     */
-    private $signer;
-
-    /**
-     * @var Key
-     */
-    private $key;
-
-    public function __construct(string $privateKey, ?string $passphrase = null)
+    public static function createWithClaims(array $claims): JsonWebToken
     {
-        $this->builder = new Builder();
-        $this->signer = new Sha256();
-        $this->key = new Key($privateKey, $passphrase);
-    }
-
-    public function createWithClaims(array $claims): JsonWebToken
-    {
-        $builder = clone $this->builder;
+        $builder = new Builder();
         foreach ($claims as $claim => $value) {
             $builder = $builder->withClaim($claim, $value);
         }
-        return new JsonWebToken($builder->getToken($this->signer, $this->key));
+        return new JsonWebToken(
+            $builder->getToken(
+                new Sha256(),
+                new Key(file_get_contents(__DIR__ . '/../../samples/private.pem'), 'secret')
+            )
+        );
+    }
+
+    public static function createWithInvalidSignature(): JsonWebToken
+    {
+        return new JsonWebToken(
+            (new Builder())->getToken(
+                new Sha256(),
+                new Key(file_get_contents(__DIR__ . '/../../samples/private-invalid.pem'))
+            )
+        );
+    }
+
+    public static function getPublicKey(): string
+    {
+        return file_get_contents(__DIR__ . '/../../samples/public.pem');
     }
 }
