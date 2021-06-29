@@ -77,13 +77,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         if (!$this->jwt) {
             return ['id' => 'anonymous'];
         }
-
-        return [
-            'id' => $this->jwt->getUserId(),
-            'uid' => $this->jwt->getCredentials()->getClaim('uid', 'null'),
-            'uitidv1id' => $this->jwt->getCredentials()->getClaim('https://publiq.be/uitidv1id', 'null'),
-            'sub' => $this->jwt->getCredentials()->getClaim('sub', 'null'),
-        ];
+        return $this->jwt->toSentryTags();
     }
 
     public function handleBatch(array $records): void
