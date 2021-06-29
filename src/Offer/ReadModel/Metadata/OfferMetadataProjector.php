@@ -80,11 +80,11 @@ class OfferMetadataProjector implements EventListener
     {
         $properties = $metadata->serialize();
 
-        if (!isset($properties['auth_api_key'])) {
+        if (!isset($properties['auth_api_key']) && !isset($properties['auth_api_client_id'])) {
             return 'unknown';
         }
 
-        $apiKey = $properties['auth_api_key'];
+        $apiKey = $properties['auth_api_key'] ?? $properties['auth_api_client_id'];
         if (!array_key_exists($apiKey, $this->apiKeyConsumerMapping)) {
             return 'other';
         }
