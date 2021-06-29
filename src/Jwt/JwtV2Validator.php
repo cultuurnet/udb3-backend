@@ -36,9 +36,9 @@ final class JwtV2Validator implements JwtValidator
 
         $udb3Token = new Udb3Token($token);
         if ($this->isAccessToken($udb3Token)) {
-            $this->validateAccessToken($udb3Token);
+            $this->validateAccessToken($token);
         } else {
-            $this->validateIdToken($udb3Token);
+            $this->validateIdToken($token);
         }
     }
 
@@ -50,7 +50,7 @@ final class JwtV2Validator implements JwtValidator
         return !is_null($jwt->getClientId());
     }
 
-    private function validateAccessToken(Udb3Token $jwt): void
+    private function validateAccessToken(Token $jwt): void
     {
         if (!$this->canUseEntryApi($jwt)) {
             throw new AuthenticationException(
@@ -60,9 +60,9 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function canUseEntryApi(Udb3Token $jwt): bool
+    private function canUseEntryApi(Token $jwt): bool
     {
-        $apis = $jwt->jwtToken()->getClaim('https://publiq.be/publiq-apis', '');
+        $apis = $jwt->getClaim('https://publiq.be/publiq-apis', '');
 
         if (!is_string($apis)) {
             return false;
@@ -72,7 +72,7 @@ final class JwtV2Validator implements JwtValidator
         return in_array('entry', $apis, true);
     }
 
-    private function validateIdToken(Udb3Token $jwt): void
+    private function validateIdToken(Token $jwt): void
     {
         // Only accept id tokens if they were provided by the JWT provider v2.
         // If an id token from another Auth0 client is used, ask to use the related access token instead.
@@ -85,14 +85,14 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function isFromJwtProviderV2(Udb3Token $jwt): bool
+    private function isFromJwtProviderV2(Token $jwt): bool
     {
-        if (!$jwt->jwtToken()->hasClaim('aud')) {
+        if (!$jwt->hasClaim('aud')) {
             return false;
         }
 
         // The aud claim can be a string or an array. Convert string to array with one value for consistency.
-        $aud = $jwt->jwtToken()->getClaim('aud');
+        $aud = $jwt->getClaim('aud');
         if (is_string($aud)) {
             $aud = [$aud];
         }
