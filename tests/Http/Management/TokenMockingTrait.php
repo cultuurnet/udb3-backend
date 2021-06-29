@@ -11,6 +11,6 @@ trait TokenMockingTrait
 {
     private function createMockToken(string $userId): JsonWebToken
     {
-        return JsonWebTokenFactory::createWithClaims(['uid' => $userId]);
+        return JsonWebTokenFactory::createWithClaims(['uid' => $userId])->authenticate();
     }
 }
