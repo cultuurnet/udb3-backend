@@ -73,6 +73,23 @@ final class Udb3TokenTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_trimmed_clients_sub_claim_as_id(): void
+    {
+        $token = new Udb3Token(
+            new Token(
+                ['alg' => 'none'],
+                [
+                    'sub' => new Basic('sub', 'ce6abd8f-b1e2-4bce-9dde-08af64438e87@clients'),
+                ]
+            )
+        );
+
+        $this->assertEquals('client|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $token->id());
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_client_id_from_azp_claim_if_present(): void
     {
         $token = new Udb3Token(
