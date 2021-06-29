@@ -44,19 +44,6 @@ class JsonWebToken extends AbstractToken
         return null;
     }
 
-    public function hasClaim(string $name): bool
-    {
-        return $this->jwt->hasClaim($name);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getClaim(string $name, $default = null)
-    {
-        return $this->jwt->getClaim($name, $default);
-    }
-
     public function hasClaims(array $names): bool
     {
         foreach ($names as $name) {
