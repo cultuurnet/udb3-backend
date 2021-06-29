@@ -87,7 +87,7 @@ class JwtBaseValidator implements JwtValidator
     private function validateRequiredClaims(JsonWebToken $token): void
     {
         foreach ($this->requiredClaims as $claim) {
-            if (!$token->getCredentials()->hasClaim($claim)) {
+            if (!$token->hasClaim($claim)) {
                 throw new AuthenticationException(
                     'Token is missing one of its required claims.'
                 );
@@ -97,7 +97,7 @@ class JwtBaseValidator implements JwtValidator
 
     private function validateIssuer(JsonWebToken $token): void
     {
-        if (!$token->getCredentials()->hasClaim('iss') || !in_array($token->getCredentials()->getClaim('iss'), $this->validIssuers, true)) {
+        if (!$token->hasClaim('iss') || !in_array($token->getClaim('iss'), $this->validIssuers, true)) {
             throw new AuthenticationException(
                 'Token is not issued by a valid issuer.'
             );

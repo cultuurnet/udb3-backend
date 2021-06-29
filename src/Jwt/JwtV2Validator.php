@@ -46,7 +46,7 @@ final class JwtV2Validator implements JwtValidator
         // This does not 100% guarantee that the token is an access token, because an access token does not have an azp
         // if it has no specific aud. However we require our integrators to always include the "https://api.publiq.be"
         // aud, so access tokens should always have an azp in our case.
-        return $jwt->getCredentials()->hasClaim('azp');
+        return !is_null($jwt->getClientId());
     }
 
     private function validateAccessToken(JsonWebToken $jwt): void
@@ -61,7 +61,7 @@ final class JwtV2Validator implements JwtValidator
 
     private function canUseEntryApi(JsonWebToken $jwt): bool
     {
-        $apis = $jwt->getCredentials()->getClaim('https://publiq.be/publiq-apis', '');
+        $apis = $jwt->getClaim('https://publiq.be/publiq-apis', '');
 
         if (!is_string($apis)) {
             return false;
@@ -86,12 +86,12 @@ final class JwtV2Validator implements JwtValidator
 
     private function isFromJwtProviderV2(JsonWebToken $jwt): bool
     {
-        if (!$jwt->getCredentials()->hasClaim('aud')) {
+        if (!$jwt->hasClaim('aud')) {
             return false;
         }
 
         // The aud claim can be a string or an array. Convert string to array with one value for consistency.
-        $aud = $jwt->getCredentials()->getClaim('aud');
+        $aud = $jwt->getClaim('aud');
         if (is_string($aud)) {
             $aud = [$aud];
         }
