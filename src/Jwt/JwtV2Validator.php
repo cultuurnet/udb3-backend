@@ -51,24 +51,12 @@ final class JwtV2Validator implements JwtValidator
 
     private function validateAccessToken(JsonWebToken $jwt): void
     {
-        if (!$this->canUseEntryApi($jwt)) {
+        if (!$jwt->hasEntryApiInPubliqApisClaim()) {
             throw new AuthenticationException(
                 'The given token and its related client are not allowed to access EntryAPI.',
                 403
             );
         }
-    }
-
-    private function canUseEntryApi(JsonWebToken $jwt): bool
-    {
-        $apis = $jwt->getClaim('https://publiq.be/publiq-apis', '');
-
-        if (!is_string($apis)) {
-            return false;
-        }
-
-        $apis = explode(' ', $apis);
-        return in_array('entry', $apis, true);
     }
 
     private function validateIdToken(JsonWebToken $jwt): void
@@ -77,25 +65,10 @@ final class JwtV2Validator implements JwtValidator
         // If an id token from another Auth0 client is used, ask to use the related access token instead.
         // Don't mention the JWT provider, we don't want to encourage any new usage of it, only support its tokens for
         // backward compatibility in existing integrations (who won't see this error then).
-        if (!$this->isFromJwtProviderV2($jwt)) {
+        if (!$jwt->hasAudience($this->v2JwtProviderAuth0ClientId)) {
             throw new AuthenticationException(
                 'The given token is an id token. Please use an access token instead.'
             );
         }
-    }
-
-    private function isFromJwtProviderV2(JsonWebToken $jwt): bool
-    {
-        if (!$jwt->hasClaim('aud')) {
-            return false;
-        }
-
-        // The aud claim can be a string or an array. Convert string to array with one value for consistency.
-        $aud = $jwt->getClaim('aud');
-        if (is_string($aud)) {
-            $aud = [$aud];
-        }
-
-        return in_array($this->v2JwtProviderAuth0ClientId, $aud, true);
     }
 }
