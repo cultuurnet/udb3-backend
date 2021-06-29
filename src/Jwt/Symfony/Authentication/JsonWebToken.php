@@ -45,8 +45,8 @@ class JsonWebToken extends AbstractToken
         return null;
     }
 
-    public function getCredentials(): Udb3Token
+    public function getCredentials(): Token
     {
-        return new Udb3Token($this->jwt);
+        return new $this->jwt;
     }
 }

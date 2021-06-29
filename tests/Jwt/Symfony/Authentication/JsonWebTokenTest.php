@@ -15,7 +15,7 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_udb3_token_as_credentials(): void
+    public function it_returns_the_token_as_credentials(): void
     {
         $udb3Token = new Udb3Token(
             new Jwt(
@@ -28,7 +28,7 @@ class JsonWebTokenTest extends TestCase
 
         $jwt = new JsonWebToken($udb3Token);
 
-        $this->assertEquals($udb3Token, $jwt->getCredentials());
+        $this->assertEquals($udb3Token->jwtToken(), $jwt->getCredentials());
     }
 
     /**

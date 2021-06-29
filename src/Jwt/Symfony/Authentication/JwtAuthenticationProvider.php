@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtValidator;
+use CultuurNet\UDB3\Jwt\Udb3Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -49,16 +50,14 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        $udb3Token = $token->getCredentials();
-
         $validV1Signature = false;
         $validV2Signature = false;
 
         try {
-            $this->v1JwtValidator->verifySignature($udb3Token->jwtToken());
+            $this->v1JwtValidator->verifySignature($token->getCredentials());
             $validV1Signature = true;
         } catch (AuthenticationException $e) {
-            $this->v2JwtValidator->verifySignature($udb3Token->jwtToken());
+            $this->v2JwtValidator->verifySignature($token->getCredentials());
             $validV2Signature = true;
         }
 
@@ -70,8 +69,8 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        $validator->validateClaims($udb3Token->jwtToken());
+        $validator->validateClaims($token->getCredentials());
 
-        return new JsonWebToken($udb3Token, true);
+        return new JsonWebToken(new Udb3Token($token->getCredentials()), true);
     }
 }

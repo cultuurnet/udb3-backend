@@ -183,7 +183,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $authToken = $this->authenticationProvider->authenticate($token);
 
-        $this->assertEquals($udb3Token, $authToken->getCredentials());
+        $this->assertEquals($udb3Token->jwtToken(), $authToken->getCredentials());
         $this->assertTrue($authToken->isAuthenticated());
     }
 }

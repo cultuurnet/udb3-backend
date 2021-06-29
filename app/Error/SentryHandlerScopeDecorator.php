@@ -80,9 +80,9 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
         return [
             'id' => $this->jwt->getUserId(),
-            'uid' => $this->jwt->getCredentials()->jwtToken()->getClaim('uid', 'null'),
-            'uitidv1id' => $this->jwt->getCredentials()->jwtToken()->getClaim('https://publiq.be/uitidv1id', 'null'),
-            'sub' => $this->jwt->getCredentials()->jwtToken()->getClaim('sub', 'null'),
+            'uid' => $this->jwt->getCredentials()->getClaim('uid', 'null'),
+            'uitidv1id' => $this->jwt->getCredentials()->getClaim('https://publiq.be/uitidv1id', 'null'),
+            'sub' => $this->jwt->getCredentials()->getClaim('sub', 'null'),
         ];
     }
 
