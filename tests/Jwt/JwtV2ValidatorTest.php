@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
