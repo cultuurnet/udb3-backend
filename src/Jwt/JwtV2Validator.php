@@ -35,7 +35,7 @@ final class JwtV2Validator implements JwtValidator
         $this->baseValidator->validateClaims($token);
 
         $udb3Token = new Udb3Token($token);
-        if ($udb3Token->isAccessToken()) {
+        if ($udb3Token->isAccessToken() || $udb3Token->isClientToken()) {
             $this->validateAccessToken($udb3Token);
         } else {
             $this->validateIdToken($udb3Token);

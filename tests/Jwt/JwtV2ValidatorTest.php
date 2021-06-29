@@ -98,9 +98,17 @@ class JwtV2ValidatorTest extends TestCase
      */
     public function it_verifies_the_permission_to_use_entry_api_if_azp_claim_is_present(): void
     {
-        $tokenWithPermission = $this->createTokenWithClaims(
+        $accessTokenWithPermission = $this->createTokenWithClaims(
             [
                 'azp' => 'foobar',
+                'https://publiq.be/publiq-apis' => 'ups entry',
+            ]
+        );
+
+        $clientTokenWithPermission = $this->createTokenWithClaims(
+            [
+                'azp' => 'foobar',
+                'sub' => 'ce6abd8f-b1e2-4bce-9dde-08af64438e87@clients',
                 'https://publiq.be/publiq-apis' => 'ups entry',
             ]
         );
@@ -112,7 +120,10 @@ class JwtV2ValidatorTest extends TestCase
             ]
         );
 
-        $this->v2Validator->validateClaims($tokenWithPermission);
+        $this->v2Validator->validateClaims($accessTokenWithPermission);
+        $this->addToAssertionCount(1);
+
+        $this->v2Validator->validateClaims($clientTokenWithPermission);
         $this->addToAssertionCount(1);
 
         $this->expectException(AuthenticationException::class);
