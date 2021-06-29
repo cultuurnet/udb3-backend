@@ -74,9 +74,13 @@ final class JwtV2Validator implements JwtValidator
 
     private function validateIdToken(Udb3Token $jwt): void
     {
+        // Only accept id tokens if they were provided by the JWT provider v2.
+        // If an id token from another Auth0 client is used, ask to use the related access token instead.
+        // Don't mention the JWT provider, we don't want to encourage any new usage of it, only support its tokens for
+        // backward compatibility in existing integrations (who won't see this error then).
         if (!$this->isFromJwtProviderV2($jwt)) {
             throw new AuthenticationException(
-                'Only legacy id tokens are supported. Please use an access token instead.'
+                'The given token is an id token. Please use an access token instead.'
             );
         }
     }
