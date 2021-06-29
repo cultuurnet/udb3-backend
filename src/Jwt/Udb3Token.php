@@ -84,4 +84,9 @@ final class Udb3Token
         $apis = explode(' ', $apis);
         return in_array('entry', $apis, true);
     }
+
+    private function endsWith(string $haystack, string $needle): bool
+    {
+        return substr($haystack, -strlen($needle)) === $needle;
+    }
 }
