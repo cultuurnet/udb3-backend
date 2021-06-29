@@ -26,11 +26,6 @@ class JwtBaseValidatorTest extends TestCase
     /**
      * @var Key
      */
-    private $publicKey;
-
-    /**
-     * @var Key
-     */
     private $privateKey;
 
     /**
@@ -42,12 +37,10 @@ class JwtBaseValidatorTest extends TestCase
     {
         $this->builder = new Builder();
         $this->signer = new Sha256();
-        $this->publicKey = new Key(file_get_contents(__DIR__ . '/samples/public.pem'));
         $this->privateKey = new Key(file_get_contents(__DIR__ . '/samples/private.pem'), 'secret');
 
         $this->validator = new JwtBaseValidator(
-            $this->signer,
-            $this->publicKey,
+            file_get_contents(__DIR__ . '/samples/public.pem'),
             ['sub'],
             ['valid-issuer-1', 'valid-issuer-2']
         );

@@ -5,19 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use Lcobucci\JWT\Signer;
-use Lcobucci\JWT\Signer\Key;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class JwtBaseValidator implements JwtValidator
 {
     /**
-     * @var Signer
-     */
-    private $signer;
-
-    /**
-     * @var Key
+     * @var string
      */
     private $publicKey;
 
@@ -36,12 +29,10 @@ class JwtBaseValidator implements JwtValidator
      * @param string[] $validIssuers
      */
     public function __construct(
-        Signer $signer,
-        Key $publicKey,
+        string $publicKey,
         array $requiredClaims = [],
         array $validIssuers = []
     ) {
-        $this->signer = $signer;
         $this->publicKey = $publicKey;
         $this->requiredClaims = $requiredClaims;
         $this->validIssuers = $validIssuers;
@@ -95,7 +86,7 @@ class JwtBaseValidator implements JwtValidator
 
     public function verifySignature(JsonWebToken $token): void
     {
-        if (!$token->verifyRsaSha256Signature($this->publicKey->getContent(), $this->publicKey->getPassphrase())) {
+        if (!$token->verifyRsaSha256Signature($this->publicKey)) {
             throw new AuthenticationException(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );

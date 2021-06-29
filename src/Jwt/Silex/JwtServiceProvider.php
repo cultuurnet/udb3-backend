@@ -9,8 +9,6 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
 use CultuurNet\UDB3\Jwt\JwtBaseValidator;
 use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -25,15 +23,13 @@ class JwtServiceProvider implements ServiceProviderInterface
                     function () use ($app, $options) {
                         return new JwtAuthenticationProvider(
                             new JwtBaseValidator(
-                                new Sha256(),
-                                new Key($options['v1']['public_key']),
+                                $options['v1']['public_key'],
                                 $options['v1']['required_claims'],
                                 $options['v1']['valid_issuers']
                             ),
                             new JwtV2Validator(
                                 new JwtBaseValidator(
-                                    new Sha256(),
-                                    new Key($options['v2']['public_key']),
+                                    $options['v2']['public_key'],
                                     $options['v2']['required_claims'],
                                     $options['v2']['valid_issuers']
                                 ),
