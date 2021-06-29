@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Token;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -101,17 +102,9 @@ class JwtListenerTest extends TestCase
      */
     public function it_authenticates_and_stores_valid_tokens()
     {
-        $tokenString = 'headers.payload.signature';
-
-        $jwt = new Token(
-            ['alg' => 'none'],
-            [],
-            null,
-            ['headers', 'payload']
-        );
-
-        $token = new JsonWebToken($jwt);
-        $authenticatedToken = new JsonWebToken($jwt, true);
+        $token = JsonWebTokenFactory::createWithClaims([]);
+        $tokenString = (string) $token->getCredentials();
+        $authenticatedToken = new JsonWebToken($token->getCredentials(), true);
 
         $request = new Request(
             [],
@@ -130,7 +123,7 @@ class JwtListenerTest extends TestCase
         $this->parser->expects($this->once())
             ->method('parse')
             ->with($tokenString)
-            ->willReturn($jwt);
+            ->willReturn($token->getCredentials());
 
         $this->authenticationManager->expects($this->once())
             ->method('authenticate')
@@ -149,16 +142,8 @@ class JwtListenerTest extends TestCase
      */
     public function it_returns_an_unauthorized_response_if_jwt_authentication_fails()
     {
-        $tokenString = 'headers.payload.signature';
-
-        $jwt = new Token(
-            ['alg' => 'none'],
-            [],
-            null,
-            ['headers', 'payload']
-        );
-
-        $token = new JsonWebToken($jwt);
+        $token = JsonWebTokenFactory::createWithClaims([]);
+        $tokenString = (string) $token->getCredentials();
 
         $request = new Request(
             [],
@@ -177,7 +162,7 @@ class JwtListenerTest extends TestCase
         $this->parser->expects($this->once())
             ->method('parse')
             ->with($tokenString)
-            ->willReturn($jwt);
+            ->willReturn($token->getCredentials());
 
         $authenticationException = new AuthenticationException(
             'Authentication failed',

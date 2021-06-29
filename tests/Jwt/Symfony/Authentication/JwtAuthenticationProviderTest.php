@@ -53,9 +53,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->assertTrue(
             $this->authenticationProvider->supports(
-                new JsonWebToken(
-                    new Token()
-                )
+                JsonWebTokenFactory::createWithClaims([])
             )
         );
     }
@@ -80,7 +78,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_throws_an_exception_when_the_jwt_signature_is_invalid()
     {
-        $token = new JsonWebToken(new Token());
+        $token = JsonWebTokenFactory::createWithClaims([]);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
@@ -102,7 +100,7 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_calls_the_validation_methods_on_the_v1_validator_if_the_signature_is_v1(): void
     {
-        $token = new JsonWebToken(new Token());
+        $token = JsonWebTokenFactory::createWithClaims([]);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
@@ -123,14 +121,11 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_calls_the_claim_validation_method_on_the_v2_validator_if_the_signature_is_v2(): void
     {
-        $token = new JsonWebToken(
-            new Token(
-                ['alg' => 'none'],
-                [
-                    'azp' => new Basic('azp', 'bla'),
-                    'https://publiq.be/publiq-apis' =>  new Basic('https://publiq.be/publiq-apis', 'entry'),
-                ]
-            )
+        $token = JsonWebTokenFactory::createWithClaims(
+            [
+                'azp' => 'bla',
+                'https://publiq.be/publiq-apis' => 'entry',
+            ]
         );
 
         $this->v1JwtValidator->expects($this->once())
@@ -155,14 +150,11 @@ class JwtAuthenticationProviderTest extends TestCase
      */
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
     {
-        $token = new JsonWebToken(
-            new Token(
-                ['alg' => 'none'],
-                [
-                    'azp' => new Basic('azp', 'Pwf7f2pSU3FsCCbGZz0gexx8NWOW9Hj9'),
-                    'https://publiq.be/publiq-apis' => new Basic('https://publiq.be/publiq-apis', 'ups entry'),
-                ]
-            )
+        $token = JsonWebTokenFactory::createWithClaims(
+            [
+                'azp' => 'bla',
+                'https://publiq.be/publiq-apis' => 'ups entry',
+            ]
         );
 
         $this->v1JwtValidator->expects($this->once())
