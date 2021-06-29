@@ -17,13 +17,13 @@ class JsonWebToken extends AbstractToken
     /**
      * @var Token
      */
-    private $jwt;
+    private $token;
 
-    public function __construct(Token $jwt, bool $authenticated = false)
+    public function __construct(Token $token, bool $authenticated = false)
     {
         parent::__construct();
         $this->setAuthenticated($authenticated);
-        $this->jwt = $jwt;
+        $this->token = $token;
     }
 
     public function authenticate(): JsonWebToken
@@ -33,23 +33,23 @@ class JsonWebToken extends AbstractToken
 
     public function getUserId(): string
     {
-        if ($this->jwt->hasClaim('uid')) {
-            return $this->jwt->getClaim('uid');
+        if ($this->token->hasClaim('uid')) {
+            return $this->token->getClaim('uid');
         }
 
-        if ($this->jwt->hasClaim('https://publiq.be/uitidv1id')) {
-            return $this->jwt->getClaim('https://publiq.be/uitidv1id');
+        if ($this->token->hasClaim('https://publiq.be/uitidv1id')) {
+            return $this->token->getClaim('https://publiq.be/uitidv1id');
         }
 
-        return $this->jwt->getClaim('sub');
+        return $this->token->getClaim('sub');
     }
 
     public function getClientId(): ?string
     {
         // Check first if the token has the claim, to prevent an OutOfBoundsException (thrown if the default is set to
         // null and the claim is missing).
-        if ($this->jwt->hasClaim('azp')) {
-            return (string) $this->jwt->getClaim('azp');
+        if ($this->token->hasClaim('azp')) {
+            return (string) $this->token->getClaim('azp');
         }
         return null;
     }
@@ -57,7 +57,7 @@ class JsonWebToken extends AbstractToken
     public function hasClaims(array $names): bool
     {
         foreach ($names as $name) {
-            if (!$this->jwt->hasClaim($name)) {
+            if (!$this->token->hasClaim($name)) {
                 return false;
             }
         }
@@ -70,22 +70,22 @@ class JsonWebToken extends AbstractToken
         // This will automatically validate the time-sensitive claims.
         // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
         // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        return $this->jwt->validate(new ValidationData(null, self::TIME_LEEWAY));
+        return $this->token->validate(new ValidationData(null, self::TIME_LEEWAY));
     }
 
     public function hasValidIssuer(array $validIssuers): bool
     {
-        return in_array($this->jwt->getClaim('iss', ''), $validIssuers, true);
+        return in_array($this->token->getClaim('iss', ''), $validIssuers, true);
     }
 
     public function hasAudience(string $audience): bool
     {
-        if (!$this->jwt->hasClaim('aud')) {
+        if (!$this->token->hasClaim('aud')) {
             return false;
         }
 
         // The aud claim can be a string or an array. Convert string to array with one value for consistency.
-        $aud = $this->jwt->getClaim('aud');
+        $aud = $this->token->getClaim('aud');
         if (is_string($aud)) {
             $aud = [$aud];
         }
@@ -95,7 +95,7 @@ class JsonWebToken extends AbstractToken
 
     public function hasEntryApiInPubliqApisClaim(): bool
     {
-        $apis = $this->jwt->getClaim('https://publiq.be/publiq-apis', '');
+        $apis = $this->token->getClaim('https://publiq.be/publiq-apis', '');
 
         if (!is_string($apis)) {
             return false;
@@ -109,21 +109,21 @@ class JsonWebToken extends AbstractToken
     {
         $signer = new Sha256();
         $key = new Key($publicKey, $keyPassphrase);
-        return $this->jwt->verify($signer, $key);
+        return $this->token->verify($signer, $key);
     }
 
     public function getCredentials(): Token
     {
-        return $this->jwt;
+        return $this->token;
     }
 
     public function toSentryTags(): array
     {
         return [
             'id' => $this->getUserId(),
-            'uid' => $this->jwt->getClaim('uid', 'null'),
-            'uitidv1id' => $this->jwt->getClaim('https://publiq.be/uitidv1id', 'null'),
-            'sub' => $this->jwt->getClaim('sub', 'null'),
+            'uid' => $this->token->getClaim('uid', 'null'),
+            'uitidv1id' => $this->token->getClaim('https://publiq.be/uitidv1id', 'null'),
+            'sub' => $this->token->getClaim('sub', 'null'),
         ];
     }
 }
