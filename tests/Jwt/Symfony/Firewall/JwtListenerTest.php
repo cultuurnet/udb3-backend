@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Token;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,11 +27,6 @@ class JwtListenerTest extends TestCase
     private $authenticationManager;
 
     /**
-     * @var Parser|MockObject
-     */
-    private $parser;
-
-    /**
      * @var JwtListener
      */
     private $listener;
@@ -48,12 +40,10 @@ class JwtListenerTest extends TestCase
     {
         $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
         $this->authenticationManager = $this->createMock(AuthenticationManagerInterface::class);
-        $this->parser = $this->createMock(Parser::class);
 
         $this->listener = new JwtListener(
             $this->tokenStorage,
-            $this->authenticationManager,
-            $this->parser
+            $this->authenticationManager
         );
 
         $this->getResponseEvent = $this->createMock(GetResponseEvent::class);
@@ -69,9 +59,6 @@ class JwtListenerTest extends TestCase
         $this->getResponseEvent->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
-
-        $this->parser->expects($this->never())
-            ->method('parse');
 
         $this->authenticationManager->expects($this->never())
             ->method('authenticate');
@@ -120,11 +107,6 @@ class JwtListenerTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $this->parser->expects($this->once())
-            ->method('parse')
-            ->with($tokenString)
-            ->willReturn($token->getCredentials());
-
         $this->authenticationManager->expects($this->once())
             ->method('authenticate')
             ->with($token)
@@ -158,11 +140,6 @@ class JwtListenerTest extends TestCase
         $this->getResponseEvent->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
-
-        $this->parser->expects($this->once())
-            ->method('parse')
-            ->with($tokenString)
-            ->willReturn($token->getCredentials());
 
         $authenticationException = new AuthenticationException(
             'Authentication failed',

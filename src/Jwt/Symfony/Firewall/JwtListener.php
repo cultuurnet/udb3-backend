@@ -8,7 +8,6 @@ use CultuurNet\UDB3\HttpFoundation\Response\ForbiddenResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\UnauthorizedResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use InvalidArgumentException;
-use Lcobucci\JWT\Parser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -28,19 +27,12 @@ class JwtListener implements ListenerInterface
      */
     private $authenticationManager;
 
-    /**
-     * @var Parser
-     */
-    private $parser;
-
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        AuthenticationManagerInterface $authenticationManager,
-        Parser $parser
+        AuthenticationManagerInterface $authenticationManager
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->authenticationManager = $authenticationManager;
-        $this->parser = $parser;
     }
 
 

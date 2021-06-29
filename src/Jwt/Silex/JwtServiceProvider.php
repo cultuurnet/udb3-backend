@@ -44,8 +44,7 @@ class JwtServiceProvider implements ServiceProviderInterface
                     function () use ($app) {
                         return new JwtListener(
                             $app['security.token_storage'],
-                            $app['security.authentication_manager'],
-                            new Parser()
+                            $app['security.authentication_manager']
                         );
                     }
                 );
