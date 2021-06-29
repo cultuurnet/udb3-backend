@@ -53,7 +53,7 @@ class PermissionsVoter implements VoterInterface
         }
 
         if ($token instanceof JsonWebToken && $token->isAuthenticated()) {
-            $userUuid = $token->getCredentials()->id();
+            $userUuid = $token->getUserId();
         } else {
             return $result;
         }

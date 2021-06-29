@@ -262,7 +262,7 @@ $app['jwt'] = $app::share(
         $token = $tokenStorage->getToken();
 
         if ($token instanceof JsonWebToken) {
-            return $token->getCredentials();
+            return $token;
         }
 
         return null;
@@ -289,7 +289,7 @@ $app['api_key'] = $app->share(
 $app['api_client_id'] = $app::share(
     function (Application $app) {
         $token = $app['jwt'];
-        if ($token instanceof Udb3Token) {
+        if ($token instanceof JsonWebToken) {
             return $token->getClientId();
         }
         return null;

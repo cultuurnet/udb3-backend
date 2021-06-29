@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex;
 
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\Jwt\Udb3Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 
 class Impersonator
 {
@@ -16,7 +16,7 @@ class Impersonator
     private $userId;
 
     /**
-     * @var Udb3Token|null
+     * @var JsonWebToken|null
      */
     private $jwt;
 
@@ -30,7 +30,7 @@ class Impersonator
         return $this->userId;
     }
 
-    public function getJwt(): ?Udb3Token
+    public function getJwt(): ?JsonWebToken
     {
         return $this->jwt;
     }
