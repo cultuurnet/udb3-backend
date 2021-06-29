@@ -225,10 +225,7 @@ $app['current_user_id'] = $app::share(
             // The token in the firewall storage is not supported.
             return null;
         }
-
-        // Get the actual Udb3Token from the Symfony Firewall "token", and return the user's id.
-        $jwt = $token->getCredentials();
-        return $jwt->id();
+        return $token->getUserId();
     }
 );
 
