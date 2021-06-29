@@ -107,57 +107,6 @@ final class Udb3TokenTest extends TestCase
     /**
      * @test
      */
-    public function it_can_check_if_the_aud_claim_contains_a_specific_value(): void
-    {
-        $token = new Udb3Token(
-            new Token(
-                ['alg' => 'none'],
-                [
-                    'aud' => new Basic('aud', ['vsCe0hXlLaR255wOrW56Fau7vYO5qvqD']),
-                ]
-            )
-        );
-
-        $this->assertTrue($token->audienceContains('vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'));
-        $this->assertFalse($token->audienceContains('bla'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_false_if_the_aud_claim_is_missing(): void
-    {
-        $token = new Udb3Token(
-            new Token(
-                ['alg' => 'none'],
-                []
-            )
-        );
-
-        $this->assertFalse($token->audienceContains('vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_handle_string_as_aud_claim(): void
-    {
-        $token = new Udb3Token(
-            new Token(
-                ['alg' => 'none'],
-                [
-                    'aud' => new Basic('aud', 'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'),
-                ]
-            )
-        );
-
-        $this->assertTrue($token->audienceContains('vsCe0hXlLaR255wOrW56Fau7vYO5qvqD'));
-        $this->assertFalse($token->audienceContains('bla'));
-    }
-
-    /**
-     * @test
-     */
     public function it_can_check_if_a_token_can_be_used_on_entry_api(): void
     {
         $tokenWithoutApis = new Udb3Token(new Token());

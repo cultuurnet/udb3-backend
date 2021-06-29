@@ -62,10 +62,25 @@ final class JwtV2Validator implements JwtValidator
 
     private function validateIdToken(Udb3Token $jwt): void
     {
-        if (!$jwt->audienceContains($this->v2JwtProviderAuth0ClientId)) {
+        if (!$this->audienceContains($jwt, $this->v2JwtProviderAuth0ClientId)) {
             throw new AuthenticationException(
                 'Only legacy id tokens are supported. Please use an access token instead.'
             );
         }
+    }
+
+    private function audienceContains(Udb3Token $jwt, string $audience): bool
+    {
+        if (!$jwt->jwtToken()->hasClaim('aud')) {
+            return false;
+        }
+
+        // The aud claim can be a string or an array. Convert string to array with one value for consistency.
+        $aud = $jwt->jwtToken()->getClaim('aud');
+        if (is_string($aud)) {
+            $aud = [$aud];
+        }
+
+        return in_array($audience, $aud, true);
     }
 }
