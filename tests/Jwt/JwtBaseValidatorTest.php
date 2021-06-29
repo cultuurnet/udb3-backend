@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
@@ -53,16 +54,16 @@ class JwtBaseValidatorTest extends TestCase
         );
     }
 
-    private function createTokenWithClaims(array $claims): Token
+    private function createTokenWithClaims(array $claims): JsonWebToken
     {
         $builder = clone $this->builder;
         foreach ($claims as $claim => $value) {
             $builder = $builder->withClaim($claim, $value);
         }
-        return $builder->getToken($this->signer, $this->privateKey);
+        return new JsonWebToken($builder->getToken($this->signer, $this->privateKey));
     }
 
-    private function createValidToken(): Token
+    private function createValidToken(): JsonWebToken
     {
         return $this->createTokenWithClaims(
             [
@@ -169,9 +170,11 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_signature_is_invalid(): void
     {
-        $token = $this->builder->getToken(
-            $this->signer,
-            new Key(file_get_contents(__DIR__ . '/samples/private-invalid.pem'))
+        $token = new JsonWebToken(
+            $this->builder->getToken(
+                $this->signer,
+                new Key(file_get_contents(__DIR__ . '/samples/private-invalid.pem'))
+             )
         );
 
         $this->expectException(AuthenticationException::class);

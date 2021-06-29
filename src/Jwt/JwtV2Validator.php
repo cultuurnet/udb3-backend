@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use Lcobucci\JWT\Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class JwtV2Validator implements JwtValidator
@@ -25,12 +25,12 @@ final class JwtV2Validator implements JwtValidator
         $this->v2JwtProviderAuth0ClientId = $v2JwtProviderAuth0ClientId;
     }
 
-    public function verifySignature(Token $token): void
+    public function verifySignature(JsonWebToken $token): void
     {
         $this->baseValidator->verifySignature($token);
     }
 
-    public function validateClaims(Token $token): void
+    public function validateClaims(JsonWebToken $token): void
     {
         $this->baseValidator->validateClaims($token);
 
@@ -41,15 +41,15 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function isAccessToken(Token $jwt): bool
+    private function isAccessToken(JsonWebToken $jwt): bool
     {
         // This does not 100% guarantee that the token is an access token, because an access token does not have an azp
         // if it has no specific aud. However we require our integrators to always include the "https://api.publiq.be"
         // aud, so access tokens should always have an azp in our case.
-        return $jwt->hasClaim('azp');
+        return $jwt->getCredentials()->hasClaim('azp');
     }
 
-    private function validateAccessToken(Token $jwt): void
+    private function validateAccessToken(JsonWebToken $jwt): void
     {
         if (!$this->canUseEntryApi($jwt)) {
             throw new AuthenticationException(
@@ -59,9 +59,9 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function canUseEntryApi(Token $jwt): bool
+    private function canUseEntryApi(JsonWebToken $jwt): bool
     {
-        $apis = $jwt->getClaim('https://publiq.be/publiq-apis', '');
+        $apis = $jwt->getCredentials()->getClaim('https://publiq.be/publiq-apis', '');
 
         if (!is_string($apis)) {
             return false;
@@ -71,7 +71,7 @@ final class JwtV2Validator implements JwtValidator
         return in_array('entry', $apis, true);
     }
 
-    private function validateIdToken(Token $jwt): void
+    private function validateIdToken(JsonWebToken $jwt): void
     {
         // Only accept id tokens if they were provided by the JWT provider v2.
         // If an id token from another Auth0 client is used, ask to use the related access token instead.
@@ -84,14 +84,14 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function isFromJwtProviderV2(Token $jwt): bool
+    private function isFromJwtProviderV2(JsonWebToken $jwt): bool
     {
-        if (!$jwt->hasClaim('aud')) {
+        if (!$jwt->getCredentials()->hasClaim('aud')) {
             return false;
         }
 
         // The aud claim can be a string or an array. Convert string to array with one value for consistency.
-        $aud = $jwt->getClaim('aud');
+        $aud = $jwt->getCredentials()->getClaim('aud');
         if (is_string($aud)) {
             $aud = [$aud];
         }

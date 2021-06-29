@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use Lcobucci\JWT\Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 interface JwtValidator
@@ -12,10 +12,10 @@ interface JwtValidator
     /**
      * @throws AuthenticationException
      */
-    public function verifySignature(Token $token): void;
+    public function verifySignature(JsonWebToken $token): void;
 
     /**
      * @throws AuthenticationException
      */
-    public function validateClaims(Token $token): void;
+    public function validateClaims(JsonWebToken $token): void;
 }

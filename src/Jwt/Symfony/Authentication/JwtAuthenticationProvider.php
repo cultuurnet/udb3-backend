@@ -53,10 +53,10 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
         $validV2Signature = false;
 
         try {
-            $this->v1JwtValidator->verifySignature($token->getCredentials());
+            $this->v1JwtValidator->verifySignature($token);
             $validV1Signature = true;
         } catch (AuthenticationException $e) {
-            $this->v2JwtValidator->verifySignature($token->getCredentials());
+            $this->v2JwtValidator->verifySignature($token);
             $validV2Signature = true;
         }
 
@@ -68,7 +68,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        $validator->validateClaims($token->getCredentials());
+        $validator->validateClaims($token);
 
         return new JsonWebToken($token->getCredentials(), true);
     }

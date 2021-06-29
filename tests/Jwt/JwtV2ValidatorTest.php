@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
@@ -52,13 +53,13 @@ class JwtV2ValidatorTest extends TestCase
         );
     }
 
-    private function createTokenWithClaims(array $claims): Token
+    private function createTokenWithClaims(array $claims): JsonWebToken
     {
         $builder = clone $this->builder;
         foreach ($claims as $claim => $value) {
             $builder = $builder->withClaim($claim, $value);
         }
-        return $builder->getToken($this->signer, $this->privateKey);
+        return new JsonWebToken($builder->getToken($this->signer, $this->privateKey));
     }
 
     /**

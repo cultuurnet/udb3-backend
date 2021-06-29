@@ -84,12 +84,12 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($token->getCredentials())
+            ->with($token)
             ->willThrowException(new AuthenticationException());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($token->getCredentials())
+            ->with($token)
             ->willThrowException(new AuthenticationException());
 
         $this->expectException(AuthenticationException::class);
@@ -106,14 +106,14 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($token->getCredentials());
+            ->with($token);
 
         $this->v2JwtValidator->expects($this->never())
             ->method('verifySignature');
 
         $this->v1JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($token->getCredentials());
+            ->with($token);
 
         $this->authenticationProvider->authenticate($token);
     }
@@ -135,17 +135,17 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($token->getCredentials())
+            ->with($token)
             ->willThrowException(new AuthenticationException());
 
         $this->v2JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($token->getCredentials())
+            ->with($token)
             ->willReturn(true);
 
         $this->v2JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($token->getCredentials());
+            ->with($token);
 
         $this->authenticationProvider->authenticate($token);
     }
@@ -167,14 +167,14 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
-            ->with($token->getCredentials());
+            ->with($token);
 
         $this->v2JwtValidator->expects($this->never())
             ->method('verifySignature');
 
         $this->v1JwtValidator->expects($this->once())
             ->method('validateClaims')
-            ->with($token->getCredentials());
+            ->with($token);
 
         $authToken = $this->authenticationProvider->authenticate($token);
 
