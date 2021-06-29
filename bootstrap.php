@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\CalendarFactory;
@@ -221,7 +221,7 @@ $app['current_user_id'] = $app::share(
         }
 
         $token = $tokenStorage->getToken();
-        if (!($token instanceof JwtUserToken)) {
+        if (!($token instanceof JsonWebToken)) {
             // The token in the firewall storage is not supported.
             return null;
         }
@@ -261,7 +261,7 @@ $app['jwt'] = $app::share(
 
         $token = $tokenStorage->getToken();
 
-        if ($token instanceof JwtUserToken) {
+        if ($token instanceof JsonWebToken) {
             return $token->getCredentials();
         }
 

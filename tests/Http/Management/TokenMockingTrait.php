@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Management;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Claim\Basic as BasicClaim;
 use Lcobucci\JWT\Token as JwtToken;
@@ -16,14 +16,14 @@ trait TokenMockingTrait
     /**
      * @param string $userId
      *
-     * @return JwtUserToken|MockObject
+     * @return JsonWebToken|MockObject
      */
     private function createMockToken($userId)
     {
         /** @var MockBuilder $mockBuilder */
-        $mockBuilder = $this->getMockBuilder(JwtUserToken::class);
+        $mockBuilder = $this->getMockBuilder(JsonWebToken::class);
 
-        /** @var JwtUserToken|MockObject $token */
+        /** @var JsonWebToken|MockObject $token */
         $token = $mockBuilder
             ->setMethods(['isAuthenticated', 'getCredentials'])
             ->setMockClassName('JwtUserToken')

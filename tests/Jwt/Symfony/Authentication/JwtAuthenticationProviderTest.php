@@ -54,7 +54,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->assertTrue(
             $this->authenticationProvider->supports(
-                new JwtUserToken(
+                new JsonWebToken(
                     new Udb3Token(new Jwt())
                 )
             )
@@ -82,7 +82,7 @@ class JwtAuthenticationProviderTest extends TestCase
     public function it_throws_an_exception_when_the_jwt_signature_is_invalid()
     {
         $udb3Token = new Udb3Token(new Jwt());
-        $token = new JwtUserToken($udb3Token);
+        $token = new JsonWebToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
@@ -105,7 +105,7 @@ class JwtAuthenticationProviderTest extends TestCase
     public function it_calls_the_validation_methods_on_the_v1_validator_if_the_signature_is_v1(): void
     {
         $udb3Token = new Udb3Token(new Jwt());
-        $token = new JwtUserToken($udb3Token);
+        $token = new JsonWebToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
@@ -135,7 +135,7 @@ class JwtAuthenticationProviderTest extends TestCase
                 ]
             )
         );
-        $token = new JwtUserToken($udb3Token);
+        $token = new JsonWebToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')
@@ -168,7 +168,7 @@ class JwtAuthenticationProviderTest extends TestCase
                 ]
             )
         );
-        $token = new JwtUserToken($udb3Token);
+        $token = new JsonWebToken($udb3Token);
 
         $this->v1JwtValidator->expects($this->once())
             ->method('verifySignature')

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 use CultuurNet\UDB3\Jwt\Udb3Token;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
-class JwtUserToken extends AbstractToken
+class JsonWebToken extends AbstractToken
 {
     /**
      * @var Udb3Token

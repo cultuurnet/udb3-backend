@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\TestCase;
 
-class JwtUserTokenTest extends TestCase
+class JsonWebTokenTest extends TestCase
 {
     /**
      * @test
@@ -24,7 +24,7 @@ class JwtUserTokenTest extends TestCase
             )
         );
 
-        $jwtUserToken = new JwtUserToken($jwt);
+        $jwtUserToken = new JsonWebToken($jwt);
 
         $this->assertEquals($jwt, $jwtUserToken->getCredentials());
     }
@@ -34,7 +34,7 @@ class JwtUserTokenTest extends TestCase
      */
     public function it_can_be_set_as_authenticated()
     {
-        $jwtUserToken = new JwtUserToken(new Udb3Token(new Jwt()), true);
+        $jwtUserToken = new JsonWebToken(new Udb3Token(new Jwt()), true);
         $this->assertTrue($jwtUserToken->isAuthenticated());
     }
 }

@@ -34,7 +34,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function supports(TokenInterface $token)
     {
-        return $token instanceof JwtUserToken;
+        return $token instanceof JsonWebToken;
     }
 
     /**
@@ -42,7 +42,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function authenticate(TokenInterface $token)
     {
-        /* @var JwtUserToken $token */
+        /* @var JsonWebToken $token */
         if (!$this->supports($token)) {
             throw new AuthenticationException(
                 'Token type ' . get_class($token) . ' not supported.'
@@ -72,6 +72,6 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator->validateClaims($udb3Token->jwtToken());
 
-        return new JwtUserToken($udb3Token, true);
+        return new JsonWebToken($udb3Token, true);
     }
 }
