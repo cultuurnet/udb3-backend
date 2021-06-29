@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use Lcobucci\JWT\Token;
+use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 class JsonWebToken extends AbstractToken
 {
+    private const TIME_LEEWAY = 30;
+
     /**
      * @var Token
      */
@@ -52,6 +55,15 @@ class JsonWebToken extends AbstractToken
             }
         }
         return true;
+    }
+
+    public function isUsableAtCurrentTime(): bool
+    {
+        // Use the built-in validation provided by Lcobucci without any extra validation data.
+        // This will automatically validate the time-sensitive claims.
+        // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
+        // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
+        return $this->jwt->validate(new ValidationData(null, self::TIME_LEEWAY));
     }
 
     public function hasValidIssuer(array $validIssuers): bool

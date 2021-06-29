@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Jwt;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class JwtBaseValidator implements JwtValidator
@@ -73,11 +72,7 @@ class JwtBaseValidator implements JwtValidator
      */
     private function validateTimeSensitiveClaims(JsonWebToken $token): void
     {
-        // Use the built-in validation provided by Lcobucci without any extra validation data.
-        // This will automatically validate the time-sensitive claims.
-        // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
-        // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        if (!$token->getCredentials()->validate(new ValidationData(null, 30))) {
+        if (!$token->isUsableAtCurrentTime()) {
             throw new AuthenticationException(
                 'Token expired (or not yet usable).'
             );
