@@ -103,34 +103,4 @@ final class Udb3TokenTest extends TestCase
 
         $this->assertNull($token->getClientId());
     }
-
-    /**
-     * @test
-     */
-    public function it_can_check_if_a_token_can_be_used_on_entry_api(): void
-    {
-        $tokenWithoutApis = new Udb3Token(new Token());
-        $tokenWithOnlyEntry = $this->createTokenForPubliqApis('entry');
-        $tokenWithMultipleIncludingEntry = $this->createTokenForPubliqApis('ups entry sapi');
-        $tokenWithMultipleExcludingEntry = $this->createTokenForPubliqApis('ups sapi');
-        $tokenWithMultipleAndTooManySpaces = $this->createTokenForPubliqApis(' ups  entry  sapi ');
-
-        $this->assertFalse($tokenWithoutApis->canUseEntryAPI());
-        $this->assertTrue($tokenWithOnlyEntry->canUseEntryAPI());
-        $this->assertTrue($tokenWithMultipleIncludingEntry->canUseEntryAPI());
-        $this->assertFalse($tokenWithMultipleExcludingEntry->canUseEntryAPI());
-        $this->assertTrue($tokenWithMultipleAndTooManySpaces->canUseEntryAPI());
-    }
-
-    private function createTokenForPubliqApis(string $publiqApis): Udb3Token
-    {
-        return new Udb3Token(
-            new Token(
-                ['alg' => 'none'],
-                [
-                    'https://publiq.be/publiq-apis' => new Basic('https://publiq.be/publiq-apis', $publiqApis),
-                ]
-            )
-        );
-    }
 }

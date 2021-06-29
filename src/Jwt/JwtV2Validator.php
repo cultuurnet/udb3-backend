@@ -52,12 +52,24 @@ final class JwtV2Validator implements JwtValidator
 
     private function validateAccessToken(Udb3Token $jwt): void
     {
-        if (!$jwt->canUseEntryAPI()) {
+        if (!$this->canUseEntryApi($jwt)) {
             throw new AuthenticationException(
                 'The given token and its related client are not allowed to access EntryAPI.',
                 403
             );
         }
+    }
+
+    private function canUseEntryApi(Udb3Token $jwt): bool
+    {
+        $apis = $jwt->jwtToken()->getClaim('https://publiq.be/publiq-apis', '');
+
+        if (!is_string($apis)) {
+            return false;
+        }
+
+        $apis = explode(' ', $apis);
+        return in_array('entry', $apis, true);
     }
 
     private function validateIdToken(Udb3Token $jwt): void
