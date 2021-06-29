@@ -99,12 +99,7 @@ class JwtBaseValidator implements JwtValidator
 
     public function verifySignature(JsonWebToken $token): void
     {
-        $isVerified = $token->getCredentials()->verify(
-            $this->signer,
-            $this->publicKey
-        );
-
-        if (!$isVerified) {
+        if (!$token->verifyRsaSha256Signature($this->publicKey->getContent(), $this->publicKey->getPassphrase())) {
             throw new AuthenticationException(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );

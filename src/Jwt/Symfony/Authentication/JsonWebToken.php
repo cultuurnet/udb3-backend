@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
+use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
@@ -96,6 +98,13 @@ class JsonWebToken extends AbstractToken
 
         $apis = explode(' ', $apis);
         return in_array('entry', $apis, true);
+    }
+
+    public function verifyRsaSha256Signature(string $publicKey, ?string $keyPassphrase = null): bool
+    {
+        $signer = new Sha256();
+        $key = new Key($publicKey, $keyPassphrase);
+        return $this->jwt->verify($signer, $key);
     }
 
     public function getCredentials(): Token
