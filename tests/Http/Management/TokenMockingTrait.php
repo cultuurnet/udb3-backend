@@ -10,11 +10,7 @@ use Lcobucci\JWT\Token;
 
 trait TokenMockingTrait
 {
-    /**
-     * @param string $userId
-     *
-     */
-    private function createMockToken($userId): JsonWebToken
+    private function createMockToken(string $userId): JsonWebToken
     {
         return new JsonWebToken(
             new Token(
