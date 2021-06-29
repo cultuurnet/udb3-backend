@@ -90,7 +90,7 @@ class JwtListenerTest extends TestCase
     public function it_authenticates_and_stores_valid_tokens()
     {
         $token = JsonWebTokenFactory::createWithClaims([]);
-        $tokenString = (string) $token->getCredentials();
+        $tokenString = $token->getCredentials();
         $authenticatedToken = $token->authenticate();
 
         $request = new Request(
@@ -125,7 +125,7 @@ class JwtListenerTest extends TestCase
     public function it_returns_an_unauthorized_response_if_jwt_authentication_fails()
     {
         $token = JsonWebTokenFactory::createWithClaims([]);
-        $tokenString = (string) $token->getCredentials();
+        $tokenString = $token->getCredentials();
 
         $request = new Request(
             [],

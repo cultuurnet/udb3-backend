@@ -40,7 +40,7 @@ class JsonWebToken extends AbstractToken
 
     public function authenticate(): JsonWebToken
     {
-        return new self((string) $this->getCredentials(), true);
+        return new self($this->getCredentials(), true);
     }
 
     public function getUserId(): string
@@ -124,9 +124,9 @@ class JsonWebToken extends AbstractToken
         return $this->token->verify($signer, $key);
     }
 
-    public function getCredentials(): Token
+    public function getCredentials(): string
     {
-        return $this->token;
+        return $this->jwt;
     }
 
     public function toSentryTags(): array

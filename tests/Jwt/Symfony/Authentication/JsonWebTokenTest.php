@@ -12,10 +12,10 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_token_as_credentials(): void
+    public function it_returns_the_json_web_token_string_as_credentials(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims([]);
-        $this->assertInstanceOf(Token::class, $jwt->getCredentials());
+        $this->assertTrue(is_string($jwt->getCredentials()));
     }
 
     /**
