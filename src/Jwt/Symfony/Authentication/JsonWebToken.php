@@ -47,6 +47,6 @@ class JsonWebToken extends AbstractToken
 
     public function getCredentials(): Token
     {
-        return new $this->jwt;
+        return $this->jwt;
     }
 }
