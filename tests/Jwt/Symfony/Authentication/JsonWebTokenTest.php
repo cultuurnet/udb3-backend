@@ -20,9 +20,8 @@ class JsonWebTokenTest extends TestCase
         $udb3Token = new Udb3Token(
             new Jwt(
                 ['alg' => 'none'],
-                [],
-                null,
-                $payload = ['header', 'payload']
+                ['header', 'payload'],
+                null
             )
         );
 
