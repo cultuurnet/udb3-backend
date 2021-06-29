@@ -34,6 +34,9 @@ final class Udb3Token
             return $this->token->getClaim('https://publiq.be/uitidv1id');
         }
 
+        if ($this->endsWith($this->token->getClaim('sub'), self::CLIENTS)) {
+            return 'client|' . rtrim($this->token->getClaim('sub'), self::CLIENTS);
+        }
         return $this->token->getClaim('sub');
     }
 
