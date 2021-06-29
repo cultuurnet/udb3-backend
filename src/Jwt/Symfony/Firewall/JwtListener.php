@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 use CultuurNet\UDB3\HttpFoundation\Response\ForbiddenResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\UnauthorizedResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use InvalidArgumentException;
 use Lcobucci\JWT\Parser;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +61,7 @@ class JwtListener implements ListenerInterface
             return;
         }
 
-        $token = new JsonWebToken(new Udb3Token($jwt));
+        $token = new JsonWebToken($jwt);
 
         try {
             $authenticatedToken = $this->authenticationManager->authenticate($token);

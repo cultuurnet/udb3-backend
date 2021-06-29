@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtValidator;
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -71,6 +70,6 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
 
         $validator->validateClaims($token->getCredentials());
 
-        return new JsonWebToken(new Udb3Token($token->getCredentials()), true);
+        return new JsonWebToken($token->getCredentials(), true);
     }
 }

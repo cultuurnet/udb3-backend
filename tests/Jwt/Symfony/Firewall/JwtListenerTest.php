@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -111,8 +110,8 @@ class JwtListenerTest extends TestCase
             ['headers', 'payload']
         );
 
-        $token = new JsonWebToken(new Udb3Token($jwt));
-        $authenticatedToken = new JsonWebToken(new Udb3Token($jwt), true);
+        $token = new JsonWebToken($jwt);
+        $authenticatedToken = new JsonWebToken($jwt, true);
 
         $request = new Request(
             [],
@@ -159,7 +158,7 @@ class JwtListenerTest extends TestCase
             ['headers', 'payload']
         );
 
-        $token = new JsonWebToken(new Udb3Token($jwt));
+        $token = new JsonWebToken($jwt);
 
         $request = new Request(
             [],

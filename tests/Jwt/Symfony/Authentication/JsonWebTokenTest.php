@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Claim\Basic;
 use Lcobucci\JWT\Token;
-use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\TestCase;
 
 class JsonWebTokenTest extends TestCase
@@ -17,17 +15,15 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_the_token_as_credentials(): void
     {
-        $udb3Token = new Udb3Token(
-            new Jwt(
+        $jwt = new JsonWebToken(
+            new Token(
                 ['alg' => 'none'],
                 ['header', 'payload'],
                 null
             )
         );
 
-        $jwt = new JsonWebToken($udb3Token);
-
-        $this->assertEquals($udb3Token->jwtToken(), $jwt->getCredentials());
+        $this->assertInstanceOf(Token::class, $jwt->getCredentials());
     }
 
     /**
@@ -35,7 +31,7 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_can_be_set_as_authenticated(): void
     {
-        $jwt = new JsonWebToken(new Udb3Token(new Jwt()), true);
+        $jwt = new JsonWebToken(new Token(), true);
         $this->assertTrue($jwt->isAuthenticated());
     }
 
@@ -44,7 +40,7 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_uid_claim_as_id_if_present(): void
     {
-        $udb3Token = new Udb3Token(
+        $jwt = new JsonWebToken(
             new Token(
                 ['alg' => 'none'],
                 [
@@ -58,8 +54,6 @@ class JsonWebTokenTest extends TestCase
             )
         );
 
-        $jwt = new JsonWebToken($udb3Token);
-
         $this->assertEquals('6e3ef9b3-e37b-428e-af30-05f3a96dbbe4', $jwt->getUserId());
     }
 
@@ -68,7 +62,7 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_uitid_v1_claim_as_id_if_present(): void
     {
-        $udb3Token = new Udb3Token(
+        $jwt = new JsonWebToken(
             new Token(
                 ['alg' => 'none'],
                 [
@@ -81,8 +75,6 @@ class JsonWebTokenTest extends TestCase
             )
         );
 
-        $jwt = new JsonWebToken($udb3Token);
-
         $this->assertEquals('b55f041e-5c5e-4850-9fb8-8cf73d538c56', $jwt->getUserId());
     }
 
@@ -91,7 +83,7 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_sub_claim_as_id(): void
     {
-        $udb3Token = new Udb3Token(
+        $jwt = new JsonWebToken(
             new Token(
                 ['alg' => 'none'],
                 [
@@ -99,8 +91,6 @@ class JsonWebTokenTest extends TestCase
                 ]
             )
         );
-
-        $jwt = new JsonWebToken($udb3Token);
 
         $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $jwt->getUserId());
     }
@@ -110,7 +100,7 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_client_id_from_azp_claim_if_present(): void
     {
-        $udb3Token = new Udb3Token(
+        $jwt = new JsonWebToken(
             new Token(
                 ['alg' => 'none'],
                 [
@@ -118,8 +108,6 @@ class JsonWebTokenTest extends TestCase
                 ]
             )
         );
-
-        $jwt = new JsonWebToken($udb3Token);
 
         $this->assertEquals('jndYaQY9BSa9W7FQqDEGI0WEi4KlU6vJ', $jwt->getClientId());
     }
@@ -129,7 +117,7 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_null_as_client_id_if_azp_claim_is_missing(): void
     {
-        $udb3Token = new Udb3Token(
+        $jwt = new JsonWebToken(
             new Token(
                 ['alg' => 'none'],
                 [
@@ -137,8 +125,6 @@ class JsonWebTokenTest extends TestCase
                 ]
             )
         );
-
-        $jwt = new JsonWebToken($udb3Token);
 
         $this->assertNull($jwt->getClientId());
     }

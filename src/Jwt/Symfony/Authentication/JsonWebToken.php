@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use Lcobucci\JWT\Token;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
@@ -15,11 +14,11 @@ class JsonWebToken extends AbstractToken
      */
     private $jwt;
 
-    public function __construct(Udb3Token $jwt, bool $authenticated = false)
+    public function __construct(Token $jwt, bool $authenticated = false)
     {
         parent::__construct();
         $this->setAuthenticated($authenticated);
-        $this->jwt = $jwt->jwtToken();
+        $this->jwt = $jwt;
     }
 
     public function getUserId(): string
