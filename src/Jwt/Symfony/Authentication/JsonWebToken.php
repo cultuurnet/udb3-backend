@@ -22,7 +22,7 @@ class JsonWebToken extends AbstractToken
         $this->jwt = $jwt->jwtToken();
     }
 
-    public function id(): string
+    public function getUserId(): string
     {
         if ($this->jwt->hasClaim('uid')) {
             return $this->jwt->getClaim('uid');
