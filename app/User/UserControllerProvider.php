@@ -17,7 +17,8 @@ class UserControllerProvider implements ControllerProviderInterface
         $app[UserIdentityController::class] = $app->share(
             function (Application $app) {
                 return new UserIdentityController(
-                    $app[Auth0UserIdentityResolver::class]
+                    $app[Auth0UserIdentityResolver::class],
+                    $app['current_user_id']
                 );
             }
         );

@@ -21,11 +21,18 @@ class UserIdentityController
      */
     private $userIdentityResolver;
 
+    /**
+     * @var string
+     */
+    private $currentUserId;
 
     public function __construct(
-        UserIdentityResolver $userIdentityResolver
-    ) {
+        UserIdentityResolver $userIdentityResolver,
+        string $currentUserId
+    )
+    {
         $this->userIdentityResolver = $userIdentityResolver;
+        $this->currentUserId = $currentUserId;
     }
 
     public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
