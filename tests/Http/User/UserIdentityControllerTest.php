@@ -57,7 +57,7 @@ class UserIdentityControllerTest extends TestCase
             (new ServerRequest())->withAttribute('emailAddress', 'jane.doe@anonymous.com')
         );
 
-        $this->assertJsonResponse(new JsonLdResponse($userIdentity), $response);
+        $this->assertJsonResponse(new JsonLdResponse($this->userIdentityToArray($userIdentity)), $response);
     }
 
     /**
@@ -105,7 +105,7 @@ class UserIdentityControllerTest extends TestCase
 
         $response = $this->userIdentityController->getCurrentUser();
 
-        $userIdentityAsArray = $userIdentity->jsonSerialize();
+        $userIdentityAsArray = $this->userIdentityToArray($userIdentity);
         $userIdentityAsArray['id'] = $userIdentity->getUserId()->toNative();
         $userIdentityAsArray['nick'] = $userIdentity->getUserName()->toNative();
 
@@ -142,5 +142,14 @@ class UserIdentityControllerTest extends TestCase
         $this->assertEquals($expectedResponse->getStatusCode(), $actualResponse->getStatusCode());
         $this->assertEquals($expectedResponse->getHeaders(), $actualResponse->getHeaders());
         $this->assertEquals($expectedResponse->getBody()->getContents(), $actualResponse->getBody()->getContents());
+    }
+
+    private function userIdentityToArray(UserIdentityDetails $userIdentityDetails): array
+    {
+        return [
+            'uuid' => $userIdentityDetails->getUserId()->toNative(),
+            'email' => $userIdentityDetails->getEmailAddress()->toNative(),
+            'username' => $userIdentityDetails->getUserName()->toNative(),
+        ];
     }
 }
