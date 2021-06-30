@@ -66,7 +66,7 @@ class JsonWebToken extends AbstractToken
 
         // V2 client access tokens are always requested using the client-credentials grant type (gty)
         // @see https://stackoverflow.com/questions/49492471/whats-the-meaning-of-the-gty-claim-in-a-jwt-token/49492971
-        if (($this->token->getClaim('gty', '') === 'client-credentials')) {
+        if ($this->token->getClaim('gty', '') === 'client-credentials') {
             return self::TYPE_V2_CLIENT_ACCESS_TOKEN;
         }
 
