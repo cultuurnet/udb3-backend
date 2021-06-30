@@ -64,7 +64,7 @@ class UpdateUniqueOrganizers extends Command
                 $organizerUuid = $organizerEvent['uuid'];
                 $organizerUrl = $this->getOrganizerWebsite($organizerEvent);
 
-                $updated = $this->updateOrganizer($organizerUuid, $organizerUrl);
+                $updated = $this->updateOrganizer($organizerUuid, $this->getUniqueValue($organizerUrl));
                 if ($updated) {
                     $messages[] = 'Added/updated organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid;
                 } else {
@@ -196,5 +196,10 @@ class UpdateUniqueOrganizers extends Command
         $payloadArray = json_decode($organizerEvent['payload'], true);
         return $payloadArray['payload']['website'];
     }
+
+    private function getUniqueValue(string $organizerWebsite): string
+    {
+        $websiteWithNoProtocol = preg_replace('/^https?:\/\/(www.)?/i', '', $organizerWebsite);
+        return preg_replace('/\/$/', '', $websiteWithNoProtocol);
     }
 }
