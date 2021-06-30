@@ -87,9 +87,7 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->authenticationProvider->authenticate($token);
     }
 
-    /**
-     * @return array
-     */
+
     public function tokenDataProvider(): array
     {
         return [
@@ -101,7 +99,6 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      * @dataProvider tokenDataProvider
-     * @param JsonWebToken $token
      */
     public function it_throws_an_exception_when_the_jwt_signature_is_invalid_for_the_expected_token_version(
         JsonWebToken $token
@@ -122,12 +119,10 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      * @dataProvider tokenDataProvider
-     * @param JsonWebToken $token
      */
     public function it_calls_the_validation_methods_on_the_right_validator_depending_on_the_token_version(
         JsonWebToken $token
-    ): void
-    {
+    ): void {
         $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
             ->with($token);
@@ -151,12 +146,10 @@ class JwtAuthenticationProviderTest extends TestCase
     /**
      * @test
      * @dataProvider tokenDataProvider
-     * @param JsonWebToken $token
      */
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(
         JsonWebToken $token
-    ): void
-    {
+    ): void {
         $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
             ->with($token);
