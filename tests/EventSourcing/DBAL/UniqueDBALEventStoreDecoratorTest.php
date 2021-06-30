@@ -179,7 +179,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     public function it_does_not_update_a_unique_value_when_the_new_value_has_already_been_used(): void
     {
         $this->insert(self::ID, self::OTHER_UNIQUE_VALUE);
-        $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
+        $this->insert(self::OTHER_ID, self::UNIQUE_VALUE);
 
         $domainMessage = new DomainMessage(
             self::ID,
@@ -206,7 +206,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
      */
     public function it_does_not_insert_when_preflight_lookup_throws(): void
     {
-        $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
+        $this->insert(self::ID, self::UNIQUE_VALUE);
 
         $this->uniqueConstraintService->expects($this->once())
             ->method('needsPreflightLookup')
