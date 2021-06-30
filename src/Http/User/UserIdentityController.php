@@ -30,8 +30,7 @@ class UserIdentityController
     public function __construct(
         UserIdentityResolver $userIdentityResolver,
         string $currentUserId
-    )
-    {
+    ) {
         $this->userIdentityResolver = $userIdentityResolver;
         $this->currentUserId = $currentUserId;
     }
