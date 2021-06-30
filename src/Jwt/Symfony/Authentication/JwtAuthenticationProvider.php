@@ -49,25 +49,10 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        $validV1Signature = false;
-        $validV2Signature = false;
+        $isV1 = $token->getType() === JsonWebToken::TYPE_V1_JWT_PROVIDER_TOKEN;
+        $validator = $isV1 ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        try {
-            $this->v1JwtValidator->verifySignature($token);
-            $validV1Signature = true;
-        } catch (AuthenticationException $e) {
-            $this->v2JwtValidator->verifySignature($token);
-            $validV2Signature = true;
-        }
-
-        if (!$validV1Signature && !$validV2Signature) {
-            throw new AuthenticationException(
-                'Token signature verification failed. The token is likely forged or manipulated.'
-            );
-        }
-
-        $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
-
+        $validator->verifySignature($token);
         $validator->validateClaims($token);
 
         return $token->authenticate();

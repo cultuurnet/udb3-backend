@@ -38,6 +38,22 @@ class JwtAuthenticationProviderTest extends TestCase
         );
     }
 
+    private function getExpectedValidatorForTokenType(JsonWebToken $token): MockObject
+    {
+        if ($token->getType() === JsonWebToken::TYPE_V1_JWT_PROVIDER_TOKEN) {
+            return $this->v1JwtValidator;
+        }
+        return $this->v2JwtValidator;
+    }
+
+    private function getUnusedValidatorForTokenType(JsonWebToken $token): MockObject
+    {
+        if ($token->getType() === JsonWebToken::TYPE_V1_JWT_PROVIDER_TOKEN) {
+            return $this->v2JwtValidator;
+        }
+        return $this->v1JwtValidator;
+    }
+
     /**
      * @test
      */
@@ -72,21 +88,31 @@ class JwtAuthenticationProviderTest extends TestCase
     }
 
     /**
-     * @test
+     * @return array
      */
-    public function it_throws_an_exception_when_the_jwt_signature_is_invalid()
+    public function tokenDataProvider(): array
     {
-        $token = JsonWebTokenFactory::createWithClaims([]);
+        return [
+            'v1' => [JsonWebTokenFactory::createWithClaims(['uid' => 'mock-v1-id'])],
+            'v2' => [JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|mock-v2-id', 'azp' => 'mock-client'])],
+        ];
+    }
 
-        $this->v1JwtValidator->expects($this->once())
+    /**
+     * @test
+     * @dataProvider tokenDataProvider
+     * @param JsonWebToken $token
+     */
+    public function it_throws_an_exception_when_the_jwt_signature_is_invalid_for_the_expected_token_version(
+        JsonWebToken $token
+    ): void {
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
             ->with($token)
             ->willThrowException(new AuthenticationException());
 
-        $this->v2JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($token)
-            ->willThrowException(new AuthenticationException());
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
+            ->method('verifySignature');
 
         $this->expectException(AuthenticationException::class);
 
@@ -95,76 +121,55 @@ class JwtAuthenticationProviderTest extends TestCase
 
     /**
      * @test
+     * @dataProvider tokenDataProvider
+     * @param JsonWebToken $token
      */
-    public function it_calls_the_validation_methods_on_the_v1_validator_if_the_signature_is_v1(): void
+    public function it_calls_the_validation_methods_on_the_right_validator_depending_on_the_token_version(
+        JsonWebToken $token
+    ): void
     {
-        $token = JsonWebTokenFactory::createWithClaims([]);
-
-        $this->v1JwtValidator->expects($this->once())
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
             ->with($token);
 
-        $this->v2JwtValidator->expects($this->never())
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
             ->method('verifySignature');
 
-        $this->v1JwtValidator->expects($this->once())
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('validateClaims')
-            ->with($token);
-
-        $this->authenticationProvider->authenticate($token);
-    }
-
-    /**
-     * @test
-     */
-    public function it_calls_the_claim_validation_method_on_the_v2_validator_if_the_signature_is_v2(): void
-    {
-        $token = JsonWebTokenFactory::createWithClaims(
-            [
-                'azp' => 'bla',
-                'https://publiq.be/publiq-apis' => 'entry',
-            ]
-        );
-
-        $this->v1JwtValidator->expects($this->once())
-            ->method('verifySignature')
             ->with($token)
             ->willThrowException(new AuthenticationException());
 
-        $this->v2JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($token)
-            ->willReturn(true);
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
+            ->method('validateClaims');
 
-        $this->v2JwtValidator->expects($this->once())
-            ->method('validateClaims')
-            ->with($token);
+        $this->expectException(AuthenticationException::class);
 
         $this->authenticationProvider->authenticate($token);
     }
 
     /**
      * @test
+     * @dataProvider tokenDataProvider
+     * @param JsonWebToken $token
      */
-    public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
+    public function it_returns_an_authenticated_token_when_the_jwt_is_valid(
+        JsonWebToken $token
+    ): void
     {
-        $token = JsonWebTokenFactory::createWithClaims(
-            [
-                'azp' => 'bla',
-                'https://publiq.be/publiq-apis' => 'ups entry',
-            ]
-        );
-
-        $this->v1JwtValidator->expects($this->once())
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
             ->with($token);
 
-        $this->v2JwtValidator->expects($this->never())
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
             ->method('verifySignature');
 
-        $this->v1JwtValidator->expects($this->once())
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('validateClaims')
             ->with($token);
+
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
+            ->method('validateClaims');
 
         $authToken = $this->authenticationProvider->authenticate($token);
 
