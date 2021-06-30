@@ -108,7 +108,7 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_v2_jwt_provider_token_type_if_a_azp_is_missing(): void
+    public function it_returns_v2_jwt_provider_token_type_if_an_azp_claim_is_missing(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|mock-user-id']);
         $this->assertEquals(JsonWebToken::TYPE_V2_JWT_PROVIDER_TOKEN, $jwt->getType());
@@ -117,7 +117,7 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_v2_client_access_token_type_if_a_gty_is_set_to_client_credentials(): void
+    public function it_returns_v2_client_access_token_type_if_the_gty_claim_is_set_to_client_credentials(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims(
             [
