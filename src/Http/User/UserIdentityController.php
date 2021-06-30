@@ -11,6 +11,7 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use ValueObjects\Exception\InvalidNativeArgumentException;
+use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -50,6 +51,22 @@ class UserIdentityController
         }
 
         return (new JsonLdResponse($userIdentity));
+    }
+
+    public function getCurrentUser(): JsonResponse
+    {
+        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->currentUserId));
+
+        if (!($userIdentity instanceof UserIdentityDetails)) {
+            return $this->createUserNotFoundResponse();
+        }
+
+        $userIdentityAsArray = $userIdentity->jsonSerialize();
+        // Keep `id` and `nick` for backwards compatibility with older API clients
+        $userIdentityAsArray['id'] = $userIdentity->getUserId()->toNative();
+        $userIdentityAsArray['nick'] = $userIdentity->getUserName()->toNative();
+
+        return new JsonLdResponse($userIdentityAsArray, 200, ['Cache-Control' => 'private']);
     }
 
     private function createUserNotFoundResponse(): ApiProblemJsonResponse
