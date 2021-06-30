@@ -231,6 +231,37 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     * @see https://jira.uitdatabank.be/browse/III-4078
+     * When `aunique` and `bunique` are already added as unique values, adding `unique` should still work
+     */
+    public function it_does_not_fail_on_preflight_with_partial_match(): void
+    {
+        $this->insert('1', 'aunique');
+        $this->insert('2', 'bunique');
+
+        $this->uniqueConstraintService->expects($this->once())
+            ->method('needsPreflightLookup')
+            ->willReturn(true);
+
+        $this->uniqueConstraintService->expects($this->never())
+            ->method('needsUpdateUniqueConstraint');
+
+        $domainMessage = new DomainMessage(
+            self::ID,
+            0,
+            new Metadata(),
+            new \stdClass(),
+            BroadwayDateTime::now()
+        );
+
+        $this->uniqueDBALEventStoreDecorator->append(
+            $domainMessage->getId(),
+            new DomainEventStream([$domainMessage])
+        );
+    }
+
     private function insert(string $uuid, string $unique): void
     {
         $sql = 'INSERT INTO ' . $this->uniqueTableName . ' VALUES (?, ?)';
