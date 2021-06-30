@@ -34,19 +34,14 @@ final class JwtV2Validator implements JwtValidator
     {
         $this->baseValidator->validateClaims($token);
 
-        if ($this->isAccessToken($token)) {
-            $this->validateAccessToken($token);
-        } else {
+        if ($token->getType() === JsonWebToken::TYPE_V2_JWT_PROVIDER_TOKEN) {
             $this->validateIdToken($token);
         }
-    }
 
-    private function isAccessToken(JsonWebToken $jwt): bool
-    {
-        // This does not 100% guarantee that the token is an access token, because an access token does not have an azp
-        // if it has no specific aud. However we require our integrators to always include the "https://api.publiq.be"
-        // aud, so access tokens should always have an azp in our case.
-        return !is_null($jwt->getClientId());
+        if ($token->getType() === JsonWebToken::TYPE_V2_USER_ACCESS_TOKEN ||
+            $token->getType() === JsonWebToken::TYPE_V2_CLIENT_ACCESS_TOKEN) {
+            $this->validateAccessToken($token);
+        }
     }
 
     private function validateAccessToken(JsonWebToken $jwt): void
