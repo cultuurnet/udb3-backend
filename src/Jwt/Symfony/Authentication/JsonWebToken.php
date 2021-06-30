@@ -14,6 +14,11 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 class JsonWebToken extends AbstractToken
 {
+    public const TYPE_V1_JWT_PROVIDER_TOKEN = 'v1_jwt_provider_token';
+    public const TYPE_V2_JWT_PROVIDER_TOKEN = 'v2_jwt_provider_token';
+    public const TYPE_V2_USER_ACCESS_TOKEN = 'v2_user_access_token';
+    public const TYPE_V2_CLIENT_ACCESS_TOKEN = 'v2_client_access_token';
+
     private const TIME_LEEWAY = 30;
 
     /**
@@ -41,6 +46,32 @@ class JsonWebToken extends AbstractToken
     public function authenticate(): JsonWebToken
     {
         return new self($this->getCredentials(), true);
+    }
+
+    /**
+     * @return string
+     *   One of the TYPE_... constants.
+     */
+    public function getType(): string
+    {
+        // V1 tokens had a non-standardized "uid" claim
+        if ($this->token->hasClaim('uid')) {
+            return self::TYPE_V1_JWT_PROVIDER_TOKEN;
+        }
+
+        // V2 tokens from the JWT provider are Auth0 ID tokens and do not have an azp claim
+        if (!$this->token->hasClaim('azp')) {
+            return self::TYPE_V2_JWT_PROVIDER_TOKEN;
+        }
+
+        // V2 client access tokens are always requested using the client-credentials grant type (gty)
+        // @see https://stackoverflow.com/questions/49492471/whats-the-meaning-of-the-gty-claim-in-a-jwt-token/49492971
+        if (($this->token->getClaim('gty', '') === 'client-credentials')) {
+            return self::TYPE_V2_CLIENT_ACCESS_TOKEN;
+        }
+
+        // If all other checks fail it's a V2 user access token.
+        return self::TYPE_V2_USER_ACCESS_TOKEN;
     }
 
     public function getUserId(): string
