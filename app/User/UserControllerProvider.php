@@ -27,6 +27,7 @@ class UserControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('users/emails/{emailAddress}', UserIdentityController::class . ':getByEmailAddress');
+        $controllers->get('user', UserIdentityController::class . ':getCurrentUser');
 
         return $controllers;
     }
