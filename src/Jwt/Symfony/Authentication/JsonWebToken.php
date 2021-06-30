@@ -159,14 +159,4 @@ class JsonWebToken extends AbstractToken
     {
         return $this->jwt;
     }
-
-    public function toSentryTags(): array
-    {
-        return [
-            'id' => $this->getUserId(),
-            'uid' => $this->token->getClaim('uid', 'null'),
-            'uitidv1id' => $this->token->getClaim('https://publiq.be/uitidv1id', 'null'),
-            'sub' => $this->token->getClaim('sub', 'null'),
-        ];
-    }
 }
