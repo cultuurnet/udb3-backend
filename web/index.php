@@ -219,32 +219,6 @@ $app->mount('/uitpas/labels', new UiTPASServiceLabelsControllerProvider());
 $app->mount('/uitpas/events', new UiTPASServiceEventControllerProvider());
 $app->mount('/uitpas/organizers', new UiTPASServiceOrganizerControllerProvider());
 
-$app->get(
-    '/user',
-    function (Application $app) {
-        /** @var Auth0UserIdentityResolver $userResolver */
-        $userResolver = $app[Auth0UserIdentityResolver::class];
-
-        $user = $userResolver->getUserById( new \ValueObjects\StringLiteral\StringLiteral($app['current_user_id']));
-
-        if (!$user) {
-            return (new \Symfony\Component\HttpFoundation\Response(null, 404));
-        }
-
-        return (new JsonResponse())
-            ->setData((object)[
-                'uuid' => $app['current_user_id'],
-                'username' => $user->getUserName()->toNative(),
-                'email' => $user->getEmailAddress()->toNative(),
-
-                // Keep `id` and `nick` for backwards compatibility with older API clients
-                'id' => $app['current_user_id'],
-                'nick' => $user->getUserName()->toNative(),
-            ])
-            ->setPrivate();
-    }
-);
-
 $app->mount(ImportControllerProvider::PATH, new ImportControllerProvider());
 
 try {

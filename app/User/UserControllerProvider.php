@@ -17,7 +17,8 @@ class UserControllerProvider implements ControllerProviderInterface
         $app[UserIdentityController::class] = $app->share(
             function (Application $app) {
                 return new UserIdentityController(
-                    $app[Auth0UserIdentityResolver::class]
+                    $app[Auth0UserIdentityResolver::class],
+                    $app['current_user_id']
                 );
             }
         );
@@ -26,6 +27,7 @@ class UserControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('users/emails/{emailAddress}', UserIdentityController::class . ':getByEmailAddress');
+        $controllers->get('user', UserIdentityController::class . ':getCurrentUser');
 
         return $controllers;
     }
