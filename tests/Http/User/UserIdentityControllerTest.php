@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
@@ -23,7 +24,7 @@ class UserIdentityControllerTest extends TestCase
     private $userIdentityController;
 
     /**
-     * @var UserIdentityResolver
+     * @var UserIdentityResolver|MockObject
      */
     private $userIdentityResolver;
 
