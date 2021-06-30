@@ -35,7 +35,7 @@ final class JwtV2Validator implements JwtValidator
         $this->baseValidator->validateClaims($token);
 
         if ($token->getType() === JsonWebToken::TYPE_V2_JWT_PROVIDER_TOKEN) {
-            $this->validateIdToken($token);
+            $this->validateIdTokenFromJwtProvider($token);
         }
 
         if ($token->getType() === JsonWebToken::TYPE_V2_USER_ACCESS_TOKEN ||
@@ -54,7 +54,7 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function validateIdToken(JsonWebToken $jwt): void
+    private function validateIdTokenFromJwtProvider(JsonWebToken $jwt): void
     {
         // Only accept id tokens if they were provided by the JWT provider v2.
         // If an id token from another Auth0 client is used, ask to use the related access token instead.
