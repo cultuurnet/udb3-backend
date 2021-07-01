@@ -40,7 +40,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
     private function getExpectedValidatorForTokenType(JsonWebToken $token): MockObject
     {
-        if ($token->getType() === JsonWebToken::TYPE_V1_JWT_PROVIDER_TOKEN) {
+        if ($token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN) {
             return $this->v1JwtValidator;
         }
         return $this->v2JwtValidator;
@@ -48,7 +48,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
     private function getUnusedValidatorForTokenType(JsonWebToken $token): MockObject
     {
-        if ($token->getType() === JsonWebToken::TYPE_V1_JWT_PROVIDER_TOKEN) {
+        if ($token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN) {
             return $this->v2JwtValidator;
         }
         return $this->v1JwtValidator;

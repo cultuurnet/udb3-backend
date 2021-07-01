@@ -34,12 +34,12 @@ final class JwtV2Validator implements JwtValidator
     {
         $this->baseValidator->validateClaims($token);
 
-        if ($token->getType() === JsonWebToken::TYPE_V2_JWT_PROVIDER_TOKEN) {
+        if ($token->getType() === JsonWebToken::V2_JWT_PROVIDER_TOKEN) {
             $this->validateIdTokenFromJwtProvider($token);
         }
 
-        if ($token->getType() === JsonWebToken::TYPE_V2_USER_ACCESS_TOKEN ||
-            $token->getType() === JsonWebToken::TYPE_V2_CLIENT_ACCESS_TOKEN) {
+        if ($token->getType() === JsonWebToken::V2_USER_ACCESS_TOKEN ||
+            $token->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
             $this->validateAccessToken($token);
         }
     }

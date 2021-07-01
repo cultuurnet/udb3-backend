@@ -49,7 +49,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
             );
         }
 
-        $isV1 = $token->getType() === JsonWebToken::TYPE_V1_JWT_PROVIDER_TOKEN;
+        $isV1 = $token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN;
         $validator = $isV1 ? $this->v1JwtValidator : $this->v2JwtValidator;
 
         $validator->verifySignature($token);

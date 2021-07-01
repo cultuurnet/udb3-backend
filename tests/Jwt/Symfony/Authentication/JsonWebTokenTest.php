@@ -102,7 +102,7 @@ class JsonWebTokenTest extends TestCase
     public function it_returns_v1_jwt_provider_token_type_if_a_uid_claim_is_present(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims(['uid' => 'mock']);
-        $this->assertEquals(JsonWebToken::TYPE_V1_JWT_PROVIDER_TOKEN, $jwt->getType());
+        $this->assertEquals(JsonWebToken::V1_JWT_PROVIDER_TOKEN, $jwt->getType());
     }
 
     /**
@@ -111,7 +111,7 @@ class JsonWebTokenTest extends TestCase
     public function it_returns_v2_jwt_provider_token_type_if_an_azp_claim_is_missing(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|mock-user-id']);
-        $this->assertEquals(JsonWebToken::TYPE_V2_JWT_PROVIDER_TOKEN, $jwt->getType());
+        $this->assertEquals(JsonWebToken::V2_JWT_PROVIDER_TOKEN, $jwt->getType());
     }
 
     /**
@@ -126,7 +126,7 @@ class JsonWebTokenTest extends TestCase
                 'gty' => 'client-credentials',
             ]
         );
-        $this->assertEquals(JsonWebToken::TYPE_V2_CLIENT_ACCESS_TOKEN, $jwt->getType());
+        $this->assertEquals(JsonWebToken::V2_CLIENT_ACCESS_TOKEN, $jwt->getType());
     }
 
     /**
@@ -140,6 +140,6 @@ class JsonWebTokenTest extends TestCase
                 'azp' => 'mock-client',
             ]
         );
-        $this->assertEquals(JsonWebToken::TYPE_V2_USER_ACCESS_TOKEN, $jwt->getType());
+        $this->assertEquals(JsonWebToken::V2_USER_ACCESS_TOKEN, $jwt->getType());
     }
 }
