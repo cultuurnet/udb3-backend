@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Error;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\Jwt\Udb3Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
 use Sentry\State\Scope;
@@ -22,9 +22,9 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
     private $decoratedHandler;
 
     /**
-     * @var Udb3Token|null
+     * @var JsonWebToken|null
      */
-    private $udb3Token;
+    private $jwt;
 
     /**
      * @var ApiKey|null
@@ -38,12 +38,12 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
     public function __construct(
         HandlerInterface $decoratedHandler,
-        ?Udb3Token $udb3Token,
+        ?JsonWebToken $jwt,
         ?ApiKey $apiKey,
         ?string $apiName
     ) {
         $this->decoratedHandler = $decoratedHandler;
-        $this->udb3Token = $udb3Token;
+        $this->jwt = $jwt;
         $this->apiKey = $apiKey;
         $this->apiName = $apiName;
     }
@@ -64,7 +64,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
     private function createApiTags(): array
     {
-        $clientId = $this->udb3Token ? $this->udb3Token->getClientId() : null;
+        $clientId = $this->jwt ? $this->jwt->getClientId() : null;
         return [
             'api_client_id' => $clientId ?? 'null',
             'api_key' => $this->apiKey ? $this->apiKey->toString() : 'null',
@@ -74,15 +74,12 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
     private function createUserInfo(): array
     {
-        if (!$this->udb3Token) {
+        if (!$this->jwt) {
             return ['id' => 'anonymous'];
         }
-
         return [
-            'id' => $this->udb3Token->id(),
-            'uid' => $this->udb3Token->jwtToken()->getClaim('uid', 'null'),
-            'uitidv1id' => $this->udb3Token->jwtToken()->getClaim('https://publiq.be/uitidv1id', 'null'),
-            'sub' => $this->udb3Token->jwtToken()->getClaim('sub', 'null'),
+            'id' => $this->jwt->getUserId(),
+            'token_type' => $this->jwt->getType(),
         ];
     }
 

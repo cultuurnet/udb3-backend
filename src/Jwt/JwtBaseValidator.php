@@ -4,21 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use Lcobucci\JWT\Signer;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Token;
-use Lcobucci\JWT\ValidationData;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class JwtBaseValidator implements JwtValidator
 {
     /**
-     * @var Signer
-     */
-    private $signer;
-
-    /**
-     * @var Key
+     * @var string
      */
     private $publicKey;
 
@@ -37,12 +29,10 @@ class JwtBaseValidator implements JwtValidator
      * @param string[] $validIssuers
      */
     public function __construct(
-        Signer $signer,
-        Key $publicKey,
+        string $publicKey,
         array $requiredClaims = [],
         array $validIssuers = []
     ) {
-        $this->signer = $signer;
         $this->publicKey = $publicKey;
         $this->requiredClaims = $requiredClaims;
         $this->validIssuers = $validIssuers;
@@ -60,58 +50,43 @@ class JwtBaseValidator implements JwtValidator
         }
     }
 
-    public function validateClaims(Token $token): void
+    public function validateClaims(JsonWebToken $token): void
     {
         $this->validateTimeSensitiveClaims($token);
         $this->validateIssuer($token);
         $this->validateRequiredClaims($token);
     }
 
-    /**
-     * Used to validate standard time-sensitive claims, i.e. exp should be in the future and nbf and iat should be in
-     * the past.
-     */
-    private function validateTimeSensitiveClaims(Token $token): void
+    private function validateTimeSensitiveClaims(JsonWebToken $token): void
     {
-        // Use the built-in validation provided by Lcobucci without any extra validation data.
-        // This will automatically validate the time-sensitive claims.
-        // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
-        // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        if (!$token->validate(new ValidationData(null, 30))) {
+        if (!$token->isUsableAtCurrentTime()) {
             throw new AuthenticationException(
                 'Token expired (or not yet usable).'
             );
         }
     }
 
-    private function validateRequiredClaims(Token $token): void
+    private function validateRequiredClaims(JsonWebToken $token): void
     {
-        foreach ($this->requiredClaims as $claim) {
-            if (!$token->hasClaim($claim)) {
-                throw new AuthenticationException(
-                    'Token is missing one of its required claims.'
-                );
-            }
+        if (!$token->hasClaims($this->requiredClaims)) {
+            throw new AuthenticationException(
+                'Token is missing one of its required claims.'
+            );
         }
     }
 
-    private function validateIssuer(Token $token): void
+    private function validateIssuer(JsonWebToken $token): void
     {
-        if (!$token->hasClaim('iss') || !in_array($token->getClaim('iss'), $this->validIssuers, true)) {
+        if (!$token->hasValidIssuer($this->validIssuers)) {
             throw new AuthenticationException(
                 'Token is not issued by a valid issuer.'
             );
         }
     }
 
-    public function verifySignature(Token $token): void
+    public function verifySignature(JsonWebToken $token): void
     {
-        $isVerified = $token->verify(
-            $this->signer,
-            $this->publicKey
-        );
-
-        if (!$isVerified) {
+        if (!$token->verifyRsaSha256Signature($this->publicKey)) {
             throw new AuthenticationException(
                 'Token signature verification failed. The token is likely forged or manipulated.'
             );

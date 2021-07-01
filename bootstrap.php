@@ -6,8 +6,7 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
-use CultuurNet\UDB3\Jwt\Udb3Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
@@ -221,14 +220,11 @@ $app['current_user_id'] = $app::share(
         }
 
         $token = $tokenStorage->getToken();
-        if (!($token instanceof JwtUserToken)) {
+        if (!($token instanceof JsonWebToken)) {
             // The token in the firewall storage is not supported.
             return null;
         }
-
-        // Get the actual Udb3Token from the Symfony Firewall "token", and return the user's id.
-        $jwt = $token->getCredentials();
-        return $jwt->id();
+        return $token->getUserId();
     }
 );
 
@@ -261,8 +257,8 @@ $app['jwt'] = $app::share(
 
         $token = $tokenStorage->getToken();
 
-        if ($token instanceof JwtUserToken) {
-            return $token->getCredentials();
+        if ($token instanceof JsonWebToken) {
+            return $token;
         }
 
         return null;
@@ -289,7 +285,7 @@ $app['api_key'] = $app->share(
 $app['api_client_id'] = $app::share(
     function (Application $app) {
         $token = $app['jwt'];
-        if ($token instanceof Udb3Token) {
+        if ($token instanceof JsonWebToken) {
             return $token->getClientId();
         }
         return null;

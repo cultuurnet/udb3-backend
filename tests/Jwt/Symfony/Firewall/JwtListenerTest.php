@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
-use CultuurNet\UDB3\Jwt\Udb3Token;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Token as Jwt;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,11 +27,6 @@ class JwtListenerTest extends TestCase
     private $authenticationManager;
 
     /**
-     * @var Parser|MockObject
-     */
-    private $parser;
-
-    /**
      * @var JwtListener
      */
     private $listener;
@@ -48,12 +40,10 @@ class JwtListenerTest extends TestCase
     {
         $this->tokenStorage = $this->createMock(TokenStorageInterface::class);
         $this->authenticationManager = $this->createMock(AuthenticationManagerInterface::class);
-        $this->parser = $this->createMock(Parser::class);
 
         $this->listener = new JwtListener(
             $this->tokenStorage,
-            $this->authenticationManager,
-            $this->parser
+            $this->authenticationManager
         );
 
         $this->getResponseEvent = $this->createMock(GetResponseEvent::class);
@@ -69,9 +59,6 @@ class JwtListenerTest extends TestCase
         $this->getResponseEvent->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
-
-        $this->parser->expects($this->never())
-            ->method('parse');
 
         $this->authenticationManager->expects($this->never())
             ->method('authenticate');
@@ -102,17 +89,9 @@ class JwtListenerTest extends TestCase
      */
     public function it_authenticates_and_stores_valid_tokens()
     {
-        $tokenString = 'headers.payload.signature';
-
-        $jwt = new Jwt(
-            ['alg' => 'none'],
-            [],
-            null,
-            ['headers', 'payload']
-        );
-
-        $token = new JwtUserToken(new Udb3Token($jwt));
-        $authenticatedToken = new JwtUserToken(new Udb3Token($jwt), true);
+        $token = JsonWebTokenFactory::createWithClaims([]);
+        $tokenString = $token->getCredentials();
+        $authenticatedToken = $token->authenticate();
 
         $request = new Request(
             [],
@@ -127,11 +106,6 @@ class JwtListenerTest extends TestCase
         $this->getResponseEvent->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
-
-        $this->parser->expects($this->once())
-            ->method('parse')
-            ->with($tokenString)
-            ->willReturn($jwt);
 
         $this->authenticationManager->expects($this->once())
             ->method('authenticate')
@@ -150,16 +124,8 @@ class JwtListenerTest extends TestCase
      */
     public function it_returns_an_unauthorized_response_if_jwt_authentication_fails()
     {
-        $tokenString = 'headers.payload.signature';
-
-        $jwt = new Jwt(
-            ['alg' => 'none'],
-            [],
-            null,
-            ['headers', 'payload']
-        );
-
-        $token = new JwtUserToken(new Udb3Token($jwt));
+        $token = JsonWebTokenFactory::createWithClaims([]);
+        $tokenString = $token->getCredentials();
 
         $request = new Request(
             [],
@@ -174,11 +140,6 @@ class JwtListenerTest extends TestCase
         $this->getResponseEvent->expects($this->any())
             ->method('getRequest')
             ->willReturn($request);
-
-        $this->parser->expects($this->once())
-            ->method('parse')
-            ->with($tokenString)
-            ->willReturn($jwt);
 
         $authenticationException = new AuthenticationException(
             'Authentication failed',

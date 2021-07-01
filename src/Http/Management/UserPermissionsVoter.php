@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Management;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtUserToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,8 +54,8 @@ class UserPermissionsVoter implements VoterInterface
             return $result;
         }
 
-        if ($token instanceof JwtUserToken && $token->isAuthenticated()) {
-            $userUuid = $token->getCredentials()->id();
+        if ($token instanceof JsonWebToken && $token->isAuthenticated()) {
+            $userUuid = $token->getUserId();
         } else {
             return $result;
         }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use Lcobucci\JWT\Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class JwtV2Validator implements JwtValidator
@@ -25,26 +25,28 @@ final class JwtV2Validator implements JwtValidator
         $this->v2JwtProviderAuth0ClientId = $v2JwtProviderAuth0ClientId;
     }
 
-    public function verifySignature(Token $token): void
+    public function verifySignature(JsonWebToken $token): void
     {
         $this->baseValidator->verifySignature($token);
     }
 
-    public function validateClaims(Token $token): void
+    public function validateClaims(JsonWebToken $token): void
     {
         $this->baseValidator->validateClaims($token);
 
-        $udb3Token = new Udb3Token($token);
-        if ($udb3Token->isAccessToken()) {
-            $this->validateAccessToken($udb3Token);
-        } else {
-            $this->validateIdToken($udb3Token);
+        if ($token->getType() === JsonWebToken::V2_JWT_PROVIDER_TOKEN) {
+            $this->validateIdTokenFromJwtProvider($token);
+        }
+
+        if ($token->getType() === JsonWebToken::V2_USER_ACCESS_TOKEN ||
+            $token->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
+            $this->validateAccessToken($token);
         }
     }
 
-    private function validateAccessToken(Udb3Token $jwt): void
+    private function validateAccessToken(JsonWebToken $jwt): void
     {
-        if (!$jwt->canUseEntryAPI()) {
+        if (!$jwt->hasEntryApiInPubliqApisClaim()) {
             throw new AuthenticationException(
                 'The given token and its related client are not allowed to access EntryAPI.',
                 403
@@ -52,11 +54,15 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function validateIdToken(Udb3Token $jwt): void
+    private function validateIdTokenFromJwtProvider(JsonWebToken $jwt): void
     {
-        if (!$jwt->audienceContains($this->v2JwtProviderAuth0ClientId)) {
+        // Only accept id tokens if they were provided by the JWT provider v2.
+        // If an id token from another Auth0 client is used, ask to use the related access token instead.
+        // Don't mention the JWT provider, we don't want to encourage any new usage of it, only support its tokens for
+        // backward compatibility in existing integrations (who won't see this error then).
+        if (!$jwt->hasAudience($this->v2JwtProviderAuth0ClientId)) {
             throw new AuthenticationException(
-                'Only legacy id tokens are supported. Please use an access token instead.'
+                'The given token is an id token. Please use an access token instead.'
             );
         }
     }

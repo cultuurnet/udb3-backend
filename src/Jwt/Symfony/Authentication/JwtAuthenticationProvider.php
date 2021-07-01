@@ -34,7 +34,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function supports(TokenInterface $token)
     {
-        return $token instanceof JwtUserToken;
+        return $token instanceof JsonWebToken;
     }
 
     /**
@@ -42,36 +42,19 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function authenticate(TokenInterface $token)
     {
-        /* @var JwtUserToken $token */
+        /** @var JsonWebToken $token */
         if (!$this->supports($token)) {
             throw new AuthenticationException(
                 'Token type ' . get_class($token) . ' not supported.'
             );
         }
 
-        $udb3Token = $token->getCredentials();
+        $isV1 = $token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN;
+        $validator = $isV1 ? $this->v1JwtValidator : $this->v2JwtValidator;
 
-        $validV1Signature = false;
-        $validV2Signature = false;
+        $validator->verifySignature($token);
+        $validator->validateClaims($token);
 
-        try {
-            $this->v1JwtValidator->verifySignature($udb3Token->jwtToken());
-            $validV1Signature = true;
-        } catch (AuthenticationException $e) {
-            $this->v2JwtValidator->verifySignature($udb3Token->jwtToken());
-            $validV2Signature = true;
-        }
-
-        if (!$validV1Signature && !$validV2Signature) {
-            throw new AuthenticationException(
-                'Token signature verification failed. The token is likely forged or manipulated.'
-            );
-        }
-
-        $validator = $validV1Signature ? $this->v1JwtValidator : $this->v2JwtValidator;
-
-        $validator->validateClaims($udb3Token->jwtToken());
-
-        return new JwtUserToken($udb3Token, true);
+        return $token->authenticate();
     }
 }

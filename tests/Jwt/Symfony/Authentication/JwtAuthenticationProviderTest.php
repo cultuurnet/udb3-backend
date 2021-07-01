@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtValidator;
-use CultuurNet\UDB3\Jwt\Udb3Token;
-use Lcobucci\JWT\Claim\Basic;
-use Lcobucci\JWT\Token as Jwt;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -41,6 +38,22 @@ class JwtAuthenticationProviderTest extends TestCase
         );
     }
 
+    private function getExpectedValidatorForTokenType(JsonWebToken $token): MockObject
+    {
+        if ($token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN) {
+            return $this->v1JwtValidator;
+        }
+        return $this->v2JwtValidator;
+    }
+
+    private function getUnusedValidatorForTokenType(JsonWebToken $token): MockObject
+    {
+        if ($token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN) {
+            return $this->v2JwtValidator;
+        }
+        return $this->v1JwtValidator;
+    }
+
     /**
      * @test
      */
@@ -54,9 +67,7 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->assertTrue(
             $this->authenticationProvider->supports(
-                new JwtUserToken(
-                    new Udb3Token(new Jwt())
-                )
+                JsonWebTokenFactory::createWithClaims([])
             )
         );
     }
@@ -76,23 +87,29 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->authenticationProvider->authenticate($token);
     }
 
+
+    public function tokenDataProvider(): array
+    {
+        return [
+            'v1' => [JsonWebTokenFactory::createWithClaims(['uid' => 'mock-v1-id'])],
+            'v2' => [JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|mock-v2-id', 'azp' => 'mock-client'])],
+        ];
+    }
+
     /**
      * @test
+     * @dataProvider tokenDataProvider
      */
-    public function it_throws_an_exception_when_the_jwt_signature_is_invalid()
-    {
-        $udb3Token = new Udb3Token(new Jwt());
-        $token = new JwtUserToken($udb3Token);
-
-        $this->v1JwtValidator->expects($this->once())
+    public function it_throws_an_exception_when_the_jwt_signature_is_invalid_for_the_expected_token_version(
+        JsonWebToken $token
+    ): void {
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
-            ->with($udb3Token->jwtToken())
+            ->with($token)
             ->willThrowException(new AuthenticationException());
 
-        $this->v2JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($udb3Token->jwtToken())
-            ->willThrowException(new AuthenticationException());
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
+            ->method('verifySignature');
 
         $this->expectException(AuthenticationException::class);
 
@@ -101,89 +118,55 @@ class JwtAuthenticationProviderTest extends TestCase
 
     /**
      * @test
+     * @dataProvider tokenDataProvider
      */
-    public function it_calls_the_validation_methods_on_the_v1_validator_if_the_signature_is_v1(): void
-    {
-        $udb3Token = new Udb3Token(new Jwt());
-        $token = new JwtUserToken($udb3Token);
-
-        $this->v1JwtValidator->expects($this->once())
+    public function it_calls_the_validation_methods_on_the_right_validator_depending_on_the_token_version(
+        JsonWebToken $token
+    ): void {
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
-            ->with($udb3Token->jwtToken());
+            ->with($token);
 
-        $this->v2JwtValidator->expects($this->never())
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
             ->method('verifySignature');
 
-        $this->v1JwtValidator->expects($this->once())
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('validateClaims')
-            ->with($udb3Token->jwtToken());
-
-        $this->authenticationProvider->authenticate($token);
-    }
-
-    /**
-     * @test
-     */
-    public function it_calls_the_claim_validation_method_on_the_v2_validator_if_the_signature_is_v2(): void
-    {
-        $udb3Token = new Udb3Token(
-            new Jwt(
-                ['alg' => 'none'],
-                [
-                    'azp' => new Basic('azp', 'bla'),
-                    'https://publiq.be/publiq-apis' =>  new Basic('https://publiq.be/publiq-apis', 'entry'),
-                ]
-            )
-        );
-        $token = new JwtUserToken($udb3Token);
-
-        $this->v1JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($udb3Token->jwtToken())
+            ->with($token)
             ->willThrowException(new AuthenticationException());
 
-        $this->v2JwtValidator->expects($this->once())
-            ->method('verifySignature')
-            ->with($udb3Token->jwtToken())
-            ->willReturn(true);
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
+            ->method('validateClaims');
 
-        $this->v2JwtValidator->expects($this->once())
-            ->method('validateClaims')
-            ->with($udb3Token->jwtToken());
+        $this->expectException(AuthenticationException::class);
 
         $this->authenticationProvider->authenticate($token);
     }
 
     /**
      * @test
+     * @dataProvider tokenDataProvider
      */
-    public function it_returns_an_authenticated_token_when_the_jwt_is_valid(): void
-    {
-        $udb3Token = new Udb3Token(
-            new Jwt(
-                ['alg' => 'none'],
-                [
-                    'azp' => new Basic('azp', 'Pwf7f2pSU3FsCCbGZz0gexx8NWOW9Hj9'),
-                    'https://publiq.be/publiq-apis' => new Basic('https://publiq.be/publiq-apis', 'ups entry'),
-                ]
-            )
-        );
-        $token = new JwtUserToken($udb3Token);
-
-        $this->v1JwtValidator->expects($this->once())
+    public function it_returns_an_authenticated_token_when_the_jwt_is_valid(
+        JsonWebToken $token
+    ): void {
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
-            ->with($udb3Token->jwtToken());
+            ->with($token);
 
-        $this->v2JwtValidator->expects($this->never())
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
             ->method('verifySignature');
 
-        $this->v1JwtValidator->expects($this->once())
+        $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('validateClaims')
-            ->with($udb3Token->jwtToken());
+            ->with($token);
+
+        $this->getUnusedValidatorForTokenType($token)->expects($this->never())
+            ->method('validateClaims');
 
         $authToken = $this->authenticationProvider->authenticate($token);
 
-        $this->assertEquals($udb3Token, $authToken->getCredentials());
+        $this->assertEquals($token->getCredentials(), $authToken->getCredentials());
         $this->assertTrue($authToken->isAuthenticated());
     }
 }
