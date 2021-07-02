@@ -24,6 +24,11 @@ class UserIdentityController
     private $userIdentityResolver;
 
     /**
+     * @var JsonWebToken
+     */
+    private $jwt;
+
+    /**
      * @var string
      */
     private $currentUserId;
@@ -33,6 +38,7 @@ class UserIdentityController
         JsonWebToken $jsonWebToken
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
+        $this->jwt = $jsonWebToken;
         $this->currentUserId = $jsonWebToken->getUserId();
     }
 
@@ -55,6 +61,16 @@ class UserIdentityController
 
     public function getCurrentUser(): JsonResponse
     {
+        if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
+            return new ApiProblemJsonResponse(
+                (new ApiProblem())
+                    ->setType('https://api.publiq.be/probs/auth/token-type-not-supported')
+                    ->setTitle('Token type not supported')
+                    ->setDetail('Client access tokens are not supported on this endpoint because a user is required to return user info.')
+                    ->setStatus(400)
+            );
+        }
+
         $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->currentUserId));
 
         if (!($userIdentity instanceof UserIdentityDetails)) {

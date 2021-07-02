@@ -119,6 +119,43 @@ class UserIdentityControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_token_type_not_supported_on_get_current_user_if_a_client_access_token_is_used(): void
+    {
+        $userIdentityControllerWithClientToken = new UserIdentityController(
+            $this->userIdentityResolver,
+            JsonWebTokenFactory::createWithClaims(
+                [
+                    'sub' => 'clientId@clients',
+                    'azp' => 'clientId',
+                    'gty' => 'client-credentials',
+                ]
+            )
+        );
+
+        $response = $userIdentityControllerWithClientToken->getCurrentUser();
+
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'Token type not supported',
+                    'type' => 'https://api.publiq.be/probs/auth/token-type-not-supported',
+                    'status' => 400,
+                    'detail' => 'Client access tokens are not supported on this endpoint because a user is required to return user info.',
+                ],
+                400,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_not_found_on_get_current_user_when_user_identity_not_found(): void
     {
         $this->userIdentityResolver->expects($this->once())
