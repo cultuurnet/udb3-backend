@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\User;
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,7 +35,7 @@ class UserIdentityControllerTest extends TestCase
 
         $this->userIdentityController = new UserIdentityController(
             $this->userIdentityResolver,
-            'current_user_id'
+            JsonWebTokenFactory::createWithClaims(['uid' => 'current_user_id'])
         );
     }
 

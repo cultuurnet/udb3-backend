@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\User;
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,10 +30,10 @@ class UserIdentityController
 
     public function __construct(
         UserIdentityResolver $userIdentityResolver,
-        string $currentUserId
+        JsonWebToken $jsonWebToken
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
-        $this->currentUserId = $currentUserId;
+        $this->currentUserId = $jsonWebToken->getUserId();
     }
 
     public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
