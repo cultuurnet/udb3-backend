@@ -74,7 +74,13 @@ class UserIdentityController
         $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->currentUserId));
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
-            return $this->createUserNotFoundResponse();
+            return new ApiProblemJsonResponse(
+                (new ApiProblem())
+                    ->setType('https://api.publiq.be/probs/uitdatabank/user-not-found')
+                    ->setTitle('User not found')
+                    ->setDetail('No user found for the id in the given token.')
+                    ->setStatus(400)
+            );
         }
 
         $userIdentityAsArray = $userIdentity->jsonSerialize();

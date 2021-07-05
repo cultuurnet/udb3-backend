@@ -165,7 +165,23 @@ class UserIdentityControllerTest extends TestCase
 
         $response = $this->userIdentityController->getCurrentUser();
 
-        $this->assertJsonResponse($this->createUserNotFoundProblem(), $response);
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'User not found',
+                    'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
+                    'status' => 400,
+                    'detail' => 'No user found for the id in the given token.',
+                ],
+                400,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
+        );
     }
 
     private function createUserNotFoundProblem(): ApiProblemJsonResponse
