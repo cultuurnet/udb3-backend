@@ -74,4 +74,15 @@ final class ApiProblems
             ->setDetail($detail)
             ->setStatus(400);
     }
+
+    public static function invalidEmailAddress(string $email): ApiProblem
+    {
+        return (new ApiProblem())
+            ->setType('https://api.publiq.be/probs/uitdatabank/invalid-email-address')
+            ->setTitle('Invalid email address')
+            ->setDetail(
+                sprintf('"%s" is not a valid email address', $email)
+            )
+            ->setStatus(400);
+    }
 }

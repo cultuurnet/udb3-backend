@@ -38,20 +38,21 @@ class UserIdentityController
 
     public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
     {
-        $notFoundResponse = new ApiProblemJsonResponse(
-            ApiProblems::userNotFound('No user found for the given email address.')
-        );
-
+        $emailAddressString = $request->getAttribute('emailAddress', '');
         try {
-            $emailAddress = new EmailAddress($request->getAttribute('emailAddress'));
+            $emailAddress = new EmailAddress($emailAddressString);
         } catch (InvalidNativeArgumentException $e) {
-            return $notFoundResponse;
+            return new ApiProblemJsonResponse(
+                ApiProblems::invalidEmailAddress($emailAddressString)
+            );
         }
 
         $userIdentity = $this->userIdentityResolver->getUserByEmail($emailAddress);
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
-            return $notFoundResponse;
+            return new ApiProblemJsonResponse(
+                ApiProblems::userNotFound('No user found for the given email address.')
+            );
         }
 
         return (new JsonLdResponse($userIdentity));

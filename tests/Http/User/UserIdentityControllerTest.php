@@ -64,15 +64,18 @@ class UserIdentityControllerTest extends TestCase
      */
     public function it_returns_not_found_on_get_by_email_when_email_is_missing(): void
     {
-        $response = $this->userIdentityController->getByEmailAddress(new ServerRequest());
+        $response = $this->userIdentityController->getByEmailAddress(
+            (new ServerRequest())
+                ->withAttribute('emailAddress', 'foo')
+        );
 
         $this->assertJsonResponse(
             new JsonResponse(
                 [
-                    'title' => 'User not found',
-                    'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
+                    'title' => 'Invalid email address',
+                    'type' => 'https://api.publiq.be/probs/uitdatabank/invalid-email-address',
                     'status' => 400,
-                    'detail' => 'No user found for the given email address.',
+                    'detail' => '"foo" is not a valid email address',
                 ],
                 400,
                 [
