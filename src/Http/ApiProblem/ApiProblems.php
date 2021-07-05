@@ -72,7 +72,7 @@ final class ApiProblems
             ->setType('https://api.publiq.be/probs/uitdatabank/user-not-found')
             ->setTitle('User not found')
             ->setDetail($detail)
-            ->setStatus(400);
+            ->setStatus(404);
     }
 
     public static function invalidEmailAddress(string $email): ApiProblem

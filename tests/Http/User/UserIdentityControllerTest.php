@@ -107,10 +107,10 @@ class UserIdentityControllerTest extends TestCase
                 [
                     'title' => 'User not found',
                     'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
-                    'status' => 400,
+                    'status' => 404,
                     'detail' => 'No user found for the given email address.',
                 ],
-                400,
+                404,
                 [
                     'Content-Type' => [
                         'application/problem+json',
