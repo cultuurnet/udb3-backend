@@ -12,6 +12,24 @@ use Crell\ApiProblem\ApiProblem;
  */
 final class ApiProblems
 {
+    public static function unauthorized(string $detail): ApiProblem
+    {
+        return (new ApiProblem())
+            ->setType('https://api.publiq.be/probs/auth/unauthorized')
+            ->setTitle('Unauthorized')
+            ->setDetail($detail)
+            ->setStatus(401);
+    }
+
+    public static function forbidden(string $detail): ApiProblem
+    {
+        return (new ApiProblem())
+            ->setType('https://api.publiq.be/probs/auth/forbidden')
+            ->setTitle('Forbidden')
+            ->setDetail($detail)
+            ->setStatus(403);
+    }
+
     public static function tokenNotSupported(string $detail): ApiProblem
     {
         return (new ApiProblem())
