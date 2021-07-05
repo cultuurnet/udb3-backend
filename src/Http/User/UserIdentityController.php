@@ -28,18 +28,12 @@ class UserIdentityController
      */
     private $jwt;
 
-    /**
-     * @var string
-     */
-    private $currentUserId;
-
     public function __construct(
         UserIdentityResolver $userIdentityResolver,
         JsonWebToken $jsonWebToken
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
         $this->jwt = $jsonWebToken;
-        $this->currentUserId = $jsonWebToken->getUserId();
     }
 
     public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
@@ -71,7 +65,7 @@ class UserIdentityController
             );
         }
 
-        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->currentUserId));
+        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->jwt->getUserId()));
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
