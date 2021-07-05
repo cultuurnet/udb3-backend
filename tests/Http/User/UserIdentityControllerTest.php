@@ -200,10 +200,10 @@ class UserIdentityControllerTest extends TestCase
         $this->assertJsonResponse(
             new JsonResponse(
                 [
-                    'title' => 'User not found',
-                    'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
+                    'title' => 'Token not supported',
+                    'type' => 'https://api.publiq.be/probs/auth/token-not-supported',
                     'status' => 400,
-                    'detail' => 'No user found for the id in the given token.',
+                    'detail' => 'No user found for the user id in the given token.',
                 ],
                 400,
                 [

@@ -76,7 +76,7 @@ class UserIdentityController
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
-                ApiProblems::userNotFound('No user found for the id in the given token.')
+                ApiProblems::tokenNotSupported('No user found for the user id in the given token.')
             );
         }
 
