@@ -170,7 +170,7 @@ class UniqueDBALEventStoreDecorator extends AbstractEventStoreDecorator
         $rows = $queryBuilder->select(self::UUID_COLUMN)
             ->from($this->uniqueTableName)
             ->where($likeUniqueValue)
-            ->setParameter('uniqueValue', '%' . $uniqueValue . '%')
+            ->setParameter('uniqueValue', $uniqueValue)
             ->execute()
             ->fetchAll();
 
