@@ -12,11 +12,11 @@ use Crell\ApiProblem\ApiProblem;
  */
 final class ApiProblems
 {
-    public static function tokenTypeNotSupported(string $detail): ApiProblem
+    public static function tokenNotSupported(string $detail): ApiProblem
     {
         return (new ApiProblem())
-            ->setType('https://api.publiq.be/probs/auth/token-type-not-supported')
-            ->setTitle('Token type not supported')
+            ->setType('https://api.publiq.be/probs/auth/token-not-supported')
+            ->setTitle('Token not supported')
             ->setDetail($detail)
             ->setStatus(400);
     }

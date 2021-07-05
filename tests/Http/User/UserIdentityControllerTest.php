@@ -169,8 +169,8 @@ class UserIdentityControllerTest extends TestCase
         $this->assertJsonResponse(
             new JsonResponse(
                 [
-                    'title' => 'Token type not supported',
-                    'type' => 'https://api.publiq.be/probs/auth/token-type-not-supported',
+                    'title' => 'Token not supported',
+                    'type' => 'https://api.publiq.be/probs/auth/token-not-supported',
                     'status' => 400,
                     'detail' => 'Client access tokens are not supported on this endpoint because a user is required to return user info.',
                 ],

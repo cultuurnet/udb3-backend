@@ -68,7 +68,7 @@ class UserIdentityController
     {
         if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
             return new ApiProblemJsonResponse(
-                ApiProblems::tokenTypeNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.')
+                ApiProblems::tokenNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.')
             );
         }
 
