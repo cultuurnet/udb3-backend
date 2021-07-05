@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\User;
 
 use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
@@ -63,11 +64,7 @@ class UserIdentityController
     {
         if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
             return new ApiProblemJsonResponse(
-                (new ApiProblem())
-                    ->setType('https://api.publiq.be/probs/auth/token-type-not-supported')
-                    ->setTitle('Token type not supported')
-                    ->setDetail('Client access tokens are not supported on this endpoint because a user is required to return user info.')
-                    ->setStatus(400)
+                ApiProblems::tokenTypeNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.')
             );
         }
 
@@ -75,11 +72,7 @@ class UserIdentityController
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
-                (new ApiProblem())
-                    ->setType('https://api.publiq.be/probs/uitdatabank/user-not-found')
-                    ->setTitle('User not found')
-                    ->setDetail('No user found for the id in the given token.')
-                    ->setStatus(400)
+                ApiProblems::userNotFound('No user found for the id in the given token.')
             );
         }
 
