@@ -47,9 +47,9 @@ class CreateProductionValidator implements DataValidatorInterface
             ];
         }
 
-        if (count($data['eventIds']) < 2) {
+        if (count($data['eventIds']) < 1) {
             return [
-                'eventIds' => 'At least two events should be provided',
+                'eventIds' => 'At least one event should be provided',
             ];
         }
 
