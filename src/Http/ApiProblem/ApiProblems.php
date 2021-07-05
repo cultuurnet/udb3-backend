@@ -9,25 +9,27 @@ use Crell\ApiProblem\ApiProblem;
 /**
  * One class used to construct every possible API problem, so we have a definitive list (for documentation), and we can
  * more easily avoid almost-the-same duplicates.
+ *
+ * Ideally only this class would construct new ApiProblem instances, and always using specifically named methods.
+ *
+ * See https://datatracker.ietf.org/doc/html/rfc7807 for info on API problems.
+ *
+ * Most important points to keep in mind:
+ * - Type should be a URI
+ * - Title should always be the same for the used type
+ * - The "about:blank" type can only be used if the error needs no further explanation than the status code
+ *     (for example, 400 is too vague)
+ * - If the "about:blank" type is used, the title should be the HTTP status phrase for the used status code
+ *     (for example, "Internal Server Error" for 500)
+ * - Avoid using "about:blank" in cases where extra documentation can be helpful
+ *     (since the URIs will link to documentation on Stoplight)
  */
 final class ApiProblems
 {
-    // The "about:blank" URI [RFC6694], when used as a problem type,
-    // indicates that the problem has no additional semantics beyond that of
-    // the HTTP status code.
-    //
-    // When "about:blank" is used, the title SHOULD be the same as the
-    // recommended HTTP status phrase for that code (e.g., "Not Found" for
-    // 404, and so on), although it MAY be localized to suit client
-    // preferences (expressed with the Accept-Language request header).
-    //
-    // @see https://datatracker.ietf.org/doc/html/rfc7807#section-4.2
-    private const TYPE_BLANK = 'about:blank';
-
     public static function internalServerError(string $detail = ''): ApiProblem
     {
         return (new ApiProblem())
-            ->setType(self::TYPE_BLANK)
+            ->setType('about:blank')
             ->setTitle('Internal Server Error')
             ->setDetail($detail)
             ->setStatus(500);
