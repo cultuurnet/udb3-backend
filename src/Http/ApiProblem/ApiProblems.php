@@ -12,8 +12,31 @@ use Crell\ApiProblem\ApiProblem;
  */
 final class ApiProblems
 {
+    // The "about:blank" URI [RFC6694], when used as a problem type,
+    // indicates that the problem has no additional semantics beyond that of
+    // the HTTP status code.
+    //
+    // When "about:blank" is used, the title SHOULD be the same as the
+    // recommended HTTP status phrase for that code (e.g., "Not Found" for
+    // 404, and so on), although it MAY be localized to suit client
+    // preferences (expressed with the Accept-Language request header).
+    //
+    // @see https://datatracker.ietf.org/doc/html/rfc7807#section-4.2
+    private const TYPE_BLANK = 'about:blank';
+
+    public static function internalServerError(string $detail = ''): ApiProblem
+    {
+        return (new ApiProblem())
+            ->setType(self::TYPE_BLANK)
+            ->setTitle('Internal Server Error')
+            ->setDetail($detail)
+            ->setStatus(500);
+    }
+
     public static function unauthorized(string $detail): ApiProblem
     {
+        // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
+        // to fix this.
         return (new ApiProblem())
             ->setType('https://api.publiq.be/probs/auth/unauthorized')
             ->setTitle('Unauthorized')
@@ -23,6 +46,8 @@ final class ApiProblems
 
     public static function forbidden(string $detail): ApiProblem
     {
+        // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
+        // to fix this.
         return (new ApiProblem())
             ->setType('https://api.publiq.be/probs/auth/forbidden')
             ->setTitle('Forbidden')

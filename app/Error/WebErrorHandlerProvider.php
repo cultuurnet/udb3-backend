@@ -8,6 +8,7 @@ use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use Error;
 use Exception;
@@ -54,8 +55,7 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
         $problem->setStatus($e->getCode() ?: $defaultStatus);
 
         if ($e instanceof Error) {
-            $problem->setTitle('Internal server error');
-            $problem->setStatus(ApiProblemJsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            $problem = ApiProblems::internalServerError();
         }
 
         if ($e instanceof DataValidationException) {
