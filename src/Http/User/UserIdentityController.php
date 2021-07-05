@@ -45,16 +45,20 @@ class UserIdentityController
 
     public function getByEmailAddress(ServerRequestInterface $request): JsonResponse
     {
+        $notFoundResponse = new ApiProblemJsonResponse(
+            ApiProblems::userNotFound('No user found for the given email address.')
+        );
+
         try {
             $emailAddress = new EmailAddress($request->getAttribute('emailAddress'));
         } catch (InvalidNativeArgumentException $e) {
-            return $this->createUserNotFoundResponse();
+            return $notFoundResponse;
         }
 
         $userIdentity = $this->userIdentityResolver->getUserByEmail($emailAddress);
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
-            return $this->createUserNotFoundResponse();
+            return $notFoundResponse;
         }
 
         return (new JsonLdResponse($userIdentity));
@@ -82,13 +86,5 @@ class UserIdentityController
         $userIdentityAsArray['nick'] = $userIdentity->getUserName()->toNative();
 
         return new JsonLdResponse($userIdentityAsArray, 200, ['Cache-Control' => 'private']);
-    }
-
-    private function createUserNotFoundResponse(): ApiProblemJsonResponse
-    {
-        return new ApiProblemJsonResponse(
-            (new ApiProblem('User not found.'))
-                ->setStatus(404)
-        );
     }
 }

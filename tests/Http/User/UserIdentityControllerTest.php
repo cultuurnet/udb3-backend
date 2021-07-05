@@ -68,7 +68,23 @@ class UserIdentityControllerTest extends TestCase
     {
         $response = $this->userIdentityController->getByEmailAddress(new ServerRequest());
 
-        $this->assertJsonResponse($this->createUserNotFoundProblem(), $response);
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'User not found',
+                    'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
+                    'status' => 400,
+                    'detail' => 'No user found for the given email address.',
+                ],
+                400,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
+        );
     }
 
     /**
@@ -85,7 +101,23 @@ class UserIdentityControllerTest extends TestCase
             (new ServerRequest())->withAttribute('emailAddress', 'jane.doe@anonymous.com')
         );
 
-        $this->assertJsonResponse($this->createUserNotFoundProblem(), $response);
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'User not found',
+                    'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
+                    'status' => 400,
+                    'detail' => 'No user found for the given email address.',
+                ],
+                400,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
+        );
     }
 
     /**
@@ -181,13 +213,6 @@ class UserIdentityControllerTest extends TestCase
                 ]
             ),
             $response
-        );
-    }
-
-    private function createUserNotFoundProblem(): ApiProblemJsonResponse
-    {
-        return new ApiProblemJsonResponse(
-            (new ApiProblem('User not found.'))->setStatus(404)
         );
     }
 
