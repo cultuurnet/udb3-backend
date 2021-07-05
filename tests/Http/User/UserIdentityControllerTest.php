@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\User;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use CultuurNet\UDB3\User\UserIdentityDetails;
