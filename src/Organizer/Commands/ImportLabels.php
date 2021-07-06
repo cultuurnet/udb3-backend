@@ -66,18 +66,12 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->getOrganizerId();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::AANBOD_BEWERKEN();
     }

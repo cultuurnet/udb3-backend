@@ -31,10 +31,7 @@ abstract class AbstractUpdateFacilities extends AbstractCommand
         return $this->facilities;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::VOORZIENINGEN_BEWERKEN();
     }

@@ -36,10 +36,7 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
         return $this->label;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->getOrganizerId();
     }
@@ -54,7 +51,7 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
         ];
     }
 
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::ORGANISATIES_BEWERKEN();
     }

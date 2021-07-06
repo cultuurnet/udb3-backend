@@ -37,12 +37,12 @@ final class AddEventToProduction implements AuthorizableCommandInterface
         return $this->productionId;
     }
 
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->getProductionId()->toNative();
     }
 
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::PRODUCTIES_AANMAKEN();
     }

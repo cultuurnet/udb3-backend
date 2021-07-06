@@ -9,12 +9,12 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 class DummyCommand implements AuthorizableCommandInterface
 {
-    public function getItemId()
+    public function getItemId(): string
     {
         return '';
     }
 
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::AANBOD_BEWERKEN();
     }

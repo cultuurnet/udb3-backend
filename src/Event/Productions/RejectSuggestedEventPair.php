@@ -27,7 +27,7 @@ final class RejectSuggestedEventPair implements AuthorizableCommandInterface
         ];
     }
 
-    public function getItemId()
+    public function getItemId(): string
     {
         return  $this->eventPair->getEventOne();
     }
@@ -37,7 +37,7 @@ final class RejectSuggestedEventPair implements AuthorizableCommandInterface
         return $this->eventPair;
     }
 
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::PRODUCTIES_AANMAKEN();
     }

@@ -105,18 +105,12 @@ class UploadImage implements AuthorizableCommandInterface
         return $this->filePath;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return (string) $this->getFileId();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::MEDIA_UPLOADEN();
     }

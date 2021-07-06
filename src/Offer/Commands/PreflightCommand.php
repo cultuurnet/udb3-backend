@@ -23,10 +23,7 @@ class PreflightCommand extends AbstractCommand
         $this->permission = $permission;
     }
 
-    /**
-     * @return Permission
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return $this->permission;
     }

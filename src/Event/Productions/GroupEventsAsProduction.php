@@ -40,12 +40,12 @@ class GroupEventsAsProduction implements AuthorizableCommandInterface
         );
     }
 
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->getProductionId()->toNative();
     }
 
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::PRODUCTIES_AANMAKEN();
     }
