@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\User;
 
-use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,7 +33,7 @@ class UserIdentityControllerTest extends TestCase
 
         $this->userIdentityController = new UserIdentityController(
             $this->userIdentityResolver,
-            'current_user_id'
+            JsonWebTokenFactory::createWithClaims(['uid' => 'current_user_id'])
         );
     }
 
@@ -65,9 +64,28 @@ class UserIdentityControllerTest extends TestCase
      */
     public function it_returns_not_found_on_get_by_email_when_email_is_missing(): void
     {
-        $response = $this->userIdentityController->getByEmailAddress(new ServerRequest());
+        $response = $this->userIdentityController->getByEmailAddress(
+            (new ServerRequest())
+                ->withAttribute('emailAddress', 'foo')
+        );
 
-        $this->assertJsonResponse($this->createUserNotFoundProblem(), $response);
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'Invalid email address',
+                    'type' => 'https://api.publiq.be/probs/uitdatabank/invalid-email-address',
+                    'status' => 400,
+                    'detail' => '"foo" is not a valid email address',
+                ],
+                400,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
+        );
     }
 
     /**
@@ -84,7 +102,23 @@ class UserIdentityControllerTest extends TestCase
             (new ServerRequest())->withAttribute('emailAddress', 'jane.doe@anonymous.com')
         );
 
-        $this->assertJsonResponse($this->createUserNotFoundProblem(), $response);
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'User not found',
+                    'type' => 'https://api.publiq.be/probs/uitdatabank/user-not-found',
+                    'status' => 404,
+                    'detail' => 'No user found for the given email address.',
+                ],
+                404,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
+        );
     }
 
     /**
@@ -118,6 +152,43 @@ class UserIdentityControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_token_type_not_supported_on_get_current_user_if_a_client_access_token_is_used(): void
+    {
+        $userIdentityControllerWithClientToken = new UserIdentityController(
+            $this->userIdentityResolver,
+            JsonWebTokenFactory::createWithClaims(
+                [
+                    'sub' => 'clientId@clients',
+                    'azp' => 'clientId',
+                    'gty' => 'client-credentials',
+                ]
+            )
+        );
+
+        $response = $userIdentityControllerWithClientToken->getCurrentUser();
+
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'Token not supported',
+                    'type' => 'https://api.publiq.be/probs/auth/token-not-supported',
+                    'status' => 400,
+                    'detail' => 'Client access tokens are not supported on this endpoint because a user is required to return user info.',
+                ],
+                400,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_not_found_on_get_current_user_when_user_identity_not_found(): void
     {
         $this->userIdentityResolver->expects($this->once())
@@ -127,13 +198,22 @@ class UserIdentityControllerTest extends TestCase
 
         $response = $this->userIdentityController->getCurrentUser();
 
-        $this->assertJsonResponse($this->createUserNotFoundProblem(), $response);
-    }
-
-    private function createUserNotFoundProblem(): ApiProblemJsonResponse
-    {
-        return new ApiProblemJsonResponse(
-            (new ApiProblem('User not found.'))->setStatus(404)
+        $this->assertJsonResponse(
+            new JsonResponse(
+                [
+                    'title' => 'Token not supported',
+                    'type' => 'https://api.publiq.be/probs/auth/token-not-supported',
+                    'status' => 400,
+                    'detail' => 'No user found for the user id in the given token.',
+                ],
+                400,
+                [
+                    'Content-Type' => [
+                        'application/problem+json',
+                    ],
+                ]
+            ),
+            $response
         );
     }
 
