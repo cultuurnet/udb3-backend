@@ -41,10 +41,7 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
         return $this->getOrganizerId();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return [
             new StringLiteral((string) $this->label),

@@ -80,10 +80,7 @@ final class ImportLabels extends AbstractCommand implements LabelSecurityInterfa
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return array_map(
             function (Label $label) {

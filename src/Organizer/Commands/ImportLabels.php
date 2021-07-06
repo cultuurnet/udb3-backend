@@ -76,10 +76,7 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
         return Permission::AANBOD_BEWERKEN();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return array_map(
             function (Label $label) {
