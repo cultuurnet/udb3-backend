@@ -14,7 +14,6 @@ class RemoveConstraint extends AbstractCommand
      */
     private $sapiVersion;
 
-
     public function __construct(
         UUID $uuid,
         SapiVersion $sapiVersion
@@ -22,7 +21,6 @@ class RemoveConstraint extends AbstractCommand
         parent::__construct($uuid);
         $this->sapiVersion = $sapiVersion->toNative();
     }
-
 
     public function getSapiVersion(): SapiVersion
     {

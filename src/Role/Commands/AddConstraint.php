@@ -30,12 +30,10 @@ class AddConstraint extends AbstractCommand
         $this->query = $query;
     }
 
-
     public function getSapiVersion(): SapiVersion
     {
         return SapiVersion::fromNative($this->sapiVersion);
     }
-
 
     public function getQuery(): Query
     {
