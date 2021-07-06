@@ -14,7 +14,6 @@ abstract class AbstractUserCommand extends AbstractCommand
      */
     private $userId;
 
-
     public function __construct(
         UUID $uuid,
         StringLiteral $userId
@@ -23,10 +22,7 @@ abstract class AbstractUserCommand extends AbstractCommand
         $this->userId = $userId;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): StringLiteral
     {
         return $this->userId;
     }

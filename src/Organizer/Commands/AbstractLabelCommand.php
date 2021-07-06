@@ -28,10 +28,7 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
         $this->label = $label;
     }
 
-    /**
-     * @return Label
-     */
-    public function getLabel()
+    public function getLabel(): Label
     {
         return $this->label;
     }

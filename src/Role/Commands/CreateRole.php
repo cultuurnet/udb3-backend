@@ -23,10 +23,7 @@ class CreateRole extends AbstractCommand
         $this->name = $name;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getName()
+    public function getName(): StringLiteral
     {
         return $this->name;
     }

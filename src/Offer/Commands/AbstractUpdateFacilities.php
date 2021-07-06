@@ -23,10 +23,7 @@ abstract class AbstractUpdateFacilities extends AbstractCommand
         $this->facilities = $facilities;
     }
 
-    /**
-     * @return array
-     */
-    public function getFacilities()
+    public function getFacilities(): array
     {
         return $this->facilities;
     }

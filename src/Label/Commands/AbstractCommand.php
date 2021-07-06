@@ -23,10 +23,7 @@ abstract class AbstractCommand implements AuthorizableCommandInterface
         $this->uuid = $uuid;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getUuid()
+    public function getUuid(): UUID
     {
         return $this->uuid;
     }

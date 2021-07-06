@@ -61,10 +61,7 @@ final class ImportLabels extends AbstractCommand implements LabelSecurityInterfa
         return $this->labelsToRemoveWhenOnOffer;
     }
 
-    /**
-     * @return Labels
-     */
-    public function getLabelsToImport()
+    public function getLabelsToImport(): Labels
     {
         $labelNamesToKeep = array_map(
             function (Label $label) {
