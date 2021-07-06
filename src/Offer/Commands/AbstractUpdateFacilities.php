@@ -14,10 +14,7 @@ abstract class AbstractUpdateFacilities extends AbstractCommand
      */
     protected $facilities;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, array $facilities)
+    public function __construct(string $itemId, array $facilities)
     {
         parent::__construct($itemId);
         $this->facilities = $facilities;

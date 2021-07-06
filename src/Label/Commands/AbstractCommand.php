@@ -15,9 +15,6 @@ abstract class AbstractCommand implements AuthorizableCommandInterface
      */
     private $uuid;
 
-    /**
-     * AbstractCommand constructor.
-     */
     public function __construct(UUID $uuid)
     {
         $this->uuid = $uuid;

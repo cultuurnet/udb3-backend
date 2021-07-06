@@ -26,10 +26,7 @@ final class ImportLabels extends AbstractCommand implements LabelSecurityInterfa
      */
     private $labelsToRemoveWhenOnOffer;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Labels $labels)
+    public function __construct(string $itemId, Labels $labels)
     {
         parent::__construct($itemId);
         $this->labels = $labels;

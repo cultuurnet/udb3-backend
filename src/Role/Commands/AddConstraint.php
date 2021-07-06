@@ -20,9 +20,6 @@ class AddConstraint extends AbstractCommand
      */
     private $query;
 
-    /**
-     * CreateConstraint constructor.
-     */
     public function __construct(
         UUID $uuid,
         SapiVersion $sapiVersion,

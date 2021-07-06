@@ -13,11 +13,7 @@ abstract class AbstractCommand implements AuthorizableCommandInterface
      */
     protected $itemId;
 
-    /**
-     * AbstractCommand constructor.
-     * @param string $itemId
-     */
-    public function __construct($itemId)
+    public function __construct(string $itemId)
     {
         if (!is_string($itemId)) {
             throw new \InvalidArgumentException(

@@ -23,11 +23,8 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
      */
     private $labelsToKeepIfAlreadyOnOrganizer;
 
-    /**
-     * @param string $organizerId
-     */
     public function __construct(
-        $organizerId,
+        string $organizerId,
         Labels $label
     ) {
         parent::__construct($organizerId);
