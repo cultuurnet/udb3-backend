@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
+use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,13 +71,17 @@ class ProductionsWriteControllerTest extends TestCase
         );
 
         $this->commandBus->record();
-        $this->controller->create($request);
+        $response = $this->controller->create($request);
 
         $this->assertCount(1, $this->commandBus->getRecordedCommands());
+
+        /** @var GroupEventsAsProduction $recordedCommand */
         $recordedCommand = $this->commandBus->getRecordedCommands()[0];
         $this->assertInstanceOf(GroupEventsAsProduction::class, $recordedCommand);
         $this->assertEquals($name, $recordedCommand->getName());
         $this->assertEquals([$eventId1, $eventId2], $recordedCommand->getEventIds());
+
+        $this->assertEquals(new JsonLdResponse(['productionId' => $recordedCommand->getItemId()], 201), $response);
     }
 
     /**

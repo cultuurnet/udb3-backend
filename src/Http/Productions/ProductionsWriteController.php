@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
 use CultuurNet\UDB3\Event\Productions\SimilarEventPair;
+use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,7 +56,7 @@ class ProductionsWriteController
 
         $this->commandBus->dispatch($command);
 
-        return new Response('', 201);
+        return new JsonLdResponse(['productionId' => $command->getItemId()], 201);
     }
 
     public function addEventToProduction(
