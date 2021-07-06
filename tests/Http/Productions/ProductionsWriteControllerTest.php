@@ -87,6 +87,33 @@ class ProductionsWriteControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_can_create_production_with_single_event(): void
+    {
+        $eventId1 = Uuid::uuid4()->toString();
+        $name = 'Singing in the drain';
+
+        $request = $this->buildRequestWithBody(
+            [
+                'name' => $name,
+                'eventIds' => [
+                    $eventId1,
+                ],
+            ]
+        );
+
+        $this->commandBus->record();
+        $this->controller->create($request);
+
+        $this->assertCount(1, $this->commandBus->getRecordedCommands());
+        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
+        $this->assertInstanceOf(GroupEventsAsProduction::class, $recordedCommand);
+        $this->assertEquals($name, $recordedCommand->getName());
+        $this->assertEquals([$eventId1], $recordedCommand->getEventIds());
+    }
+
+    /**
+     * @test
+     */
     public function it_validates_incoming_data_to_create_a_production(): void
     {
         $request = $this->buildRequestWithBody(
