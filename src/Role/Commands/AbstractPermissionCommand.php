@@ -14,7 +14,6 @@ abstract class AbstractPermissionCommand extends AbstractCommand
      */
     private $rolePermission;
 
-
     public function __construct(
         UUID $uuid,
         Permission $rolePermission
@@ -26,10 +25,7 @@ abstract class AbstractPermissionCommand extends AbstractCommand
         $this->rolePermission = $rolePermission->toNative();
     }
 
-    /**
-     * @return Permission
-     */
-    public function getRolePermission()
+    public function getRolePermission(): Permission
     {
         return Permission::fromNative($this->rolePermission);
     }

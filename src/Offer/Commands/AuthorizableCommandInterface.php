@@ -8,13 +8,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 interface AuthorizableCommandInterface
 {
-    /**
-     * @return string
-     */
-    public function getItemId();
+    public function getItemId(): string;
 
-    /**
-     * @return Permission
-     */
-    public function getPermission();
+    public function getPermission(): Permission;
 }

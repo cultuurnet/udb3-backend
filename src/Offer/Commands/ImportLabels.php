@@ -26,10 +26,7 @@ final class ImportLabels extends AbstractCommand implements LabelSecurityInterfa
      */
     private $labelsToRemoveWhenOnOffer;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, Labels $labels)
+    public function __construct(string $itemId, Labels $labels)
     {
         parent::__construct($itemId);
         $this->labels = $labels;
@@ -61,10 +58,7 @@ final class ImportLabels extends AbstractCommand implements LabelSecurityInterfa
         return $this->labelsToRemoveWhenOnOffer;
     }
 
-    /**
-     * @return Labels
-     */
-    public function getLabelsToImport()
+    public function getLabelsToImport(): Labels
     {
         $labelNamesToKeep = array_map(
             function (Label $label) {
@@ -80,10 +74,7 @@ final class ImportLabels extends AbstractCommand implements LabelSecurityInterfa
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return array_map(
             function (Label $label) {

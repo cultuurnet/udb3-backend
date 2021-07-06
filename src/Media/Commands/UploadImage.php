@@ -60,26 +60,17 @@ class UploadImage implements AuthorizableCommandInterface
         $this->language = $language;
     }
 
-    /**
-     * @return Language
-     */
-    public function getLanguage()
+    public function getLanguage(): Language
     {
         return $this->language;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getFileId()
+    public function getFileId(): UUID
     {
         return $this->fileId;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getDescription()
+    public function getDescription(): StringLiteral
     {
         return $this->description;
     }
@@ -89,34 +80,22 @@ class UploadImage implements AuthorizableCommandInterface
         return $this->copyrightHolder;
     }
 
-    /**
-     * @return MIMEType
-     */
-    public function getMimeType()
+    public function getMimeType(): MIMEType
     {
         return $this->mimeType;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getFilePath()
+    public function getFilePath(): StringLiteral
     {
         return $this->filePath;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return (string) $this->getFileId();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::MEDIA_UPLOADEN();
     }

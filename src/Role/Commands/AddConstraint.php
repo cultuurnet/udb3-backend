@@ -20,9 +20,6 @@ class AddConstraint extends AbstractCommand
      */
     private $query;
 
-    /**
-     * CreateConstraint constructor.
-     */
     public function __construct(
         UUID $uuid,
         SapiVersion $sapiVersion,
@@ -33,12 +30,10 @@ class AddConstraint extends AbstractCommand
         $this->query = $query;
     }
 
-
     public function getSapiVersion(): SapiVersion
     {
         return SapiVersion::fromNative($this->sapiVersion);
     }
-
 
     public function getQuery(): Query
     {

@@ -23,11 +23,8 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
      */
     private $labelsToKeepIfAlreadyOnOrganizer;
 
-    /**
-     * @param string $organizerId
-     */
     public function __construct(
-        $organizerId,
+        string $organizerId,
         Labels $label
     ) {
         parent::__construct($organizerId);
@@ -47,10 +44,7 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
         return $this->labelsToKeepIfAlreadyOnOrganizer;
     }
 
-    /**
-     * @return Labels
-     */
-    public function getLabels()
+    public function getLabels(): Labels
     {
         $labelNamesToKeep = array_map(
             function (Label $label) {
@@ -66,26 +60,17 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->getOrganizerId();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::AANBOD_BEWERKEN();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return array_map(
             function (Label $label) {

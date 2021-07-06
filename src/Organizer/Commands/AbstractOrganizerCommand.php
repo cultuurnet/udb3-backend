@@ -11,18 +11,12 @@ abstract class AbstractOrganizerCommand
      */
     private $organizerId;
 
-    /**
-     * @param string $organizerId
-     */
-    public function __construct($organizerId)
+    public function __construct(string $organizerId)
     {
         $this->organizerId = $organizerId;
     }
 
-    /**
-     * @return string
-     */
-    public function getOrganizerId()
+    public function getOrganizerId(): string
     {
         return $this->organizerId;
     }

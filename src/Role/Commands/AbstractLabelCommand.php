@@ -13,7 +13,6 @@ abstract class AbstractLabelCommand extends AbstractCommand
      */
     private $labelId;
 
-
     public function __construct(
         UUID $uuid,
         UUID $labelId
@@ -22,10 +21,7 @@ abstract class AbstractLabelCommand extends AbstractCommand
         $this->labelId = $labelId;
     }
 
-    /**
-     * @return UUID
-     */
-    public function getLabelId()
+    public function getLabelId(): UUID
     {
         return $this->labelId;
     }

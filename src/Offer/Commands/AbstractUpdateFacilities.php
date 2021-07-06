@@ -14,27 +14,18 @@ abstract class AbstractUpdateFacilities extends AbstractCommand
      */
     protected $facilities;
 
-    /**
-     * @param string $itemId
-     */
-    public function __construct($itemId, array $facilities)
+    public function __construct(string $itemId, array $facilities)
     {
         parent::__construct($itemId);
         $this->facilities = $facilities;
     }
 
-    /**
-     * @return array
-     */
-    public function getFacilities()
+    public function getFacilities(): array
     {
         return $this->facilities;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::VOORZIENINGEN_BEWERKEN();
     }

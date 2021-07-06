@@ -35,18 +35,12 @@ final class MarkAsDuplicate implements AuthorizableCommandInterface
         return $this->canonicalPlaceId;
     }
 
-    /**
-     * @return string
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->duplicatePlaceId;
     }
 
-    /**
-     * @return Permission
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::GEBRUIKERS_BEHEREN();
     }
