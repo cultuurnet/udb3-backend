@@ -290,6 +290,7 @@ class ReadRoleRestControllerTest extends TestCase
             'MEDIA_UPLOADEN',
             'VOORZIENINGEN_BEWERKEN',
             'PRODUCTIES_AANMAKEN',
+            'FILMS_AANMAKEN',
         ]);
 
         $this->jsonEquals->assert($expectedResponseJson, $responseJson);
