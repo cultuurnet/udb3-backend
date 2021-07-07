@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Organizer\Events;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 use InvalidArgumentException;
+use ValueObjects\Web\PortNumber;
+use ValueObjects\Web\Url;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintService
 {
@@ -35,7 +37,25 @@ class WebsiteUniqueConstraintService implements UniqueConstraintService
         /* @var OrganizerCreatedWithUniqueWebsite|WebsiteUpdated $payload */
         $payload = $domainMessage->getPayload();
 
-        $websiteWithNoProtocol = preg_replace('/^https?:\/\/(www.)?/i', '', $payload->getWebsite());
-        return preg_replace('/\/$/', '', $websiteWithNoProtocol);
+        return $this->normalizeUrl($payload->getWebsite());
+    }
+
+    private function normalizeUrl(Url $url): string
+    {
+        $domain = $url->getDomain()->toNative();
+        if (strpos($domain, 'www.') === 0) {
+            $domain = substr($domain, strlen('www.'));
+        }
+
+        return implode(
+            '',
+            [
+                $domain,
+                ($url->getPort() instanceof PortNumber) ? ':' . $url->getPort()->toNative() : null,
+                !$url->getPath()->isEmpty() ? rtrim($url->getPath()->toNative(), '/') : null,
+                $url->getQueryString()->toNative(),
+                $url->getFragmentIdentifier()->toNative(),
+            ]
+        );
     }
 }
