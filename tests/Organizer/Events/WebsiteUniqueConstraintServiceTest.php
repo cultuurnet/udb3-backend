@@ -217,6 +217,14 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
                 'ftp://www.decorridor.be/trailing-slash/?query=true#fragment',
                 'decorridor.be/trailing-slash?query=true#fragment',
             ],
+            'https://www.decorridor.be/?query=true' => [
+                'https://www.decorridor.be/?query=true',
+                'decorridor.be/?query=true',
+            ],
+            'https://www.decorridor.be/#fragment' => [
+                'https://www.decorridor.be/#fragment',
+                'decorridor.be/#fragment',
+            ],
         ];
     }
 
