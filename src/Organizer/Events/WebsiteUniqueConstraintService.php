@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Organizer\Events;
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 use InvalidArgumentException;
-use League\Uri\Components\Port;
-use ValueObjects\Web\NullPortNumber;
 use ValueObjects\Web\PortNumber;
 use ValueObjects\Web\Url;
 
