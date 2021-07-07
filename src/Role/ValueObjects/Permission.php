@@ -19,6 +19,7 @@ use ValueObjects\Enum\Enum;
  * @method static Permission MEDIA_UPLOADEN()
  * @method static Permission VOORZIENINGEN_BEWERKEN()
  * @method static Permission PRODUCTIES_AANMAKEN()
+ * @method static Permission FILMS_AANMAKEN()
  */
 class Permission extends Enum
 {
@@ -32,4 +33,5 @@ class Permission extends Enum
     public const MEDIA_UPLOADEN = 'Media uploaden';
     public const VOORZIENINGEN_BEWERKEN = 'Voorzieningen bewerken';
     public const PRODUCTIES_AANMAKEN = 'Producties aanmaken';
+    public const FILMS_AANMAKEN = 'Films aanmaken';
 }
