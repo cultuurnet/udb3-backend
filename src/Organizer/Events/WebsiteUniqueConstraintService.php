@@ -59,15 +59,6 @@ class WebsiteUniqueConstraintService implements UniqueConstraintService
             $path = '/';
         }
 
-        return implode(
-            '',
-            [
-                $domain,
-                $port,
-                $path,
-                $queryString,
-                $fragment,
-            ]
-        );
+        return $domain . $port . $path . $queryString . $fragment;
     }
 }
