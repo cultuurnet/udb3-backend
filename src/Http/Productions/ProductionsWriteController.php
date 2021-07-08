@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Productions;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\MergeProductions;
@@ -104,6 +105,10 @@ class ProductionsWriteController
 
     public function renameProduction(string $productionId, string $productionName): Response
     {
+        if (empty($productionName)) {
+            throw new DataValidationException('The new production name is required');
+        }
+
         $renameCommand = new RenameProduction(ProductionId::fromNative($productionId), $productionName);
 
         $this->commandBus->dispatch($renameCommand);

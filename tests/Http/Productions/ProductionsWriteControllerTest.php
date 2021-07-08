@@ -198,6 +198,18 @@ class ProductionsWriteControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_prevents_empty_rename(): void
+    {
+        $productionId = ProductionId::generate();
+
+        $this->expectException(DataValidationException::class);
+
+        $this->controller->renameProduction($productionId->toNative(), '');
+    }
+
+    /**
+     * @test
+     */
     public function it_can_skip_events(): void
     {
         $eventId1 = Uuid::uuid4()->toString();
