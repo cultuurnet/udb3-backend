@@ -128,13 +128,10 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider organizerWebsiteUrlProvider
      * @test
      */
-    public function it_returns_the_unique_constraint_value_from_supported_events(
-        string $given,
-        string $expected
-    ): void {
+    public function it_returns_the_unique_constraint_value_from_supported_events(): void
+    {
         $websiteCreatedEvent = DomainMessage::recordNow(
             $this->organizerId,
             0,
@@ -142,7 +139,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new OrganizerCreatedWithUniqueWebsite(
                 $this->organizerId,
                 new Language('en'),
-                Url::fromNative($given),
+                Url::fromNative('http://decorridor.be'),
                 new Title('CultuurNet')
             )
         );
@@ -153,81 +150,19 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new WebsiteUpdated(
                 $this->organizerId,
-                Url::fromNative($given)
+                Url::fromNative('http://decorridor.be')
             )
         );
 
         $this->assertEquals(
-            $expected,
+            'decorridor.be',
             $this->service->getUniqueConstraintValue($websiteCreatedEvent)
         );
 
         $this->assertEquals(
-            $expected,
+            'decorridor.be',
             $this->service->getUniqueConstraintValue($websiteUpdatedEvent)
         );
-    }
-
-    public function organizerWebsiteUrlProvider(): array
-    {
-        return [
-            'http://decorridor.be' => [
-                'http://decorridor.be',
-                'decorridor.be',
-            ],
-            'https://decorridor.be' => [
-                'https://decorridor.be',
-                'decorridor.be',
-            ],
-            'http://decorridor.be/' => [
-                'http://decorridor.be/',
-                'decorridor.be',
-            ],
-            'https://decorridor.be/' => [
-                'https://decorridor.be/',
-                'decorridor.be',
-            ],
-            'http://www.decorridor.be' => [
-                'http://www.decorridor.be',
-                'decorridor.be',
-            ],
-            'https://www.decorridor.be' => [
-                'https://www.decorridor.be',
-                'decorridor.be',
-            ],
-            'http://www.decorridor.be/' => [
-                'http://www.decorridor.be/',
-                'decorridor.be',
-            ],
-            'https://www.decorridor.be/' => [
-                'https://www.decorridor.be/',
-                'decorridor.be',
-            ],
-            'HTtps://www.decorridor.be/' => [
-                'HTtps://www.decorridor.be/',
-                'decorridor.be',
-            ],
-            'https://www.decorridor.be/path' => [
-                'https://www.decorridor.be/path',
-                'decorridor.be/path',
-            ],
-            'https://www.decorridor.be/trailing-slash/' => [
-                'https://www.decorridor.be/trailing-slash/',
-                'decorridor.be/trailing-slash',
-            ],
-            'ftp://www.decorridor.be/trailing-slash/?query=true#fragment' => [
-                'ftp://www.decorridor.be/trailing-slash/?query=true#fragment',
-                'decorridor.be/trailing-slash?query=true#fragment',
-            ],
-            'https://www.decorridor.be/?query=true' => [
-                'https://www.decorridor.be/?query=true',
-                'decorridor.be/?query=true',
-            ],
-            'https://www.decorridor.be/#fragment' => [
-                'https://www.decorridor.be/#fragment',
-                'decorridor.be/#fragment',
-            ],
-        ];
     }
 
     /**
