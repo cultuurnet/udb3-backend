@@ -94,6 +94,14 @@ class ProductionCommandHandler extends Udb3CommandHandler
         $this->productionRepository->moveEvents($command->getFrom(), $toProduction);
     }
 
+    public function handleRenameProduction(RenameProduction $renameProduction): void
+    {
+        $this->productionRepository->renameProduction(
+            $renameProduction->getProductionId(),
+            $renameProduction->getName()
+        );
+    }
+
     public function handleRejectSuggestedEventPair(RejectSuggestedEventPair $command): void
     {
         $this->skippedSimilarEventsRepository->add($command->getEventPair());
