@@ -4,6 +4,7 @@
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
 use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Silex\ApiName;
 use CultuurNet\UDB3\Silex\ConfigWriter;
 use CultuurNet\UDB3\Silex\Console\ChangeOfferOwner;
@@ -121,7 +122,7 @@ $consoleApp->add(new UpdateOfferStatusCommand(OfferType::PLACE(), $app['event_co
 $consoleApp->add(new ChangeOfferOwner($app['event_command_bus']));
 $consoleApp->add(new ChangeOfferOwnerInBulk($app['event_command_bus'], $app['offer_permission_query']));
 $consoleApp->add(new UpdateUniqueLabels($app['dbal_connection']));
-$consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection']));
+$consoleApp->add(new UpdateUniqueOrganizers($app['dbal_connection'], new WebsiteNormalizer()));
 
 $consoleApp->add(new ImportOfferAutoClassificationLabels($app['dbal_connection'], $app['event_command_bus']));
 
