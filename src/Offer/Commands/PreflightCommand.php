@@ -13,20 +13,13 @@ class PreflightCommand extends AbstractCommand
      */
     private $permission;
 
-    /**
-     * @param string $itemId
-     * @param Permission $permission
-     */
-    public function __construct($itemId, $permission)
+    public function __construct(string $itemId, Permission $permission)
     {
         parent::__construct($itemId);
         $this->permission = $permission;
     }
 
-    /**
-     * @return Permission
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return $this->permission;
     }

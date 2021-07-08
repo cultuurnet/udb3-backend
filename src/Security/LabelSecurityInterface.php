@@ -11,5 +11,5 @@ interface LabelSecurityInterface
     /**
      * @return StringLiteral[]
      */
-    public function getNames();
+    public function getNames(): array;
 }

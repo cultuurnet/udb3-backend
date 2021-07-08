@@ -179,7 +179,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
     public function it_does_not_update_a_unique_value_when_the_new_value_has_already_been_used(): void
     {
         $this->insert(self::ID, self::OTHER_UNIQUE_VALUE);
-        $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
+        $this->insert(self::OTHER_ID, self::UNIQUE_VALUE);
 
         $domainMessage = new DomainMessage(
             self::ID,
@@ -206,7 +206,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
      */
     public function it_does_not_insert_when_preflight_lookup_throws(): void
     {
-        $this->insert(self::OTHER_UNIQUE_VALUE, self::UNIQUE_VALUE);
+        $this->insert(self::ID, self::UNIQUE_VALUE);
 
         $this->uniqueConstraintService->expects($this->once())
             ->method('needsPreflightLookup')
@@ -216,6 +216,37 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
             ->method('needsUpdateUniqueConstraint');
 
         $this->expectException(UniqueConstraintException::class);
+
+        $domainMessage = new DomainMessage(
+            self::ID,
+            0,
+            new Metadata(),
+            new \stdClass(),
+            BroadwayDateTime::now()
+        );
+
+        $this->uniqueDBALEventStoreDecorator->append(
+            $domainMessage->getId(),
+            new DomainEventStream([$domainMessage])
+        );
+    }
+
+    /**
+     * @test
+     * @see https://jira.uitdatabank.be/browse/III-4078
+     * When `aunique` and `bunique` are already added as unique values, adding `unique` should still work
+     */
+    public function it_does_not_fail_on_preflight_with_partial_match(): void
+    {
+        $this->insert('1', 'aunique');
+        $this->insert('2', 'bunique');
+
+        $this->uniqueConstraintService->expects($this->once())
+            ->method('needsPreflightLookup')
+            ->willReturn(true);
+
+        $this->uniqueConstraintService->expects($this->never())
+            ->method('needsUpdateUniqueConstraint');
 
         $domainMessage = new DomainMessage(
             self::ID,

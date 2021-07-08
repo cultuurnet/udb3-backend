@@ -37,12 +37,12 @@ final class MergeProductions implements AuthorizableCommandInterface
         return $this->to;
     }
 
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->getFrom()->toNative();
     }
 
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::PRODUCTIES_AANMAKEN();
     }

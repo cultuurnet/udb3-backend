@@ -14,8 +14,8 @@ use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
-use CultuurNet\UDB3\HttpFoundation\Response\ForbiddenResponse;
-use CultuurNet\UDB3\HttpFoundation\Response\UnauthorizedResponse;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
@@ -101,7 +101,7 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 try {
                     $apiKeyAuthenticator->authenticate($psr7Request);
                 } catch (RequestAuthenticationException $e) {
-                    return new UnauthorizedResponse($e->getMessage());
+                    return new ApiProblemJsonResponse(ApiProblems::unauthorized($e->getMessage()));
                 }
 
                 // Check that the API consumer linked to the API key has the required permission to use EntryAPI.
@@ -115,7 +115,9 @@ class UitidApiKeyServiceProvider implements ServiceProviderInterface
                 $consumer = $consumerRepository->getConsumer($app['auth.api_key']);
 
                 if (!$permissionCheck->satisfiedBy($consumer)) {
-                    return new ForbiddenResponse('Given API key is not authorized to use EntryAPI.');
+                    return new ApiProblemJsonResponse(
+                        ApiProblems::forbidden('Given API key is not authorized to use EntryAPI.')
+                    );
                 }
 
                 $app['consumer'] = $consumer;

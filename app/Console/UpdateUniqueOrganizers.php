@@ -64,7 +64,7 @@ class UpdateUniqueOrganizers extends Command
                 $organizerUuid = $organizerEvent['uuid'];
                 $organizerUrl = $this->getOrganizerWebsite($organizerEvent);
 
-                $updated = $this->updateOrganizer($organizerUuid, $organizerUrl);
+                $updated = $this->updateOrganizer($organizerUuid, $this->getUniqueValue($organizerUrl));
                 if ($updated) {
                     $messages[] = 'Added/updated organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid;
                 } else {
@@ -122,7 +122,7 @@ class UpdateUniqueOrganizers extends Command
     /**
      * @throws DBALException
      */
-    private function updateOrganizer(string $organizerUuid, Url $organizerUrl): bool
+    private function updateOrganizer(string $organizerUuid, string $uniqueValue): bool
     {
         // There are 3 possible states:
         // 1. The organizer uuid is present with the correct url
@@ -139,7 +139,7 @@ class UpdateUniqueOrganizers extends Command
 
         $existingOrganizerUrl = count($existingOrganizerUrls) === 1 ? $existingOrganizerUrls[0] : null;
 
-        if ($existingOrganizerUrl === (string) $organizerUrl) {
+        if ($existingOrganizerUrl === $uniqueValue) {
             return false;
         }
 
@@ -150,7 +150,7 @@ class UpdateUniqueOrganizers extends Command
                         'organizer_unique_websites',
                         [
                             'uuid_col' => $organizerUuid,
-                            'unique_col' => (string)$organizerUrl,
+                            'unique_col' => $uniqueValue,
                         ]
                     );
                 return true;
@@ -170,7 +170,7 @@ class UpdateUniqueOrganizers extends Command
                     'organizer_unique_websites',
                     [
                         'uuid_col' => $organizerUuid,
-                        'unique_col' => (string)$organizerUrl,
+                        'unique_col' => $uniqueValue,
                     ],
                     [
                         'uuid_col' => $organizerUuid,
@@ -191,9 +191,15 @@ class UpdateUniqueOrganizers extends Command
         }
     }
 
-    private function getOrganizerWebsite(array $organizerEvent): Url
+    private function getOrganizerWebsite(array $organizerEvent): string
     {
         $payloadArray = json_decode($organizerEvent['payload'], true);
-        return Url::fromNative($payloadArray['payload']['website']);
+        return $payloadArray['payload']['website'];
+    }
+
+    private function getUniqueValue(string $organizerWebsite): string
+    {
+        $websiteWithNoProtocol = preg_replace('/^https?:\/\/(www.)?/i', '', $organizerWebsite);
+        return preg_replace('/\/$/', '', $websiteWithNoProtocol);
     }
 }

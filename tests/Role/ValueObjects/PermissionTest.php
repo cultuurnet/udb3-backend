@@ -27,6 +27,7 @@ class PermissionTest extends TestCase
                 Permission::VOORZIENINGEN_BEWERKEN()->getName() => Permission::VOORZIENINGEN_BEWERKEN,
                 Permission::ORGANISATIES_BEWERKEN()->getName() => Permission::ORGANISATIES_BEWERKEN,
                 Permission::PRODUCTIES_AANMAKEN()->getName() => Permission::PRODUCTIES_AANMAKEN,
+                Permission::FILMS_AANMAKEN()->getName() => Permission::FILMS_AANMAKEN,
             ],
             $permissions
         );

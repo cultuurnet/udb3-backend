@@ -18,7 +18,7 @@ class UserControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new UserIdentityController(
                     $app[Auth0UserIdentityResolver::class],
-                    $app['current_user_id']
+                    $app['jwt']
                 );
             }
         );

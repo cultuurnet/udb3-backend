@@ -17,44 +17,32 @@ abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements 
      */
     private $label;
 
-    /**
-     * @param string $organizerId
-     */
     public function __construct(
-        $organizerId,
+        string $organizerId,
         Label $label
     ) {
         parent::__construct($organizerId);
         $this->label = $label;
     }
 
-    /**
-     * @return Label
-     */
-    public function getLabel()
+    public function getLabel(): Label
     {
         return $this->label;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->getOrganizerId();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNames()
+    public function getNames(): array
     {
         return [
             new StringLiteral((string) $this->label),
         ];
     }
 
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::ORGANISATIES_BEWERKEN();
     }

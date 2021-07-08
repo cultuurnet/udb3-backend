@@ -81,18 +81,7 @@ class CreateProductionValidatorTest extends TestCase
                     'eventIds' => [],
                 ],
                 [
-                    'eventIds' => 'At least two events should be provided',
-                ],
-            ],
-            'With one event' => [
-                [
-                    'name' => 'foo',
-                    'eventIds' => [
-                        Uuid::uuid4()->toString(),
-                    ],
-                ],
-                [
-                    'eventIds' => 'At least two events should be provided',
+                    'eventIds' => 'At least one event should be provided',
                 ],
             ],
             'Without name' => [

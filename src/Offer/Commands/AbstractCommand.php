@@ -13,11 +13,7 @@ abstract class AbstractCommand implements AuthorizableCommandInterface
      */
     protected $itemId;
 
-    /**
-     * AbstractCommand constructor.
-     * @param string $itemId
-     */
-    public function __construct($itemId)
+    public function __construct(string $itemId)
     {
         if (!is_string($itemId)) {
             throw new \InvalidArgumentException(
@@ -28,18 +24,12 @@ abstract class AbstractCommand implements AuthorizableCommandInterface
         $this->itemId = $itemId;
     }
 
-    /**
-     * @return string
-     */
-    public function getItemId()
+    public function getItemId(): string
     {
         return $this->itemId;
     }
 
-    /**
-     * @return Permission
-     */
-    public function getPermission()
+    public function getPermission(): Permission
     {
         return Permission::AANBOD_BEWERKEN();
     }

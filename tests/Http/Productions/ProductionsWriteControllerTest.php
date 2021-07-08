@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
+use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,13 +71,44 @@ class ProductionsWriteControllerTest extends TestCase
         );
 
         $this->commandBus->record();
+        $response = $this->controller->create($request);
+
+        $this->assertCount(1, $this->commandBus->getRecordedCommands());
+
+        /** @var GroupEventsAsProduction $recordedCommand */
+        $recordedCommand = $this->commandBus->getRecordedCommands()[0];
+        $this->assertInstanceOf(GroupEventsAsProduction::class, $recordedCommand);
+        $this->assertEquals($name, $recordedCommand->getName());
+        $this->assertEquals([$eventId1, $eventId2], $recordedCommand->getEventIds());
+
+        $this->assertEquals(new JsonLdResponse(['productionId' => $recordedCommand->getItemId()], 201), $response);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_create_production_with_single_event(): void
+    {
+        $eventId1 = Uuid::uuid4()->toString();
+        $name = 'Singing in the drain';
+
+        $request = $this->buildRequestWithBody(
+            [
+                'name' => $name,
+                'eventIds' => [
+                    $eventId1,
+                ],
+            ]
+        );
+
+        $this->commandBus->record();
         $this->controller->create($request);
 
         $this->assertCount(1, $this->commandBus->getRecordedCommands());
         $recordedCommand = $this->commandBus->getRecordedCommands()[0];
         $this->assertInstanceOf(GroupEventsAsProduction::class, $recordedCommand);
         $this->assertEquals($name, $recordedCommand->getName());
-        $this->assertEquals([$eventId1, $eventId2], $recordedCommand->getEventIds());
+        $this->assertEquals([$eventId1], $recordedCommand->getEventIds());
     }
 
     /**
