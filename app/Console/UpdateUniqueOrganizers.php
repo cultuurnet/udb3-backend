@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Console;
 
+use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -26,10 +27,16 @@ class UpdateUniqueOrganizers extends Command
      */
     private $connection;
 
-    public function __construct(Connection $connection)
+    /**
+     * @var WebsiteNormalizer
+     */
+    private $websiteNormalizer;
+
+    public function __construct(Connection $connection, WebsiteNormalizer $websiteNormalizer)
     {
         parent::__construct();
         $this->connection = $connection;
+        $this->websiteNormalizer = $websiteNormalizer;
     }
 
     protected function configure(): void
@@ -64,7 +71,10 @@ class UpdateUniqueOrganizers extends Command
                 $organizerUuid = $organizerEvent['uuid'];
                 $organizerUrl = $this->getOrganizerWebsite($organizerEvent);
 
-                $updated = $this->updateOrganizer($organizerUuid, $this->getUniqueValue($organizerUrl));
+                $updated = $this->updateOrganizer(
+                    $organizerUuid,
+                    $this->websiteNormalizer->normalizeUrl(Url::fromNative($organizerUrl))
+                );
                 if ($updated) {
                     $messages[] = 'Added/updated organizer ' . $organizerUrl . ' with uuid ' . $organizerUuid;
                 } else {
@@ -195,11 +205,5 @@ class UpdateUniqueOrganizers extends Command
     {
         $payloadArray = json_decode($organizerEvent['payload'], true);
         return $payloadArray['payload']['website'];
-    }
-
-    private function getUniqueValue(string $organizerWebsite): string
-    {
-        $websiteWithNoProtocol = preg_replace('/^https?:\/\/(www.)?/i', '', $organizerWebsite);
-        return preg_replace('/\/$/', '', $websiteWithNoProtocol);
     }
 }

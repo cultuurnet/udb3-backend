@@ -2,14 +2,26 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Organizer\Events;
+namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
+use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
+use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use InvalidArgumentException;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintService
 {
+    /**
+     * @var WebsiteNormalizer
+     */
+    private $websiteNormalizer;
+
+    public function __construct(WebsiteNormalizer $websiteNormalizer)
+    {
+        $this->websiteNormalizer = $websiteNormalizer;
+    }
+
     public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return $domainMessage->getPayload() instanceof OrganizerCreatedWithUniqueWebsite ||
@@ -35,7 +47,6 @@ class WebsiteUniqueConstraintService implements UniqueConstraintService
         /* @var OrganizerCreatedWithUniqueWebsite|WebsiteUpdated $payload */
         $payload = $domainMessage->getPayload();
 
-        $websiteWithNoProtocol = preg_replace('/^https?:\/\/(www.)?/i', '', $payload->getWebsite());
-        return preg_replace('/\/$/', '', $websiteWithNoProtocol);
+        return $this->websiteNormalizer->normalizeUrl($payload->getWebsite());
     }
 }

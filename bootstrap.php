@@ -3,19 +3,19 @@
 use Broadway\CommandHandling\CommandBus;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\EventHandling\ReplayFlaggingEventBus;
+use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Clock\SystemClock;
 use CultuurNet\UDB3\Event\EventOrganizerRelationService;
-use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
-use CultuurNet\UDB3\CalendarFactory;
 use CultuurNet\UDB3\Event\ExternalEventService;
 use CultuurNet\UDB3\Event\LocationMarkedAsDuplicateProcessManager;
+use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
@@ -24,7 +24,8 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
-use CultuurNet\UDB3\Organizer\Events\WebsiteUniqueConstraintService;
+use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
 use CultuurNet\UDB3\Place\PlaceOrganizerRelationService;
@@ -38,6 +39,7 @@ use CultuurNet\UDB3\Silex\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\Silex\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Silex\Error\LoggerFactory;
 use CultuurNet\UDB3\Silex\Error\LoggerName;
+use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Silex\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Silex\Impersonator;
@@ -52,7 +54,6 @@ use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use CultuurNet\UDB3\Silex\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Silex\Security\OrganizerSecurityServiceProvider;
-use CultuurNet\UDB3\Silex\Error\SentryServiceProvider;
 use CultuurNet\UDB3\Silex\Term\TermServiceProvider;
 use CultuurNet\UDB3\Silex\Yaml\YamlConfigServiceProvider;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
@@ -742,7 +743,7 @@ $app['organizer_store'] = $app->share(
             $eventStore,
             $app['dbal_connection'],
             'organizer_unique_websites',
-            new WebsiteUniqueConstraintService()
+            new WebsiteUniqueConstraintService(new WebsiteNormalizer())
         );
     }
 );

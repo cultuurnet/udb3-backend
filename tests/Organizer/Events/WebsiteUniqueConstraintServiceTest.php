@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Organizer\Events;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Web\Url;
@@ -40,7 +42,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
 
     public function setUp()
     {
-        $this->service = new WebsiteUniqueConstraintService();
+        $this->service = new WebsiteUniqueConstraintService(new WebsiteNormalizer());
 
         $this->organizerId = '2fad63f2-4da2-4c32-ae97-6a581d0e84d2';
 
@@ -126,13 +128,10 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
     }
 
     /**
-     * @dataProvider organizerWebsiteUrlProvider
      * @test
      */
-    public function it_returns_the_unique_constraint_value_from_supported_events(string $organizerWebsiteUrl)
+    public function it_returns_the_unique_constraint_value_from_supported_events(): void
     {
-        $uniqueConstraintValue = 'decorridor.be';
-
         $websiteCreatedEvent = DomainMessage::recordNow(
             $this->organizerId,
             0,
@@ -140,7 +139,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new OrganizerCreatedWithUniqueWebsite(
                 $this->organizerId,
                 new Language('en'),
-                Url::fromNative($organizerWebsiteUrl),
+                Url::fromNative('http://decorridor.be'),
                 new Title('CultuurNet')
             )
         );
@@ -151,52 +150,19 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
             new Metadata([]),
             new WebsiteUpdated(
                 $this->organizerId,
-                Url::fromNative($organizerWebsiteUrl)
+                Url::fromNative('http://decorridor.be')
             )
         );
 
         $this->assertEquals(
-            $uniqueConstraintValue,
+            'decorridor.be',
             $this->service->getUniqueConstraintValue($websiteCreatedEvent)
         );
 
         $this->assertEquals(
-            $uniqueConstraintValue,
+            'decorridor.be',
             $this->service->getUniqueConstraintValue($websiteUpdatedEvent)
         );
-    }
-
-    public function organizerWebsiteUrlProvider(): array
-    {
-        return [
-            'http://decorridor.be' => [
-                'http://decorridor.be',
-            ],
-            'https://decorridor.be' => [
-                'https://decorridor.be',
-            ],
-            'http://decorridor.be/' => [
-                'http://decorridor.be/',
-            ],
-            'https://decorridor.be/' => [
-                'https://decorridor.be/',
-            ],
-            'http://www.decorridor.be' => [
-                'http://www.decorridor.be',
-            ],
-            'https://www.decorridor.be' => [
-                'https://www.decorridor.be',
-            ],
-            'http://www.decorridor.be/' => [
-                'http://www.decorridor.be/',
-            ],
-            'https://www.decorridor.be/' => [
-                'https://www.decorridor.be/',
-            ],
-            'HTtps://www.decorridor.be/' => [
-                'HTtps://www.decorridor.be/',
-            ],
-        ];
     }
 
     /**
