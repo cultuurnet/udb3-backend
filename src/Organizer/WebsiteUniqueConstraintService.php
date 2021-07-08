@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Organizer\Events;
+namespace CultuurNet\UDB3\Organizer;
 
 use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
+use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
+use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use InvalidArgumentException;
 use ValueObjects\Web\PortNumber;
 use ValueObjects\Web\Url;
