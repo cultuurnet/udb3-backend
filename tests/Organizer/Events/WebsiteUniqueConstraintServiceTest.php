@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Organizer\Events;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\TestCase;
@@ -41,7 +42,7 @@ class WebsiteUniqueConstraintServiceTest extends TestCase
 
     public function setUp()
     {
-        $this->service = new WebsiteUniqueConstraintService();
+        $this->service = new WebsiteUniqueConstraintService(new WebsiteNormalizer());
 
         $this->organizerId = '2fad63f2-4da2-4c32-ae97-6a581d0e84d2';
 
