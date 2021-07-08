@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
+use CultuurNet\UDB3\Event\Productions\RenameProduction;
 use CultuurNet\UDB3\Event\Productions\SimilarEventPair;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,6 +98,15 @@ class ProductionsWriteController
         );
 
         $this->commandBus->dispatch($command);
+
+        return new Response('', 204);
+    }
+
+    public function renameProduction(string $productionId, string $productionName): Response
+    {
+        $renameCommand = new RenameProduction(ProductionId::fromNative($productionId), $productionName);
+
+        $this->commandBus->dispatch($renameCommand);
 
         return new Response('', 204);
     }

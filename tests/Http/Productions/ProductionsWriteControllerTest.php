@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
+use CultuurNet\UDB3\Event\Productions\RenameProduction;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -174,6 +175,22 @@ class ProductionsWriteControllerTest extends TestCase
 
         $this->assertEquals(
             [new MergeProductions($fromProductionId, $toProductionId)],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_rename_a_production(): void
+    {
+        $productionId = ProductionId::generate();
+
+        $this->commandBus->record();
+        $this->controller->renameProduction($productionId->toNative(), 'Bar');
+
+        $this->assertEquals(
+            [new RenameProduction($productionId, 'Bar')],
             $this->commandBus->getRecordedCommands()
         );
     }
