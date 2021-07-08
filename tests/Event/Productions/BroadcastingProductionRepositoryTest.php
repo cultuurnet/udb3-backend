@@ -246,4 +246,47 @@ class BroadcastingProductionRepositoryTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_broadcasts_event_projected_to_jsonld_for_events_in_a_production_when_production_gets_renamed(): void
+    {
+        $productionId = ProductionId::fromNative('bf1668d0-ce82-4e38-b284-2947f12850d6');
+
+        $production = new Production(
+            $productionId,
+            'Foo',
+            [
+                'd6a65aa8-d871-4a3e-a7ef-81926ad62371',
+                'a40ca8ff-cdae-406c-9124-f5874ef8056a',
+            ]
+        );
+
+        $this->decoratee->expects($this->once())
+            ->method('renameProduction')
+            ->with($productionId, 'Bar');
+
+        $this->decoratee->expects($this->once())
+            ->method('find')
+            ->with($productionId)
+            ->willReturn($production);
+
+        $this->repository->renameProduction($productionId, 'Bar');
+
+        $expected = [
+            new EventProjectedToJSONLD(
+                'd6a65aa8-d871-4a3e-a7ef-81926ad62371',
+                'https://io.uitdatabank.be/events/d6a65aa8-d871-4a3e-a7ef-81926ad62371'
+            ),
+            new EventProjectedToJSONLD(
+                'a40ca8ff-cdae-406c-9124-f5874ef8056a',
+                'https://io.uitdatabank.be/events/a40ca8ff-cdae-406c-9124-f5874ef8056a'
+            ),
+        ];
+
+        $actual = $this->eventBus->getEvents();
+
+        $this->assertEquals($expected, $actual);
+    }
 }
