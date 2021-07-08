@@ -9,11 +9,19 @@ use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintService;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\WebsiteUpdated;
 use InvalidArgumentException;
-use ValueObjects\Web\PortNumber;
-use ValueObjects\Web\Url;
 
 class WebsiteUniqueConstraintService implements UniqueConstraintService
 {
+    /**
+     * @var WebsiteNormalizer
+     */
+    private $websiteNormalizer;
+
+    public function __construct(WebsiteNormalizer $websiteNormalizer)
+    {
+        $this->websiteNormalizer = $websiteNormalizer;
+    }
+
     public function hasUniqueConstraint(DomainMessage $domainMessage): bool
     {
         return $domainMessage->getPayload() instanceof OrganizerCreatedWithUniqueWebsite ||
@@ -39,26 +47,6 @@ class WebsiteUniqueConstraintService implements UniqueConstraintService
         /* @var OrganizerCreatedWithUniqueWebsite|WebsiteUpdated $payload */
         $payload = $domainMessage->getPayload();
 
-        return $this->normalizeUrl($payload->getWebsite());
-    }
-
-    private function normalizeUrl(Url $url): string
-    {
-        $domain = $url->getDomain()->toNative();
-        if (strpos($domain, 'www.') === 0) {
-            $domain = substr($domain, strlen('www.'));
-        }
-
-        $port = $url->getPort() instanceof PortNumber ? ':' . $url->getPort()->toNative() : '';
-
-        $queryString = $url->getQueryString()->toNative();
-        $fragment = $url->getFragmentIdentifier()->toNative();
-
-        $path = rtrim($url->getPath()->toNative(), '/');
-        if ($path === '' && ($queryString !== '' || $fragment !== '')) {
-            $path = '/';
-        }
-
-        return $domain . $port . $path . $queryString . $fragment;
+        return $this->websiteNormalizer->normalizeUrl($payload->getWebsite());
     }
 }

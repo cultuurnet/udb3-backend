@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
+use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Organizer\WebsiteUniqueConstraintService;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\MarkAsDuplicateCommandHandler;
@@ -742,7 +743,7 @@ $app['organizer_store'] = $app->share(
             $eventStore,
             $app['dbal_connection'],
             'organizer_unique_websites',
-            new WebsiteUniqueConstraintService()
+            new WebsiteUniqueConstraintService(new WebsiteNormalizer())
         );
     }
 );
