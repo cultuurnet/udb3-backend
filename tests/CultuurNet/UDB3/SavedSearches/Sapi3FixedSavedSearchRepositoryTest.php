@@ -108,4 +108,40 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
             $savedSearches
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_handles_email_mode(): void
+    {
+        $user = new UserIdentityDetails(
+            new StringLiteral('my_user_id'),
+            new StringLiteral('my_name'),
+            new EmailAddress('jane.doe@anonymous.com')
+        );
+
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with(new StringLiteral('my_user_id'))
+            ->willReturn($user);
+
+        $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
+            'my_user_id',
+            $userIdentityResolver,
+            CreatedByQueryMode::EMAIL()
+        );
+
+        $savedSearches = $sapi3FixedSavedSearchRepository->ownedByCurrentUser();
+
+        $this->assertEquals(
+            [
+                new SavedSearch(
+                    new StringLiteral('Door mij ingevoerd'),
+                    new CreatorQueryString('jane.doe@anonymous.com')
+                ),
+            ],
+            $savedSearches
+        );
+    }
 }
