@@ -40,4 +40,34 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
             $savedSearches
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_handles_user_not_found(): void
+    {
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with(new StringLiteral('my_user_id'))
+            ->willReturn(null);
+
+        $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
+            'my_user_id',
+            $userIdentityResolver,
+            CreatedByQueryMode::MIXED()
+        );
+
+        $savedSearches = $sapi3FixedSavedSearchRepository->ownedByCurrentUser();
+
+        $this->assertEquals(
+            [
+                new SavedSearch(
+                    new StringLiteral('Door mij ingevoerd'),
+                    new CreatorQueryString('my_user_id')
+                ),
+            ],
+            $savedSearches
+        );
+    }
 }
