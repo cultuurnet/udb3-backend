@@ -88,6 +88,40 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_polyfill_a_default_booking_availability_if_not_set(): void
+    {
+        $this
+            ->given([])
+            ->assertReturnedDocumentContains(
+                [
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_change_booking_availability(): void
+    {
+        $this
+            ->given([
+                'bookingAvailability' => [
+                    'type' => 'Unavailable',
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingAvailability' => [
+                    'type' => 'Unavailable',
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_polyfill_a_default_status_on_subEvent_if_not_set(): void
     {
         $this

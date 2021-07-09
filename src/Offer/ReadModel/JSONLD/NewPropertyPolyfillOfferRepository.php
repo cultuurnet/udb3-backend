@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Event\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -23,6 +24,7 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
         return $jsonDocument->applyAssoc(
             function (array $json) {
                 $json = $this->polyfillStatus($json);
+                $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventStatus($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 return $json;
@@ -43,6 +45,15 @@ final class NewPropertyPolyfillOfferRepository extends DocumentRepositoryDecorat
             $json['status'] = [
                 'type' => StatusType::available()->toNative(),
             ];
+        }
+
+        return $json;
+    }
+
+    private function polyfillBookingAvailability(array $json): array
+    {
+        if (!isset($json['bookingAvailability'])) {
+            $json['bookingAvailability'] = BookingAvailability::available()->serialize();
         }
 
         return $json;
