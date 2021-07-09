@@ -54,7 +54,7 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
     {
         // If the creator query mode is set to uuid only, return early to avoid fetching user info from auth0 because
         // it's not needed.
-        if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::UUID()) {
+        if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::UUID) {
             return new CreatorQueryString($this->userId);
         }
 
