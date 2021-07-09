@@ -196,12 +196,18 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     public function it_should_fix_status_of_embedded_location_if_already_set_with_wrong_format(): void
     {
         $this
-            ->given(['location' => ['status' => 'Unavailable']])
+            ->given([
+                'location' => [
+                    'status' => 'Unavailable',
+                    'bookingAvailability' => ['type' => 'Unavailable'],
+                ],
+            ])
             ->assertReturnedDocumentContains([
                 'location' => [
                     'status' => [
                         'type' => 'Unavailable',
                     ],
+                    'bookingAvailability' => ['type' => 'Unavailable'],
                 ],
             ]);
     }
@@ -212,12 +218,13 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     public function it_should_add_default_status_of_embedded_location(): void
     {
         $this
-            ->given(['location' => []])
+            ->given(['location' => ['bookingAvailability' => ['type' => 'Unavailable']]])
             ->assertReturnedDocumentContains([
                 'location' => [
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => ['type' => 'Unavailable'],
                 ],
             ]);
     }
@@ -226,6 +233,31 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
      * @test
      */
     public function it_should_not_add_default_status_of_embedded_location_if_there_is_no_location(): void
+    {
+        $this
+            ->given(['@type' => 'Place'])
+            ->assertReturnedDocumentDoesNotContainKey('location');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_add_default_booking_availability_of_embedded_location(): void
+    {
+        $this
+            ->given(['location' => ['status' => ['type' => 'Available']]])
+            ->assertReturnedDocumentContains([
+                'location' => [
+                    'status' => ['type' => 'Available'],
+                    'bookingAvailability' => ['type' => 'Available'],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_add_default_booking_availability_embedded_location_if_there_is_no_location(): void
     {
         $this
             ->given(['@type' => 'Place'])
