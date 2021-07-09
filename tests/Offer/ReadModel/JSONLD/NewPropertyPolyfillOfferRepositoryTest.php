@@ -122,7 +122,7 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_polyfill_a_default_status_on_subEvent_if_not_set(): void
+    public function it_should_polyfill_a_default_status_and_booking_availability_on_subEvent_if_not_set(): void
     {
         $this
             ->given(
@@ -145,6 +145,14 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             '@type' => 'Event',
                             'startDate' => '2020-01-03T16:00:00+01:00',
                             'endDate' => '2020-01-03T20:00:00+01:00',
+                            'bookingAvailability' => [
+                                'type' => 'Unavailable',
+                            ],
+                        ],
+                        [
+                            '@type' => 'Event',
+                            'startDate' => '2020-01-04T16:00:00+01:00',
+                            'endDate' => '2020-01-04T20:00:00+01:00',
                             'status' => [
                                 'type' => 'TemporarilyUnavailable',
                                 'reason' => [
@@ -165,6 +173,9 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             'status' => [
                                 'type' => 'Available',
                             ],
+                            'bookingAvailability' => [
+                                'type' => 'Available',
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -173,16 +184,33 @@ class NewPropertyPolyfillOfferRepositoryTest extends TestCase
                             'status' => [
                                 'type' => 'Unavailable',
                             ],
+                            'bookingAvailability' => [
+                                'type' => 'Available',
+                            ],
                         ],
                         [
                             '@type' => 'Event',
                             'startDate' => '2020-01-03T16:00:00+01:00',
                             'endDate' => '2020-01-03T20:00:00+01:00',
                             'status' => [
+                                'type' => 'Available',
+                            ],
+                            'bookingAvailability' => [
+                                'type' => 'Unavailable',
+                            ],
+                        ],
+                        [
+                            '@type' => 'Event',
+                            'startDate' => '2020-01-04T16:00:00+01:00',
+                            'endDate' => '2020-01-04T20:00:00+01:00',
+                            'status' => [
                                 'type' => 'TemporarilyUnavailable',
                                 'reason' => [
                                     'nl' => 'Tijdelijk uitgesteld',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => 'Available',
                             ],
                         ],
                     ],
