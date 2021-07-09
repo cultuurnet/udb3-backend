@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\SavedSearches;
+
+use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
+use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
+use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
+use CultuurNet\UDB3\User\UserIdentityResolver;
+use PHPUnit\Framework\TestCase;
+use ValueObjects\StringLiteral\StringLiteral;
+
+class Sapi3FixedSavedSearchRepositoryTest extends TestCase
+{
+    /**
+     * @test
+     */
+    public function it_handles_query_mode_uuid(): void
+    {
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->never())
+            ->method('getUserById');
+
+        $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
+            'my_user_id',
+            $userIdentityResolver,
+            CreatedByQueryMode::UUID()
+        );
+
+        $savedSearches = $sapi3FixedSavedSearchRepository->ownedByCurrentUser();
+
+        $this->assertEquals(
+            [
+                new SavedSearch(
+                    new StringLiteral('Door mij ingevoerd'),
+                    new CreatorQueryString('my_user_id')
+                ),
+            ],
+            $savedSearches
+        );
+    }
+}
