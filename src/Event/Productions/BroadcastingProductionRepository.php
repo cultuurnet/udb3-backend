@@ -65,6 +65,14 @@ final class BroadcastingProductionRepository implements ProductionRepository
         $this->dispatchEventsProjectedToJsonLd(...$groupedEventIds);
     }
 
+    public function renameProduction(ProductionId $productionId, string $name): void
+    {
+        $this->repository->renameProduction($productionId, $name);
+
+        $groupedEventIds = $this->getEventIdsForProductionId($productionId);
+        $this->dispatchEventsProjectedToJsonLd(...$groupedEventIds);
+    }
+
     public function find(ProductionId $productionId): Production
     {
         return $this->repository->find($productionId);
