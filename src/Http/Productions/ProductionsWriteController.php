@@ -35,14 +35,21 @@ class ProductionsWriteController
      */
     private $skipEventsValidator;
 
+    /**
+     * @var RenameProductionValidator
+     */
+    private $renameProductionValidator;
+
     public function __construct(
         CommandBus $commandBus,
         CreateProductionValidator $createProductionValidator,
-        SkipEventsValidator $skipEventsValidator
+        SkipEventsValidator $skipEventsValidator,
+        RenameProductionValidator $renameProductionValidator
     ) {
         $this->commandBus = $commandBus;
         $this->createProductionValidator = $createProductionValidator;
         $this->skipEventsValidator = $skipEventsValidator;
+        $this->renameProductionValidator = $renameProductionValidator;
     }
 
     public function create(Request $request): Response

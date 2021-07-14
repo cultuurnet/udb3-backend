@@ -48,7 +48,8 @@ class ProductionsWriteControllerTest extends TestCase
         $this->controller = new ProductionsWriteController(
             $this->commandBus,
             $this->validator,
-            $this->skipValidator
+            $this->skipValidator,
+            new RenameProductionValidator()
         );
     }
 
