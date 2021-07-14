@@ -187,8 +187,14 @@ class ProductionsWriteControllerTest extends TestCase
     {
         $productionId = ProductionId::generate();
 
+        $request = $this->buildRequestWithBody(
+            [
+                'name' => 'Bar',
+            ]
+        );
+
         $this->commandBus->record();
-        $this->controller->renameProduction($productionId->toNative(), 'Bar');
+        $this->controller->renameProduction($productionId->toNative(), $request);
 
         $this->assertEquals(
             [new RenameProduction($productionId, 'Bar')],
@@ -203,9 +209,15 @@ class ProductionsWriteControllerTest extends TestCase
     {
         $productionId = ProductionId::generate();
 
+        $request = $this->buildRequestWithBody(
+            [
+                'name' => '',
+            ]
+        );
+
         $this->expectException(DataValidationException::class);
 
-        $this->controller->renameProduction($productionId->toNative(), '');
+        $this->controller->renameProduction($productionId->toNative(), $request);
     }
 
     /**

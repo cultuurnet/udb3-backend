@@ -110,13 +110,12 @@ class ProductionsWriteController
         return new Response('', 204);
     }
 
-    public function renameProduction(string $productionId, string $productionName): Response
+    public function renameProduction(string $productionId, Request $request): Response
     {
-        if (empty($productionName)) {
-            throw new DataValidationException('The new production name is required');
-        }
+        $data = json_decode($request->getContent(), true);
+        $this->renameProductionValidator->validate($data);
 
-        $renameCommand = new RenameProduction(ProductionId::fromNative($productionId), $productionName);
+        $renameCommand = new RenameProduction(ProductionId::fromNative($productionId), $data['name']);
 
         $this->commandBus->dispatch($renameCommand);
 
