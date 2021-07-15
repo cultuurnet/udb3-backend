@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0UserAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;
 use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
@@ -20,13 +24,18 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
      */
     public function it_handles_query_mode_uuid(): void
     {
-        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $userIdentityResolver->expects($this->never())
-            ->method('getUserById');
+        $token = new JwtProviderV1Token(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'uid' => 'my_user_id',
+                    'nick' => 'foo',
+                    'email' => 'mock@example.com',
+                ]
+            )
+        );
 
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
-            'my_user_id',
-            $userIdentityResolver,
+            $token,
             CreatedByQueryMode::UUID()
         );
 
@@ -46,17 +55,20 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_user_not_found(): void
+    public function it_handles_user_not_found_in_mixed_mode(): void
     {
-        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $userIdentityResolver->expects($this->once())
-            ->method('getUserById')
-            ->with(new StringLiteral('my_user_id'))
-            ->willReturn(null);
+        $token = new Auth0ClientAccessToken(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'sub' => 'mock-client-id@clients',
+                    'azp' => 'mock-client-id',
+                    'gty' => 'client-credentials',
+                ]
+            )
+        );
 
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
-            'my_user_id',
-            $userIdentityResolver,
+            $token,
             CreatedByQueryMode::MIXED()
         );
 
@@ -66,7 +78,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
             [
                 new SavedSearch(
                     new StringLiteral('Door mij ingevoerd'),
-                    new CreatorQueryString('my_user_id')
+                    new CreatorQueryString('mock-client-id@clients')
                 ),
             ],
             $savedSearches
@@ -78,21 +90,18 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
      */
     public function it_handles_mixed_mode(): void
     {
-        $user = new UserIdentityDetails(
-            new StringLiteral('my_user_id'),
-            new StringLiteral('my_name'),
-            new EmailAddress('jane.doe@anonymous.com')
+        $token = new JwtProviderV1Token(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'uid' => 'my_user_id',
+                    'nick' => 'foo',
+                    'email' => 'jane.doe@anonymous.com',
+                ]
+            )
         );
 
-        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $userIdentityResolver->expects($this->once())
-            ->method('getUserById')
-            ->with(new StringLiteral('my_user_id'))
-            ->willReturn($user);
-
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
-            'my_user_id',
-            $userIdentityResolver,
+            $token,
             CreatedByQueryMode::MIXED()
         );
 
@@ -114,21 +123,18 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
      */
     public function it_handles_email_mode(): void
     {
-        $user = new UserIdentityDetails(
-            new StringLiteral('my_user_id'),
-            new StringLiteral('my_name'),
-            new EmailAddress('jane.doe@anonymous.com')
+        $token = new JwtProviderV1Token(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'uid' => 'my_user_id',
+                    'nick' => 'foo',
+                    'email' => 'jane.doe@anonymous.com',
+                ]
+            )
         );
 
-        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $userIdentityResolver->expects($this->once())
-            ->method('getUserById')
-            ->with(new StringLiteral('my_user_id'))
-            ->willReturn($user);
-
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
-            'my_user_id',
-            $userIdentityResolver,
+            $token,
             CreatedByQueryMode::EMAIL()
         );
 

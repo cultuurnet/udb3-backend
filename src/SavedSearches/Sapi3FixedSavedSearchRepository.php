@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
 use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
-use CultuurNet\UDB3\User\UserIdentityResolver;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
 {
     /**
-     * @var string
+     * @var Token
      */
-    private $userId;
-
-    /**
-     * @var UserIdentityResolver
-     */
-    private $userIdentityResolver;
+    private $token;
 
     /**
      * @var CreatedByQueryMode
@@ -29,12 +24,10 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
     protected $createdByQueryMode;
 
     public function __construct(
-        string $userId,
-        UserIdentityResolver $userIdentityResolver,
+        Token $token,
         CreatedByQueryMode $createdByQueryMode
     ) {
-        $this->userId = $userId;
-        $this->userIdentityResolver = $userIdentityResolver;
+        $this->token = $token;
         $this->createdByQueryMode = $createdByQueryMode;
     }
 
@@ -55,14 +48,14 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
         // If the creator query mode is set to uuid only, return early to avoid fetching user info from auth0 because
         // it's not needed.
         if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::UUID) {
-            return new CreatorQueryString($this->userId);
+            return new CreatorQueryString($this->token->getUserId());
         }
 
         // If the user is not found on Auth0, just return a query that filters the creator on user id since we don't
         // have an email to filter on anyway.
-        $user = $this->userIdentityResolver->getUserById(new StringLiteral($this->userId));
+        $user = $this->token->getUserIdentityDetails();
         if (!$user) {
-            return new CreatorQueryString($this->userId);
+            return new CreatorQueryString($this->token->getUserId());
         }
 
         // If the user is found and the mode is set to mixed, return a query that filters the creator on either email
@@ -70,7 +63,7 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
         if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::MIXED) {
             return new CreatorQueryString(
                 $user->getEmailAddress()->toNative(),
-                $this->userId
+                $this->token->getUserId()
             );
         }
 
