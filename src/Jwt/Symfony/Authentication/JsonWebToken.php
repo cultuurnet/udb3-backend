@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use InvalidArgumentException;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
@@ -11,6 +12,8 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
+use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Web\EmailAddress;
 
 class JsonWebToken extends AbstractToken
 {
@@ -85,6 +88,34 @@ class JsonWebToken extends AbstractToken
         }
 
         return $this->token->getClaim('sub');
+    }
+
+    public function containsUserIdentityDetails(): bool
+    {
+        // Tokens from the V1 JWT provider (= custom) and V2 JWT provider (= Auth0 ID tokens) contain the username and
+        // email. Auth0 access tokens do not.
+        return $this->hasClaims(['nick', 'email']) || $this->hasClaims(['nickname', 'email']);
+    }
+
+    public function getUserIdentityDetails(): ?UserIdentityDetails
+    {
+        // Tokens from V1 JWT provider (= custom)
+        if ($this->hasClaims(['nick', 'email'])) {
+            return new UserIdentityDetails(
+                new StringLiteral($this->getUserId()),
+                new StringLiteral($this->token->getClaim('nick')),
+                new EmailAddress($this->token->getClaim('email'))
+            );
+        }
+        // Tokens from V2 JWT provider (= Auth0 ID tokens)
+        if ($this->hasClaims(['nickname', 'email'])) {
+            return new UserIdentityDetails(
+                new StringLiteral($this->getUserId()),
+                new StringLiteral($this->token->getClaim('nickname')),
+                new EmailAddress($this->token->getClaim('email'))
+            );
+        }
+        return null;
     }
 
     public function getClientId(): ?string
