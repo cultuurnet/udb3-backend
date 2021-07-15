@@ -92,13 +92,6 @@ class JsonWebToken extends AbstractToken
         return $this->token->getClaim('sub');
     }
 
-    public function containsUserIdentityDetails(): bool
-    {
-        // Tokens from the V1 JWT provider (= custom) and V2 JWT provider (= Auth0 ID tokens) contain the username and
-        // email. Auth0 access tokens do not.
-        return $this->hasClaims(['nick', 'email']) || $this->hasClaims(['nickname', 'email']);
-    }
-
     public function getUserIdentityDetails(UserIdentityResolver $userIdentityResolver): ?UserIdentityDetails
     {
         if ($this->getType() === self::V2_CLIENT_ACCESS_TOKEN) {
