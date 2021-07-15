@@ -90,6 +90,14 @@ class JsonWebToken extends AbstractToken
         return $this->token->getClaim('sub');
     }
 
+    public function getAuth0UserId(): ?string
+    {
+        if ($this->token->hasClaim('sub')) {
+            return $this->token->getClaim('sub');
+        }
+        return null;
+    }
+
     public function containsUserIdentityDetails(): bool
     {
         // Tokens from the V1 JWT provider (= custom) and V2 JWT provider (= Auth0 ID tokens) contain the username and
