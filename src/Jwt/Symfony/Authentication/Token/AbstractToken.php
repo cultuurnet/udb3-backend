@@ -10,9 +10,9 @@ use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
-use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
+use Symfony\Component\Security\Core\Authentication\Token\AbstractToken as AbstractSymfonySecurityToken;
 
-abstract class AbstractJsonWebToken extends AbstractToken
+abstract class AbstractToken extends AbstractSymfonySecurityToken
 {
     private const TIME_LEEWAY = 30;
 
@@ -38,7 +38,7 @@ abstract class AbstractJsonWebToken extends AbstractToken
         $this->token = (new Parser())->parse($jwt);
     }
 
-    public function authenticate(): AbstractJsonWebToken
+    public function authenticate(): AbstractToken
     {
         $clone = clone $this;
         $clone->setAuthenticated(true);

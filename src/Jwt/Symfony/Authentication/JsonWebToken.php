@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractJsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-class JsonWebToken extends AbstractJsonWebToken
+class JsonWebToken extends AbstractToken
 {
     public const V1_JWT_PROVIDER_TOKEN = 'v1_jwt_provider_token';
     public const V2_JWT_PROVIDER_TOKEN = 'v2_jwt_provider_token';
