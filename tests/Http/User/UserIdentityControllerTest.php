@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0UserAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -33,7 +36,15 @@ class UserIdentityControllerTest extends TestCase
 
         $this->userIdentityController = new UserIdentityController(
             $this->userIdentityResolver,
-            JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'])
+            new JwtProviderV1Token(
+                MockTokenStringFactory::createWithClaims(
+                    [
+                        'uid' => '982f6bd4-71b2-40fb-88f1-a7df699e76eb',
+                        'nick' => 'foo',
+                        'email' => 'mock@example.com',
+                    ]
+                )
+            )
         );
     }
 
@@ -130,63 +141,19 @@ class UserIdentityControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_user_identity_of_current_user_from_token_that_contains_it(): void
+    public function it_can_get_user_identity_of_current_user_from_token(): void
     {
-        $jwt = JsonWebTokenFactory::createWithClaims(
-            [
-                'uid' => 'current_user_id',
-                'nick' => 'jane_doe',
-                'email' => 'jane.doe@anonymous.com',
-            ]
-        );
-
         $this->userIdentityResolver->expects($this->never())
             ->method('getUserById');
-
-        $controller = new UserIdentityController(
-            $this->userIdentityResolver,
-            $jwt
-        );
-        $response = $controller->getCurrentUser();
-
-        $expected = [
-            'uuid' => 'current_user_id',
-            'email' => 'jane.doe@anonymous.com',
-            'username' => 'jane_doe',
-            'id' => 'current_user_id',
-            'nick' => 'jane_doe',
-        ];
-
-        $this->assertJsonResponse(
-            new JsonLdResponse($expected, 200, ['Cache-Control' => 'private']),
-            $response
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_get_user_identity_of_current_user_from_auth0_if_not_in_token(): void
-    {
-        $userIdentity = new UserIdentityDetails(
-            new StringLiteral('auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'),
-            new StringLiteral('jane_doe'),
-            new EmailAddress('jane.doe@anonymous.com')
-        );
-
-        $this->userIdentityResolver->expects($this->once())
-            ->method('getUserById')
-            ->with(new StringLiteral('auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'))
-            ->willReturn($userIdentity);
 
         $response = $this->userIdentityController->getCurrentUser();
 
         $expected = [
-            'uuid' => 'auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b',
-            'email' => 'jane.doe@anonymous.com',
-            'username' => 'jane_doe',
-            'id' => 'auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b',
-            'nick' => 'jane_doe',
+            'uuid' => '982f6bd4-71b2-40fb-88f1-a7df699e76eb',
+            'email' => 'mock@example.com',
+            'username' => 'foo',
+            'id' => '982f6bd4-71b2-40fb-88f1-a7df699e76eb',
+            'nick' => 'foo',
         ];
 
         $this->assertJsonResponse(
@@ -202,12 +169,14 @@ class UserIdentityControllerTest extends TestCase
     {
         $userIdentityControllerWithClientToken = new UserIdentityController(
             $this->userIdentityResolver,
-            JsonWebTokenFactory::createWithClaims(
-                [
-                    'sub' => 'clientId@clients',
-                    'azp' => 'clientId',
-                    'gty' => 'client-credentials',
-                ]
+            new Auth0ClientAccessToken(
+                MockTokenStringFactory::createWithClaims(
+                    [
+                        'sub' => 'mock-client-id@clients',
+                        'azp' => 'mock-client-id',
+                        'gty' => 'client-credentials',
+                    ]
+                )
             )
         );
 
@@ -237,12 +206,27 @@ class UserIdentityControllerTest extends TestCase
      */
     public function it_returns_not_found_on_get_current_user_when_user_identity_not_found(): void
     {
+        $token = new Auth0UserAccessToken(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'sub' => 'auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b',
+                    'azp' => 'mock-client-id',
+                ]
+            ),
+            $this->userIdentityResolver
+        );
+
+        $controller = new UserIdentityController(
+            $this->userIdentityResolver,
+            $token
+        );
+
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
             ->with(new StringLiteral('auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'))
             ->willReturn(null);
 
-        $response = $this->userIdentityController->getCurrentUser();
+        $response = $controller->getCurrentUser();
 
         $this->assertJsonResponse(
             new JsonResponse(

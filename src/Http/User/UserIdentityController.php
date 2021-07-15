@@ -7,12 +7,12 @@ namespace CultuurNet\UDB3\Http\User;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
 use CultuurNet\UDB3\Http\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use ValueObjects\Exception\InvalidNativeArgumentException;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -24,13 +24,13 @@ class UserIdentityController
     private $userIdentityResolver;
 
     /**
-     * @var JsonWebToken
+     * @var Token
      */
     private $jwt;
 
     public function __construct(
         UserIdentityResolver $userIdentityResolver,
-        JsonWebToken $jsonWebToken
+        Token $jsonWebToken
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
         $this->jwt = $jsonWebToken;
@@ -60,17 +60,13 @@ class UserIdentityController
 
     public function getCurrentUser(): JsonResponse
     {
-        if ($this->jwt->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
+        if ($this->jwt instanceof Auth0ClientAccessToken) {
             return new ApiProblemJsonResponse(
                 ApiProblems::tokenNotSupported('Client access tokens are not supported on this endpoint because a user is required to return user info.')
             );
         }
 
-        if ($this->jwt->containsUserIdentityDetails()) {
-            return $this->createCurrentUserResponse($this->jwt->getUserIdentityDetails());
-        }
-
-        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->jwt->getExternalUserId()));
+        $userIdentity = $this->jwt->getUserIdentityDetails();
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
