@@ -74,10 +74,15 @@ class UserIdentityController
             );
         }
 
-        $userIdentityAsArray = $userIdentity->jsonSerialize();
+        return $this->createCurrentUserResponse($userIdentity);
+    }
+
+    private function createCurrentUserResponse(UserIdentityDetails $userIdentityDetails): JsonLdResponse
+    {
+        $userIdentityAsArray = $userIdentityDetails->jsonSerialize();
         // Keep `id` and `nick` for backwards compatibility with older API clients
-        $userIdentityAsArray['id'] = $userIdentity->getUserId()->toNative();
-        $userIdentityAsArray['nick'] = $userIdentity->getUserName()->toNative();
+        $userIdentityAsArray['id'] = $userIdentityDetails->getUserId()->toNative();
+        $userIdentityAsArray['nick'] = $userIdentityDetails->getUserName()->toNative();
 
         return new JsonLdResponse($userIdentityAsArray, 200, ['Cache-Control' => 'private']);
     }
