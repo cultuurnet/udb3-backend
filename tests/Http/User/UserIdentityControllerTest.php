@@ -250,7 +250,7 @@ class UserIdentityControllerTest extends TestCase
                     'title' => 'Token not supported',
                     'type' => 'https://api.publiq.be/probs/auth/token-not-supported',
                     'status' => 400,
-                    'detail' => 'No user found for the user id in the given token.',
+                    'detail' => 'No user found for the given token.',
                 ],
                 400,
                 [
