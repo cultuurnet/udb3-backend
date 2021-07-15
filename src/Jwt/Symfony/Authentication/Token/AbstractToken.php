@@ -8,11 +8,11 @@ use CultuurNet\UDB3\Jwt\Symfony\Authentication\InvalidArgumentException;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Token as LcobucciToken;
 use Lcobucci\JWT\ValidationData;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken as AbstractSymfonySecurityToken;
 
-abstract class AbstractToken extends AbstractSymfonySecurityToken
+abstract class AbstractToken extends AbstractSymfonySecurityToken implements Token
 {
     private const TIME_LEEWAY = 30;
 
@@ -22,7 +22,7 @@ abstract class AbstractToken extends AbstractSymfonySecurityToken
     private $jwt;
 
     /**
-     * @var Token
+     * @var LcobucciToken
      */
     protected $token;
 
