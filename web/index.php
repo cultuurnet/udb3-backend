@@ -76,16 +76,10 @@ $app['security.firewalls'] = array(
         'jwt' => [
             'v1' => [
                 'valid_issuers' => $app['config']['jwt']['v1']['valid_issuers'],
-                'required_claims' => [
-                    'uid',
-                ],
                 'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v1']['keys']['public']['file']
             ],
             'v2' => [
                 'valid_issuers' => $app['config']['jwt']['v2']['valid_issuers'],
-                'required_claims' => [
-                    'sub',
-                ],
                 'public_key' => 'file://' . __DIR__ . '/../' . $app['config']['jwt']['v2']['keys']['public']['file']
             ],
         ],

@@ -20,7 +20,6 @@ class JwtBaseValidatorTest extends TestCase
     {
         $this->validator = new JwtBaseValidator(
             JsonWebTokenFactory::getPublicKey(),
-            ['sub'],
             ['valid-issuer-1', 'valid-issuer-2']
         );
     }
@@ -83,24 +82,6 @@ class JwtBaseValidatorTest extends TestCase
                 'nbf' => time() - 3600,
                 'exp' => time() + 3600,
                 'iss' => 'invalid-issuer',
-            ]
-        );
-
-        $this->expectException(AuthenticationException::class);
-        $this->validator->validateClaims($token);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_if_a_required_claim_is_missing(): void
-    {
-        $token = JsonWebTokenFactory::createWithClaims(
-            [
-                'iat' => time() - 3600,
-                'nbf' => time() - 3600,
-                'exp' => time() + 3600,
-                'iss' => 'valid-issuer-1',
             ]
         );
 

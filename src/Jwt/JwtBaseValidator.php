@@ -17,31 +17,17 @@ class JwtBaseValidator implements JwtValidator
     /**
      * @var string[]
      */
-    private $requiredClaims;
-
-    /**
-     * @var string[]
-     */
     private $validIssuers;
 
     /**
-     * @param string[] $requiredClaims
      * @param string[] $validIssuers
      */
     public function __construct(
         string $publicKey,
-        array $requiredClaims = [],
         array $validIssuers = []
     ) {
         $this->publicKey = $publicKey;
-        $this->requiredClaims = $requiredClaims;
         $this->validIssuers = $validIssuers;
-
-        if (count($requiredClaims) !== count(array_filter($this->requiredClaims, 'is_string'))) {
-            throw new \InvalidArgumentException(
-                'All required claims should be strings.'
-            );
-        }
 
         if (count($validIssuers) !== count(array_filter($this->validIssuers, 'is_string'))) {
             throw new \InvalidArgumentException(
@@ -54,7 +40,6 @@ class JwtBaseValidator implements JwtValidator
     {
         $this->validateTimeSensitiveClaims($token);
         $this->validateIssuer($token);
-        $this->validateRequiredClaims($token);
     }
 
     private function validateTimeSensitiveClaims(JsonWebToken $token): void
@@ -62,15 +47,6 @@ class JwtBaseValidator implements JwtValidator
         if (!$token->isUsableAtCurrentTime()) {
             throw new AuthenticationException(
                 'Token expired (or not yet usable).'
-            );
-        }
-    }
-
-    private function validateRequiredClaims(JsonWebToken $token): void
-    {
-        if (!$token->hasClaims($this->requiredClaims)) {
-            throw new AuthenticationException(
-                'Token is missing one of its required claims.'
             );
         }
     }
