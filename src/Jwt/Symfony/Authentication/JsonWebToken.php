@@ -15,41 +15,12 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
-class JsonWebToken extends AbstractToken
+class JsonWebToken extends AbstractJsonWebToken
 {
     public const V1_JWT_PROVIDER_TOKEN = 'v1_jwt_provider_token';
     public const V2_JWT_PROVIDER_TOKEN = 'v2_jwt_provider_token';
     public const V2_USER_ACCESS_TOKEN = 'v2_user_access_token';
     public const V2_CLIENT_ACCESS_TOKEN = 'v2_client_access_token';
-
-    private const TIME_LEEWAY = 30;
-
-    /**
-     * @var string
-     */
-    private $jwt;
-
-    /**
-     * @var Token
-     */
-    private $token;
-
-    /**
-     * @throws InvalidArgumentException
-     *   If the provided JWT string cannot be parsed
-     */
-    public function __construct(string $jwt, bool $authenticated = false)
-    {
-        parent::__construct();
-        $this->setAuthenticated($authenticated);
-        $this->jwt = $jwt;
-        $this->token = (new Parser())->parse($jwt);
-    }
-
-    public function authenticate(): JsonWebToken
-    {
-        return new self($this->getCredentials(), true);
-    }
 
     /**
      * @return string
@@ -153,45 +124,6 @@ class JsonWebToken extends AbstractToken
         return null;
     }
 
-    public function hasClaims(array $names): bool
-    {
-        foreach ($names as $name) {
-            if (!$this->token->hasClaim($name)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public function isUsableAtCurrentTime(): bool
-    {
-        // Use the built-in validation provided by Lcobucci without any extra validation data.
-        // This will automatically validate the time-sensitive claims.
-        // Set the leeway to 30 seconds so we can compensate for slight clock skew between auth0 and our own servers.
-        // @see https://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#nbfDef
-        return $this->token->validate(new ValidationData(null, self::TIME_LEEWAY));
-    }
-
-    public function hasValidIssuer(array $validIssuers): bool
-    {
-        return in_array($this->token->getClaim('iss', ''), $validIssuers, true);
-    }
-
-    public function hasAudience(string $audience): bool
-    {
-        if (!$this->token->hasClaim('aud')) {
-            return false;
-        }
-
-        // The aud claim can be a string or an array. Convert string to array with one value for consistency.
-        $aud = $this->token->getClaim('aud');
-        if (is_string($aud)) {
-            $aud = [$aud];
-        }
-
-        return in_array($audience, $aud, true);
-    }
-
     public function hasEntryApiInPubliqApisClaim(): bool
     {
         $apis = $this->token->getClaim('https://publiq.be/publiq-apis', '');
@@ -202,17 +134,5 @@ class JsonWebToken extends AbstractToken
 
         $apis = explode(' ', $apis);
         return in_array('entry', $apis, true);
-    }
-
-    public function verifyRsaSha256Signature(string $publicKey, ?string $keyPassphrase = null): bool
-    {
-        $signer = new Sha256();
-        $key = new Key($publicKey, $keyPassphrase);
-        return $this->token->verify($signer, $key);
-    }
-
-    public function getCredentials(): string
-    {
-        return $this->jwt;
     }
 }
