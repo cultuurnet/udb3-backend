@@ -4,7 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
+use Auth0\SDK\API\Management;
 use CultuurNet\UDB3\Jwt\JwtValidator;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0UserAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV2Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
+use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -38,17 +47,17 @@ class JwtAuthenticationProviderTest extends TestCase
         );
     }
 
-    private function getExpectedValidatorForTokenType(JsonWebToken $token): MockObject
+    private function getExpectedValidatorForTokenType(Token $token): MockObject
     {
-        if ($token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN) {
+        if ($token instanceof JwtProviderV1Token) {
             return $this->v1JwtValidator;
         }
         return $this->v2JwtValidator;
     }
 
-    private function getUnusedValidatorForTokenType(JsonWebToken $token): MockObject
+    private function getUnusedValidatorForTokenType(Token $token): MockObject
     {
-        if ($token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN) {
+        if ($token instanceof JwtProviderV1Token) {
             return $this->v2JwtValidator;
         }
         return $this->v1JwtValidator;
@@ -67,7 +76,59 @@ class JwtAuthenticationProviderTest extends TestCase
 
         $this->assertTrue(
             $this->authenticationProvider->supports(
-                JsonWebTokenFactory::createWithClaims([])
+                new JwtProviderV1Token(
+                    MockTokenStringFactory::createWithClaims(
+                        [
+                            'uid' => 'a9b59309-8409-4f2a-a48c-b3e74f61c003',
+                            'nick' => 'foo',
+                            'email' => 'foo@example.com',
+                        ]
+                    )
+                )
+            )
+        );
+
+        $this->assertTrue(
+            $this->authenticationProvider->supports(
+                new JwtProviderV2Token(
+                    MockTokenStringFactory::createWithClaims(
+                        [
+                            'sub' => 'auth0|a9b59309-8409-4f2a-a48c-b3e74f61c003',
+                            'nickname' => 'foo',
+                            'email' => 'foo@example.com',
+                        ]
+                    )
+                )
+            )
+        );
+
+        $this->assertTrue(
+            $this->authenticationProvider->supports(
+                new Auth0UserAccessToken(
+                    MockTokenStringFactory::createWithClaims(
+                        [
+                            'sub' => 'auth0|9491aedb-7955-4c32-9aae-a692f47c6de0',
+                            'azp' => 'mock-client-id',
+                        ]
+                    ),
+                    new Auth0UserIdentityResolver(
+                        $this->createMock(Management::class)
+                    )
+                )
+            )
+        );
+
+        $this->assertTrue(
+            $this->authenticationProvider->supports(
+                new Auth0ClientAccessToken(
+                    MockTokenStringFactory::createWithClaims(
+                        [
+                            'sub' => 'mock-client-id@clients',
+                            'azp' => 'mock-client-id',
+                            'gty' => 'client-credentials',
+                        ]
+                    )
+                )
             )
         );
     }
@@ -87,12 +148,31 @@ class JwtAuthenticationProviderTest extends TestCase
         $this->authenticationProvider->authenticate($token);
     }
 
-
     public function tokenDataProvider(): array
     {
         return [
-            'v1' => [JsonWebTokenFactory::createWithClaims(['uid' => 'mock-v1-id'])],
-            'v2' => [JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|mock-v2-id', 'azp' => 'mock-client'])],
+            'v1' => [
+                new JwtProviderV1Token(
+                    MockTokenStringFactory::createWithClaims(
+                        [
+                            'uid' => 'a9b59309-8409-4f2a-a48c-b3e74f61c003',
+                            'nick' => 'foo',
+                            'email' => 'foo@example.com',
+                        ]
+                    )
+                )
+            ],
+            'v2' => [
+                new Auth0ClientAccessToken(
+                    MockTokenStringFactory::createWithClaims(
+                        [
+                            'sub' => 'mock-client-id@clients',
+                            'azp' => 'mock-client-id',
+                            'gty' => 'client-credentials',
+                        ]
+                    )
+                )
+            ],
         ];
     }
 
@@ -101,7 +181,7 @@ class JwtAuthenticationProviderTest extends TestCase
      * @dataProvider tokenDataProvider
      */
     public function it_throws_an_exception_when_the_jwt_signature_is_invalid_for_the_expected_token_version(
-        JsonWebToken $token
+        AbstractToken $token
     ): void {
         $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
@@ -121,7 +201,7 @@ class JwtAuthenticationProviderTest extends TestCase
      * @dataProvider tokenDataProvider
      */
     public function it_calls_the_validation_methods_on_the_right_validator_depending_on_the_token_version(
-        JsonWebToken $token
+        AbstractToken $token
     ): void {
         $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')
@@ -148,7 +228,7 @@ class JwtAuthenticationProviderTest extends TestCase
      * @dataProvider tokenDataProvider
      */
     public function it_returns_an_authenticated_token_when_the_jwt_is_valid(
-        JsonWebToken $token
+        AbstractToken $token
     ): void {
         $this->getExpectedValidatorForTokenType($token)->expects($this->once())
             ->method('verifySignature')

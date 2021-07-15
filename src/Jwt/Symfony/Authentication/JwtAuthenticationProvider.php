@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\Jwt\JwtValidator;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -34,7 +37,7 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function supports(TokenInterface $token)
     {
-        return $token instanceof JsonWebToken;
+        return $token instanceof AbstractToken;
     }
 
     /**
@@ -42,14 +45,14 @@ class JwtAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function authenticate(TokenInterface $token)
     {
-        /** @var JsonWebToken $token */
+        /** @var AbstractToken $token */
         if (!$this->supports($token)) {
             throw new AuthenticationException(
                 'Token type ' . get_class($token) . ' not supported.'
             );
         }
 
-        $isV1 = $token->getType() === JsonWebToken::V1_JWT_PROVIDER_TOKEN;
+        $isV1 = $token instanceof JwtProviderV1Token;
         $validator = $isV1 ? $this->v1JwtValidator : $this->v2JwtValidator;
 
         $validator->verifySignature($token);
