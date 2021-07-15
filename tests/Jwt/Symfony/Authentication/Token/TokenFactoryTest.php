@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication\Token;
 
 use Auth0\SDK\API\Management;
