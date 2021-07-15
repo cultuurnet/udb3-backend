@@ -70,7 +70,7 @@ class UserIdentityController
             return $this->createCurrentUserResponse($this->jwt->getUserIdentityDetails());
         }
 
-        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->jwt->getAuth0UserId()));
+        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->jwt->getExternalUserId()));
 
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(

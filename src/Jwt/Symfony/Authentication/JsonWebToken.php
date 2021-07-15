@@ -97,12 +97,18 @@ class JsonWebToken extends AbstractToken
         return $this->token->getClaim('sub');
     }
 
-    public function getAuth0UserId(): ?string
+    /**
+     * Returns the user id used on the external authorization system.
+     * Will either be:
+     * - The v1 id for v1 tokens
+     * - The v2 id for v2 tokens
+     */
+    public function getExternalUserId(): string
     {
-        if ($this->token->hasClaim('sub')) {
-            return $this->token->getClaim('sub');
+        if ($this->token->hasClaim('uid')) {
+            return $this->token->getClaim('uid');
         }
-        return null;
+        return $this->token->getClaim('sub');
     }
 
     public function containsUserIdentityDetails(): bool
