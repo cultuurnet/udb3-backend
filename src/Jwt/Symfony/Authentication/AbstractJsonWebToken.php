@@ -29,7 +29,7 @@ abstract class AbstractJsonWebToken extends AbstractToken
      * @throws InvalidArgumentException
      *   If the provided JWT string cannot be parsed
      */
-    final public function __construct(string $jwt, bool $authenticated = false)
+    public function __construct(string $jwt, bool $authenticated = false)
     {
         parent::__construct();
         $this->setAuthenticated($authenticated);
@@ -39,7 +39,9 @@ abstract class AbstractJsonWebToken extends AbstractToken
 
     public function authenticate(): AbstractJsonWebToken
     {
-        return new static($this->getCredentials(), true);
+        $clone = clone $this;
+        $clone->setAuthenticated(true);
+        return $clone;
     }
 
     public function hasClaims(array $names): bool
