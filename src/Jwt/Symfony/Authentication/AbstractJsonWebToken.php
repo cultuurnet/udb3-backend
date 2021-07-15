@@ -37,7 +37,7 @@ abstract class AbstractJsonWebToken extends AbstractToken
         $this->token = (new Parser())->parse($jwt);
     }
 
-    public function authenticate(): JsonWebToken
+    public function authenticate(): AbstractJsonWebToken
     {
         return new static($this->getCredentials(), true);
     }
