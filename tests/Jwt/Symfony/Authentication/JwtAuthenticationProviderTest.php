@@ -160,7 +160,7 @@ class JwtAuthenticationProviderTest extends TestCase
                             'email' => 'foo@example.com',
                         ]
                     )
-                )
+                ),
             ],
             'v2' => [
                 new Auth0ClientAccessToken(
@@ -171,7 +171,7 @@ class JwtAuthenticationProviderTest extends TestCase
                             'gty' => 'client-credentials',
                         ]
                     )
-                )
+                ),
             ],
         ];
     }

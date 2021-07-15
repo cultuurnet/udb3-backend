@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 use CultuurNet\UDB3\Jwt\JwtValidator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;

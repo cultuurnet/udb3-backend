@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Management;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;

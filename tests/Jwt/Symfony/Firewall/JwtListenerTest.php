@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
 use Auth0\SDK\API\Management;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0UserAccessToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\TokenFactory;
 use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
