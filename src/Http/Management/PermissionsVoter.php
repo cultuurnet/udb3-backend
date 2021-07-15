@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Management;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -52,7 +52,7 @@ class PermissionsVoter implements VoterInterface
             return $result;
         }
 
-        if ($token instanceof JsonWebToken && $token->isAuthenticated()) {
+        if ($token instanceof AbstractToken && $token->isAuthenticated()) {
             $userUuid = $token->getUserId();
         } else {
             return $result;
