@@ -17,15 +17,6 @@ abstract class Auth0AccessToken extends AbstractToken implements AccessToken
         }
     }
 
-    public function getUserId(): string
-    {
-        if ($this->token->hasClaim('https://publiq.be/uitidv1id')) {
-            return (string) $this->token->getClaim('https://publiq.be/uitidv1id');
-        }
-
-        return (string) $this->token->getClaim('sub');
-    }
-
     public function getClientId(): string
     {
         return (string) $this->token->getClaim('azp');
