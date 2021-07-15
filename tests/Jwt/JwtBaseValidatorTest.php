@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -19,21 +20,25 @@ class JwtBaseValidatorTest extends TestCase
     public function setUp()
     {
         $this->validator = new JwtBaseValidator(
-            JsonWebTokenFactory::getPublicKey(),
+            MockTokenStringFactory::getPublicKey(),
             ['valid-issuer-1', 'valid-issuer-2']
         );
     }
 
-    private function createValidToken(): JsonWebToken
+    private function createValidToken(): Token
     {
-        return JsonWebTokenFactory::createWithClaims(
-            [
-                'iat' => time() - 3600,
-                'nbf' => time() - 3600,
-                'exp' => time() + 3600,
-                'iss' => 'valid-issuer-1',
-                'sub' => 'mock-id',
-            ]
+        return new Auth0ClientAccessToken(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'iat' => time() - 3600,
+                    'nbf' => time() - 3600,
+                    'exp' => time() + 3600,
+                    'iss' => 'valid-issuer-1',
+                    'sub' => 'mock-id@clients',
+                    'azp' => 'mock-id',
+                    'gty' => 'client-credentials',
+                ]
+            )
         );
     }
 
@@ -42,12 +47,18 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_token_is_expired(): void
     {
-        $token = JsonWebTokenFactory::createWithClaims(
-            [
-                'iat' => time() - 3600,
-                'nbf' => time() - 3600,
-                'exp' => time() - 1800,
-            ]
+        $token = new Auth0ClientAccessToken(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'iat' => time() - 3600,
+                    'nbf' => time() - 3600,
+                    'exp' => time() - 1800,
+                    'iss' => 'valid-issuer-1',
+                    'sub' => 'mock-id@clients',
+                    'azp' => 'mock-id',
+                    'gty' => 'client-credentials',
+                ]
+            )
         );
 
         $this->expectException(AuthenticationException::class);
@@ -59,12 +70,17 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_issuer_is_missing(): void
     {
-        $token = JsonWebTokenFactory::createWithClaims(
-            [
-                'iat' => time() - 3600,
-                'nbf' => time() - 3600,
-                'exp' => time() + 3600,
-            ]
+        $token = new Auth0ClientAccessToken(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'iat' => time() - 3600,
+                    'nbf' => time() - 3600,
+                    'exp' => time() - 1800,
+                    'sub' => 'mock-id@clients',
+                    'azp' => 'mock-id',
+                    'gty' => 'client-credentials',
+                ]
+            )
         );
 
         $this->expectException(AuthenticationException::class);
@@ -76,13 +92,18 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_issuer_is_invalid(): void
     {
-        $token = JsonWebTokenFactory::createWithClaims(
-            [
-                'iat' => time() - 3600,
-                'nbf' => time() - 3600,
-                'exp' => time() + 3600,
-                'iss' => 'invalid-issuer',
-            ]
+        $token = new Auth0ClientAccessToken(
+            MockTokenStringFactory::createWithClaims(
+                [
+                    'iat' => time() - 3600,
+                    'nbf' => time() - 3600,
+                    'exp' => time() - 1800,
+                    'iss' => 'invalid-issuer',
+                    'sub' => 'mock-id@clients',
+                    'azp' => 'mock-id',
+                    'gty' => 'client-credentials',
+                ]
+            )
         );
 
         $this->expectException(AuthenticationException::class);
@@ -94,16 +115,7 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_does_not_throw_if_all_claims_are_valid(): void
     {
-        $token = JsonWebTokenFactory::createWithClaims(
-            [
-                'iat' => time() - 3600,
-                'nbf' => time() - 3600,
-                'exp' => time() + 3600,
-                'iss' => 'valid-issuer-1',
-                'sub' => 'auth0|mock-id',
-            ]
-        );
-
+        $token = $this->createValidToken();
         $this->validator->validateClaims($token);
         $this->addToAssertionCount(1);
     }
@@ -113,7 +125,19 @@ class JwtBaseValidatorTest extends TestCase
      */
     public function it_throws_if_the_signature_is_invalid(): void
     {
-        $token = JsonWebTokenFactory::createWithInvalidSignature();
+        $token = new Auth0ClientAccessToken(
+            MockTokenStringFactory::createWithClaimsAndInvalidSignature(
+                [
+                    'iat' => time() - 3600,
+                    'nbf' => time() - 3600,
+                    'exp' => time() - 1800,
+                    'iss' => 'valid-issuer-1',
+                    'sub' => 'mock-id@clients',
+                    'azp' => 'mock-id',
+                    'gty' => 'client-credentials',
+                ]
+            )
+        );
         $this->expectException(AuthenticationException::class);
         $this->validator->verifySignature($token);
     }

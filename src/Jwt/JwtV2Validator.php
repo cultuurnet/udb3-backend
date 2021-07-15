@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0AccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV2Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class JwtV2Validator implements JwtValidator
@@ -25,28 +27,27 @@ final class JwtV2Validator implements JwtValidator
         $this->v2JwtProviderAuth0ClientId = $v2JwtProviderAuth0ClientId;
     }
 
-    public function verifySignature(JsonWebToken $token): void
+    public function verifySignature(Token $token): void
     {
         $this->baseValidator->verifySignature($token);
     }
 
-    public function validateClaims(JsonWebToken $token): void
+    public function validateClaims(Token $token): void
     {
         $this->baseValidator->validateClaims($token);
 
-        if ($token->getType() === JsonWebToken::V2_JWT_PROVIDER_TOKEN) {
+        if ($token instanceof JwtProviderV2Token) {
             $this->validateIdTokenFromJwtProvider($token);
         }
 
-        if ($token->getType() === JsonWebToken::V2_USER_ACCESS_TOKEN ||
-            $token->getType() === JsonWebToken::V2_CLIENT_ACCESS_TOKEN) {
+        if ($token instanceof Auth0AccessToken) {
             $this->validateAccessToken($token);
         }
     }
 
-    private function validateAccessToken(JsonWebToken $jwt): void
+    private function validateAccessToken(Auth0AccessToken $jwt): void
     {
-        if (!$jwt->hasEntryApiInPubliqApisClaim()) {
+        if (!$jwt->canUseEntryApi()) {
             throw new AuthenticationException(
                 'The given token and its related client are not allowed to access EntryAPI.',
                 403
@@ -54,7 +55,7 @@ final class JwtV2Validator implements JwtValidator
         }
     }
 
-    private function validateIdTokenFromJwtProvider(JsonWebToken $jwt): void
+    private function validateIdTokenFromJwtProvider(JwtProviderV2Token $jwt): void
     {
         // Only accept id tokens if they were provided by the JWT provider v2.
         // If an id token from another Auth0 client is used, ask to use the related access token instead.

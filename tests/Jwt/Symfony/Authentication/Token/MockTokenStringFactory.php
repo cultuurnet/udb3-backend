@@ -21,4 +21,21 @@ final class MockTokenStringFactory
             new Key(file_get_contents(__DIR__ . '/../../../samples/private.pem'), 'secret')
         );
     }
+
+    public static function createWithClaimsAndInvalidSignature(array $claims): string
+    {
+        $builder = new Builder();
+        foreach ($claims as $claim => $value) {
+            $builder = $builder->withClaim($claim, $value);
+        }
+        return (string) $builder->getToken(
+            new Sha256(),
+            new Key(file_get_contents(__DIR__ . '/../../../samples/private-invalid.pem'))
+        );
+    }
+
+    public static function getPublicKey(): string
+    {
+        return file_get_contents(__DIR__ . '/../../../samples/public.pem');
+    }
 }

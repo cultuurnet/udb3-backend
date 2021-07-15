@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Token;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class JwtBaseValidator implements JwtValidator
@@ -36,13 +36,13 @@ class JwtBaseValidator implements JwtValidator
         }
     }
 
-    public function validateClaims(JsonWebToken $token): void
+    public function validateClaims(Token $token): void
     {
         $this->validateTimeSensitiveClaims($token);
         $this->validateIssuer($token);
     }
 
-    private function validateTimeSensitiveClaims(JsonWebToken $token): void
+    private function validateTimeSensitiveClaims(Token $token): void
     {
         if (!$token->isUsableAtCurrentTime()) {
             throw new AuthenticationException(
@@ -51,7 +51,7 @@ class JwtBaseValidator implements JwtValidator
         }
     }
 
-    private function validateIssuer(JsonWebToken $token): void
+    private function validateIssuer(Token $token): void
     {
         if (!$token->hasValidIssuer($this->validIssuers)) {
             throw new AuthenticationException(
@@ -60,7 +60,7 @@ class JwtBaseValidator implements JwtValidator
         }
     }
 
-    public function verifySignature(JsonWebToken $token): void
+    public function verifySignature(Token $token): void
     {
         if (!$token->verifyRsaSha256Signature($this->publicKey)) {
             throw new AuthenticationException(
