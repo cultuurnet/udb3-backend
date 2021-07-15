@@ -225,7 +225,7 @@ $app['current_user_id'] = $app::share(
             // The token in the firewall storage is not supported.
             return null;
         }
-        return $token->getInternalUserId();
+        return $token->getUserId();
     }
 );
 
