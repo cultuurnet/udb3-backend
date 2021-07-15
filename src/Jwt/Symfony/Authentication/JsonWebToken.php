@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\UserIdentityResolver;
+use Exception;
 use InvalidArgumentException;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
@@ -97,8 +99,12 @@ class JsonWebToken extends AbstractToken
         return $this->hasClaims(['nick', 'email']) || $this->hasClaims(['nickname', 'email']);
     }
 
-    public function getUserIdentityDetails(): ?UserIdentityDetails
+    public function getUserIdentityDetails(UserIdentityResolver $userIdentityResolver): ?UserIdentityDetails
     {
+        if ($this->getType() === self::V2_CLIENT_ACCESS_TOKEN) {
+            return null;
+        }
+
         // Tokens from V1 JWT provider (= custom)
         if ($this->hasClaims(['nick', 'email'])) {
             return new UserIdentityDetails(
@@ -107,6 +113,7 @@ class JsonWebToken extends AbstractToken
                 new EmailAddress($this->token->getClaim('email'))
             );
         }
+
         // Tokens from V2 JWT provider (= Auth0 ID tokens)
         if ($this->hasClaims(['nickname', 'email'])) {
             return new UserIdentityDetails(
@@ -115,7 +122,12 @@ class JsonWebToken extends AbstractToken
                 new EmailAddress($this->token->getClaim('email'))
             );
         }
-        return null;
+
+        try {
+            return $userIdentityResolver->getUserById(new StringLiteral($this->getUserId()));
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     public function getClientId(): ?string
