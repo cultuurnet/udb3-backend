@@ -9,7 +9,6 @@ use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearchRepositoryInterface;
 use CultuurNet\UDB3\SavedSearches\Sapi3FixedSavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\UDB3SavedSearchRepository;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
-use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;

@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SavedSearches;
 
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0UserAccessToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;
 use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
-use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class Sapi3FixedSavedSearchRepositoryTest extends TestCase
 {
