@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
@@ -151,6 +152,10 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_user_identity_details_for_v1_jwt_provider_tokens(): void
     {
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->never())
+            ->method('getUserById');
+
         $v1Token = JsonWebTokenFactory::createWithClaims(
             [
                 'uid' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
@@ -165,8 +170,7 @@ class JsonWebTokenTest extends TestCase
             new EmailAddress('mock@example.com')
         );
 
-        $this->assertTrue($v1Token->containsUserIdentityDetails());
-        $this->assertEquals($details, $v1Token->getUserIdentityDetails());
+        $this->assertEquals($details, $v1Token->getUserIdentityDetails($userIdentityResolver));
     }
 
     /**
@@ -174,6 +178,10 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_returns_user_identity_details_for_v2_jwt_provider_tokens(): void
     {
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->never())
+            ->method('getUserById');
+
         $v2Token = JsonWebTokenFactory::createWithClaims(
             [
                 'https://publiq.be/uitidv1id' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
@@ -189,15 +197,26 @@ class JsonWebTokenTest extends TestCase
             new EmailAddress('mock@example.com')
         );
 
-        $this->assertTrue($v2Token->containsUserIdentityDetails());
-        $this->assertEquals($details, $v2Token->getUserIdentityDetails());
+        $this->assertEquals($details, $v2Token->getUserIdentityDetails($userIdentityResolver));
     }
 
     /**
      * @test
      */
-    public function it_does_not_return_user_identity_details_for_user_access_tokens(): void
+    public function it_fetches_user_identity_details_for_user_access_tokens(): void
     {
+        $details = new UserIdentityDetails(
+            new StringLiteral('c82bd40c-1932-4c45-bd5d-a76cc9907cee'),
+            new StringLiteral('mock-nickname'),
+            new EmailAddress('mock@example.com')
+        );
+
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('c82bd40c-1932-4c45-bd5d-a76cc9907cee')
+            ->willReturn($details);
+
         $userAccessToken = JsonWebTokenFactory::createWithClaims(
             [
                 'https://publiq.be/uitidv1id' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
@@ -206,8 +225,7 @@ class JsonWebTokenTest extends TestCase
             ]
         );
 
-        $this->assertFalse($userAccessToken->containsUserIdentityDetails());
-        $this->assertNull($userAccessToken->getUserIdentityDetails());
+        $this->assertEquals($details, $userAccessToken->getUserIdentityDetails($userIdentityResolver));
     }
 
     /**
@@ -215,14 +233,18 @@ class JsonWebTokenTest extends TestCase
      */
     public function it_does_not_return_user_identity_details_for_client_access_tokens(): void
     {
+        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $userIdentityResolver->expects($this->never())
+            ->method('getUserById');
+
         $clientAccessToken = JsonWebTokenFactory::createWithClaims(
             [
                 'sub' => 'mock-client@clients',
                 'azp' => 'mock-client',
+                'gty' => 'client-credentials',
             ]
         );
 
-        $this->assertFalse($clientAccessToken->containsUserIdentityDetails());
-        $this->assertNull($clientAccessToken->getUserIdentityDetails());
+        $this->assertNull($clientAccessToken->getUserIdentityDetails($userIdentityResolver));
     }
 }

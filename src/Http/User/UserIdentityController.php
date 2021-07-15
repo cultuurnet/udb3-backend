@@ -66,15 +66,10 @@ class UserIdentityController
             );
         }
 
-        if ($this->jwt->containsUserIdentityDetails()) {
-            return $this->createCurrentUserResponse($this->jwt->getUserIdentityDetails());
-        }
-
-        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->jwt->getUserId()));
-
+        $userIdentity = $this->jwt->getUserIdentityDetails($this->userIdentityResolver);
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
-                ApiProblems::tokenNotSupported('No user found for the user id in the given token.')
+                ApiProblems::tokenNotSupported('No user found for the given token.')
             );
         }
 
