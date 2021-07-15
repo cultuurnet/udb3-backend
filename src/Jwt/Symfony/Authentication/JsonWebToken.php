@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractJsonWebToken;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
+namespace CultuurNet\UDB3\Jwt\Symfony\Authentication\Token;
 
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\InvalidArgumentException;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
