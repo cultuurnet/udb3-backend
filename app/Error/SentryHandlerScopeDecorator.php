@@ -78,7 +78,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
             return ['id' => 'anonymous'];
         }
         return [
-            'id' => $this->jwt->getUserId(),
+            'id' => $this->jwt->getInternalUserId(),
             'token_type' => $this->jwt->getType(),
         ];
     }

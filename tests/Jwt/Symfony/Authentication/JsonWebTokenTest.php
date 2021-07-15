@@ -42,7 +42,7 @@ class JsonWebTokenTest extends TestCase
             ]
         );
 
-        $this->assertEquals('6e3ef9b3-e37b-428e-af30-05f3a96dbbe4', $jwt->getUserId());
+        $this->assertEquals('6e3ef9b3-e37b-428e-af30-05f3a96dbbe4', $jwt->getInternalUserId());
         $this->assertNull($jwt->getAuth0UserId());
     }
 
@@ -58,7 +58,7 @@ class JsonWebTokenTest extends TestCase
             ]
         );
 
-        $this->assertEquals('b55f041e-5c5e-4850-9fb8-8cf73d538c56', $jwt->getUserId());
+        $this->assertEquals('b55f041e-5c5e-4850-9fb8-8cf73d538c56', $jwt->getInternalUserId());
         $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $jwt->getAuth0UserId());
     }
 
@@ -73,7 +73,7 @@ class JsonWebTokenTest extends TestCase
             ]
         );
 
-        $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $jwt->getUserId());
+        $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $jwt->getInternalUserId());
         $this->assertEquals('auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87', $jwt->getAuth0UserId());
     }
 

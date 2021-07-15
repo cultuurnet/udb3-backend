@@ -77,7 +77,14 @@ class JsonWebToken extends AbstractToken
         return self::V2_USER_ACCESS_TOKEN;
     }
 
-    public function getUserId(): string
+    /**
+     * Returns the user id used by UDB3 internally.
+     * Will either be:
+     * - The v1 id for v1 tokens
+     * - The v1 id for v2 tokens for a migrated v1 user
+     * - The v2 id for v2 tokens for new v2 users
+     */
+    public function getInternalUserId(): string
     {
         if ($this->token->hasClaim('uid')) {
             return $this->token->getClaim('uid');
@@ -110,7 +117,7 @@ class JsonWebToken extends AbstractToken
         // Tokens from V1 JWT provider (= custom)
         if ($this->hasClaims(['nick', 'email'])) {
             return new UserIdentityDetails(
-                new StringLiteral($this->getUserId()),
+                new StringLiteral($this->getInternalUserId()),
                 new StringLiteral($this->token->getClaim('nick')),
                 new EmailAddress($this->token->getClaim('email'))
             );
@@ -118,7 +125,7 @@ class JsonWebToken extends AbstractToken
         // Tokens from V2 JWT provider (= Auth0 ID tokens)
         if ($this->hasClaims(['nickname', 'email'])) {
             return new UserIdentityDetails(
-                new StringLiteral($this->getUserId()),
+                new StringLiteral($this->getInternalUserId()),
                 new StringLiteral($this->token->getClaim('nickname')),
                 new EmailAddress($this->token->getClaim('email'))
             );
