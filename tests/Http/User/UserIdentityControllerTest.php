@@ -33,7 +33,7 @@ class UserIdentityControllerTest extends TestCase
 
         $this->userIdentityController = new UserIdentityController(
             $this->userIdentityResolver,
-            JsonWebTokenFactory::createWithClaims(['uid' => 'current_user_id'])
+            JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'])
         );
     }
 
@@ -169,23 +169,23 @@ class UserIdentityControllerTest extends TestCase
     public function it_can_get_user_identity_of_current_user_from_auth0_if_not_in_token(): void
     {
         $userIdentity = new UserIdentityDetails(
-            new StringLiteral('current_user_id'),
+            new StringLiteral('auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'),
             new StringLiteral('jane_doe'),
             new EmailAddress('jane.doe@anonymous.com')
         );
 
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
-            ->with(new StringLiteral('current_user_id'))
+            ->with(new StringLiteral('auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'))
             ->willReturn($userIdentity);
 
         $response = $this->userIdentityController->getCurrentUser();
 
         $expected = [
-            'uuid' => 'current_user_id',
+            'uuid' => 'auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b',
             'email' => 'jane.doe@anonymous.com',
             'username' => 'jane_doe',
-            'id' => 'current_user_id',
+            'id' => 'auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b',
             'nick' => 'jane_doe',
         ];
 
@@ -239,7 +239,7 @@ class UserIdentityControllerTest extends TestCase
     {
         $this->userIdentityResolver->expects($this->once())
             ->method('getUserById')
-            ->with(new StringLiteral('current_user_id'))
+            ->with(new StringLiteral('auth0|c44dd39d-855d-4eaa-8b78-ee352fefcf3b'))
             ->willReturn(null);
 
         $response = $this->userIdentityController->getCurrentUser();
