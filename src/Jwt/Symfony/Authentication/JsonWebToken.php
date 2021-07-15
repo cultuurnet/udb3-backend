@@ -5,13 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use InvalidArgumentException;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
-use Lcobucci\JWT\ValidationData;
-use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 
