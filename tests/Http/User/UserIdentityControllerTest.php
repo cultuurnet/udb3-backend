@@ -52,11 +52,17 @@ class UserIdentityControllerTest extends TestCase
             ->method('getUserByEmail')
             ->willReturn($userIdentity);
 
+        $expected = [
+            'uuid' => 'user_id',
+            'email' => 'jane.doe@anonymous.com',
+            'username' => 'jane_doe',
+        ];
+
         $response = $this->userIdentityController->getByEmailAddress(
             (new ServerRequest())->withAttribute('emailAddress', 'jane.doe@anonymous.com')
         );
 
-        $this->assertJsonResponse(new JsonLdResponse($this->userIdentityToArray($userIdentity)), $response);
+        $this->assertJsonResponse(new JsonLdResponse($expected), $response);
     }
 
     /**
@@ -139,12 +145,16 @@ class UserIdentityControllerTest extends TestCase
 
         $response = $this->userIdentityController->getCurrentUser();
 
-        $userIdentityAsArray = $this->userIdentityToArray($userIdentity);
-        $userIdentityAsArray['id'] = $userIdentity->getUserId()->toNative();
-        $userIdentityAsArray['nick'] = $userIdentity->getUserName()->toNative();
+        $expected = [
+            'uuid' => 'current_user_id',
+            'email' => 'jane.doe@anonymous.com',
+            'username' => 'jane_doe',
+            'id' => 'current_user_id',
+            'nick' => 'jane_doe',
+        ];
 
         $this->assertJsonResponse(
-            new JsonLdResponse($userIdentityAsArray, 200, ['Cache-Control' => 'private']),
+            new JsonLdResponse($expected, 200, ['Cache-Control' => 'private']),
             $response
         );
     }
@@ -222,14 +232,5 @@ class UserIdentityControllerTest extends TestCase
         $this->assertEquals($expectedResponse->getStatusCode(), $actualResponse->getStatusCode());
         $this->assertEquals($expectedResponse->getHeaders(), $actualResponse->getHeaders());
         $this->assertEquals($expectedResponse->getBody()->getContents(), $actualResponse->getBody()->getContents());
-    }
-
-    private function userIdentityToArray(UserIdentityDetails $userIdentityDetails): array
-    {
-        return [
-            'uuid' => $userIdentityDetails->getUserId()->toNative(),
-            'email' => $userIdentityDetails->getEmailAddress()->toNative(),
-            'username' => $userIdentityDetails->getUserName()->toNative(),
-        ];
     }
 }
