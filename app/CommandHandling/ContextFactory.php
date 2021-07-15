@@ -7,7 +7,8 @@ namespace CultuurNet\UDB3\Silex\CommandHandling;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AccessToken;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -16,7 +17,7 @@ final class ContextFactory
 {
     public static function createContext(
         ?string $userId = null,
-        ?JsonWebToken $jwt = null,
+        ?AbstractToken $jwt = null,
         ?ApiKey $apiKey = null,
         ?string $apiName = null,
         ?Request $request = null,
@@ -32,7 +33,7 @@ final class ContextFactory
             $contextValues['auth_jwt'] = $jwt;
         }
 
-        if ($jwt && $jwt->getClientId()) {
+        if ($jwt instanceof AccessToken) {
             $contextValues['auth_api_client_id'] = $jwt->getClientId();
         }
 

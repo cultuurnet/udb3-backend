@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Error;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0UserAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV1Token;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\JwtProviderV2Token;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
 use Sentry\State\Scope;
@@ -22,7 +27,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
     private $decoratedHandler;
 
     /**
-     * @var JsonWebToken|null
+     * @var AbstractToken|null
      */
     private $jwt;
 
@@ -38,7 +43,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
     public function __construct(
         HandlerInterface $decoratedHandler,
-        ?JsonWebToken $jwt,
+        ?AbstractToken $jwt,
         ?ApiKey $apiKey,
         ?string $apiName
     ) {
@@ -64,7 +69,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
 
     private function createApiTags(): array
     {
-        $clientId = $this->jwt ? $this->jwt->getClientId() : null;
+        $clientId = $this->jwt instanceof AccessToken ? $this->jwt->getClientId() : null;
         return [
             'api_client_id' => $clientId ?? 'null',
             'api_key' => $this->apiKey ? $this->apiKey->toString() : 'null',
@@ -77,9 +82,19 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         if (!$this->jwt) {
             return ['id' => 'anonymous'];
         }
+
+        $tokenTypes = [
+            JwtProviderV1Token::class => 'v1_jwt_provider_token',
+            JwtProviderV2Token::class => 'v2_jwt_provider_token',
+            Auth0UserAccessToken::class => 'v2_user_access_token',
+            Auth0ClientAccessToken::class => 'v2_client_access_token',
+        ];
+
+        $tokenClass = get_class($this->jwt);
+
         return [
             'id' => $this->jwt->getUserId(),
-            'token_type' => $this->jwt->getType(),
+            'token_type' => $tokenTypes[$tokenClass] ?? 'null',
         ];
     }
 

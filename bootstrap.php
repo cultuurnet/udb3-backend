@@ -14,7 +14,8 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use CultuurNet\UDB3\EventSourcing\DBAL\UniqueDBALEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AccessToken;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
@@ -221,7 +222,7 @@ $app['current_user_id'] = $app::share(
         }
 
         $token = $tokenStorage->getToken();
-        if (!($token instanceof JsonWebToken)) {
+        if (!($token instanceof AbstractToken)) {
             // The token in the firewall storage is not supported.
             return null;
         }
@@ -258,7 +259,7 @@ $app['jwt'] = $app::share(
 
         $token = $tokenStorage->getToken();
 
-        if ($token instanceof JsonWebToken) {
+        if ($token instanceof AbstractToken) {
             return $token;
         }
 
@@ -286,7 +287,7 @@ $app['api_key'] = $app->share(
 $app['api_client_id'] = $app::share(
     function (Application $app) {
         $token = $app['jwt'];
-        if ($token instanceof JsonWebToken) {
+        if ($token instanceof AccessToken) {
             return $token->getClientId();
         }
         return null;
