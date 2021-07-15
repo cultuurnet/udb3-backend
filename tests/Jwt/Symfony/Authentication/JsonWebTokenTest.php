@@ -43,7 +43,7 @@ class JsonWebTokenTest extends TestCase
         );
 
         $this->assertEquals('6e3ef9b3-e37b-428e-af30-05f3a96dbbe4', $jwt->getInternalUserId());
-        $this->assertNull($jwt->getExternalUserId());
+        $this->assertEquals('6e3ef9b3-e37b-428e-af30-05f3a96dbbe4', $jwt->getExternalUserId());
     }
 
     /**
