@@ -66,6 +66,10 @@ class UserIdentityController
             );
         }
 
+        if ($this->jwt->containsUserIdentityDetails()) {
+            return $this->createCurrentUserResponse($this->jwt->getUserIdentityDetails());
+        }
+
         $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->jwt->getUserId()));
 
         if (!($userIdentity instanceof UserIdentityDetails)) {

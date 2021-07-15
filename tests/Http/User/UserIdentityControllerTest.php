@@ -130,7 +130,43 @@ class UserIdentityControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_user_identity_of_current_user(): void
+    public function it_can_get_user_identity_of_current_user_from_token_that_contains_it(): void
+    {
+        $jwt = JsonWebTokenFactory::createWithClaims(
+            [
+                'uid' => 'current_user_id',
+                'nick' => 'jane_doe',
+                'email' => 'jane.doe@anonymous.com',
+            ]
+        );
+
+        $this->userIdentityResolver->expects($this->never())
+            ->method('getUserById');
+
+        $controller = new UserIdentityController(
+            $this->userIdentityResolver,
+            $jwt
+        );
+        $response = $controller->getCurrentUser();
+
+        $expected = [
+            'uuid' => 'current_user_id',
+            'email' => 'jane.doe@anonymous.com',
+            'username' => 'jane_doe',
+            'id' => 'current_user_id',
+            'nick' => 'jane_doe',
+        ];
+
+        $this->assertJsonResponse(
+            new JsonLdResponse($expected, 200, ['Cache-Control' => 'private']),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_user_identity_of_current_user_from_auth0_if_not_in_token(): void
     {
         $userIdentity = new UserIdentityDetails(
             new StringLiteral('current_user_id'),
