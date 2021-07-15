@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Firewall;
 
+use Auth0\SDK\API\Management;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0ClientAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\Auth0UserAccessToken;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\MockTokenStringFactory;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\TokenFactory;
+use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +48,11 @@ class JwtListenerTest extends TestCase
         $this->authenticationManager = $this->createMock(AuthenticationManagerInterface::class);
 
         $this->listener = new JwtListener(
+            new TokenFactory(
+                new Auth0UserIdentityResolver(
+                    $this->createMock(Management::class)
+                )
+            ),
             $this->tokenStorage,
             $this->authenticationManager
         );
@@ -89,8 +100,14 @@ class JwtListenerTest extends TestCase
      */
     public function it_authenticates_and_stores_valid_tokens()
     {
-        $token = JsonWebTokenFactory::createWithClaims([]);
-        $tokenString = $token->getCredentials();
+        $tokenString = MockTokenStringFactory::createWithClaims(
+            [
+                'sub' => 'mock-client-id@clients',
+                'azp' => 'mock-client-id',
+                'gty' => 'client-credentials',
+            ]
+        );
+        $token = new Auth0ClientAccessToken($tokenString);
         $authenticatedToken = $token->authenticate();
 
         $request = new Request(
@@ -124,8 +141,14 @@ class JwtListenerTest extends TestCase
      */
     public function it_returns_an_unauthorized_response_if_jwt_authentication_fails()
     {
-        $token = JsonWebTokenFactory::createWithClaims([]);
-        $tokenString = $token->getCredentials();
+        $tokenString = MockTokenStringFactory::createWithClaims(
+            [
+                'sub' => 'mock-client-id@clients',
+                'azp' => 'mock-client-id',
+                'gty' => 'client-credentials',
+            ]
+        );
+        $token = new Auth0ClientAccessToken($tokenString);
 
         $request = new Request(
             [],

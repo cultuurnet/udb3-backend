@@ -6,8 +6,10 @@ namespace CultuurNet\UDB3\Jwt\Silex;
 
 use CultuurNet\UDB3\Jwt\JwtV2Validator;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JwtAuthenticationProvider;
+use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\TokenFactory;
 use CultuurNet\UDB3\Jwt\Symfony\Firewall\JwtListener;
 use CultuurNet\UDB3\Jwt\JwtBaseValidator;
+use CultuurNet\UDB3\User\Auth0UserIdentityResolver;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -40,6 +42,7 @@ class JwtServiceProvider implements ServiceProviderInterface
                 $app['security.authentication_listener.' . $name . '.jwt'] = $app->share(
                     function () use ($app) {
                         return new JwtListener(
+                            new TokenFactory($app[Auth0UserIdentityResolver::class]),
                             $app['security.token_storage'],
                             $app['security.authentication_manager']
                         );
