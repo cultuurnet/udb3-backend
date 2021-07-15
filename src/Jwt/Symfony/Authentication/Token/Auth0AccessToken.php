@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication\Token;
 
-use CultuurNet\UDB3\Jwt\Symfony\Authentication\Token\AbstractToken;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\Exception\InvalidClaims;
 
 abstract class Auth0AccessToken extends AbstractToken implements AccessToken
