@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use PHPUnit\Framework\TestCase;
+use ValueObjects\StringLiteral\StringLiteral;
+use ValueObjects\Web\EmailAddress;
 
 class JsonWebTokenTest extends TestCase
 {
@@ -141,5 +144,85 @@ class JsonWebTokenTest extends TestCase
             ]
         );
         $this->assertEquals(JsonWebToken::V2_USER_ACCESS_TOKEN, $jwt->getType());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_user_identity_details_for_v1_jwt_provider_tokens(): void
+    {
+        $v1Token = JsonWebTokenFactory::createWithClaims(
+            [
+                'uid' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+                'nick' => 'mock-nickname',
+                'email' => 'mock@example.com',
+            ]
+        );
+
+        $details = new UserIdentityDetails(
+            new StringLiteral('c82bd40c-1932-4c45-bd5d-a76cc9907cee'),
+            new StringLiteral('mock-nickname'),
+            new EmailAddress('mock@example.com')
+        );
+
+        $this->assertTrue($v1Token->containsUserIdentityDetails());
+        $this->assertEquals($details, $v1Token->getUserIdentityDetails());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_user_identity_details_for_v2_jwt_provider_tokens(): void
+    {
+        $v2Token = JsonWebTokenFactory::createWithClaims(
+            [
+                'https://publiq.be/uitidv1id' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+                'sub' => 'auth0|c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+                'nickname' => 'mock-nickname',
+                'email' => 'mock@example.com',
+            ]
+        );
+
+        $details = new UserIdentityDetails(
+            new StringLiteral('c82bd40c-1932-4c45-bd5d-a76cc9907cee'),
+            new StringLiteral('mock-nickname'),
+            new EmailAddress('mock@example.com')
+        );
+
+        $this->assertTrue($v2Token->containsUserIdentityDetails());
+        $this->assertEquals($details, $v2Token->getUserIdentityDetails());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_return_user_identity_details_for_user_access_tokens(): void
+    {
+        $userAccessToken = JsonWebTokenFactory::createWithClaims(
+            [
+                'https://publiq.be/uitidv1id' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+                'sub' => 'auth0|c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+                'azp' => 'mock-client',
+            ]
+        );
+
+        $this->assertFalse($userAccessToken->containsUserIdentityDetails());
+        $this->assertNull($userAccessToken->getUserIdentityDetails());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_return_user_identity_details_for_client_access_tokens(): void
+    {
+        $clientAccessToken = JsonWebTokenFactory::createWithClaims(
+            [
+                'sub' => 'mock-client@clients',
+                'azp' => 'mock-client',
+            ]
+        );
+
+        $this->assertFalse($clientAccessToken->containsUserIdentityDetails());
+        $this->assertNull($clientAccessToken->getUserIdentityDetails());
     }
 }
