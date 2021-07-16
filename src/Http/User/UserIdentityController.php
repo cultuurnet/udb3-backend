@@ -12,7 +12,6 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Http\Message\ServerRequestInterface;
 use ValueObjects\Exception\InvalidNativeArgumentException;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
 use Zend\Diactoros\Response\JsonResponse;
 
@@ -66,11 +65,10 @@ class UserIdentityController
             );
         }
 
-        $userIdentity = $this->userIdentityResolver->getUserById(new StringLiteral($this->jwt->getUserId()));
-
+        $userIdentity = $this->jwt->getUserIdentityDetails($this->userIdentityResolver);
         if (!($userIdentity instanceof UserIdentityDetails)) {
             return new ApiProblemJsonResponse(
-                ApiProblems::tokenNotSupported('No user found for the user id in the given token.')
+                ApiProblems::tokenNotSupported('No user found for the given token.')
             );
         }
 
