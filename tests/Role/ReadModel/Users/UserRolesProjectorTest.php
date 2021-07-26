@@ -214,9 +214,9 @@ class UserRolesProjectorTest extends TestCase
 
         // The existing role users relations.
         $userIdentityDetails = new UserIdentityDetails(
-            new StringLiteral('userId'),
-            new StringLiteral('userName'),
-            new EmailAddress('username@company.com')
+            'userId',
+            'userName',
+            'username@company.com'
         );
         $users[$userIdentityDetails->getUserId()->toNative()] = $userIdentityDetails;
         $roleUsersDocument = new JsonDocument(

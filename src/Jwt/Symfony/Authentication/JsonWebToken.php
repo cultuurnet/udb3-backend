@@ -101,18 +101,18 @@ class JsonWebToken extends AbstractToken
         // Tokens from V1 JWT provider (= custom)
         if ($this->hasClaims(['nick', 'email'])) {
             return new UserIdentityDetails(
-                new StringLiteral($this->getUserId()),
-                new StringLiteral($this->token->getClaim('nick')),
-                new EmailAddress($this->token->getClaim('email'))
+                $this->getUserId(),
+                $this->token->getClaim('nick'),
+                $this->token->getClaim('email')
             );
         }
 
         // Tokens from V2 JWT provider (= Auth0 ID tokens)
         if ($this->hasClaims(['nickname', 'email'])) {
             return new UserIdentityDetails(
-                new StringLiteral($this->getUserId()),
-                new StringLiteral($this->token->getClaim('nickname')),
-                new EmailAddress($this->token->getClaim('email'))
+                $this->getUserId(),
+                $this->token->getClaim('nickname'),
+                $this->token->getClaim('email')
             );
         }
 

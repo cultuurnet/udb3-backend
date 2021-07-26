@@ -59,9 +59,9 @@ class RoleUsersProjectorTest extends TestCase
         );
 
         $this->userIdentityDetail = new UserIdentityDetails(
-            new StringLiteral('userId'),
-            new StringLiteral('username'),
-            new EmailAddress('username@company.be')
+            'userId',
+            'username',
+            'username@company.be'
         );
     }
 

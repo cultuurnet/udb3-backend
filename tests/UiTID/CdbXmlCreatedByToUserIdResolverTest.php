@@ -86,9 +86,9 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
         $userId = new StringLiteral('auth0|c4ff15aa-a8d2-4952-b9eb-329d625b0d02');
 
         $user = new UserIdentityDetails(
-            $userId,
-            new StringLiteral('johndoe'),
-            new EmailAddress('johndoe@example.com')
+            $userId->toNative(),
+            'johndoe',
+            'johndoe@example.com'
         );
 
         $this->users->expects($this->once())
@@ -112,9 +112,9 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
         $userId = new StringLiteral('abc');
 
         $user = new UserIdentityDetails(
-            $userId,
-            new StringLiteral('johndoe'),
-            new EmailAddress('johndoe@example.com')
+            $userId->toNative(),
+            'johndoe',
+            'johndoe@example.com'
         );
 
         $this->users->expects($this->once())
@@ -143,9 +143,9 @@ class CdbXmlCreatedByToUserIdResolverTest extends TestCase
         $userId = new StringLiteral('abc');
 
         $user = new UserIdentityDetails(
-            $userId,
-            new StringLiteral('johndoe'),
-            new EmailAddress('johndoe@example.com')
+            $userId->toNative(),
+            'johndoe',
+            'johndoe@example.com'
         );
 
         $this->users->expects($this->once())
