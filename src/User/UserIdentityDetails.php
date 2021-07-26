@@ -34,12 +34,9 @@ class UserIdentityDetails implements \JsonSerializable
         $this->emailAddress = $emailAddress;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): string
     {
-        return new StringLiteral($this->userId);
+        return $this->userId;
     }
 
     /**
