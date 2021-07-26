@@ -10,24 +10,24 @@ use ValueObjects\Web\EmailAddress;
 class UserIdentityDetails implements \JsonSerializable
 {
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $userId;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $userName;
 
     /**
-     * @var EmailAddress
+     * @var string
      */
     private $emailAddress;
 
     public function __construct(
-        StringLiteral $userId,
-        StringLiteral $userName,
-        EmailAddress $emailAddress
+        string $userId,
+        string $userName,
+        string $emailAddress
     ) {
         $this->userId = $userId;
         $this->userName = $userName;
@@ -39,7 +39,7 @@ class UserIdentityDetails implements \JsonSerializable
      */
     public function getUserId()
     {
-        return $this->userId;
+        return new StringLiteral($this->userId);
     }
 
     /**
@@ -47,7 +47,7 @@ class UserIdentityDetails implements \JsonSerializable
      */
     public function getUserName()
     {
-        return $this->userName;
+        return new StringLiteral($this->userName);
     }
 
     /**
@@ -55,7 +55,7 @@ class UserIdentityDetails implements \JsonSerializable
      */
     public function getEmailAddress()
     {
-        return $this->emailAddress;
+        return new EmailAddress($this->emailAddress);
     }
 
     /**
@@ -64,9 +64,9 @@ class UserIdentityDetails implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'uuid' => $this->userId->toNative(),
-            'email' => $this->emailAddress->toNative(),
-            'username' => $this->userName->toNative(),
+            'uuid' => $this->userId,
+            'email' => $this->emailAddress,
+            'username' => $this->userName,
         ];
     }
 }
