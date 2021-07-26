@@ -43,9 +43,9 @@ class UserIdentityControllerTest extends TestCase
     public function it_can_get_user_identity_by_email(): void
     {
         $userIdentity = new UserIdentityDetails(
-            new StringLiteral('user_id'),
-            new StringLiteral('jane_doe'),
-            new EmailAddress('jane.doe@anonymous.com')
+            'user_id',
+            'jane_doe',
+            'jane.doe@anonymous.com'
         );
 
         $this->userIdentityResolver->expects($this->once())
@@ -169,9 +169,9 @@ class UserIdentityControllerTest extends TestCase
     public function it_can_get_user_identity_of_current_user_from_auth0_if_not_in_token(): void
     {
         $userIdentity = new UserIdentityDetails(
-            new StringLiteral('current_user_id'),
-            new StringLiteral('jane_doe'),
-            new EmailAddress('jane.doe@anonymous.com')
+            'current_user_id',
+            'jane_doe',
+            'jane.doe@anonymous.com'
         );
 
         $this->userIdentityResolver->expects($this->once())

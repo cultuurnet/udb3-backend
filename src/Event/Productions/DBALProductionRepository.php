@@ -94,6 +94,19 @@ class DBALProductionRepository extends AbstractDBALRepository implements Product
         );
     }
 
+    public function renameProduction(ProductionId $productionId, string $name): void
+    {
+        $this->getConnection()->update(
+            $this->getTableName()->toNative(),
+            [
+                'name' => $name,
+            ],
+            [
+                'production_id' => $productionId->toNative(),
+            ]
+        );
+    }
+
     /**
      * @return Production[]
      */
