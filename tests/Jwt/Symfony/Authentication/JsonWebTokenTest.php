@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class JsonWebTokenTest extends TestCase
 {
