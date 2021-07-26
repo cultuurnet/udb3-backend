@@ -44,12 +44,9 @@ class UserIdentityDetails implements \JsonSerializable
         return $this->userName;
     }
 
-    /**
-     * @return EmailAddress
-     */
-    public function getEmailAddress()
+    public function getEmailAddress(): string
     {
-        return new EmailAddress($this->emailAddress);
+        return $this->emailAddress;
     }
 
     /**
