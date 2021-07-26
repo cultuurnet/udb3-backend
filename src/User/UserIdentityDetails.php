@@ -39,12 +39,9 @@ class UserIdentityDetails implements \JsonSerializable
         return $this->userId;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserName()
+    public function getUserName(): string
     {
-        return new StringLiteral($this->userName);
+        return $this->userName;
     }
 
     /**
