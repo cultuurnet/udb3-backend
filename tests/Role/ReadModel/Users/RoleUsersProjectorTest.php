@@ -130,7 +130,7 @@ class RoleUsersProjectorTest extends TestCase
         );
 
         $this->mockGetUserById(
-            $this->userIdentityDetail->getUserId(),
+            new StringLiteral($this->userIdentityDetail->getUserId()),
             $this->userIdentityDetail
         );
 
@@ -323,7 +323,7 @@ class RoleUsersProjectorTest extends TestCase
     ) {
         $userIdentityDetails = [];
 
-        $key = $userIdentityDetail->getUserId()->toNative();
+        $key = $userIdentityDetail->getUserId();
         $userIdentityDetails[$key] = $userIdentityDetail;
 
         return new JsonDocument($uuid, json_encode($userIdentityDetails));

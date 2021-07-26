@@ -53,7 +53,7 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
             // If the createdby is not a UUID, it might still be an Auth0 or social id.
             $user = $this->users->getUserById($createdByIdentifier);
             if ($user instanceof UserIdentityDetails) {
-                return $user->getUserId();
+                return new StringLiteral($user->getUserId());
             }
 
             // If no user was found with the createdby as id, check if it's an email and look up the user that way.
@@ -65,7 +65,7 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
                 $user = $this->users->getUserByNick($createdByIdentifier);
             }
             if ($user instanceof UserIdentityDetails) {
-                return $user->getUserId();
+                return new StringLiteral($user->getUserId());
             }
         } catch (Exception $e) {
             $this->logger->error(

@@ -218,7 +218,7 @@ class UserRolesProjectorTest extends TestCase
             'userName',
             'username@company.com'
         );
-        $users[$userIdentityDetails->getUserId()->toNative()] = $userIdentityDetails;
+        $users[$userIdentityDetails->getUserId()] = $userIdentityDetails;
         $roleUsersDocument = new JsonDocument(
             $roleDetailsProjectedToJSONLD->getUuid()->toNative(),
             json_encode($users)
