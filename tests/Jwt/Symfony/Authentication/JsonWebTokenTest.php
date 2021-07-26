@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Jwt\Symfony\Authentication;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class JsonWebTokenTest extends TestCase
 {
@@ -165,9 +163,9 @@ class JsonWebTokenTest extends TestCase
         );
 
         $details = new UserIdentityDetails(
-            new StringLiteral('c82bd40c-1932-4c45-bd5d-a76cc9907cee'),
-            new StringLiteral('mock-nickname'),
-            new EmailAddress('mock@example.com')
+            'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+            'mock-nickname',
+            'mock@example.com'
         );
 
         $this->assertEquals($details, $v1Token->getUserIdentityDetails($userIdentityResolver));
@@ -192,9 +190,9 @@ class JsonWebTokenTest extends TestCase
         );
 
         $details = new UserIdentityDetails(
-            new StringLiteral('c82bd40c-1932-4c45-bd5d-a76cc9907cee'),
-            new StringLiteral('mock-nickname'),
-            new EmailAddress('mock@example.com')
+            'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+            'mock-nickname',
+            'mock@example.com'
         );
 
         $this->assertEquals($details, $v2Token->getUserIdentityDetails($userIdentityResolver));
@@ -206,9 +204,9 @@ class JsonWebTokenTest extends TestCase
     public function it_fetches_user_identity_details_for_user_access_tokens(): void
     {
         $details = new UserIdentityDetails(
-            new StringLiteral('c82bd40c-1932-4c45-bd5d-a76cc9907cee'),
-            new StringLiteral('mock-nickname'),
-            new EmailAddress('mock@example.com')
+            'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
+            'mock-nickname',
+            'mock@example.com'
         );
 
         $userIdentityResolver = $this->createMock(UserIdentityResolver::class);

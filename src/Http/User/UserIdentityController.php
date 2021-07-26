@@ -74,8 +74,8 @@ class UserIdentityController
 
         $userIdentityAsArray = $userIdentity->jsonSerialize();
         // Keep `id` and `nick` for backwards compatibility with older API clients
-        $userIdentityAsArray['id'] = $userIdentity->getUserId()->toNative();
-        $userIdentityAsArray['nick'] = $userIdentity->getUserName()->toNative();
+        $userIdentityAsArray['id'] = $userIdentity->getUserId();
+        $userIdentityAsArray['nick'] = $userIdentity->getUserName();
 
         return new JsonLdResponse($userIdentityAsArray, 200, ['Cache-Control' => 'private']);
     }

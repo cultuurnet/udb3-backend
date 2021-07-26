@@ -70,14 +70,14 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchRepositoryInterface
         // or user id.
         if ($this->createdByQueryMode->toNative() === CreatedByQueryMode::MIXED) {
             return new CreatorQueryString(
-                $user->getEmailAddress()->toNative(),
+                $user->getEmailAddress(),
                 $this->token->getUserId()
             );
         }
 
         // Otherwise return a query that filters the creator on email (original/historical behaviour).
         return new CreatorQueryString(
-            $user->getEmailAddress()->toNative()
+            $user->getEmailAddress()
         );
     }
 }
