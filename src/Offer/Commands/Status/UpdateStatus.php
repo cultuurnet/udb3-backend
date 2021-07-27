@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands\Status;
 
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
 final class UpdateStatus implements AuthorizableCommandInterface

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ClassNameCommandFilter implements CommandFilterInterface
