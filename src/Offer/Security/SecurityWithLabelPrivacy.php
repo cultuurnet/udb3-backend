@@ -38,9 +38,7 @@ class SecurityWithLabelPrivacy
     }
 
 
-    /**
-     * @inheritdoc
-     */
+
     public function isAuthorized(AuthorizableCommandInterface $command)
     {
         if ($this->isLabelCommand($command)) {

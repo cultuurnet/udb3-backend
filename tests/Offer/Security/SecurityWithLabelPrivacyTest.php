@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Security\SecurityInterface;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class SecurityWithLabelPrivacyTest extends TestCase
 {
