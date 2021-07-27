@@ -9,17 +9,14 @@ use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDeco
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateFacilities as EventUpdateFacilities;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Offer\Security\Security;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
-use CultuurNet\UDB3\Place\Commands\UpdateFacilities as PlaceUpdateFacilities;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -57,7 +54,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::FILMS_AANMAKEN()
                             )
                             ->withVoter(
-                                new class implements PermissionVoterInterface {
+                                new class() implements PermissionVoterInterface {
                                     public function isAllowed(
                                         Permission $permission,
                                         StringLiteral $offerId,
