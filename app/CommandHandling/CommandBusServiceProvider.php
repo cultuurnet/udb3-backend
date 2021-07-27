@@ -51,7 +51,12 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 new UserPermissionVoter(
                                     $app['user_permissions_read_repository']
                                 ),
-                                Permission::VOORZIENINGEN_BEWERKEN()
+                                Permission::VOORZIENINGEN_BEWERKEN(),
+                                Permission::GEBRUIKERS_BEHEREN(),
+                                Permission::LABELS_BEHEREN(),
+                                Permission::ORGANISATIES_BEHEREN(),
+                                Permission::PRODUCTIES_AANMAKEN(),
+                                Permission::FILMS_AANMAKEN()
                             )
                     )
                 );
