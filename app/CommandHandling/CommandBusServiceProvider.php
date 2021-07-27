@@ -48,11 +48,8 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::AANBOD_VERWIJDEREN()
                             )
                             ->withVoter(
-                                new CompositeVoter(
-                                    $app['god_user_voter'],
-                                    new UserPermissionVoter(
-                                        $app['user_permissions_read_repository']
-                                    )
+                                new UserPermissionVoter(
+                                    $app['user_permissions_read_repository']
                                 ),
                                 Permission::VOORZIENINGEN_BEWERKEN()
                             )
