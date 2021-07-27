@@ -12,7 +12,7 @@ use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
-use CultuurNet\UDB3\Offer\Security\Security;
+use CultuurNet\UDB3\Security\Security;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;

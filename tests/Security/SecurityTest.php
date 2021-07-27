@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\Security;
+namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
@@ -13,7 +12,6 @@ use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class SecurityTest extends TestCase
 {
