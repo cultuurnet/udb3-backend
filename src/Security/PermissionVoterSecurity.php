@@ -29,13 +29,12 @@ class PermissionVoterSecurity implements Security
 
     public function isAuthorized(AuthorizableCommandInterface $command)
     {
-        $offerId = new StringLiteral($command->getItemId());
-
-        return $this->currentUiTIDUserCanEditOffer($offerId, $command);
+        $itemId = new StringLiteral($command->getItemId());
+        return $this->currentUserCanEditItem($itemId, $command);
     }
 
-    private function currentUiTIDUserCanEditOffer(
-        StringLiteral $offerId,
+    private function currentUserCanEditItem(
+        StringLiteral $itemId,
         AuthorizableCommandInterface $command
     ): bool {
         if (!$this->userId) {
@@ -44,7 +43,7 @@ class PermissionVoterSecurity implements Security
 
         return $this->permissionVoter->isAllowed(
             $command->getPermission(),
-            $offerId,
+            $itemId,
             new StringLiteral($this->userId)
         );
     }
