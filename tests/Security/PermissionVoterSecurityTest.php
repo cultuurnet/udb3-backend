@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class SecurityTest extends TestCase
+class PermissionVoterSecurityTest extends TestCase
 {
     /**
      * @var string
@@ -72,9 +72,9 @@ class SecurityTest extends TestCase
         );
     }
 
-    private function createSecurityForUserId(?string $userId): Security
+    private function createSecurityForUserId(?string $userId): PermissionVoterSecurity
     {
-        return new Security($userId, $this->permissionVoter);
+        return new PermissionVoterSecurity($userId, $this->permissionVoter);
     }
 
     /**
