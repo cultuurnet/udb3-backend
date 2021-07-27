@@ -18,8 +18,10 @@ use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Place\Commands\UpdateFacilities as PlaceUpdateFacilities;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\ClassNameCommandFilter;
+use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Security\SecurityWithUserPermission;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -46,7 +48,12 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::AANBOD_VERWIJDEREN()
                             )
                             ->withVoter(
-                                $app['facility_permission_voter'],
+                                new CompositeVoter(
+                                    $app['god_user_voter'],
+                                    new UserPermissionVoter(
+                                        $app['user_permissions_read_repository']
+                                    )
+                                ),
                                 Permission::VOORZIENINGEN_BEWERKEN()
                             )
                     )

@@ -60,17 +60,6 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                 );
             }
         );
-
-        $app['facility_permission_voter'] = $app->share(
-            function (Application $app) {
-                return new CompositeVoter(
-                    $app['god_user_voter'],
-                    new UserPermissionVoter(
-                        $app['user_permissions_read_repository']
-                    )
-                );
-            }
-        );
     }
 
     /**
