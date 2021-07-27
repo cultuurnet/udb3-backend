@@ -7,12 +7,16 @@ namespace CultuurNet\UDB3\Offer\Security;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\LabelSecurityInterface;
-use CultuurNet\UDB3\Security\SecurityDecoratorBase;
 use CultuurNet\UDB3\Security\SecurityInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SecurityWithLabelPrivacy extends SecurityDecoratorBase
+class SecurityWithLabelPrivacy
 {
+    /**
+     * @var SecurityInterface
+     */
+    private $decoratee;
+
     /**
      * @var string
      */
@@ -28,8 +32,7 @@ class SecurityWithLabelPrivacy extends SecurityDecoratorBase
         string $userId,
         ReadRepositoryInterface $labelReadRepository
     ) {
-        parent::__construct($decoratee);
-
+        $this->decoratee = $decoratee;
         $this->userId = $userId;
         $this->labelReadRepository = $labelReadRepository;
     }
@@ -44,7 +47,7 @@ class SecurityWithLabelPrivacy extends SecurityDecoratorBase
             /** @var LabelSecurityInterface $command */
             return $this->canUseLabel($command);
         } else {
-            return parent::isAuthorized($command);
+            return $this->decoratee->isAuthorized($command);
         }
     }
 
