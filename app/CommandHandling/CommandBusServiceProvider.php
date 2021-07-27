@@ -45,6 +45,10 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::AANBOD_MODEREREN(),
                                 Permission::AANBOD_VERWIJDEREN()
                             )
+                            ->withVoter(
+                                $app['facility_permission_voter'],
+                                Permission::VOORZIENINGEN_BEWERKEN()
+                            )
                     )
                 );
 
@@ -55,16 +59,6 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                 );
 
                 $security = new MediaSecurity($security);
-
-                $security = new SecurityWithUserPermission(
-                    $security,
-                    $app['current_user_id'],
-                    $app['facility_permission_voter'],
-                    new ClassNameCommandFilter(
-                        new StringLiteral(PlaceUpdateFacilities::class),
-                        new StringLiteral(EventUpdateFacilities::class)
-                    )
-                );
 
                 return $security;
             }
