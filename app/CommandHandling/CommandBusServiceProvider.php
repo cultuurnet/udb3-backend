@@ -28,33 +28,23 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        // This voter delegates to another voter based on which permission to
-        // check. It covers detailed permissions for offer and organizers.
-        $app['command_bus.split_permission_voter'] = $app->share(
-            function (Application $app) {
-                $splitter = (new PermissionSplitVoter())
-                    ->withVoter(
-                        $app['organizer_permission_voter_inner'],
-                        Permission::ORGANISATIES_BEWERKEN()
-                    )
-                    ->withVoter(
-                        $app['offer_permission_voter_inner'],
-                        Permission::AANBOD_BEWERKEN(),
-                        Permission::AANBOD_MODEREREN(),
-                        Permission::AANBOD_VERWIJDEREN()
-                    );
-
-                return $splitter;
-            }
-        );
-
         $app['command_bus.security'] = $app->share(
             function ($app) {
                 $security = new Security(
                     $app['current_user_id'],
                     new CompositeVoter(
                         $app['god_user_voter'],
-                        $app['command_bus.split_permission_voter']
+                        (new PermissionSplitVoter())
+                            ->withVoter(
+                                $app['organizer_permission_voter_inner'],
+                                Permission::ORGANISATIES_BEWERKEN()
+                            )
+                            ->withVoter(
+                                $app['offer_permission_voter_inner'],
+                                Permission::AANBOD_BEWERKEN(),
+                                Permission::AANBOD_MODEREREN(),
+                                Permission::AANBOD_VERWIJDEREN()
+                            )
                     )
                 );
 
