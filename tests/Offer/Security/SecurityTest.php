@@ -82,82 +82,7 @@ class SecurityTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_false_for_user_with_missing_id()
-    {
-        $security = $this->createSecurityForUserId(null);
-
-        $offerId = new StringLiteral('offerId');
-        $allowsUpdate = $security->allowsUpdateWithCdbXml($offerId);
-
-        $this->assertFalse($allowsUpdate);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_true_for_god_user()
-    {
-        $security = $this->createSecurityForUserId($this->godUserId);
-
-        $offerId = new StringLiteral('offerId');
-        $allowsUpdate = $security->allowsUpdateWithCdbXml($offerId);
-
-        $this->assertTrue($allowsUpdate);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_true_for_own_offer()
-    {
-        $security = $this->createSecurityForUserId($this->ownerUserId);
-
-        $this->mockGetEditableOffers(['offerId', 'otherOfferId']);
-
-        $offerId = new StringLiteral('offerId');
-        $allowsUpdate = $security->allowsUpdateWithCdbXml($offerId);
-
-        $this->assertTrue($allowsUpdate);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_false_when_not_own_offer_and_not_matching_user_permission()
-    {
-        $security = $this->createSecurityForUserId('userId');
-
-        $this->mockGetEditableOffers(['otherOfferId', 'andOtherOfferId']);
-
-        $this->mockItMatchesOffer(false);
-
-        $offerId = new StringLiteral('offerId');
-        $allowsUpdate = $security->allowsUpdateWithCdbXml($offerId);
-
-        $this->assertFalse($allowsUpdate);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_true_when_not_own_offer_but_matching_user_permission()
-    {
-        $security = $this->createSecurityForUserId($this->roleUserId);
-
-        $this->mockGetEditableOffers(['otherOfferId', 'andOtherOfferId']);
-
-        $this->mockItMatchesOffer(true);
-
-        $offerId = new StringLiteral('offerId');
-        $allowsUpdate = $security->allowsUpdateWithCdbXml($offerId);
-
-        $this->assertTrue($allowsUpdate);
-    }
-
-    /**
-     * @test
-     */
-    public function it_also_handles_authorizable_command()
+    public function it_handles_authorizable_command()
     {
         $security = $this->createSecurityForUserId($this->godUserId);
 
@@ -173,23 +98,5 @@ class SecurityTest extends TestCase
         $allowsUpdate = $security->isAuthorized($authorizableCommand);
 
         $this->assertTrue($allowsUpdate);
-    }
-
-    /**
-     * @param string[] $editableOffers
-     */
-    private function mockGetEditableOffers($editableOffers)
-    {
-        $this->permissionRepository->method('getEditableOffers')
-            ->willReturn($editableOffers);
-    }
-
-    /**
-     * @param bool $matches
-     */
-    private function mockItMatchesOffer($matches)
-    {
-        $this->userPermissionMatcher->method('itMatchesOffer')
-            ->willReturn($matches);
     }
 }

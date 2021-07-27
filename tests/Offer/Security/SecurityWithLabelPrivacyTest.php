@@ -65,21 +65,6 @@ class SecurityWithLabelPrivacyTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_allows_update_with_cdbxml_to_decoratee()
-    {
-        $offerId = new StringLiteral('3650cf00-aa8a-4cf3-a928-a01c2eb3b0d8');
-
-        $this->securityDecoratee->method('allowsUpdateWithCdbXml')
-            ->with($offerId);
-
-        $this->securityWithLabelPrivacy->allowsUpdateWithCdbXml($offerId);
-
-        $this->expectNotToPerformAssertions();
-    }
-
-    /**
-     * @test
-     */
     public function it_delegates_is_authorized_to_decoratee_when_not_label_security_command()
     {
         $translateTitle = new UpdateTitle(

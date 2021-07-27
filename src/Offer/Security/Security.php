@@ -31,14 +31,6 @@ class Security implements SecurityInterface
         $this->permissionVoter = $permissionVoter;
     }
 
-    public function allowsUpdateWithCdbXml(StringLiteral $offerId)
-    {
-        return $this->currentUiTIDUserCanEditOffer(
-            $offerId,
-            new PreflightCommand($offerId->toNative(), Permission::AANBOD_BEWERKEN())
-        );
-    }
-
     public function isAuthorized(AuthorizableCommandInterface $command)
     {
         $offerId = new StringLiteral($command->getItemId());
