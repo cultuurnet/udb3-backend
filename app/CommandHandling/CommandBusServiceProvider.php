@@ -10,9 +10,9 @@ use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateFacilities as EventUpdateFacilities;
-use CultuurNet\UDB3\Media\MediaSecurity;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionSplitVoter;
+use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Offer\Security\Security;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Place\Commands\UpdateFacilities as PlaceUpdateFacilities;
@@ -58,6 +58,18 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::PRODUCTIES_AANMAKEN(),
                                 Permission::FILMS_AANMAKEN()
                             )
+                            ->withVoter(
+                                new class implements PermissionVoterInterface {
+                                    public function isAllowed(
+                                        Permission $permission,
+                                        StringLiteral $offerId,
+                                        StringLiteral $userId
+                                    ): bool {
+                                        return true;
+                                    }
+                                },
+                                Permission::MEDIA_UPLOADEN()
+                            )
                     )
                 );
 
@@ -66,8 +78,6 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                     $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
-
-                $security = new MediaSecurity($security);
 
                 return $security;
             }
