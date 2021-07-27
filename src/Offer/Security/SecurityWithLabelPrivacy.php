@@ -7,13 +7,13 @@ namespace CultuurNet\UDB3\Offer\Security;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\LabelSecurityInterface;
-use CultuurNet\UDB3\Security\SecurityInterface;
+use CultuurNet\UDB3\Security\Security;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class SecurityWithLabelPrivacy
 {
     /**
-     * @var SecurityInterface
+     * @var Security
      */
     private $decoratee;
 
@@ -28,7 +28,7 @@ class SecurityWithLabelPrivacy
     private $labelReadRepository;
 
     public function __construct(
-        SecurityInterface $decoratee,
+        Security $decoratee,
         string $userId,
         ReadRepositoryInterface $labelReadRepository
     ) {
