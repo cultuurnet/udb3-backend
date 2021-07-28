@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
@@ -35,7 +35,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     private $notAllowedUserId;
 
     /**
-     * @var ResourceOwnerQueryInterface|MockObject
+     * @var ResourceOwnerQuery|MockObject
      */
     private $permissionRepository;
 
@@ -52,7 +52,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
         $this->notAllowedUserId = '4b7d9a94-e4ff-4840-92b2-2f3f37ee99d4';
 
         $this->permissionRepository = $this->createMock(
-            ResourceOwnerQueryInterface::class
+            ResourceOwnerQuery::class
         );
 
         $this->permissionVoter = new AnyOfVoter(
@@ -73,8 +73,8 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     {
         $security = $this->createSecurityForUserId($this->godUserId);
 
-        /** @var AuthorizableCommandInterface|MockObject $authorizableCommand */
-        $authorizableCommand = $this->createMock(AuthorizableCommandInterface::class);
+        /** @var AuthorizableCommand|MockObject $authorizableCommand */
+        $authorizableCommand = $this->createMock(AuthorizableCommand::class);
 
         $authorizableCommand->method('getItemId')
             ->willReturn('offerId');

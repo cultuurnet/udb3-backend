@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Event\ValueObjects\Status;
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-final class UpdateSubEventsStatus implements AuthorizableCommandInterface
+final class UpdateSubEventsStatus implements AuthorizableCommand
 {
     /**
      * @var string

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-final class RejectSuggestedEventPair implements AuthorizableCommandInterface
+final class RejectSuggestedEventPair implements AuthorizableCommand
 {
     /**
      * @var SimilarEventPair

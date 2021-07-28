@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class GroupEventsAsProduction implements AuthorizableCommandInterface
+class GroupEventsAsProduction implements AuthorizableCommand
 {
     /**
      * @var string[]

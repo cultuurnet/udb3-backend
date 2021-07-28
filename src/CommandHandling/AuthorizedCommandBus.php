@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\Security\CommandBusSecurity;
 use Psr\Log\LoggerAwareInterface;
@@ -46,7 +46,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
      */
     public function dispatch($command)
     {
-        if ($command instanceof AuthorizableCommandInterface) {
+        if ($command instanceof AuthorizableCommand) {
             $authorized = $this->isAuthorized($command);
         } else {
             $authorized = true;
@@ -62,7 +62,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         }
     }
 
-    public function isAuthorized(AuthorizableCommandInterface $command): bool
+    public function isAuthorized(AuthorizableCommand $command): bool
     {
         return $this->security->isAuthorized($command);
     }

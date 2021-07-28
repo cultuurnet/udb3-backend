@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Security\ResourceOwner;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-interface ResourceOwnerRepositoryInterface
+interface ResourceOwnerRepository
 {
     public function markResourceEditableByUser(
         StringLiteral $offerId,

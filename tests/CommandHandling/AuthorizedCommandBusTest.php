@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\Security\CommandBusSecurity;
@@ -31,7 +31,7 @@ class AuthorizedCommandBusTest extends TestCase
     private $security;
 
     /**
-     * @var AuthorizableCommandInterface|MockObject
+     * @var AuthorizableCommand|MockObject
      */
     private $command;
 
@@ -48,7 +48,7 @@ class AuthorizedCommandBusTest extends TestCase
 
         $this->security = $this->createMock(CommandBusSecurity::class);
 
-        $this->command = $this->createMock(AuthorizableCommandInterface::class);
+        $this->command = $this->createMock(AuthorizableCommand::class);
 
         $this->authorizedCommandBus = new AuthorizedCommandBus(
             $this->decoratee,
@@ -62,8 +62,8 @@ class AuthorizedCommandBusTest extends TestCase
      */
     public function it_delegates_is_authorized_call_to_security()
     {
-        /** @var AuthorizableCommandInterface $command */
-        $command = $this->createMock(AuthorizableCommandInterface::class);
+        /** @var AuthorizableCommand $command */
+        $command = $this->createMock(AuthorizableCommand::class);
 
         $this->mockIsAuthorized(true);
 

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 
-final class ChangeOwner implements AuthorizableCommandInterface
+final class ChangeOwner implements AuthorizableCommand
 {
     /**
      * @var string

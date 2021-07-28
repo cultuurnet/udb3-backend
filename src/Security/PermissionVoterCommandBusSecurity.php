@@ -27,7 +27,7 @@ class PermissionVoterCommandBusSecurity implements CommandBusSecurity
         $this->permissionVoter = $permissionVoter;
     }
 
-    public function isAuthorized(AuthorizableCommandInterface $command)
+    public function isAuthorized(AuthorizableCommand $command)
     {
         $itemId = new StringLiteral($command->getItemId());
         return $this->currentUserCanEditItem($itemId, $command);
@@ -35,7 +35,7 @@ class PermissionVoterCommandBusSecurity implements CommandBusSecurity
 
     private function currentUserCanEditItem(
         StringLiteral $itemId,
-        AuthorizableCommandInterface $command
+        AuthorizableCommand $command
     ): bool {
         if (!$this->userId) {
             return false;

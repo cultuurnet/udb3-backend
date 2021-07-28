@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Commands;
 
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-final class MarkAsDuplicate implements AuthorizableCommandInterface
+final class MarkAsDuplicate implements AuthorizableCommand
 {
     /**
      * @var string

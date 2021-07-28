@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\ResourceOwner\Doctrine;
 
-use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepositoryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DBALResourceOwnerRepository implements ResourceOwnerRepositoryInterface, ResourceOwnerQueryInterface
+class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOwnerQuery
 {
     /**
      * @var Connection

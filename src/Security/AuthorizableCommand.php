@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-interface AuthorizableCommandInterface
+interface AuthorizableCommand
 {
     public function getItemId(): string;
 

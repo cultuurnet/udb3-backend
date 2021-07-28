@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Security\ResourceOwner;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CombinedResourceOwnerQuery implements ResourceOwnerQueryInterface
+class CombinedResourceOwnerQuery implements ResourceOwnerQuery
 {
     /**
-     * @var ResourceOwnerQueryInterface[]
+     * @var ResourceOwnerQuery[]
      */
     private $permissionQueries;
 
     /**
      * CombinedPermissionQuery constructor.
-     * @param ResourceOwnerQueryInterface[] $permissionQueries
+     * @param ResourceOwnerQuery[] $permissionQueries
      */
     public function __construct(array $permissionQueries)
     {

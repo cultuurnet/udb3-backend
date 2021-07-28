@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use ValueObjects\StringLiteral\StringLiteral;
 
-abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements AuthorizableCommandInterface, AuthorizableLabelCommand
+abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements AuthorizableCommand, AuthorizableLabelCommand
 {
     /**
      * @var Label

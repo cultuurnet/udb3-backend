@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class RenameProduction implements AuthorizableCommandInterface
+class RenameProduction implements AuthorizableCommand
 {
     /**
      * @var ProductionId

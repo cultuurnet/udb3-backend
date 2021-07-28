@@ -11,5 +11,5 @@ interface CommandBusSecurity
      *
      * @return bool
      */
-    public function isAuthorized(AuthorizableCommandInterface $command);
+    public function isAuthorized(AuthorizableCommand $command);
 }

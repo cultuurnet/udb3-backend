@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\Permission;
 
-use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ResourceOwnerVoter implements PermissionVoter
 {
     /**
-     * @var ResourceOwnerQueryInterface
+     * @var ResourceOwnerQuery
      */
     private $permissionRepository;
 
 
-    public function __construct(ResourceOwnerQueryInterface $permissionRepository)
+    public function __construct(ResourceOwnerQuery $permissionRepository)
     {
         $this->permissionRepository = $permissionRepository;
     }

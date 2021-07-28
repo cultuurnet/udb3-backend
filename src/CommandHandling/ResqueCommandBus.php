@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -93,7 +93,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
     public function dispatch($command)
     {
         if ($this->decoratee instanceof AuthorizedCommandBusInterface &&
-            $command instanceof AuthorizableCommandInterface) {
+            $command instanceof AuthorizableCommand) {
             if (!$this->decoratee->isAuthorized($command)) {
                 throw new CommandAuthorizationException(
                     new StringLiteral($this->decoratee->getUserId()),
