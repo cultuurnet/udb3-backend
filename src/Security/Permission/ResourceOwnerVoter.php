@@ -26,7 +26,7 @@ class ResourceOwnerVoter implements PermissionVoter
         StringLiteral $itemId,
         StringLiteral $userId
     ): bool {
-        $editableEvents = $this->permissionRepository->getEditableOffers($userId);
+        $editableEvents = $this->permissionRepository->getEditableResourceIds($userId);
         return in_array($itemId, $editableEvents);
     }
 }

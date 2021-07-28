@@ -42,7 +42,7 @@ final class ChangeOwnerHandler implements CommandHandler
         // The aggregate cannot check who was the initial owner, because that's stored in the metadata (!) of the
         // EventCreated/PlaceCreated/EventImportedFromUDB2/PlaceImportedFromUDB2 events and the base class of broadway
         // doesn't pass that info to the applyEventCreated() etc methods.
-        $offersOwnedByNewOwner = $this->permissionQuery->getEditableOffers(new StringLiteral($newOwnerId));
+        $offersOwnedByNewOwner = $this->permissionQuery->getEditableResourceIds(new StringLiteral($newOwnerId));
 
         // Don't use strict comparison here in in_array because getEditableOffers() returns StringLiterals. They will
         // get cast to strings automatically when comparing.

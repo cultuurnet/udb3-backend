@@ -53,12 +53,12 @@ class DBALRepositoryTest extends TestCase
 
         $this->assertEquals(
             [],
-            $this->repository->getEditableOffers($johnDoe)
+            $this->repository->getEditableResourceIds($johnDoe)
         );
 
         $this->assertEquals(
             [],
-            $this->repository->getEditableOffers($janeDoe)
+            $this->repository->getEditableResourceIds($janeDoe)
         );
 
         array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
@@ -66,12 +66,12 @@ class DBALRepositoryTest extends TestCase
 
         $this->assertEquals(
             $editableByJohnDoe,
-            $this->repository->getEditableOffers($johnDoe)
+            $this->repository->getEditableResourceIds($johnDoe)
         );
 
         $this->assertEquals(
             $editableByJaneDoe,
-            $this->repository->getEditableOffers($janeDoe)
+            $this->repository->getEditableResourceIds($janeDoe)
         );
     }
 
@@ -101,7 +101,7 @@ class DBALRepositoryTest extends TestCase
 
         $this->assertEquals(
             $editableByJohnDoe,
-            $this->repository->getEditableOffers($johnDoe)
+            $this->repository->getEditableResourceIds($johnDoe)
         );
     }
 
@@ -126,14 +126,14 @@ class DBALRepositoryTest extends TestCase
             [
                 new StringLiteral('456'),
             ],
-            $this->repository->getEditableOffers($janeDoe)
+            $this->repository->getEditableResourceIds($janeDoe)
         );
         $this->assertEquals(
             [
                 new StringLiteral('123'),
                 new StringLiteral('789'),
             ],
-            $this->repository->getEditableOffers($johnDoe)
+            $this->repository->getEditableResourceIds($johnDoe)
         );
     }
 }

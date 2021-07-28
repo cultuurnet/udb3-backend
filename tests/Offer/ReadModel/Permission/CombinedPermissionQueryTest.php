@@ -46,7 +46,7 @@ class CombinedPermissionQueryTest extends TestCase
                 ->method('getEditableOffers');
         }
 
-        $this->combinedPermissionQuery->getEditableOffers(
+        $this->combinedPermissionQuery->getEditableResourceIds(
             new StringLiteral('userId')
         );
     }
@@ -56,7 +56,7 @@ class CombinedPermissionQueryTest extends TestCase
      */
     public function it_returns_merged_array_from_all_permission_queries()
     {
-        $editableOffers = $this->combinedPermissionQuery->getEditableOffers(
+        $editableOffers = $this->combinedPermissionQuery->getEditableResourceIds(
             new StringLiteral('userId')
         );
 
@@ -81,7 +81,7 @@ class CombinedPermissionQueryTest extends TestCase
             $permissionQueries
         );
 
-        $this->assertEmpty($combinedPermissionQuery->getEditableOffers(
+        $this->assertEmpty($combinedPermissionQuery->getEditableResourceIds(
             new StringLiteral('userId')
         ));
     }

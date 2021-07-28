@@ -25,14 +25,14 @@ class CombinedPermissionQuery implements PermissionQueryInterface
     /**
      * @return StringLiteral[] A list of offer ids.
      */
-    public function getEditableOffers(StringLiteral $uitId)
+    public function getEditableResourceIds(StringLiteral $uitId)
     {
         $editableOffers = [];
 
         foreach ($this->permissionQueries as $permissionQuery) {
             $editableOffers = array_merge(
                 $editableOffers,
-                $permissionQuery->getEditableOffers($uitId)
+                $permissionQuery->getEditableResourceIds($uitId)
             );
         }
 

@@ -9,7 +9,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface PermissionQueryInterface
 {
     /**
-     * @return StringLiteral[] A list of offer ids.
+     * @return StringLiteral[] A list of resource ids that the given user can edit.
      */
-    public function getEditableOffers(StringLiteral $uitId);
+    public function getEditableResourceIds(StringLiteral $uitId);
 }
