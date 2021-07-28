@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Offer\Security\Permission;
 
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OwnerVoter implements PermissionVoterInterface
+class OwnerVoter implements PermissionVoter
 {
     /**
      * @var PermissionQueryInterface

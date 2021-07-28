@@ -19,8 +19,8 @@ class PermissionSplitVoterTest extends TestCase
         $userId = new StringLiteral('john_doe');
         $organizerId = new StringLiteral('organizer_abc');
 
-        $a = $this->getMockBuilder(PermissionVoterInterface::class)->getMock();
-        $b = $this->getMockBuilder(PermissionVoterInterface::class)->getMock();
+        $a = $this->getMockBuilder(PermissionVoter::class)->getMock();
+        $b = $this->getMockBuilder(PermissionVoter::class)->getMock();
 
         $voter = (new PermissionSplitVoter())
             ->withVoter($a, Permission::LABELS_BEHEREN(), Permission::AANBOD_VERWIJDEREN())

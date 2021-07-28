@@ -10,10 +10,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 /**
  * Delegates voting to another voter based on which permission needs checking.
  */
-final class PermissionSplitVoter implements PermissionVoterInterface
+final class PermissionSplitVoter implements PermissionVoter
 {
     /**
-     * @var \CultuurNet\UDB3\Security\Permission\PermissionVoterInterface[]
+     * @var \CultuurNet\UDB3\Security\Permission\PermissionVoter[]
      */
     private $mapping;
 
@@ -30,7 +30,7 @@ final class PermissionSplitVoter implements PermissionVoterInterface
     }
 
     public function withVoter(
-        PermissionVoterInterface $voter,
+        PermissionVoter $voter,
         Permission ...$permissions
     ): self {
         $c = clone $this;

@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInte
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class UserPermissionVoter implements PermissionVoterInterface
+class UserPermissionVoter implements PermissionVoter
 {
     /**
      * @var UserPermissionsReadRepositoryInterface

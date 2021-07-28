@@ -7,17 +7,17 @@ namespace CultuurNet\UDB3\Security\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class AnyOfVoter implements PermissionVoterInterface
+class AnyOfVoter implements PermissionVoter
 {
     /**
-     * @var PermissionVoterInterface[]
+     * @var PermissionVoter[]
      */
     private $voters;
 
     /**
-     * @param PermissionVoterInterface[] ...$voters
+     * @param PermissionVoter[] ...$voters
      */
-    public function __construct(PermissionVoterInterface ...$voters)
+    public function __construct(PermissionVoter ...$voters)
     {
         $this->voters = $voters;
     }

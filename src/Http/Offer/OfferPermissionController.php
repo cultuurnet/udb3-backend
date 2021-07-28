@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +21,7 @@ class OfferPermissionController
     private $permission;
 
     /**
-     * @var PermissionVoterInterface
+     * @var PermissionVoter
      */
     private $permissionVoter;
 
@@ -33,7 +33,7 @@ class OfferPermissionController
 
     public function __construct(
         Permission $permission,
-        PermissionVoterInterface $permissionVoter,
+        PermissionVoter $permissionVoter,
         StringLiteral $currentUserId = null
     ) {
         $this->permission = $permission;
