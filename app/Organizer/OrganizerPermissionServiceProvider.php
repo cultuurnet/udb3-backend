@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Organizer\ReadModel\Permission\Projector;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALResourceOwnerRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -23,7 +23,7 @@ class OrganizerPermissionServiceProvider implements ServiceProviderInterface
 
         $app['organizer_permission.repository'] = $app->share(
             function (Application $app) {
-                return new DBALRepository(
+                return new DBALResourceOwnerRepository(
                     $app['organizer_permission.table_name'],
                     $app['dbal_connection'],
                     $app['organizer_permission.id_field']

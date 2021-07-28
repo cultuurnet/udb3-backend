@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Event;
 
 use CultuurNet\UDB3\Event\ReadModel\Permission\Projector;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALResourceOwnerRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -22,7 +22,7 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
 
         $app['event_permission.repository'] = $app->share(
             function (Application $app) {
-                return new DBALRepository(
+                return new DBALResourceOwnerRepository(
                     $app['event_permission.table_name'],
                     $app['dbal_connection'],
                     $app['event_permission.id_field']
