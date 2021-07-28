@@ -51,13 +51,13 @@ class DBALRepository implements PermissionRepositoryInterface, PermissionQueryIn
     /**
      * @inheritdoc
      */
-    public function getEditableResourceIds(StringLiteral $uitId)
+    public function getEditableResourceIds(StringLiteral $userId)
     {
         $q = $this->connection->createQueryBuilder();
         $q->select($this->idField->toNative())
             ->from($this->tableName->toNative())
             ->where('user_id = :userId')
-            ->setParameter(':userId', $uitId->toNative());
+            ->setParameter(':userId', $userId->toNative());
 
         $results = $q->execute();
 
