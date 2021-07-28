@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use CultuurNet\UDB3\Security\CommandBusSecurity;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SecurityWithLabelPrivacy implements CommandBusSecurity
+class LabelCommandBusSecurity implements CommandBusSecurity
 {
     /**
      * @var CommandBusSecurity
@@ -36,8 +36,6 @@ class SecurityWithLabelPrivacy implements CommandBusSecurity
         $this->userId = $userId;
         $this->labelReadRepository = $labelReadRepository;
     }
-
-
 
     public function isAuthorized(AuthorizableCommandInterface $command)
     {
