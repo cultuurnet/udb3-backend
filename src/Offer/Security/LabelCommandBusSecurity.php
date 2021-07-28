@@ -42,15 +42,7 @@ class LabelCommandBusSecurity implements CommandBusSecurity
         if (!($command instanceof AuthorizableLabelCommand)) {
             return $this->decoratee->isAuthorized($command);
         }
-        return $this->canUseLabel($command);
-    }
 
-    /**
-     * @return bool
-     * @throws \InvalidArgumentException
-     */
-    private function canUseLabel(AuthorizableLabelCommand $command)
-    {
         foreach ($command->getLabelNames() as $labelName) {
             if (!$this->labelReadRepository->canUseLabel(
                 new StringLiteral($this->userId),
