@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class PermissionVoterSecurityTest extends TestCase
+class PermissionVoterCommandBusSecurityTest extends TestCase
 {
     /**
      * @var string
