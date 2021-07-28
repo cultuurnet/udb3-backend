@@ -16,7 +16,7 @@ class CombinedPermissionQueryTest extends TestCase
     private $permissionQueries;
 
     /**
-     * @var CombinedPermissionQuery
+     * @var CombinedResourceOwnerQuery
      */
     private $combinedPermissionQuery;
 
@@ -31,7 +31,7 @@ class CombinedPermissionQueryTest extends TestCase
             new StringLiteral('offerId3'),
         ]);
 
-        $this->combinedPermissionQuery = new CombinedPermissionQuery(
+        $this->combinedPermissionQuery = new CombinedResourceOwnerQuery(
             $this->permissionQueries
         );
     }
@@ -77,7 +77,7 @@ class CombinedPermissionQueryTest extends TestCase
         $permissionQueries[] = $this->createPermissionQuery([]);
         $permissionQueries[] = $this->createPermissionQuery([]);
 
-        $combinedPermissionQuery = new CombinedPermissionQuery(
+        $combinedPermissionQuery = new CombinedResourceOwnerQuery(
             $permissionQueries
         );
 
