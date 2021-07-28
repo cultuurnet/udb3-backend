@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Security\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\StringLiteral\StringLiteral;
 
-interface PermissionVoterInterface
+interface PermissionVoter
 {
     /**
      * @return bool
