@@ -49,22 +49,16 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::AANBOD_MODEREREN(),
                                 Permission::AANBOD_VERWIJDEREN()
                             )
-                            // Most other permissions should just be checked by seeing if the user has that permission.
-                            ->withVoter(
-                                new UserPermissionVoter(
-                                    $app['user_permissions_read_repository']
-                                ),
-                                Permission::VOORZIENINGEN_BEWERKEN(),
-                                Permission::GEBRUIKERS_BEHEREN(),
-                                Permission::LABELS_BEHEREN(),
-                                Permission::ORGANISATIES_BEHEREN(),
-                                Permission::PRODUCTIES_AANMAKEN(),
-                                Permission::FILMS_AANMAKEN()
-                            )
                             // Uploading media is allowed for any logged in user.
                             ->withVoter(
                                 new AlwaysAllowedVoter(),
                                 Permission::MEDIA_UPLOADEN()
+                            )
+                            // Other permissions should just be checked by seeing if the user has that permission.
+                            ->withDefaultVoter(
+                                new UserPermissionVoter(
+                                    $app['user_permissions_read_repository']
+                                )
                             )
                     )
                 );

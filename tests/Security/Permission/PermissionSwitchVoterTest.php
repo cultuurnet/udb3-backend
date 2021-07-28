@@ -47,4 +47,38 @@ class PermissionSwitchVoterTest extends TestCase
             $voter->isAllowed(Permission::AANBOD_MODEREREN(), $offerId, $userId)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_use_a_default_voter_for_permissions_that_do_not_have_a_specific_voter(): void
+    {
+        $offerId = new StringLiteral('232');
+        $userId = new StringLiteral('john_doe');
+
+        $specific = $this->getMockBuilder(PermissionVoter::class)->getMock();
+        $default = $this->getMockBuilder(PermissionVoter::class)->getMock();
+
+        $voter = (new PermissionSwitchVoter())
+            ->withVoter($specific, Permission::AANBOD_VERWIJDEREN())
+            ->withDefaultVoter($default);
+
+        $specific->expects($this->once())
+            ->method('isAllowed')
+            ->with(Permission::AANBOD_VERWIJDEREN(), $offerId, $userId)
+            ->willReturn(false);
+
+        $default->expects($this->once())
+            ->method('isAllowed')
+            ->with(Permission::LABELS_BEHEREN(), $offerId, $userId)
+            ->willReturn(true);
+
+        $this->assertFalse(
+            $voter->isAllowed(Permission::AANBOD_VERWIJDEREN(), $offerId, $userId)
+        );
+
+        $this->assertTrue(
+            $voter->isAllowed(Permission::LABELS_BEHEREN(), $offerId, $userId)
+        );
+    }
 }
