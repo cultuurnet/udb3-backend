@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Security;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedResourceOwnerQuery;
+use CultuurNet\UDB3\Security\ResourceOwner\CombinedResourceOwnerQuery;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;

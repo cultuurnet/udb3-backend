@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\ResourceOwner;
 
-use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CombinedResourceOwnerQuery implements ResourceOwnerQueryInterface
