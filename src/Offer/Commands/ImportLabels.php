@@ -74,7 +74,7 @@ final class ImportLabels extends AbstractCommand implements AuthorizableLabelCom
         );
     }
 
-    public function getNames(): array
+    public function getLabelNames(): array
     {
         return array_map(
             function (Label $label) {

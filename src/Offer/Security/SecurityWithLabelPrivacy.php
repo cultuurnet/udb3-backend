@@ -63,7 +63,7 @@ class SecurityWithLabelPrivacy implements Security
      */
     private function canUseLabel(AuthorizableLabelCommand $command)
     {
-        foreach ($command->getNames() as $labelName) {
+        foreach ($command->getLabelNames() as $labelName) {
             if (!$this->labelReadRepository->canUseLabel(
                 new StringLiteral($this->userId),
                 $labelName

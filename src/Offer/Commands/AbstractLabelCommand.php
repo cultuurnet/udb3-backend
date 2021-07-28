@@ -31,7 +31,7 @@ abstract class AbstractLabelCommand extends AbstractCommand implements Authoriza
         return $this->label;
     }
 
-    public function getNames(): array
+    public function getLabelNames(): array
     {
         return [
             new StringLiteral((string)$this->label),

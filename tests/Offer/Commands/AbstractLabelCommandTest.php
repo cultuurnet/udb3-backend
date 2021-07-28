@@ -73,7 +73,7 @@ class AbstractLabelCommandTest extends TestCase
             [
                 new StringLiteral('LabelTest'),
             ],
-            $this->labelCommand->getNames()
+            $this->labelCommand->getLabelNames()
         );
     }
 }

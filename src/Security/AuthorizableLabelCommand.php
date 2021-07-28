@@ -11,5 +11,5 @@ interface AuthorizableLabelCommand
     /**
      * @return StringLiteral[]
      */
-    public function getNames(): array;
+    public function getLabelNames(): array;
 }
