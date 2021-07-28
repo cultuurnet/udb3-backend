@@ -32,7 +32,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                         $app['god_user_voter'],
                         (new PermissionSwitchVoter())
                             ->withVoter(
-                                $app['organizer_permission_voter_inner'],
+                                $app['organizer_permission_voter'],
                                 Permission::ORGANISATIES_BEWERKEN()
                             )
                             ->withVoter(

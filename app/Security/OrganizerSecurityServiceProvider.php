@@ -19,9 +19,10 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['organizer_permission_voter_inner'] = $app->share(
+        $app['organizer_permission_voter'] = $app->share(
             function (Application $app) {
                 return new AnyOfVoter(
+                    $app['god_user_voter'],
                     new ResourceOwnerVoter($app['organizer_owner.repository']),
                     new Sapi3RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
@@ -30,15 +31,6 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
                         $app['config']['search']['v3']['api_key'] ?? null,
                         []
                     )
-                );
-            }
-        );
-
-        $app['organizer_permission_voter'] = $app->share(
-            function (Application $app) {
-                return new AnyOfVoter(
-                    $app['god_user_voter'],
-                    $app['organizer_permission_voter_inner']
                 );
             }
         );
