@@ -11,7 +11,7 @@ use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Security\Permission\AlwaysAllowedVoter;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
-use CultuurNet\UDB3\Security\Permission\PermissionSplitVoter;
+use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
 use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
@@ -32,7 +32,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                     $app['current_user_id'],
                     new AnyOfVoter(
                         $app['god_user_voter'],
-                        (new PermissionSplitVoter())
+                        (new PermissionSwitchVoter())
                             ->withVoter(
                                 $app['organizer_permission_voter_inner'],
                                 Permission::ORGANISATIES_BEWERKEN()
