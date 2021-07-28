@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Security;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
-use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
+use CultuurNet\UDB3\Offer\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -57,7 +57,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
 
         $this->permissionVoter = new AnyOfVoter(
             new GodUserVoter([$this->godUserId]),
-            new OwnerVoter($this->permissionRepository)
+            new ResourceOwnerVoter($this->permissionRepository)
         );
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Security;
 
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
-use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
+use CultuurNet\UDB3\Offer\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use GuzzleHttp\Psr7\Uri;
 use Http\Adapter\Guzzle6\Client;
@@ -22,7 +22,7 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
         $app['organizer_permission_voter_inner'] = $app->share(
             function (Application $app) {
                 return new AnyOfVoter(
-                    new OwnerVoter($app['organizer_permission.repository']),
+                    new ResourceOwnerVoter($app['organizer_permission.repository']),
                     new Sapi3RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
                         new Uri($app['config']['search']['v3']['base_url'] . '/organizers/'),
