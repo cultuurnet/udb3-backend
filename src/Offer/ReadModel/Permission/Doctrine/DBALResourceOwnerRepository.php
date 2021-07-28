@@ -10,7 +10,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerRepositoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DBALRepository implements ResourceOwnerRepositoryInterface, ResourceOwnerQueryInterface
+class DBALResourceOwnerRepository implements ResourceOwnerRepositoryInterface, ResourceOwnerQueryInterface
 {
     /**
      * @var Connection

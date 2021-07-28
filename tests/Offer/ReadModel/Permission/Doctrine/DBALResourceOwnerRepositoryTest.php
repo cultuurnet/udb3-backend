@@ -8,12 +8,12 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DBALRepositoryTest extends TestCase
+class DBALResourceOwnerRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
     /**
-     * @var DBALRepository
+     * @var DBALResourceOwnerRepository
      */
     private $repository;
 
@@ -26,7 +26,7 @@ class DBALRepositoryTest extends TestCase
             $this->getConnection()->getSchemaManager()
         );
 
-        $this->repository = new DBALRepository(
+        $this->repository = new DBALResourceOwnerRepository(
             $table,
             $this->getConnection(),
             $idField
