@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Security\Permission;
 
-use CultuurNet\UDB3\Offer\Security\Sapi3SearchQueryFactory;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Search\CountingSearchServiceInterface;
@@ -19,22 +18,15 @@ class RoleConstraintVoter implements PermissionVoterInterface
     private $userConstraintsReadRepository;
 
     /**
-     * @var Sapi3SearchQueryFactory
-     */
-    private $searchQueryFactory;
-
-    /**
      * @var CountingSearchServiceInterface
      */
     private $searchService;
 
     public function __construct(
         UserConstraintsReadRepositoryInterface $userConstraintsReadRepository,
-        Sapi3SearchQueryFactory $searchQueryFactory,
         CountingSearchServiceInterface $searchService
     ) {
         $this->userConstraintsReadRepository = $userConstraintsReadRepository;
-        $this->searchQueryFactory = $searchQueryFactory;
         $this->searchService = $searchService;
     }
 
@@ -51,7 +43,7 @@ class RoleConstraintVoter implements PermissionVoterInterface
             return false;
         }
 
-        $query = $this->searchQueryFactory->createFromConstraints(
+        $query = $this->createQueryFromConstraints(
             $constraints,
             $itemId
         );
@@ -59,5 +51,32 @@ class RoleConstraintVoter implements PermissionVoterInterface
         $totalItems = $this->searchService->search($query);
 
         return $totalItems === 1;
+    }
+
+    private function createQueryString(
+        StringLiteral $constraint,
+        StringLiteral $offerId
+    ): string {
+        $constraintStr = '(' . $constraint->toNative() . ')';
+        $offerIdStr = $offerId->toNative();
+
+        return '(' . $constraintStr . ' AND id:' . $offerIdStr . ')';
+    }
+
+    private function createQueryFromConstraints(
+        array $constraints,
+        StringLiteral $offerId
+    ): string {
+        $queryString = '';
+
+        foreach ($constraints as $constraint) {
+            if (strlen($queryString)) {
+                $queryString .= ' OR ';
+            }
+
+            $queryString .= $this->createQueryString($constraint, $offerId);
+        }
+
+        return $queryString;
     }
 }
