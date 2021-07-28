@@ -26,21 +26,30 @@ class CommandBusServiceProvider implements ServiceProviderInterface
     {
         $app['command_bus.security'] = $app->share(
             function ($app) {
+                // Set up security to check permissions of AuthorizableCommand commands.
                 $security = new PermissionVoterCommandBusSecurity(
                     $app['current_user_id'],
+                    // Either allow everything for god users, or use a voter based on the specific permission
                     new AnyOfVoter(
                         $app['god_user_voter'],
                         (new PermissionSwitchVoter())
+                            // Use the organizer voter for ORGANISATIES_BEWERKEN to take into account who is the owner
+                            // and/or look at the constraint query in the role to only allow edits to a subset of
+                            // organizers.
                             ->withVoter(
                                 $app['organizer_permission_voter'],
                                 Permission::ORGANISATIES_BEWERKEN()
                             )
+                            // Use the offer voter for AANBOD permissions to take into account who is the owner
+                            // and/or look at the constraint query in the role to only allow edits to a subset of
+                            // offers.
                             ->withVoter(
                                 $app['offer_permission_voter'],
                                 Permission::AANBOD_BEWERKEN(),
                                 Permission::AANBOD_MODEREREN(),
                                 Permission::AANBOD_VERWIJDEREN()
                             )
+                            // Most other permissions should just be checked by seeing if the user has that permission.
                             ->withVoter(
                                 new UserPermissionVoter(
                                     $app['user_permissions_read_repository']
@@ -52,6 +61,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::PRODUCTIES_AANMAKEN(),
                                 Permission::FILMS_AANMAKEN()
                             )
+                            // Uploading media is allowed for any logged in user.
                             ->withVoter(
                                 new AlwaysAllowedVoter(),
                                 Permission::MEDIA_UPLOADEN()
@@ -59,6 +69,8 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                     )
                 );
 
+                // Set up security decorator to check if the current user can use the label(s) in an
+                // AuthorizableLabelCommand (skipped otherwise).
                 $security = new LabelCommandBusSecurity(
                     $security,
                     $app['current_user_id'],
