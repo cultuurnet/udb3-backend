@@ -54,7 +54,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $randomCommand = $this->createMock(AbstractCommand::class);
 
         $this->permissionQuery->expects($this->never())
-            ->method('getEditableOffers');
+            ->method('getEditableResourceIds');
 
         $id = 'f818db49-1484-4513-a534-d22c2ca88026';
 
@@ -74,7 +74,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $newOwner = 'auth0|598e7dc9-523b-4d58-b6ea-b4aad5a4a291';
 
         $this->permissionQuery
-            ->method('getEditableOffers')
+            ->method('getEditableResourceIds')
             ->with($newOwner)
             ->willReturn([new StringLiteral($id)]);
 
@@ -95,7 +95,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $newOwner = 'auth0|598e7dc9-523b-4d58-b6ea-b4aad5a4a291';
 
         $this->permissionQuery
-            ->method('getEditableOffers')
+            ->method('getEditableResourceIds')
             ->with($newOwner)
             ->willReturn([new StringLiteral($otherId)]);
 

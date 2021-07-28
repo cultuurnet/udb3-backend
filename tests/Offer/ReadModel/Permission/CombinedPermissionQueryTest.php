@@ -43,7 +43,7 @@ class CombinedPermissionQueryTest extends TestCase
     {
         foreach ($this->permissionQueries as $permissionQuery) {
             $permissionQuery->expects($this->once())
-                ->method('getEditableOffers');
+                ->method('getEditableResourceIds');
         }
 
         $this->combinedPermissionQuery->getEditableResourceIds(
@@ -94,7 +94,7 @@ class CombinedPermissionQueryTest extends TestCase
     {
         $permissionQuery = $this->createMock(ResourceOwnerQueryInterface::class);
 
-        $permissionQuery->method('getEditableOffers')
+        $permissionQuery->method('getEditableResourceIds')
             ->willReturn($editableOffers);
 
         return $permissionQuery;

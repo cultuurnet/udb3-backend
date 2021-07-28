@@ -78,7 +78,7 @@ class ProjectorTest extends TestCase
             ->willReturn($userId);
 
         $this->repository->expects($this->once())
-            ->method('markOfferEditableByUser')
+            ->method('markResourceEditableByUser')
             ->with(
                 new StringLiteral('dcd1ef37-0608-4824-afe3-99124feda64b'),
                 $userId
@@ -113,7 +113,7 @@ class ProjectorTest extends TestCase
             ->willReturn(null);
 
         $this->repository->expects($this->never())
-            ->method('markOfferEditableByUser');
+            ->method('markResourceEditableByUser');
 
         $this->projector->handle($msg);
     }
@@ -147,7 +147,7 @@ class ProjectorTest extends TestCase
         );
 
         $this->repository->expects($this->once())
-            ->method('markOfferEditableByUser')
+            ->method('markResourceEditableByUser')
             ->with(
                 $eventId,
                 $userId
@@ -179,7 +179,7 @@ class ProjectorTest extends TestCase
         );
 
         $this->repository->expects($this->once())
-            ->method('markOfferEditableByUser')
+            ->method('markResourceEditableByUser')
             ->with(
                 $eventId,
                 $userId
@@ -207,7 +207,7 @@ class ProjectorTest extends TestCase
         );
 
         $this->repository->expects($this->once())
-            ->method('markOfferEditableByNewUser')
+            ->method('markResourceEditableByNewUser')
             ->with(
                 new StringLiteral($eventId),
                 new StringLiteral($newOwnerId)
