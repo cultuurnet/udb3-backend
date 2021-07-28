@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Security;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedResourceOwnerQuery;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
@@ -22,7 +22,7 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
     {
         $app['offer_permission_query'] = $app->share(
             function (Application $app) {
-                return new CombinedPermissionQuery(
+                return new CombinedResourceOwnerQuery(
                     [
                         $app['event_permission.repository'],
                         $app['place_permission.repository'],

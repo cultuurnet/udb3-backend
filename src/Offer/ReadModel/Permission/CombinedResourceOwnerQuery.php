@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Permission;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CombinedPermissionQuery implements ResourceOwnerQueryInterface
+class CombinedResourceOwnerQuery implements ResourceOwnerQueryInterface
 {
     /**
      * @var ResourceOwnerQueryInterface[]
