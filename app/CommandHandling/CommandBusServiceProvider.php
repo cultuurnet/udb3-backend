@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
-use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
+use CultuurNet\UDB3\Offer\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
@@ -68,7 +68,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                     )
                 );
 
-                $security = new SecurityWithLabelPrivacy(
+                $security = new LabelCommandBusSecurity(
                     $security,
                     $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]

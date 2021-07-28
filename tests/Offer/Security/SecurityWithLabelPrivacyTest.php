@@ -33,7 +33,7 @@ class SecurityWithLabelPrivacyTest extends TestCase
     private $labelReadRepository;
 
     /**
-     * @var SecurityWithLabelPrivacy
+     * @var LabelCommandBusSecurity
      */
     private $securityWithLabelPrivacy;
 
@@ -52,7 +52,7 @@ class SecurityWithLabelPrivacyTest extends TestCase
             ReadRepositoryInterface::class
         );
 
-        $this->securityWithLabelPrivacy = new SecurityWithLabelPrivacy(
+        $this->securityWithLabelPrivacy = new LabelCommandBusSecurity(
             $this->securityDecoratee,
             $this->userId,
             $this->labelReadRepository
