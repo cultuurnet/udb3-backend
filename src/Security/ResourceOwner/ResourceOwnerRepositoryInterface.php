@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\ReadModel\Permission;
+namespace CultuurNet\UDB3\Security\ResourceOwner;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
