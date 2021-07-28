@@ -17,15 +17,12 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['place_permission.table_name'] = new StringLiteral('place_permission_readmodel');
-        $app['place_permission.id_field'] = new StringLiteral('place_id');
-
         $app['place_owner.repository'] = $app->share(
             function (Application $app) {
                 return new DBALResourceOwnerRepository(
-                    $app['place_permission.table_name'],
+                    new StringLiteral('place_permission_readmodel'),
                     $app['dbal_connection'],
-                    $app['place_permission.id_field']
+                    new StringLiteral('place_id')
                 );
             }
         );

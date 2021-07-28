@@ -17,15 +17,12 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['event_permission.table_name'] = new StringLiteral('event_permission_readmodel');
-        $app['event_permission.id_field'] = new StringLiteral('event_id');
-
         $app['event_owner.repository'] = $app->share(
             function (Application $app) {
                 return new DBALResourceOwnerRepository(
-                    $app['event_permission.table_name'],
+                    new StringLiteral('event_permission_readmodel'),
                     $app['dbal_connection'],
-                    $app['event_permission.id_field']
+                    new StringLiteral('event_id')
                 );
             }
         );

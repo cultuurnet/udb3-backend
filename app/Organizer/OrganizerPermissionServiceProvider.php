@@ -18,15 +18,12 @@ class OrganizerPermissionServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['organizer_permission.table_name'] = new StringLiteral('organizer_permission_readmodel');
-        $app['organizer_permission.id_field'] = new StringLiteral('organizer_id');
-
         $app['organizer_owner.repository'] = $app->share(
             function (Application $app) {
                 return new DBALResourceOwnerRepository(
-                    $app['organizer_permission.table_name'],
+                    new StringLiteral('organizer_permission_readmodel'),
                     $app['dbal_connection'],
-                    $app['organizer_permission.id_field']
+                    new StringLiteral('organizer_id')
                 );
             }
         );
