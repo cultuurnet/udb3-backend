@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine;
+namespace CultuurNet\UDB3\Security\ResourceOwner\Doctrine;
 
 use CultuurNet\UDB3\Doctrine\DBAL\SchemaConfiguratorInterface;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
