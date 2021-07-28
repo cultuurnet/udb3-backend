@@ -73,11 +73,12 @@ class CommandBusLabelSecurityTest extends TestCase
         );
 
         $this->securityDecoratee->method('isAuthorized')
-            ->with($translateTitle);
+            ->with($translateTitle)
+            ->willReturn(true);
 
-        $this->securityWithLabelPrivacy->isAuthorized($translateTitle);
+        $allowed = $this->securityWithLabelPrivacy->isAuthorized($translateTitle);
 
-        $this->expectNotToPerformAssertions();
+        $this->assertTrue($allowed);
     }
 
     /**
