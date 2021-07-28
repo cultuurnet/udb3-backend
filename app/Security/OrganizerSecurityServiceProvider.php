@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Security;
 
-use CultuurNet\UDB3\Security\Permission\CompositeVoter;
+use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use GuzzleHttp\Psr7\Uri;
@@ -21,7 +21,7 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
     {
         $app['organizer_permission_voter_inner'] = $app->share(
             function (Application $app) {
-                return new CompositeVoter(
+                return new AnyOfVoter(
                     new OwnerVoter($app['organizer_permission.repository']),
                     new Sapi3RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
@@ -36,7 +36,7 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
 
         $app['organizer_permission_voter'] = $app->share(
             function (Application $app) {
-                return new CompositeVoter(
+                return new AnyOfVoter(
                     $app['god_user_voter'],
                     $app['organizer_permission_voter_inner']
                 );

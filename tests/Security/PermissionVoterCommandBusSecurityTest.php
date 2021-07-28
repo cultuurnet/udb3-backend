@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
-use CultuurNet\UDB3\Security\Permission\CompositeVoter;
+use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -40,7 +40,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     private $permissionRepository;
 
     /**
-     * @var CompositeVoter
+     * @var AnyOfVoter
      */
     private $permissionVoter;
 
@@ -55,7 +55,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
             PermissionQueryInterface::class
         );
 
-        $this->permissionVoter = new CompositeVoter(
+        $this->permissionVoter = new AnyOfVoter(
             new GodUserVoter([$this->godUserId]),
             new OwnerVoter($this->permissionRepository)
         );
