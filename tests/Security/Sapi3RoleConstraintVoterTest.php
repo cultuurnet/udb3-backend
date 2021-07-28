@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\Security;
+namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Offer\Security\Permission\Sapi3RoleConstraintVoter;
+use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use GuzzleHttp\Psr7\Request;
