@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;

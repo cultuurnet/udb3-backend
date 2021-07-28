@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;

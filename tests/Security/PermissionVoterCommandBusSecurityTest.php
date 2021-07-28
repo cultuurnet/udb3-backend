@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
