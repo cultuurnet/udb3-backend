@@ -25,11 +25,9 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
                 return new CompositeVoter(
                     new OwnerVoter($app['organizer_permission.repository']),
                     new RoleConstraintVoter(
-                        new Sapi3UserPermissionMatcher(
-                            $app['user_constraints_read_repository'],
-                            new Sapi3SearchQueryFactory(),
-                            $app[Sapi3SearchServiceProvider::ORGANIZERS_COUNTING_SEARCH_SERVICE]
-                        )
+                        $app['user_constraints_read_repository'],
+                        new Sapi3SearchQueryFactory(),
+                        $app[Sapi3SearchServiceProvider::ORGANIZERS_COUNTING_SEARCH_SERVICE]
                     )
                 );
             }
