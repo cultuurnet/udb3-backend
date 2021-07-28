@@ -31,9 +31,10 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['offer_permission_voter_inner'] = $app->share(
+        $app['offer_permission_voter'] = $app->share(
             function (Application $app) {
                 return new AnyOfVoter(
+                    $app['god_user_voter'],
                     new ResourceOwnerVoter($app['offer_permission_query']),
                     new Sapi3RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
@@ -42,15 +43,6 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
                         $app['config']['search']['v3']['api_key'] ?? null,
                         ['disableDefaultFilters' => true]
                     )
-                );
-            }
-        );
-
-        $app['offer_permission_voter'] = $app->share(
-            function (Application $app) {
-                return new AnyOfVoter(
-                    $app['god_user_voter'],
-                    $app['offer_permission_voter_inner']
                 );
             }
         );

@@ -36,7 +36,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::ORGANISATIES_BEWERKEN()
                             )
                             ->withVoter(
-                                $app['offer_permission_voter_inner'],
+                                $app['offer_permission_voter'],
                                 Permission::AANBOD_BEWERKEN(),
                                 Permission::AANBOD_MODEREREN(),
                                 Permission::AANBOD_VERWIJDEREN()
