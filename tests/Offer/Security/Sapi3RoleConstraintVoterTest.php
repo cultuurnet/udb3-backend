@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Security;
 
-use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
+use CultuurNet\UDB3\Offer\Security\Permission\Sapi3RoleConstraintVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use GuzzleHttp\Psr7\Request;
@@ -28,7 +28,7 @@ class RoleConstraintVoterTest extends TestCase
     private $httpClient;
 
     /**
-     * @var RoleConstraintVoter
+     * @var Sapi3RoleConstraintVoter
      */
     private $roleConstraintVoter;
 
@@ -43,7 +43,7 @@ class RoleConstraintVoterTest extends TestCase
         $apiKey = 'cf462083-7bbd-46fc-95c3-6a0bc95918a5';
         $extraParameters = ['disableDefaultFilters' => true];
 
-        $this->roleConstraintVoter = new RoleConstraintVoter(
+        $this->roleConstraintVoter = new Sapi3RoleConstraintVoter(
             $this->userConstraintsReadRepository,
             $searchLocation,
             $this->httpClient,
