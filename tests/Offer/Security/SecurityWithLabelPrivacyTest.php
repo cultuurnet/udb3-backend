@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand as OfferAbstractLabelCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Mock\Commands\UpdateTitle;
-use CultuurNet\UDB3\Security\Security;
+use CultuurNet\UDB3\Security\CommandBusSecurity;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class SecurityWithLabelPrivacyTest extends TestCase
 {
     /**
-     * @var Security|MockObject
+     * @var CommandBusSecurity|MockObject
      */
     private $securityDecoratee;
 
@@ -44,7 +44,7 @@ class SecurityWithLabelPrivacyTest extends TestCase
 
     protected function setUp()
     {
-        $this->securityDecoratee = $this->createMock(Security::class);
+        $this->securityDecoratee = $this->createMock(CommandBusSecurity::class);
 
         $this->userId = '82650413-baf2-4257-a25b-d25dc18999dc';
 

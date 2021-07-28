@@ -9,7 +9,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
-use CultuurNet\UDB3\Security\Security;
+use CultuurNet\UDB3\Security\CommandBusSecurity;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -26,7 +26,7 @@ class AuthorizedCommandBusTest extends TestCase
     private $userId;
 
     /**
-     * @var Security|MockObject
+     * @var CommandBusSecurity|MockObject
      */
     private $security;
 
@@ -46,7 +46,7 @@ class AuthorizedCommandBusTest extends TestCase
 
         $this->userId = '9bd817a3-670e-4720-affa-7636e29073ce';
 
-        $this->security = $this->createMock(Security::class);
+        $this->security = $this->createMock(CommandBusSecurity::class);
 
         $this->command = $this->createMock(AuthorizableCommandInterface::class);
 

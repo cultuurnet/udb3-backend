@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Security;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PermissionVoterSecurity implements Security
+class PermissionVoterCommandBusSecurity implements CommandBusSecurity
 {
     /**
      * @var string

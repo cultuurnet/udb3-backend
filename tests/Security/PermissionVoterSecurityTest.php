@@ -73,9 +73,9 @@ class PermissionVoterSecurityTest extends TestCase
         );
     }
 
-    private function createSecurityForUserId(?string $userId): PermissionVoterSecurity
+    private function createSecurityForUserId(?string $userId): PermissionVoterCommandBusSecurity
     {
-        return new PermissionVoterSecurity($userId, $this->permissionVoter);
+        return new PermissionVoterCommandBusSecurity($userId, $this->permissionVoter);
     }
 
     /**

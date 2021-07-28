@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
-use CultuurNet\UDB3\Security\Security;
+use CultuurNet\UDB3\Security\CommandBusSecurity;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -26,14 +26,14 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
     private $userId;
 
     /**
-     * @var Security
+     * @var CommandBusSecurity
      */
     private $security;
 
     public function __construct(
         CommandBus $decoratee,
         string $userId,
-        Security $security
+        CommandBusSecurity $security
     ) {
         parent::__construct($decoratee);
 

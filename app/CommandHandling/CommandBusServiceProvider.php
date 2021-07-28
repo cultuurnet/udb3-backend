@@ -12,7 +12,7 @@ use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
-use CultuurNet\UDB3\Security\PermissionVoterSecurity;
+use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
@@ -27,7 +27,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
     {
         $app['command_bus.security'] = $app->share(
             function ($app) {
-                $security = new PermissionVoterSecurity(
+                $security = new PermissionVoterCommandBusSecurity(
                     $app['current_user_id'],
                     new CompositeVoter(
                         $app['god_user_voter'],
