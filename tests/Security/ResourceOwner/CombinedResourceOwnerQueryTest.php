@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\ReadModel\Permission;
+namespace CultuurNet\UDB3\Security\ResourceOwner;
 
+use CultuurNet\UDB3\Security\ResourceOwner\CombinedResourceOwnerQuery;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
