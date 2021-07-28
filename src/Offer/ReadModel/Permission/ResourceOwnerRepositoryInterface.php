@@ -8,13 +8,10 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface ResourceOwnerRepositoryInterface
 {
-    /**
-     * @return void
-     */
     public function markResourceEditableByUser(
         StringLiteral $offerId,
         StringLiteral $userId
-    );
+    ): void;
 
     public function markResourceEditableByNewUser(
         StringLiteral $offerId,

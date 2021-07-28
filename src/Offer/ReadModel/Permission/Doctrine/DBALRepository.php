@@ -69,10 +69,7 @@ class DBALRepository implements ResourceOwnerRepositoryInterface, ResourceOwnerQ
         return $events;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function markResourceEditableByUser(StringLiteral $eventId, StringLiteral $userId)
+    public function markResourceEditableByUser(StringLiteral $eventId, StringLiteral $userId): void
     {
         try {
             $this->connection->insert(
