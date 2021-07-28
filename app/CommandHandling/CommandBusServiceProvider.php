@@ -12,7 +12,6 @@ use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Security\Permission\AlwaysAllowedVoter;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
-use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
 use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -20,7 +19,6 @@ use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class CommandBusServiceProvider implements ServiceProviderInterface
 {
