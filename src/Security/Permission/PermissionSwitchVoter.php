@@ -10,7 +10,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 /**
  * Delegates voting to another voter based on which permission needs checking.
  */
-final class PermissionSplitVoter implements PermissionVoter
+final class PermissionSwitchVoter implements PermissionVoter
 {
     /**
      * @var \CultuurNet\UDB3\Security\Permission\PermissionVoter[]

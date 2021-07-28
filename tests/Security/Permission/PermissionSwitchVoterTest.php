@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PermissionSplitVoterTest extends TestCase
+class PermissionSwitchVoterTest extends TestCase
 {
     /**
      * @test
@@ -22,7 +22,7 @@ class PermissionSplitVoterTest extends TestCase
         $a = $this->getMockBuilder(PermissionVoter::class)->getMock();
         $b = $this->getMockBuilder(PermissionVoter::class)->getMock();
 
-        $voter = (new PermissionSplitVoter())
+        $voter = (new PermissionSwitchVoter())
             ->withVoter($a, Permission::LABELS_BEHEREN(), Permission::AANBOD_VERWIJDEREN())
             ->withVoter($b, Permission::ORGANISATIES_BEWERKEN());
 
