@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Security\LabelSecurityInterface;
 use CultuurNet\UDB3\Security\Security;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SecurityWithLabelPrivacy
+class SecurityWithLabelPrivacy implements Security
 {
     /**
      * @var Security
