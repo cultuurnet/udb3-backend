@@ -13,7 +13,7 @@ interface ResourceOwnerRepositoryInterface
      */
     public function markResourceEditableByUser(
         StringLiteral $offerId,
-        StringLiteral $uitId
+        StringLiteral $userId
     );
 
     public function markResourceEditableByNewUser(
