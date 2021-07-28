@@ -20,7 +20,7 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['offer_permission_query'] = $app->share(
+        $app['offer_owner_query'] = $app->share(
             function (Application $app) {
                 return new CombinedResourceOwnerQuery(
                     [
@@ -35,7 +35,7 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new AnyOfVoter(
                     $app['god_user_voter'],
-                    new ResourceOwnerVoter($app['offer_permission_query']),
+                    new ResourceOwnerVoter($app['offer_owner_query']),
                     new Sapi3RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
                         new Uri($app['config']['search']['v3']['base_url'] . '/offers/'),
