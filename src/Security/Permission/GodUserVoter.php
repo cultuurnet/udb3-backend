@@ -22,14 +22,11 @@ class GodUserVoter implements PermissionVoter
         $this->godUserIds = $godUserIds;
     }
 
-    /**
-     * @return bool
-     */
     public function isAllowed(
         Permission $permission,
         StringLiteral $itemId,
         StringLiteral $userId
-    ) {
+    ): bool {
         return in_array($userId->toNative(), $this->godUserIds);
     }
 }

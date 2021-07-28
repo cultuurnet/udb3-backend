@@ -22,14 +22,11 @@ class UserPermissionVoter implements PermissionVoter
         $this->userPermissionsReadRepository = $userPermissionsReadRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function isAllowed(
         Permission $requiredPermission,
         StringLiteral $itemId,
         StringLiteral $userId
-    ) {
+    ): bool {
         $permissions = $this->userPermissionsReadRepository->getPermissions(
             $userId
         );

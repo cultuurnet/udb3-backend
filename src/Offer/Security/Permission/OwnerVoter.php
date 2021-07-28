@@ -22,14 +22,11 @@ class OwnerVoter implements PermissionVoter
         $this->permissionRepository = $permissionRepository;
     }
 
-    /**
-     * @return bool
-     */
     public function isAllowed(
         Permission $permission,
         StringLiteral $itemId,
         StringLiteral $userId
-    ) {
+    ): bool {
         $editableEvents = $this->permissionRepository->getEditableOffers($userId);
         return in_array($itemId, $editableEvents);
     }

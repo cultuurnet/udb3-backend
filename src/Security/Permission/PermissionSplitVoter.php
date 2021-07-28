@@ -21,7 +21,7 @@ final class PermissionSplitVoter implements PermissionVoter
         Permission $permission,
         StringLiteral $itemId,
         StringLiteral $userId
-    ) {
+    ): bool {
         if (!isset($this->mapping[(string)$permission])) {
             return false;
         }

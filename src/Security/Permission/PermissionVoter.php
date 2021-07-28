@@ -9,12 +9,9 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface PermissionVoter
 {
-    /**
-     * @return bool
-     */
     public function isAllowed(
         Permission $permission,
         StringLiteral $itemId,
         StringLiteral $userId
-    );
+    ): bool;
 }

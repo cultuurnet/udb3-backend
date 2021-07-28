@@ -22,14 +22,11 @@ class AnyOfVoter implements PermissionVoter
         $this->voters = $voters;
     }
 
-    /**
-     * @return bool
-     */
     public function isAllowed(
         Permission $permission,
         StringLiteral $itemId,
         StringLiteral $userId
-    ) {
+    ): bool {
         foreach ($this->voters as $voter) {
             if ($voter->isAllowed($permission, $itemId, $userId)) {
                 return true;
