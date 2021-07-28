@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDeco
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
+use CultuurNet\UDB3\Security\Permission\AlwaysAllowedVoter;
 use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
@@ -54,15 +55,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 Permission::FILMS_AANMAKEN()
                             )
                             ->withVoter(
-                                new class() implements PermissionVoterInterface {
-                                    public function isAllowed(
-                                        Permission $permission,
-                                        StringLiteral $itemId,
-                                        StringLiteral $userId
-                                    ): bool {
-                                        return true;
-                                    }
-                                },
+                                new AlwaysAllowedVoter(),
                                 Permission::MEDIA_UPLOADEN()
                             )
                     )
