@@ -20,11 +20,6 @@ class RoleConstraintVoterTest extends TestCase
     private $userConstraintsReadRepository;
 
     /**
-     * @var Sapi3SearchQueryFactory|MockObject
-     */
-    private $searchQueryFactory;
-
-    /**
      * @var CountingSearchServiceInterface|MockObject
      */
     private $searchService;
@@ -40,17 +35,12 @@ class RoleConstraintVoterTest extends TestCase
             UserConstraintsReadRepositoryInterface::class
         );
 
-        $this->searchQueryFactory = $this->createMock(
-            Sapi3SearchQueryFactory::class
-        );
-
         $this->searchService = $this->createMock(
             CountingSearchServiceInterface::class
         );
 
         $this->roleConstraintVoter = new RoleConstraintVoter(
             $this->userConstraintsReadRepository,
-            $this->searchQueryFactory,
             $this->searchService
         );
     }
@@ -69,7 +59,7 @@ class RoleConstraintVoterTest extends TestCase
             new StringLiteral('address.\*.postalCode:3000'),
         ];
         $offerId = new StringLiteral('625a4e74-a1ca-4bee-9e85-39869457d531');
-        $query = '(address.\*.postalCode:3000 AND id:625a4e74-a1ca-4bee-9e85-39869457d531)';
+        $query = '((address.\*.postalCode:3000) AND id:625a4e74-a1ca-4bee-9e85-39869457d531)';
 
         $this->userConstraintsReadRepository->expects($this->once())
             ->method('getByUserAndPermission')
@@ -78,14 +68,6 @@ class RoleConstraintVoterTest extends TestCase
                 $permission
             )
             ->willReturn($constraints);
-
-        $this->searchQueryFactory->expects($this->once())
-            ->method('createFromConstraints')
-            ->with(
-                $constraints,
-                $offerId
-            )
-            ->willReturn($query);
 
         $this->searchService->expects($this->once())
             ->method('search')
@@ -103,7 +85,6 @@ class RoleConstraintVoterTest extends TestCase
             )
         );
     }
-
 
     public function totalItemsDataProvider(): array
     {
@@ -139,9 +120,6 @@ class RoleConstraintVoterTest extends TestCase
                 $permission
             )
             ->willReturn([]);
-
-        $this->searchQueryFactory->expects($this->never())
-            ->method('createFromConstraints');
 
         $this->searchService->expects($this->never())
             ->method('search');
