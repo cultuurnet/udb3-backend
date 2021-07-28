@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
+use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class PermissionVoterSecurity implements Security

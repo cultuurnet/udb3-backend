@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
+use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

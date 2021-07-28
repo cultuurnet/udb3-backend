@@ -11,7 +11,7 @@ use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
 use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\PermissionSplitVoter;
-use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
+use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Security\PermissionVoterSecurity;
 use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;

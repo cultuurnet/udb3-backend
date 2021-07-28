@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
@@ -13,7 +14,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class PermissionSplitVoter implements PermissionVoterInterface
 {
     /**
-     * @var \CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface[]
+     * @var \CultuurNet\UDB3\Security\Permission\PermissionVoterInterface[]
      */
     private $mapping;
 
@@ -30,7 +31,6 @@ class PermissionSplitVoter implements PermissionVoterInterface
     }
 
     /**
-     * @param \CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface $voter
      * @param \CultuurNet\UDB3\Role\ValueObjects\Permission ...$permissions
      * @return \CultuurNet\UDB3\Offer\Security\Permission\PermissionSplitVoter
      */
