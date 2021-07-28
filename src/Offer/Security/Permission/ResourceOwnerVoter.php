@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OwnerVoter implements PermissionVoter
+class ResourceOwnerVoter implements PermissionVoter
 {
     /**
      * @var PermissionQueryInterface
