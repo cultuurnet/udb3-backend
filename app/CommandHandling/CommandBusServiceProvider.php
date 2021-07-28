@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDeco
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
-use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
+use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Security\PermissionVoterSecurity;

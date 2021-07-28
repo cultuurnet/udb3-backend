@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Security;
 
-use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
+use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
 use CultuurNet\UDB3\Offer\Security\Sapi3SearchQueryFactory;
