@@ -9,12 +9,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 interface ResourceOwnerRepository
 {
     public function markResourceEditableByUser(
-        StringLiteral $offerId,
+        StringLiteral $resourceId,
         StringLiteral $userId
     ): void;
 
     public function markResourceEditableByNewUser(
-        StringLiteral $offerId,
+        StringLiteral $resourceId,
         StringLiteral $userId
     ): void;
 }

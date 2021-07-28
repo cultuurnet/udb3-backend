@@ -77,17 +77,17 @@ class Sapi3RoleConstraintVoter implements PermissionVoter
 
     private function createQueryString(
         StringLiteral $constraint,
-        StringLiteral $offerId
+        StringLiteral $resourceId
     ): string {
         $constraintStr = '(' . $constraint->toNative() . ')';
-        $offerIdStr = $offerId->toNative();
+        $resourceIdStr = $resourceId->toNative();
 
-        return '(' . $constraintStr . ' AND id:' . $offerIdStr . ')';
+        return '(' . $constraintStr . ' AND id:' . $resourceIdStr . ')';
     }
 
     private function createQueryFromConstraints(
         array $constraints,
-        StringLiteral $offerId
+        StringLiteral $resourceId
     ): string {
         $queryString = '';
 
@@ -96,7 +96,7 @@ class Sapi3RoleConstraintVoter implements PermissionVoter
                 $queryString .= ' OR ';
             }
 
-            $queryString .= $this->createQueryString($constraint, $offerId);
+            $queryString .= $this->createQueryString($constraint, $resourceId);
         }
 
         return $queryString;

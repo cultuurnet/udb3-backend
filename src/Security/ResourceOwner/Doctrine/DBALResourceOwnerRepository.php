@@ -35,7 +35,7 @@ class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOw
      *  A database connection.
      *
      * @param StringLiteral $idField
-     *  The name of the column that holds the offer identifier.
+     *  The name of the column that holds the resource identifier.
      *
      */
     public function __construct(

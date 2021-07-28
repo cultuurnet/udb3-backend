@@ -22,20 +22,17 @@ class CombinedResourceOwnerQuery implements ResourceOwnerQuery
         $this->permissionQueries = $permissionQueries;
     }
 
-    /**
-     * @return StringLiteral[] A list of offer ids.
-     */
     public function getEditableResourceIds(StringLiteral $userId)
     {
-        $editableOffers = [];
+        $editableResourceIds = [];
 
         foreach ($this->permissionQueries as $permissionQuery) {
-            $editableOffers = array_merge(
-                $editableOffers,
+            $editableResourceIds = array_merge(
+                $editableResourceIds,
                 $permissionQuery->getEditableResourceIds($userId)
             );
         }
 
-        return $editableOffers;
+        return $editableResourceIds;
     }
 }
