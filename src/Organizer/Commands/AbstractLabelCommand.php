@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Organizer\Commands;
 use CultuurNet\UDB3\Label;
 use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Security\LabelSecurityInterface;
+use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use ValueObjects\StringLiteral\StringLiteral;
 
-abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements AuthorizableCommandInterface, LabelSecurityInterface
+abstract class AbstractLabelCommand extends AbstractOrganizerCommand implements AuthorizableCommandInterface, AuthorizableLabelCommand
 {
     /**
      * @var Label

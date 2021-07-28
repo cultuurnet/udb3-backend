@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Security\LabelSecurityInterface;
+use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use ValueObjects\StringLiteral\StringLiteral;
 
-final class ImportLabels extends AbstractCommand implements LabelSecurityInterface
+final class ImportLabels extends AbstractCommand implements AuthorizableLabelCommand
 {
     /**
      * @var Labels

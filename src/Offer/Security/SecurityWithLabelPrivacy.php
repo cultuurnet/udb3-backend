@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\Security;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
-use CultuurNet\UDB3\Security\LabelSecurityInterface;
+use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use CultuurNet\UDB3\Security\Security;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -42,7 +42,7 @@ class SecurityWithLabelPrivacy implements Security
     public function isAuthorized(AuthorizableCommandInterface $command)
     {
         if ($this->isLabelCommand($command)) {
-            /** @var LabelSecurityInterface $command */
+            /** @var AuthorizableLabelCommand $command */
             return $this->canUseLabel($command);
         } else {
             return $this->decoratee->isAuthorized($command);
@@ -54,14 +54,14 @@ class SecurityWithLabelPrivacy implements Security
      */
     private function isLabelCommand(AuthorizableCommandInterface $command)
     {
-        return ($command instanceof LabelSecurityInterface);
+        return ($command instanceof AuthorizableLabelCommand);
     }
 
     /**
      * @return bool
      * @throws \InvalidArgumentException
      */
-    private function canUseLabel(LabelSecurityInterface $command)
+    private function canUseLabel(AuthorizableLabelCommand $command)
     {
         foreach ($command->getNames() as $labelName) {
             if (!$this->labelReadRepository->canUseLabel(

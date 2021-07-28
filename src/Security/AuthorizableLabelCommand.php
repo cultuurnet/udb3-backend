@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Security;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-interface LabelSecurityInterface
+interface AuthorizableLabelCommand
 {
     /**
      * @return StringLiteral[]
