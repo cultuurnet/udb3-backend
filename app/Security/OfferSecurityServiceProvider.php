@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\Security;
 
 use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
-use CultuurNet\UDB3\Offer\Security\Permission\ResourceOwnerVoter;
+use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use GuzzleHttp\Psr7\Uri;
 use Http\Adapter\Guzzle6\Client;
