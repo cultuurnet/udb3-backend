@@ -6,8 +6,10 @@ namespace CultuurNet\UDB3\Offer\Security\Permission;
 
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Search\CountingSearchServiceInterface;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
+use GuzzleHttp\Psr7\Request;
+use Http\Client\HttpClient;
+use Psr\Http\Message\UriInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class RoleConstraintVoter implements PermissionVoterInterface
@@ -18,16 +20,37 @@ class RoleConstraintVoter implements PermissionVoterInterface
     private $userConstraintsReadRepository;
 
     /**
-     * @var CountingSearchServiceInterface
+     * @var UriInterface
      */
-    private $searchService;
+    private $searchLocation;
+
+    /**
+     * @var HttpClient
+     */
+    private $httpClient;
+
+    /**
+     * @var string|null
+     */
+    private $apiKey;
+
+    /**
+     * @var array
+     */
+    private $queryParameters;
 
     public function __construct(
         UserConstraintsReadRepositoryInterface $userConstraintsReadRepository,
-        CountingSearchServiceInterface $searchService
+        UriInterface $searchLocation,
+        HttpClient $httpClient,
+        ?string $apiKey,
+        array $queryParameters
     ) {
         $this->userConstraintsReadRepository = $userConstraintsReadRepository;
-        $this->searchService = $searchService;
+        $this->searchLocation = $searchLocation;
+        $this->httpClient = $httpClient;
+        $this->apiKey = $apiKey;
+        $this->queryParameters = $queryParameters;
     }
 
     public function isAllowed(
@@ -48,7 +71,7 @@ class RoleConstraintVoter implements PermissionVoterInterface
             $itemId
         );
 
-        $totalItems = $this->searchService->search($query);
+        $totalItems = $this->search($query);
 
         return $totalItems === 1;
     }
@@ -78,5 +101,41 @@ class RoleConstraintVoter implements PermissionVoterInterface
         }
 
         return $queryString;
+    }
+
+    private function search(string $query): int
+    {
+        $queryParameters =
+            [
+                'q' => $query,
+                'start' => 0,
+                'limit' => 1,
+            ];
+
+        $queryParameters += $this->queryParameters;
+
+        $queryParameters = http_build_query($queryParameters);
+
+        $headers = [];
+
+        if ($this->apiKey) {
+            $headers['X-Api-Key'] = $this->apiKey;
+        }
+
+        $url = $this->searchLocation->withQuery($queryParameters);
+
+        $request = new Request(
+            'GET',
+            (string) $url,
+            $headers
+        );
+
+        $response = $this->httpClient->sendRequest($request);
+
+        $decodedResponse = json_decode(
+            $response->getBody()->getContents()
+        );
+
+        return (int) $decodedResponse->{'totalItems'};
     }
 }
