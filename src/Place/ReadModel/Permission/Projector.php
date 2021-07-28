@@ -9,7 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerRepositoryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepositoryInterface;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;

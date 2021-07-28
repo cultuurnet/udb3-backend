@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerRepositoryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepositoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DBALResourceOwnerRepository implements ResourceOwnerRepositoryInterface, ResourceOwnerQueryInterface

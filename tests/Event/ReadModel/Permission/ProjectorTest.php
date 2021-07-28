@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerRepositoryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepositoryInterface;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
