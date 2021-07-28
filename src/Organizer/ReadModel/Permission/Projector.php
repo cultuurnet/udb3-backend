@@ -9,7 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerRepositoryInterface;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
@@ -25,12 +25,12 @@ class Projector implements EventListener
     private $userIdResolver;
 
     /**
-     * @var PermissionRepositoryInterface
+     * @var ResourceOwnerRepositoryInterface
      */
     private $permissionRepository;
 
     public function __construct(
-        PermissionRepositoryInterface $permissionRepository,
+        ResourceOwnerRepositoryInterface $permissionRepository,
         CreatedByToUserIdResolverInterface $createdByToUserIdResolver
     ) {
         $this->userIdResolver = $createdByToUserIdResolver;

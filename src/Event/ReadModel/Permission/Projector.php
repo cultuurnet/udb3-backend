@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerRepositoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class Projector implements EventListener
@@ -26,12 +26,12 @@ class Projector implements EventListener
     private $userIdResolver;
 
     /**
-     * @var PermissionRepositoryInterface
+     * @var ResourceOwnerRepositoryInterface
      */
     private $permissionRepository;
 
     public function __construct(
-        PermissionRepositoryInterface $permissionRepository,
+        ResourceOwnerRepositoryInterface $permissionRepository,
         CreatedByToUserIdResolverInterface $createdByToUserIdResolver
     ) {
         $this->userIdResolver = $createdByToUserIdResolver;

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Permission;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-interface PermissionRepositoryInterface
+interface ResourceOwnerRepositoryInterface
 {
     /**
      * @return void

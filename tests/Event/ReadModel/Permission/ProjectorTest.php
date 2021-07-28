@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerRepositoryInterface;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ProjectorTest extends TestCase
 {
     /**
-     * @var PermissionRepositoryInterface|MockObject
+     * @var ResourceOwnerRepositoryInterface|MockObject
      */
     private $repository;
 
@@ -41,7 +41,7 @@ class ProjectorTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(PermissionRepositoryInterface::class);
+        $this->repository = $this->createMock(ResourceOwnerRepositoryInterface::class);
         $this->userIdResolver = $this->createMock(CreatedByToUserIdResolverInterface::class);
 
         $this->projector = new Projector(
