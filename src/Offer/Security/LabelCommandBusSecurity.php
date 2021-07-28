@@ -39,20 +39,12 @@ class LabelCommandBusSecurity implements CommandBusSecurity
 
     public function isAuthorized(AuthorizableCommandInterface $command)
     {
-        if ($this->isLabelCommand($command)) {
+        if ($command instanceof AuthorizableLabelCommand) {
             /** @var AuthorizableLabelCommand $command */
             return $this->canUseLabel($command);
         } else {
             return $this->decoratee->isAuthorized($command);
         }
-    }
-
-    /**
-     * @return bool
-     */
-    private function isLabelCommand(AuthorizableCommandInterface $command)
-    {
-        return ($command instanceof AuthorizableLabelCommand);
     }
 
     /**
