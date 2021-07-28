@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class CommandBusLabelSecurityTest extends TestCase
+class LabelCommandBusSecurityTest extends TestCase
 {
     /**
      * @var CommandBusSecurity|MockObject
