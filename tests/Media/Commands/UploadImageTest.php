@@ -96,26 +96,4 @@ class UploadImageTest extends TestCase
             $this->uploadImage->getLanguage()
         );
     }
-
-    /**
-     * @test
-     */
-    public function it_stores_an_item_id()
-    {
-        $this->assertEquals(
-            'de305d54-75b4-431b-adb2-eb6b9e546014',
-            $this->uploadImage->getItemId()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_stores_a_permission()
-    {
-        $this->assertEquals(
-            Permission::MEDIA_UPLOADEN(),
-            $this->uploadImage->getPermission()
-        );
-    }
 }

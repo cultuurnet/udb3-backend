@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class UploadImage implements AuthorizableCommand
+class UploadImage
 {
     /**
      * @var UUID
@@ -88,15 +88,5 @@ class UploadImage implements AuthorizableCommand
     public function getFilePath(): StringLiteral
     {
         return $this->filePath;
-    }
-
-    public function getItemId(): string
-    {
-        return (string) $this->getFileId();
-    }
-
-    public function getPermission(): Permission
-    {
-        return Permission::MEDIA_UPLOADEN();
     }
 }
