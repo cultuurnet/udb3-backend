@@ -12,7 +12,7 @@ use Http\Client\HttpClient;
 use Psr\Http\Message\UriInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class RoleConstraintVoter implements PermissionVoterInterface
+class Sapi3RoleConstraintVoter implements PermissionVoterInterface
 {
     /**
      * @var UserConstraintsReadRepositoryInterface

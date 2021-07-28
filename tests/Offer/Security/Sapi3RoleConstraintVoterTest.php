@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class RoleConstraintVoterTest extends TestCase
+class Sapi3RoleConstraintVoterTest extends TestCase
 {
     /**
      * @var UserConstraintsReadRepositoryInterface|MockObject

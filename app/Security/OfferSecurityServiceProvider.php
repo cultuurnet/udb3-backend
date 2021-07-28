@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Silex\Security;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
-use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
+use CultuurNet\UDB3\Offer\Security\Permission\Sapi3RoleConstraintVoter;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use GuzzleHttp\Psr7\Uri;
 use Http\Adapter\Guzzle6\Client;
@@ -36,7 +36,7 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CompositeVoter(
                     new OwnerVoter($app['offer_permission_query']),
-                    new RoleConstraintVoter(
+                    new Sapi3RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
                         new Uri($app['config']['search']['v3']['base_url'] . '/offers/'),
                         new Client(new \GuzzleHttp\Client()),
