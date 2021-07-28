@@ -32,21 +32,17 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['user_permission_matcher'] = $app->share(
-            function (Application $app) {
-                return new Sapi3UserPermissionMatcher(
-                    $app['user_constraints_read_repository'],
-                    new Sapi3SearchQueryFactory(),
-                    $app[Sapi3SearchServiceProvider::OFFERS_COUNTING_SEARCH_SERVICE]
-                );
-            }
-        );
-
         $app['offer_permission_voter_inner'] = $app->share(
             function (Application $app) {
                 return new CompositeVoter(
                     new OwnerVoter($app['offer_permission_query']),
-                    new RoleConstraintVoter($app['user_permission_matcher'])
+                    new RoleConstraintVoter(
+                        new Sapi3UserPermissionMatcher(
+                            $app['user_constraints_read_repository'],
+                            new Sapi3SearchQueryFactory(),
+                            $app[Sapi3SearchServiceProvider::OFFERS_COUNTING_SEARCH_SERVICE]
+                        )
+                    )
                 );
             }
         );
