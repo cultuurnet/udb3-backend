@@ -8,6 +8,8 @@ use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
 use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
+use GuzzleHttp\Psr7\Uri;
+use Http\Adapter\Guzzle6\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -24,7 +26,10 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
                     new OwnerVoter($app['organizer_permission.repository']),
                     new RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
-                        $app[Sapi3SearchServiceProvider::ORGANIZERS_COUNTING_SEARCH_SERVICE]
+                        new Uri($app['config']['search']['v3']['base_url'] . '/organizers/'),
+                        new Client(new \GuzzleHttp\Client()),
+                        $app['config']['search']['v3']['api_key'] ?? null,
+                        []
                     )
                 );
             }

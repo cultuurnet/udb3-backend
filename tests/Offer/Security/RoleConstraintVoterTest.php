@@ -7,7 +7,10 @@ namespace CultuurNet\UDB3\Offer\Security;
 use CultuurNet\UDB3\Offer\Security\Permission\RoleConstraintVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Search\CountingSearchServiceInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
+use Http\Client\HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -20,9 +23,9 @@ class RoleConstraintVoterTest extends TestCase
     private $userConstraintsReadRepository;
 
     /**
-     * @var CountingSearchServiceInterface|MockObject
+     * @var HttpClient|MockObject
      */
-    private $searchService;
+    private $httpClient;
 
     /**
      * @var RoleConstraintVoter
@@ -35,13 +38,17 @@ class RoleConstraintVoterTest extends TestCase
             UserConstraintsReadRepositoryInterface::class
         );
 
-        $this->searchService = $this->createMock(
-            CountingSearchServiceInterface::class
-        );
+        $searchLocation =  new Uri('http://udb-search.dev/offers/');
+        $this->httpClient = $this->createMock(HttpClient::class);
+        $apiKey = 'cf462083-7bbd-46fc-95c3-6a0bc95918a5';
+        $extraParameters = ['disableDefaultFilters' => true];
 
         $this->roleConstraintVoter = new RoleConstraintVoter(
             $this->userConstraintsReadRepository,
-            $this->searchService
+            $searchLocation,
+            $this->httpClient,
+            $apiKey,
+            $extraParameters
         );
     }
 
@@ -69,12 +76,19 @@ class RoleConstraintVoterTest extends TestCase
             )
             ->willReturn($constraints);
 
-        $this->searchService->expects($this->once())
-            ->method('search')
-            ->with($query)
-            ->willReturn(
-                $totalItems
-            );
+        $expectedRequest = new Request(
+            'GET',
+            'http://udb-search.dev/offers/?q=' . urlencode($query) . '&start=0&limit=1&disableDefaultFilters=1',
+            ['X-Api-Key' => 'cf462083-7bbd-46fc-95c3-6a0bc95918a5']
+        );
+
+        $response = new Response(200, [], json_encode(['totalItems' => $totalItems]));
+
+        $this->httpClient
+            ->expects($this->once())
+            ->method('sendRequest')
+            ->with($expectedRequest)
+            ->willReturn($response);
 
         $this->assertEquals(
             $expected,
@@ -121,8 +135,8 @@ class RoleConstraintVoterTest extends TestCase
             )
             ->willReturn([]);
 
-        $this->searchService->expects($this->never())
-            ->method('search');
+        $this->httpClient->expects($this->never())
+            ->method('sendRequest');
 
         $this->assertFalse(
             $this->roleConstraintVoter->isAllowed(
