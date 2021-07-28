@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Offer\ReadModel\Permission\CombinedPermissionQuery;
 use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Offer\Security\Permission\OwnerVoter;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
-use CultuurNet\UDB3\Silex\Search\Sapi3SearchServiceProvider;
 use GuzzleHttp\Psr7\Uri;
 use Http\Adapter\Guzzle6\Client;
 use Silex\Application;

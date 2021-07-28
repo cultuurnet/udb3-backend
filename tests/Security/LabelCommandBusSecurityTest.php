@@ -10,8 +10,6 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractLabelCommand as OfferAbstractLabelCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Mock\Commands\UpdateTitle;
-use CultuurNet\UDB3\Security\CommandBusSecurity;
-use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
