@@ -57,7 +57,7 @@ class CommandBusServiceProvider implements ServiceProviderInterface
                                 new class() implements PermissionVoterInterface {
                                     public function isAllowed(
                                         Permission $permission,
-                                        StringLiteral $offerId,
+                                        StringLiteral $itemId,
                                         StringLiteral $userId
                                     ): bool {
                                         return true;

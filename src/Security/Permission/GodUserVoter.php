@@ -27,7 +27,7 @@ class GodUserVoter implements PermissionVoterInterface
      */
     public function isAllowed(
         Permission $permission,
-        StringLiteral $offerId,
+        StringLiteral $itemId,
         StringLiteral $userId
     ) {
         return in_array($userId->toNative(), $this->godUserIds);

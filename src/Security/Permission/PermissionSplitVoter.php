@@ -19,14 +19,14 @@ final class PermissionSplitVoter implements PermissionVoterInterface
 
     public function isAllowed(
         Permission $permission,
-        StringLiteral $offerId,
+        StringLiteral $itemId,
         StringLiteral $userId
     ) {
         if (!isset($this->mapping[(string)$permission])) {
             return false;
         }
 
-        return $this->mapping[(string)$permission]->isAllowed($permission, $offerId, $userId);
+        return $this->mapping[(string)$permission]->isAllowed($permission, $itemId, $userId);
     }
 
     public function withVoter(

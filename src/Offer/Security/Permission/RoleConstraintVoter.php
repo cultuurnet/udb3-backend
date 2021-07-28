@@ -27,13 +27,13 @@ class RoleConstraintVoter implements PermissionVoterInterface
      */
     public function isAllowed(
         Permission $permission,
-        StringLiteral $offerId,
+        StringLiteral $itemId,
         StringLiteral $userId
     ) {
         return $this->userPermissionMatcher->itMatchesOffer(
             $userId,
             $permission,
-            $offerId
+            $itemId
         );
     }
 }

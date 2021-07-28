@@ -27,7 +27,7 @@ class UserPermissionVoter implements PermissionVoterInterface
      */
     public function isAllowed(
         Permission $requiredPermission,
-        StringLiteral $offerId,
+        StringLiteral $itemId,
         StringLiteral $userId
     ) {
         $permissions = $this->userPermissionsReadRepository->getPermissions(

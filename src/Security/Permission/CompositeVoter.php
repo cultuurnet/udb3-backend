@@ -27,11 +27,11 @@ class CompositeVoter implements PermissionVoterInterface
      */
     public function isAllowed(
         Permission $permission,
-        StringLiteral $offerId,
+        StringLiteral $itemId,
         StringLiteral $userId
     ) {
         foreach ($this->voters as $voter) {
-            if ($voter->isAllowed($permission, $offerId, $userId)) {
+            if ($voter->isAllowed($permission, $itemId, $userId)) {
                 return true;
             }
         }

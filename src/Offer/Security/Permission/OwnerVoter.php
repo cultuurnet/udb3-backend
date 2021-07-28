@@ -27,10 +27,10 @@ class OwnerVoter implements PermissionVoterInterface
      */
     public function isAllowed(
         Permission $permission,
-        StringLiteral $offerId,
+        StringLiteral $itemId,
         StringLiteral $userId
     ) {
         $editableEvents = $this->permissionRepository->getEditableOffers($userId);
-        return in_array($offerId, $editableEvents);
+        return in_array($itemId, $editableEvents);
     }
 }
