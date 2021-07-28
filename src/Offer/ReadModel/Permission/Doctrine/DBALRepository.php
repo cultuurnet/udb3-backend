@@ -72,7 +72,7 @@ class DBALRepository implements ResourceOwnerRepositoryInterface, ResourceOwnerQ
     /**
      * @inheritdoc
      */
-    public function markOfferEditableByUser(StringLiteral $eventId, StringLiteral $uitId)
+    public function markResourceEditableByUser(StringLiteral $eventId, StringLiteral $uitId)
     {
         try {
             $this->connection->insert(
@@ -88,7 +88,7 @@ class DBALRepository implements ResourceOwnerRepositoryInterface, ResourceOwnerQ
         }
     }
 
-    public function markOfferEditableByNewUser(StringLiteral $eventId, StringLiteral $userId): void
+    public function markResourceEditableByNewUser(StringLiteral $eventId, StringLiteral $userId): void
     {
         $this->connection->update(
             $this->tableName->toNative(),

@@ -80,7 +80,7 @@ class DBALRepositoryTest extends TestCase
      */
     private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId)
     {
-        $this->repository->markOfferEditableByUser($eventId, $userId);
+        $this->repository->markResourceEditableByUser($eventId, $userId);
     }
 
     /**
@@ -97,7 +97,7 @@ class DBALRepositoryTest extends TestCase
 
         array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
 
-        $this->repository->markOfferEditableByUser(new StringLiteral('456'), $johnDoe);
+        $this->repository->markResourceEditableByUser(new StringLiteral('456'), $johnDoe);
 
         $this->assertEquals(
             $editableByJohnDoe,
@@ -120,7 +120,7 @@ class DBALRepositoryTest extends TestCase
 
         array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
 
-        $this->repository->markOfferEditableByNewUser(new StringLiteral('456'), $janeDoe);
+        $this->repository->markResourceEditableByNewUser(new StringLiteral('456'), $janeDoe);
 
         $this->assertEquals(
             [

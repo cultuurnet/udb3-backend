@@ -56,7 +56,7 @@ class Projector implements EventListener
                 return;
             }
 
-            $this->permissionRepository->markOfferEditableByUser(
+            $this->permissionRepository->markResourceEditableByUser(
                 new StringLiteral($organizerImportedFromUDB2->getActorId()),
                 $ownerId
             );
@@ -91,7 +91,7 @@ class Projector implements EventListener
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 
-        $this->permissionRepository->markOfferEditableByUser(
+        $this->permissionRepository->markResourceEditableByUser(
             new StringLiteral($organizerId),
             $ownerId
         );

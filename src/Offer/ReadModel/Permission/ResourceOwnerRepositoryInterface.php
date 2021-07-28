@@ -11,12 +11,12 @@ interface ResourceOwnerRepositoryInterface
     /**
      * @return void
      */
-    public function markOfferEditableByUser(
+    public function markResourceEditableByUser(
         StringLiteral $offerId,
         StringLiteral $uitId
     );
 
-    public function markOfferEditableByNewUser(
+    public function markResourceEditableByNewUser(
         StringLiteral $offerId,
         StringLiteral $userId
     ): void;
