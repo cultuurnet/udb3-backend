@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Security\Permission\CompositeVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
-use CultuurNet\UDB3\Offer\Security\LabelCommandBusSecurity;
+use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;

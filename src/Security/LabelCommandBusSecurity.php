@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Offer\Security;
+namespace CultuurNet\UDB3\Security;
 
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Security\AuthorizableCommandInterface;
-use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
-use CultuurNet\UDB3\Security\CommandBusSecurity;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
