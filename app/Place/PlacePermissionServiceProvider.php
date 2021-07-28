@@ -20,7 +20,7 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
         $app['place_permission.table_name'] = new StringLiteral('place_permission_readmodel');
         $app['place_permission.id_field'] = new StringLiteral('place_id');
 
-        $app['place_permission.repository'] = $app->share(
+        $app['place_owner.repository'] = $app->share(
             function (Application $app) {
                 return new DBALResourceOwnerRepository(
                     $app['place_permission.table_name'],
@@ -33,7 +33,7 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
         $app['place_permission.projector'] = $app->share(
             function (Application $app) {
                 $projector = new Projector(
-                    $app['place_permission.repository'],
+                    $app['place_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
 

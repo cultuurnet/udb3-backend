@@ -22,7 +22,7 @@ class OrganizerSecurityServiceProvider implements ServiceProviderInterface
         $app['organizer_permission_voter_inner'] = $app->share(
             function (Application $app) {
                 return new AnyOfVoter(
-                    new ResourceOwnerVoter($app['organizer_permission.repository']),
+                    new ResourceOwnerVoter($app['organizer_owner.repository']),
                     new Sapi3RoleConstraintVoter(
                         $app['user_constraints_read_repository'],
                         new Uri($app['config']['search']['v3']['base_url'] . '/organizers/'),

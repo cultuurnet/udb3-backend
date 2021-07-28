@@ -21,7 +21,7 @@ class OrganizerPermissionServiceProvider implements ServiceProviderInterface
         $app['organizer_permission.table_name'] = new StringLiteral('organizer_permission_readmodel');
         $app['organizer_permission.id_field'] = new StringLiteral('organizer_id');
 
-        $app['organizer_permission.repository'] = $app->share(
+        $app['organizer_owner.repository'] = $app->share(
             function (Application $app) {
                 return new DBALResourceOwnerRepository(
                     $app['organizer_permission.table_name'],
@@ -34,7 +34,7 @@ class OrganizerPermissionServiceProvider implements ServiceProviderInterface
         $app[self::PERMISSION_PROJECTOR] = $app->share(
             function (Application $app) {
                 $projector = new Projector(
-                    $app['organizer_permission.repository'],
+                    $app['organizer_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
 

@@ -24,8 +24,8 @@ class OfferSecurityServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CombinedResourceOwnerQuery(
                     [
-                        $app['event_permission.repository'],
-                        $app['place_permission.repository'],
+                        $app['event_owner.repository'],
+                        $app['place_owner.repository'],
                     ]
                 );
             }

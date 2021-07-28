@@ -20,7 +20,7 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
         $app['event_permission.table_name'] = new StringLiteral('event_permission_readmodel');
         $app['event_permission.id_field'] = new StringLiteral('event_id');
 
-        $app['event_permission.repository'] = $app->share(
+        $app['event_owner.repository'] = $app->share(
             function (Application $app) {
                 return new DBALResourceOwnerRepository(
                     $app['event_permission.table_name'],
@@ -33,7 +33,7 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
         $app['event_permission.projector'] = $app->share(
             function (Application $app) {
                 $projector = new Projector(
-                    $app['event_permission.repository'],
+                    $app['event_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
 
