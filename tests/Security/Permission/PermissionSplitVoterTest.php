@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Security\Permission;
 
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionSplitVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionVoterInterface;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
