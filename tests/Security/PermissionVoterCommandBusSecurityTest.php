@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Security\Permission\ResourceOwnerVoter;
@@ -35,7 +35,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     private $notAllowedUserId;
 
     /**
-     * @var PermissionQueryInterface|MockObject
+     * @var ResourceOwnerQueryInterface|MockObject
      */
     private $permissionRepository;
 
@@ -52,7 +52,7 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
         $this->notAllowedUserId = '4b7d9a94-e4ff-4840-92b2-2f3f37ee99d4';
 
         $this->permissionRepository = $this->createMock(
-            PermissionQueryInterface::class
+            ResourceOwnerQueryInterface::class
         );
 
         $this->permissionVoter = new AnyOfVoter(

@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Permission;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-class CombinedPermissionQuery implements PermissionQueryInterface
+class CombinedPermissionQuery implements ResourceOwnerQueryInterface
 {
     /**
-     * @var PermissionQueryInterface[]
+     * @var ResourceOwnerQueryInterface[]
      */
     private $permissionQueries;
 
     /**
      * CombinedPermissionQuery constructor.
-     * @param PermissionQueryInterface[] $permissionQueries
+     * @param ResourceOwnerQueryInterface[] $permissionQueries
      */
     public function __construct(array $permissionQueries)
     {

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -17,13 +17,13 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ChangeOfferOwnerInBulk extends AbstractCommand
 {
     /**
-     * @var PermissionQueryInterface
+     * @var ResourceOwnerQueryInterface
      */
     private $permissionQuery;
 
     public function __construct(
         CommandBus $commandBus,
-        PermissionQueryInterface $permissionQuery
+        ResourceOwnerQueryInterface $permissionQuery
     ) {
         parent::__construct($commandBus);
         $this->permissionQuery = $permissionQuery;

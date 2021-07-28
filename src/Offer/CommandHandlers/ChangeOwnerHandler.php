@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ChangeOwnerHandler implements CommandHandler
@@ -18,13 +18,13 @@ final class ChangeOwnerHandler implements CommandHandler
     private $offerRepository;
 
     /**
-     * @var PermissionQueryInterface
+     * @var ResourceOwnerQueryInterface
      */
     private $permissionQuery;
 
     public function __construct(
         OfferRepository $offerRepository,
-        PermissionQueryInterface $permissionQuery
+        ResourceOwnerQueryInterface $permissionQuery
     ) {
         $this->offerRepository = $offerRepository;
         $this->permissionQuery = $permissionQuery;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DBALRepository implements PermissionRepositoryInterface, PermissionQueryInterface
+class DBALRepository implements PermissionRepositoryInterface, ResourceOwnerQueryInterface
 {
     /**
      * @var Connection

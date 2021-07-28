@@ -11,7 +11,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class CombinedPermissionQueryTest extends TestCase
 {
     /**
-     * @var PermissionQueryInterface[]|MockObject[]
+     * @var ResourceOwnerQueryInterface[]|MockObject[]
      */
     private $permissionQueries;
 
@@ -88,11 +88,11 @@ class CombinedPermissionQueryTest extends TestCase
 
     /**
      * @param StringLiteral[] $editableOffers
-     * @return PermissionQueryInterface|MockObject
+     * @return ResourceOwnerQueryInterface|MockObject
      */
     private function createPermissionQuery(array $editableOffers)
     {
-        $permissionQuery = $this->createMock(PermissionQueryInterface::class);
+        $permissionQuery = $this->createMock(ResourceOwnerQueryInterface::class);
 
         $permissionQuery->method('getEditableOffers')
             ->willReturn($editableOffers);

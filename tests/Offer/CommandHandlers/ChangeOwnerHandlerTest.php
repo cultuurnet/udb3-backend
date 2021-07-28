@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Offer\ReadModel\Permission\ResourceOwnerQueryInterface;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -28,7 +28,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var PermissionQueryInterface|MockObject
+     * @var ResourceOwnerQueryInterface|MockObject
      */
     private $permissionQuery;
 
@@ -41,7 +41,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
             new PlaceRepository($eventStore, $eventBus)
         );
 
-        $this->permissionQuery = $this->createMock(PermissionQueryInterface::class);
+        $this->permissionQuery = $this->createMock(ResourceOwnerQueryInterface::class);
 
         return new ChangeOwnerHandler($repository, $this->permissionQuery);
     }

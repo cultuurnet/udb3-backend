@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\Permission;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-interface PermissionQueryInterface
+interface ResourceOwnerQueryInterface
 {
     /**
      * @return StringLiteral[] A list of resource ids that the given user can edit.
