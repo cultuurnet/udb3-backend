@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALResourceOwnerRepository;
+use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
 use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
 use Silex\Application;
 use Silex\ServiceProviderInterface;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Organizer\ReadModel\Permission\Projector;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALResourceOwnerRepository;
+use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
