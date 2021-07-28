@@ -10,6 +10,9 @@ use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use CultuurNet\UDB3\Security\CommandBusSecurity;
 use ValueObjects\StringLiteral\StringLiteral;
 
+/**
+ * Checks commands that add/remove labels from entities to see if the user is allowed to use those specific labels.
+ */
 class LabelCommandBusSecurity implements CommandBusSecurity
 {
     /**
