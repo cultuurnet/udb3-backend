@@ -42,11 +42,6 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
     private $permissionRepository;
 
     /**
-     * @var UserPermissionMatcherInterface|MockObject
-     */
-    private $userPermissionMatcher;
-
-    /**
      * @var CompositeVoter
      */
     private $permissionVoter;
@@ -62,14 +57,9 @@ class PermissionVoterCommandBusSecurityTest extends TestCase
             PermissionQueryInterface::class
         );
 
-        $this->userPermissionMatcher = $this->createMock(
-            UserPermissionMatcherInterface::class
-        );
-
         $this->permissionVoter = new CompositeVoter(
             new GodUserVoter([$this->godUserId]),
-            new OwnerVoter($this->permissionRepository),
-            new RoleConstraintVoter($this->userPermissionMatcher)
+            new OwnerVoter($this->permissionRepository)
         );
     }
 
