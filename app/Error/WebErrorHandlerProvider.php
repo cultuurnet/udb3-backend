@@ -15,6 +15,8 @@ use Exception;
 use Respect\Validation\Exceptions\GroupedValidationException;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
 
 class WebErrorHandlerProvider implements ServiceProviderInterface
@@ -56,6 +58,10 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
         if ($e instanceof Error) {
             $problem = ApiProblems::internalServerError();
+        }
+
+        if ($e instanceof AccessDeniedException || $e instanceof AccessDeniedHttpException) {
+            $problem = ApiProblems::forbidden();
         }
 
         if ($e instanceof DataValidationException) {
