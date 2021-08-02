@@ -48,10 +48,7 @@ class DBALResourceOwnerRepository implements ResourceOwnerRepository, ResourceOw
         $this->idField = $idField;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getEditableResourceIds(StringLiteral $userId)
+    public function getEditableResourceIds(StringLiteral $userId): array
     {
         $q = $this->connection->createQueryBuilder();
         $q->select($this->idField->toNative())

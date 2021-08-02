@@ -22,7 +22,7 @@ class CombinedResourceOwnerQuery implements ResourceOwnerQuery
         $this->permissionQueries = $permissionQueries;
     }
 
-    public function getEditableResourceIds(StringLiteral $userId)
+    public function getEditableResourceIds(StringLiteral $userId): array
     {
         $editableResourceIds = [];
 
