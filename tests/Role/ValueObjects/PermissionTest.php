@@ -23,7 +23,6 @@ class PermissionTest extends TestCase
                 Permission::GEBRUIKERS_BEHEREN()->getName() => Permission::GEBRUIKERS_BEHEREN,
                 Permission::LABELS_BEHEREN()->getName() => Permission::LABELS_BEHEREN,
                 Permission::ORGANISATIES_BEHEREN()->getName() => Permission::ORGANISATIES_BEHEREN,
-                Permission::MEDIA_UPLOADEN()->getName() => Permission::MEDIA_UPLOADEN,
                 Permission::VOORZIENINGEN_BEWERKEN()->getName() => Permission::VOORZIENINGEN_BEWERKEN,
                 Permission::ORGANISATIES_BEWERKEN()->getName() => Permission::ORGANISATIES_BEWERKEN,
                 Permission::PRODUCTIES_AANMAKEN()->getName() => Permission::PRODUCTIES_AANMAKEN,

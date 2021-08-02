@@ -7,12 +7,10 @@ namespace CultuurNet\UDB3\Media\Commands;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class UploadImage implements AuthorizableCommandInterface
+class UploadImage
 {
     /**
      * @var UUID
@@ -88,15 +86,5 @@ class UploadImage implements AuthorizableCommandInterface
     public function getFilePath(): StringLiteral
     {
         return $this->filePath;
-    }
-
-    public function getItemId(): string
-    {
-        return (string) $this->getFileId();
-    }
-
-    public function getPermission(): Permission
-    {
-        return Permission::MEDIA_UPLOADEN();
     }
 }

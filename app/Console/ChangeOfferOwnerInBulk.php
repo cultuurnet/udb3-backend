@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Silex\Console;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -17,13 +17,13 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ChangeOfferOwnerInBulk extends AbstractCommand
 {
     /**
-     * @var PermissionQueryInterface
+     * @var ResourceOwnerQuery
      */
     private $permissionQuery;
 
     public function __construct(
         CommandBus $commandBus,
-        PermissionQueryInterface $permissionQuery
+        ResourceOwnerQuery $permissionQuery
     ) {
         parent::__construct($commandBus);
         $this->permissionQuery = $permissionQuery;
@@ -54,7 +54,7 @@ class ChangeOfferOwnerInBulk extends AbstractCommand
 
         $success = 0;
         $errors = 0;
-        foreach ($this->permissionQuery->getEditableOffers(new StringLiteral($originalOwnerId)) as $editableOffer) {
+        foreach ($this->permissionQuery->getEditableResourceIds(new StringLiteral($originalOwnerId)) as $editableOffer) {
             $offerId = $editableOffer->toNative();
             try {
                 $this->commandBus->dispatch(

@@ -156,6 +156,10 @@ class ReadRoleRestController
             );
         }
 
+        // Always add the obsolete MEDIA_UPLOADEN permission for backward compatibility with clients that maybe expect
+        // it in the /user/permissions response
+        $list[] = 'MEDIA_UPLOADEN';
+
         return (new JsonResponse())
             ->setData($list)
             ->setPrivate();

@@ -15,7 +15,7 @@ use CultuurNet\UDB3\CalendarType;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Event\EventType;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -28,7 +28,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ProjectorTest extends TestCase
 {
     /**
-     * @var PermissionRepositoryInterface|MockObject
+     * @var ResourceOwnerRepository|MockObject
      */
     private $repository;
 
@@ -44,7 +44,7 @@ class ProjectorTest extends TestCase
 
     public function setUp()
     {
-        $this->repository = $this->createMock(PermissionRepositoryInterface::class);
+        $this->repository = $this->createMock(ResourceOwnerRepository::class);
         $this->userIdResolver = $this->createMock(CreatedByToUserIdResolverInterface::class);
 
         $this->projector = new Projector(
@@ -81,7 +81,7 @@ class ProjectorTest extends TestCase
             ->willReturn($userId);
 
         $this->repository->expects($this->once())
-            ->method('markOfferEditableByUser')
+            ->method('markResourceEditableByUser')
             ->with(
                 new StringLiteral('318F2ACB-F612-6F75-0037C9C29F44087A'),
                 $userId
@@ -116,7 +116,7 @@ class ProjectorTest extends TestCase
             ->willReturn(null);
 
         $this->repository->expects($this->never())
-            ->method('markOfferEditableByUser');
+            ->method('markResourceEditableByUser');
 
         $this->projector->handle($msg);
     }
@@ -153,7 +153,7 @@ class ProjectorTest extends TestCase
         );
 
         $this->repository->expects($this->once())
-            ->method('markOfferEditableByUser')
+            ->method('markResourceEditableByUser')
             ->with(
                 $placeId,
                 $userId
@@ -181,7 +181,7 @@ class ProjectorTest extends TestCase
         );
 
         $this->repository->expects($this->once())
-            ->method('markOfferEditableByNewUser')
+            ->method('markResourceEditableByNewUser')
             ->with(
                 new StringLiteral($placeId),
                 new StringLiteral($newOwnerId)

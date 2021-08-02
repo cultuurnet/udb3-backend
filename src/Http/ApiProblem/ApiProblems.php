@@ -46,7 +46,7 @@ final class ApiProblems
             ->setStatus(401);
     }
 
-    public static function forbidden(string $detail): ApiProblem
+    public static function forbidden(string $detail = null): ApiProblem
     {
         // Don't use about:blank as type here, even though we could, so we can make the URL point to documentation how
         // to fix this.

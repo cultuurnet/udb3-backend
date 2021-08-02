@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Commands;
 
 use CultuurNet\UDB3\Label;
-use CultuurNet\UDB3\Security\LabelSecurityInterface;
+use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use ValueObjects\StringLiteral\StringLiteral;
 
-abstract class AbstractLabelCommand extends AbstractCommand implements LabelSecurityInterface
+abstract class AbstractLabelCommand extends AbstractCommand implements AuthorizableLabelCommand
 {
     /**
      * @var Label
@@ -31,7 +31,7 @@ abstract class AbstractLabelCommand extends AbstractCommand implements LabelSecu
         return $this->label;
     }
 
-    public function getNames(): array
+    public function getLabelNames(): array
     {
         return [
             new StringLiteral((string)$this->label),

@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Http\Assert\JsonEquals;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -22,7 +22,7 @@ class OfferPermissionsControllerTest extends TestCase
     private $permissions;
 
     /**
-     * @var PermissionVoterInterface|MockObject
+     * @var PermissionVoter|MockObject
      */
     private $voter;
 
@@ -54,7 +54,7 @@ class OfferPermissionsControllerTest extends TestCase
             Permission::AANBOD_VERWIJDEREN(),
         ];
         $this->permissions = $permissionsToCheck;
-        $this->voter = $this->createMock(PermissionVoterInterface::class);
+        $this->voter = $this->createMock(PermissionVoter::class);
 
         $this->currentUserId = new StringLiteral('cd8d2005-e978-4f4c-9eb6-a0c0104fd8d0');
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class CommandAuthorizationException extends \Exception
@@ -15,7 +14,7 @@ class CommandAuthorizationException extends \Exception
     private $userId;
 
     /**
-     * @var AuthorizableCommandInterface
+     * @var AuthorizableCommand
      */
     private $command;
 
@@ -24,7 +23,7 @@ class CommandAuthorizationException extends \Exception
      */
     public function __construct(
         StringLiteral $userId,
-        AuthorizableCommandInterface $command
+        AuthorizableCommand $command
     ) {
         parent::__construct(
             sprintf(
@@ -50,7 +49,7 @@ class CommandAuthorizationException extends \Exception
     }
 
     /**
-     * @return AuthorizableCommandInterface
+     * @return AuthorizableCommand
      */
     public function getCommand()
     {
