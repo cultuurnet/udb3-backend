@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Search;
 
+use CultuurNet\UDB3\Search\Sapi3SearchService;
+use GuzzleHttp\Psr7\Uri;
 use Http\Adapter\Guzzle6\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -18,8 +20,8 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
     {
         $app[self::SEARCH_SERVICE_OFFERS] = $app->share(
             function ($app) {
-                return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-                    new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/offers/'),
+                return new Sapi3SearchService(
+                    new Uri($app['config']['search']['v3']['base_url'] . '/offers/'),
                     new Client(new \GuzzleHttp\Client()),
                     $app['iri_offer_identifier_factory'],
                     $app['config']['export']['search']['api_key'] ?? null
@@ -29,8 +31,8 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
 
         $app[self::SEARCH_SERVICE_EVENTS] = $app->share(
             function ($app) {
-                return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-                    new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/events/'),
+                return new Sapi3SearchService(
+                    new Uri($app['config']['search']['v3']['base_url'] . '/events/'),
                     new Client(new \GuzzleHttp\Client()),
                     $app['iri_offer_identifier_factory'],
                     $app['config']['export']['search']['api_key'] ?? null
@@ -40,8 +42,8 @@ class Sapi3SearchServiceProvider implements ServiceProviderInterface
 
         $app[self::SEARCH_SERVICE_PLACES] = $app->share(
             function ($app) {
-                return new \CultuurNet\UDB3\Search\Sapi3SearchService(
-                    new \GuzzleHttp\Psr7\Uri($app['config']['search']['v3']['base_url'] . '/places/'),
+                return new Sapi3SearchService(
+                    new Uri($app['config']['search']['v3']['base_url'] . '/places/'),
                     new Client(new \GuzzleHttp\Client()),
                     $app['iri_offer_identifier_factory'],
                     $app['config']['export']['search']['api_key'] ?? null
