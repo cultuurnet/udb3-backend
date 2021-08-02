@@ -79,8 +79,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         }
     }
 
-
-    public function setContext(Metadata $context = null)
+    public function setContext(Metadata $context = null): void
     {
         $this->metadata = $context;
 

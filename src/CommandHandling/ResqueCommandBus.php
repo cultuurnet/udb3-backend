@@ -53,10 +53,7 @@ class ResqueCommandBus extends CommandBusDecoratorBase implements ContextAwareIn
         $this->eventDispatcher = $dispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setContext(Metadata $context = null)
+    public function setContext(Metadata $context = null): void
     {
         $this->context = $context;
 
