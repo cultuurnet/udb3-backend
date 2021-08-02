@@ -29,12 +29,10 @@ class EventPermissionServiceProvider implements ServiceProviderInterface
 
         $app['event_permission.projector'] = $app->share(
             function (Application $app) {
-                $projector = new Projector(
+                return new Projector(
                     $app['event_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
-
-                return $projector;
             }
         );
     }

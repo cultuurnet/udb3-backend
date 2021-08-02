@@ -59,13 +59,11 @@ class CommandBusServiceProvider implements ServiceProviderInterface
 
                 // Set up security decorator to check if the current user can use the label(s) in an
                 // AuthorizableLabelCommand (skipped otherwise).
-                $security = new LabelCommandBusSecurity(
+                return new LabelCommandBusSecurity(
                     $security,
                     $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
-
-                return $security;
             }
         );
 

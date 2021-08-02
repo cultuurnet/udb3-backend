@@ -30,12 +30,10 @@ class OrganizerPermissionServiceProvider implements ServiceProviderInterface
 
         $app[self::PERMISSION_PROJECTOR] = $app->share(
             function (Application $app) {
-                $projector = new Projector(
+                return new Projector(
                     $app['organizer_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
-
-                return $projector;
             }
         );
     }

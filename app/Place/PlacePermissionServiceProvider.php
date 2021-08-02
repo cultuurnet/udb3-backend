@@ -29,12 +29,10 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
 
         $app['place_permission.projector'] = $app->share(
             function (Application $app) {
-                $projector = new Projector(
+                return new Projector(
                     $app['place_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
-
-                return $projector;
             }
         );
     }
