@@ -28,7 +28,7 @@ final class PermissionSwitchVoter implements PermissionVoter
         StringLiteral $userId
     ): bool {
         if (!isset($this->mapping[(string)$permission])) {
-            return isset($this->defaultVoter) ? $this->defaultVoter->isAllowed($permission, $itemId, $userId) : false;
+            return isset($this->defaultVoter) && $this->defaultVoter->isAllowed($permission, $itemId, $userId);
         }
 
         return $this->mapping[(string)$permission]->isAllowed($permission, $itemId, $userId);
