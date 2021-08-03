@@ -544,9 +544,6 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => StatusType::available()->toNative(),
                     ],
-                    'bookingAvailability' => [
-                        'type' => BookingAvailability::available()->toNative(),
-                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
