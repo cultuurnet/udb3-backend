@@ -398,9 +398,6 @@ class CalendarTest extends TestCase
         $this->assertEquals($jsonld, $calendar->toJsonLd());
     }
 
-    /**
-     * @return array
-     */
     public function jsonldCalendarProvider(): array
     {
         return [
