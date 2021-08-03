@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Event\ValueObjects;
+namespace CultuurNet\UDB3\Offer\ValueObjects;
 
 use Broadway\Serializer\Serializable;
 use InvalidArgumentException;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 
-use CultuurNet\UDB3\Event\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 

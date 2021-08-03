@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Event\ValueObjects;
+namespace CultuurNet\UDB3\Offer\ValueObjects;
 
-use CultuurNet\UDB3\Event\ValueObjects\BookingAvailability;
 use PHPUnit\Framework\TestCase;
 
 final class BookingAvailabilityTest extends TestCase
