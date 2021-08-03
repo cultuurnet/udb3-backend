@@ -281,6 +281,10 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             $calendar->status = Status::deserialize($data['status']);
         }
 
+        if (!empty($data['bookingAvailability'])) {
+            $calendar->bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
+        }
+
         return $calendar;
     }
 

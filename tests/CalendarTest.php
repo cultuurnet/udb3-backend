@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
+use Book;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
@@ -385,6 +386,49 @@ class CalendarTest extends TestCase
                             'fr' => 'Malheureusement reporté.',
                         ],
                     ],
+                ]
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_with_explicit_booking_availability(): void
+    {
+        $calendar = new Calendar(
+            CalendarType::SINGLE(),
+            new DateTime('2021-03-18T14:00:00+01:00'),
+            new DateTime('2021-03-18T16:00:00+01:00'),
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T16:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+            ]
+        );
+
+        $this->assertEquals(
+            $calendar->withBookingAvailability(BookingAvailability::unavailable()),
+            Calendar::deserialize(
+                [
+                    'type' => 'single',
+                    'startDate' => '2021-03-18T14:00:00+01:00',
+                    'endDate' => '2021-03-18T16:00:00+01:00',
+                    'bookingAvailability' => [
+                        'type' => 'Unavailable',
+                    ],
+                    'timestamps' => [
+                        [
+                            'startDate' => '2021-03-18T14:00:00+01:00',
+                            'endDate' => '2021-03-18T16:00:00+01:00',
+                            'bookingAvailability' => [
+                                'type' => 'Unavailable',
+                            ],
+                        ],
+                    ]
                 ]
             )
         );
