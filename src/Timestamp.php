@@ -8,6 +8,7 @@ use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -29,10 +30,16 @@ final class Timestamp implements Serializable
      */
     private $status;
 
+    /**
+     * @var BookingAvailability
+     */
+    private $bookingAvailability;
+
     public function __construct(
         DateTimeInterface $startDate,
         DateTimeInterface $endDate,
-        Status $status = null
+        Status $status = null,
+        BookingAvailability $bookingAvailability = null
     ) {
         if ($endDate < $startDate) {
             throw new InvalidArgumentException('End date can not be earlier than start date.');
@@ -41,12 +48,20 @@ final class Timestamp implements Serializable
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->status = $status ?? new Status(StatusType::available(), []);
+        $this->bookingAvailability = $bookingAvailability ?? BookingAvailability::available();
     }
 
     public function withStatus(Status $status): self
     {
         $clone = clone $this;
         $clone->status = $status;
+        return $clone;
+    }
+
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): self
+    {
+        $clone = clone $this;
+        $clone->bookingAvailability = $bookingAvailability;
         return $clone;
     }
 
@@ -63,6 +78,11 @@ final class Timestamp implements Serializable
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function getBookingAvailability(): BookingAvailability
+    {
+        return $this->bookingAvailability;
     }
 
     public static function deserialize(array $data): Timestamp
