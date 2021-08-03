@@ -33,7 +33,7 @@ class CommandAuthorizationException extends \Exception
                 $command->getItemId(),
                 get_class($command)
             ),
-            401
+            403
         );
 
         $this->userId = $userId;
