@@ -107,7 +107,8 @@ class TimestampTest extends TestCase
                 [
                     new StatusReason(new Language('nl'), 'Vanavond niet, schat'),
                 ]
-            )
+            ),
+            BookingAvailability::unavailable()
         );
 
         $serialized = [
@@ -119,6 +120,9 @@ class TimestampTest extends TestCase
                     'nl' => 'Vanavond niet, schat',
                 ],
             ],
+            'bookingAvailability' => [
+                'type' => BookingAvailability::unavailable()->toNative(),
+            ]
         ];
 
         $this->assertEquals($serialized, $timestamp->serialize());

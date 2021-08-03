@@ -714,12 +714,18 @@ class CdbXMLImporterTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2017-02-20T13:00:00+01:00',
                     'endDate' => '2017-02-20T16:45:00+01:00',
                     'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
                         'type' => 'Available',
                     ],
                 ],
@@ -730,12 +736,18 @@ class CdbXMLImporterTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2017-03-20T13:00:00+01:00',
                     'endDate' => '2017-03-20T16:45:00+01:00',
                     'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
                         'type' => 'Available',
                     ],
                 ],
@@ -763,13 +775,18 @@ class CdbXMLImporterTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
-
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2016-11-30T13:00:00+01:00',
                     'endDate' => '2016-11-30T17:00:00+01:00',
                     'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
                         'type' => 'Available',
                     ],
                 ],
@@ -780,12 +797,18 @@ class CdbXMLImporterTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2016-12-09T00:00:00+01:00',
                     'endDate' => '2016-12-09T00:00:00+01:00',
                     'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
                         'type' => 'Available',
                     ],
                 ],
@@ -796,12 +819,18 @@ class CdbXMLImporterTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2017-11-30T13:00:00+01:00',
                     'endDate' => '2017-11-30T17:00:00+01:00',
                     'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
                         'type' => 'Available',
                     ],
                 ],
@@ -829,12 +858,18 @@ class CdbXMLImporterTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2017-02-20T13:00:00+01:00',
                     'endDate' => '2017-02-20T13:00:00+01:00',
                     'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
                         'type' => 'Available',
                     ],
                 ],
@@ -845,12 +880,18 @@ class CdbXMLImporterTest extends TestCase
                     'status' => [
                         'type' => 'Available',
                     ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2017-03-20T13:00:00+01:00',
                     'endDate' => '2017-03-20T13:00:00+01:00',
                     'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
                         'type' => 'Available',
                     ],
                 ],

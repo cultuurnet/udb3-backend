@@ -568,12 +568,14 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'startDate' => '2015-01-26T13:25:21+01:00',
                 'endDate' => '2015-01-27T13:25:21+01:00',
                 'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) ['type' => 'Available'],
             ],
             (object)[
                 '@type' => 'Event',
                 'startDate' => '2015-01-28T13:25:21+01:00',
                 'endDate' => '2015-01-29T13:25:21+01:00',
                 'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) ['type' => 'Available'],
             ],
         ];
         $jsonLD->availableTo = $jsonLD->endDate;

@@ -92,6 +92,11 @@ final class Timestamp implements Serializable
             $status = Status::deserialize($data['status']);
         }
 
+        $bookingAvailability = null;
+        if (isset($data['bookingAvailability'])) {
+            $bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
+        }
+
         $startDate = DateTime::createFromFormat(DateTime::ATOM, $data['startDate']);
         $endDate = DateTime::createFromFormat(DateTime::ATOM, $data['endDate']);
 
@@ -99,7 +104,7 @@ final class Timestamp implements Serializable
             $endDate = $startDate;
         }
 
-        return new self($startDate, $endDate, $status);
+        return new self($startDate, $endDate, $status, $bookingAvailability);
     }
 
     public function serialize(): array
@@ -108,6 +113,7 @@ final class Timestamp implements Serializable
             'startDate' => $this->startDate->format(DateTime::ATOM),
             'endDate' => $this->endDate->format(DateTime::ATOM),
             'status' => $this->status->serialize(),
+            'bookingAvailability' => $this->bookingAvailability->serialize(),
         ];
     }
 

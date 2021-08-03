@@ -235,12 +235,18 @@ class CalendarTest extends TestCase
                         'status' => [
                             'type' => StatusType::available()->toNative(),
                         ],
+                        'bookingAvailability' => [
+                            'type' => BookingAvailability::available()->toNative(),
+                        ],
                     ],
                     [
                         'startDate' => self::TIMESTAMP_2_START_DATE,
                         'endDate' => self::TIMESTAMP_2_END_DATE,
                         'status' => [
                             'type' => StatusType::available()->toNative(),
+                        ],
+                        'bookingAvailability' => [
+                            'type' => BookingAvailability::available()->toNative(),
                         ],
                     ],
                 ],
@@ -500,6 +506,9 @@ class CalendarTest extends TestCase
                             'status' => [
                                 'type' => StatusType::available()->toNative(),
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                     ],
                 ],
@@ -542,6 +551,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Malheureusement reporté.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                     ],
                 ],
@@ -577,6 +589,9 @@ class CalendarTest extends TestCase
                             'status' => [
                                 'type' => StatusType::available()->toNative(),
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -584,6 +599,9 @@ class CalendarTest extends TestCase
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
                                 'type' => StatusType::available()->toNative(),
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -638,6 +656,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Malheureusement reporté.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -649,6 +670,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Gelukkig gaat het door.',
                                     'fr' => 'Heureusement, ça continue.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -703,6 +727,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Malheureusement reporté.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -714,6 +741,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -768,6 +798,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Il a été annulé.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -779,6 +812,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -841,6 +877,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Il a été annulé.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -852,6 +891,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
