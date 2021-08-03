@@ -27,7 +27,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
 use ValueObjects\DateTime\Minute;
@@ -141,6 +143,76 @@ class CalendarTest extends TestCase
                 'wrong opening hours',
             ]
         );
+    }
+
+    public function it_allows_updating_booking_availability_on_single_type(): void
+    {
+        $singleCalendar = new Calendar(
+            CalendarType::SINGLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00')
+                ),
+            ]
+        );
+
+        $singleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+
+        $this->assertEquals(BookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
+    }
+
+    public function it_allows_updating_booking_availability_on_multiple_type(): void
+    {
+        $singleCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00')
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00')
+                ),
+            ]
+        );
+
+        $singleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+
+        $this->assertEquals(BookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_permanent_type(): void
+    {
+        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+
+        $this->expectException(DomainException::class);
+
+        $permanentCalendar->withBookingAvailability(BookingAvailability::unavailable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_periodic_type(): void
+    {
+        $periodicCalendar = new Calendar(
+            CalendarType::PERIODIC(),
+            new DateTime('2021-03-18T14:00:00+01:00'),
+            new DateTime('2021-03-18T14:00:00+01:00'),
+        );
+
+        $this->expectException(DomainException::class);
+
+        $periodicCalendar->withBookingAvailability(BookingAvailability::unavailable());
     }
 
     /**

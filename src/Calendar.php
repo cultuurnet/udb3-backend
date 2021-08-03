@@ -14,9 +14,11 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
+use DomainException;
 use InvalidArgumentException;
 
 final class Calendar implements CalendarInterface, JsonLdSerializableInterface, Serializable
@@ -50,6 +52,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      * @var Status
      */
     private $status;
+
+    /**
+     * @var BookingAvailability
+     */
+    private $bookingAvailability;
 
     /**
      * @param Timestamp[] $timestamps
@@ -94,12 +101,33 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $this->timestamps = $timestamps;
 
         $this->status = new Status($this->deriveStatusTypeFromSubEvents(), []);
+
+        $this->bookingAvailability = BookingAvailability::available();
     }
 
     public function withStatus(Status $status): self
     {
         $clone = clone $this;
         $clone->status = $status;
+        return $clone;
+    }
+
+    public function allowsUpdatingBookingAvailability(): bool
+    {
+        return $this->type->sameValueAs(CalendarType::SINGLE()) || $this->type->sameValueAs(CalendarType::MULTIPLE());
+    }
+
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): self
+    {
+        if (!$this->allowsUpdatingBookingAvailability()) {
+            throw new DomainException(
+                'Not allowed to update booking availability on calendar type: "' . $this->type->getName() . '".'
+                . ' Only single and multiple calendar types can be updated.'
+            );
+        }
+
+        $clone = clone $this;
+        $clone->bookingAvailability = $bookingAvailability;
         return $clone;
     }
 
@@ -175,6 +203,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function getBookingAvailability(): BookingAvailability
+    {
+        return $this->bookingAvailability;
     }
 
     public function serialize(): array
