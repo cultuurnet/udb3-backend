@@ -49,7 +49,7 @@ class CalendarTest extends TestCase
      */
     private $calendar;
 
-    public function setUp()
+    public function setUp(): void
     {
         $timestamp1 = new Timestamp(
             DateTime::createFromFormat(DateTime::ATOM, self::TIMESTAMP_1_START_DATE),
@@ -109,7 +109,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function time_stamps_need_to_have_type_time_stamp()
+    public function time_stamps_need_to_have_type_time_stamp(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
@@ -127,7 +127,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function opening_hours_need_to_have_type_opening_hour()
+    public function opening_hours_need_to_have_type_opening_hour(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('OpeningHours should have type OpeningHour.');
@@ -146,7 +146,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_can_serialize(): void
     {
         $this->assertEquals(
             [
@@ -212,7 +212,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $actualCalendar = Calendar::deserialize([
             'type' => 'multiple',
@@ -274,7 +274,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_with_explicit_status()
+    public function it_can_deserialize_with_explicit_status(): void
     {
         $status = new Status(
             StatusType::temporarilyUnavailable(),
@@ -312,7 +312,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_without_overwriting_the_status_of_subEvents()
+    public function it_can_deserialize_without_overwriting_the_status_of_subEvents(): void
     {
         $timestamp1 = new Timestamp(
             DateTime::createFromFormat(DateTime::ATOM, self::TIMESTAMP_1_START_DATE),
@@ -394,14 +394,14 @@ class CalendarTest extends TestCase
     public function it_should_generate_the_expected_json_for_a_calendar_of_each_type(
         Calendar $calendar,
         array $jsonld
-    ) {
+    ): void {
         $this->assertEquals($jsonld, $calendar->toJsonLd());
     }
 
     /**
      * @return array
      */
-    public function jsonldCalendarProvider()
+    public function jsonldCalendarProvider(): array
     {
         return [
             'single no sub event status' => [
@@ -841,7 +841,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_assume_the_timezone_is_Brussels_when_none_is_provided_when_deserializing()
+    public function it_should_assume_the_timezone_is_Brussels_when_none_is_provided_when_deserializing(): void
     {
         $oldCalendarData = [
             'type' => 'periodic',
@@ -864,7 +864,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_when_start_date_can_not_be_converted()
+    public function it_throws_invalid_argument_exception_when_start_date_can_not_be_converted(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -881,7 +881,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_when_end_date_can_not_be_converted()
+    public function it_throws_invalid_argument_exception_when_end_date_can_not_be_converted(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -898,7 +898,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_single_calendars()
+    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_single_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -927,7 +927,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_single_calendars()
+    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_single_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -956,7 +956,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_multiple_calendars()
+    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_multiple_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'multiple',
@@ -985,7 +985,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_multiple_calendars()
+    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_multiple_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'multiple',
@@ -1015,7 +1015,7 @@ class CalendarTest extends TestCase
      * @test
      * @dataProvider periodicCalendarWithMissingDatesDataProvider
      */
-    public function it_should_not_create_a_periodic_calendar_with_missing_dates(array $calendarData)
+    public function it_should_not_create_a_periodic_calendar_with_missing_dates(array $calendarData): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('A period should have a start- and end-date.');
@@ -1023,7 +1023,7 @@ class CalendarTest extends TestCase
         Calendar::deserialize($calendarData);
     }
 
-    public function periodicCalendarWithMissingDatesDataProvider()
+    public function periodicCalendarWithMissingDatesDataProvider(): array
     {
         return [
             'no dates' => [
@@ -1049,7 +1049,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_single_date_range_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_single_date_range_calendar(): void
     {
         $subEvent = new SubEvent(
             new DateRange(
@@ -1082,7 +1082,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_multiple_date_range_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_multiple_date_range_calendar(): void
     {
         $subEvents = new SubEvents(
             new SubEvent(
@@ -1128,7 +1128,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar(): void
     {
         $dateRange = new DateRange(
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
@@ -1155,7 +1155,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar_with_opening_hours()
+    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar_with_opening_hours(): void
     {
         $dateRange = new DateRange(
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
@@ -1226,7 +1226,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar(): void
     {
         $openingHours = new OpeningHours();
         $udb3ModelCalendar = new PermanentCalendar($openingHours);
@@ -1247,7 +1247,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar_with_opening_hours()
+    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar_with_opening_hours(): void
     {
         $openingHours = new OpeningHours(
             new Udb3ModelOpeningHour(
@@ -1313,7 +1313,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_takes_into_account_udb3_model_calendar_status()
+    public function it_takes_into_account_udb3_model_calendar_status(): void
     {
         $udb3ModelCalendar = (new PermanentCalendar(new OpeningHours()))
             ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::TemporarilyUnavailable()));
@@ -1329,7 +1329,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_determine_same_calendars()
+    public function it_can_determine_same_calendars(): void
     {
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
