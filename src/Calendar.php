@@ -82,7 +82,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             }
         }
 
-        $this->type = $type->toNative();
+        $this->type = $type;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->openingHours = $openingHours;
@@ -117,7 +117,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     public function getType(): CalendarType
     {
-        return CalendarType::fromNative($this->type);
+        return $this->type;
     }
 
     public function getStartDate(): ?DateTimeInterface
@@ -194,7 +194,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         );
 
         $calendar = [
-            'type' => $this->type,
+            'type' => $this->type->toNative(),
             'status' => $this->status->serialize(),
         ];
 
