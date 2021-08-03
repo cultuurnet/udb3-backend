@@ -122,7 +122,7 @@ class TimestampTest extends TestCase
             ],
             'bookingAvailability' => [
                 'type' => BookingAvailability::unavailable()->toNative(),
-            ]
+            ],
         ];
 
         $this->assertEquals($serialized, $timestamp->serialize());
