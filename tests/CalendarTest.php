@@ -228,6 +228,9 @@ class CalendarTest extends TestCase
                 'status' => [
                     'type' => StatusType::available()->toNative(),
                 ],
+                'bookingAvailability' => [
+                    'type' => BookingAvailability::available()->toNative(),
+                ],
                 'timestamps' => [
                     [
                         'startDate' => self::TIMESTAMP_1_START_DATE,
