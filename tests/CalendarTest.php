@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
-use Book;
 use CultuurNet\UDB3\Calendar\DayOfWeek;
 use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
@@ -428,7 +427,7 @@ class CalendarTest extends TestCase
                                 'type' => 'Unavailable',
                             ],
                         ],
-                    ]
+                    ],
                 ]
             )
         );
@@ -544,6 +543,9 @@ class CalendarTest extends TestCase
                     'endDate' => '2016-03-13T12:00:00+01:00',
                     'status' => [
                         'type' => StatusType::available()->toNative(),
+                    ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
                     ],
                     'subEvent' => [
                         [
