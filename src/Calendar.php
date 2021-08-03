@@ -115,14 +115,66 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $clone;
     }
 
-    public function getStatus(): Status
-    {
-        return $this->status;
-    }
-
     public function getType(): CalendarType
     {
         return CalendarType::fromNative($this->type);
+    }
+
+    public function getStartDate(): ?DateTimeInterface
+    {
+        $timestamps = $this->getTimestamps();
+
+        if (empty($timestamps)) {
+            return $this->startDate;
+        }
+
+        $startDate = null;
+        foreach ($timestamps as $timestamp) {
+            if ($startDate === null || $timestamp->getStartDate() < $startDate) {
+                $startDate = $timestamp->getStartDate();
+            }
+        }
+
+        return $startDate;
+    }
+
+    public function getEndDate(): ?DateTimeInterface
+    {
+        $timestamps = $this->getTimestamps();
+
+        if (empty($timestamps)) {
+            return $this->endDate;
+        }
+
+        $endDate = null;
+        foreach ($this->getTimestamps() as $timestamp) {
+            if ($endDate === null || $timestamp->getEndDate() > $endDate) {
+                $endDate = $timestamp->getEndDate();
+            }
+        }
+
+        return $endDate;
+    }
+
+    /**
+     * @return array|OpeningHour[]
+     */
+    public function getOpeningHours(): array
+    {
+        return $this->openingHours;
+    }
+
+    /**
+     * @return array|Timestamp[]
+     */
+    public function getTimestamps(): array
+    {
+        return $this->timestamps;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
     }
 
     public function serialize(): array
@@ -218,85 +270,6 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $dateTime;
     }
 
-    public function getStartDate(): ?DateTimeInterface
-    {
-        $timestamps = $this->getTimestamps();
-
-        if (empty($timestamps)) {
-            return $this->startDate;
-        }
-
-        $startDate = null;
-        foreach ($timestamps as $timestamp) {
-            if ($startDate === null || $timestamp->getStartDate() < $startDate) {
-                $startDate = $timestamp->getStartDate();
-            }
-        }
-
-        return $startDate;
-    }
-
-    public function getEndDate(): ?DateTimeInterface
-    {
-        $timestamps = $this->getTimestamps();
-
-        if (empty($timestamps)) {
-            return $this->endDate;
-        }
-
-        $endDate = null;
-        foreach ($this->getTimestamps() as $timestamp) {
-            if ($endDate === null || $timestamp->getEndDate() > $endDate) {
-                $endDate = $timestamp->getEndDate();
-            }
-        }
-
-        return $endDate;
-    }
-
-    /**
-     * @return array|OpeningHour[]
-     */
-    public function getOpeningHours(): array
-    {
-        return $this->openingHours;
-    }
-
-    /**
-     * @return array|Timestamp[]
-     */
-    public function getTimestamps(): array
-    {
-        return $this->timestamps;
-    }
-
-    private function deriveStatusTypeFromSubEvents(): StatusType
-    {
-        $statusTypeCounts = [];
-        $statusTypeCounts[StatusType::available()->toNative()] = 0;
-        $statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] = 0;
-        $statusTypeCounts[StatusType::unavailable()->toNative()] = 0;
-
-        foreach ($this->timestamps as $timestamp) {
-            ++$statusTypeCounts[$timestamp->getStatus()->getType()->toNative()];
-        }
-
-        if ($statusTypeCounts[StatusType::available()->toNative()] > 0) {
-            return StatusType::available();
-        }
-
-        if ($statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] > 0) {
-            return StatusType::temporarilyUnavailable();
-        }
-
-        if ($statusTypeCounts[StatusType::unavailable()->toNative()] > 0) {
-            return StatusType::unavailable();
-        }
-
-        // This extra return is needed for events with calendar type of permanent or periodic.
-        return StatusType::available();
-    }
-
     public function toJsonLd(): array
     {
         $jsonLd = [];
@@ -373,6 +346,33 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $calendar = new self($type, $startDate, $endDate, $timestamps, $openingHours);
         $calendar->status = Status::fromUdb3ModelStatus($udb3Calendar->getStatus());
         return $calendar;
+    }
+
+    private function deriveStatusTypeFromSubEvents(): StatusType
+    {
+        $statusTypeCounts = [];
+        $statusTypeCounts[StatusType::available()->toNative()] = 0;
+        $statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] = 0;
+        $statusTypeCounts[StatusType::unavailable()->toNative()] = 0;
+
+        foreach ($this->timestamps as $timestamp) {
+            ++$statusTypeCounts[$timestamp->getStatus()->getType()->toNative()];
+        }
+
+        if ($statusTypeCounts[StatusType::available()->toNative()] > 0) {
+            return StatusType::available();
+        }
+
+        if ($statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] > 0) {
+            return StatusType::temporarilyUnavailable();
+        }
+
+        if ($statusTypeCounts[StatusType::unavailable()->toNative()] > 0) {
+            return StatusType::unavailable();
+        }
+
+        // This extra return is needed for events with calendar type of permanent or periodic.
+        return StatusType::available();
     }
 
     /**
