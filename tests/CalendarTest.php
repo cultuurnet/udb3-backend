@@ -207,7 +207,7 @@ class CalendarTest extends TestCase
         $periodicCalendar = new Calendar(
             CalendarType::PERIODIC(),
             new DateTime('2021-03-18T14:00:00+01:00'),
-            new DateTime('2021-03-18T14:00:00+01:00'),
+            new DateTime('2021-03-18T14:00:00+01:00')
         );
 
         $this->expectException(DomainException::class);
