@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\OfferLocator;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
@@ -607,6 +608,7 @@ $subscribeCoreCommandHandlers = function (CommandBus $commandBus, Application $a
 
         // Offer command handlers
         $commandBus->subscribe($app[UpdateStatusHandler::class]);
+        $commandBus->subscribe($app[UpdateBookingAvailabilityHandler::class]);
         $commandBus->subscribe($app[ChangeOwnerHandler::class]);
         $commandBus->subscribe($app[AddLabelHandler::class]);
         $commandBus->subscribe($app[RemoveLabelHandler::class]);

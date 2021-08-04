@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\Offer\OfferRepository;
@@ -75,6 +76,12 @@ class OfferServiceProvider implements ServiceProviderInterface
         $app[UpdateStatusHandler::class] = $app->share(
             function (Application $app) {
                 return new UpdateStatusHandler($app[OfferRepository::class]);
+            }
+        );
+
+        $app[UpdateBookingAvailabilityHandler::class] = $app->share(
+            function (Application $app) {
+                return new UpdateBookingAvailabilityHandler($app[OfferRepository::class]);
             }
         );
 
