@@ -166,7 +166,7 @@ class CalendarTest extends TestCase
 
     public function it_allows_updating_booking_availability_on_multiple_type(): void
     {
-        $singleCalendar = new Calendar(
+        $multipleCalendar = new Calendar(
             CalendarType::MULTIPLE(),
             null,
             null,
@@ -182,9 +182,9 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $singleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+        $multipleCalendar->withBookingAvailability(BookingAvailability::unavailable());
 
-        $this->assertEquals(BookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailability::unavailable(), $multipleCalendar->getBookingAvailability());
     }
 
     /**
