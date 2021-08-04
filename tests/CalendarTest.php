@@ -145,6 +145,55 @@ class CalendarTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_determines_booking_availability_from_sub_events(): void
+    {
+        $unavailableCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+            ]
+        );
+
+        $availableCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::available()
+                ),
+            ]
+        );
+
+        $this->assertEquals(BookingAvailability::unavailable(), $unavailableCalendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailability::available(), $availableCalendar->getBookingAvailability());
+    }
+
     public function it_allows_updating_booking_availability_on_single_type(): void
     {
         $singleCalendar = new Calendar(

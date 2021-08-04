@@ -102,7 +102,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $this->status = new Status($this->deriveStatusTypeFromSubEvents(), []);
 
-        $this->bookingAvailability = BookingAvailability::available();
+        $this->bookingAvailability = $this->deriveBookingAvailabilityFromSubEvents();
     }
 
     public function withStatus(Status $status): self
@@ -440,5 +440,26 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // expected status type without any reason. (If the top level status had a reason it's probably not applicable
         // for the new status type.)
         return new Status($expectedStatusType, []);
+    }
+
+    /**
+     * This method can determine the top level booking availability from the sub events aka timestamps
+     * - If there are no timestamps this is a periodic or permanent calendar which is always available
+     * - If one of the timestamps is available then the top level is available
+     * - If all of the timestamps are unavailable the top level is also unavailable
+     */
+    private function deriveBookingAvailabilityFromSubEvents(): BookingAvailability
+    {
+        if (empty($this->timestamps)) {
+            return BookingAvailability::available();
+        }
+
+        foreach ($this->timestamps as $timestamp) {
+            if ($timestamp->getBookingAvailability()->equals(BookingAvailability::available())) {
+                return BookingAvailability::available();
+            }
+        }
+
+        return BookingAvailability::unavailable();
     }
 }
