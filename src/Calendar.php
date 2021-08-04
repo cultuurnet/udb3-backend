@@ -117,7 +117,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $this->type->sameValueAs(CalendarType::SINGLE()) || $this->type->sameValueAs(CalendarType::MULTIPLE());
     }
 
-    public function withBookingAvailability(BookingAvailability $bookingAvailability): self
+    private function guardUpdatingBookingAvailability(): void
     {
         if (!$this->allowsUpdatingBookingAvailability()) {
             throw new DomainException(
@@ -125,6 +125,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
                 . ' Only single and multiple calendar types can be updated.'
             );
         }
+    }
+
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): self
+    {
+        $this->guardUpdatingBookingAvailability();
 
         $clone = clone $this;
         $clone->bookingAvailability = $bookingAvailability;
