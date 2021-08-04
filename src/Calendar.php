@@ -468,7 +468,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      */
     private function deriveBookingAvailabilityFromSubEvents(): BookingAvailability
     {
-        if (!$this->allowsUpdatingBookingAvailability()) {
+        if (empty($this->timestamps)) {
             return BookingAvailability::available();
         }
 
@@ -488,7 +488,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
      */
     private function determineCorrectTopBookingAvailabilityForProjection(): BookingAvailability
     {
-        if (!$this->allowsUpdatingBookingAvailability()) {
+        if (empty($this->timestamps)) {
             return BookingAvailability::available();
         }
 
