@@ -273,6 +273,92 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_allows_updating_booking_availability_on_timestamp_of_single_type(): void
+    {
+        $singleCalendar = new Calendar(
+            CalendarType::SINGLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00')
+                ),
+            ]
+        );
+
+        $singleCalendar = $singleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+
+        $this->assertEquals(
+            BookingAvailability::unavailable(),
+            $singleCalendar->getTimestamps()[0]->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_updating_booking_availability_on_timestamps_of_multiple_type(): void
+    {
+        $multipleCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00')
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00')
+                ),
+            ]
+        );
+
+        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+
+        $this->assertEquals(
+            BookingAvailability::unavailable(),
+            $multipleCalendar->getTimestamps()[0]->getBookingAvailability()
+        );
+        $this->assertEquals(
+            BookingAvailability::unavailable(),
+            $multipleCalendar->getTimestamps()[1]->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_timestamps_of_permanent_type(): void
+    {
+        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+
+        $this->expectException(DomainException::class);
+
+        $permanentCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_timestamps_of_periodic_type(): void
+    {
+        $periodicCalendar = new Calendar(
+            CalendarType::PERIODIC(),
+            new DateTime('2021-03-18T14:00:00+01:00'),
+            new DateTime('2021-03-18T14:00:00+01:00')
+        );
+
+        $this->expectException(DomainException::class);
+
+        $periodicCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+    }
+
+    /**
+     * @test
+     */
     public function it_can_serialize(): void
     {
         $this->assertEquals(

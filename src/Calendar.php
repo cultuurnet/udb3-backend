@@ -148,6 +148,20 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $clone;
     }
 
+    public function withBookingAvailabilityOnTimestamps(BookingAvailability $bookingAvailability): self
+    {
+        $this->guardUpdatingBookingAvailability();
+
+        $clone = clone $this;
+        $clone->timestamps = \array_map(
+            function (Timestamp $timestamp) use ($bookingAvailability): Timestamp {
+                return $timestamp->withBookingAvailability($bookingAvailability);
+            },
+            $clone->getTimestamps()
+        );
+        return $clone;
+    }
+
     public function getType(): CalendarType
     {
         return $this->type;
