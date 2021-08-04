@@ -14,11 +14,11 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
-use DomainException;
 use InvalidArgumentException;
 
 final class Calendar implements CalendarInterface, JsonLdSerializableInterface, Serializable
@@ -120,10 +120,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private function guardUpdatingBookingAvailability(): void
     {
         if (!$this->allowsUpdatingBookingAvailability()) {
-            throw new DomainException(
-                'Not allowed to update booking availability on calendar type: "' . $this->type->getName() . '".'
-                . ' Only single and multiple calendar types can be updated.'
-            );
+            throw UpdateBookingAvailabilityNotAllowed::forCalendarType($this->type);
         }
     }
 
