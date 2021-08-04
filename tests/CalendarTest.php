@@ -194,6 +194,9 @@ class CalendarTest extends TestCase
         $this->assertEquals(BookingAvailability::available(), $availableCalendar->getBookingAvailability());
     }
 
+    /**
+     * @test
+     */
     public function it_allows_updating_booking_availability_on_single_type(): void
     {
         $singleCalendar = new Calendar(
@@ -208,11 +211,14 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $singleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+        $singleCalendar = $singleCalendar->withBookingAvailability(BookingAvailability::unavailable());
 
         $this->assertEquals(BookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
     }
 
+    /**
+     * @test
+     */
     public function it_allows_updating_booking_availability_on_multiple_type(): void
     {
         $multipleCalendar = new Calendar(
@@ -231,7 +237,7 @@ class CalendarTest extends TestCase
             ]
         );
 
-        $multipleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+        $multipleCalendar = $multipleCalendar->withBookingAvailability(BookingAvailability::unavailable());
 
         $this->assertEquals(BookingAvailability::unavailable(), $multipleCalendar->getBookingAvailability());
     }
