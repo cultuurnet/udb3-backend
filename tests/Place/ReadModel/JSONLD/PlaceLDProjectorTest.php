@@ -207,6 +207,9 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->status = (object) [
             'type' => 'Available',
         ];
+        $jsonLD->bookingAvailability = (object) [
+            'type' => 'Available',
+        ];
 
         $body = $this->project(
             $placeCreated,
@@ -274,6 +277,9 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->status = (object)[
             'type' => 'Available',
         ];
+        $jsonLD->bookingAvailability = (object)[
+            'type' => 'Available',
+        ];
 
         $body = $this->project(
             $placeCreated,
@@ -334,6 +340,9 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->languages = ['en'];
         $jsonLD->completedLanguages = ['en'];
         $jsonLD->status = (object)[
+            'type' => 'Available',
+        ];
+        $jsonLD->bookingAvailability = (object)[
             'type' => 'Available',
         ];
 
@@ -812,6 +821,9 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['en'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->status = (object)[
+            'type' => 'Available',
+        ];
+        $expectedJsonLD->bookingAvailability = (object)[
             'type' => 'Available',
         ];
 

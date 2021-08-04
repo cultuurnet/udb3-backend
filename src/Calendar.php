@@ -325,6 +325,8 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
         $jsonLd['status'] = $this->determineCorrectTopStatusForProjection()->serialize();
 
+        $jsonLd['bookingAvailability'] = $this->determineCorrectTopBookingAvailabilityForProjection()->serialize();
+
         $timestamps = $this->getTimestamps();
         if (!empty($timestamps)) {
             $jsonLd['subEvent'] = [];
@@ -461,5 +463,19 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         return BookingAvailability::unavailable();
+    }
+
+    /**
+     * A projection can require a potential fix:
+     * - For a periodic or permanent calendar this is always available
+     * - If there are timestamps the top level status is calculated
+     */
+    private function determineCorrectTopBookingAvailabilityForProjection(): BookingAvailability
+    {
+        if (!$this->allowsUpdatingBookingAvailability()) {
+            return BookingAvailability::available();
+        }
+
+        return $this->deriveBookingAvailabilityFromSubEvents();
     }
 }
