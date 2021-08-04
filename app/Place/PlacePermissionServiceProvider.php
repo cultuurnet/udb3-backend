@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Place;
 
-use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
 use CultuurNet\UDB3\Place\ReadModel\Permission\Projector;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -17,27 +17,22 @@ class PlacePermissionServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['place_permission.table_name'] = new StringLiteral('place_permission_readmodel');
-        $app['place_permission.id_field'] = new StringLiteral('place_id');
-
-        $app['place_permission.repository'] = $app->share(
+        $app['place_owner.repository'] = $app->share(
             function (Application $app) {
-                return new DBALRepository(
-                    $app['place_permission.table_name'],
+                return new DBALResourceOwnerRepository(
+                    new StringLiteral('place_permission_readmodel'),
                     $app['dbal_connection'],
-                    $app['place_permission.id_field']
+                    new StringLiteral('place_id')
                 );
             }
         );
 
         $app['place_permission.projector'] = $app->share(
             function (Application $app) {
-                $projector = new Projector(
-                    $app['place_permission.repository'],
+                return new Projector(
+                    $app['place_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
-
-                return $projector;
             }
         );
     }

@@ -21,7 +21,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class RoleUsersProjectorTest extends TestCase
 {
@@ -59,9 +58,9 @@ class RoleUsersProjectorTest extends TestCase
         );
 
         $this->userIdentityDetail = new UserIdentityDetails(
-            new StringLiteral('userId'),
-            new StringLiteral('username'),
-            new EmailAddress('username@company.be')
+            'userId',
+            'username',
+            'username@company.be'
         );
     }
 
@@ -130,7 +129,7 @@ class RoleUsersProjectorTest extends TestCase
         );
 
         $this->mockGetUserById(
-            $this->userIdentityDetail->getUserId(),
+            new StringLiteral($this->userIdentityDetail->getUserId()),
             $this->userIdentityDetail
         );
 
@@ -323,7 +322,7 @@ class RoleUsersProjectorTest extends TestCase
     ) {
         $userIdentityDetails = [];
 
-        $key = $userIdentityDetail->getUserId()->toNative();
+        $key = $userIdentityDetail->getUserId();
         $userIdentityDetails[$key] = $userIdentityDetail;
 
         return new JsonDocument($uuid, json_encode($userIdentityDetails));

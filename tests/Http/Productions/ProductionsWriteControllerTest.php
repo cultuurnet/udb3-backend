@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
+use CultuurNet\UDB3\Event\Productions\RenameProduction;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -29,25 +30,14 @@ class ProductionsWriteControllerTest extends TestCase
      */
     private $controller;
 
-    /**
-     * @var CreateProductionValidator
-     */
-    private $validator;
-
-    /**
-     * @var SkipEventsValidator
-     */
-    private $skipValidator;
-
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->validator = new CreateProductionValidator();
-        $this->skipValidator = new SkipEventsValidator();
         $this->controller = new ProductionsWriteController(
             $this->commandBus,
-            $this->validator,
-            $this->skipValidator
+            new CreateProductionValidator(),
+            new SkipEventsValidator(),
+            new RenameProductionValidator()
         );
     }
 
@@ -176,6 +166,46 @@ class ProductionsWriteControllerTest extends TestCase
             [new MergeProductions($fromProductionId, $toProductionId)],
             $this->commandBus->getRecordedCommands()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_rename_a_production(): void
+    {
+        $productionId = ProductionId::generate();
+
+        $request = $this->buildRequestWithBody(
+            [
+                'name' => 'Bar',
+            ]
+        );
+
+        $this->commandBus->record();
+        $this->controller->renameProduction($productionId->toNative(), $request);
+
+        $this->assertEquals(
+            [new RenameProduction($productionId, 'Bar')],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_empty_rename(): void
+    {
+        $productionId = ProductionId::generate();
+
+        $request = $this->buildRequestWithBody(
+            [
+                'name' => '',
+            ]
+        );
+
+        $this->expectException(DataValidationException::class);
+
+        $this->controller->renameProduction($productionId->toNative(), $request);
     }
 
     /**

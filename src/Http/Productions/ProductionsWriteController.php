@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\Productions\MergeProductions;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
+use CultuurNet\UDB3\Event\Productions\RenameProduction;
 use CultuurNet\UDB3\Event\Productions\SimilarEventPair;
 use CultuurNet\UDB3\HttpFoundation\Response\JsonLdResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,14 +34,21 @@ class ProductionsWriteController
      */
     private $skipEventsValidator;
 
+    /**
+     * @var RenameProductionValidator
+     */
+    private $renameProductionValidator;
+
     public function __construct(
         CommandBus $commandBus,
         CreateProductionValidator $createProductionValidator,
-        SkipEventsValidator $skipEventsValidator
+        SkipEventsValidator $skipEventsValidator,
+        RenameProductionValidator $renameProductionValidator
     ) {
         $this->commandBus = $commandBus;
         $this->createProductionValidator = $createProductionValidator;
         $this->skipEventsValidator = $skipEventsValidator;
+        $this->renameProductionValidator = $renameProductionValidator;
     }
 
     public function create(Request $request): Response
@@ -97,6 +105,18 @@ class ProductionsWriteController
         );
 
         $this->commandBus->dispatch($command);
+
+        return new Response('', 204);
+    }
+
+    public function renameProduction(string $productionId, Request $request): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $this->renameProductionValidator->validate($data);
+
+        $renameCommand = new RenameProduction(ProductionId::fromNative($productionId), $data['name']);
+
+        $this->commandBus->dispatch($renameCommand);
 
         return new Response('', 204);
     }

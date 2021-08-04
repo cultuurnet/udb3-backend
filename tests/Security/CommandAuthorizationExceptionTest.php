@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security;
 
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +27,7 @@ class CommandAuthorizationExceptionTest extends TestCase
     private $itemId;
 
     /**
-     * @var AuthorizableCommandInterface|MockObject
+     * @var AuthorizableCommand|MockObject
      */
     private $command;
 
@@ -43,7 +42,7 @@ class CommandAuthorizationExceptionTest extends TestCase
         $this->permission = Permission::AANBOD_BEWERKEN();
         $this->itemId = '69aa5d8d-5d56-4774-9320-d8e7c1721693';
 
-        $this->command = $this->createMock(AuthorizableCommandInterface::class);
+        $this->command = $this->createMock(AuthorizableCommand::class);
         $this->command->method('getPermission')
             ->willReturn($this->permission);
         $this->command->method('getItemId')

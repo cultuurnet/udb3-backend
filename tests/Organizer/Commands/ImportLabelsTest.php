@@ -75,7 +75,7 @@ class ImportLabelsTest extends TestCase
                 new StringLiteral('foo'),
                 new StringLiteral('bar'),
             ],
-            $this->importLabels->getNames()
+            $this->importLabels->getLabelNames()
         );
     }
 

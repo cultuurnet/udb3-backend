@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Security\Permission;
 
-use CultuurNet\UDB3\Offer\Security\Permission\PermissionVoterInterface;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class UserPermissionVoter implements PermissionVoterInterface
+class UserPermissionVoter implements PermissionVoter
 {
     /**
      * @var UserPermissionsReadRepositoryInterface
@@ -23,14 +22,11 @@ class UserPermissionVoter implements PermissionVoterInterface
         $this->userPermissionsReadRepository = $userPermissionsReadRepository;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function isAllowed(
         Permission $requiredPermission,
-        StringLiteral $offerId,
+        StringLiteral $itemId,
         StringLiteral $userId
-    ) {
+    ): bool {
         $permissions = $this->userPermissionsReadRepository->getPermissions(
             $userId
         );

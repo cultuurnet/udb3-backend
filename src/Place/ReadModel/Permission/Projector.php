@@ -9,7 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Place\Events\OwnerChanged;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use CultuurNet\UDB3\Place\Events\PlaceImportedFromUDB2;
@@ -25,12 +25,12 @@ class Projector implements EventListener
     private $userIdResolver;
 
     /**
-     * @var PermissionRepositoryInterface
+     * @var ResourceOwnerRepository
      */
     private $permissionRepository;
 
     public function __construct(
-        PermissionRepositoryInterface $permissionRepository,
+        ResourceOwnerRepository $permissionRepository,
         CreatedByToUserIdResolverInterface $createdByToUserIdResolver
     ) {
         $this->userIdResolver = $createdByToUserIdResolver;
@@ -56,7 +56,7 @@ class Projector implements EventListener
                 return;
             }
 
-            $this->permissionRepository->markOfferEditableByUser(
+            $this->permissionRepository->markResourceEditableByUser(
                 new StringLiteral($placeImportedFromUDB2->getActorId()),
                 $ownerId
             );
@@ -70,7 +70,7 @@ class Projector implements EventListener
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 
-        $this->permissionRepository->markOfferEditableByUser(
+        $this->permissionRepository->markResourceEditableByUser(
             new StringLiteral($placeCreated->getPlaceId()),
             $ownerId
         );
@@ -78,7 +78,7 @@ class Projector implements EventListener
 
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): void
     {
-        $this->permissionRepository->markOfferEditableByNewUser(
+        $this->permissionRepository->markResourceEditableByNewUser(
             new StringLiteral($ownerChanged->getOfferId()),
             new StringLiteral($ownerChanged->getNewOwnerId())
         );

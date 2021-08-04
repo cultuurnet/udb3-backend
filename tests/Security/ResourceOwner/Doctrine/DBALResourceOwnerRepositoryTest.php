@@ -1,0 +1,139 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Security\ResourceOwner\Doctrine;
+
+use CultuurNet\UDB3\DBALTestConnectionTrait;
+use PHPUnit\Framework\TestCase;
+use ValueObjects\StringLiteral\StringLiteral;
+
+class DBALResourceOwnerRepositoryTest extends TestCase
+{
+    use DBALTestConnectionTrait;
+
+    /**
+     * @var DBALResourceOwnerRepository
+     */
+    private $repository;
+
+    public function setUp()
+    {
+        $table = new StringLiteral('event_permission');
+        $idField = new StringLiteral('event_id');
+
+        (new SchemaConfigurator($table, $idField))->configure(
+            $this->getConnection()->getSchemaManager()
+        );
+
+        $this->repository = new DBALResourceOwnerRepository(
+            $table,
+            $this->getConnection(),
+            $idField
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_add_and_query_offer_permissions()
+    {
+        $johnDoe = new StringLiteral('abc');
+        $editableByJohnDoe = [
+            new StringLiteral('123'),
+            new StringLiteral('456'),
+            new StringLiteral('789'),
+        ];
+        $janeDoe = new StringLiteral('def');
+        $editableByJaneDoe = [
+            new StringLiteral('101112'),
+            new StringLiteral('131415'),
+            new StringLiteral('456'),
+        ];
+
+        $this->assertEquals(
+            [],
+            $this->repository->getEditableResourceIds($johnDoe)
+        );
+
+        $this->assertEquals(
+            [],
+            $this->repository->getEditableResourceIds($janeDoe)
+        );
+
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
+        array_walk($editableByJaneDoe, [$this, 'markEditable'], $janeDoe);
+
+        $this->assertEquals(
+            $editableByJohnDoe,
+            $this->repository->getEditableResourceIds($johnDoe)
+        );
+
+        $this->assertEquals(
+            $editableByJaneDoe,
+            $this->repository->getEditableResourceIds($janeDoe)
+        );
+    }
+
+    /**
+     * @param string $key
+     */
+    private function markEditable(StringLiteral $eventId, $key, StringLiteral $userId)
+    {
+        $this->repository->markResourceEditableByUser($eventId, $userId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_silently_ignores_adding_duplicate_permissions()
+    {
+        $johnDoe = new StringLiteral('abc');
+        $editableByJohnDoe = [
+            new StringLiteral('123'),
+            new StringLiteral('456'),
+            new StringLiteral('789'),
+        ];
+
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
+
+        $this->repository->markResourceEditableByUser(new StringLiteral('456'), $johnDoe);
+
+        $this->assertEquals(
+            $editableByJohnDoe,
+            $this->repository->getEditableResourceIds($johnDoe)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_the_user_id_if_explicitly_requested(): void
+    {
+        $johnDoe = new StringLiteral('abc');
+        $janeDoe = new StringLiteral('def');
+        $editableByJohnDoe = [
+            new StringLiteral('123'),
+            new StringLiteral('456'),
+            new StringLiteral('789'),
+        ];
+
+        array_walk($editableByJohnDoe, [$this, 'markEditable'], $johnDoe);
+
+        $this->repository->markResourceEditableByNewUser(new StringLiteral('456'), $janeDoe);
+
+        $this->assertEquals(
+            [
+                new StringLiteral('456'),
+            ],
+            $this->repository->getEditableResourceIds($janeDoe)
+        );
+        $this->assertEquals(
+            [
+                new StringLiteral('123'),
+                new StringLiteral('789'),
+            ],
+            $this->repository->getEditableResourceIds($johnDoe)
+        );
+    }
+}

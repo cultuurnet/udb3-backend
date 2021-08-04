@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Media\Commands;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -94,28 +93,6 @@ class UploadImageTest extends TestCase
         $this->assertEquals(
             new Language('en'),
             $this->uploadImage->getLanguage()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_stores_an_item_id()
-    {
-        $this->assertEquals(
-            'de305d54-75b4-431b-adb2-eb6b9e546014',
-            $this->uploadImage->getItemId()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_stores_a_permission()
-    {
-        $this->assertEquals(
-            Permission::MEDIA_UPLOADEN(),
-            $this->uploadImage->getPermission()
         );
     }
 }

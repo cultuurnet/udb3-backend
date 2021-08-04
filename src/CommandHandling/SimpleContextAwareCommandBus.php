@@ -24,7 +24,7 @@ class SimpleContextAwareCommandBus implements CommandBus, ContextAwareInterface,
      */
     private $commandHandlers = [];
 
-    public function setContext(Metadata $context = null)
+    public function setContext(Metadata $context = null): void
     {
         $this->context = $context;
     }

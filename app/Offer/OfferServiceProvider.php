@@ -82,7 +82,7 @@ class OfferServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ChangeOwnerHandler(
                     $app[OfferRepository::class],
-                    $app['offer_permission_query']
+                    $app['offer_owner_query']
                 );
             }
         );

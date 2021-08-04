@@ -6,12 +6,12 @@ namespace CultuurNet\UDB3\Organizer\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Security\LabelSecurityInterface;
+use CultuurNet\UDB3\Security\AuthorizableLabelCommand;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ImportLabels extends AbstractOrganizerCommand implements AuthorizableCommandInterface, LabelSecurityInterface
+class ImportLabels extends AbstractOrganizerCommand implements AuthorizableCommand, AuthorizableLabelCommand
 {
     /**
      * @var Labels
@@ -70,7 +70,7 @@ class ImportLabels extends AbstractOrganizerCommand implements AuthorizableComma
         return Permission::AANBOD_BEWERKEN();
     }
 
-    public function getNames(): array
+    public function getLabelNames(): array
     {
         return array_map(
             function (Label $label) {

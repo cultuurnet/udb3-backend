@@ -19,7 +19,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
 
 class UserRolesProjectorTest extends TestCase
 {
@@ -214,11 +213,11 @@ class UserRolesProjectorTest extends TestCase
 
         // The existing role users relations.
         $userIdentityDetails = new UserIdentityDetails(
-            new StringLiteral('userId'),
-            new StringLiteral('userName'),
-            new EmailAddress('username@company.com')
+            'userId',
+            'userName',
+            'username@company.com'
         );
-        $users[$userIdentityDetails->getUserId()->toNative()] = $userIdentityDetails;
+        $users[$userIdentityDetails->getUserId()] = $userIdentityDetails;
         $roleUsersDocument = new JsonDocument(
             $roleDetailsProjectedToJSONLD->getUuid()->toNative(),
             json_encode($users)

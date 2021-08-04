@@ -16,7 +16,6 @@ use ValueObjects\Enum\Enum;
  * @method static Permission ORGANISATIES_BEWERKEN()
  * @method static Permission GEBRUIKERS_BEHEREN()
  * @method static Permission LABELS_BEHEREN()
- * @method static Permission MEDIA_UPLOADEN()
  * @method static Permission VOORZIENINGEN_BEWERKEN()
  * @method static Permission PRODUCTIES_AANMAKEN()
  * @method static Permission FILMS_AANMAKEN()
@@ -30,7 +29,6 @@ class Permission extends Enum
     public const ORGANISATIES_BEWERKEN = 'Organisaties bewerken';
     public const GEBRUIKERS_BEHEREN = 'Gebruikers beheren';
     public const LABELS_BEHEREN = 'Labels beheren';
-    public const MEDIA_UPLOADEN = 'Media uploaden';
     public const VOORZIENINGEN_BEWERKEN = 'Voorzieningen bewerken';
     public const PRODUCTIES_AANMAKEN = 'Producties aanmaken';
     public const FILMS_AANMAKEN = 'Films aanmaken';

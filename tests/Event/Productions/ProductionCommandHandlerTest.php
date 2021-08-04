@@ -247,7 +247,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_will_not_remove_events_from_another_production()
+    public function it_will_not_remove_events_from_another_production(): void
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
@@ -281,7 +281,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_merge_productions()
+    public function it_can_merge_productions(): void
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
@@ -310,7 +310,7 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_will_not_merge_to_unknown_production()
+    public function it_will_not_merge_to_unknown_production(): void
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
@@ -330,7 +330,27 @@ class ProductionCommandHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_mark_events_as_skipped()
+    public function it_can_rename_a_production(): void
+    {
+        $this->eventRepository->method('fetch')->willReturn(new JsonDocument('Foo'));
+
+        $eventId = Uuid::uuid4()->toString();
+        $groupEvent = GroupEventsAsProduction::withProductionName([$eventId], 'Foo');
+        $this->commandHandler->handle($groupEvent);
+
+        $renameProduction = new RenameProduction($groupEvent->getProductionId(), 'Bar');
+
+        $this->commandHandler->handle($renameProduction);
+
+        $renamedProduction = $this->productionRepository->find($groupEvent->getProductionId());
+        $this->assertEquals('Bar', $renamedProduction->getName());
+        $this->assertEquals($groupEvent->getEventIds(), $renamedProduction->getEventIds());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_mark_events_as_skipped(): void
     {
         $eventPair = SimilarEventPair::fromArray([
             Uuid::uuid4()->toString(),

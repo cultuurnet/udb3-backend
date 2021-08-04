@@ -21,6 +21,8 @@ interface ProductionRepository
 
     public function moveEvents(ProductionId $from, Production $to): void;
 
+    public function renameProduction(ProductionId $productionId, string $name): void;
+
     /**
      * @return Production[]
      */
