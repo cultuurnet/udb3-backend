@@ -36,7 +36,7 @@ class SavedSearchesServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CombinedSavedSearchRepository(
                     new Sapi3FixedSavedSearchRepository(
-                        $app['current_user_id'],
+                        $app['jwt'],
                         $app[Auth0UserIdentityResolver::class],
                         $this->getCreatedByQueryMode($app)
                     ),

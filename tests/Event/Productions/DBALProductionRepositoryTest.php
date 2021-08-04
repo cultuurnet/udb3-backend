@@ -119,6 +119,20 @@ class DBALProductionRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_can_rename_a_production(): void
+    {
+        $production = $this->givenThereIsAProduction('Foo');
+
+        $this->repository->renameProduction($production->getProductionId(), 'Bar');
+
+        $renamedProduction = $this->repository->find($production->getProductionId());
+        $this->assertEquals('Bar', $renamedProduction->getName());
+        $this->assertEquals($production->getEventIds(), $renamedProduction->getEventIds());
+    }
+
+    /**
+     * @test
+     */
     public function it_can_find_production_for_event(): void
     {
         $event = Uuid::uuid4()->toString();

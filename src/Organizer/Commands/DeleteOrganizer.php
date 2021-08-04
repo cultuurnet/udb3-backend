@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 
-class DeleteOrganizer extends AbstractOrganizerCommand implements AuthorizableCommandInterface
+class DeleteOrganizer extends AbstractOrganizerCommand implements AuthorizableCommand
 {
     public function getItemId(): string
     {

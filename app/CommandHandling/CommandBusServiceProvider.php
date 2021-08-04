@@ -9,74 +9,61 @@ use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDeco
 use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBus;
 use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\CommandHandling\SimpleContextAwareCommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateFacilities as EventUpdateFacilities;
-use CultuurNet\UDB3\Media\MediaSecurity;
-use CultuurNet\UDB3\Offer\Security\Permission\CompositeVoter;
-use CultuurNet\UDB3\Offer\Security\Permission\PermissionSplitVoter;
-use CultuurNet\UDB3\Offer\Security\Security;
-use CultuurNet\UDB3\Offer\Security\SecurityWithLabelPrivacy;
-use CultuurNet\UDB3\Place\Commands\UpdateFacilities as PlaceUpdateFacilities;
+use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
+use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
+use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
+use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Security\ClassNameCommandFilter;
-use CultuurNet\UDB3\Security\SecurityWithUserPermission;
+use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\Silex\Labels\LabelServiceProvider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class CommandBusServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        // This voter delegates to another voter based on which permission to
-        // check. It covers detailed permissions for offer and organizers.
-        $app['command_bus.split_permission_voter'] = $app->share(
-            function (Application $app) {
-                $splitter = (new PermissionSplitVoter())
-                    ->withVoter(
-                        $app['organizer_permission_voter_inner'],
-                        Permission::ORGANISATIES_BEWERKEN()
-                    )
-                    ->withVoter(
-                        $app['offer_permission_voter_inner'],
-                        Permission::AANBOD_BEWERKEN(),
-                        Permission::AANBOD_MODEREREN(),
-                        Permission::AANBOD_VERWIJDEREN()
-                    );
-
-                return $splitter;
-            }
-        );
-
         $app['command_bus.security'] = $app->share(
             function ($app) {
-                $security = new Security(
+                // Set up security to check permissions of AuthorizableCommand commands.
+                $security = new PermissionVoterCommandBusSecurity(
                     $app['current_user_id'],
-                    new CompositeVoter(
+                    // Either allow everything for god users, or use a voter based on the specific permission
+                    new AnyOfVoter(
                         $app['god_user_voter'],
-                        $app['command_bus.split_permission_voter']
+                        (new PermissionSwitchVoter())
+                            // Use the organizer voter for ORGANISATIES_BEWERKEN to take into account who is the owner
+                            // and/or look at the constraint query in the role to only allow edits to a subset of
+                            // organizers.
+                            ->withVoter(
+                                $app['organizer_permission_voter'],
+                                Permission::ORGANISATIES_BEWERKEN()
+                            )
+                            // Use the offer voter for AANBOD permissions to take into account who is the owner
+                            // and/or look at the constraint query in the role to only allow edits to a subset of
+                            // offers.
+                            ->withVoter(
+                                $app['offer_permission_voter'],
+                                Permission::AANBOD_BEWERKEN(),
+                                Permission::AANBOD_MODEREREN(),
+                                Permission::AANBOD_VERWIJDEREN()
+                            )
+                            // Other permissions should just be checked by seeing if the user has that permission.
+                            ->withDefaultVoter(
+                                new UserPermissionVoter(
+                                    $app['user_permissions_read_repository']
+                                )
+                            )
                     )
                 );
 
-                $security = new SecurityWithLabelPrivacy(
+                // Set up security decorator to check if the current user can use the label(s) in an
+                // AuthorizableLabelCommand (skipped otherwise).
+                return new LabelCommandBusSecurity(
                     $security,
                     $app['current_user_id'],
                     $app[LabelServiceProvider::JSON_READ_REPOSITORY]
                 );
-
-                $security = new MediaSecurity($security);
-
-                $security = new SecurityWithUserPermission(
-                    $security,
-                    $app['current_user_id'],
-                    $app['facility_permission_voter'],
-                    new ClassNameCommandFilter(
-                        new StringLiteral(PlaceUpdateFacilities::class),
-                        new StringLiteral(EventUpdateFacilities::class)
-                    )
-                );
-
-                return $security;
             }
         );
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Silex\Organizer;
 
 use CultuurNet\UDB3\Organizer\ReadModel\Permission\Projector;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Security\ResourceOwner\Doctrine\DBALResourceOwnerRepository;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -18,27 +18,22 @@ class OrganizerPermissionServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['organizer_permission.table_name'] = new StringLiteral('organizer_permission_readmodel');
-        $app['organizer_permission.id_field'] = new StringLiteral('organizer_id');
-
-        $app['organizer_permission.repository'] = $app->share(
+        $app['organizer_owner.repository'] = $app->share(
             function (Application $app) {
-                return new DBALRepository(
-                    $app['organizer_permission.table_name'],
+                return new DBALResourceOwnerRepository(
+                    new StringLiteral('organizer_permission_readmodel'),
                     $app['dbal_connection'],
-                    $app['organizer_permission.id_field']
+                    new StringLiteral('organizer_id')
                 );
             }
         );
 
         $app[self::PERMISSION_PROJECTOR] = $app->share(
             function (Application $app) {
-                $projector = new Projector(
-                    $app['organizer_permission.repository'],
+                return new Projector(
+                    $app['organizer_owner.repository'],
                     $app['cdbxml_created_by_resolver']
                 );
-
-                return $projector;
             }
         );
     }

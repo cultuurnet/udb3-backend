@@ -4,69 +4,54 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User;
 
-use ValueObjects\StringLiteral\StringLiteral;
-use ValueObjects\Web\EmailAddress;
-
 class UserIdentityDetails implements \JsonSerializable
 {
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $userId;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $userName;
 
     /**
-     * @var EmailAddress
+     * @var string
      */
     private $emailAddress;
 
     public function __construct(
-        StringLiteral $userId,
-        StringLiteral $userName,
-        EmailAddress $emailAddress
+        string $userId,
+        string $userName,
+        string $emailAddress
     ) {
         $this->userId = $userId;
         $this->userName = $userName;
         $this->emailAddress = $emailAddress;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserId()
+    public function getUserId(): string
     {
         return $this->userId;
     }
 
-    /**
-     * @return StringLiteral
-     */
-    public function getUserName()
+    public function getUserName(): string
     {
         return $this->userName;
     }
 
-    /**
-     * @return EmailAddress
-     */
-    public function getEmailAddress()
+    public function getEmailAddress(): string
     {
         return $this->emailAddress;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
-            'uuid' => $this->userId->toNative(),
-            'email' => $this->emailAddress->toNative(),
-            'username' => $this->userName->toNative(),
+            'uuid' => $this->userId,
+            'email' => $this->emailAddress,
+            'username' => $this->userName,
         ];
     }
 }

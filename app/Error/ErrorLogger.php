@@ -14,15 +14,18 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
+use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation\EventHasTicketSalesException;
 use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\GroupedValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
 
 final class ErrorLogger
@@ -46,6 +49,9 @@ final class ErrorLogger
         FormatterException::class,
         EventCannotBeAddedToProduction::class,
         EventCannotBeRemovedFromProduction::class,
+        AccessDeniedHttpException::class,
+        AccessDeniedException::class,
+        UpdateBookingAvailabilityNotAllowed::class,
     ];
 
     /**

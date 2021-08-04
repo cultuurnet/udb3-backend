@@ -56,9 +56,9 @@ final class Auth0UserIdentityResolver implements UserIdentityResolver
         $user = array_shift($users);
 
         return new UserIdentityDetails(
-            new StringLiteral($this->extractUserId($user)),
-            new StringLiteral($user['nickname']),
-            new EmailAddress($user['email'])
+            $this->extractUserId($user),
+            $user['nickname'],
+            $user['email']
         );
     }
 

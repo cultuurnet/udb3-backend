@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Silex\Security;
 
-use CultuurNet\UDB3\Offer\Security\Permission\GodUserVoter;
+use CultuurNet\UDB3\Security\Permission\GodUserVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine\UserConstraintsReadRepository;
 use CultuurNet\UDB3\Silex\Role\UserPermissionsServiceProvider;
 use Silex\Application;

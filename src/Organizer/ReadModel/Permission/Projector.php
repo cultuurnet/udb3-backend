@@ -9,7 +9,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionRepositoryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
@@ -25,12 +25,12 @@ class Projector implements EventListener
     private $userIdResolver;
 
     /**
-     * @var PermissionRepositoryInterface
+     * @var ResourceOwnerRepository
      */
     private $permissionRepository;
 
     public function __construct(
-        PermissionRepositoryInterface $permissionRepository,
+        ResourceOwnerRepository $permissionRepository,
         CreatedByToUserIdResolverInterface $createdByToUserIdResolver
     ) {
         $this->userIdResolver = $createdByToUserIdResolver;
@@ -56,7 +56,7 @@ class Projector implements EventListener
                 return;
             }
 
-            $this->permissionRepository->markOfferEditableByUser(
+            $this->permissionRepository->markResourceEditableByUser(
                 new StringLiteral($organizerImportedFromUDB2->getActorId()),
                 $ownerId
             );
@@ -91,7 +91,7 @@ class Projector implements EventListener
         $metadata = $domainMessage->getMetadata()->serialize();
         $ownerId = new StringLiteral($metadata['user_id']);
 
-        $this->permissionRepository->markOfferEditableByUser(
+        $this->permissionRepository->markResourceEditableByUser(
             new StringLiteral($organizerId),
             $ownerId
         );

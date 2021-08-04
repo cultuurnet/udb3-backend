@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Offer\ReadModel\Permission\PermissionQueryInterface;
+use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerQuery;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Title;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -28,7 +28,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
 {
     /**
-     * @var PermissionQueryInterface|MockObject
+     * @var ResourceOwnerQuery|MockObject
      */
     private $permissionQuery;
 
@@ -41,7 +41,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
             new PlaceRepository($eventStore, $eventBus)
         );
 
-        $this->permissionQuery = $this->createMock(PermissionQueryInterface::class);
+        $this->permissionQuery = $this->createMock(ResourceOwnerQuery::class);
 
         return new ChangeOwnerHandler($repository, $this->permissionQuery);
     }
@@ -54,7 +54,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $randomCommand = $this->createMock(AbstractCommand::class);
 
         $this->permissionQuery->expects($this->never())
-            ->method('getEditableOffers');
+            ->method('getEditableResourceIds');
 
         $id = 'f818db49-1484-4513-a534-d22c2ca88026';
 
@@ -74,7 +74,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $newOwner = 'auth0|598e7dc9-523b-4d58-b6ea-b4aad5a4a291';
 
         $this->permissionQuery
-            ->method('getEditableOffers')
+            ->method('getEditableResourceIds')
             ->with($newOwner)
             ->willReturn([new StringLiteral($id)]);
 
@@ -95,7 +95,7 @@ class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
         $newOwner = 'auth0|598e7dc9-523b-4d58-b6ea-b4aad5a4a291';
 
         $this->permissionQuery
-            ->method('getEditableOffers')
+            ->method('getEditableResourceIds')
             ->with($newOwner)
             ->willReturn([new StringLiteral($otherId)]);
 

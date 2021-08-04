@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\CommandHandling;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Offer\Commands\AuthorizableCommandInterface;
+use CultuurNet\UDB3\Security\AuthorizableCommand;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
-use CultuurNet\UDB3\Security\SecurityInterface;
+use CultuurNet\UDB3\Security\CommandBusSecurity;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -26,14 +26,14 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
     private $userId;
 
     /**
-     * @var SecurityInterface
+     * @var CommandBusSecurity
      */
     private $security;
 
     public function __construct(
         CommandBus $decoratee,
         string $userId,
-        SecurityInterface $security
+        CommandBusSecurity $security
     ) {
         parent::__construct($decoratee);
 
@@ -46,7 +46,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
      */
     public function dispatch($command)
     {
-        if ($command instanceof AuthorizableCommandInterface) {
+        if ($command instanceof AuthorizableCommand) {
             $authorized = $this->isAuthorized($command);
         } else {
             $authorized = true;
@@ -62,7 +62,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         }
     }
 
-    public function isAuthorized(AuthorizableCommandInterface $command): bool
+    public function isAuthorized(AuthorizableCommand $command): bool
     {
         return $this->security->isAuthorized($command);
     }
@@ -79,8 +79,7 @@ class AuthorizedCommandBus extends CommandBusDecoratorBase implements Authorized
         }
     }
 
-
-    public function setContext(Metadata $context = null)
+    public function setContext(Metadata $context = null): void
     {
         $this->metadata = $context;
 
