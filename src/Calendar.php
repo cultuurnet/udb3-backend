@@ -444,13 +444,13 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
 
     /**
      * This method can determine the top level booking availability from the sub events aka timestamps
-     * - If there are no timestamps this is a periodic or permanent calendar which is always available
+     * - For a periodic or permanent calendar this is always available
      * - If one of the timestamps is available then the top level is available
      * - If all of the timestamps are unavailable the top level is also unavailable
      */
     private function deriveBookingAvailabilityFromSubEvents(): BookingAvailability
     {
-        if (empty($this->timestamps)) {
+        if (!$this->allowsUpdatingBookingAvailability()) {
             return BookingAvailability::available();
         }
 
