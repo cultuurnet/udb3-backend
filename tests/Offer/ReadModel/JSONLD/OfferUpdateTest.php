@@ -60,6 +60,9 @@ class OfferUpdateTest extends TestCase
                 'status' => [
                     'type' => 'Available',
                 ],
+                'bookingAvailability' => [
+                    'type' => 'Available',
+                ],
             ])
         );
 

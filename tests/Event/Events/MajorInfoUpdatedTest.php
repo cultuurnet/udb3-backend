@@ -60,6 +60,9 @@ class MajorInfoUpdatedTest extends TestCase
                         'status' => [
                             'type' => 'Available',
                         ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
                         'type' => 'permanent',
                     ],
                     'event_type' => [

@@ -149,6 +149,9 @@ class EventCreatedTest extends TestCase
                         'status' => [
                             'type' => 'Available',
                         ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
                         'type' => 'permanent',
                     ],
                     'event_type' => [
@@ -184,6 +187,9 @@ class EventCreatedTest extends TestCase
                         'status' => [
                             'type' => 'Available',
                         ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
                         'type' => 'permanent',
                     ],
                     'event_type' => [
@@ -214,6 +220,9 @@ class EventCreatedTest extends TestCase
                     'location' => 'd379187b-7f71-4403-8fff-645a28be8fd0',
                     'calendar' => [
                         'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
                             'type' => 'Available',
                         ],
                         'type' => 'permanent',

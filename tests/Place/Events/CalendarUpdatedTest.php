@@ -49,6 +49,9 @@ class CalendarUpdatedTest extends TestCase
                 'status' => [
                     'type' => 'Available',
                 ],
+                'bookingAvailability' => [
+                    'type' => 'Available',
+                ],
             ],
         ];
 

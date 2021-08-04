@@ -30,5 +30,8 @@
   "completedLanguages": ["en"],
   "status": {
     "type": "Available"
+  },
+  "bookingAvailability": {
+    "type": "Available"
   }
 }

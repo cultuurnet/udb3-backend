@@ -167,6 +167,9 @@ class PlaceCreatedTest extends TestCase
                         'status' => [
                             'type' => 'Available',
                         ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
                     ],
                     'event_type' => [
                         'id' => 'bar_id',
@@ -212,6 +215,9 @@ class PlaceCreatedTest extends TestCase
                         'status' => [
                             'type' => 'Available',
                         ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
                     ],
                     'event_type' => [
                         'id' => 'bar_id',
@@ -252,6 +258,9 @@ class PlaceCreatedTest extends TestCase
                     'calendar' => [
                         'type' => 'permanent',
                         'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
                             'type' => 'Available',
                         ],
                     ],

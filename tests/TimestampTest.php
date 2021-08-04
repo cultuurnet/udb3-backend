@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
 use CultuurNet\UDB3\Event\ValueObjects\StatusReason;
 use CultuurNet\UDB3\Event\ValueObjects\StatusType;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -83,6 +84,19 @@ class TimestampTest extends TestCase
     /**
      * @test
      */
+    public function it_has_a_default_booking_availability(): void
+    {
+        $timestamp = new Timestamp(
+            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE)
+        );
+
+        $this->assertEquals(BookingAvailability::available(), $timestamp->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
     public function it_can_serialize_and_deserialize(): void
     {
         $timestamp = new Timestamp(
@@ -93,7 +107,8 @@ class TimestampTest extends TestCase
                 [
                     new StatusReason(new Language('nl'), 'Vanavond niet, schat'),
                 ]
-            )
+            ),
+            BookingAvailability::unavailable()
         );
 
         $serialized = [
@@ -104,6 +119,9 @@ class TimestampTest extends TestCase
                 'reason' => [
                     'nl' => 'Vanavond niet, schat',
                 ],
+            ],
+            'bookingAvailability' => [
+                'type' => BookingAvailability::unavailable()->toNative(),
             ],
         ];
 
@@ -138,6 +156,29 @@ class TimestampTest extends TestCase
         $this->assertEquals(
             $expected,
             $timestamp->withStatus($newStatus)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_changing_the_booking_availability(): void
+    {
+        $timestamp = new Timestamp(
+            DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
+            DateTime::createFromFormat(DateTime::ATOM, self::END_DATE)
+        );
+
+        $updatedTimestamp = $timestamp->withBookingAvailability(BookingAvailability::unavailable());
+
+        $this->assertEquals(
+            new Timestamp(
+                DateTime::createFromFormat(DateTime::ATOM, self::START_DATE),
+                DateTime::createFromFormat(DateTime::ATOM, self::END_DATE),
+                new Status(StatusType::available(), []),
+                BookingAvailability::unavailable()
+            ),
+            $updatedTimestamp
         );
     }
 

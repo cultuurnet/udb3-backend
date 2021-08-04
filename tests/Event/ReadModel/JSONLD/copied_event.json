@@ -33,6 +33,9 @@
       "endDate": "2015-01-27T13:25:21+01:00",
       "status": {
         "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available"
       }
     },
     {
@@ -41,6 +44,9 @@
       "endDate": "2015-01-29T13:25:21+01:00",
       "status": {
         "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available"
       }
     }
   ],
@@ -48,5 +54,8 @@
   "completedLanguages": ["en"],
   "status": {
     "type":"Available"
+  },
+  "bookingAvailability": {
+    "type": "Available"
   }
 }

@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
@@ -52,6 +54,11 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private $status;
 
     /**
+     * @var BookingAvailability
+     */
+    private $bookingAvailability;
+
+    /**
      * @param Timestamp[] $timestamps
      * @param OpeningHour[] $openingHours
      */
@@ -82,7 +89,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
             }
         }
 
-        $this->type = $type->toNative();
+        $this->type = $type;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->openingHours = $openingHours;
@@ -94,12 +101,35 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         $this->timestamps = $timestamps;
 
         $this->status = new Status($this->deriveStatusTypeFromSubEvents(), []);
+
+        $this->bookingAvailability = $this->deriveBookingAvailabilityFromSubEvents();
     }
 
     public function withStatus(Status $status): self
     {
         $clone = clone $this;
         $clone->status = $status;
+        return $clone;
+    }
+
+    public function allowsUpdatingBookingAvailability(): bool
+    {
+        return $this->type->sameValueAs(CalendarType::SINGLE()) || $this->type->sameValueAs(CalendarType::MULTIPLE());
+    }
+
+    private function guardUpdatingBookingAvailability(): void
+    {
+        if (!$this->allowsUpdatingBookingAvailability()) {
+            throw UpdateBookingAvailabilityNotAllowed::forCalendarType($this->type);
+        }
+    }
+
+    public function withBookingAvailability(BookingAvailability $bookingAvailability): self
+    {
+        $this->guardUpdatingBookingAvailability();
+
+        $clone = clone $this;
+        $clone->bookingAvailability = $bookingAvailability;
         return $clone;
     }
 
@@ -115,107 +145,23 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $clone;
     }
 
-    public function getStatus(): Status
+    public function withBookingAvailabilityOnTimestamps(BookingAvailability $bookingAvailability): self
     {
-        return $this->status;
+        $this->guardUpdatingBookingAvailability();
+
+        $clone = clone $this;
+        $clone->timestamps = \array_map(
+            function (Timestamp $timestamp) use ($bookingAvailability): Timestamp {
+                return $timestamp->withBookingAvailability($bookingAvailability);
+            },
+            $clone->getTimestamps()
+        );
+        return $clone;
     }
 
     public function getType(): CalendarType
     {
-        return CalendarType::fromNative($this->type);
-    }
-
-    public function serialize(): array
-    {
-        $serializedTimestamps = array_map(
-            function (Timestamp $timestamp) {
-                return $timestamp->serialize();
-            },
-            $this->timestamps
-        );
-
-        $serializedOpeningHours = array_map(
-            function (OpeningHour $openingHour) {
-                return $openingHour->serialize();
-            },
-            $this->openingHours
-        );
-
-        $calendar = [
-            'type' => $this->type,
-            'status' => $this->status->serialize(),
-        ];
-
-        empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTime::ATOM);
-        empty($this->endDate) ?: $calendar['endDate'] = $this->endDate->format(DateTime::ATOM);
-        empty($serializedTimestamps) ?: $calendar['timestamps'] = $serializedTimestamps;
-        empty($serializedOpeningHours) ?: $calendar['openingHours'] = $serializedOpeningHours;
-
-        return $calendar;
-    }
-
-    public static function deserialize(array $data): Calendar
-    {
-        $calendarType = CalendarType::fromNative($data['type']);
-
-        $startDate = !empty($data['startDate']) ? self::deserializeDateTime($data['startDate']) : null;
-        $endDate = !empty($data['endDate']) ? self::deserializeDateTime($data['endDate']) : null;
-
-        // Fix for old events that could have a end date before the start date
-        if ($startDate && $endDate && ($startDate > $endDate)) {
-            $endDate = $startDate;
-        }
-
-        // Backwards compatibility for serialized single or multiple calendar types that are missing timestamps but do
-        // have a start and end date.
-        $defaultTimeStamps = [];
-        if ($calendarType->sameValueAs(CalendarType::SINGLE()) || $calendarType->sameValueAs(CalendarType::MULTIPLE())) {
-            $defaultTimeStamps = $startDate ? [new Timestamp($startDate, $endDate ?: $startDate)] : [];
-        }
-
-        $calendar = new self(
-            $calendarType,
-            $startDate,
-            $endDate,
-            !empty($data['timestamps']) ? array_map(
-                function ($timestamp) {
-                    return Timestamp::deserialize($timestamp);
-                },
-                $data['timestamps']
-            ) : $defaultTimeStamps,
-            !empty($data['openingHours']) ? array_map(
-                function ($openingHour) {
-                    return OpeningHour::deserialize($openingHour);
-                },
-                $data['openingHours']
-            ) : []
-        );
-
-        if (!empty($data['status'])) {
-            $calendar->status = Status::deserialize($data['status']);
-        }
-
-        return $calendar;
-    }
-
-    /**
-     * This deserialization function takes into account old data that might be missing a timezone.
-     * It will fall back to creating a DateTime object and assume Brussels.
-     * If this still fails an error will be thrown.
-     */
-    private static function deserializeDateTime(string $dateTimeData): DateTime
-    {
-        $dateTime = DateTime::createFromFormat(DateTime::ATOM, $dateTimeData);
-
-        if ($dateTime === false) {
-            $dateTime = DateTime::createFromFormat('Y-m-d\TH:i:s', $dateTimeData, new DateTimeZone('Europe/Brussels'));
-
-            if (!$dateTime) {
-                throw new InvalidArgumentException('Invalid date string provided for timestamp, ISO8601 expected!');
-            }
-        }
-
-        return $dateTime;
+        return $this->type;
     }
 
     public function getStartDate(): ?DateTimeInterface
@@ -270,31 +216,112 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $this->timestamps;
     }
 
-    private function deriveStatusTypeFromSubEvents(): StatusType
+    public function getStatus(): Status
     {
-        $statusTypeCounts = [];
-        $statusTypeCounts[StatusType::available()->toNative()] = 0;
-        $statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] = 0;
-        $statusTypeCounts[StatusType::unavailable()->toNative()] = 0;
+        return $this->status;
+    }
 
-        foreach ($this->timestamps as $timestamp) {
-            ++$statusTypeCounts[$timestamp->getStatus()->getType()->toNative()];
+    public function getBookingAvailability(): BookingAvailability
+    {
+        return $this->bookingAvailability;
+    }
+
+    public function serialize(): array
+    {
+        $serializedTimestamps = array_map(
+            function (Timestamp $timestamp) {
+                return $timestamp->serialize();
+            },
+            $this->timestamps
+        );
+
+        $serializedOpeningHours = array_map(
+            function (OpeningHour $openingHour) {
+                return $openingHour->serialize();
+            },
+            $this->openingHours
+        );
+
+        $calendar = [
+            'type' => $this->type->toNative(),
+            'status' => $this->status->serialize(),
+            'bookingAvailability' => $this->bookingAvailability->serialize(),
+        ];
+
+        empty($this->startDate) ?: $calendar['startDate'] = $this->startDate->format(DateTime::ATOM);
+        empty($this->endDate) ?: $calendar['endDate'] = $this->endDate->format(DateTime::ATOM);
+        empty($serializedTimestamps) ?: $calendar['timestamps'] = $serializedTimestamps;
+        empty($serializedOpeningHours) ?: $calendar['openingHours'] = $serializedOpeningHours;
+
+        return $calendar;
+    }
+
+    public static function deserialize(array $data): Calendar
+    {
+        $calendarType = CalendarType::fromNative($data['type']);
+
+        $startDate = !empty($data['startDate']) ? self::deserializeDateTime($data['startDate']) : null;
+        $endDate = !empty($data['endDate']) ? self::deserializeDateTime($data['endDate']) : null;
+
+        // Fix for old events that could have a end date before the start date
+        if ($startDate && $endDate && ($startDate > $endDate)) {
+            $endDate = $startDate;
         }
 
-        if ($statusTypeCounts[StatusType::available()->toNative()] > 0) {
-            return StatusType::available();
+        // Backwards compatibility for serialized single or multiple calendar types that are missing timestamps but do
+        // have a start and end date.
+        $defaultTimeStamps = [];
+        if ($calendarType->sameValueAs(CalendarType::SINGLE()) || $calendarType->sameValueAs(CalendarType::MULTIPLE())) {
+            $defaultTimeStamps = $startDate ? [new Timestamp($startDate, $endDate ?: $startDate)] : [];
         }
 
-        if ($statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] > 0) {
-            return StatusType::temporarilyUnavailable();
+        $calendar = new self(
+            $calendarType,
+            $startDate,
+            $endDate,
+            !empty($data['timestamps']) ? array_map(
+                function ($timestamp) {
+                    return Timestamp::deserialize($timestamp);
+                },
+                $data['timestamps']
+            ) : $defaultTimeStamps,
+            !empty($data['openingHours']) ? array_map(
+                function ($openingHour) {
+                    return OpeningHour::deserialize($openingHour);
+                },
+                $data['openingHours']
+            ) : []
+        );
+
+        if (!empty($data['status'])) {
+            $calendar->status = Status::deserialize($data['status']);
         }
 
-        if ($statusTypeCounts[StatusType::unavailable()->toNative()] > 0) {
-            return StatusType::unavailable();
+        if (!empty($data['bookingAvailability'])) {
+            $calendar->bookingAvailability = BookingAvailability::deserialize($data['bookingAvailability']);
         }
 
-        // This extra return is needed for events with calendar type of permanent or periodic.
-        return StatusType::available();
+        return $calendar;
+    }
+
+    /**
+     * This deserialization function takes into account old data that might be missing a timezone.
+     * It will fall back to creating a DateTime object and assume Brussels.
+     * If this still fails an error will be thrown.
+     */
+    private static function deserializeDateTime(string $dateTimeData): DateTime
+    {
+        $dateTime = DateTime::createFromFormat(DateTime::ATOM, $dateTimeData);
+
+        if ($dateTime === false) {
+            $dateTime = DateTime::createFromFormat('Y-m-d\TH:i:s', $dateTimeData, new DateTimeZone('Europe/Brussels'));
+
+            if (!$dateTime) {
+                throw new InvalidArgumentException('Invalid date string provided for timestamp, ISO8601 expected!');
+            }
+        }
+
+        return $dateTime;
     }
 
     public function toJsonLd(): array
@@ -313,6 +340,8 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         }
 
         $jsonLd['status'] = $this->determineCorrectTopStatusForProjection()->serialize();
+
+        $jsonLd['bookingAvailability'] = $this->determineCorrectTopBookingAvailabilityForProjection()->serialize();
 
         $timestamps = $this->getTimestamps();
         if (!empty($timestamps)) {
@@ -375,6 +404,33 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $calendar;
     }
 
+    private function deriveStatusTypeFromSubEvents(): StatusType
+    {
+        $statusTypeCounts = [];
+        $statusTypeCounts[StatusType::available()->toNative()] = 0;
+        $statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] = 0;
+        $statusTypeCounts[StatusType::unavailable()->toNative()] = 0;
+
+        foreach ($this->timestamps as $timestamp) {
+            ++$statusTypeCounts[$timestamp->getStatus()->getType()->toNative()];
+        }
+
+        if ($statusTypeCounts[StatusType::available()->toNative()] > 0) {
+            return StatusType::available();
+        }
+
+        if ($statusTypeCounts[StatusType::temporarilyUnavailable()->toNative()] > 0) {
+            return StatusType::temporarilyUnavailable();
+        }
+
+        if ($statusTypeCounts[StatusType::unavailable()->toNative()] > 0) {
+            return StatusType::unavailable();
+        }
+
+        // This extra return is needed for events with calendar type of permanent or periodic.
+        return StatusType::available();
+    }
+
     /**
      * If the calendar has subEvents (timestamps), and a status manually set through an import or full calendar update
      * through the API, the top status might be incorrect.
@@ -402,5 +458,40 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         // expected status type without any reason. (If the top level status had a reason it's probably not applicable
         // for the new status type.)
         return new Status($expectedStatusType, []);
+    }
+
+    /**
+     * This method can determine the top level booking availability from the sub events aka timestamps
+     * - For a periodic or permanent calendar this is always available
+     * - If one of the timestamps is available then the top level is available
+     * - If all of the timestamps are unavailable the top level is also unavailable
+     */
+    private function deriveBookingAvailabilityFromSubEvents(): BookingAvailability
+    {
+        if (empty($this->timestamps)) {
+            return BookingAvailability::available();
+        }
+
+        foreach ($this->timestamps as $timestamp) {
+            if ($timestamp->getBookingAvailability()->equals(BookingAvailability::available())) {
+                return BookingAvailability::available();
+            }
+        }
+
+        return BookingAvailability::unavailable();
+    }
+
+    /**
+     * A projection can require a potential fix:
+     * - For a periodic or permanent calendar this is always available
+     * - If there are timestamps the top level status is calculated
+     */
+    private function determineCorrectTopBookingAvailabilityForProjection(): BookingAvailability
+    {
+        if (empty($this->timestamps)) {
+            return BookingAvailability::available();
+        }
+
+        return $this->deriveBookingAvailabilityFromSubEvents();
     }
 }

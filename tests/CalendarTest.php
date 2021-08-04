@@ -27,6 +27,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\DateTime\Hour;
@@ -49,7 +51,7 @@ class CalendarTest extends TestCase
      */
     private $calendar;
 
-    public function setUp()
+    public function setUp(): void
     {
         $timestamp1 = new Timestamp(
             DateTime::createFromFormat(DateTime::ATOM, self::TIMESTAMP_1_START_DATE),
@@ -109,7 +111,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function time_stamps_need_to_have_type_time_stamp()
+    public function time_stamps_need_to_have_type_time_stamp(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Timestamps should have type TimeStamp.');
@@ -127,7 +129,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function opening_hours_need_to_have_type_opening_hour()
+    public function opening_hours_need_to_have_type_opening_hour(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('OpeningHours should have type OpeningHour.');
@@ -146,7 +148,218 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_serialize()
+    public function it_determines_booking_availability_from_sub_events(): void
+    {
+        $unavailableCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+            ]
+        );
+
+        $availableCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                    null,
+                    BookingAvailability::available()
+                ),
+            ]
+        );
+
+        $this->assertEquals(BookingAvailability::unavailable(), $unavailableCalendar->getBookingAvailability());
+        $this->assertEquals(BookingAvailability::available(), $availableCalendar->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_updating_booking_availability_on_single_type(): void
+    {
+        $singleCalendar = new Calendar(
+            CalendarType::SINGLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00')
+                ),
+            ]
+        );
+
+        $singleCalendar = $singleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+
+        $this->assertEquals(BookingAvailability::unavailable(), $singleCalendar->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_updating_booking_availability_on_multiple_type(): void
+    {
+        $multipleCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00')
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00')
+                ),
+            ]
+        );
+
+        $multipleCalendar = $multipleCalendar->withBookingAvailability(BookingAvailability::unavailable());
+
+        $this->assertEquals(BookingAvailability::unavailable(), $multipleCalendar->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_permanent_type(): void
+    {
+        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+
+        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+
+        $permanentCalendar->withBookingAvailability(BookingAvailability::unavailable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_periodic_type(): void
+    {
+        $periodicCalendar = new Calendar(
+            CalendarType::PERIODIC(),
+            new DateTime('2021-03-18T14:00:00+01:00'),
+            new DateTime('2021-03-18T14:00:00+01:00')
+        );
+
+        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+
+        $periodicCalendar->withBookingAvailability(BookingAvailability::unavailable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_updating_booking_availability_on_timestamp_of_single_type(): void
+    {
+        $singleCalendar = new Calendar(
+            CalendarType::SINGLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00')
+                ),
+            ]
+        );
+
+        $singleCalendar = $singleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+
+        $this->assertEquals(
+            BookingAvailability::unavailable(),
+            $singleCalendar->getTimestamps()[0]->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_updating_booking_availability_on_timestamps_of_multiple_type(): void
+    {
+        $multipleCalendar = new Calendar(
+            CalendarType::MULTIPLE(),
+            null,
+            null,
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00')
+                ),
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00')
+                ),
+            ]
+        );
+
+        $multipleCalendar = $multipleCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+
+        $this->assertEquals(
+            BookingAvailability::unavailable(),
+            $multipleCalendar->getTimestamps()[0]->getBookingAvailability()
+        );
+        $this->assertEquals(
+            BookingAvailability::unavailable(),
+            $multipleCalendar->getTimestamps()[1]->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_timestamps_of_permanent_type(): void
+    {
+        $permanentCalendar = new Calendar(CalendarType::PERMANENT());
+
+        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+
+        $permanentCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_prevents_updating_booking_availability_on_timestamps_of_periodic_type(): void
+    {
+        $periodicCalendar = new Calendar(
+            CalendarType::PERIODIC(),
+            new DateTime('2021-03-18T14:00:00+01:00'),
+            new DateTime('2021-03-18T14:00:00+01:00')
+        );
+
+        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
+
+        $periodicCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_serialize(): void
     {
         $this->assertEquals(
             [
@@ -156,6 +369,9 @@ class CalendarTest extends TestCase
                 'status' => [
                     'type' => StatusType::available()->toNative(),
                 ],
+                'bookingAvailability' => [
+                    'type' => BookingAvailability::available()->toNative(),
+                ],
                 'timestamps' => [
                     [
                         'startDate' => self::TIMESTAMP_1_START_DATE,
@@ -163,12 +379,18 @@ class CalendarTest extends TestCase
                         'status' => [
                             'type' => StatusType::available()->toNative(),
                         ],
+                        'bookingAvailability' => [
+                            'type' => BookingAvailability::available()->toNative(),
+                        ],
                     ],
                     [
                         'startDate' => self::TIMESTAMP_2_START_DATE,
                         'endDate' => self::TIMESTAMP_2_END_DATE,
                         'status' => [
                             'type' => StatusType::available()->toNative(),
+                        ],
+                        'bookingAvailability' => [
+                            'type' => BookingAvailability::available()->toNative(),
                         ],
                     ],
                 ],
@@ -212,7 +434,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize()
+    public function it_can_deserialize(): void
     {
         $actualCalendar = Calendar::deserialize([
             'type' => 'multiple',
@@ -274,7 +496,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_with_explicit_status()
+    public function it_can_deserialize_with_explicit_status(): void
     {
         $status = new Status(
             StatusType::temporarilyUnavailable(),
@@ -312,7 +534,50 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_without_overwriting_the_status_of_subEvents()
+    public function it_can_deserialize_with_explicit_booking_availability(): void
+    {
+        $calendar = new Calendar(
+            CalendarType::SINGLE(),
+            new DateTime('2021-03-18T14:00:00+01:00'),
+            new DateTime('2021-03-18T16:00:00+01:00'),
+            [
+                new Timestamp(
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T16:00:00+01:00'),
+                    null,
+                    BookingAvailability::unavailable()
+                ),
+            ]
+        );
+
+        $this->assertEquals(
+            $calendar->withBookingAvailability(BookingAvailability::unavailable()),
+            Calendar::deserialize(
+                [
+                    'type' => 'single',
+                    'startDate' => '2021-03-18T14:00:00+01:00',
+                    'endDate' => '2021-03-18T16:00:00+01:00',
+                    'bookingAvailability' => [
+                        'type' => 'Unavailable',
+                    ],
+                    'timestamps' => [
+                        [
+                            'startDate' => '2021-03-18T14:00:00+01:00',
+                            'endDate' => '2021-03-18T16:00:00+01:00',
+                            'bookingAvailability' => [
+                                'type' => 'Unavailable',
+                            ],
+                        ],
+                    ],
+                ]
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_without_overwriting_the_status_of_subEvents(): void
     {
         $timestamp1 = new Timestamp(
             DateTime::createFromFormat(DateTime::ATOM, self::TIMESTAMP_1_START_DATE),
@@ -394,14 +659,11 @@ class CalendarTest extends TestCase
     public function it_should_generate_the_expected_json_for_a_calendar_of_each_type(
         Calendar $calendar,
         array $jsonld
-    ) {
+    ): void {
         $this->assertEquals($jsonld, $calendar->toJsonLd());
     }
 
-    /**
-     * @return array
-     */
-    public function jsonldCalendarProvider()
+    public function jsonldCalendarProvider(): array
     {
         return [
             'single no sub event status' => [
@@ -423,6 +685,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => StatusType::available()->toNative(),
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
@@ -430,6 +695,9 @@ class CalendarTest extends TestCase
                             'endDate' => '2016-03-13T12:00:00+01:00',
                             'status' => [
                                 'type' => StatusType::available()->toNative(),
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -461,6 +729,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => 'TemporarilyUnavailable',
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
@@ -472,6 +743,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Jammer genoeg uitgesteld.',
                                     'fr' => 'Malheureusement reporté.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -500,6 +774,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => StatusType::available()->toNative(),
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
@@ -508,6 +785,9 @@ class CalendarTest extends TestCase
                             'status' => [
                                 'type' => StatusType::available()->toNative(),
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -515,6 +795,9 @@ class CalendarTest extends TestCase
                             'endDate' => '2020-03-13T12:00:00+01:00',
                             'status' => [
                                 'type' => StatusType::available()->toNative(),
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -557,6 +840,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => StatusType::available()->toNative(),
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
@@ -569,6 +855,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Malheureusement reporté.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -580,6 +869,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Gelukkig gaat het door.',
                                     'fr' => 'Heureusement, ça continue.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -622,6 +914,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => 'TemporarilyUnavailable',
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
@@ -634,6 +929,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Malheureusement reporté.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -645,6 +943,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -687,6 +988,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => 'Unavailable',
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
@@ -699,6 +1003,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Il a été annulé.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -710,6 +1017,9 @@ class CalendarTest extends TestCase
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
                             ],
                         ],
                     ],
@@ -760,6 +1070,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => 'Unavailable',
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                     'subEvent' => [
                         [
                             '@type' => 'Event',
@@ -772,6 +1085,9 @@ class CalendarTest extends TestCase
                                     'fr' => 'Il a été annulé.',
                                 ],
                             ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
                         ],
                         [
                             '@type' => 'Event',
@@ -783,6 +1099,65 @@ class CalendarTest extends TestCase
                                     'nl' => 'Nog erger, het is afgelast.',
                                     'fr' => 'Pire encore, il a été annulé.',
                                 ],
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::available()->toNative(),
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'multiple with corrected booking availability' => [
+                'calendar' => (new Calendar(
+                    CalendarType::MULTIPLE(),
+                    null,
+                    null,
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                    ]
+                ))->withBookingAvailability(BookingAvailability::available()),
+                'jsonld' => [
+                    'calendarType' => 'multiple',
+                    'startDate' => '2016-03-06T10:00:00+01:00',
+                    'endDate' => '2020-03-13T12:00:00+01:00',
+                    'status' => [
+                        'type' => StatusType::available()->toNative(),
+                    ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::unavailable()->toNative(),
+                    ],
+                    'subEvent' => [
+                        [
+                            '@type' => 'Event',
+                            'startDate' => '2016-03-06T10:00:00+01:00',
+                            'endDate' => '2016-03-13T12:00:00+01:00',
+                            'status' => [
+                                'type' => StatusType::available()->toNative(),
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::unavailable()->toNative(),
+                            ],
+                        ],
+                        [
+                            '@type' => 'Event',
+                            'startDate' => '2020-03-06T10:00:00+01:00',
+                            'endDate' => '2020-03-13T12:00:00+01:00',
+                            'status' => [
+                                'type' => StatusType::available()->toNative(),
+                            ],
+                            'bookingAvailability' => [
+                                'type' => BookingAvailability::unavailable()->toNative(),
                             ],
                         ],
                     ],
@@ -801,6 +1176,9 @@ class CalendarTest extends TestCase
                     'status' => [
                         'type' => StatusType::available()->toNative(),
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                 ],
             ],
             'permanent' => [
@@ -811,6 +1189,9 @@ class CalendarTest extends TestCase
                     'calendarType' => 'permanent',
                     'status' => [
                         'type' => StatusType::available()->toNative(),
+                    ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
                     ],
                 ],
             ],
@@ -833,6 +1214,9 @@ class CalendarTest extends TestCase
                             'nl' => 'We zijn in volle verbouwing',
                         ],
                     ],
+                    'bookingAvailability' => [
+                        'type' => BookingAvailability::available()->toNative(),
+                    ],
                 ],
             ],
         ];
@@ -841,7 +1225,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_assume_the_timezone_is_Brussels_when_none_is_provided_when_deserializing()
+    public function it_should_assume_the_timezone_is_Brussels_when_none_is_provided_when_deserializing(): void
     {
         $oldCalendarData = [
             'type' => 'periodic',
@@ -864,7 +1248,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_when_start_date_can_not_be_converted()
+    public function it_throws_invalid_argument_exception_when_start_date_can_not_be_converted(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -881,7 +1265,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_invalid_argument_exception_when_end_date_can_not_be_converted()
+    public function it_throws_invalid_argument_exception_when_end_date_can_not_be_converted(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -898,7 +1282,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_single_calendars()
+    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_single_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -927,7 +1311,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_single_calendars()
+    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_single_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'single',
@@ -956,7 +1340,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_multiple_calendars()
+    public function it_adds_a_timestamp_based_on_start_and_end_date_if_one_is_missing_for_multiple_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'multiple',
@@ -985,7 +1369,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_multiple_calendars()
+    public function it_adds_a_timestamp_based_on_start_date_if_one_is_missing_for_multiple_calendars(): void
     {
         $invalidCalendarData = [
             'type' => 'multiple',
@@ -1015,7 +1399,7 @@ class CalendarTest extends TestCase
      * @test
      * @dataProvider periodicCalendarWithMissingDatesDataProvider
      */
-    public function it_should_not_create_a_periodic_calendar_with_missing_dates(array $calendarData)
+    public function it_should_not_create_a_periodic_calendar_with_missing_dates(array $calendarData): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('A period should have a start- and end-date.');
@@ -1023,7 +1407,7 @@ class CalendarTest extends TestCase
         Calendar::deserialize($calendarData);
     }
 
-    public function periodicCalendarWithMissingDatesDataProvider()
+    public function periodicCalendarWithMissingDatesDataProvider(): array
     {
         return [
             'no dates' => [
@@ -1049,7 +1433,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_single_date_range_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_single_date_range_calendar(): void
     {
         $subEvent = new SubEvent(
             new DateRange(
@@ -1082,7 +1466,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_multiple_date_range_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_multiple_date_range_calendar(): void
     {
         $subEvents = new SubEvents(
             new SubEvent(
@@ -1128,7 +1512,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar(): void
     {
         $dateRange = new DateRange(
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
@@ -1155,7 +1539,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar_with_opening_hours()
+    public function it_should_be_creatable_from_an_udb3_model_periodic_calendar_with_opening_hours(): void
     {
         $dateRange = new DateRange(
             \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2016-03-06T10:00:00+01:00'),
@@ -1226,7 +1610,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar()
+    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar(): void
     {
         $openingHours = new OpeningHours();
         $udb3ModelCalendar = new PermanentCalendar($openingHours);
@@ -1247,7 +1631,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar_with_opening_hours()
+    public function it_should_be_creatable_from_an_udb3_model_permanent_calendar_with_opening_hours(): void
     {
         $openingHours = new OpeningHours(
             new Udb3ModelOpeningHour(
@@ -1313,7 +1697,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_takes_into_account_udb3_model_calendar_status()
+    public function it_takes_into_account_udb3_model_calendar_status(): void
     {
         $udb3ModelCalendar = (new PermanentCalendar(new OpeningHours()))
             ->withStatus(new Udb3ModelStatus(Udb3ModelStatusType::TemporarilyUnavailable()));
@@ -1329,7 +1713,7 @@ class CalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_can_determine_same_calendars()
+    public function it_can_determine_same_calendars(): void
     {
         $calendar = new Calendar(
             CalendarType::PERIODIC(),
