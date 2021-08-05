@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
