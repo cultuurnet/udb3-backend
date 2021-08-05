@@ -29,7 +29,7 @@ class CalendarJSONDeserializerTest extends TestCase
      */
     private $calendarDataValidator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calendarDataValidator = $this->createMock(DataValidatorInterface::class);
     }
@@ -37,7 +37,7 @@ class CalendarJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_json_to_calendar()
+    public function it_can_deserialize_json_to_calendar(): void
     {
         $calendarAsJsonString = new StringLiteral(
             file_get_contents(__DIR__ . '/samples/calendar.json')
@@ -97,7 +97,7 @@ class CalendarJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_json_to_calendar_with_status()
+    public function it_can_deserialize_json_to_calendar_with_status(): void
     {
         $calendarAsJsonString = new StringLiteral(
             file_get_contents(__DIR__ . '/samples/calendar_with_status.json')
@@ -207,7 +207,7 @@ class CalendarJSONDeserializerTest extends TestCase
     public function it_should_return_right_calendar_type_from_json_data(
         string $calendarData,
         CalendarType $expectedCalendarType
-    ) {
+    ): void {
         $calendarAsJsonString = new StringLiteral($calendarData);
 
         $calendarJSONDeserializer = new CalendarJSONDeserializer(
@@ -220,7 +220,7 @@ class CalendarJSONDeserializerTest extends TestCase
         $this->assertEquals($expectedCalendarType, $calendar->getType());
     }
 
-    public function calendarDataProvider()
+    public function calendarDataProvider(): array
     {
         return [
             'calendar_of_type_PERMANENT_when_json_only_contains_opening_hours' => [
