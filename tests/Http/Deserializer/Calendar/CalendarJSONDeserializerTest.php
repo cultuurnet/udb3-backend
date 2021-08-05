@@ -153,7 +153,7 @@ class CalendarJSONDeserializerTest extends TestCase
                 (new TimeStamp(
                     \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-03T09:00:00+01:00'),
                     \DateTime::createFromFormat(\DateTime::ATOM, '2020-02-10T16:00:00+01:00')
-                ))->withBookingAvailability(BookingAvailability::unavailable())
+                ))->withBookingAvailability(BookingAvailability::unavailable()),
             ]
         ))->withBookingAvailability(BookingAvailability::unavailable());
 
