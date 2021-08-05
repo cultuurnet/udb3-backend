@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
+use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Timestamp;
@@ -50,12 +51,12 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             new Calendar(CalendarType::PERMANENT())
         );
 
-        $updateBookingAvailability = new UpdateBookingAvailability('1', BookingAvailability::unavailable());
+        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
 
         $this->scenario
             ->withAggregateId('1')
             ->given([$permanentEventCreated])
-            ->when($updateBookingAvailability)
+            ->when(new UpdateBookingAvailability('1', BookingAvailability::unavailable()))
             ->then([]);
     }
 
@@ -77,12 +78,12 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             )
         );
 
-        $updateBookingAvailability = new UpdateBookingAvailability('1', BookingAvailability::unavailable());
+        $this->expectException(UpdateBookingAvailabilityNotAllowed::class);
 
         $this->scenario
             ->withAggregateId('1')
             ->given([$periodicEventCreated])
-            ->when($updateBookingAvailability)
+            ->when(new UpdateBookingAvailability('1', BookingAvailability::unavailable()))
             ->then([]);
     }
 
