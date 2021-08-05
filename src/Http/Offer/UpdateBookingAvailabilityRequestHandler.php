@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
+use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
+use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +41,15 @@ final class UpdateBookingAvailabilityRequestHandler
 
         $this->updateBookingAvailabilityValidator->validate($data);
 
-        $this->commandBus->dispatch(
-            new UpdateBookingAvailability($offerId, BookingAvailability::fromNative($data['type']))
-        );
+        try {
+            $this->commandBus->dispatch(
+                new UpdateBookingAvailability($offerId, BookingAvailability::fromNative($data['type']))
+            );
+        } catch (UpdateBookingAvailabilityNotAllowed $exception) {
+            return new ApiProblemJsonResponse(
+                ApiProblems::updateBookingAvailabilityNotAllowed($exception->getMessage())
+            );
+        }
 
         return new NoContent();
     }
