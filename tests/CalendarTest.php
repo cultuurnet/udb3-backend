@@ -147,51 +147,95 @@ class CalendarTest extends TestCase
 
     /**
      * @test
+     * @dataProvider calendarProvider
      */
-    public function it_determines_booking_availability_from_sub_events(): void
+    public function it_determines_booking_availability_from_sub_events(
+        Calendar $calendar,
+        BookingAvailability $expectedBookingAvailability
+    ): void {
+        $this->assertEquals($expectedBookingAvailability, $calendar->getBookingAvailability());
+    }
+
+    public function calendarProvider(): array
     {
-        $unavailableCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
-            null,
-            null,
-            [
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+        return [
+            'single available' => [
+                new Calendar(
+                    CalendarType::SINGLE(),
                     null,
-                    BookingAvailability::unavailable()
-                ),
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
                     null,
-                    BookingAvailability::unavailable()
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::available()
+                        ),
+                    ]
                 ),
-            ]
-        );
-
-        $availableCalendar = new Calendar(
-            CalendarType::MULTIPLE(),
-            null,
-            null,
-            [
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                BookingAvailability::available(),
+            ],
+            'single unavailable' => [
+                new Calendar(
+                    CalendarType::SINGLE(),
                     null,
-                    BookingAvailability::unavailable()
-                ),
-                new Timestamp(
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
                     null,
-                    BookingAvailability::available()
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                    ]
                 ),
-            ]
-        );
-
-        $this->assertEquals(BookingAvailability::unavailable(), $unavailableCalendar->getBookingAvailability());
-        $this->assertEquals(BookingAvailability::available(), $availableCalendar->getBookingAvailability());
+                BookingAvailability::unavailable()
+            ],
+            'multiple available' => [
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    null,
+                    null,
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::available()
+                        ),
+                    ]
+                ),
+                BookingAvailability::available(),
+            ],
+            'multiple unavailable' => [
+                new Calendar(
+                    CalendarType::MULTIPLE(),
+                    null,
+                    null,
+                    [
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2016-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                        new Timestamp(
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-06T10:00:00+01:00'),
+                            DateTime::createFromFormat(DateTime::ATOM, '2020-03-13T12:00:00+01:00'),
+                            null,
+                            BookingAvailability::unavailable()
+                        ),
+                    ]
+                ),
+                BookingAvailability::unavailable(),
+            ],
+        ];
     }
 
     /**
@@ -206,7 +250,7 @@ class CalendarTest extends TestCase
             [
                 new Timestamp(
                     DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00')
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
                 ),
             ]
         );
