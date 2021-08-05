@@ -112,14 +112,9 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
         return $clone;
     }
 
-    public function allowsUpdatingBookingAvailability(): bool
-    {
-        return $this->type->sameValueAs(CalendarType::SINGLE()) || $this->type->sameValueAs(CalendarType::MULTIPLE());
-    }
-
     private function guardUpdatingBookingAvailability(): void
     {
-        if (!$this->allowsUpdatingBookingAvailability()) {
+        if ($this->type->sameValueAs(CalendarType::PERIODIC()) || $this->type->sameValueAs(CalendarType::PERMANENT())) {
             throw UpdateBookingAvailabilityNotAllowed::forCalendarType($this->type);
         }
     }

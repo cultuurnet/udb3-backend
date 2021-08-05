@@ -215,10 +215,6 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateBookingAvailability(BookingAvailability $bookingAvailability): void
     {
-        if (!$this->calendar->allowsUpdatingBookingAvailability()) {
-            return;
-        }
-
         $this->updateCalendar(
             $this->calendar
                 ->withBookingAvailability($bookingAvailability)
