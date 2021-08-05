@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
-use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotSupported;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Place\PlaceRepository;
 use CultuurNet\UDB3\Timestamp;
@@ -51,7 +51,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             new Calendar(CalendarType::PERMANENT())
         );
 
-        $this->expectException(UpdateBookingAvailabilityNotSupported::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $this->scenario
             ->withAggregateId('1')
@@ -78,7 +78,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             )
         );
 
-        $this->expectException(UpdateBookingAvailabilityNotSupported::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $this->scenario
             ->withAggregateId('1')

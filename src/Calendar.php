@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour as Udb3ModelOpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotSupported;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use DateTimeInterface;
@@ -115,7 +115,7 @@ final class Calendar implements CalendarInterface, JsonLdSerializableInterface, 
     private function guardUpdatingBookingAvailability(): void
     {
         if ($this->type->sameValueAs(CalendarType::PERIODIC()) || $this->type->sameValueAs(CalendarType::PERMANENT())) {
-            throw UpdateBookingAvailabilityNotSupported::forCalendarType($this->type);
+            throw CalendarTypeNotSupported::forCalendarType($this->type);
         }
     }
 

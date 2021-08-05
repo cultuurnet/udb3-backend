@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\HttpFoundation\Response\NoContent;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
-use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotSupported;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,9 +44,9 @@ final class UpdateBookingAvailabilityRequestHandler
             $this->commandBus->dispatch(
                 new UpdateBookingAvailability($offerId, BookingAvailability::fromNative($data['type']))
             );
-        } catch (UpdateBookingAvailabilityNotSupported $exception) {
+        } catch (CalendarTypeNotSupported $exception) {
             return new ApiProblemJsonResponse(
-                ApiProblems::updateBookingAvailabilityNotSupported($exception->getMessage())
+                ApiProblems::calendarTypeNotSupported($exception->getMessage())
             );
         }
 

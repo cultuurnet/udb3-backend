@@ -86,11 +86,11 @@ final class ApiProblems
             ->setStatus(400);
     }
 
-    public static function updateBookingAvailabilityNotSupported(string $detail): ApiProblem
+    public static function calendarTypeNotSupported(string $detail): ApiProblem
     {
         return (new ApiProblem())
-            ->setType('https://api.publiq.be/probs/uitdatabank/update-booking-availability-not-supported')
-            ->setTitle('Update of booking availability is not supported')
+            ->setType('https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported')
+            ->setTitle('Calendar type not supported')
             ->setDetail($detail)
             ->setStatus(400);
     }

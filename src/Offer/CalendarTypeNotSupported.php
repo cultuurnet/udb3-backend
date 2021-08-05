@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer;
 use CultuurNet\UDB3\CalendarType;
 use Exception;
 
-final class UpdateBookingAvailabilityNotSupported extends Exception
+final class CalendarTypeNotSupported extends Exception
 {
     public static function forCalendarType(CalendarType $calendarType): self
     {

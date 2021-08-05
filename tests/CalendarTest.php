@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status as Udb3ModelStatus;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType as Udb3ModelStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotSupported;
+use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -293,7 +293,7 @@ class CalendarTest extends TestCase
     {
         $permanentCalendar = new Calendar(CalendarType::PERMANENT());
 
-        $this->expectException(UpdateBookingAvailabilityNotSupported::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $permanentCalendar->withBookingAvailability(BookingAvailability::unavailable());
     }
@@ -309,7 +309,7 @@ class CalendarTest extends TestCase
             new DateTime('2021-03-18T14:00:00+01:00')
         );
 
-        $this->expectException(UpdateBookingAvailabilityNotSupported::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $periodicCalendar->withBookingAvailability(BookingAvailability::unavailable());
     }
@@ -379,7 +379,7 @@ class CalendarTest extends TestCase
     {
         $permanentCalendar = new Calendar(CalendarType::PERMANENT());
 
-        $this->expectException(UpdateBookingAvailabilityNotSupported::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $permanentCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
     }
@@ -395,7 +395,7 @@ class CalendarTest extends TestCase
             new DateTime('2021-03-18T14:00:00+01:00')
         );
 
-        $this->expectException(UpdateBookingAvailabilityNotSupported::class);
+        $this->expectException(CalendarTypeNotSupported::class);
 
         $periodicCalendar->withBookingAvailabilityOnTimestamps(BookingAvailability::unavailable());
     }
