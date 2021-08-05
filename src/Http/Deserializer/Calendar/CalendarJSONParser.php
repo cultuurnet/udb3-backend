@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Calendar\DayOfWeekCollection;
 use CultuurNet\UDB3\Calendar\OpeningHour;
 use CultuurNet\UDB3\Calendar\OpeningTime;
 use CultuurNet\UDB3\Event\ValueObjects\Status;
+use CultuurNet\UDB3\Offer\ValueObjects\BookingAvailability;
 use CultuurNet\UDB3\Timestamp;
 
 class CalendarJSONParser
@@ -39,6 +40,15 @@ class CalendarJSONParser
         return Status::deserialize($data['status']);
     }
 
+    public function getBookingAvailability(array $data): ?BookingAvailability
+    {
+        if (!isset($data['bookingAvailability'])) {
+            return null;
+        }
+
+        return BookingAvailability::deserialize($data['bookingAvailability']);
+    }
+
     /**
      * @return Timestamp[]
      */
@@ -59,6 +69,12 @@ class CalendarJSONParser
             $status = isset($timeSpan['status']) ? Status::deserialize($timeSpan['status']) : $this->getStatus($data);
             if ($status) {
                 $timestamp = $timestamp->withStatus($status);
+            }
+
+            $bookingAvailability = isset($timeSpan['bookingAvailability']) ?
+                BookingAvailability::deserialize($timeSpan['bookingAvailability']) : $this->getBookingAvailability($data);
+            if ($bookingAvailability) {
+                $timestamp = $timestamp->withBookingAvailability($bookingAvailability);
             }
 
             $timestamps[] = $timestamp;

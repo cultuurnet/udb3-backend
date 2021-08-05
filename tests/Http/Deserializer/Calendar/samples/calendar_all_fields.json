@@ -9,6 +9,9 @@
       "fr": "Reason in het Frans"
     }
   },
+  "bookingAvailability": {
+    "type": "Unavailable"
+  },
   "timeSpans": [
     {
       "start": "2020-01-26T09:00:00+01:00",
@@ -23,6 +26,9 @@
           "nl": "Reason in het Nederlands",
           "fr": "Reason in het Frans"
         }
+      },
+      "bookingAvailability": {
+        "type": "Unavailable"
       }
     }
   ],
