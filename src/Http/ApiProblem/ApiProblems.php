@@ -86,11 +86,11 @@ final class ApiProblems
             ->setStatus(400);
     }
 
-    public static function updateBookingAvailabilityNotAllowed(string $detail): ApiProblem
+    public static function updateBookingAvailabilityNotSupported(string $detail): ApiProblem
     {
         return (new ApiProblem())
-            ->setType('https://api.publiq.be/probs/uitdatabank/update-booking-availability-not-allowed')
-            ->setTitle('Update booking availability not allowed')
+            ->setType('https://api.publiq.be/probs/uitdatabank/update-booking-availability-not-supported')
+            ->setTitle('Update of booking availability is not supported')
             ->setDetail($detail)
             ->setStatus(400);
     }

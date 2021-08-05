@@ -14,7 +14,7 @@ use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
-use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotAllowed;
+use CultuurNet\UDB3\Offer\UpdateBookingAvailabilityNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use CultuurNet\UDB3\UiTPAS\Event\CommandHandling\Validation\EventHasTicketSalesException;
@@ -51,7 +51,7 @@ final class ErrorLogger
         EventCannotBeRemovedFromProduction::class,
         AccessDeniedHttpException::class,
         AccessDeniedException::class,
-        UpdateBookingAvailabilityNotAllowed::class,
+        UpdateBookingAvailabilityNotSupported::class,
     ];
 
     /**
