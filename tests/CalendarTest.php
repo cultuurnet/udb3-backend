@@ -189,7 +189,7 @@ class CalendarTest extends TestCase
                         ),
                     ]
                 ),
-                BookingAvailability::unavailable()
+                BookingAvailability::unavailable(),
             ],
             'multiple available' => [
                 new Calendar(
