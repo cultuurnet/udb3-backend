@@ -250,7 +250,7 @@ class CalendarTest extends TestCase
             [
                 new Timestamp(
                     DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
-                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00'),
+                    DateTime::createFromFormat(DateTime::ATOM, '2021-03-18T14:00:00+01:00')
                 ),
             ]
         );
