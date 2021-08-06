@@ -8,6 +8,7 @@ use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidData;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidSyntax;
@@ -62,6 +63,10 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
 
         if ($e instanceof Error) {
             $problem = ApiProblems::internalServerError();
+        }
+
+        if ($e instanceof ApiProblemException) {
+            $problem = $e->getApiProblem();
         }
 
         if ($e instanceof AccessDeniedException ||
