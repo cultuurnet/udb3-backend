@@ -164,7 +164,7 @@ class UserIdentityControllerTest extends TestCase
         ];
 
         $this->assertJsonResponse(
-            new JsonLdResponse($expected, 200, ['Cache-Control' => 'private']),
+            new JsonLdResponse($expected, 200, new Headers(['Cache-Control' => 'private'])),
             $response
         );
     }
@@ -196,7 +196,7 @@ class UserIdentityControllerTest extends TestCase
         ];
 
         $this->assertJsonResponse(
-            new JsonLdResponse($expected, 200, ['Cache-Control' => 'private']),
+            new JsonLdResponse($expected, 200, new Headers(['Cache-Control' => 'private'])),
             $response
         );
     }

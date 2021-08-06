@@ -12,6 +12,7 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Psr7\Headers;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 use ValueObjects\Web\EmailAddress;
 
@@ -77,6 +78,6 @@ class UserIdentityController
         $userIdentityAsArray['id'] = $userIdentity->getUserId();
         $userIdentityAsArray['nick'] = $userIdentity->getUserName();
 
-        return new JsonLdResponse($userIdentityAsArray, 200, ['Cache-Control' => 'private']);
+        return new JsonLdResponse($userIdentityAsArray, 200, new Headers(['Cache-Control' => 'private']));
     }
 }
