@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidData;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidSyntax;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyMissing;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -58,7 +56,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     public function it_fails_on_empty_body(): void
     {
         $given = $this->createMockRequestWithBody('');
-        $this->expectException(RequestBodyMissing::class);
+        $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
 
@@ -68,7 +66,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     public function it_fails_on_unparsable_body(): void
     {
         $given = $this->createMockRequestWithBody('{{}');
-        $this->expectException(RequestBodyInvalidSyntax::class);
+        $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
 
@@ -78,7 +76,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     public function it_fails_on_missing_type(): void
     {
         $given = $this->createMockRequestWithBody('{}');
-        $this->expectException(RequestBodyInvalidData::class);
+        $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
 
@@ -88,7 +86,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
     public function it_fails_on_invalid_type(): void
     {
         $given = $this->createMockRequestWithBody('{"type":"foo"}');
-        $this->expectException(RequestBodyInvalidData::class);
+        $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
 }

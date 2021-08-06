@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Request\Body;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -42,7 +43,7 @@ class JsonRequestBodyParserTest extends TestCase
     public function it_throws_when_body_is_missing(): void
     {
         $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
-        $this->expectException(RequestBodyMissing::class);
+        $this->expectException(ApiProblemException::class);
         $this->parser->parse($given);
     }
 
@@ -52,7 +53,7 @@ class JsonRequestBodyParserTest extends TestCase
     public function it_throws_when_body_is_invalid_json(): void
     {
         $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
-        $this->expectException(RequestBodyInvalidSyntax::class);
+        $this->expectException(ApiProblemException::class);
         $this->parser->parse($given);
     }
 }
