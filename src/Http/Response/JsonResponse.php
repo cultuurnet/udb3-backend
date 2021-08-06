@@ -22,8 +22,8 @@ class JsonResponse extends Response
             throw new ApiProblemException(ApiProblems::internalServerError('Could not encode JSON response.'));
         }
 
-        if ($headers instanceof HeadersInterface && !$headers->hasHeader('content-type')) {
-            $headers->setHeader('content-type', 'application/json');
+        if ($headers instanceof HeadersInterface && !$headers->hasHeader('Content-Type')) {
+            $headers->setHeader('Content-Type', 'application/json');
         }
 
         parent::__construct($status, $headers, $body);
