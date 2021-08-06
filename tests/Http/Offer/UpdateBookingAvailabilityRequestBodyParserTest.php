@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
 
 final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
 {
@@ -16,23 +15,15 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
      */
     private $updateBookingAvailabilityRequestBodyParser;
 
+    /**
+     * @var Psr7RequestBuilder
+     */
+    private $requestBuilder;
+
     protected function setUp(): void
     {
         $this->updateBookingAvailabilityRequestBodyParser = new UpdateBookingAvailabilityRequestBodyParser();
-    }
-
-    private function createMockRequestWithBody(string $body): ServerRequestInterface
-    {
-        $stream = $this->createMock(StreamInterface::class);
-        $stream->method('__toString')
-            ->willReturn($body);
-
-        $mock = $this->createMock(ServerRequestInterface::class);
-        $mock->method('getBody')
-            ->willReturn($stream);
-
-        /** @var ServerRequestInterface $mock */
-        return $mock;
+        $this->requestBuilder = new Psr7RequestBuilder();
     }
 
     /**
@@ -40,7 +31,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
      */
     public function it_allows_valid_data(): void
     {
-        $given = $this->createMockRequestWithBody('{"type":"Available"}');
+        $given = $this->requestBuilder->withBodyFromString('{"type":"Available"}')->build('PUT');
         $expected = [
             'type' => 'Available',
         ];
@@ -55,7 +46,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
      */
     public function it_fails_on_empty_body(): void
     {
-        $given = $this->createMockRequestWithBody('');
+        $given = $this->requestBuilder->withBodyFromString('')->build('PUT');
         $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
@@ -65,7 +56,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
      */
     public function it_fails_on_unparsable_body(): void
     {
-        $given = $this->createMockRequestWithBody('{{}');
+        $given = $this->requestBuilder->withBodyFromString('{{}')->build('PUT');
         $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
@@ -75,7 +66,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
      */
     public function it_fails_on_missing_type(): void
     {
-        $given = $this->createMockRequestWithBody('{}');
+        $given = $this->requestBuilder->withBodyFromString('{}')->build('PUT');
         $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
@@ -85,7 +76,7 @@ final class UpdateBookingAvailabilityRequestBodyParserTest extends TestCase
      */
     public function it_fails_on_invalid_type(): void
     {
-        $given = $this->createMockRequestWithBody('{"type":"foo"}');
+        $given = $this->requestBuilder->withBodyFromString('{"type":"foo"}')->build('PUT');
         $this->expectException(ApiProblemException::class);
         $this->updateBookingAvailabilityRequestBodyParser->parse($given);
     }
