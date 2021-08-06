@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidData;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidSyntax;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyMissing;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
@@ -58,6 +59,7 @@ final class ErrorLogger
         RequestBodyMissing::class,
         RequestBodyInvalidSyntax::class,
         RequestBodyInvalidData::class,
+        ApiProblemException::class,
     ];
 
     /**
