@@ -10,9 +10,6 @@ use CultureFeed_HttpException;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblems;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidData;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidSyntax;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyMissing;
 use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Security\CommandAuthorizationException;
 use Error;
@@ -84,16 +81,6 @@ class WebErrorHandlerProvider implements ServiceProviderInterface
                     $e->getCommand()->getItemId()
                 )
             );
-        }
-
-        if ($e instanceof RequestBodyMissing) {
-            $problem = ApiProblems::bodyMissing();
-        }
-        if ($e instanceof RequestBodyInvalidSyntax) {
-            $problem = ApiProblems::bodyInvalidSyntax($e->getMessage());
-        }
-        if ($e instanceof RequestBodyInvalidData) {
-            $problem = ApiProblems::bodyInvalidData($e->getMessage(), $e->getJsonPointer());
         }
 
         if ($e instanceof DataValidationException) {

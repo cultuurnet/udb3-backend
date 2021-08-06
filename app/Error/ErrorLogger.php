@@ -13,9 +13,6 @@ use CultuurNet\UDB3\Deserializer\NotWellFormedException;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeAddedToProduction;
 use CultuurNet\UDB3\Event\Productions\EventCannotBeRemovedFromProduction;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidData;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyInvalidSyntax;
-use CultuurNet\UDB3\Http\Request\Body\RequestBodyMissing;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblemException;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -56,9 +53,6 @@ final class ErrorLogger
         AccessDeniedHttpException::class,
         AccessDeniedException::class,
         CalendarTypeNotSupported::class,
-        RequestBodyMissing::class,
-        RequestBodyInvalidSyntax::class,
-        RequestBodyInvalidData::class,
         ApiProblemException::class,
     ];
 
