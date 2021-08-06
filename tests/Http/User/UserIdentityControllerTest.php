@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\User;
 
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
+use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Jwt\Symfony\Authentication\JsonWebTokenFactory;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Headers;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\EmailAddress;
-use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\ServerRequest;
 
 class UserIdentityControllerTest extends TestCase
@@ -84,11 +86,13 @@ class UserIdentityControllerTest extends TestCase
                     'detail' => '"foo" is not a valid email address',
                 ],
                 400,
-                [
-                    'Content-Type' => [
-                        'application/problem+json',
-                    ],
-                ]
+                new Headers(
+                    [
+                        'Content-Type' => [
+                            'application/problem+json',
+                        ],
+                    ]
+                )
             ),
             $response
         );
@@ -117,11 +121,13 @@ class UserIdentityControllerTest extends TestCase
                     'detail' => 'No user found for the given email address.',
                 ],
                 404,
-                [
-                    'Content-Type' => [
-                        'application/problem+json',
-                    ],
-                ]
+                new Headers(
+                    [
+                        'Content-Type' => [
+                            'application/problem+json',
+                        ],
+                    ]
+                )
             ),
             $response
         );
@@ -222,11 +228,13 @@ class UserIdentityControllerTest extends TestCase
                     'detail' => 'Client access tokens are not supported on this endpoint because a user is required to return user info.',
                 ],
                 400,
-                [
-                    'Content-Type' => [
-                        'application/problem+json',
-                    ],
-                ]
+                new Headers(
+                    [
+                        'Content-Type' => [
+                            'application/problem+json',
+                        ],
+                    ]
+                )
             ),
             $response
         );
@@ -253,17 +261,19 @@ class UserIdentityControllerTest extends TestCase
                     'detail' => 'No user found for the given token.',
                 ],
                 400,
-                [
-                    'Content-Type' => [
-                        'application/problem+json',
-                    ],
-                ]
+                new Headers(
+                    [
+                        'Content-Type' => [
+                            'application/problem+json',
+                        ],
+                    ]
+                )
             ),
             $response
         );
     }
 
-    private function assertJsonResponse(JsonResponse $expectedResponse, JsonResponse $actualResponse): void
+    private function assertJsonResponse(ResponseInterface $expectedResponse, ResponseInterface $actualResponse): void
     {
         $this->assertEquals($expectedResponse->getStatusCode(), $actualResponse->getStatusCode());
         $this->assertEquals($expectedResponse->getHeaders(), $actualResponse->getHeaders());

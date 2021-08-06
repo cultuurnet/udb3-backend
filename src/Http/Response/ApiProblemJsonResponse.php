@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Response;
 
 use Crell\ApiProblem\ApiProblem;
-use Zend\Diactoros\Response\JsonResponse;
+use Slim\Psr7\Headers;
+use Slim\Psr7\Interfaces\HeadersInterface;
 
 /**
  * @see https://tools.ietf.org/html/draft-nottingham-http-problem-07
  **/
 class ApiProblemJsonResponse extends JsonResponse
 {
-    public function __construct(ApiProblem $problem, $headers = [])
+    public function __construct(ApiProblem $problem, ?HeadersInterface $headers = null)
     {
-        $headers += ['Content-Type' => 'application/problem+json'];
-
-        $status = 400;
-        if (null !== $problem->getStatus()) {
-            $status = $problem->getStatus();
+        if (!($headers instanceof HeadersInterface)) {
+            $headers = new Headers();
         }
 
+        $headers->setHeader('Content-Type', 'application/problem+json');
+
+        $status = $problem->getStatus() ?? 400;
         $data = $problem->asArray();
 
         parent::__construct(
