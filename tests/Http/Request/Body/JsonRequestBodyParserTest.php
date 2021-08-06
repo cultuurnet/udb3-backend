@@ -17,7 +17,7 @@ class JsonRequestBodyParserTest extends TestCase
      */
     private $requestBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parser = new JsonRequestBodyParser();
         $this->requestBuilder = new Psr7RequestBuilder();
